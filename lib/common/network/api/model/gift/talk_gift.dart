@@ -1,0 +1,1 @@
+export 'gift_model.dart';

@@ -1,0 +1,100 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+android {
+    namespace "com.example.talk_fo_me"
+    compileSdk flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        applicationId "com.social.guanjia"
+        minSdkVersion 24
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        manifestPlaceholders = [
+            GETUI_APPID    : "ik4JEL2FzA6x8FmIVoCsv3",
+        ]
+//        ndk {
+//            abiFilters "arm64-v8a", "armeabi-v7a"
+//        }
+    }
+
+
+    signingConfigs {
+        release {
+            storeFile file("../jingxiu.jks")
+            keyAlias "jingxiu"
+            keyPassword "qC6XrqeqUqQkidHH"
+            storePassword "qC6XrqeqUqQkidHH"
+        }
+        dev {
+            storeFile file("../tbsport.jks")
+            keyAlias "tbsport"
+            keyPassword "tbsport1234567890"
+            storePassword "tbsport1234567890"
+        }
+    }
+
+    sourceSets{
+        main{
+            jniLibs.srcDirs=['libs']
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+        }
+        release {
+//            minifyEnabled false //关闭混淆
+//            shrinkResources false
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation files('libs/ipaynow_base_v2.1.7_api1.0.0.jar')
+    implementation files('libs/ipaynow_alipay_v2.0.0.jar')
+    implementation 'com.getui:gtsdk:3.2.18.0'  //个推SDK
+    implementation 'com.getui:gtc:3.2.6.0'  //个推核心组件
+}

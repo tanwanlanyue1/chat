@@ -49,8 +49,11 @@ abstract class AppRoutes {
   ///设置-绑定手机号码
   static const bindingPage = '/BindingPage';
 
-  //我的-评价
+  ///我的-评价
   static const mineEvaluatePage = '/mineEvaluatePage';
+
+  ///佳丽-评价我的
+  static const jiaEvaluatePage = '/jiaEvaluatePage';
 
   ///设置-修改登录密码
   static const updatePasswordPage = '/updatePasswordPage';
@@ -77,7 +80,7 @@ abstract class AppRoutes {
   static const attentionOrFansPage = '$auth/attentionOrFansPage';
 
   /// 我的-意见反馈
-  static const mineFeedbackPage = '$auth/mineFeedbackPage';
+  static const mineFeedbackPage = '/mineFeedbackPage';
 
   /// 我的-帮助与客服
   static const mineHelpPage = '$auth/mineHelpPage';

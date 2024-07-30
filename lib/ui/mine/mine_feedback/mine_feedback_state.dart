@@ -5,31 +5,27 @@ class MineFeedbackState {
 
   List<Map<String, dynamic>> typeList = [
     {
-      "title": "闪退、卡顿、黑屏/白屏",
+      "title": "VIP制度",
       "type": 0,
     },
     {
-      "title": "功能故障或者不可用",
+      "title": "服务流程",
       "type": 1,
     },
     {
-      "title": "内容太少，找不到想要的",
+      "title": "活动营销",
       "type": 2,
     },
     {
-      "title": "产品不好用，我有建议",
+      "title": "售后服务",
       "type": 3,
     },
     {
-      "title": "页面、配色不好看",
+      "title": "我要投诉",
       "type": 4,
     },
     {
-      "title": "密码、隐私、欺诈等",
-      "type": 5,
-    },
-    {
-      "title": "其他问题",
+      "title": "其他",
       "type": 999,
     },
   ];

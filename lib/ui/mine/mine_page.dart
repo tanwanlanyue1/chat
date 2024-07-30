@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -121,22 +123,6 @@ class _MinePageState extends State<MinePage>
                 ),
               ),
             )),
-        Container(
-          height: 74.rpx,
-          margin: EdgeInsets.only(top: 16.rpx, left: 12.rpx, right: 12.rpx),
-          decoration: BoxDecoration(
-            image: AppDecorations.backgroundImage(
-                "assets/images/mine/merits_back.png"),
-          ),
-          child: Obx(() {
-            return Row(
-              children: [
-                _meritVirtue(),
-                _balance(),
-              ],
-            );
-          }),
-        ),
       ],
     );
   }
@@ -213,14 +199,6 @@ class _MinePageState extends State<MinePage>
                                 ),
                               ),
                             ),
-                            Flexible(
-                              child: Text(
-                                nextLevelText,
-                                style: AppTextStyle.fs12m
-                                    .copyWith(color: AppColor.gray9),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
                             SizedBox(width: 2.rpx),
                             AppImage.asset(
                               "assets/images/mine/mine_down_arrow.png",
@@ -241,179 +219,23 @@ class _MinePageState extends State<MinePage>
     );
   }
 
-  String get nextLevelText {
-    final info = controller.loginService.levelMoneyInfo;
-    final cavExpDiff = info?.cavExpDiff ?? 0;
-    final cavDayDiff = info?.cavDayDiff ?? 0;
-    if (cavExpDiff > 0) {
-      return "距离下一级还需修行值$cavExpDiff";
-    } else {
-      return "距离下一级还需修行$cavDayDiff天";
-    }
-  }
-
-  /// 功德
-  Widget _meritVirtue() {
-    final mavLevelName =
-        controller.loginService.levelMoneyInfo?.mavLevelName ?? "";
-
-    return Expanded(
-      child: GestureDetector(
-        onTap: controller.onTapMeritVirtue,
-        behavior: HitTestBehavior.opaque,
-        child: Padding(
-          padding: EdgeInsets.only(left: 30.rpx),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    "功德",
-                    style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
-                  ),
-                  Visibility(
-                    visible: controller.loginService.isLogin &&
-                        mavLevelName.isNotEmpty,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: AppColor.brown14,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(4.rpx))),
-                      margin: EdgeInsets.only(left: 6.rpx),
-                      padding: EdgeInsets.symmetric(horizontal: 2.rpx),
-                      height: 18.rpx,
-                      child: Text(
-                        controller.loginService.levelMoneyInfo?.mavLevelName ??
-                            "",
-                        style: AppTextStyle.fs12m
-                            .copyWith(color: AppColor.brown36),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                controller.loginService.isLogin
-                    ? "${controller.loginService.levelMoneyInfo?.mavExp ?? 0}"
-                    : "———",
-                maxLines: 1,
-                style: TextStyle(
-                  fontSize: 22.rpx,
-                  color: const Color(0xff333333),
-                  fontWeight: FontWeight.bold,
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  /// 余额
-  Widget _balance() {
-    return Expanded(
-      child: Padding(
-        padding: EdgeInsets.only(left: 30.rpx),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "余额",
-                  style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
-                ),
-                if (controller.loginService.isLogin)
-                  Container(
-                    margin: EdgeInsets.only(left: 8.rpx),
-                    child: GestureDetector(
-                      onTap: () => controller.onTapGoldDetails(),
-                      child: Text(
-                        "明细>",
-                        style: AppTextStyle.fs12m
-                            .copyWith(color: AppColor.brown36),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            SizedBox(height: 4.rpx),
-            Row(
-              children: [
-                Expanded(
-                  child: AutoSizeText(
-                    minFontSize: 10,
-                    maxLines: 1,
-                    controller.loginService.isLogin
-                        ? "${controller.loginService.levelMoneyInfo?.money ?? 0}"
-                        : "———",
-                    style: TextStyle(
-                        fontSize: 22.rpx,
-                        color: const Color(0xff333333),
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                if (controller.loginService.isLogin)
-                  GestureDetector(
-                    onTap: () => controller.onTapPurchase(),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: AppColor.gray5,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(4.rpx))),
-                      margin: EdgeInsets.only(left: 8.rpx, right: 12.rpx),
-                      padding: EdgeInsets.symmetric(horizontal: 8.rpx),
-                      height: 20.rpx,
-                      alignment: Alignment.center,
-                      child: ShaderMask(
-                        shaderCallback: (Rect bounds) {
-                          return const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [AppColor.brown42, AppColor.brown43],
-                          ).createShader(Offset.zero & bounds.size);
-                        },
-                        blendMode: BlendMode.srcIn,
-                        child: Text(
-                          "充值",
-                          style: AppTextStyle.fs12b.copyWith(height: 1.0000001),
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   /// 修行之路
   Widget _discipline() {
     return Container(
       padding: EdgeInsets.all(12.rpx),
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(left: 12.rpx, right: 12.rpx),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("修行之路",
-                    style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5)),
-                // GestureDetector(
-                //   onTap: () => controller.onTapMissionCenter(),
-                //   child: Text("任务中心>", style: TextStyle(fontSize: 12.rpx)),
-                // ),
-              ],
-            ),
-          ),
-        ],
+      child: GestureDetector(
+        onTap: (){
+          if(state.current.value == 0){
+            state.current.value = 1;
+          }else{
+            state.current.value = 0;
+          }
+        },
+        child: Container(
+          margin: EdgeInsets.only(left: 12.rpx, right: 12.rpx),
+          child: Text("切换佳丽",
+              style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5)),
+        ),
       ),
     );
   }
@@ -427,40 +249,40 @@ class _MinePageState extends State<MinePage>
       padding: EdgeInsets.symmetric(horizontal: 12.rpx),
       child: ScrollConfiguration(
         behavior: ChatScrollBehavior(),
-        child: Column(
-          children: List.generate(state.commonFeature.length, (index) {
-            MineItemSource item = state.commonFeature[index];
-            return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () =>
-                  controller.onTapItem(state.commonFeature[index].type),
-              child: SizedBox(
-                height: 48.rpx,
-                child: Row(
-                  children: [
-                    AppImage.asset(
-                      '${item.icon}',
-                      width: 24.rpx,
-                      height: 24.rpx,
-                    ),
-                    SizedBox(
-                      width: 12.rpx,
-                    ),
-                    Text(
-                      '${item.title}',
-                      style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
-                    ),
-                    const Spacer(),
-                    AppImage.asset(
-                      'assets/images/mine/mine_right.png',
-                      width: 20.rpx,
-                      height: 20.rpx,
-                    ),
-                  ],
+        child: Obx(()=> Column(
+            children: List.generate(state.current.value == 0 ? state.commonFeature.length : state.jiaCommonFeature.length, (index) {
+              MineItemSource item = state.current.value == 0 ? state.commonFeature[index] : state.jiaCommonFeature[index];
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => controller.onTapItem(item.type),
+                child: SizedBox(
+                  height: 48.rpx,
+                  child: Row(
+                    children: [
+                      AppImage.asset(
+                        '${item.icon}',
+                        width: 24.rpx,
+                        height: 24.rpx,
+                      ),
+                      SizedBox(
+                        width: 12.rpx,
+                      ),
+                      Text(
+                        '${item.title}',
+                        style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
+                      ),
+                      const Spacer(),
+                      AppImage.asset(
+                        'assets/images/mine/mine_right.png',
+                        width: 20.rpx,
+                        height: 20.rpx,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+          )
         ),
       ),
     );

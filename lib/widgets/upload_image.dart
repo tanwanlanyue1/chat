@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:guanjia/common/app_color.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/photo_and_camera_bottom_sheet.dart';
@@ -95,27 +96,28 @@ class _UploadImageState extends State<UploadImage> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xffF4F5F7),
+                  color: Colors.white,
+                  border: Border.all(width: 1.rpx,color: AppColor.gray9),
                   borderRadius: BorderRadius.circular(8.rpx),
                 ),
-                width: 56.rpx,
-                height: 56.rpx,
+                width: 80.rpx,
+                height: 80.rpx,
                 margin: EdgeInsets.only(
                   top: 8.rpx,
                 ),
                 alignment: Alignment.center,
                 child: AppImage.asset(
                   'assets/images/mine/add_image.png',
-                  width: 28.rpx,
-                  height: 28.rpx,
+                  width: 20.rpx,
+                  height: 20.rpx,
                 ),
               ));
         }
         if (_imagesList.isNotEmpty) {
           return _createGridViewItem(
               Container(
-                width: 56.rpx,
-                height: 56.rpx,
+                width: 80.rpx,
+                height: 80.rpx,
                 margin: EdgeInsets.only(
                   right: 10.rpx,
                   top: 8.rpx,
@@ -124,8 +126,8 @@ class _UploadImageState extends State<UploadImage> {
                   borderRadius: BorderRadius.circular(8.rpx),
                   child: AppImage.file(
                     _imagesList[index],
-                    width: 56.rpx,
-                    height: 56.rpx,
+                    width: 80.rpx,
+                    height: 80.rpx,
                   ),
                 ),
               ),

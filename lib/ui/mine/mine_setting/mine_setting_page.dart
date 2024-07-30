@@ -6,6 +6,7 @@ import 'package:guanjia/common/network/network.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_info.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/setting_item.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -24,7 +25,7 @@ class MineSettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("设置"),
+        title: Text(S.current.setting),
       ),
       backgroundColor: const Color(0xffF6F8FE),
       body: Obx(() {
@@ -42,57 +43,60 @@ class MineSettingPage extends StatelessWidget {
                     },
                   ),
                   SettingItem(
-                    title: "账号安全",
+                    bottom: 1.rpx,
+                    title: "修改登录密码",
                     callBack: () {
-                      Get.toNamed(AppRoutes.accountSafetyPage);
+                      Get.toNamed(AppRoutes.updatePasswordPage);
                     },
                   ),
-                  // SettingItem(
-                  //   title: "消息设置",
-                  //   bottom: 0,
-                  //   trailing: Text(
-                  //     "推送已开启",
-                  //     style: TextStyle(
-                  //         fontSize: 14.rpx, color: const Color(0xff999999)),
-                  //   ),
-                  //   borderRadius: BorderRadius.only(
-                  //     topLeft: Radius.circular(8.rpx),
-                  //     topRight: Radius.circular(8.rpx),
-                  //   ),
-                  //   callBack: () {
-                  //     Get.toNamed(Routes.messageSettingPage);
-                  //   },
-                  // ),
-                  // Container(
-                  //   color: Colors.white,
-                  //   height: 28.rpx,
-                  //   padding: EdgeInsets.only(left: 12.rpx),
-                  //   margin: EdgeInsets.only(bottom: 1.rpx),
-                  //   alignment: Alignment.topLeft,
-                  //   child: Text(
-                  //     "要开启或停用消息推送可在设备设置-通知设置更改",
-                  //     style: TextStyle(
-                  //         fontSize: 12.rpx, color: const Color(0xff999999)),
-                  //   ),
-                  // ),
                   SettingItem(
-                    title: "权限设置",
-                    // bottom: 1.rpx,
+                    bottom: 1.rpx,
+                    title: "设置支付密码",
+                    callBack: () {
+                      Get.toNamed(AppRoutes.updatePasswordPage);
+                    },
+                  ),
+                  SettingItem(
+                    title: "修改支付密码",
+                    callBack: () {
+                      Get.toNamed(AppRoutes.updatePasswordPage);
+                    },
+                  ),
+                  SettingItem(
+                    title: "语言切换",
+                    bottom: 1.rpx,
                     borderRadius: BorderRadius.circular(8.rpx),
                     callBack: () {
                       Get.toNamed(AppRoutes.permissions);
                     },
                   ),
-                  // SettingItem(
-                  //   title: "黑名单管理",
-                  //   borderRadius: BorderRadius.only(
-                  //     bottomLeft: Radius.circular(8.rpx),
-                  //     bottomRight: Radius.circular(8.rpx),
-                  //   ),
-                  //   callBack: () {
-                  //     Get.toNamed(Routes.accountBlacklistPage);
-                  //   },
-                  // ),
+                  SettingItem(
+                    title: "清空缓存",
+                    trailing: Text(
+                      controller.cacheSize.value,
+                      style: TextStyle(
+                          fontSize: 14.rpx, color: const Color(0xff999999)),
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8.rpx),
+                      bottomRight: Radius.circular(8.rpx),
+                    ),
+                    callBack: () => controller.onTapClearCache(),
+                  ),
+                  SettingItem(
+                    title: "自动更新",
+                    trailing: Text(
+                      controller.cacheSize.value,
+                      style: TextStyle(
+                          fontSize: 14.rpx, color: const Color(0xff999999)),
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8.rpx),
+                      bottomRight: Radius.circular(8.rpx),
+                    ),
+                    callBack: () => controller.onTapClearCache(),
+                  ),
+
                   SettingItem(
                     title: "关于我们",
                     bottom: 1.rpx,
@@ -108,19 +112,6 @@ class MineSettingPage extends StatelessWidget {
                     callBack: () {
                       Get.toNamed(AppRoutes.aboutPage);
                     },
-                  ),
-                  SettingItem(
-                    title: "清理缓存",
-                    trailing: Text(
-                      controller.cacheSize.value,
-                      style: TextStyle(
-                          fontSize: 14.rpx, color: const Color(0xff999999)),
-                    ),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(8.rpx),
-                      bottomRight: Radius.circular(8.rpx),
-                    ),
-                    callBack: () => controller.onTapClearCache(),
                   ),
                   if (!AppInfo.isRelease) _buildDevServerSwitch(),
                   if (!AppInfo.isRelease) _buildProxySetting(),
@@ -189,7 +180,7 @@ class MineSettingPage extends StatelessWidget {
             ],
           ),
           AppImage.asset(
-            "assets/images/mine/right.png",
+            "assets/images/mine/mine_right.png",
             width: 20.rpx,
             height: 20.rpx,
           ),
@@ -217,7 +208,7 @@ class MineSettingPage extends StatelessWidget {
             Text('代理设置', style: TextStyle(fontSize: 15.rpx)),
             const Spacer(),
             AppImage.asset(
-              "assets/images/mine/right.png",
+              "assets/images/mine/mine_right.png",
               width: 20.rpx,
               height: 20.rpx,
             ),

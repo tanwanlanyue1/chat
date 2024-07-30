@@ -52,7 +52,7 @@ class SettingItem extends StatelessWidget {
             ),
             right ??
                 AppImage.asset(
-                  "assets/images/mine/right.png",
+                  "assets/images/mine/mine_right.png",
                   width: 20.rpx,
                   height: 20.rpx,
                 ),

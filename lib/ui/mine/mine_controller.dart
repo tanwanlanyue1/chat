@@ -114,6 +114,9 @@ class MineController extends GetxController {
       case MineItemType.evaluate:
         Get.toNamed(AppRoutes.mineEvaluatePage);
         break;
+      case MineItemType.jiaEvaluate:
+        Get.toNamed(AppRoutes.jiaEvaluatePage);
+        break;
     }
   }
 }

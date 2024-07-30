@@ -56,27 +56,19 @@ class HomePage extends StatelessWidget {
               child: Container(
                 height: 50.rpx,
                 alignment: Alignment.center,
-                child: Stack(
-                  children: [
-                    // Visibility(
-                    //   visible: i == state.initPage.value,
-                    //   child: AppImage.asset("assets/images/home/bottom_select.png",width: 60.rpx,height: 50.rpx,),
-                    // ),
-                    Container(
-                      width: 60.rpx,
-                      padding: EdgeInsets.only(top: 5.rpx),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          AppImage.asset(i == state.initPage.value ? item.activeIcon : item.icon,width: 22.rpx, height: 24.rpx,),
-                          Text( item.title,style:  i == state.initPage.value ?
-                          AppTextStyle.fs10b.copyWith(color: AppColor.red1):
-                          AppTextStyle.fs10m.copyWith(color: AppColor.brown36),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
+                child: Container(
+                  width: 60.rpx,
+                  padding: EdgeInsets.only(top: 5.rpx),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      AppImage.asset(i == state.initPage.value ? item.activeIcon : item.icon,width: 22.rpx, height: 24.rpx,),
+                      Text( item.title,style:  i == state.initPage.value ?
+                      AppTextStyle.fs12b.copyWith(color: AppColor.primary):
+                      AppTextStyle.fs12m.copyWith(color: AppColor.black6),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

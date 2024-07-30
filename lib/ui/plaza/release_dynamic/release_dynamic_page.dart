@@ -76,9 +76,6 @@ class ReleaseDynamicPage extends StatelessWidget {
               }
           ),
         ),
-        UploadImage(
-          imgList: [],
-        ),
         GestureDetector(
           child: Container(
             color: Colors.red,

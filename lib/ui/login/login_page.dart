@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'login_controller.dart';
 
 class LoginPage extends StatelessWidget {
@@ -114,17 +113,21 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     CommonGradientButton(
-                      text: "登录",
                       onTap: () => controller.onLogin(1),
+                      text: "登录",
+                      height: 50.rpx,
                     ),
                     SizedBox(height: 252.rpx),
-                    Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "还没有账号？马上注册",
-                        style: AppTextStyle.st.medium
-                            .size(14.rpx)
-                            .textColor(Colors.white),
+                    GestureDetector(
+                      onTap: controller.onTapToAccountRegisterPage,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "还没有账号？马上注册",
+                          style: AppTextStyle.st.medium
+                              .size(14.rpx)
+                              .textColor(Colors.white),
+                        ),
                       ),
                     ),
                   ],
@@ -133,42 +136,6 @@ class LoginPage extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CommonGradientButton extends StatelessWidget {
-  const CommonGradientButton({
-    super.key,
-    this.text = "",
-    this.onTap,
-  });
-
-  final String text;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 50.rpx,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.rpx),
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color(0xff0F73ED),
-                Color(0xffC538FF),
-              ],
-            )),
-        alignment: Alignment.center,
-        child: Text(
-          text,
-          style: AppTextStyle.st.medium.size(16.rpx).textColor(Colors.white),
-        ),
       ),
     );
   }

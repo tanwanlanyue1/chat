@@ -36,8 +36,8 @@ class AppBackButtonIcon extends StatelessWidget {
       width: 24,
       height: 24,
       brightness == Brightness.dark
-          ? 'assets/images/common/ic_back_black.png'
-          : 'assets/images/common/ic_back_white.png',
+          ? 'assets/images/common/back_black.png'
+          : 'assets/images/common/back_white.png',
     );
   }
 }

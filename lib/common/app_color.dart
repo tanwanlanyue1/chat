@@ -1,13 +1,32 @@
-
 import 'package:flutter/material.dart';
 
-class AppColor{
+/// 项目中使用到的颜色
+/// 透明色建议直接使用 withOpacity 直接设置
+/// 同种类颜色尽量规范命名
+/// 例如：gray6 = 0xFF666666, gray9 = 0xFF999999，grayE6 = 0xFFE6E6E6
+class AppColor {
   const AppColor._();
 
-  static const primary = Color(0xFF8D310F);
+  /// 主色
+  static const primary = Color(0xFF3699FF);
 
-  static const scaffoldBackground = Color(0xFFF6F8FE);
+  /// 界面背景色
+  static const scaffoldBackground = Color(0xFFF7F7F7);
 
+  /// 黑灰色
+  static const black3 = Color(0xFF333333);
+  static const black6 = Color(0xFF666666);
+  static const black7 = Color(0xFF999999);
+  static const black92 = Color(0xFF929DB2);
+
+  /// 按钮渐变色
+  static const gradientBegin = Color(0xff0F73ED);
+  static const gradientEnd = Color(0xffC538FF);
+
+  static const gradientBackgroundBegin = Color(0xff226EF0);
+  static const gradientBackgroundEnd = Color(0xffBD3CFF);
+
+  /// old
   static const gray1 = Color(0x38FFFFFF);
   static const gray2 = Color(0x99FFFFFF);
   static const gray3 = Color(0xCCFFFFFF);
@@ -24,8 +43,8 @@ class AppColor{
   static const gray12 = Color(0xffE6E6E6);
   static const gray13 = Color(0xFFF7EFE3);
   static const gray14 = Color(0xFFF6F6F6);
-  static const gray19= Color(0xffF5F1E9);
-  static const gray20= Color(0xffE8E7E9);
+  static const gray19 = Color(0xffF5F1E9);
+  static const gray20 = Color(0xffE8E7E9);
   static const gray30 = Color(0xff666666);
   static const gray39 = Color(0x33999999);
 

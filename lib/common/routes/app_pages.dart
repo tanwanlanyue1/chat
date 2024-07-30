@@ -4,13 +4,11 @@ import 'package:guanjia/common/routes/middlewares/auth_middleware.dart';
 import 'package:guanjia/common/routes/middlewares/route_welcome.dart';
 import 'package:guanjia/common/routes/pages/login_pages.dart';
 import 'package:guanjia/common/routes/pages/mine_pages.dart';
-import 'package:guanjia/common/routes/pages/wish_pavilion_pages.dart';
 import 'package:guanjia/ui/ad/launch_ad/launch_ad_page.dart';
 import 'package:guanjia/ui/home/home_page.dart';
 import 'package:guanjia/ui/plaza/classification_square/classification_square_page.dart';
 import 'package:guanjia/ui/plaza/plaza_detail/plaza_detail_controller.dart';
 import 'package:guanjia/ui/plaza/plaza_detail/plaza_detail_page.dart';
-import 'package:guanjia/ui/plaza/plaza_history/plaza_history_page.dart';
 import 'package:guanjia/ui/plaza/release_dynamic/release_dynamic_page.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_page.dart';
 import 'package:guanjia/ui/welcome/welcome_page.dart';
@@ -23,7 +21,6 @@ class AppPages {
   // static const initial = AppRoutes.home;
 
   static final routes = [
-    ...WishPavilionPages.routes,
     ...LoginPages.routes,
     ...MinePages.routes,
     GetPage(
@@ -54,10 +51,6 @@ class AppPages {
               communityId: Get.tryGetArgs('communityId'),
               userId: Get.tryGetArgs('userId'),
             ))),
-    GetPage(
-      name: AppRoutes.plazaHistoryPage,
-      page: () => PlazaHistoryPage(),
-    ),
     GetPage(
       name: AppRoutes.webPage,
       page: () => WebPage(

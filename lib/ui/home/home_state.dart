@@ -3,23 +3,28 @@ import 'package:get/get.dart';
 class HomeState {
   List<AppBarItem> allBottomNavItems = [
     const AppBarItem(
-      icon: 'assets/images/home/disabuse.png',
-      activeIcon: 'assets/images/home/disabuse_unselected.png',
-      title: '解疑',
+      icon: 'assets/images/home/chat_none.png',
+      activeIcon: 'assets/images/home/chat.png',
+      title: '聊天',
     ),
     const AppBarItem(
-        icon: 'assets/images/home/wish.png',
-        activeIcon: 'assets/images/home/wish_unselected.png',
-        title: '心愿阁',
+      icon: 'assets/images/home/order_form_none.png',
+      activeIcon: 'assets/images/home/order_form.png',
+      title: '订单',
     ),
     const AppBarItem(
-        icon: 'assets/images/home/plaza.png',
-        activeIcon: 'assets/images/home/plaza_unselected.png',
-        title: '广场',
+        icon: 'assets/images/home/dating_hall.png',
+        activeIcon: 'assets/images/home/dating_hall_none.png',
+        title: '交友大厅',
     ),
     const AppBarItem(
-        icon: 'assets/images/home/mine.png',
-        activeIcon: 'assets/images/home/mine_unselected.png',
+        icon: 'assets/images/home/discover.png',
+        activeIcon: 'assets/images/home/discover_none.png',
+        title: '发现',
+    ),
+    const AppBarItem(
+        icon: 'assets/images/home/mine_none.png',
+        activeIcon: 'assets/images/home/mine.png',
         title: '我的',
     ),
   ];

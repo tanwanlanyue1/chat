@@ -29,7 +29,6 @@ class OpenApi {
     String? appleId,
     String? identityToken,
   }) async {
-    final cid = await SS.notification.getCid();
     return HttpClient.post(
       '/openapi/login',
       data: {
@@ -40,7 +39,6 @@ class OpenApi {
         "code": code,
         "appleId": appleId,
         "identityToken": identityToken,
-        "cid": cid,
       },
       dataConverter: (json) {
         return LoginRes.fromJson(json);

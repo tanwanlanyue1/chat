@@ -48,19 +48,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!-- 现在支付基础包 -->
-        <activity
-            android:name="com.ipaynow.plugin.presenter.PayMethodActivity"
-            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
-            android:exported="false"
-            android:theme="@android:style/Theme.Dialog" />
-        <!-- 支付宝支付 -->
-        <activity
-            android:name="com.alipay.sdk.app.H5PayActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
         <activity
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
@@ -84,25 +71,6 @@
             android:screenOrientation="behind"
             android:theme="@style/NormalTheme" />
 
-        <!--联通电信授权页-->
-        <activity
-            android:name="com.mobile.auth.gatewayauth.LoginAuthActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            tools:replace="android:configChanges"
-            android:exported="false"
-            android:launchMode="singleTop"
-            android:screenOrientation="behind"
-            android:theme="@style/authsdk_activity_dialog"/>
-
-        <!--移动授权页-->
-        <activity
-            android:name="com.cmic.sso.sdk.activity.LoginAuthActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            tools:replace="android:configChanges"
-            android:exported="false"
-            android:launchMode="singleTask"
-            android:screenOrientation="behind"
-            android:theme="@style/authsdk_activity_dialog" />
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:get/route_manager.dart';
-import 'package:guanjia/ui/wish_pavilion/charm/widgets/charm_top_up_dialog.dart';
 import 'package:guanjia/widgets/loading.dart';
 import '../http_client.dart';
 
@@ -43,7 +42,6 @@ class AuthenticationInterceptor extends Interceptor{
           onUnauthorized?.call();
         }else if(apiResponse.code == 1103){
           Loading.dismiss();
-          Get.dialog(const CharmTopUpDialog());
           return;
         }
       }

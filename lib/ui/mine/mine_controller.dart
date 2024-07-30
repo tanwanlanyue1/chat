@@ -7,7 +7,6 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_link.dart';
 import 'package:guanjia/ui/home/home_controller.dart';
-import 'package:guanjia/ui/home/widget/home_drawer_controller.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/web/web_page.dart';
 import 'mine_state.dart';
@@ -90,7 +89,6 @@ class MineController extends GetxController {
         Get.toNamed(AppRoutes.plazaHistoryPage);
         break;
       case MineItemType.myQuestionsAndAnswers:
-        HomeDrawerController.open();
         break;
       case MineItemType.message:
         Get.toNamed(AppRoutes.mineMessage);

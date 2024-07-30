@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
@@ -470,7 +469,6 @@ class LoginPage extends StatelessWidget {
             children: [
               if (hasWXLogin)
                 GestureDetector(
-                  onTap: controller.onWechatLogin,
                   child: AppImage.asset(
                       "assets/images/login/login_other_wx.png",
                       width: 46.rpx,
@@ -478,7 +476,6 @@ class LoginPage extends StatelessWidget {
                 ),
               if (hasOneKeyLogin)
                 GestureDetector(
-                  onTap: controller.onOneKeyLogin,
                   child: AppImage.asset(
                       "assets/images/login/login_other_onekey.png",
                       width: 46.rpx,
@@ -486,7 +483,6 @@ class LoginPage extends StatelessWidget {
                 ),
               if (hasAppleLogin)
                 GestureDetector(
-                  onTap: () => controller.onAppleLogin(),
                   child: AppImage.asset(
                       "assets/images/login/login_other_apple.png",
                       width: 46.rpx,

@@ -1,1 +1,0 @@
--keepattributes Exceptions,InnerClasses,Signature,Deprecated,*Annotation*,EnclosingMethod

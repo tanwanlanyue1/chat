@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'dart:io';
 import 'dart:ui';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:lunar/lunar.dart';
 import 'package:guanjia/widgets/loading.dart';
-import 'package:guanjia/widgets/lunar/lunar_manager.dart';
 import 'package:guanjia/widgets/photo_view_gallery_page.dart';
 import 'package:guanjia/widgets/photo_view_simple_screen.dart';
 
@@ -132,12 +128,6 @@ class CommonUtils {
     return "$today${DateUtil.formatDate(date, format: 'yyyy' + "-" + 'MM' + "-" + 'dd')} ${weekday.toUpperCase()}";
   }
 
-  //阳历转农历
-  static Lunar solarToLunar(DateTime solarDate) {
-    Lunar lunar = Lunar.fromYmdHms(solarDate.year, solarDate.month,
-        solarDate.day, solarDate.hour, solarDate.minute, solarDate.second);
-    return lunar;
-  }
 
   // 倒计时转换为时分秒
   static String convertCountdownToHMS(int seconds) {
@@ -145,17 +135,6 @@ class CommonUtils {
     int minutes = (seconds % 3600) ~/ 60;
     int remainingSeconds = seconds % 60;
     return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
-  }
-
-  //农历转阳历
-  static Solar lunarToSolar(List<String> lunar) {
-    int year = int.parse(lunar[0]);
-    int month = LunarManager.lunarMonth[lunar[1]]!;
-    int day = LunarManager.lunarDay[lunar[2]]!;
-    int hour = LunarManager.lunarTime[lunar[3]]!;
-    Lunar lunars = Lunar.fromYmdHms(year, month, day,hour,0,0);
-    Solar solar = lunars.getSolar();
-    return solar;
   }
 
   static void saveImage({

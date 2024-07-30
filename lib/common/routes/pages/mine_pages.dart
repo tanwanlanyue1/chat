@@ -17,14 +17,10 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/ui/mine/mine_message/mine_message_page.dart';
 import '../../../ui/mine/mine_comment/mine_comment_page.dart';
 import '../../../ui/mine/mine_feedback/mine_feedback_page.dart';
-import '../../../ui/mine/mine_gold_detail/mine_gold_detail_page.dart';
 import '../../../ui/mine/mine_help/mine_help_page.dart';
 import '../../../ui/mine/mine_message/message_session/message_session_page.dart';
 import '../../../ui/mine/mine_message/message_setting/message_setting_page.dart';
 import '../../../ui/mine/mine_praise/mine_praise_page.dart';
-import '../../../ui/mine/mine_purchase/mine_purchase_page.dart';
-import '../../../ui/mine/mine_record/mine_record_page.dart';
-import '../../../ui/mine/mine_record/record_details/record_details_page.dart';
 import '../../../ui/mine/mine_setting/about/about_page.dart';
 import '../../../ui/mine/mine_setting/account_blacklist/account_blacklist_page.dart';
 import '../../../ui/mine/mine_setting/account_data/account_data_page.dart';
@@ -85,14 +81,6 @@ class MinePages {
       page: () => MinePraisePage(),
     ),
     GetPage(
-      name: AppRoutes.minePurchase,
-      page: () => MinePurchasePage(),
-    ),
-    GetPage(
-      name: AppRoutes.mineGoldDetail,
-      page: () => MineGoldDetailPage(),
-    ),
-    GetPage(
       name: AppRoutes.mineSettingPage,
       page: () => MineSettingPage(),
     ),
@@ -126,21 +114,6 @@ class MinePages {
       name: AppRoutes.permissions,
       page: () => MinePermissionsPage(),
     ),
-    GetPage(
-      name: AppRoutes.mineRecordPage,
-      page: () => MineRecordPage(),
-    ),
-    GetPage(
-        name: AppRoutes.recordDetailsPage,
-        page: () {
-          var args = Get.tryGetArgs('archivesInfo');
-          if (args != null && args is ArchivesInfo) {
-            return RecordDetailsPage(
-              archivesInfo: args,
-            );
-          }
-          return RecordDetailsPage();
-        }),
     GetPage(
       name: AppRoutes.mineMissionCenter,
       page: () => MineMissionCenterPage(),

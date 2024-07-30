@@ -14,6 +14,5 @@ export 'confirm_dialog.dart';
 export 'app_exit_confirm.dart';
 export 'svga_view.dart';
 export 'animated_scale_button.dart';
-export 'interactional_view.dart';
 export 'system_ui.dart';
 export 'app_back_button.dart';

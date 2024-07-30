@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lunar/lunar.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
@@ -55,34 +54,6 @@ class AccountDataController extends GetxController {
 
   Future<void> selectBirth(int year, int month, int day) async {
     final date = DateTime(year, month, day);
-
-    final solar = Solar.fromDate(date);
-    final lunar = solar.getLunar();
-
-    final birth = solar.toYmd();
-    final zodiac = lunar.getYearShengXiao();
-    final star = solar.getXingZuo();
-
-    Loading.show();
-    final res = await UserApi.modifyUserInfoNoCheck(
-      birth: birth,
-      zodiac: zodiac,
-      star: star,
-    );
-    Loading.dismiss();
-
-    if (!res.isSuccess) {
-      res.showErrorMessage();
-      return;
-    }
-
-    Loading.showToast("修改成功");
-
-    loginService.setInfo((val) {
-      val?.birth = birth;
-      val?.zodiac = zodiac;
-      val?.star = star;
-    });
   }
 
   void _updateHead(List<String> urls) async {

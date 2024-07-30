@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
-import 'package:guanjia/ui/home/widget/home_drawer_controller.dart';
 import 'package:guanjia/ui/plaza/fortune_square/fortune_square_view.dart';
 import 'package:guanjia/widgets/app_image.dart';
 
@@ -34,7 +33,6 @@ class _PlazaPageState extends State<PlazaPage> with AutomaticKeepAliveClientMixi
         centerTitle: false,
         actions: [
           GestureDetector(
-            onTap: HomeDrawerController.open,
             child: Container(
               margin: EdgeInsets.only(right: 16.rpx),
               child: AppImage.asset(

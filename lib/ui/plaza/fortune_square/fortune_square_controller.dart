@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:guanjia/common/utils/plaza_database.dart';
 import 'package:guanjia/widgets/ad_dialog.dart';
 
 import '../../../common/network/api/model/plaza/talk_plaza.dart';

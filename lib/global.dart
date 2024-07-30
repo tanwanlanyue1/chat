@@ -10,12 +10,9 @@ import 'package:guanjia/common/network/httpclient/http_client.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/ui/ad/ad_manager.dart';
 import 'package:guanjia/ui/welcome/welcome_storage.dart';
-import 'package:guanjia/widgets/lunar/lunar_manager.dart';
-import 'package:wechat_kit/wechat_kit.dart';
 
 import 'common/app_config.dart';
 import 'common/app_localization.dart';
-import 'common/database/app_database.dart';
 import 'common/routes/app_pages.dart';
 import 'common/service/service.dart';
 
@@ -44,15 +41,9 @@ class Global {
     }
 
     try {
-      //数据库初始化
-      await AppDatabase.instance.initialize();
 
       //多语言支持
       await AppLocalization.instance.initialize();
-
-      //TODO 循环过多，看怎么优化
-      LunarManager.generateSolarYears();
-      LunarManager.generateLunarYears();
 
       //网络请求客户端初始化
       HttpClient.initialize(
@@ -92,12 +83,6 @@ class Global {
 
     //广告
     await ADManager.instance.initialize();
-
-    //微信SDK
-    WechatKitPlatform.instance.registerApp(
-      appId: AppConfig.wechatAppId,
-      universalLink: AppConfig.iosUniversalLink,
-    );
   }
 
   static Future<Map<String, dynamic>> getAuthorizedHeaders() async {

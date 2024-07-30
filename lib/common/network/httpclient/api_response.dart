@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:get/get.dart';
-import 'package:guanjia/ui/wish_pavilion/charm/widgets/charm_top_up_dialog.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 import 'app_exceptions.dart';
@@ -77,7 +76,6 @@ class ApiResponse<T> {
     if([401, 4].contains(code)){
       return;
     }else if(code == 1103){
-      Get.dialog(const CharmTopUpDialog());
       return;
     }
     final msg = errorMessage;

@@ -93,8 +93,4 @@ flutter {
 }
 
 dependencies {
-    implementation files('libs/ipaynow_base_v2.1.7_api1.0.0.jar')
-    implementation files('libs/ipaynow_alipay_v2.0.0.jar')
-    implementation 'com.getui:gtsdk:3.2.18.0'  //个推SDK
-    implementation 'com.getui:gtc:3.2.6.0'  //个推核心组件
 }

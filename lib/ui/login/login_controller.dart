@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
@@ -14,9 +13,7 @@ import 'package:guanjia/common/utils/result.dart';
 import 'package:guanjia/ui/login/widgets/privacy_policy_dialog.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/web/web_page.dart';
-import 'package:wechat_kit/wechat_kit.dart';
 import 'login_state.dart';
-import 'one_key_login_manager.dart';
 
 class LoginController extends GetxController with GetAutoDisposeMixin {
   final LoginState state = LoginState();
@@ -39,7 +36,6 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
   TapGestureRecognizer protocolProtocolRecognizer = TapGestureRecognizer();
   TapGestureRecognizer privacyProtocolRecognizer = TapGestureRecognizer();
 
-  final _oneKeyLoginManager = OneKeyLoginManager();
 
   Timer? _timer;
   var _remainingSeconds = 60;
@@ -74,55 +70,6 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
         arguments: {"type": 1}, preventDuplicates: false);
   }
 
-  void onAppleLogin() async {
-    if (!(await _verifyPrivacy())) return;
-
-    final credential = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-      ],
-    );
-    final userIdentifier = credential.userIdentifier ?? '';
-    final identityToken = credential.identityToken ?? '';
-    if (userIdentifier.isEmpty) {
-      AppLogger.w('苹果登录userIdentifier为空');
-      return;
-    }
-
-    Loading.show();
-
-    //查询是否已绑定手机
-    final response =
-        await OpenApi.checkBindPhone(type: 2, code: userIdentifier);
-    if (!response.isSuccess) {
-      Loading.dismiss();
-      response.showErrorMessage();
-      return;
-    }
-    //未绑定手机，则先绑定
-    if (response.data != true) {
-      Loading.dismiss();
-      Get.toNamed(AppRoutes.loginPhoneBindingPage, arguments: {
-        'code': identityToken,
-        'userIdentifier': userIdentifier,
-        'identityToken': identityToken,
-        'loginType': 6,
-      });
-      return;
-    }
-
-    final result = await SS.login.loginByApple(
-      userIdentifier: userIdentifier,
-      identityToken: identityToken,
-    );
-    Loading.dismiss();
-    result.when(success: (_) {
-      Get.backToRoot();
-    }, failure: (errorMessage) {
-      Loading.showToast(errorMessage);
-    });
-  }
-
   void onFetchSms() async {
     FocusScope.of(Get.context!).unfocus();
 
@@ -140,55 +87,6 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
     }, failure: (errorMessage) {
       Loading.showToast(errorMessage);
     });
-  }
-
-  ///微信登录
-  void onWechatLogin() async {
-    if (!(await _verifyPrivacy())) return;
-
-    await WechatKitPlatform.instance.auth(scope: ['snsapi_userinfo']);
-    final resp = await WechatKitPlatform.instance.respStream().first;
-    if (resp is WechatAuthResp) {
-      final code = resp.code;
-      if (code == null || code.isEmpty) {
-        return;
-      }
-      Loading.show();
-
-      //查询是否已绑定手机
-      final response = await OpenApi.checkBindPhone(type: 1, code: code);
-      if (!response.isSuccess) {
-        Loading.dismiss();
-        response.showErrorMessage();
-        return;
-      }
-      //未绑定手机，则先绑定
-      if (response.data != true) {
-        Loading.dismiss();
-        Get.toNamed(AppRoutes.loginPhoneBindingPage, arguments: {
-          'code': code,
-          'loginType': 3,
-        });
-        return;
-      }
-
-      final result = await SS.login.loginByWeChat(code: code);
-      Loading.dismiss();
-      result.when(success: (_) {
-        Get.backToRoot();
-      }, failure: (errorMessage) {
-        Loading.showToast(errorMessage);
-      });
-    }
-  }
-
-  ///本机号码一键登录
-  void onOneKeyLogin() async {
-    if (!(await _verifyPrivacy())) return;
-
-    _oneKeyLoginManager.openAuthPage(
-      isPhoneBinding: false,
-    );
   }
 
   void onLogin(int type) async {
@@ -284,27 +182,6 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
     return true;
   }
 
-  ///初始化一键登录
-  void _initOneKeyLogin() {
-    autoCancel(_oneKeyLoginManager.onEnvAvailableStream.listen((isAvailable) {
-      state.hasOneKeyLogin.value = isAvailable;
-    }));
-
-    autoCancel(
-        _oneKeyLoginManager.onFetchTokenSuccessStream.listen((token) async {
-      Loading.show();
-      final result = await SS.login.loginByOneKey(token);
-      Loading.dismiss();
-      result.when(success: (_) {
-        Get.backToRoot();
-      }, failure: (errorMessage) {
-        Loading.showToast(errorMessage);
-      });
-    }));
-
-    _oneKeyLoginManager.initialize();
-  }
-
   void _smsTextChanged() {
     state.isSmsReady.value =
         accountController.text.isNotEmpty && smsCodeController.text.isNotEmpty;
@@ -335,9 +212,7 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
     registerAccountController.addListener(_registerTextChanged);
     registerPasswordController.addListener(_registerTextChanged);
     registerConfirmPasswordController.addListener(_registerTextChanged);
-    _initOneKeyLogin();
 
-    state.hasWXLogin.value = await WechatKitPlatform.instance.isInstalled();
     super.onInit();
   }
 
@@ -365,8 +240,6 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
 
     protocolProtocolRecognizer.dispose();
     privacyProtocolRecognizer.dispose();
-
-    _oneKeyLoginManager.dispose();
     _timer?.cancel();
 
     super.onClose();

@@ -6,7 +6,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/service/service.dart';
-import 'package:guanjia/ui/home/widget/conversation_drawer.dart';
 import 'package:guanjia/ui/plaza/widgets/plaza_card.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -61,7 +60,6 @@ class ClassificationSquarePage extends StatelessWidget {
           )
         ],
       ),
-      drawer: ConversationDrawer(),
     );
   }
 

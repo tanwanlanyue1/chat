@@ -8,7 +8,6 @@ import 'package:guanjia/common/network/api/plaza_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
-import 'package:guanjia/common/utils/plaza_database.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/photo_view_gallery_page.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -68,8 +67,7 @@ class PlazaCard extends StatelessWidget {
 
   //查询详情
   Future<void> getDetail(PlazaListModel item) async {
-    //历史浏览记录保存
-    PlazaDatabase.insertOrUpdateData("${item.postId}",item);
+
   }
 
   @override

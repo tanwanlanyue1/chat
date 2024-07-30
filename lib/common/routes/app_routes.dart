@@ -118,6 +118,12 @@ abstract class AppRoutes {
   /// 登录
   static const loginPage = '/loginPage';
 
+  /// 注册
+  static const loginRegisterPage = '/loginRegisterPage';
+
+  /// 忘记密码
+  static const loginForgotPage = '/loginForgotPage';
+
   /// 登录-绑定手机
   static const loginPhoneBindingPage = '/loginPhoneBinding';
 

@@ -1,14 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
-import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
-import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/result.dart';
 import 'package:guanjia/ui/login/widgets/privacy_policy_dialog.dart';
 import 'package:guanjia/widgets/loading.dart';
@@ -36,7 +33,6 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
   TapGestureRecognizer protocolProtocolRecognizer = TapGestureRecognizer();
   TapGestureRecognizer privacyProtocolRecognizer = TapGestureRecognizer();
 
-
   Timer? _timer;
   var _remainingSeconds = 60;
 
@@ -56,13 +52,12 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
     state.isSelectPrivacy.value = !state.isSelectPrivacy.value;
   }
 
-  void onTapToUpdatePasswordPage() async {
-    Get.toNamed(AppRoutes.updatePasswordPage);
+  void onTapToForgotPage() async {
+    Get.toNamed(AppRoutes.loginForgotPage);
   }
 
-  void onTapToAccountRegisterPage() async {
-    Get.toNamed(AppRoutes.loginPage,
-        arguments: {"type": 2}, preventDuplicates: false);
+  void onTapToRegisterPage() async {
+    Get.toNamed(AppRoutes.loginRegisterPage);
   }
 
   void onTapToPasswordLoginPage() {

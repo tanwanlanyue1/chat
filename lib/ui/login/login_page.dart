@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -26,43 +24,35 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> buildChildren() {
-      List<Widget> children = [];
-
-      if (isRegisterLogin) {
-        children.add(_registerWidget());
-      } else {
-        children.addAll([
-          SizedBox(height: 20.rpx),
-          AppImage.asset("assets/images/login/login_logo.png",
-              width: 80.rpx, height: 80.rpx),
-          SizedBox(height: 30.rpx),
-          _contentContainer(),
-          SizedBox(height: 50.rpx),
-        ]);
-      }
-
-      children.addAll([
-        _otherLoginColumn(),
-        SizedBox(height: 30.rpx),
-        _privacyContainer(),
-        SizedBox(height: Get.mediaQuery.padding.bottom + 30.rpx),
-      ]);
-
-      return children;
-    }
-
     return Scaffold(
-      backgroundColor: const Color(0xffF7EFE6),
-      appBar: AppBar(
-        backgroundColor: const Color(0xffF7EFE6),
-      ),
-      body: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: buildChildren(),
-        ),
+      extendBodyBehindAppBar: true,
+      // appBar: AppBar(),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned.fill(
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.yellow,
+            ),
+          ),
+          Positioned.fill(
+            child: AppImage.asset(
+              "assets/login/default_bg.png",
+              fit: BoxFit.fill,
+            ),
+          ),
+          SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("data"),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -4,7 +4,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.core.content.FileProvider
-import com.example.talk_fo_me.BuildConfig
+import com.social.guanjia.BuildConfig
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -84,6 +84,6 @@ class PluginUtil : MethodCallHandler {
     }
 
     companion object {
-        private const val CHANNEL = "com.qt.jx/plugin"
+        private const val CHANNEL = "com.social.guanjia/plugin"
     }
 }

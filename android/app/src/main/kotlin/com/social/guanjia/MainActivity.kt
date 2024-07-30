@@ -1,4 +1,4 @@
-package com.example.talk_fo_me
+package com.social.guanjia
 import PluginUtil
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine

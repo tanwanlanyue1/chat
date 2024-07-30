@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -23,17 +22,17 @@ class WelcomePage extends StatelessWidget {
         height: Get.height,
         padding: FEdgeInsets(bottom: max(48.rpx, Get.mediaQuery.padding.bottom)),
         alignment: Alignment.bottomCenter,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AppAssetImage('assets/images/common/ls_welcome.png'),
-          ),
-        ),
-        child: Button.image(
+        // decoration: const BoxDecoration(
+        //   image: DecorationImage(
+        //     fit: BoxFit.cover,
+        //     image: AppAssetImage('assets/images/common/ls_welcome.png'),
+        //   ),
+        // ),
+        child: Button.stadium(
           onPressed: PrivacyDialog.show,
           width: 156.rpx,
           height: 42.rpx,
-          image: AppImage.asset('assets/images/common/experience.png'),
+          // image: AppImage.asset('assets/images/common/experience.png'),
           child: Text(
             "立即体验",
             style: AppTextStyle.fs18m.copyWith(

@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.talk_fo_me"
+    namespace "com.social.guanjia"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -46,9 +46,6 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        manifestPlaceholders = [
-            GETUI_APPID    : "ik4JEL2FzA6x8FmIVoCsv3",
-        ]
 //        ndk {
 //            abiFilters "arm64-v8a", "armeabi-v7a"
 //        }
@@ -57,16 +54,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("../jingxiu.jks")
-            keyAlias "jingxiu"
+            storeFile file("../guanjia.jks")
+            keyAlias "com.social.guanjia"
             keyPassword "qC6XrqeqUqQkidHH"
             storePassword "qC6XrqeqUqQkidHH"
-        }
-        dev {
-            storeFile file("../tbsport.jks")
-            keyAlias "tbsport"
-            keyPassword "tbsport1234567890"
-            storePassword "tbsport1234567890"
         }
     }
 

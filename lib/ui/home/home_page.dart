@@ -58,10 +58,10 @@ class HomePage extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Stack(
                   children: [
-                    Visibility(
-                      visible: i == state.initPage.value,
-                      child: AppImage.asset("assets/images/home/bottom_select.png",width: 60.rpx,height: 50.rpx,),
-                    ),
+                    // Visibility(
+                    //   visible: i == state.initPage.value,
+                    //   child: AppImage.asset("assets/images/home/bottom_select.png",width: 60.rpx,height: 50.rpx,),
+                    // ),
                     Container(
                       width: 60.rpx,
                       padding: EdgeInsets.only(top: 5.rpx),

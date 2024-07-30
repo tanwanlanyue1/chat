@@ -111,6 +111,9 @@ class MineController extends GetxController {
       case MineItemType.attentionOrFans:
         Get.toNamed(AppRoutes.attentionOrFansPage);
         break;
+      case MineItemType.evaluate:
+        Get.toNamed(AppRoutes.mineEvaluatePage);
+        break;
     }
   }
 }

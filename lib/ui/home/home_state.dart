@@ -13,13 +13,13 @@ class HomeState {
       title: '订单',
     ),
     const AppBarItem(
-        icon: 'assets/images/home/dating_hall.png',
-        activeIcon: 'assets/images/home/dating_hall_none.png',
+        icon: 'assets/images/home/dating_hall_none.png',
+        activeIcon: 'assets/images/home/dating_hall.png',
         title: '交友大厅',
     ),
     const AppBarItem(
-        icon: 'assets/images/home/discover.png',
-        activeIcon: 'assets/images/home/discover_none.png',
+        icon: 'assets/images/home/discover_none.png',
+        activeIcon: 'assets/images/home/discover.png',
         title: '发现',
     ),
     const AppBarItem(

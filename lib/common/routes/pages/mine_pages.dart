@@ -2,6 +2,7 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/ui/mine/attention_or_fans/attention_or_fans_page.dart';
 import 'package:guanjia/ui/mine/attention_or_fans/mine_attention/mine_attention_page.dart';
 import 'package:guanjia/ui/mine/attention_or_fans/mine_fans/mine_fans_page.dart';
+import 'package:guanjia/ui/mine/mine_evaluate/mine_evaluate_page.dart';
 import 'package:guanjia/ui/mine/mine_merit_virtue/mine_merit_virtue_page.dart';
 import 'package:guanjia/ui/mine/mine_message/message_notice/message_notice_page.dart';
 import 'package:guanjia/ui/mine/mine_mission_center/mine_mission_center_page.dart';
@@ -141,6 +142,10 @@ class MinePages {
     GetPage(
       name: AppRoutes.bindingPage,
       page: () => BindingPage(),
+    ),
+    GetPage(
+      name: AppRoutes.mineEvaluatePage,
+      page: () => MineEvaluatePage(),
     ),
   ];
 }

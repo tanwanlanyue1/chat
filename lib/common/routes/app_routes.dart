@@ -49,6 +49,9 @@ abstract class AppRoutes {
   ///设置-绑定手机号码
   static const bindingPage = '/BindingPage';
 
+  //我的-评价
+  static const mineEvaluatePage = '/mineEvaluatePage';
+
   ///设置-修改登录密码
   static const updatePasswordPage = '/updatePasswordPage';
 

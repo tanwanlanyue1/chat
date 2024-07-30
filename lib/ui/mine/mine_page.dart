@@ -8,7 +8,6 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/common/utils/un_listview.dart';
-import 'package:guanjia/ui/mine/widgets/mine_item.dart';
 import 'package:guanjia/widgets/advertising_swiper.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/system_ui.dart';
@@ -37,10 +36,10 @@ class _MinePageState extends State<MinePage>
         color: AppColor.brown14,
         child: Stack(
           children: [
-            AppImage.asset(
-              "assets/images/mine/mine_backage.png",
-              height: 236.rpx,
-            ),
+            // AppImage.asset(
+            //   "assets/images/mine/mine_backage.png",
+            //   height: 236.rpx,
+            // ),
             Column(
               children: [
                 Container(
@@ -52,18 +51,18 @@ class _MinePageState extends State<MinePage>
                     onTap: () {
                       Get.toNamed(AppRoutes.accountDataPage);
                     },
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          left: 24.rpx,
-                          right: 12.rpx,
-                          top: 10.rpx,
-                          bottom: 10.rpx),
-                      child: AppImage.asset(
-                        'assets/images/mine/compile.png',
-                        width: 24.rpx,
-                        height: 24.rpx,
-                      ),
-                    ),
+                    // child: Padding(
+                    //   padding: EdgeInsets.only(
+                    //       left: 24.rpx,
+                    //       right: 12.rpx,
+                    //       top: 10.rpx,
+                    //       bottom: 10.rpx),
+                    //   child: AppImage.asset(
+                    //     'assets/images/mine/compile.png',
+                    //     width: 24.rpx,
+                    //     height: 24.rpx,
+                    //   ),
+                    // ),
                   ),
                 ),
                 Expanded(
@@ -73,7 +72,7 @@ class _MinePageState extends State<MinePage>
                     child: ListView(
                       padding: EdgeInsets.zero,
                       children: [
-                        _header(),
+                        // _header(),
                         SizedBox(height: 12.rpx),
                         _discipline(),
                         AdvertisingSwiper(
@@ -414,13 +413,6 @@ class _MinePageState extends State<MinePage>
               ],
             ),
           ),
-          MineItem(
-            onTap: (index) =>
-                controller.onTapItem(state.discipline[index].type),
-            items: state.discipline,
-            iconLength: 44.rpx,
-            mainAxisExtent: 72.rpx,
-          ),
         ],
       ),
     );
@@ -431,13 +423,6 @@ class _MinePageState extends State<MinePage>
     return Container(
       width: 351.rpx,
       decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AppAssetImage(
-            'assets/images/mine/buddha.png',
-          ),
-          fit: BoxFit.fitWidth,
-          alignment: Alignment.bottomCenter,
-        ),
       ),
       padding: EdgeInsets.symmetric(horizontal: 12.rpx),
       child: ScrollConfiguration(
@@ -467,7 +452,7 @@ class _MinePageState extends State<MinePage>
                     ),
                     const Spacer(),
                     AppImage.asset(
-                      'assets/images/mine/enter_into.png',
+                      'assets/images/mine/mine_right.png',
                       width: 20.rpx,
                       height: 20.rpx,
                     ),

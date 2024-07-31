@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/ui/login/widgets/login_text_field.dart';
@@ -58,24 +59,24 @@ class ForgotPage extends StatelessWidget {
   List<Widget> _forgotWidget() {
     return [
       Text(
-        "忘记密码？",
+        S.current.forgotTitle,
         style: AppTextStyle.st.medium.size(30.rpx).textColor(Colors.white),
       ),
       SizedBox(height: 20.rpx),
       Text(
-        "请在下面输入您的电子邮件已接收密码重置邮件？",
+        S.current.forgotTitleTip,
         style: AppTextStyle.st.size(14.rpx).textColor(Colors.white),
       ),
       SizedBox(height: 50.rpx),
       LoginTextField(
         controller: controller.emailController,
-        labelText: "邮箱地址",
+        labelText: S.current.forgotEmailHint,
         keyboardType: TextInputType.emailAddress,
       ),
       SizedBox(height: 30.rpx),
       CommonGradientButton(
         onTap: controller.onTapToNext,
-        text: "发 送",
+        text: S.current.forgotSend,
         height: 50.rpx,
       ),
     ];
@@ -84,36 +85,36 @@ class ForgotPage extends StatelessWidget {
   List<Widget> _resetWidget() {
     return [
       Text(
-        "重置密码",
+        S.current.forgotNextTitle,
         style: AppTextStyle.st.medium.size(30.rpx).textColor(Colors.white),
       ),
       SizedBox(height: 20.rpx),
       Text(
-        "重置代码发送到您的电子邮件。请输入代码并创建新密码",
+        S.current.forgotNextTitleTip,
         style: AppTextStyle.st.size(14.rpx).textColor(Colors.white),
       ),
       SizedBox(height: 50.rpx),
       LoginTextField(
         controller: controller.emailController,
-        hintText: "重置代码",
+        hintText: S.current.forgotCodeHint,
         keyboardType: TextInputType.emailAddress,
       ),
       SizedBox(height: _textFieldPadding),
       LoginTextField(
         controller: controller.passwordController,
-        hintText: "新的密码",
+        hintText: S.current.forgotPasswordHint,
         obscureText: true,
       ),
       SizedBox(height: _textFieldPadding),
       LoginTextField(
         controller: controller.passwordAgainController,
-        hintText: "确认密码",
+        hintText: S.current.forgotPasswordAgainHint,
         obscureText: true,
       ),
       SizedBox(height: 30.rpx),
       CommonGradientButton(
         onTap: null,
-        text: "更改密码",
+        text: S.current.forgotResetPassword,
         height: 50.rpx,
       ),
     ];

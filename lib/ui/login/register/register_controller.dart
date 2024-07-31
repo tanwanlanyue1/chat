@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 
 import 'register_state.dart';
 
@@ -20,5 +21,9 @@ class RegisterController extends GetxController {
     phoneController.dispose();
     emailController.dispose();
     super.onClose();
+  }
+
+  void onTapRegister() {
+    Get.toNamed(AppRoutes.loginQuestionPage);
   }
 }

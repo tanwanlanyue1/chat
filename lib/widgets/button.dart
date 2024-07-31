@@ -7,11 +7,11 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 ///按钮
 class Button extends StatelessWidget {
   ///默认背景色
-  static const _defaultBackgroundColor = AppColor.gold1;
+  static const _defaultBackgroundColor = AppColor.primary;
 
-  static const _defaultOutlineColor = AppColor.gold1;
+  static const _defaultOutlineColor = AppColor.primary;
 
-  static get _defaultHeight => 42.rpx;
+  static get _defaultHeight => 50.rpx;
 
   final Widget? child;
   final BorderRadiusGeometry? borderRadius;

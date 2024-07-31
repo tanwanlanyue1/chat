@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/ui/login/forgot/forgot_page.dart';
 import 'package:guanjia/ui/login/login_phone_binding/login_phone_binding_controller.dart';
+import 'package:guanjia/ui/login/question/question_page.dart';
 import 'package:guanjia/ui/login/register/register_page.dart';
 import '../../../ui/login/login_page.dart';
 import '../../../ui/login/login_phone_binding/login_phone_binding_page.dart';
@@ -50,6 +51,15 @@ class LoginPages {
         return (args != null && args is bool)
             ? ForgotPage(isNext: args)
             : ForgotPage();
+      },
+    ),
+    GetPage(
+      name: AppRoutes.loginQuestionPage,
+      page: () {
+        var args = Get.tryGetArgs("page");
+        return (args != null && args is int)
+            ? QuestionPage(page: args)
+            : QuestionPage(page: 0);
       },
     ),
   ];

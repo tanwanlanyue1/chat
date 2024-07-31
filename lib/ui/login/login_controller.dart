@@ -87,6 +87,10 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
   void onLogin(int type) async {
     FocusScope.of(Get.context!).unfocus();
 
+    Get.toNamed(AppRoutes.loginQuestionPage);
+
+    return;
+
     if (!(await _verifyPrivacy())) return;
 
     if (type == 2) {

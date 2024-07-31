@@ -136,6 +136,9 @@ abstract class AppRoutes {
   /// 登录-绑定手机
   static const loginPhoneBindingPage = '/loginPhoneBinding';
 
+  /// 登录-问题
+  static const loginQuestionPage = '/loginQuestionPage';
+
   /// 心愿阁-禅房
   static const zenRoomPage = '/zenRoomPage';
 

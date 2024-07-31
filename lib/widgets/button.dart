@@ -11,6 +11,7 @@ class Button extends StatelessWidget {
 
   static const _defaultOutlineColor = AppColor.primary;
 
+  static get _defaultBorderRadius => BorderRadius.circular(8.rpx);
   static get _defaultHeight => 50.rpx;
 
   final Widget? child;
@@ -61,7 +62,7 @@ class Button extends StatelessWidget {
   ///- child 按钮内容
   ///- width 按钮宽
   ///- height 按钮高
-  ///- borderRadius 圆角
+  ///- borderRadius 圆角,默认8rpx
   ///- backgroundColor 背景色
   ///- disabledBackgroundColor 禁用时的背景色
   ///- margin 外边距
@@ -83,7 +84,7 @@ class Button extends StatelessWidget {
   }) =>
       Button._(
         key: key,
-        borderRadius: borderRadius,
+        borderRadius: borderRadius ?? _defaultBorderRadius,
         backgroundColor: backgroundColor ?? _defaultBackgroundColor,
         disabledBackgroundColor: disabledBackgroundColor,
         width: width,
@@ -136,7 +137,7 @@ class Button extends StatelessWidget {
   ///- child 按钮内容
   ///- width 按钮宽
   ///- height 按钮高
-  ///- borderRadius 圆角
+  ///- borderRadius 圆角，默认8rpx
   ///- borderColor 边框色
   ///- backgroundColor 背景色
   ///- disabledBackgroundColor 禁用时的背景色
@@ -160,7 +161,7 @@ class Button extends StatelessWidget {
   }) =>
       Button._(
         key: key,
-        borderRadius: borderRadius,
+        borderRadius: borderRadius ?? _defaultBorderRadius,
         borderColor: borderColor ?? _defaultOutlineColor,
         backgroundColor: backgroundColor,
         disabledBackgroundColor: disabledBackgroundColor,

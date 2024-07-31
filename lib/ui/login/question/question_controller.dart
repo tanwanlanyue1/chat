@@ -15,4 +15,16 @@ class QuestionController extends GetxController {
       );
     }
   }
+
+  void onTapGender(bool gender, int page) {
+    state.gender.value = gender;
+
+    onTapNext(page);
+  }
+
+  void onTapLikeGender(bool gender, int page) {
+    state.likeGender.value = gender;
+
+    onTapNext(page);
+  }
 }

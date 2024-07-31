@@ -11,6 +11,7 @@ import 'question_controller.dart';
 
 class QuestionPage extends StatelessWidget {
   final int page;
+
   QuestionPage({super.key, required this.page});
 
   final controller = Get.put(QuestionController());
@@ -68,108 +69,157 @@ class QuestionPage extends StatelessWidget {
   }
 
   Widget _createdQuestionWidget(int number) {
-    switch (number) {
-      case 1:
-        return _welcomeWidget();
-      case 2:
-        return _genderWidget();
-      case 3:
-        return _welcomeWidget();
-      case 4:
-        return _welcomeWidget();
-      default:
-        return _welcomeWidget();
+    ({Widget widget, double top}) subWidget() {
+      switch (number) {
+        case 1:
+          return (widget: _genderWidget(), top: Get.width - 52.rpx);
+        case 2:
+          return (widget: _birthdayWidget(), top: Get.width - 52.rpx);
+        case 3:
+          return (widget: _likeGenderWidget(), top: Get.width - 52.rpx);
+        case 4:
+          return (widget: _welcomeWidget(), top: Get.width - 52.rpx);
+        default:
+          return (widget: _welcomeWidget(), top: Get.width);
+      }
     }
-  }
 
-  Widget _welcomeWidget() {
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
       padding: EdgeInsets.only(
-        top: Get.width,
+        top: subWidget().top,
         bottom: Get.mediaQuery.padding.bottom,
       ),
-      child: Column(
-        children: [
-          Text(
-            "欢迎使用管佳！",
-            style: AppTextStyle.st.medium.size(30.rpx).textColor(Colors.white),
+      child: subWidget().widget,
+    );
+  }
+
+  Widget _welcomeWidget() {
+    return Column(
+      children: [
+        Text(
+          "欢迎使用管佳！",
+          style: AppTextStyle.st.medium.size(30.rpx).textColor(Colors.white),
+        ),
+        SizedBox(height: 20.rpx),
+        SizedBox(
+          width: 247.rpx,
+          child: Text(
+            "现在我们有${state.count}个问题可以帮助您找到更为 合您心意的佳丽",
+            textAlign: TextAlign.center,
+            style: AppTextStyle.st.size(14.rpx).textColor(Colors.white),
           ),
-          SizedBox(height: 20.rpx),
-          SizedBox(
-            width: 247.rpx,
+        ),
+        SizedBox(height: 30.rpx),
+        GestureDetector(
+          onTap: () => controller.onTapNext(page),
+          child: Container(
+            width: 200.rpx,
+            height: 50.rpx,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.rpx),
+            ),
             child: Text(
-              "现在我们有${state.count}个问题可以帮助您找到更为 合您心意的佳丽",
-              textAlign: TextAlign.center,
-              style: AppTextStyle.st.size(14.rpx).textColor(Colors.white),
+              "马上开始",
+              style: AppTextStyle.st.medium
+                  .size(16.rpx)
+                  .textColor(AppColor.black3),
             ),
           ),
-          SizedBox(height: 30.rpx),
-          GestureDetector(
-            onTap: () => controller.onTapNext(page),
-            child: Container(
-              width: 200.rpx,
-              height: 50.rpx,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8.rpx),
-              ),
-              child: Text(
-                "马上开始",
-                style: AppTextStyle.st.medium
-                    .size(16.rpx)
-                    .textColor(AppColor.black3),
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget _genderWidget() {
-    return SingleChildScrollView(
-      physics: const ClampingScrollPhysics(),
-      padding: EdgeInsets.only(
-        top: Get.width,
-        bottom: Get.mediaQuery.padding.bottom,
-      ),
-      child: Column(
-        children: [
-          Text(
-            "欢迎使用管佳！",
-            style: AppTextStyle.st.medium.size(30.rpx).textColor(Colors.white),
-          ),
-          SizedBox(height: 20.rpx),
-          SizedBox(
-            width: 247.rpx,
-            child: Text(
-              "现在我们有${state.count}个问题可以帮助您找到更为 合您心意的佳丽",
-              textAlign: TextAlign.center,
-              style: AppTextStyle.st.size(14.rpx).textColor(Colors.white),
+    Widget genderButton(bool isBoy) {
+      return Obx(() {
+        var isSelect = state.gender.value == isBoy;
+        return _genderButton(isBoy, isSelect);
+      });
+    }
+
+    return Column(
+      children: [
+        Text(
+          "请选择您的性别：",
+          style: AppTextStyle.st.medium.size(18.rpx).textColor(Colors.white),
+        ),
+        SizedBox(height: 32.rpx),
+        genderButton(true),
+        SizedBox(height: 16.rpx),
+        genderButton(false),
+      ],
+    );
+  }
+
+  Widget _birthdayWidget() {
+    return Column(
+      children: [
+        Text(
+          "请输入您的生日：",
+          style: AppTextStyle.st.medium.size(18.rpx).textColor(Colors.white),
+        ),
+        SizedBox(height: 32.rpx),
+        SizedBox(height: 16.rpx),
+      ],
+    );
+  }
+
+  Widget _likeGenderWidget() {
+    Widget genderButton(bool isBoy) {
+      return Obx(() {
+        var isSelect = state.likeGender.value == isBoy;
+        return _genderButton(isBoy, isSelect);
+      });
+    }
+
+    return Column(
+      children: [
+        Text(
+          "您喜欢的对象是？",
+          style: AppTextStyle.st.medium.size(18.rpx).textColor(Colors.white),
+        ),
+        SizedBox(height: 32.rpx),
+        genderButton(true),
+        SizedBox(height: 16.rpx),
+        genderButton(false),
+      ],
+    );
+  }
+
+  GestureDetector _genderButton(bool isBoy, bool isSelect) {
+    return GestureDetector(
+      onTap: () => controller.onTapGender(isBoy, page),
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 32.rpx),
+        padding: EdgeInsets.symmetric(horizontal: 16.rpx),
+        height: 56.rpx,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.rpx),
+        ),
+        child: Row(
+          children: [
+            AppImage.asset(
+              !isSelect
+                  ? "assets/images/login/choose_normal.png"
+                  : "assets/images/login/choose_select.png",
+              width: 24.rpx,
+              height: 24.rpx,
             ),
-          ),
-          SizedBox(height: 30.rpx),
-          GestureDetector(
-            onTap: () => controller.onTapNext(page),
-            child: Container(
-              width: 200.rpx,
-              height: 50.rpx,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8.rpx),
-              ),
-              child: Text(
-                "马上开始",
-                style: AppTextStyle.st.medium
-                    .size(16.rpx)
-                    .textColor(AppColor.black3),
-              ),
+            SizedBox(width: 16.rpx),
+            Text(
+              isBoy ? "男" : "女",
+              style: AppTextStyle.st.medium
+                  .size(16.rpx)
+                  .textColor(AppColor.black3)
+                  .copyWith(height: 1),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

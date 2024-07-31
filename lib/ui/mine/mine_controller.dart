@@ -121,6 +121,12 @@ class MineController extends GetxController {
       case MineItemType.activation:
         ActivationProgression.show();
         break;
+      case MineItemType.viewContract:
+        // TODO: Handle this case.
+        break;
+      case MineItemType.generateContract:
+        Get.toNamed(AppRoutes.contractGeneratePage);
+        break;
     }
   }
 }

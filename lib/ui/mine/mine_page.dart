@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/widgets/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -231,11 +232,29 @@ class _MinePageState extends State<MinePage>
             state.current.value = 0;
           }
         },
-        child: Container(
-          margin: EdgeInsets.only(left: 12.rpx, right: 12.rpx),
-          child: Text("切换佳丽",
-              style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5)),
-        ),
+        child: Obx((){
+          final value = state.current();
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Button(
+                width: 100.rpx,
+                child: Text('顾客'),
+                onPressed: value == 0 ? null : () => state.current.value = 0,
+              ),
+              Button(
+                width: 100.rpx,
+                child: Text('佳丽'),
+                onPressed: value == 1 ? null : () => state.current.value = 1,
+              ),
+              Button(
+                width: 100.rpx,
+                child: Text('经纪人'),
+                onPressed: value == 2 ? null : () => state.current.value = 2,
+              ),
+            ],
+          );
+        }),
       ),
     );
   }

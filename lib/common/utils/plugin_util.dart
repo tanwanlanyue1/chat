@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 /// 通用插件，桥接到原生
 class PluginUtil {
   PluginUtil._();
-  static const MethodChannel _methodChannel = MethodChannel('com.qt.jx/plugin');
+  static const MethodChannel _methodChannel = MethodChannel('com.social.guanjia/plugin');
 
   static Future<String?> getDeviceId() async {
     try {

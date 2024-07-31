@@ -50,6 +50,16 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `管佳`
+  String get appName {
+    return Intl.message(
+      '管佳',
+      name: 'appName',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `语言`
   String get language {
     return Intl.message(
@@ -205,6 +215,76 @@ class S {
     return Intl.message(
       '查看契约单',
       name: 'viewSheet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `生成契约单`
+  String get generateContract {
+    return Intl.message(
+      '生成契约单',
+      name: 'generateContract',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `甲方：`
+  String get partyA {
+    return Intl.message(
+      '甲方：',
+      name: 'partyA',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `乙方：`
+  String get partyB {
+    return Intl.message(
+      '乙方：',
+      name: 'partyB',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `选择好友绑定`
+  String get selectFriendBinding {
+    return Intl.message(
+      '选择好友绑定',
+      name: 'selectFriendBinding',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `时间：`
+  String get contractDate {
+    return Intl.message(
+      '时间：',
+      name: 'contractDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `修改契约单模板`
+  String get contractEdit {
+    return Intl.message(
+      '修改契约单模板',
+      name: 'contractEdit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `立即推送契约单`
+  String get contractPush {
+    return Intl.message(
+      '立即推送契约单',
+      name: 'contractPush',
       desc: '',
       args: [],
     );

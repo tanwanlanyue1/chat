@@ -211,4 +211,7 @@ abstract class AppRoutes {
 
   ///开屏广告
   static const launchAd = '/launchAd';
+
+  ///生成契约单
+  static const contractGeneratePage = '/ContractGeneratePage';
 }

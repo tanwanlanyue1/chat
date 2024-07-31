@@ -43,7 +43,6 @@ class App extends StatelessWidget {
               ),
               child: DismissKeyboard(
                 child: GetMaterialApp(
-                  title: '境修',
                   theme: AppTheme.light,
                   darkTheme: AppTheme.dark,
                   debugShowCheckedModeBanner: false,

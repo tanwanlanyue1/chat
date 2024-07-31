@@ -102,8 +102,13 @@ class MineState {
       icon: "assets/images/mine/modification_service.png",
     ),
     MineItemSource(
-      type: MineItemType.setting,
+      type: MineItemType.viewContract,
       title: S.current.viewSheet,
+      icon: "assets/images/mine/look_contract.png",
+    ),
+    MineItemSource(
+      type: MineItemType.generateContract,
+      title: S.current.generateContract,
       icon: "assets/images/mine/look_contract.png",
     ),
   ];
@@ -131,6 +136,8 @@ enum MineItemType {
   help, // 客服与帮助
   attentionOrFans, // 关注或粉丝
   activation, //激活
+  viewContract, //查看契约单
+  generateContract, //生成契约单
 }
 
 class MineItemSource {

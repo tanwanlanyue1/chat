@@ -1,4 +1,5 @@
 {
+  "appName": "管佳",
   "language": "语言",
   "setting": "设置",
   "personalInformation": "个人信息",
@@ -14,5 +15,12 @@
   "appraiseMe": "评价我的",
   "whoSeenMe": "谁看过我",
   "modificationServiceCharge": "修改服务费",
-  "viewSheet": "查看契约单"
+  "viewSheet": "查看契约单",
+  "generateContract": "生成契约单",
+  "partyA": "甲方：",
+  "partyB": "乙方：",
+  "selectFriendBinding": "选择好友绑定",
+  "contractDate": "时间：",
+  "contractEdit": "修改契约单模板",
+  "contractPush": "立即推送契约单"
 }

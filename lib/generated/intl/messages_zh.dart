@@ -23,10 +23,15 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "activationProgression": MessageLookupByLibrary.simpleMessage("激活/进阶"),
+        "appName": MessageLookupByLibrary.simpleMessage("管佳"),
         "appraiseMe": MessageLookupByLibrary.simpleMessage("评价我的"),
         "cancelAdvanceToBroker":
             MessageLookupByLibrary.simpleMessage("解约/进阶为经纪人"),
+        "contractDate": MessageLookupByLibrary.simpleMessage("时间："),
+        "contractEdit": MessageLookupByLibrary.simpleMessage("修改契约单模板"),
+        "contractPush": MessageLookupByLibrary.simpleMessage("立即推送契约单"),
         "feedback": MessageLookupByLibrary.simpleMessage("意见反馈"),
+        "generateContract": MessageLookupByLibrary.simpleMessage("生成契约单"),
         "language": MessageLookupByLibrary.simpleMessage("语言"),
         "modificationServiceCharge":
             MessageLookupByLibrary.simpleMessage("修改服务费"),
@@ -36,7 +41,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "mySettings": MessageLookupByLibrary.simpleMessage("我的设置"),
         "myVIP": MessageLookupByLibrary.simpleMessage("我的VIP"),
         "myWallet": MessageLookupByLibrary.simpleMessage("我的钱包"),
+        "partyA": MessageLookupByLibrary.simpleMessage("甲方："),
+        "partyB": MessageLookupByLibrary.simpleMessage("乙方："),
         "personalInformation": MessageLookupByLibrary.simpleMessage("个人信息"),
+        "selectFriendBinding": MessageLookupByLibrary.simpleMessage("选择好友绑定"),
         "setting": MessageLookupByLibrary.simpleMessage("设置"),
         "viewSheet": MessageLookupByLibrary.simpleMessage("查看契约单"),
         "whoSeenMe": MessageLookupByLibrary.simpleMessage("谁看过我")

@@ -7,6 +7,7 @@ import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'login_controller.dart';
 
 class LoginPage extends StatelessWidget {
@@ -53,7 +54,7 @@ class LoginPage extends StatelessWidget {
                         .copyWith(top: 28.rpx),
                     children: [
                       Text(
-                        "您好， \n欢迎回来！",
+                        S.current.loginWelcome,
                         style: AppTextStyle.st.medium
                             .size(30.rpx)
                             .textColor(Colors.white),
@@ -61,12 +62,12 @@ class LoginPage extends StatelessWidget {
                       SizedBox(height: 50.rpx),
                       LoginTextField(
                         controller: controller.registerAccountController,
-                        labelText: "账号",
+                        labelText: S.current.loginAccount,
                       ),
                       SizedBox(height: 16.rpx),
                       LoginTextField(
                         controller: controller.registerPasswordController,
-                        labelText: "密码",
+                        labelText: S.current.loginPassword,
                         obscureText: true,
                       ),
                       Container(
@@ -76,7 +77,7 @@ class LoginPage extends StatelessWidget {
                           onTap: controller.onTapToForgotPage,
                           behavior: HitTestBehavior.opaque,
                           child: Text(
-                            "忘记密码？",
+                            S.current.loginForgetPassword,
                             style: AppTextStyle.st.medium
                                 .size(14.rpx)
                                 .textColor(Colors.white.withOpacity(0.5)),
@@ -85,7 +86,7 @@ class LoginPage extends StatelessWidget {
                       ),
                       CommonGradientButton(
                         onTap: () => controller.onLogin(1),
-                        text: "登 录",
+                        text: S.current.login,
                         height: 50.rpx,
                       ),
                     ],
@@ -97,7 +98,7 @@ class LoginPage extends StatelessWidget {
                     padding: EdgeInsets.all(8.rpx),
                     alignment: Alignment.center,
                     child: Text(
-                      "还没有账号？马上注册",
+                      S.current.loginRegister,
                       style: AppTextStyle.st.medium
                           .size(14.rpx)
                           .textColor(Colors.white),

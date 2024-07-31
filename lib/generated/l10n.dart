@@ -209,6 +209,266 @@ class S {
       args: [],
     );
   }
+
+  /// `登 录`
+  String get login {
+    return Intl.message(
+      '登 录',
+      name: 'login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `您好，\n欢迎回来！`
+  String get loginWelcome {
+    return Intl.message(
+      '您好，\n欢迎回来！',
+      name: 'loginWelcome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `账号`
+  String get loginAccount {
+    return Intl.message(
+      '账号',
+      name: 'loginAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `密码`
+  String get loginPassword {
+    return Intl.message(
+      '密码',
+      name: 'loginPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `忘记密码？`
+  String get loginForgetPassword {
+    return Intl.message(
+      '忘记密码？',
+      name: 'loginForgetPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `还没有账号？马上注册`
+  String get loginRegister {
+    return Intl.message(
+      '还没有账号？马上注册',
+      name: 'loginRegister',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `注册`
+  String get register {
+    return Intl.message(
+      '注册',
+      name: 'register',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `注 册`
+  String get registerSpace {
+    return Intl.message(
+      '注 册',
+      name: 'registerSpace',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `请输入用户名`
+  String get registerAccountHint {
+    return Intl.message(
+      '请输入用户名',
+      name: 'registerAccountHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `请设置6-20位登录密码`
+  String get registerPasswordHint {
+    return Intl.message(
+      '请设置6-20位登录密码',
+      name: 'registerPasswordHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `请再次确认登陆密码`
+  String get registerPasswordAgainHint {
+    return Intl.message(
+      '请再次确认登陆密码',
+      name: 'registerPasswordAgainHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `+1 194-351-2685（手机号码选填）`
+  String get registerPhoneHint {
+    return Intl.message(
+      '+1 194-351-2685（手机号码选填）',
+      name: 'registerPhoneHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `请输入您的邮箱（选填）`
+  String get registerEmailHint {
+    return Intl.message(
+      '请输入您的邮箱（选填）',
+      name: 'registerEmailHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `已有账号？去登录`
+  String get registerLogin {
+    return Intl.message(
+      '已有账号？去登录',
+      name: 'registerLogin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `点击注册默认同意`
+  String get registerAgreement {
+    return Intl.message(
+      '点击注册默认同意',
+      name: 'registerAgreement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `用户协议`
+  String get webUser {
+    return Intl.message(
+      '用户协议',
+      name: 'webUser',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `忘记密码？`
+  String get forgotTitle {
+    return Intl.message(
+      '忘记密码？',
+      name: 'forgotTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `重置密码`
+  String get forgotNextTitle {
+    return Intl.message(
+      '重置密码',
+      name: 'forgotNextTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `请在下面输入您的电子邮件已接收密码重置邮件？`
+  String get forgotTitleTip {
+    return Intl.message(
+      '请在下面输入您的电子邮件已接收密码重置邮件？',
+      name: 'forgotTitleTip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `重置代码发送到您的电子邮件。请输入代码并创建新密码`
+  String get forgotNextTitleTip {
+    return Intl.message(
+      '重置代码发送到您的电子邮件。请输入代码并创建新密码',
+      name: 'forgotNextTitleTip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `邮箱地址`
+  String get forgotEmailHint {
+    return Intl.message(
+      '邮箱地址',
+      name: 'forgotEmailHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `重置代码`
+  String get forgotCodeHint {
+    return Intl.message(
+      '重置代码',
+      name: 'forgotCodeHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `新的密码`
+  String get forgotPasswordHint {
+    return Intl.message(
+      '新的密码',
+      name: 'forgotPasswordHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `确认密码`
+  String get forgotPasswordAgainHint {
+    return Intl.message(
+      '确认密码',
+      name: 'forgotPasswordAgainHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `发 送`
+  String get forgotSend {
+    return Intl.message(
+      '发 送',
+      name: 'forgotSend',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `更改密码`
+  String get forgotResetPassword {
+    return Intl.message(
+      '更改密码',
+      name: 'forgotResetPassword',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

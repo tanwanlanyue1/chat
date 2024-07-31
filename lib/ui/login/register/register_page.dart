@@ -7,6 +7,7 @@ import 'package:guanjia/ui/login/widgets/login_text_field.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 import 'register_controller.dart';
 
@@ -48,7 +49,7 @@ class RegisterPage extends StatelessWidget {
                         .copyWith(top: 68.rpx),
                     children: [
                       Text(
-                        "注册",
+                        S.current.register,
                         style: AppTextStyle.st.medium
                             .size(30.rpx)
                             .textColor(Colors.white),
@@ -56,30 +57,30 @@ class RegisterPage extends StatelessWidget {
                       SizedBox(height: textFieldPadding),
                       LoginTextField(
                         controller: controller.userNameController,
-                        hintText: "请输入用户名",
+                        hintText: S.current.registerAccountHint,
                       ),
                       SizedBox(height: textFieldPadding),
                       LoginTextField(
                         controller: controller.passwordController,
-                        hintText: "请设置6-20位登录密码",
+                        hintText: S.current.registerPasswordHint,
                         obscureText: true,
                       ),
                       SizedBox(height: textFieldPadding),
                       LoginTextField(
                         controller: controller.passwordAgainController,
-                        hintText: "请再次确认登陆密码",
+                        hintText: S.current.registerPasswordAgainHint,
                         obscureText: true,
                       ),
                       SizedBox(height: textFieldPadding),
                       LoginTextField(
                         controller: controller.phoneController,
-                        hintText: "+1 194-351-2685（手机号码选填）",
+                        hintText: S.current.registerPhoneHint,
                         keyboardType: TextInputType.number,
                       ),
                       SizedBox(height: textFieldPadding),
                       LoginTextField(
                         controller: controller.emailController,
-                        hintText: "请输入您的邮箱（选填）",
+                        hintText: S.current.registerEmailHint,
                         keyboardType: TextInputType.emailAddress,
                       ),
                       Container(
@@ -89,7 +90,7 @@ class RegisterPage extends StatelessWidget {
                           onTap: null,
                           behavior: HitTestBehavior.opaque,
                           child: Text(
-                            "点击注册默认同意 用户协议",
+                            "${S.current.registerAgreement} ${S.current.webUser}",
                             style: AppTextStyle.st.medium
                                 .size(14.rpx)
                                 .textColor(Colors.white.withOpacity(0.5)),
@@ -98,7 +99,7 @@ class RegisterPage extends StatelessWidget {
                       ),
                       CommonGradientButton(
                         onTap: controller.onTapRegister,
-                        text: "注 册",
+                        text: S.current.registerSpace,
                         height: 50.rpx,
                       ),
                     ],
@@ -110,7 +111,7 @@ class RegisterPage extends StatelessWidget {
                     padding: EdgeInsets.all(8.rpx),
                     alignment: Alignment.center,
                     child: Text(
-                      "已有账号？去登录",
+                      S.current.registerLogin,
                       style: AppTextStyle.st.medium
                           .size(14.rpx)
                           .textColor(Colors.white),

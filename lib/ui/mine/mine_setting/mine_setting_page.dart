@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/network/network.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -27,20 +28,48 @@ class MineSettingPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(S.current.setting),
       ),
-      backgroundColor: const Color(0xffF6F8FE),
+      backgroundColor: AppColor.scaffoldBackground,
       body: Obx(() {
         return Column(
           children: [
             Expanded(
               child: ListView(
-                padding: EdgeInsets.symmetric(horizontal: 12.rpx)
-                    .copyWith(top: 12.rpx),
+                padding: EdgeInsets.symmetric(horizontal: 12.rpx).copyWith(top: 12.rpx),
                 children: [
                   SettingItem(
-                    title: "账户资料",
-                    callBack: () {
-                      Get.toNamed(AppRoutes.accountDataPage);
-                    },
+                    bottom: 1.rpx,
+                    title: "震动提醒",
+                    right: SizedBox(
+                      width: 46.rpx,
+                      child: Transform.scale(
+                        scale: 0.8,
+                        child: CupertinoSwitch(
+                          value: state.shake.value,
+                          activeColor: AppColor.primary,
+                          trackColor: AppColor.gray9,
+                          onChanged: (value){
+                            state.shake.value = value;
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  SettingItem(
+                    title: "铃声提醒",
+                    right: SizedBox(
+                      width: 46.rpx,
+                      child: Transform.scale(
+                        scale: 0.8,
+                        child: CupertinoSwitch(
+                          value: state.bell.value,
+                          activeColor: AppColor.primary,
+                          trackColor: AppColor.gray9,
+                          onChanged: (value){
+                            state.bell.value = value;
+                          },
+                        ),
+                      ),
+                    ),
                   ),
                   SettingItem(
                     bottom: 1.rpx,
@@ -53,13 +82,13 @@ class MineSettingPage extends StatelessWidget {
                     bottom: 1.rpx,
                     title: "设置支付密码",
                     callBack: () {
-                      Get.toNamed(AppRoutes.updatePasswordPage);
+                      Get.toNamed(AppRoutes.paymentPasswordPage);
                     },
                   ),
                   SettingItem(
                     title: "修改支付密码",
                     callBack: () {
-                      Get.toNamed(AppRoutes.updatePasswordPage);
+                      Get.toNamed(AppRoutes.updatePasswordPage,arguments: {"login":false});
                     },
                   ),
                   SettingItem(
@@ -72,6 +101,7 @@ class MineSettingPage extends StatelessWidget {
                   ),
                   SettingItem(
                     title: "清空缓存",
+                    bottom: 1.rpx,
                     trailing: Text(
                       controller.cacheSize.value,
                       style: TextStyle(
@@ -84,9 +114,9 @@ class MineSettingPage extends StatelessWidget {
                     callBack: () => controller.onTapClearCache(),
                   ),
                   SettingItem(
-                    title: "自动更新",
+                    title: "检测新版本",
                     trailing: Text(
-                      controller.cacheSize.value,
+                      '1.0.1',
                       style: TextStyle(
                           fontSize: 14.rpx, color: const Color(0xff999999)),
                     ),
@@ -94,17 +124,12 @@ class MineSettingPage extends StatelessWidget {
                       bottomLeft: Radius.circular(8.rpx),
                       bottomRight: Radius.circular(8.rpx),
                     ),
-                    callBack: () => controller.onTapClearCache(),
+                    // callBack: () => controller.onTapClearCache(),
                   ),
 
                   SettingItem(
                     title: "关于我们",
                     bottom: 1.rpx,
-                    trailing: Text(
-                      "版本${controller.version}",
-                      style: TextStyle(
-                          fontSize: 14.rpx, color: const Color(0xff999999)),
-                    ),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8.rpx),
                       topRight: Radius.circular(8.rpx),
@@ -118,31 +143,6 @@ class MineSettingPage extends StatelessWidget {
                 ],
               ),
             ),
-            if (SS.login.isLogin)
-              GestureDetector(
-                onTap: controller.onTapSignOut,
-                child: SafeArea(
-                  child: Container(
-                    height: 42.rpx,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(21.rpx),
-                    ),
-                    margin: EdgeInsets.symmetric(horizontal: 8.rpx)
-                        .copyWith(top: 12.rpx, bottom: 20.rpx),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "退出登录",
-                          style: TextStyle(
-                              color: const Color(0xff8D310F), fontSize: 16.rpx),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
           ],
         );
       }),

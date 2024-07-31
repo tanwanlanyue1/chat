@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 import '../../common/network/api/api.dart';
 
@@ -9,47 +10,42 @@ class MineState {
   List<MineItemSource> commonFeature = [
     MineItemSource(
       type: MineItemType.myQuestionsAndAnswers,
-      title: "个人信息",
+      title: S.current.personalInformation,
       icon: "assets/images/mine/personal_info.png",
     ),
     MineItemSource(
       type: MineItemType.collection,
-      title: "我的钱包",
+      title: S.current.myWallet,
       icon: "assets/images/mine/wallet.png",
     ),
     MineItemSource(
       type: MineItemType.browsingHistory,
-      title: "我的VIP",
+      title: S.current.myVIP,
       icon: "assets/images/mine/VIP.png",
     ),
     MineItemSource(
       type: MineItemType.evaluate,
-      title: "我的评价",
+      title: S.current.myAssessment,
       icon: "assets/images/mine/evaluate.png",
     ),
     MineItemSource(
       type: MineItemType.feedback,
-      title: "意见反馈",
+      title: S.current.feedback,
       icon: "assets/images/mine/feedback.png",
     ),
     MineItemSource(
       type: MineItemType.setting,
-      title: "我的设置",
+      title: S.current.mySettings,
       icon: "assets/images/mine/setting.png",
     ),
     MineItemSource(
-      type: MineItemType.help,
-      title: "激活/进阶",
+      type: MineItemType.activation,
+      title: S.current.activationProgression,
       icon: "assets/images/mine/activate.png",
     ),
     MineItemSource(
       type: MineItemType.setting,
-      title: "我的关注",
-      icon: "assets/images/mine/attention.png",
-    ),
-    MineItemSource(
-      type: MineItemType.setting,
-      title: "我的消息",
+      title: S.current.myMessage,
       icon: "assets/images/mine/message.png",
     ),
   ];
@@ -57,57 +53,57 @@ class MineState {
   List<MineItemSource> jiaCommonFeature = [
     MineItemSource(
       type: MineItemType.myQuestionsAndAnswers,
-      title: "个人信息",
+      title: S.current.personalInformation,
       icon: "assets/images/mine/personal_info.png",
     ),
     MineItemSource(
       type: MineItemType.collection,
-      title: "我的钱包",
+      title: S.current.myWallet,
       icon: "assets/images/mine/wallet.png",
     ),
     MineItemSource(
       type: MineItemType.browsingHistory,
-      title: "我的VIP",
+      title: S.current.myVIP,
       icon: "assets/images/mine/VIP.png",
     ),
     MineItemSource(
       type: MineItemType.evaluate,
-      title: "我的客户",
+      title: S.current.myCustomer,
       icon: "assets/images/mine/mine_client.png",
     ),
     MineItemSource(
       type: MineItemType.feedback,
-      title: "意见反馈",
+      title: S.current.feedback,
       icon: "assets/images/mine/feedback.png",
     ),
     MineItemSource(
       type: MineItemType.help,
-      title: "解约/进阶为经纪人",
+      title: S.current.cancelAdvanceToBroker,
       icon: "assets/images/mine/cancel_a_contract.png",
     ),
     MineItemSource(
       type: MineItemType.jiaEvaluate,
-      title: "评价我的",
+      title: S.current.appraiseMe,
       icon: "assets/images/mine/evaluate.png",
     ),
     MineItemSource(
       type: MineItemType.setting,
-      title: "谁看过我",
+      title: S.current.whoSeenMe,
       icon: "assets/images/mine/examine.png",
     ),
     MineItemSource(
       type: MineItemType.setting,
-      title: "我的设置",
+      title: S.current.mySettings,
       icon: "assets/images/mine/setting.png",
     ),
     MineItemSource(
       type: MineItemType.setting,
-      title: "修改服务费",
+      title: S.current.modificationServiceCharge,
       icon: "assets/images/mine/modification_service.png",
     ),
     MineItemSource(
       type: MineItemType.setting,
-      title: "查看契约单",
+      title: S.current.viewSheet,
       icon: "assets/images/mine/look_contract.png",
     ),
   ];
@@ -134,6 +130,7 @@ enum MineItemType {
   jiaEvaluate, // 佳丽-评价我的
   help, // 客服与帮助
   attentionOrFans, // 关注或粉丝
+  activation, //激活
 }
 
 class MineItemSource {

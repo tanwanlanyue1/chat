@@ -58,6 +58,9 @@ abstract class AppRoutes {
   ///设置-修改登录密码
   static const updatePasswordPage = '/updatePasswordPage';
 
+  ///设置-支付密码
+  static const paymentPasswordPage = '/paymentPasswordPage';
+
   ///设置-账户黑名单
   static const accountBlacklistPage = '/accountBlacklistPage';
 

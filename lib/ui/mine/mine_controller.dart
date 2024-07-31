@@ -10,6 +10,7 @@ import 'package:guanjia/ui/home/home_controller.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/web/web_page.dart';
 import 'mine_state.dart';
+import 'widgets/activation_progression.dart';
 
 class MineController extends GetxController {
   final MineState state = MineState();
@@ -116,6 +117,9 @@ class MineController extends GetxController {
         break;
       case MineItemType.jiaEvaluate:
         Get.toNamed(AppRoutes.jiaEvaluatePage);
+        break;
+      case MineItemType.activation:
+        ActivationProgression.show();
         break;
     }
   }

@@ -10,7 +10,7 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 
 import 'update_password_controller.dart';
 
-///修改登录密码
+///修改登录密码/修改支付密码
 class UpdatePasswordPage extends StatelessWidget {
   final controller = Get.put(UpdatePasswordController());
   final state = Get.find<UpdatePasswordController>().state;
@@ -18,10 +18,10 @@ class UpdatePasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F8FE),
+      backgroundColor: AppColor.scaffoldBackground,
       appBar: AppBar(
         title: Text(
-          "修改登录密码",
+          state.isLogin.value ? "修改登录密码" : "修改支付密码",
           style: TextStyle(
             color: const Color(0xff333333),
             fontSize: 18.rpx,
@@ -29,17 +29,16 @@ class UpdatePasswordPage extends StatelessWidget {
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.only(left: 12.rpx, right: 12.rpx, top: 16.rpx),
+        padding: EdgeInsets.only(left: 12.rpx, right: 12.rpx, top: 24.rpx),
         children: [
           _buildPhoneNumberTips(),
-          _buildPhoneField(),
           _buildVerificationCodeField(),
+          _buildVerificationMode(),
           _buildNewPasswordField(),
           _buildConfirmPasswordField(),
           _buildSubmitButton(),
-        ]
-            .separated(SizedBox(
-              height: 10.rpx,
+        ].separated(SizedBox(
+              height: 1.rpx,
             ))
             .toList(),
       ),
@@ -47,38 +46,57 @@ class UpdatePasswordPage extends StatelessWidget {
   }
 
   Widget _buildPhoneNumberTips() {
-    return Padding(
-      padding: EdgeInsets.only(left: 12.rpx),
+    return Obx(() => Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(bottom: 15.rpx),
       child: Text(
-        '使用以下安全验证手机号码获取验证码',
+        state.isPhone.value ?
+        '手机验证码将发送到138****8888手机上，请注意查收':
+        '邮箱验证码将发送到1726****45.com邮箱上，请注意查收',
         style: TextStyle(
-          fontSize: 14.rpx,
-          color: Color(0xff999999),
+          fontSize: 12.rpx,
+          color: AppColor.gray30,
+        ),
+      ),
+    ));
+  }
+
+  //验证方式
+  Widget _buildVerificationMode() {
+    return GestureDetector(
+      onTap: (){
+        state.isPhone.value = !state.isPhone.value;
+      },
+      child: Container(
+        alignment: Alignment.centerRight,
+        margin: EdgeInsets.only(bottom: 24.rpx,top: 11.rpx),
+        child: RichText(
+          text: TextSpan(
+            text: "收不到验证码? ",
+            style: TextStyle(
+              fontSize: 12.rpx,
+              color: AppColor.gray30,
+            ),
+            children: const [
+              TextSpan(
+                text: "换个验证方式",
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildPhoneField() {
-    return Obx(() {
-      return SettingTextField(
-        inputController: controller.phoneNumberInputController,
-        labelText: '手机号',
-        hintText: '请输入手机号码',
-        readOnly: state.loginService.isLogin,
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-          LengthLimitingTextInputFormatter(11),
-        ],
-      );
-    });
-  }
-
   Widget _buildVerificationCodeField() {
-    return SettingTextField(
+    return Obx(() => SettingTextField(
       inputController: controller.verificationInputController,
-      labelText: '验证码',
-      hintText: '输入验证码',
+      labelText: state.isPhone.value ?
+      '手机验证码':'邮箱验证码',
+      hintText: '请输入验证码',
       keyboardType: TextInputType.number,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp('[0-9]')),
@@ -87,12 +105,12 @@ class UpdatePasswordPage extends StatelessWidget {
       suffixIcon: LoginVerificationCodeButton(
         onFetch: controller.fetchSms,
       ),
-    );
+    ));
   }
 
   Widget _buildNewPasswordField() {
     return SettingTextField(
-      labelText: '新登录密码',
+      labelText: '请输入密码',
       inputController: controller.newPasswordInputController,
       hintText: '请输入6-20位字符',
       inputFormatters: [
@@ -105,9 +123,9 @@ class UpdatePasswordPage extends StatelessWidget {
 
   Widget _buildConfirmPasswordField() {
     return SettingTextField(
-      labelText: '确认密码',
+      labelText: '请确认密码',
       inputController: controller.confirmPasswordInputController,
-      hintText: '再次输入密码',
+      hintText: '请输入确认密码',
       inputFormatters: [
         FilteringTextInputFormatter.deny(RegExp(r'\s')),
         LengthLimitingTextInputFormatter(16),
@@ -125,13 +143,13 @@ class UpdatePasswordPage extends StatelessWidget {
           decoration: BoxDecoration(
               color: AppColor.primary
                   .withOpacity(state.isVisible.value ? 1 : 0.15),
-              borderRadius: BorderRadius.circular(23.rpx)),
-          margin: EdgeInsets.symmetric(horizontal: 8.rpx, vertical: 40.rpx),
+              borderRadius: BorderRadius.circular(8.rpx)),
+          margin: EdgeInsets.symmetric(horizontal: 38.rpx, vertical: 40.rpx),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "立即修改",
+                "确定",
                 style: TextStyle(color: Colors.white, fontSize: 16.rpx),
               )
             ],

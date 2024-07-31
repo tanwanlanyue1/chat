@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/ui/mine/attention_or_fans/attention_or_fans_page.dart';
 import 'package:guanjia/ui/mine/attention_or_fans/mine_attention/mine_attention_page.dart';
@@ -12,6 +13,8 @@ import 'package:guanjia/ui/mine/mine_reward_points/mine_reward_points_page.dart'
 import 'package:guanjia/ui/mine/mine_reward_points_detail/mine_reward_points_detail_page.dart';
 import 'package:guanjia/ui/mine/mine_collect/mine_collect_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/binding/binding_page.dart';
+import 'package:guanjia/ui/mine/mine_setting/payment_password/payment_password_page.dart';
+import 'package:guanjia/ui/mine/mine_setting/update_password/update_password_controller.dart';
 import '../app_pages.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -103,6 +106,9 @@ class MinePages {
     GetPage(
       name: AppRoutes.updatePasswordPage,
       page: () => UpdatePasswordPage(),
+      binding: BindingsBuilder.put(() => UpdatePasswordController(
+        login: Get.tryGetArgs('login'),
+      )),
     ),
     GetPage(
       name: AppRoutes.accountBlacklistPage,
@@ -151,6 +157,10 @@ class MinePages {
     GetPage(
       name: AppRoutes.jiaEvaluatePage,
       page: () => JiaEvaluatePage(),
+    ),
+    GetPage(
+      name: AppRoutes.paymentPasswordPage,
+      page: () => PaymentPasswordPage(),
     ),
   ];
 }

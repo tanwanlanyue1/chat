@@ -30,11 +30,11 @@ class AboutPage extends StatelessWidget {
         child: Obx(() {
           return Column(
             children: [
-              AppImage.asset(
-                'assets/images/login/login_logo.png',
-                width: 68.rpx,
-                height: 68.rpx,
-              ),
+              // AppImage.asset(
+              //   'assets/images/login/login_logo.png',
+              //   width: 68.rpx,
+              //   height: 68.rpx,
+              // ),
               Text(
                 "版本${state.version}",
                 style: TextStyle(fontSize: 18.rpx),
@@ -42,10 +42,6 @@ class AboutPage extends StatelessWidget {
               SizedBox(
                 height: 40.rpx,
               ),
-              // SettingItem(
-              //   title: "新版检测",
-              //   callBack: () {},
-              // ),
               ...List.generate(
                   state.agreementList.length,
                   (i) => SettingItem(

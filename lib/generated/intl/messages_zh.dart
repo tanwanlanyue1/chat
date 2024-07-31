@@ -22,7 +22,23 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "activationProgression": MessageLookupByLibrary.simpleMessage("激活/进阶"),
+        "appraiseMe": MessageLookupByLibrary.simpleMessage("评价我的"),
+        "cancelAdvanceToBroker":
+            MessageLookupByLibrary.simpleMessage("解约/进阶为经纪人"),
+        "feedback": MessageLookupByLibrary.simpleMessage("意见反馈"),
         "language": MessageLookupByLibrary.simpleMessage("语言"),
-        "setting": MessageLookupByLibrary.simpleMessage("设置")
+        "modificationServiceCharge":
+            MessageLookupByLibrary.simpleMessage("修改服务费"),
+        "myAssessment": MessageLookupByLibrary.simpleMessage("我的评价"),
+        "myCustomer": MessageLookupByLibrary.simpleMessage("我的客户"),
+        "myMessage": MessageLookupByLibrary.simpleMessage("我的消息"),
+        "mySettings": MessageLookupByLibrary.simpleMessage("我的设置"),
+        "myVIP": MessageLookupByLibrary.simpleMessage("我的VIP"),
+        "myWallet": MessageLookupByLibrary.simpleMessage("我的钱包"),
+        "personalInformation": MessageLookupByLibrary.simpleMessage("个人信息"),
+        "setting": MessageLookupByLibrary.simpleMessage("设置"),
+        "viewSheet": MessageLookupByLibrary.simpleMessage("查看契约单"),
+        "whoSeenMe": MessageLookupByLibrary.simpleMessage("谁看过我")
       };
 }

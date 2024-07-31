@@ -6,6 +6,11 @@ import 'update_password_state.dart';
 
 class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
   final state = UpdatePasswordState();
+  UpdatePasswordController({
+    bool? login,
+  }){// true：修改登录密码，false：修改支付密码，
+    state.isLogin.value = login ?? true;
+  }
 
   final phoneNumberInputController = TextEditingController();
   final verificationInputController = TextEditingController();

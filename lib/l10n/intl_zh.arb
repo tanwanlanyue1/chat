@@ -1,4 +1,18 @@
 {
   "language": "语言",
-  "setting": "设置"
+  "setting": "设置",
+  "personalInformation": "个人信息",
+  "myWallet": "我的钱包",
+  "myVIP": "我的VIP",
+  "myAssessment": "我的评价",
+  "feedback": "意见反馈",
+  "mySettings": "我的设置",
+  "activationProgression": "激活/进阶",
+  "myMessage": "我的消息",
+  "myCustomer": "我的客户",
+  "cancelAdvanceToBroker": "解约/进阶为经纪人",
+  "appraiseMe": "评价我的",
+  "whoSeenMe": "谁看过我",
+  "modificationServiceCharge": "修改服务费",
+  "viewSheet": "查看契约单"
 }

@@ -50,11 +50,12 @@ class SettingItem extends StatelessWidget {
                 child: trailing ?? Container(),
               ),
             ),
+            SizedBox(width: 8.rpx),
             right ??
                 AppImage.asset(
                   "assets/images/mine/mine_right.png",
-                  width: 20.rpx,
-                  height: 20.rpx,
+                  width: 16.rpx,
+                  height: 16.rpx,
                 ),
           ],
         ),

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 
 ///获取验证码按钮
@@ -68,7 +69,7 @@ class _LoginVerificationCodeButtonState extends State<LoginVerificationCodeButto
                 text,
                 style: TextStyle(
                   fontSize: 14.rpx,
-                  color: enabled ? Color(0xff8D310F) : Color(0xff999999),
+                  color: enabled ? AppColor.primary : Color(0xff999999),
                   height: 1.3,
                 ),
               )

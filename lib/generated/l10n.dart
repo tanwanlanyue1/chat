@@ -69,6 +69,146 @@ class S {
       args: [],
     );
   }
+
+  /// `个人信息`
+  String get personalInformation {
+    return Intl.message(
+      '个人信息',
+      name: 'personalInformation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `我的钱包`
+  String get myWallet {
+    return Intl.message(
+      '我的钱包',
+      name: 'myWallet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `我的VIP`
+  String get myVIP {
+    return Intl.message(
+      '我的VIP',
+      name: 'myVIP',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `我的评价`
+  String get myAssessment {
+    return Intl.message(
+      '我的评价',
+      name: 'myAssessment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `意见反馈`
+  String get feedback {
+    return Intl.message(
+      '意见反馈',
+      name: 'feedback',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `我的设置`
+  String get mySettings {
+    return Intl.message(
+      '我的设置',
+      name: 'mySettings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `激活/进阶`
+  String get activationProgression {
+    return Intl.message(
+      '激活/进阶',
+      name: 'activationProgression',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `我的消息`
+  String get myMessage {
+    return Intl.message(
+      '我的消息',
+      name: 'myMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `我的客户`
+  String get myCustomer {
+    return Intl.message(
+      '我的客户',
+      name: 'myCustomer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `解约/进阶为经纪人`
+  String get cancelAdvanceToBroker {
+    return Intl.message(
+      '解约/进阶为经纪人',
+      name: 'cancelAdvanceToBroker',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `评价我的`
+  String get appraiseMe {
+    return Intl.message(
+      '评价我的',
+      name: 'appraiseMe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `谁看过我`
+  String get whoSeenMe {
+    return Intl.message(
+      '谁看过我',
+      name: 'whoSeenMe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `修改服务费`
+  String get modificationServiceCharge {
+    return Intl.message(
+      '修改服务费',
+      name: 'modificationServiceCharge',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `查看契约单`
+  String get viewSheet {
+    return Intl.message(
+      '查看契约单',
+      name: 'viewSheet',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

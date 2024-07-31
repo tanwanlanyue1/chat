@@ -35,7 +35,7 @@ class SettingTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = this.height ?? 46.rpx;
+    final height = this.height ?? 50.rpx;
     return Container(
       height: height,
       decoration: BoxDecoration(

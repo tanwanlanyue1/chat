@@ -18,7 +18,7 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _textFieldPadding = 16.rpx;
+    final textFieldPadding = 16.rpx;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -53,30 +53,30 @@ class RegisterPage extends StatelessWidget {
                             .size(30.rpx)
                             .textColor(Colors.white),
                       ),
-                      SizedBox(height: _textFieldPadding),
+                      SizedBox(height: textFieldPadding),
                       LoginTextField(
                         controller: controller.userNameController,
                         hintText: "请输入用户名",
                       ),
-                      SizedBox(height: _textFieldPadding),
+                      SizedBox(height: textFieldPadding),
                       LoginTextField(
                         controller: controller.passwordController,
                         hintText: "请设置6-20位登录密码",
                         obscureText: true,
                       ),
-                      SizedBox(height: _textFieldPadding),
+                      SizedBox(height: textFieldPadding),
                       LoginTextField(
                         controller: controller.passwordAgainController,
                         hintText: "请再次确认登陆密码",
                         obscureText: true,
                       ),
-                      SizedBox(height: _textFieldPadding),
+                      SizedBox(height: textFieldPadding),
                       LoginTextField(
                         controller: controller.phoneController,
                         hintText: "+1 194-351-2685（手机号码选填）",
                         keyboardType: TextInputType.number,
                       ),
-                      SizedBox(height: _textFieldPadding),
+                      SizedBox(height: textFieldPadding),
                       LoginTextField(
                         controller: controller.emailController,
                         hintText: "请输入您的邮箱（选填）",
@@ -97,7 +97,7 @@ class RegisterPage extends StatelessWidget {
                         ),
                       ),
                       CommonGradientButton(
-                        onTap: null,
+                        onTap: controller.onTapRegister,
                         text: "注 册",
                         height: 50.rpx,
                       ),

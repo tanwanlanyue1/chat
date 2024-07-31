@@ -20,6 +20,8 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'zh';
 
+  static String m0(count) => "现在我们有${count}个问题可以帮助您找到更为 合您心意的佳丽";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "activationProgression": MessageLookupByLibrary.simpleMessage("激活/进阶"),
@@ -55,6 +57,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "myVIP": MessageLookupByLibrary.simpleMessage("我的VIP"),
         "myWallet": MessageLookupByLibrary.simpleMessage("我的钱包"),
         "personalInformation": MessageLookupByLibrary.simpleMessage("个人信息"),
+        "questionBegin": MessageLookupByLibrary.simpleMessage("马上开始"),
+        "questionFinish": MessageLookupByLibrary.simpleMessage("完 成"),
+        "questionGenderLike": MessageLookupByLibrary.simpleMessage("您喜欢的对象是？"),
+        "questionLabelsLike":
+            MessageLookupByLibrary.simpleMessage("您比较偏爱的风格是什么？"),
+        "questionMan": MessageLookupByLibrary.simpleMessage("男士"),
+        "questionSkip": MessageLookupByLibrary.simpleMessage("跳过"),
+        "questionTip": m0,
+        "questionWelcome": MessageLookupByLibrary.simpleMessage("欢迎使用管佳！"),
+        "questionWoman": MessageLookupByLibrary.simpleMessage("女士"),
         "register": MessageLookupByLibrary.simpleMessage("注册"),
         "registerAccountHint": MessageLookupByLibrary.simpleMessage("请输入用户名"),
         "registerAgreement": MessageLookupByLibrary.simpleMessage("点击注册默认同意"),

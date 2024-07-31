@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -43,7 +41,7 @@ class QuestionPage extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    "跳过",
+                    S.current.questionSkip,
                     style: AppTextStyle.st.medium
                         .size(14.rpx)
                         .textColor(Colors.white),
@@ -105,7 +103,7 @@ class QuestionPage extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    "您喜欢的对象是？",
+                    S.current.questionGenderLike,
                     style: AppTextStyle.st.medium
                         .size(18.rpx)
                         .textColor(Colors.white),
@@ -120,7 +118,7 @@ class QuestionPage extends StatelessWidget {
                   ),
                   SizedBox(height: 60.rpx),
                   Text(
-                    "您比较偏爱的风格是什么？",
+                    S.current.questionLabelsLike,
                     style: AppTextStyle.st.medium
                         .size(18.rpx)
                         .textColor(Colors.white),
@@ -152,7 +150,7 @@ class QuestionPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.rpx),
               ),
               child: Text(
-                "完 成",
+                S.current.questionFinish,
                 style: AppTextStyle.st.semiBold
                     .size(16.rpx)
                     .textColor(AppColor.black3),
@@ -217,7 +215,7 @@ class QuestionPage extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "欢迎使用管佳！",
+                  S.current.questionWelcome,
                   style: AppTextStyle.st.medium
                       .size(30.rpx)
                       .textColor(Colors.white),
@@ -226,7 +224,8 @@ class QuestionPage extends StatelessWidget {
                 SizedBox(
                   width: 247.rpx,
                   child: Text(
-                    "现在我们有${state.count}个问题可以帮助您找到更为 合您心意的佳丽",
+                    // "现在我们有${state.count}个问题可以帮助您找到更为 合您心意的佳丽",
+                    S.current.questionTip(state.count),
                     textAlign: TextAlign.center,
                     style: AppTextStyle.st.size(14.rpx).textColor(Colors.white),
                   ),
@@ -243,7 +242,7 @@ class QuestionPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.rpx),
                     ),
                     child: Text(
-                      "马上开始",
+                      S.current.questionBegin,
                       style: AppTextStyle.st.medium
                           .size(16.rpx)
                           .textColor(AppColor.black3),
@@ -286,7 +285,7 @@ class QuestionPage extends StatelessWidget {
             ),
             SizedBox(height: 16.rpx),
             Text(
-              isBoy ? "男士" : "女士",
+              isBoy ? S.current.questionMan : S.current.questionWoman,
               style: AppTextStyle.st.medium
                   .size(16.rpx)
                   .textColor(

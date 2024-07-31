@@ -469,6 +469,96 @@ class S {
       args: [],
     );
   }
+
+  /// `跳过`
+  String get questionSkip {
+    return Intl.message(
+      '跳过',
+      name: 'questionSkip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `欢迎使用管佳！`
+  String get questionWelcome {
+    return Intl.message(
+      '欢迎使用管佳！',
+      name: 'questionWelcome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `现在我们有{count}个问题可以帮助您找到更为 合您心意的佳丽`
+  String questionTip(Object count) {
+    return Intl.message(
+      '现在我们有$count个问题可以帮助您找到更为 合您心意的佳丽',
+      name: 'questionTip',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `马上开始`
+  String get questionBegin {
+    return Intl.message(
+      '马上开始',
+      name: 'questionBegin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `男士`
+  String get questionMan {
+    return Intl.message(
+      '男士',
+      name: 'questionMan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `女士`
+  String get questionWoman {
+    return Intl.message(
+      '女士',
+      name: 'questionWoman',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `完 成`
+  String get questionFinish {
+    return Intl.message(
+      '完 成',
+      name: 'questionFinish',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `您喜欢的对象是？`
+  String get questionGenderLike {
+    return Intl.message(
+      '您喜欢的对象是？',
+      name: 'questionGenderLike',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `您比较偏爱的风格是什么？`
+  String get questionLabelsLike {
+    return Intl.message(
+      '您比较偏爱的风格是什么？',
+      name: 'questionLabelsLike',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -40,5 +40,14 @@
   "forgotPasswordHint": "新的密码",
   "forgotPasswordAgainHint": "确认密码",
   "forgotSend": "发 送",
-  "forgotResetPassword": "更改密码"
+  "forgotResetPassword": "更改密码",
+  "questionSkip": "跳过",
+  "questionWelcome": "欢迎使用管佳！",
+  "questionTip": "现在我们有{count}个问题可以帮助您找到更为 合您心意的佳丽",
+  "questionBegin": "马上开始",
+  "questionMan": "男士",
+  "questionWoman": "女士",
+  "questionFinish": "完 成",
+  "questionGenderLike": "您喜欢的对象是？",
+  "questionLabelsLike": "您比较偏爱的风格是什么？"
 }

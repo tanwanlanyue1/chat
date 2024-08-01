@@ -8,6 +8,8 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 class AccountDataItem extends StatelessWidget {
   final Function? onTap;
   final String? title;
+  final String? detail;
+  final String? detailHintText;
   final Widget? trailing;
   final double? height;
   final bool autoHeight;
@@ -16,6 +18,8 @@ class AccountDataItem extends StatelessWidget {
     super.key,
     this.onTap,
     this.title,
+    this.detail,
+    this.detailHintText,
     this.trailing,
     this.height,
     this.autoHeight = false,
@@ -23,6 +27,15 @@ class AccountDataItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    detailWidget() {
+      return Text(
+        detail ?? detailHintText ?? "请选择",
+        style: AppTextStyle.st.medium
+            .size(14.rpx)
+            .textColor(detail != null ? AppColor.black3 : AppColor.black9),
+      );
+    }
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.rpx),
       height: autoHeight ? null : height ?? 60.rpx,
@@ -35,6 +48,7 @@ class AccountDataItem extends StatelessWidget {
         onTap: () {
           onTap?.call();
         },
+        behavior: HitTestBehavior.opaque,
         child: Row(
           children: [
             Text(
@@ -47,7 +61,7 @@ class AccountDataItem extends StatelessWidget {
             Expanded(
               child: Align(
                 alignment: Alignment.centerRight,
-                child: trailing ?? const SizedBox(),
+                child: trailing ?? detailWidget(),
               ),
             ),
           ],

@@ -1,4 +1,5 @@
 import 'package:get/state_manager.dart';
+import 'package:guanjia/widgets/label_widget.dart';
 
 class QuestionState {
   final count = 2; // 当前问题数量
@@ -23,15 +24,5 @@ class QuestionState {
     LabelItem(title: '游戏'),
     LabelItem(title: '旅行'),
     LabelItem(title: '读书'),
-  ].obs;
-}
-
-class LabelItem {
-  final String title;
-  bool selected;
-
-  LabelItem({
-    required this.title,
-    this.selected = false,
-  });
+  ];
 }

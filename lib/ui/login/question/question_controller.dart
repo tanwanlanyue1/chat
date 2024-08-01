@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/widgets/label_widget.dart';
 
 import 'question_state.dart';
 
@@ -34,7 +35,6 @@ class QuestionController extends GetxController {
   }
 
   void onTapLabel(LabelItem item) {
-    print(state.labelItems);
     item.selected = !item.selected;
     update();
   }

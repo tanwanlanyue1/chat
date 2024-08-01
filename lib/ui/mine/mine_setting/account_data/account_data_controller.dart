@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/widgets/label_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -13,9 +15,25 @@ class AccountDataController extends GetxController {
 
   final loginService = SS.login;
 
+  final signatureController = TextEditingController();
+
+  @override
+  void onClose() {
+    signatureController.dispose();
+    super.onClose();
+  }
+
+  void onTapJob() {}
+
+  void onTapLabel(LabelItem item) {
+    item.selected = !item.selected;
+    update();
+  }
+
   /// 选择图片或者拍照
   void selectCamera() {
-    PhotoAndCameraBottomSheet.show(onUploadUrls: _updateHead, limit: 1, isCrop: true);
+    PhotoAndCameraBottomSheet.show(
+        onUploadUrls: _updateHead, limit: 1, isCrop: true);
   }
 
   Future<void> selectSex() async {

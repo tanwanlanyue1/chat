@@ -8,6 +8,7 @@ import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/login/question/question_state.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/label_widget.dart';
 
 import 'question_controller.dart';
 
@@ -130,7 +131,14 @@ class QuestionPage extends StatelessWidget {
                       spacing: 12.rpx,
                       runSpacing: 12.rpx,
                       children: List.generate(state.labelItems.length, (index) {
-                        return _labelButton(state.labelItems[index]);
+                        return GetBuilder<QuestionController>(
+                            builder: (controller) {
+                          final item = state.labelItems[index];
+                          return LabelWidget(
+                            onTap: () => controller.onTapLabel(item),
+                            item: item,
+                          );
+                        });
                       }),
                     ),
                   ),
@@ -160,31 +168,6 @@ class QuestionPage extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Widget _labelButton(LabelItem item) {
-    return GetBuilder<QuestionController>(builder: (controller) {
-      return GestureDetector(
-        onTap: () => controller.onTapLabel(item),
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 24.rpx, vertical: 16.rpx),
-          decoration: BoxDecoration(
-            color: item.selected ? Colors.white : null,
-            border: Border.all(
-              color: Colors.white,
-              width: 1.rpx,
-            ),
-            borderRadius: BorderRadius.circular(8.rpx),
-          ),
-          child: Text(
-            item.title,
-            style: AppTextStyle.st.semiBold
-                .size(14.rpx)
-                .textColor(item.selected ? AppColor.black3 : Colors.white),
-          ),
-        ),
-      );
-    });
   }
 
   Widget _welcomeWidget() {
@@ -224,7 +207,6 @@ class QuestionPage extends StatelessWidget {
                 SizedBox(
                   width: 247.rpx,
                   child: Text(
-                    // "现在我们有${state.count}个问题可以帮助您找到更为 合您心意的佳丽",
                     S.current.questionTip(state.count),
                     textAlign: TextAlign.center,
                     style: AppTextStyle.st.size(14.rpx).textColor(Colors.white),

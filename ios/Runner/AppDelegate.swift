@@ -4,7 +4,7 @@ import Flutter
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
     
-    private let CHANNEL = "com.qt.jx/plugin"
+    private let CHANNEL = "com.social.guanjia/plugin"
     
     override func application(
         _ application: UIApplication,

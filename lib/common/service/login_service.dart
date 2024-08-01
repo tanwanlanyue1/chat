@@ -107,11 +107,11 @@ class LoginService extends GetxService {
   ///- phone 手机号
   ///- password 密码
   Future<Result<void, String>> loginByPassword({
-    required String phone,
+    required String account,
     required String password,
   }) {
     return _login(
-      phone: phone,
+      account: account,
       password: password,
       loginType: 1,
     );
@@ -133,11 +133,15 @@ class LoginService extends GetxService {
   Future<Result<void, String>> loginByRegister({
     required String account,
     required String password,
+    String? phone,
+    String? email,
   }) {
     return _login(
-      phone: account,
-      password: password,
       loginType: 5,
+      account: account,
+      password: password,
+      phone: phone,
+      email: email,
     );
   }
 
@@ -196,22 +200,26 @@ class LoginService extends GetxService {
   /// return 错误信息
   Future<Result<void, String>> _login({
     required int loginType,
+    String? account,
     String? phone,
     String? password,
     String? verifyCode,
     String? code,
     String? userIdentifier,
     String? identityToken,
+    String? email,
   }) async {
     // 先请求登录接口
     final res = await OpenApi.login(
-      phone: phone,
       loginType: loginType,
+      account: account,
+      phone: phone,
       password: password,
       verifyCode: verifyCode,
       code: code,
       appleId: userIdentifier,
       identityToken: identityToken,
+      email: email,
     );
 
     if (!res.isSuccess) {
@@ -242,18 +250,18 @@ class LoginService extends GetxService {
       return ResultFailure(bindingProcess);
     }
 
-    // 获取并保存等级境修币信息
-    final levelMoneyRes = await fetchLevelMoneyInfo();
-    final levelMoneyProcess = await levelMoneyRes.whenAsync(success: (_) async {
-      return null;
-    }, failure: (errorMessage) async {
-      await _clearData();
-      return errorMessage;
-    });
-
-    if (levelMoneyProcess != null) {
-      return ResultFailure(levelMoneyProcess);
-    }
+    // // 获取并保存等级境修币信息
+    // final levelMoneyRes = await fetchLevelMoneyInfo();
+    // final levelMoneyProcess = await levelMoneyRes.whenAsync(success: (_) async {
+    //   return null;
+    // }, failure: (errorMessage) async {
+    //   await _clearData();
+    //   return errorMessage;
+    // });
+    //
+    // if (levelMoneyProcess != null) {
+    //   return ResultFailure(levelMoneyProcess);
+    // }
 
     // 获取用户信息并修改登录状态
     return await fetchMyInfo()
@@ -324,25 +332,26 @@ class LoginService extends GetxService {
   /// autoSave: 是否自动保存到本地
   Future<Result<LevelMoneyRes, String>> fetchLevelMoneyInfo(
       {bool autoSave = true}) async {
-    final res = await UserApi.getLevelAndMoney();
-    if (!res.isSuccess) {
-      return ResultFailure(res.errorMessage ?? "data error");
-    }
-
-    final data = res.data;
-    if (data == null) {
-      return const ResultFailure("data error");
-    }
-
-    if (autoSave) await _setupLevelMoneyData(res: data);
-
-    return ResultSuccess(data);
+    return const ResultFailure("data error");
+    // final res = await UserApi.getLevelAndMoney();
+    // if (!res.isSuccess) {
+    //   return ResultFailure(res.errorMessage ?? "data error");
+    // }
+    //
+    // final data = res.data;
+    // if (data == null) {
+    //   return const ResultFailure("data error");
+    // }
+    //
+    // if (autoSave) await _setupLevelMoneyData(res: data);
+    //
+    // return ResultSuccess(data);
   }
 
   /// 用户退出登录
   /// - userAction 是否是用户主动点击退出登录
   Future<Result<void, String>> signOut({bool userAction = true}) async {
-    if(userAction){
+    if (userAction) {
       final res = await UserApi.signOut();
       // 清空数据
       await _clearData();
@@ -350,7 +359,7 @@ class LoginService extends GetxService {
       if (!res.isSuccess) {
         return ResultFailure(res.errorMessage ?? "data error");
       }
-    }else{
+    } else {
       // 清空数据
       await _clearData();
       LoginEvent(false).emit();
@@ -444,7 +453,7 @@ class LoginService extends GetxService {
 
   ///用户未登录，接口401回调
   void onUnauthorized() async {
-    if(!isLogin || ConfirmDialog.isVisible){
+    if (!isLogin || ConfirmDialog.isVisible) {
       //如果用户本来就没有登录，则不需要弹窗提示
       return;
     }
@@ -457,7 +466,7 @@ class LoginService extends GetxService {
     if (result) {
       Future.delayed(
         const Duration(milliseconds: 100),
-            () => Get.toNamed(AppRoutes.loginPage),
+        () => Get.toNamed(AppRoutes.loginPage),
       );
     }
   }

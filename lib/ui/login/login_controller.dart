@@ -15,19 +15,8 @@ import 'login_state.dart';
 class LoginController extends GetxController with GetAutoDisposeMixin {
   final LoginState state = LoginState();
 
-  // 验证码
   TextEditingController accountController = TextEditingController();
-  TextEditingController smsCodeController = TextEditingController();
-
-  // 密码
-  TextEditingController passwordAccountController = TextEditingController();
-  TextEditingController passwordCodeController = TextEditingController();
-
-  // 注册专用
-  TextEditingController registerAccountController = TextEditingController();
-  TextEditingController registerPasswordController = TextEditingController();
-  TextEditingController registerConfirmPasswordController =
-      TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   // 协议点击手势
   TapGestureRecognizer protocolProtocolRecognizer = TapGestureRecognizer();
@@ -84,66 +73,21 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
     });
   }
 
-  void onLogin(int type) async {
+  void onTapLogin() async {
     FocusScope.of(Get.context!).unfocus();
 
-    Get.toNamed(AppRoutes.loginQuestionPage);
-
-    return;
-
-    if (!(await _verifyPrivacy())) return;
-
-    if (type == 2) {
-      if (registerPasswordController.text !=
-          registerConfirmPasswordController.text) {
-        Loading.showToast("两次输入的密码不一致");
-        return;
-      }
-    }
-
     Loading.show();
-
-    Result<void, String> result;
-    if (type == 0) {
-      result = await SS.login.loginByVerifyCode(
-        phone: accountController.text,
-        verifyCode: smsCodeController.text,
-      );
-    } else if (type == 1) {
-      result = await SS.login.loginByPassword(
-        phone: passwordAccountController.text,
-        password: passwordCodeController.text,
-      );
-    } else {
-      result = await SS.login.loginByRegister(
-        account: registerAccountController.text,
-        password: registerPasswordController.text,
-      );
-    }
+    Result<void, String> result = await SS.login.loginByPassword(
+      account: accountController.text,
+      password: passwordController.text,
+    );
     Loading.dismiss();
+
     result.when(success: (_) {
       Get.backToRoot();
     }, failure: (errorMessage) {
       Loading.showToast(errorMessage);
     });
-  }
-
-  bool _isValidAccountText(String text) {
-    final onlyAlphabeticRegex = RegExp(r'^[a-zA-Z]+$');
-    final onlyNumericRegex = RegExp(r'^[0-9]+$');
-    final onlySpecialCharRegex = RegExp(r'^[^a-zA-Z0-9]+$');
-
-    return !(onlyAlphabeticRegex.hasMatch(text) ||
-        onlyNumericRegex.hasMatch(text) ||
-        onlySpecialCharRegex.hasMatch(text));
-  }
-
-  bool _isValidPasswordText(String text) {
-    final hasAlphabetic = RegExp(r'[a-zA-Z]').hasMatch(text);
-    final hasNumeric = RegExp(r'[0-9]').hasMatch(text);
-    final onlyAlphaNumeric = RegExp(r'^[a-zA-Z0-9]+$').hasMatch(text);
-
-    return hasAlphabetic && hasNumeric && onlyAlphaNumeric;
   }
 
   void _startTimer() {
@@ -169,73 +113,10 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
     state.smsButtonText.value = "获取验证码";
   }
 
-  // 校验是否点击下方协议
-  Future<bool> _verifyPrivacy() async {
-    if (!state.isSelectPrivacy.value) {
-      final res = await PrivacyPolicyDialog.show();
-      if (!(res ?? false)) return false;
-
-      state.isSelectPrivacy.value = true;
-      return true;
-    }
-    return true;
-  }
-
-  void _smsTextChanged() {
-    state.isSmsReady.value =
-        accountController.text.isNotEmpty && smsCodeController.text.isNotEmpty;
-  }
-
-  void _passwordTextChanged() {
-    state.isPasswordReady.value = passwordAccountController.text.isNotEmpty &&
-        passwordCodeController.text.isNotEmpty;
-  }
-
-  void _registerTextChanged() {
-    state.isRegisterReady.value = registerAccountController.text.isNotEmpty &&
-        registerPasswordController.text.isNotEmpty &&
-        registerConfirmPasswordController.text.isNotEmpty;
-
-    state.isRegisterAccountReady.value =
-        registerAccountController.text.isNotEmpty;
-  }
-
-  @override
-  void onInit() async {
-    accountController.addListener(_smsTextChanged);
-    smsCodeController.addListener(_smsTextChanged);
-
-    passwordAccountController.addListener(_passwordTextChanged);
-    passwordCodeController.addListener(_passwordTextChanged);
-
-    registerAccountController.addListener(_registerTextChanged);
-    registerPasswordController.addListener(_registerTextChanged);
-    registerConfirmPasswordController.addListener(_registerTextChanged);
-
-    super.onInit();
-  }
-
   @override
   void onClose() {
-    accountController.removeListener(_smsTextChanged);
-    smsCodeController.removeListener(_smsTextChanged);
-
-    passwordAccountController.removeListener(_passwordTextChanged);
-    passwordCodeController.removeListener(_passwordTextChanged);
-
-    registerAccountController.removeListener(_registerTextChanged);
-    registerPasswordController.removeListener(_registerTextChanged);
-    registerConfirmPasswordController.removeListener(_registerTextChanged);
-
     accountController.dispose();
-    smsCodeController.dispose();
-
-    passwordAccountController.dispose();
-    passwordCodeController.dispose();
-
-    registerAccountController.dispose();
-    registerPasswordController.dispose();
-    registerConfirmPasswordController.dispose();
+    passwordController.dispose();
 
     protocolProtocolRecognizer.dispose();
     privacyProtocolRecognizer.dispose();

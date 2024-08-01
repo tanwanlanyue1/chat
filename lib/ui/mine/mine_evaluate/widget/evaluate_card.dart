@@ -7,8 +7,9 @@ import 'package:guanjia/widgets/app_image.dart';
 //评价项
 class EvaluateCard extends StatelessWidget {
   int index;
+  bool team;
   EdgeInsetsGeometry? margin;
-  EvaluateCard({super.key,required this.index,this.margin});
+  EvaluateCard({super.key,required this.index,this.margin,this.team = false});
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +60,29 @@ class EvaluateCard extends StatelessWidget {
               margin: EdgeInsets.only(top: 16.rpx),
               child: Text("非常温柔的小姐姐，一次特别的体验，令人难忘。"*(index+1),style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),)
           ),
+          team ?
+          Container(
+              margin: EdgeInsets.only(top: 12.rpx),
+              alignment: Alignment.centerRight,
+              child: RichText(
+                text: TextSpan(
+                  text: "——来自用户",
+                  style: TextStyle(
+                    fontSize: 12.rpx,
+                    color: AppColor.gray30,
+                  ),
+                  children: const [
+                    TextSpan(
+                      text: "【放羊的星星】",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ) :
+          Container(),
         ],
       ),
     );

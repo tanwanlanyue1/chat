@@ -74,6 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "myCustomer": MessageLookupByLibrary.simpleMessage("我的客户"),
         "myMessage": MessageLookupByLibrary.simpleMessage("我的消息"),
         "mySettings": MessageLookupByLibrary.simpleMessage("我的设置"),
+        "myTeam": MessageLookupByLibrary.simpleMessage("我的团队"),
         "myVIP": MessageLookupByLibrary.simpleMessage("我的VIP"),
         "myWallet": MessageLookupByLibrary.simpleMessage("我的钱包"),
         "none": MessageLookupByLibrary.simpleMessage("暂无"),
@@ -106,6 +107,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectFriendBinding": MessageLookupByLibrary.simpleMessage("选择好友绑定"),
         "setting": MessageLookupByLibrary.simpleMessage("设置"),
         "startStopTime": MessageLookupByLibrary.simpleMessage("起止时间："),
+        "teamEvaluation": MessageLookupByLibrary.simpleMessage("团队评价"),
         "updateNow": MessageLookupByLibrary.simpleMessage("立即修改"),
         "webUser": MessageLookupByLibrary.simpleMessage("用户协议"),
         "whoSeenMe": MessageLookupByLibrary.simpleMessage("谁看过我")

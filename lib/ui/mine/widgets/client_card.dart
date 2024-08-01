@@ -47,7 +47,7 @@ class ClientCard extends StatelessWidget {
                           height: 4.rpx,
                           margin: EdgeInsets.symmetric(horizontal: 8.rpx),
                           decoration: const BoxDecoration(
-                            color: AppColor.black7,
+                            color: AppColor.black6,
                             shape: BoxShape.circle,
                           ),
                         ),

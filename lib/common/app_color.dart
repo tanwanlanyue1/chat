@@ -16,7 +16,7 @@ class AppColor {
   /// 黑灰色
   static const black3 = Color(0xFF333333);
   static const black6 = Color(0xFF666666);
-  static const black7 = Color(0xFF999999);
+  static const black9 = Color(0xFF999999);
   static const black92 = Color(0xFF929DB2);
 
   /// 按钮渐变色

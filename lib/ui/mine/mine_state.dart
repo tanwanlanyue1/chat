@@ -9,7 +9,7 @@ class MineState {
   // 客户-常用功能
   List<MineItemSource> commonFeature = [
     MineItemSource(
-      type: MineItemType.myQuestionsAndAnswers,
+      type: MineItemType.accountData,
       title: S.current.personalInformation,
       icon: "assets/images/mine/personal_info.png",
     ),
@@ -119,6 +119,7 @@ class MineState {
 }
 
 enum MineItemType {
+  accountData, // 个人信息
   homework, // 禅房功课
   disabuse, // 解惑
   invitation, // 邀请有奖

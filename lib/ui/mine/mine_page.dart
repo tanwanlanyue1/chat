@@ -23,6 +23,8 @@ import 'package:guanjia/widgets/system_ui.dart';
 import 'mine_controller.dart';
 import 'mine_state.dart';
 import 'widgets/activation_progression.dart';
+import 'widgets/beautiful_status_switch.dart';
+import 'widgets/security_deposit_dialog.dart';
 
 ///我的
 class MinePage extends StatefulWidget {
@@ -145,7 +147,13 @@ class _MinePageState extends State<MinePage>
                 ),
               ],
             ),
-          )
+          ),
+          ObxValue((statusRx) {
+            return BeautifulStatusSwitch(
+              status: statusRx(),
+              onChange: controller.onTapBeautifulStatus,
+            );
+          }, state.beautifulStatusRx),
         ],
       ),
     );
@@ -249,7 +257,7 @@ class _MinePageState extends State<MinePage>
           title: S.current.activationProgression,
           icon: "assets/images/mine/activate.png",
           trailing: S.current.normalUser,
-          onTap: (){
+          onTap: () {
             ActivationProgression.show();
           },
         ),
@@ -321,7 +329,7 @@ class _MinePageState extends State<MinePage>
     );
   }
 
-  Widget buildSignOutButton(){
+  Widget buildSignOutButton() {
     return Center(
       child: Button(
         margin: FEdgeInsets(top: 24.rpx),

@@ -170,10 +170,11 @@
   "teamList": "团队列表",
   "cancelContract": "解约",
   "contactBeauty": "联系佳丽",
-  "confirmTerminate": "确定解约",
   "signOut": "退出登录",
   "normalUser": "普通用户",
   "beautifulUser": "佳丽",
-  "brokerUser": "经纪人"
-
+  "brokerUser": "经纪人",
+  "securityDepositHint": "请先缴纳保证金{price}，点击 下方按钮立即缴纳！",
+  "depositNow": "立即缴纳",
+  "securityDepositTips": "注：保证金在订单结束后会原路返回"
 }

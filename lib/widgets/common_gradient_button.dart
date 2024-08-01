@@ -19,6 +19,7 @@ class CommonGradientButton extends StatelessWidget {
     this.onTap,
     this.text,
     this.textStyle,
+    this.width,
     this.height,
     this.padding,
     this.borderRadius,
@@ -29,6 +30,7 @@ class CommonGradientButton extends StatelessWidget {
   final VoidCallback? onTap;
   final String? text;
   final TextStyle? textStyle;
+  final double? width;
   final double? height;
   final EdgeInsetsGeometry? padding;
   final BorderRadius? borderRadius;
@@ -40,6 +42,7 @@ class CommonGradientButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        width: width,
         height: height,
         padding: padding,
         decoration: BoxDecoration(

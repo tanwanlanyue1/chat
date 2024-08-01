@@ -127,6 +127,9 @@ class MineController extends GetxController {
       case MineItemType.generateContract:
         Get.toNamed(AppRoutes.contractGeneratePage);
         break;
+      case MineItemType.haveSeen:
+        Get.toNamed(AppRoutes.haveSeenPage);
+        break;
     }
   }
 }

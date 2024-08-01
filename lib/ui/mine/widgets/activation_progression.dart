@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
@@ -10,7 +11,7 @@ import 'package:guanjia/widgets/common_gradient_button.dart';
 class ActivationProgression extends StatelessWidget {
   const ActivationProgression({super.key});
 
-  ///发布成功后返回true,否则返回null
+  //进阶弹窗
   static Future<bool?> show() {
     return Get.dialog(
       const ActivationProgression(),
@@ -65,7 +66,10 @@ class ActivationProgression extends StatelessWidget {
                       child: Column(
                         children: [
                           GestureDetector(
-                            onTap: (){},
+                            onTap: (){
+                              Get.back();
+                              Get.toNamed(AppRoutes.identityProgressionPage);
+                            },
                             child: Container(
                               width: 120.rpx,
                               height: 40.rpx,
@@ -78,7 +82,9 @@ class ActivationProgression extends StatelessWidget {
                             ),
                           ),
                           GestureDetector(
-                            onTap: (){},
+                            onTap: (){
+                              Get.toNamed(AppRoutes.identityProgressionPage);
+                            },
                             child: Container(
                               width: 120.rpx,
                               height: 40.rpx,

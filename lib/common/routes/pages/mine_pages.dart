@@ -3,12 +3,13 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/ui/mine/attention_or_fans/attention_or_fans_page.dart';
 import 'package:guanjia/ui/mine/attention_or_fans/mine_attention/mine_attention_page.dart';
 import 'package:guanjia/ui/mine/attention_or_fans/mine_fans/mine_fans_page.dart';
+import 'package:guanjia/ui/mine/have_seen/have_seen_page.dart';
+import 'package:guanjia/ui/mine/identity_progression/identity_progression_page.dart';
 import 'package:guanjia/ui/mine/contract_generate/contract_generate_controller.dart';
 import 'package:guanjia/ui/mine/contract_generate/contract_generate_page.dart';
 import 'package:guanjia/ui/mine/mine_evaluate/jia_evaluate/jia_evaluate_page.dart';
 import 'package:guanjia/ui/mine/mine_evaluate/mine_evaluate_page.dart';
 import 'package:guanjia/ui/mine/mine_merit_virtue/mine_merit_virtue_page.dart';
-import 'package:guanjia/ui/mine/mine_message/message_notice/message_notice_page.dart';
 import 'package:guanjia/ui/mine/mine_mission_center/mine_mission_center_page.dart';
 import 'package:guanjia/ui/mine/mine_practice/mine_practice_page.dart';
 import 'package:guanjia/ui/mine/mine_reward_points/mine_reward_points_page.dart';
@@ -25,8 +26,6 @@ import 'package:guanjia/ui/mine/mine_message/mine_message_page.dart';
 import '../../../ui/mine/mine_comment/mine_comment_page.dart';
 import '../../../ui/mine/mine_feedback/mine_feedback_page.dart';
 import '../../../ui/mine/mine_help/mine_help_page.dart';
-import '../../../ui/mine/mine_message/message_session/message_session_page.dart';
-import '../../../ui/mine/mine_message/message_setting/message_setting_page.dart';
 import '../../../ui/mine/mine_praise/mine_praise_page.dart';
 import '../../../ui/mine/mine_setting/about/about_page.dart';
 import '../../../ui/mine/mine_setting/account_blacklist/account_blacklist_page.dart';
@@ -39,10 +38,6 @@ import '../../../ui/mine/mine_setting/update_password/update_password_page.dart'
 
 class MinePages {
   static final routes = [
-    GetPage(
-      name: AppRoutes.messageSettingPage,
-      page: () => MessageSettingPage(),
-    ),
     GetPage(
       name: AppRoutes.mineAttentionPage,
       page: () => MineAttentionPage(),
@@ -62,18 +57,6 @@ class MinePages {
     GetPage(
       name: AppRoutes.mineMessage,
       page: () => MineMessagePage(),
-    ),
-    GetPage(
-        name: AppRoutes.messageSessionPage,
-        page: () {
-          var args = Get.tryGetArgs("sessionId");
-          return (args != null && args is String)
-              ? MessageSessionPage()
-              : MessageSessionPage();
-        }),
-    GetPage(
-      name: AppRoutes.messageNotice,
-      page: () => MessageNotice(),
     ),
     GetPage(
       name: AppRoutes.mineFans,
@@ -168,6 +151,14 @@ class MinePages {
       name: AppRoutes.contractGeneratePage,
       page: () => ContractGeneratePage(),
       binding: BindingsBuilder.put(ContractGenerateController.new),
+    ),
+    GetPage(
+      name: AppRoutes.identityProgressionPage,
+      page: () => IdentityProgressionPage(),
+    ),
+    GetPage(
+      name: AppRoutes.haveSeenPage,
+      page: () => HaveSeenPage(),
     ),
   ];
 }

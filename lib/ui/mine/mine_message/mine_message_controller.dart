@@ -19,19 +19,12 @@ class MineMessageController extends GetxController {
 
   void onTapSession(int index) {
     if(index==0){
-      Get.toNamed(AppRoutes.messageSessionPage);
-      state.items[0].unread = 0;
       update();
     }else{
       Get.toNamed(AppRoutes.messageNotice);
     }
   }
 
-  void onTapOptions(String routeName,int index) {
-    Get.toNamed(routeName);
-    state.options[index].unread = 0;
-    update();
-  }
 
   @override
   void onInit() {
@@ -52,20 +45,6 @@ class MineMessageController extends GetxController {
     final response = await UserApi.getMessagesCounts();
     if (response.isSuccess) {
       List message = response.data ?? [];
-      for (var e in message) {
-        if(e['type'] == 0){
-          state.items[0].unread = e['count'];
-        }
-        if(e['type'] == 1){
-          state.options[2].unread = e['count'];
-        }
-        if(e['type'] == 5){
-          state.options[0].unread = e['count'];
-        }
-        if(e['type'] == 3 || e['type'] == 4){
-          state.options[1].unread += (e['count'] as int);
-        }
-      }
       update();
     }
   }
@@ -80,14 +59,6 @@ class MineMessageController extends GetxController {
       responses.firstWhereOrNull((element) => !element.isSuccess)?.showErrorMessage();
       refreshController.refreshCompleted();
       return;
-    }
-    if(responses[0].data != null && responses[0].data.length != 0){
-      state.items[0].detail = responses[0].data?[0].content ?? '';
-      state.items[0].time = responses[0].data?[0].createTime ?? '';
-    }
-    if(responses[1].data != null && responses[1].data.length != 0){
-      state.items[1].detail = responses[1].data?[0]?.systemMessage?.title ?? '';
-      state.items[1].time = responses[1].data?[0]?.systemMessage?.createTime ?? '';
     }
     update();
     refreshController.refreshCompleted();

@@ -97,4 +97,6 @@ class AppColor {
   static const red58 = Color(0xFFCC5258);
 
   static const green2 = Color(0xff2E9959);
+
+  static const purple6 = Color(0xffC644FC);
 }

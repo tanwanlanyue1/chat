@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/mine/widgets/login_verification_code_button.dart';
 import 'package:guanjia/ui/mine/widgets/setting_text_field.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 import 'binding_controller.dart';
 
@@ -18,31 +21,35 @@ class BindingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F8FE),
+      backgroundColor: AppColor.scaffoldBackground,
       appBar: AppBar(
-        title: Text(
-          "绑定手机",
+        title: Obx(() => Text(
+          state.isPhone.value ? "绑定手机" : "绑定邮箱",
           style: TextStyle(
             color: const Color(0xff333333),
             fontSize: 18.rpx,
           ),
-        ),
+        )),
       ),
-      body: ListView(
-        padding: EdgeInsets.only(left: 12.rpx, right: 12.rpx, top: 16.rpx),
+      body: Obx(() => ListView(
+        padding: EdgeInsets.only(top: 24.rpx),
         children: [
           _buildPhoneNumberTips(),
-          _buildPhoneField(),
+          Visibility(
+            visible: state.isPhone.value,
+            replacement: _buildMailboxField(),
+            child: _buildPhoneField(),
+          ),
           _buildVerificationCodeField(),
+          _buildVerificationMode(),
           _buildSubmitButton(),
         ]
             .separated(
-              SizedBox(
-                height: 10.rpx,
-              ),
-            )
-            .toList(),
-      ),
+          SizedBox(
+            height: 12.rpx,
+          ),
+        ).toList(),
+      )),
     );
   }
 
@@ -50,20 +57,66 @@ class BindingPage extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 12.rpx),
       child: Text(
-        '使用以下安全验证手机号码获取验证码',
+        '使用以下方式获取验证码，完成绑定',
         style: TextStyle(
-          fontSize: 14.rpx,
-          color: Color(0xff999999),
+          fontSize: 12.rpx,
+          color: AppColor.black6,
         ),
       ),
     );
   }
 
   Widget _buildPhoneField() {
+    return Container(
+      height: 50.rpx,
+      color: Colors.white,
+      padding: EdgeInsets.only(left: 16.rpx),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("手机号码",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+          Expanded(
+            child: IntlPhoneField(
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: '请输入手机号码',
+                hintStyle: TextStyle(
+                  fontSize: 14.rpx,
+                  color: AppColor.gray9,
+                ),
+              ),
+              initialCountryCode: 'CN',
+              languageCode: "ZH",
+              disableLengthCheck: true,
+              dropdownIconPosition: IconPosition.trailing,
+              dropdownIcon: const Icon(Icons.keyboard_arrow_down_sharp,color: AppColor.gray5,),
+              onCountryChanged: (val){
+                print("val==$val");
+              },
+              pickerDialogStyle: PickerDialogStyle(
+                  backgroundColor: Colors.white,
+                  searchFieldInputDecoration: InputDecoration(
+                      labelText: "搜索"
+                  )
+              ),
+              onChanged: (phone) {
+                print("phone==${phone.countryCode}");
+                print(phone.number);
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //绑定邮箱
+  Widget _buildMailboxField() {
     return SettingTextField(
       inputController: controller.phoneNumberInputController,
-      labelText: '手机号',
-      hintText: '请输入手机号码',
+      labelText: '我的邮箱',
+      hintText: '请输入邮箱',
+      borderRadius: BorderRadius.zero,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp('[0-9]')),
         LengthLimitingTextInputFormatter(11),
@@ -74,8 +127,9 @@ class BindingPage extends StatelessWidget {
   Widget _buildVerificationCodeField() {
     return SettingTextField(
       inputController: controller.verificationInputController,
-      labelText: '验证码',
-      hintText: '输入验证码',
+      labelText: state.isPhone.value ? '手机验证码' : '邮箱验证码',
+      hintText: '请输入验证码',
+      borderRadius: BorderRadius.zero,
       keyboardType: TextInputType.number,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp('[0-9]')),
@@ -83,6 +137,36 @@ class BindingPage extends StatelessWidget {
       ],
       suffixIcon: LoginVerificationCodeButton(
         onFetch: controller.fetchSms,
+      ),
+    );
+  }
+
+  //验证方式
+  Widget _buildVerificationMode() {
+    return GestureDetector(
+      onTap: (){
+        state.isPhone.value = !state.isPhone.value;
+      },
+      child: Container(
+        alignment: Alignment.centerRight,
+        margin: EdgeInsets.only(bottom: 24.rpx,right: 16.rpx),
+        child: RichText(
+          text: TextSpan(
+            text: "收不到验证码? ",
+            style: TextStyle(
+              fontSize: 12.rpx,
+              color: AppColor.gray30,
+            ),
+            children: const [
+              TextSpan(
+                text: "换个验证方式",
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -96,7 +180,7 @@ class BindingPage extends StatelessWidget {
           decoration: BoxDecoration(
               color: AppColor.primary
                   .withOpacity(state.isVisible.value ? 1 : 0.15),
-              borderRadius: BorderRadius.circular(23.rpx)),
+              borderRadius: BorderRadius.circular(8.rpx)),
           margin: EdgeInsets.symmetric(horizontal: 8.rpx, vertical: 40.rpx),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

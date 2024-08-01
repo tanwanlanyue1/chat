@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 
@@ -18,26 +19,51 @@ class IdentityProgressionPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "身份进阶成功",
+          "身份进阶审核",
           style: TextStyle(
             color: const Color(0xff333333),
             fontSize: 18.rpx,
           ),
         ),
+        elevation: 5.rpx,
+        shadowColor: AppColor.gray11,
+      ),
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          jiaAudit(),
+        ],
       ),
     );
   }
 
-  //佳丽审核成功
+  //审核中
   Widget jiaAudit(){
     return Container(
+      margin: EdgeInsets.only(top: 36.rpx),
       child: Column(
         children: [
+          AppImage.asset('assets/images/mine/wait.png',width: 70.rpx,height: 70.rpx,),
+          SizedBox(height: 24.rpx,),
+          Text("申请资料已提交",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
+          Text("请耐心等待，可询问客服关注进度",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),textAlign: TextAlign.center,),
           Container(
-            child: AppImage.asset('assets/images/mine/succeed.png',width: 70.rpx,height: 70.rpx,),
-          ),
-          Text("身份进阶成功，恭喜您成为佳丽！"),
-          Text("请在下方输入框中设置您的服务费，设置成功后 点击确定按钮即可。"),
+            decoration: BoxDecoration(
+              color: AppColor.scaffoldBackground,
+              borderRadius: BorderRadius.circular(8.rpx),
+            ),
+            height: 50.rpx,
+            margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 60.rpx),
+            padding: EdgeInsets.symmetric(horizontal: 16.rpx),
+            child: Row(
+              children: [
+                AppImage.asset('assets/images/mine/prosperity.png',width: 16.rpx,height: 16.rpx,),
+                Text("已提交",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30)),
+                const Spacer(),
+                Text("2024.03.24 14:32",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -49,26 +75,9 @@ class IdentityProgressionPage extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          Text("注：佳丽上线接单时就需要缴纳保证金，保证金在订单结束后将在24小时内原路退回。"),
-          GestureDetector(
-            onTap: null,
-            child: Container(
-              height: 42.rpx,
-              decoration: BoxDecoration(
-                  color: AppColor.primary,
-                  borderRadius: BorderRadius.circular(8.rpx)),
-              margin: EdgeInsets.symmetric(horizontal: 38.rpx, vertical: 40.rpx),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "确定",
-                    style: TextStyle(color: Colors.white, fontSize: 16.rpx),
-                  )
-                ],
-              ),
-            ),
-          ),
+          AppImage.asset('assets/images/mine/wait.png',width: 70.rpx,height: 70.rpx,),
+          SizedBox(height: 24.rpx,),
+          Text("恭喜您成为佳丽",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
           GestureDetector(
             onTap: null,
             child: Container(

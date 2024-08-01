@@ -1,5 +1,4 @@
 class IdentityProgressionState {
-  IdentityProgressionState() {
-    ///Initialize variables
-  }
+  //权益
+  List rightsAndInterests = [];
 }

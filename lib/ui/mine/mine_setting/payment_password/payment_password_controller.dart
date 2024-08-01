@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 import 'payment_password_state.dart';
@@ -22,6 +23,7 @@ class PaymentPasswordController extends GetxController {
 
   /// 提交修改
   void submit() async {
+    Get.toNamed(AppRoutes.bindingPage);
     // final phone = state.loginService.isLogin
     //     ? state.loginService.bindingInfo?.phone ?? ""
     //     : phoneNumberInputController.text;

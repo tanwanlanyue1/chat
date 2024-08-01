@@ -62,6 +62,9 @@ class MineController extends GetxController {
 
   void onTapItem(MineItemType type) {
     switch (type) {
+      case MineItemType.accountData:
+        Get.toNamed(AppRoutes.accountDataPage);
+        break;
       case MineItemType.homework:
         Get.toNamed(AppRoutes.practiceDetailPage);
         break;
@@ -145,6 +148,9 @@ class MineController extends GetxController {
         break;
       case MineItemType.contractList:
         Get.toNamed(AppRoutes.contractListPage);
+        break;
+      case MineItemType.haveSeen:
+        Get.toNamed(AppRoutes.haveSeenPage);
         break;
     }
   }

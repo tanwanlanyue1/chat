@@ -38,7 +38,7 @@ abstract class AppRoutes {
   static const mineSettingPage = '/mineSettingPage';
 
   ///账户资料
-  static const accountDataPage = '$auth/accountDataPage';
+  static const accountDataPage = '/accountDataPage';
 
   ///更改信息页
   static const updateInfoPage = '/updateInfoPage';
@@ -60,6 +60,12 @@ abstract class AppRoutes {
 
   ///设置-支付密码
   static const paymentPasswordPage = '/paymentPasswordPage';
+
+  ///设置-身份进阶
+  static const identityProgressionPage = '/identityProgressionPage';
+
+  ///我的-谁看过我
+  static const haveSeenPage = '/haveSeenPage';
 
   ///设置-账户黑名单
   static const accountBlacklistPage = '/accountBlacklistPage';
@@ -89,7 +95,7 @@ abstract class AppRoutes {
   static const mineHelpPage = '$auth/mineHelpPage';
 
   /// 我的-消息
-  static const mineMessage = '$auth/mineMessage';
+  static const mineMessage = '/mineMessage';
 
   /// 消息-会话
   static const messageSessionPage = '/messageSessionPage';

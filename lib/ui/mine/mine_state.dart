@@ -9,7 +9,7 @@ class MineState {
   // 客户-常用功能
   List<MineItemSource> commonFeature = [
     MineItemSource(
-      type: MineItemType.myQuestionsAndAnswers,
+      type: MineItemType.accountData,
       title: S.current.personalInformation,
       icon: "assets/images/mine/personal_info.png",
     ),
@@ -43,8 +43,9 @@ class MineState {
       title: S.current.activationProgression,
       icon: "assets/images/mine/activate.png",
     ),
+    //mineMessage
     MineItemSource(
-      type: MineItemType.setting,
+      type: MineItemType.message,
       title: S.current.myMessage,
       icon: "assets/images/mine/message.png",
     ),
@@ -77,7 +78,7 @@ class MineState {
       icon: "assets/images/mine/feedback.png",
     ),
     MineItemSource(
-      type: MineItemType.help,
+      type: MineItemType.activation,
       title: S.current.cancelAdvanceToBroker,
       icon: "assets/images/mine/cancel_a_contract.png",
     ),
@@ -87,7 +88,7 @@ class MineState {
       icon: "assets/images/mine/evaluate.png",
     ),
     MineItemSource(
-      type: MineItemType.setting,
+      type: MineItemType.haveSeen,
       title: S.current.whoSeenMe,
       icon: "assets/images/mine/examine.png",
     ),
@@ -128,6 +129,7 @@ class MineState {
 }
 
 enum MineItemType {
+  accountData, // 个人信息
   homework, // 禅房功课
   disabuse, // 解惑
   invitation, // 邀请有奖
@@ -143,6 +145,7 @@ enum MineItemType {
   feedback, // 问题反馈
   setting, // 设置
   jiaEvaluate, // 佳丽-评价我的
+  haveSeen, // 佳丽-谁看过我
   help, // 客服与帮助
   attentionOrFans, // 关注或粉丝
   activation, //激活

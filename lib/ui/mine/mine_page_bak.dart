@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/mine_list_tile.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -21,6 +22,7 @@ import 'package:guanjia/widgets/system_ui.dart';
 
 import 'mine_controller.dart';
 import 'mine_state.dart';
+import 'widgets/activation_progression.dart';
 
 ///我的
 class MinePageBak extends StatefulWidget {
@@ -43,12 +45,18 @@ class _MinePageState extends State<MinePageBak>
         children: [
           buildHeader(),
           Expanded(
-            child: ListView(
-              padding: FEdgeInsets(horizontal: 16.rpx),
-              children: [
-                buildBanner(),
-                buildSectionOne(),
-              ],
+            child: SmartRefresher(
+              controller: controller.refreshController,
+              onRefresh: controller.onRefresh,
+              child: ListView(
+                padding: FEdgeInsets(horizontal: 16.rpx, bottom: 24.rpx),
+                children: [
+                  buildBanner(),
+                  buildSectionOne(),
+                  buildSectionTwo(),
+                  buildLogoutButton(),
+                ],
+              ),
             ),
           ),
         ],
@@ -64,7 +72,7 @@ class _MinePageState extends State<MinePageBak>
         //背景
         Container(
           width: double.infinity,
-          height: 150.rpx + Get.mediaQuery.padding.top,
+          height: 140.rpx + Get.mediaQuery.padding.top,
           margin: FEdgeInsets(bottom: 28.rpx),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -78,63 +86,68 @@ class _MinePageState extends State<MinePageBak>
           ),
         ),
         //用户信息
-        Positioned(
-          child: buildShadowBox(
-              width: 343.rpx,
-              height: 130.rpx,
-              padding: FEdgeInsets(horizontal: 16.rpx),
-              child: Row(
-                children: [
-                  Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      AppImage.network(
-                        width: 90.rpx,
-                        height: 90.rpx,
-                        shape: BoxShape.circle,
-                        'https://pic1.zhimg.com/v2-dbbe270b44aebc392b71c83ad61b9ef1.jpg?source=8673f162',
-                      ),
-                      AppImage.asset(
-                        'assets/images/mine/ic_vip.png',
-                        width: 24.rpx,
-                        height: 24.rpx,
-                      ),
-                    ],
-                  ),
-                  Spacing.w12,
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Landon',
-                          style: AppTextStyle.fs18m.copyWith(
-                            color: AppColor.gray5,
-                          ),
-                        ),
-                        Padding(
-                          padding: FEdgeInsets(vertical: 4.rpx),
-                          child: Text(
-                            '中国·北京',
-                            style: AppTextStyle.fs16m.copyWith(
-                              color: AppColor.gray9,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          'ID:1754654458',
-                          style: AppTextStyle.fs12m.copyWith(
-                            color: AppColor.gray9,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              )),
-        ),
+        buildUserInfo(),
       ],
+    );
+  }
+
+  ///用户信息
+  Widget buildUserInfo() {
+    return buildShadowBox(
+      width: double.infinity,
+      height: 130.rpx,
+      margin: FEdgeInsets(horizontal: 16.rpx),
+      padding: FEdgeInsets(horizontal: 16.rpx),
+      child: Row(
+        children: [
+          Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              AppImage.network(
+                width: 90.rpx,
+                height: 90.rpx,
+                shape: BoxShape.circle,
+                'https://pic1.zhimg.com/v2-dbbe270b44aebc392b71c83ad61b9ef1.jpg?source=8673f162',
+              ),
+              AppImage.asset(
+                'assets/images/mine/ic_vip.png',
+                width: 24.rpx,
+                height: 24.rpx,
+              ),
+            ],
+          ),
+          Spacing.w12,
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Landon',
+                  style: AppTextStyle.fs18m.copyWith(
+                    color: AppColor.gray5,
+                  ),
+                ),
+                Padding(
+                  padding: FEdgeInsets(vertical: 4.rpx),
+                  child: Text(
+                    '中国·北京',
+                    style: AppTextStyle.fs16m.copyWith(
+                      color: AppColor.gray9,
+                    ),
+                  ),
+                ),
+                Text(
+                  'ID:1754654458',
+                  style: AppTextStyle.fs12m.copyWith(
+                    color: AppColor.gray9,
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -185,15 +198,16 @@ class _MinePageState extends State<MinePageBak>
     EdgeInsetsGeometry? margin,
   }) {
     return buildShadowBox(
-        margin: margin,
-        width: double.infinity,
-        child: Column(
-          children: children.separated(Divider()).toList(),
-        ));
+      margin: margin,
+      width: double.infinity,
+      child: Column(
+        children: children.separated(const Divider(height: 0)).toList(),
+      ),
+    );
   }
 
-  ///第一部分
-  Widget buildSectionOne(){
+  ///第1部分
+  Widget buildSectionOne() {
     return buildSection(
       children: [
         //个人信息
@@ -211,16 +225,112 @@ class _MinePageState extends State<MinePageBak>
           title: S.current.myVIP,
           icon: "assets/images/mine/VIP.png",
         ),
-        //我的VIP
+        //我的评价
         MineListTile(
-          title: S.current.myVIP,
-          icon: "assets/images/mine/VIP.png",
+          title: S.current.myAssessment,
+          icon: "assets/images/mine/evaluate.png",
+          pagePath: AppRoutes.mineEvaluatePage,
+        ),
+        //意见反馈
+        MineListTile(
+          title: S.current.feedback,
+          icon: "assets/images/mine/feedback.png",
+          pagePath: AppRoutes.mineFeedbackPage,
+        ),
+        //我的设置
+        MineListTile(
+          title: S.current.mySettings,
+          icon: "assets/images/mine/setting.png",
+          pagePath: AppRoutes.mineSettingPage,
+        ),
+        //激活/进阶
+        MineListTile(
+          title: S.current.activationProgression,
+          icon: "assets/images/mine/activate.png",
+          trailing: '普通用户',
+          onTap: (){
+            ActivationProgression.show();
+          },
+        ),
+        //解约/进阶为经纪人
+        MineListTile(
+          title: S.current.cancelAdvanceToBroker,
+          icon: "assets/images/mine/cancel_a_contract.png",
+          trailing: '佳丽',
+        ),
+        //评价我的
+        MineListTile(
+          title: S.current.appraiseMe,
+          icon: "assets/images/mine/evaluate.png",
+          pagePath: AppRoutes.jiaEvaluatePage,
+        ),
+        //团队评价
+        MineListTile(
+          title: S.current.teamEvaluation,
+          icon: "assets/images/mine/evaluate.png",
+          pagePath: AppRoutes.mineTeamEvaluatePage,
+        ),
+        //我的团队
+        MineListTile(
+          title: S.current.myTeam,
+          icon: "assets/images/mine/my_team.png",
+          trailing: '经纪人',
+          pagePath: AppRoutes.mineMyTeamPage,
         ),
       ],
     );
   }
 
+  ///第2部分
+  Widget buildSectionTwo() {
+    return buildSection(
+      margin: FEdgeInsets(top: 16.rpx),
+      children: [
+        //谁看过我
+        MineListTile(
+          title: S.current.whoSeenMe,
+          icon: "assets/images/mine/examine.png",
+          pagePath: AppRoutes.haveSeenPage,
+        ),
+        //修改服务费
+        MineListTile(
+          title: S.current.modificationServiceCharge,
+          icon: "assets/images/mine/modification_service.png",
+          pagePath: AppRoutes.mineServiceChargePage,
+        ),
+        //查看契约单
+        MineListTile(
+          title: S.current.contractDetail,
+          icon: "assets/images/mine/look_contract.png",
+          pagePath: AppRoutes.contractListPage,
+        ),
+        //生成契约单
+        MineListTile(
+          title: S.current.generateContract,
+          icon: "assets/images/mine/look_contract.png",
+          pagePath: AppRoutes.contractGeneratePage,
+        ),
+        //我的消息
+        MineListTile(
+          title: S.current.myMessage,
+          icon: "assets/images/mine/message.png",
+          pagePath: AppRoutes.mineMessage,
+        ),
+      ],
+    );
+  }
 
+  Widget buildLogoutButton(){
+    return Center(
+      child: Button(
+        margin: FEdgeInsets(top: 24.rpx),
+        width: 200.rpx,
+        height: 46.rpx,
+        onPressed: () => SS.login.signOut(userAction: true),
+        child: Text('退出登录', style: AppTextStyle.fs16m),
+      ),
+    );
+  }
 
   @override
   bool get wantKeepAlive => true;

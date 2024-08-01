@@ -29,7 +29,7 @@ class HomeState {
     ),
   ];
   //默认下标
-  final initPage = 0.obs;
+  final currentPageRx = 0.obs;
 
 }
 

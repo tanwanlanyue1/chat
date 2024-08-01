@@ -8,10 +8,10 @@ import 'package:guanjia/ui/plaza/plaza_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/widgets.dart';
+import '../mine/mine_page_bak.dart';
 import 'home_controller.dart';
 
 class HomePage extends StatelessWidget {
-
   final controller = Get.put(HomeController());
   final state = Get.find<HomeController>().state;
 
@@ -27,54 +27,38 @@ class HomePage extends StatelessWidget {
             Container(),
             Container(),
             PlazaPage(),
-            MinePage(),
+            MinePageBak(),
           ],
         ),
-        bottomNavigationBar: bottomNavItem(),
+        bottomNavigationBar: buildBottomNavigationBar(),
       ),
     );
   }
 
   //底部
-  Widget bottomNavItem(){
-    return ObxValue((p0) => Container(
-      padding: EdgeInsets.only(bottom: Get.mediaQuery.padding.bottom),
-      color: AppColor.brown2,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(state.allBottomNavItems.length, (i) {
-          var item = state.allBottomNavItems[i];
-          return Expanded(
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: (){
-                if (i != state.initPage.value) {
-                  controller.updateInfoList();
-                }
-                controller.setInitPage = i;
-              },
-              child: Container(
-                height: 50.rpx,
-                alignment: Alignment.center,
-                child: Container(
-                  width: 60.rpx,
-                  padding: EdgeInsets.only(top: 5.rpx),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      AppImage.asset(i == state.initPage.value ? item.activeIcon : item.icon,width: 22.rpx, height: 24.rpx,),
-                      Text( item.title,style:  i == state.initPage.value ?
-                      AppTextStyle.fs12b.copyWith(color: AppColor.primary):
-                      AppTextStyle.fs12m.copyWith(color: AppColor.black6),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+  Widget buildBottomNavigationBar() {
+    return Obx(() {
+      return BottomNavigationBar(
+        backgroundColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
+        onTap: controller.setCurrentPage,
+        currentIndex: state.currentPageRx(),
+        items: state.allBottomNavItems.map((item) {
+          return BottomNavigationBarItem(
+            icon: AppImage.asset(
+              item.icon,
+              width: 32.rpx,
+              height: 32.rpx,
             ),
+            activeIcon: AppImage.asset(
+              item.activeIcon,
+              width: 32.rpx,
+              height: 32.rpx,
+            ),
+            label: item.title,
           );
-        }),
-      ),
-    ),state.initPage);
+        }).toList(growable: false),
+      );
+    });
   }
 }

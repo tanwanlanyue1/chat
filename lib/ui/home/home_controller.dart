@@ -13,7 +13,7 @@ import 'home_state.dart';
 class HomeController extends GetxController {
   final HomeState state = HomeState();
   late PageController pageController =
-      PageController(initialPage: state.initPage.value);
+      PageController(initialPage: state.currentPageRx.value);
   //分页控制器
   final pagingController = DefaultPagingController<dynamic>(
     firstPage: 1,
@@ -45,8 +45,8 @@ class HomeController extends GetxController {
     }
   }
 
-  set setInitPage(int index) {
-    state.initPage.value = index;
+  void setCurrentPage(int index) {
+    state.currentPageRx.value = index;
     pageController.jumpToPage(index);
   }
 

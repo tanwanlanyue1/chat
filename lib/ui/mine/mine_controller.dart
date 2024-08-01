@@ -25,11 +25,10 @@ class MineController extends GetxController {
     super.onInit();
   }
 
-  void onRefresh() async {
+  void onRefresh() {
     if (loginService.isLogin) {
-      await loginService.fetchMyInfo();
       loginService
-          .fetchLevelMoneyInfo()
+          .fetchMyInfo()
           .whenComplete(() => refreshController.refreshCompleted());
     } else {
       refreshController.refreshCompleted();
@@ -47,7 +46,6 @@ class MineController extends GetxController {
   void onTapPurchase() {
     Get.toNamed(AppRoutes.minePurchase);
   }
-
 
   void onTapItem(MineItemType type) {
     switch (type) {
@@ -81,20 +79,14 @@ class MineController extends GetxController {
         ActivationProgression.show();
         break;
       case MineItemType.contractDetail:
-        Get.toNamed(
-          AppRoutes.contractDetailPage,
-          arguments: {
-            'status': ContractStatus.signed,
-          }
-        );
+        Get.toNamed(AppRoutes.contractDetailPage, arguments: {
+          'status': ContractStatus.signed,
+        });
         break;
       case MineItemType.contractSign:
-        Get.toNamed(
-          AppRoutes.contractDetailPage,
-          arguments: {
-            'status': ContractStatus.unsigned,
-          }
-        );
+        Get.toNamed(AppRoutes.contractDetailPage, arguments: {
+          'status': ContractStatus.unsigned,
+        });
         break;
       case MineItemType.generateContract:
         Get.toNamed(AppRoutes.contractGeneratePage);

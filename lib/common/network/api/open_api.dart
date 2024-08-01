@@ -13,25 +13,30 @@ class OpenApi {
   const OpenApi._();
 
   /// 用户登录接口
-  ///- phone: 用户手机号
   ///- loginType：用户登录类型(1:密码登录,2:验证码登录,3:微信登录,4:一键登录,5:注册账号,6苹果登录)
+  ///- account: 用户账号
+  ///- phone: 用户手机号
   ///- password：用户密码
   ///- verifyCode：验证码
   ///- code：第三方登录code
   ///- appleId：苹果登录用户唯一标识
   ///- identityToken：苹果登录授权token
+  ///- email：邮箱
   static Future<ApiResponse<LoginRes>> login({
-    String? phone,
     required int loginType,
+    String? account,
+    String? phone,
     String? password,
     String? verifyCode,
     String? code,
     String? appleId,
     String? identityToken,
+    String? email,
   }) async {
     return HttpClient.post(
       '/openapi/login',
       data: {
+        "account": account,
         "phone": phone,
         "loginType": loginType,
         "password": password,
@@ -39,6 +44,7 @@ class OpenApi {
         "code": code,
         "appleId": appleId,
         "identityToken": identityToken,
+        "email": email,
       },
       dataConverter: (json) {
         return LoginRes.fromJson(json);

@@ -25,7 +25,7 @@ class AccountSafetyController extends GetxController {
   }
 
   void onTapUpdatePassword() {
-    final phone = loginService.bindingInfo?.phone ?? "";
+    final phone = loginService.info?.phone ?? "";
     final isBinding = phone.isNotEmpty;
 
     if (isBinding) {
@@ -39,7 +39,7 @@ class AccountSafetyController extends GetxController {
 
   //注销
   void onTapSignOut() {
-    final phone = loginService.bindingInfo?.phone ?? "";
+    final phone = loginService.info?.phone ?? "";
     final isBinding = phone.isNotEmpty;
 
     if (!isBinding) {

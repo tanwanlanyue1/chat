@@ -51,7 +51,6 @@ class BindingController extends GetxController {
     }
 
     loginService.fetchMyInfo();
-    loginService.fetchBindingInfo();
 
     Loading.showToast("绑定成功");
     Get.back();

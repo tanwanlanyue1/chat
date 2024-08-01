@@ -164,17 +164,17 @@ class MineSettingPage extends StatelessWidget {
             additionServers: [
               //颜鹏
               Server(
-                api: Uri.parse('http://192.168.2.18:19900'),
+                api: Uri.parse('http://192.168.2.18:20000'),
                 ws: Uri.parse(''),
               ),
               //杨文
               Server(
-                api: Uri.parse('http://192.168.2.117:19900'),
+                api: Uri.parse('http://192.168.2.117:20000'),
                 ws: Uri.parse(''),
               ),
               //安伟
               Server(
-                api: Uri.parse('http://192.168.2.114:19900'),
+                api: Uri.parse('http://192.168.2.114:20000'),
                 ws: Uri.parse(''),
               ),
             ],

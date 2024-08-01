@@ -9,7 +9,7 @@ import Foundation
 import Security
 
 class UniqueIdentifier {
-    private static let service = "com.qt.jx/plugin/device_id"
+    private static let service = "com.social.guanjia/plugin/device_id"
     private static let account = "device_id"
     
     static func getDeviceId() -> String {

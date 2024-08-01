@@ -61,12 +61,12 @@ class LoginPage extends StatelessWidget {
                       ),
                       SizedBox(height: 50.rpx),
                       LoginTextField(
-                        controller: controller.registerAccountController,
+                        controller: controller.accountController,
                         labelText: S.current.loginAccount,
                       ),
                       SizedBox(height: 16.rpx),
                       LoginTextField(
-                        controller: controller.registerPasswordController,
+                        controller: controller.passwordController,
                         labelText: S.current.loginPassword,
                         obscureText: true,
                       ),
@@ -85,7 +85,7 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                       CommonGradientButton(
-                        onTap: () => controller.onLogin(1),
+                        onTap: () => controller.onTapLogin(),
                         text: S.current.login,
                         height: 50.rpx,
                       ),

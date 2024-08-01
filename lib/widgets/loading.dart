@@ -70,13 +70,14 @@ class LoadingIndicator extends StatelessWidget {
             lowerBound: 0.8,
             duration: const Duration(milliseconds: 1000),
             reverse: true,
-            child: AppImage.asset(
-              'assets/images/common/ic_loading.png',
-              width: iconSize,
-              height: iconSize,
-              fit: BoxFit.contain,
-              alignment: Alignment.center,
-            ),
+            // child: AppImage.asset(
+            //   'assets/images/common/ic_loading.png',
+            //   width: iconSize,
+            //   height: iconSize,
+            //   fit: BoxFit.contain,
+            //   alignment: Alignment.center,
+            // ),
+            child: const SizedBox(),
             builder: (_, value, child) {
               return Transform.scale(
                 scale: value,

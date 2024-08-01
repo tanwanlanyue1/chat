@@ -124,7 +124,7 @@ class JsInjector{
 
   ///获取绑定信息
   void _getBinding(String method, int uuid) async{
-    final bindingInfo = SS.login.bindingInfo;
+    final bindingInfo = SS.login.info;
     String? args;
     if(bindingInfo != null){
       args = jsonEncode(bindingInfo.toJson());

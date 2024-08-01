@@ -177,9 +177,7 @@ class _MinePageState extends State<MinePage>
                         child: Row(
                           children: [
                             Visibility(
-                              visible: controller.loginService.levelMoneyInfo
-                                      ?.cavLevelName !=
-                                  null,
+                              visible: false,
                               child: Container(
                                 margin: EdgeInsets.only(right: 8.rpx),
                                 alignment: Alignment.center,
@@ -191,9 +189,7 @@ class _MinePageState extends State<MinePage>
                                     EdgeInsets.symmetric(horizontal: 3.rpx),
                                 height: 14.rpx,
                                 child: Text(
-                                  controller.loginService.levelMoneyInfo
-                                          ?.cavLevelName ??
-                                      "",
+                                  "",
                                   style: AppTextStyle.fs10m.copyWith(
                                       color: AppColor.red1, height: 1),
                                 ),
@@ -224,14 +220,14 @@ class _MinePageState extends State<MinePage>
     return Container(
       padding: EdgeInsets.all(12.rpx),
       child: GestureDetector(
-        onTap: (){
-          if(state.current.value == 0){
+        onTap: () {
+          if (state.current.value == 0) {
             state.current.value = 1;
-          }else{
+          } else {
             state.current.value = 0;
           }
         },
-        child: Obx((){
+        child: Obx(() {
           final value = state.current();
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -262,46 +258,54 @@ class _MinePageState extends State<MinePage>
   Widget _personalService() {
     return Container(
       width: 351.rpx,
-      decoration: const BoxDecoration(
-      ),
+      decoration: const BoxDecoration(),
       padding: EdgeInsets.symmetric(horizontal: 12.rpx),
       child: ScrollConfiguration(
         behavior: ChatScrollBehavior(),
-        child: Obx(()=> Column(
-            children: List.generate(state.current.value == 0 ? state.commonFeature.length : state.current.value == 1 ? state.jiaCommonFeature.length : state.brokerCommonFeature.length, (index) {
-              MineItemSource item = state.current.value == 0 ? state.commonFeature[index] : state.current.value == 1 ? state.jiaCommonFeature[index] : state.brokerCommonFeature[index] ;
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () => controller.onTapItem(item.type),
-                child: SizedBox(
-                  height: 48.rpx,
-                  child: Row(
-                    children: [
-                      AppImage.asset(
-                        '${item.icon}',
-                        width: 24.rpx,
-                        height: 24.rpx,
-                      ),
-                      SizedBox(
-                        width: 12.rpx,
-                      ),
-                      Text(
-                        '${item.title}',
-                        style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
-                      ),
-                      const Spacer(),
-                      AppImage.asset(
-                        'assets/images/mine/mine_right.png',
-                        width: 20.rpx,
-                        height: 20.rpx,
-                      ),
-                    ],
+        child: Obx(() => Column(
+              children: List.generate(
+                  state.current.value == 0
+                      ? state.commonFeature.length
+                      : state.current.value == 1
+                          ? state.jiaCommonFeature.length
+                          : state.brokerCommonFeature.length, (index) {
+                MineItemSource item = state.current.value == 0
+                    ? state.commonFeature[index]
+                    : state.current.value == 1
+                        ? state.jiaCommonFeature[index]
+                        : state.brokerCommonFeature[index];
+                return GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => controller.onTapItem(item.type),
+                  child: SizedBox(
+                    height: 48.rpx,
+                    child: Row(
+                      children: [
+                        AppImage.asset(
+                          '${item.icon}',
+                          width: 24.rpx,
+                          height: 24.rpx,
+                        ),
+                        SizedBox(
+                          width: 12.rpx,
+                        ),
+                        Text(
+                          '${item.title}',
+                          style: AppTextStyle.fs14m
+                              .copyWith(color: AppColor.gray5),
+                        ),
+                        const Spacer(),
+                        AppImage.asset(
+                          'assets/images/mine/mine_right.png',
+                          width: 20.rpx,
+                          height: 20.rpx,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }),
-          )
-        ),
+                );
+              }),
+            )),
       ),
     );
   }

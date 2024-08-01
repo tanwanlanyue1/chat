@@ -819,6 +819,46 @@ class S {
       args: [],
     );
   }
+
+  /// `退出登录`
+  String get signOut {
+    return Intl.message(
+      '退出登录',
+      name: 'signOut',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `普通用户`
+  String get normalUser {
+    return Intl.message(
+      '普通用户',
+      name: 'normalUser',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `佳丽`
+  String get beautifulUser {
+    return Intl.message(
+      '佳丽',
+      name: 'beautifulUser',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `经纪人`
+  String get brokerUser {
+    return Intl.message(
+      '经纪人',
+      name: 'brokerUser',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

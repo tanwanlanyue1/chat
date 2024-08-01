@@ -54,7 +54,7 @@ class _MinePageState extends State<MinePage>
                   buildBanner(),
                   buildSectionOne(),
                   buildSectionTwo(),
-                  buildLogoutButton(),
+                  buildSignOutButton(),
                 ],
               ),
             ),
@@ -248,7 +248,7 @@ class _MinePageState extends State<MinePage>
         MineListTile(
           title: S.current.activationProgression,
           icon: "assets/images/mine/activate.png",
-          trailing: '普通用户',
+          trailing: S.current.normalUser,
           onTap: (){
             ActivationProgression.show();
           },
@@ -257,7 +257,7 @@ class _MinePageState extends State<MinePage>
         MineListTile(
           title: S.current.cancelAdvanceToBroker,
           icon: "assets/images/mine/cancel_a_contract.png",
-          trailing: '佳丽',
+          trailing: S.current.beautifulUser,
         ),
         //评价我的
         MineListTile(
@@ -275,7 +275,7 @@ class _MinePageState extends State<MinePage>
         MineListTile(
           title: S.current.myTeam,
           icon: "assets/images/mine/my_team.png",
-          trailing: '经纪人',
+          trailing: S.current.brokerUser,
           pagePath: AppRoutes.mineMyTeamPage,
         ),
       ],
@@ -321,14 +321,14 @@ class _MinePageState extends State<MinePage>
     );
   }
 
-  Widget buildLogoutButton(){
+  Widget buildSignOutButton(){
     return Center(
       child: Button(
         margin: FEdgeInsets(top: 24.rpx),
         width: 200.rpx,
         height: 46.rpx,
         onPressed: controller.onTapSignOut,
-        child: Text('退出登录', style: AppTextStyle.fs16m),
+        child: Text(S.current.signOut, style: AppTextStyle.fs16m),
       ),
     );
   }

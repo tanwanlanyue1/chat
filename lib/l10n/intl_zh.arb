@@ -75,5 +75,9 @@
   "effectiveTime": "起止时间：",
   "none": "暂无",
   "contractTerminateHint": "和当前经纪人发起解约?发起后系统将自动向该经纪人发送解约申请。",
-  "confirmTerminate": "确定解约"
+  "confirmTerminate": "确定解约",
+  "signOut": "退出登录",
+  "normalUser": "普通用户",
+  "beautifulUser": "佳丽",
+  "brokerUser": "经纪人"
 }

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/login_verification_code_button.dart';
 import 'package:guanjia/ui/mine/widgets/setting_text_field.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -21,7 +22,7 @@ class UpdatePasswordPage extends StatelessWidget {
       backgroundColor: AppColor.scaffoldBackground,
       appBar: AppBar(
         title: Text(
-          state.isLogin.value ? "修改登录密码" : "修改支付密码",
+          state.isLogin.value ? S.current.changingPassword : S.current.changingPaymentPassword,
           style: TextStyle(
             color: const Color(0xff333333),
             fontSize: 18.rpx,
@@ -51,8 +52,8 @@ class UpdatePasswordPage extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 15.rpx),
       child: Text(
         state.isPhone.value ?
-        '手机验证码将发送到138****8888手机上，请注意查收':
-        '邮箱验证码将发送到1726****45.com邮箱上，请注意查收',
+        '${S.current.phoneVerificationCode}138****8888${S.current.cellPhone}':
+        '${S.current.emailVerificationCode}1726****45.com${S.current.cellEmail}',
         style: TextStyle(
           fontSize: 12.rpx,
           color: AppColor.gray30,
@@ -72,15 +73,15 @@ class UpdatePasswordPage extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 24.rpx,top: 11.rpx),
         child: RichText(
           text: TextSpan(
-            text: "收不到验证码? ",
+            text: "${S.current.notReceiveTheVerification}? ",
             style: TextStyle(
               fontSize: 12.rpx,
               color: AppColor.gray30,
             ),
-            children: const [
+            children: [
               TextSpan(
-                text: "换个验证方式",
-                style: TextStyle(
+                text: S.current.changeVerificationMethod,
+                style: const TextStyle(
                   decoration: TextDecoration.underline,
                 ),
               ),
@@ -95,8 +96,8 @@ class UpdatePasswordPage extends StatelessWidget {
     return Obx(() => SettingTextField(
       inputController: controller.verificationInputController,
       labelText: state.isPhone.value ?
-      '手机验证码':'邮箱验证码',
-      hintText: '请输入验证码',
+      S.current.cellPhoneVerificationCode:S.current.cellEmailVerificationCode,
+      hintText: S.current.pleaseEnterTheVerificationCode,
       keyboardType: TextInputType.number,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp('[0-9]')),
@@ -110,9 +111,9 @@ class UpdatePasswordPage extends StatelessWidget {
 
   Widget _buildNewPasswordField() {
     return SettingTextField(
-      labelText: '请输入密码',
+      labelText: S.current.enterYourPIN,
       inputController: controller.newPasswordInputController,
-      hintText: '请输入6-20位字符',
+      hintText: S.current.pleaseEnter620Characters,
       inputFormatters: [
         FilteringTextInputFormatter.deny(RegExp(r'\s')),
         LengthLimitingTextInputFormatter(16),
@@ -123,9 +124,9 @@ class UpdatePasswordPage extends StatelessWidget {
 
   Widget _buildConfirmPasswordField() {
     return SettingTextField(
-      labelText: '请确认密码',
+      labelText: S.current.pleaseConfirmThePassword,
       inputController: controller.confirmPasswordInputController,
-      hintText: '请输入确认密码',
+      hintText: S.current.pleaseEnterYourConfirmationPassword,
       inputFormatters: [
         FilteringTextInputFormatter.deny(RegExp(r'\s')),
         LengthLimitingTextInputFormatter(16),
@@ -149,7 +150,7 @@ class UpdatePasswordPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "确定",
+                S.current.confirm,
                 style: TextStyle(color: Colors.white, fontSize: 16.rpx),
               )
             ],

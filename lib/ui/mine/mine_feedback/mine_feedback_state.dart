@@ -1,31 +1,33 @@
 import 'dart:io';
 
+import 'package:guanjia/generated/l10n.dart';
+
 class MineFeedbackState {
   int typeIndex = 0;
 
   List<Map<String, dynamic>> typeList = [
     {
-      "title": "VIP制度",
+      "title": S.current.VIPSystem,
       "type": 0,
     },
     {
-      "title": "服务流程",
+      "title": S.current.serviceProcess,
       "type": 1,
     },
     {
-      "title": "活动营销",
+      "title": S.current.activeMarketing,
       "type": 2,
     },
     {
-      "title": "售后服务",
+      "title": S.current.afterSalesService,
       "type": 3,
     },
     {
-      "title": "我要投诉",
+      "title": S.current.iHaveAComplaint,
       "type": 4,
     },
     {
-      "title": "其他",
+      "title": S.current.other,
       "type": 999,
     },
   ];

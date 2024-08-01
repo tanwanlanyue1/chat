@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 
 ///客户项
@@ -51,7 +52,7 @@ class ClientCard extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                         ),
-                        Text("昨天 09:35",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                        Text("${S.current.yesterday} 09:35",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
                       ],
                     ),
                   ],
@@ -66,7 +67,7 @@ class ClientCard extends StatelessWidget {
                 width: 82.rpx,
                 height: 28.rpx,
                 alignment: Alignment.center,
-                child: Text("跟Ta联系",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+                child: Text(S.current.getTouchWith,style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
               )
             ],
           ),

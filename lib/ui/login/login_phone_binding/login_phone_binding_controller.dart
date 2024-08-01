@@ -6,6 +6,7 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/result.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 import 'login_phone_binding_state.dart';
@@ -70,7 +71,7 @@ class LoginPhoneBindingController extends GetxController {
 
     _remainingSeconds = 60;
     state.isCountingDown.value = false;
-    state.smsButtonText.value = "获取验证码";
+    state.smsButtonText.value = S.current.getCode;
   }
 
   void onBinding() async {

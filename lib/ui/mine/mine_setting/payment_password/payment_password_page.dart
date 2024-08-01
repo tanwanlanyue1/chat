@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/setting_text_field.dart';
 
 import 'payment_password_controller.dart';
@@ -20,7 +21,7 @@ class PaymentPasswordPage extends StatelessWidget {
       backgroundColor: AppColor.scaffoldBackground,
       appBar: AppBar(
         title: Text(
-          "设置支付密码",
+          S.current.setPaymentPassword,
           style: TextStyle(
             color: const Color(0xff333333),
             fontSize: 18.rpx,
@@ -42,9 +43,9 @@ class PaymentPasswordPage extends StatelessWidget {
 
   Widget _buildNewPasswordField() {
     return SettingTextField(
-      labelText: '请输入密码',
+      labelText: S.current.enterYourPIN,
       inputController: controller.newPasswordInputController,
-      hintText: '请输入支付密码',
+      hintText: S.current.pleaseEnterYourPaymentPassword,
       inputFormatters: [
         FilteringTextInputFormatter.deny(RegExp(r'\s')),
         LengthLimitingTextInputFormatter(16),
@@ -55,9 +56,9 @@ class PaymentPasswordPage extends StatelessWidget {
 
   Widget _buildConfirmPasswordField() {
     return SettingTextField(
-      labelText: '请确认密码',
+      labelText: S.current.pleaseConfirmThePassword,
       inputController: controller.confirmPasswordInputController,
-      hintText: '请确认支付密码',
+      hintText: S.current.confirmPayment,
       inputFormatters: [
         FilteringTextInputFormatter.deny(RegExp(r'\s')),
         LengthLimitingTextInputFormatter(16),
@@ -82,7 +83,7 @@ class PaymentPasswordPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "确定",
+                S.current.confirm,
                 style: TextStyle(color: Colors.white, fontSize: 16.rpx),
               )
             ],

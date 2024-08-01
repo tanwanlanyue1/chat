@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/input_widget.dart';
 import 'package:guanjia/widgets/upload_image.dart';
@@ -21,7 +22,7 @@ class MineFeedbackPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.scaffoldBackground,
       appBar: AppBar(
-        title: const Text("意见反馈"),
+        title: Text(S.current.feedback),
       ),
       body: GetBuilder<MineFeedbackController>(
         builder: (controller) {
@@ -85,7 +86,7 @@ class MineFeedbackPage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '您好，请选择标签',
+                  S.current.pleaseSelectATag,
                   style: TextStyle(color: AppColor.gray5, fontSize: 16.rpx),
                 ),
               ],
@@ -142,7 +143,7 @@ class MineFeedbackPage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '具体建议内容',
+                  S.current.specificProposalContent,
                   style: TextStyle(color: AppColor.gray5, fontSize: 16.rpx),
                 ),
               ],
@@ -154,7 +155,7 @@ class MineFeedbackPage extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: 16.rpx),
                 color: AppColor.grayF7,
                 child: InputWidget(
-                    hintText: '请输入建议内容',
+                    hintText: S.current.pleaseEnterASuggestion,
                     maxLength: 200,
                     lines: 4,
                     fillColor: AppColor.grayF7,
@@ -187,7 +188,7 @@ class MineFeedbackPage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '上传图片',
+                  S.current.uploadPictures,
                   style: TextStyle(color: AppColor.gray5, fontSize: 16.rpx),
                 ),
               ],
@@ -238,13 +239,13 @@ class MineFeedbackPage extends StatelessWidget {
                   height: 50.rpx,
                   alignment: Alignment.center,
                   child: Text(
-                    '联系电话',
+                    S.current.contactNumber,
                     style: TextStyle(color: AppColor.gray9, fontSize: 14.rpx),
                   ),
                 ),
                 Expanded(
                   child: InputWidget(
-                      hintText: '请填写您的手机号码或邮箱，便于与您联系(选填)',
+                      hintText: S.current.pleaseFillInYourMobilePhoneNumber,
                       fillColor: Colors.white,
                       inputController: controller.contactController,
                       border: OutlineInputBorder(

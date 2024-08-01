@@ -7,6 +7,7 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/result.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/login/widgets/privacy_policy_dialog.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/web/web_page.dart';
@@ -110,7 +111,7 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
 
     _remainingSeconds = 60;
     state.isCountingDown.value = false;
-    state.smsButtonText.value = "获取验证码";
+    state.smsButtonText.value = S.current.getCode;
   }
 
   @override

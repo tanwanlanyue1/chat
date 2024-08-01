@@ -38,7 +38,7 @@ class MineSettingPage extends StatelessWidget {
                 children: [
                   SettingItem(
                     bottom: 1.rpx,
-                    title: "震动提醒",
+                    title: S.current.vibrationReminder,
                     right: SizedBox(
                       width: 46.rpx,
                       child: Transform.scale(
@@ -55,7 +55,7 @@ class MineSettingPage extends StatelessWidget {
                     ),
                   ),
                   SettingItem(
-                    title: "铃声提醒",
+                    title: S.current.bellReminder,
                     right: SizedBox(
                       width: 46.rpx,
                       child: Transform.scale(
@@ -73,26 +73,26 @@ class MineSettingPage extends StatelessWidget {
                   ),
                   SettingItem(
                     bottom: 1.rpx,
-                    title: "修改登录密码",
+                    title: S.current.changingPassword,
                     callBack: () {
                       Get.toNamed(AppRoutes.updatePasswordPage);
                     },
                   ),
                   SettingItem(
                     bottom: 1.rpx,
-                    title: "设置支付密码",
+                    title: S.current.setPaymentPassword,
                     callBack: () {
                       Get.toNamed(AppRoutes.paymentPasswordPage);
                     },
                   ),
                   SettingItem(
-                    title: "修改支付密码",
+                    title: S.current.changingPaymentPassword,
                     callBack: () {
                       Get.toNamed(AppRoutes.updatePasswordPage,arguments: {"login":false});
                     },
                   ),
                   SettingItem(
-                    title: "语言切换",
+                    title: S.current.languageSwitch,
                     bottom: 1.rpx,
                     borderRadius: BorderRadius.circular(8.rpx),
                     callBack: () {
@@ -100,7 +100,7 @@ class MineSettingPage extends StatelessWidget {
                     },
                   ),
                   SettingItem(
-                    title: "清空缓存",
+                    title: S.current.clearCache,
                     bottom: 1.rpx,
                     trailing: Text(
                       controller.cacheSize.value,
@@ -114,7 +114,7 @@ class MineSettingPage extends StatelessWidget {
                     callBack: () => controller.onTapClearCache(),
                   ),
                   SettingItem(
-                    title: "检测新版本",
+                    title: S.current.detectNewVersions,
                     trailing: Text(
                       '1.0.1',
                       style: TextStyle(
@@ -128,7 +128,7 @@ class MineSettingPage extends StatelessWidget {
                   ),
 
                   SettingItem(
-                    title: "关于我们",
+                    title: S.current.aboutUs,
                     bottom: 1.rpx,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8.rpx),

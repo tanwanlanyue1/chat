@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/mine_setting/app_update/app_update_manager.dart';
 import 'package:guanjia/ui/mine/widgets/setting_item.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -23,7 +24,7 @@ class AboutPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xffF6F8FE),
       appBar: AppBar(
-        title: const Text("关于我们"),
+        title: Text(S.current.aboutUs),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.rpx, vertical: 32.rpx),
@@ -36,7 +37,7 @@ class AboutPage extends StatelessWidget {
               //   height: 68.rpx,
               // ),
               Text(
-                "版本${state.version}",
+                "${S.current.versions}${state.version}",
                 style: TextStyle(fontSize: 18.rpx),
               ),
               SizedBox(

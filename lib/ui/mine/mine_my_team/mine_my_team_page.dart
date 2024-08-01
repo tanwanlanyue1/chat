@@ -20,7 +20,7 @@ class MineMyTeamPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("团队列表"),
+        title: Text(S.current.teamList),
       ),
       body: Column(
         children: [
@@ -74,7 +74,7 @@ class MineMyTeamPage extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                         ),
-                        Text("佳丽",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                        Text(S.current.goodGirl,style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
                       ],
                     ),
                   ],
@@ -94,7 +94,7 @@ class MineMyTeamPage extends StatelessWidget {
                     children: [
                       AppImage.asset("assets/images/mine/cancelAContract.png",width: 20.rpx,height: 20.rpx,),
                       SizedBox(height: 2.rpx,),
-                      Text("解约",style: AppTextStyle.fs12m.copyWith(color: AppColor.primary),),
+                      Text(S.current.cancelContract,style: AppTextStyle.fs12m.copyWith(color: AppColor.primary),),
                     ],
                   ),
                 ),
@@ -105,7 +105,7 @@ class MineMyTeamPage extends StatelessWidget {
                   children: [
                     AppImage.asset("assets/images/mine/relation.png",width: 20.rpx,height: 20.rpx,),
                     SizedBox(height: 2.rpx,),
-                    Text("联系佳丽",style: AppTextStyle.fs12m.copyWith(color: AppColor.purple6)),
+                    Text(S.current.contactBeauty,style: AppTextStyle.fs12m.copyWith(color: AppColor.purple6)),
                   ],
                 ),
               ),

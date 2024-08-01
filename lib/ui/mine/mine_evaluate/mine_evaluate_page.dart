@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 
 import 'mine_evaluate_controller.dart';
@@ -19,7 +20,7 @@ class MineEvaluatePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("我的评价",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
+        title: Text(S.current.myAssessment,style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
       ),
       backgroundColor: AppColor.grayF7,
       body: ListView(

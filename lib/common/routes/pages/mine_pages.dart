@@ -3,8 +3,13 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/ui/mine/attention_or_fans/attention_or_fans_page.dart';
 import 'package:guanjia/ui/mine/attention_or_fans/mine_attention/mine_attention_page.dart';
 import 'package:guanjia/ui/mine/attention_or_fans/mine_fans/mine_fans_page.dart';
+import 'package:guanjia/ui/mine/contract_detail/contract_detail_controller.dart';
+import 'package:guanjia/ui/mine/contract_detail/contract_detail_page.dart';
+import 'package:guanjia/ui/mine/contract_detail/contract_detail_state.dart';
 import 'package:guanjia/ui/mine/contract_generate/contract_generate_controller.dart';
 import 'package:guanjia/ui/mine/contract_generate/contract_generate_page.dart';
+import 'package:guanjia/ui/mine/contract_list/contract_list_controller.dart';
+import 'package:guanjia/ui/mine/contract_list/contract_list_page.dart';
 import 'package:guanjia/ui/mine/mine_evaluate/jia_evaluate/jia_evaluate_page.dart';
 import 'package:guanjia/ui/mine/mine_evaluate/mine_evaluate_page.dart';
 import 'package:guanjia/ui/mine/mine_merit_virtue/mine_merit_virtue_page.dart';
@@ -109,8 +114,8 @@ class MinePages {
       name: AppRoutes.updatePasswordPage,
       page: () => UpdatePasswordPage(),
       binding: BindingsBuilder.put(() => UpdatePasswordController(
-        login: Get.tryGetArgs('login'),
-      )),
+            login: Get.tryGetArgs('login'),
+          )),
     ),
     GetPage(
       name: AppRoutes.accountBlacklistPage,
@@ -166,8 +171,22 @@ class MinePages {
     ),
     GetPage(
       name: AppRoutes.contractGeneratePage,
-      page: () => ContractGeneratePage(),
+      page: () => const ContractGeneratePage(),
       binding: BindingsBuilder.put(ContractGenerateController.new),
+    ),
+    GetPage(
+      name: AppRoutes.contractDetailPage,
+      page: () => const ContractDetailPage(),
+      binding: BindingsBuilder.put(() {
+        return ContractDetailController(
+          status: Get.getArgs('status', ContractStatus.unsigned),
+        );
+      }),
+    ),
+    GetPage(
+      name: AppRoutes.contractListPage,
+      page: () => const ContractListPage(),
+      binding: BindingsBuilder.put(ContractListController.new),
     ),
   ];
 }

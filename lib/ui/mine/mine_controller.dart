@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:get/get.dart';
+import 'package:guanjia/ui/mine/contract_detail/contract_detail_state.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
@@ -21,7 +22,6 @@ class MineController extends GetxController {
 
   @override
   void onInit() {
-    
     super.onInit();
   }
 
@@ -71,7 +71,7 @@ class MineController extends GetxController {
         break;
       case MineItemType.invitation:
         final jumpLink = SS.appConfig.configRx()?.jumpLink;
-        if(jumpLink != null){
+        if (jumpLink != null) {
           AppLink.jump(jumpLink);
           return;
         }
@@ -107,7 +107,10 @@ class MineController extends GetxController {
         Get.toNamed(AppRoutes.mineSettingPage);
         break;
       case MineItemType.help:
-        WebPage.go(title: '客服与帮助', url: '${AppConfig.urlHelp}?t=${DateTime.now().millisecondsSinceEpoch}');
+        WebPage.go(
+            title: '客服与帮助',
+            url:
+                '${AppConfig.urlHelp}?t=${DateTime.now().millisecondsSinceEpoch}');
         break;
       case MineItemType.attentionOrFans:
         Get.toNamed(AppRoutes.attentionOrFansPage);
@@ -121,11 +124,27 @@ class MineController extends GetxController {
       case MineItemType.activation:
         ActivationProgression.show();
         break;
-      case MineItemType.viewContract:
-        // TODO: Handle this case.
+      case MineItemType.contractDetail:
+        Get.toNamed(
+          AppRoutes.contractDetailPage,
+          arguments: {
+            'status': ContractStatus.signed,
+          }
+        );
+        break;
+      case MineItemType.contractSign:
+        Get.toNamed(
+          AppRoutes.contractDetailPage,
+          arguments: {
+            'status': ContractStatus.unsigned,
+          }
+        );
         break;
       case MineItemType.generateContract:
         Get.toNamed(AppRoutes.contractGeneratePage);
+        break;
+      case MineItemType.contractList:
+        Get.toNamed(AppRoutes.contractListPage);
         break;
     }
   }

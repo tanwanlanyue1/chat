@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_color.dart';
 import 'package:svgaplayer_flutter/player.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
@@ -52,8 +53,8 @@ class AppImage extends StatelessWidget {
           alignment: alignment,
         );
 
-  static int? _toInt(double? value){
-    if(value == double.infinity){
+  static int? _toInt(double? value) {
+    if (value == double.infinity) {
       return null;
     }
     return value?.toInt();
@@ -83,7 +84,9 @@ class AppImage extends StatelessWidget {
           width: width,
           height: height,
           imageUrl: resizeImage
-              ? url.getResizeImageUrl(width: memCacheWidth ?? width, height: memCacheHeight ?? height)
+              ? url.getResizeImageUrl(
+                  width: memCacheWidth ?? width,
+                  height: memCacheHeight ?? height)
               : url,
           alignment: align,
           imageBuilder: (context, imageProvider) {
@@ -106,10 +109,28 @@ class AppImage extends StatelessWidget {
           },
           placeholder: placeholder != null
               ? (context, url) => placeholder
-              : (context, url) => Container(),
+              : (context, url) => Container(
+                    width: width,
+                    height: width,
+                    decoration: BoxDecoration(
+                      borderRadius: borderRadius,
+                      border: border,
+                      shape: shape,
+                      color: AppColor.gray2,
+                    ),
+                  ),
           errorWidget: placeholder != null
               ? (context, url, obj) => placeholder
-              : (context, url, obj) => Container(),
+              : (context, url, obj) => Container(
+                    width: width,
+                    height: width,
+                    decoration: BoxDecoration(
+                      borderRadius: borderRadius,
+                      border: border,
+                      shape: shape,
+                      color: AppColor.gray2,
+                    ),
+                  ),
         );
 
   ///SVGA动效
@@ -174,7 +195,7 @@ extension on String {
   ///华为云https://support.huaweicloud.com/usermanual-obs/obs_01_0430.html
   ///OSS云存储裁剪图片
   String getResizeImageUrl({double? width, double? height}) {
-    if(width == double.infinity || height == double.infinity){
+    if (width == double.infinity || height == double.infinity) {
       return this;
     }
 

@@ -102,13 +102,23 @@ class MineState {
       icon: "assets/images/mine/modification_service.png",
     ),
     MineItemSource(
-      type: MineItemType.viewContract,
-      title: S.current.viewSheet,
+      type: MineItemType.contractDetail,
+      title: S.current.contractDetail,
+      icon: "assets/images/mine/look_contract.png",
+    ),
+    MineItemSource(
+      type: MineItemType.contractSign,
+      title: S.current.contractSign,
       icon: "assets/images/mine/look_contract.png",
     ),
     MineItemSource(
       type: MineItemType.generateContract,
       title: S.current.generateContract,
+      icon: "assets/images/mine/look_contract.png",
+    ),
+    MineItemSource(
+      type: MineItemType.contractList,
+      title: S.current.contractList,
       icon: "assets/images/mine/look_contract.png",
     ),
   ];
@@ -136,8 +146,10 @@ enum MineItemType {
   help, // 客服与帮助
   attentionOrFans, // 关注或粉丝
   activation, //激活
-  viewContract, //查看契约单
+  contractDetail, //查看契约单-签约
+  contractSign, //查看契约单-解约
   generateContract, //生成契约单
+  contractList, //契约单列表
 }
 
 class MineItemSource {

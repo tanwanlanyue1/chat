@@ -214,4 +214,10 @@ abstract class AppRoutes {
 
   ///生成契约单
   static const contractGeneratePage = '/ContractGeneratePage';
+
+  ///契约单详情
+  static const contractDetailPage = '/ContractDetailPage';
+
+  ///契约单列表
+  static const contractListPage = '/ContractListPage';
 }

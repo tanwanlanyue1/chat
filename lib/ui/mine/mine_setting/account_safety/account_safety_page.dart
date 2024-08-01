@@ -53,7 +53,7 @@ class AccountSafetyPage extends StatelessWidget {
               ),
             ),
             Obx(() {
-              final phone = controller.loginService.bindingInfo?.phone ?? "";
+              final phone = controller.loginService.info?.phone ?? "";
               final isBinding = phone.isNotEmpty;
               final detail = isBinding ? _maskPhoneNumber(phone) : "绑定";
 

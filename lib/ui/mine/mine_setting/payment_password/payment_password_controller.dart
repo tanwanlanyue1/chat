@@ -14,7 +14,7 @@ class PaymentPasswordController extends GetxController {
   void onInit() {
     super.onInit();
     // final phoneString = state.loginService.isLogin
-    //     ? _maskPhoneNumber(state.loginService.bindingInfo?.phone ?? "")
+    //     ? _maskPhoneNumber(state.loginService.info?.phone ?? "")
     //     : "";
 
     newPasswordInputController.addListener(_checkFields);
@@ -25,7 +25,7 @@ class PaymentPasswordController extends GetxController {
   void submit() async {
     Get.toNamed(AppRoutes.bindingPage);
     // final phone = state.loginService.isLogin
-    //     ? state.loginService.bindingInfo?.phone ?? ""
+    //     ? state.loginService.info?.phone ?? ""
     //     : phoneNumberInputController.text;
     // final verifyCode = verificationInputController.text;
     // final newPassword = newPasswordInputController.text;

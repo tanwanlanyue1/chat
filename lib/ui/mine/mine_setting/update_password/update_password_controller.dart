@@ -20,7 +20,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
   /// 获取短信验证码
   Future<bool> fetchSms() async {
     final phone = state.loginService.isLogin
-        ? state.loginService.bindingInfo?.phone ?? ""
+        ? state.loginService.info?.phone ?? ""
         : phoneNumberInputController.text;
 
     if (phone.length != 11) {
@@ -42,7 +42,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
   /// 提交修改
   void submit() async {
     final phone = state.loginService.isLogin
-        ? state.loginService.bindingInfo?.phone ?? ""
+        ? state.loginService.info?.phone ?? ""
         : phoneNumberInputController.text;
     final verifyCode = verificationInputController.text;
     final newPassword = newPasswordInputController.text;
@@ -71,7 +71,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
 
     // 已登录需要显示带星号的电话号码
     final phoneString = state.loginService.isLogin
-        ? _maskPhoneNumber(state.loginService.bindingInfo?.phone ?? "")
+        ? _maskPhoneNumber(state.loginService.info?.phone ?? "")
         : "";
     phoneNumberInputController.text = phoneString;
 

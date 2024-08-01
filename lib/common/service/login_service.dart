@@ -32,12 +32,6 @@ class LoginService extends GetxService {
     _info.update(fn);
   }
 
-  // 当前登录用户绑定信息, 外部可通过obx监听改变
-  BindingRes? get bindingInfo => _bindingInfo.value;
-
-  // 当前登录用户等级境修币信息, 外部可通过obx监听改变
-  LevelMoneyRes? get levelMoneyInfo => _levelMoneyInfo.value;
-
   // 用户 id
   int? get userId => _loginRes?.userId;
 
@@ -52,31 +46,18 @@ class LoginService extends GetxService {
   // 当前用户信息
   final Rxn<UserModel> _info = Rxn<UserModel>();
 
-  // 当前用户绑定信息
-  final Rxn<BindingRes> _bindingInfo = Rxn<BindingRes>();
-
-  // 当前用户等级和境修币信息
-  final Rxn<LevelMoneyRes> _levelMoneyInfo = Rxn<LevelMoneyRes>();
-
   // 用户是否登录
   final _isLogin = false.obs;
 
   static const _kLoginData = 'loginData';
   static const _kUserData = 'userData';
-  static const _kBindingData = 'bindingData';
-  static const _kLevelMoneyData = 'levelMoneyData';
   final _localStorage = LocalStorage('LoginService');
 
   Future<LoginService> init() async {
     final loginData = await _localStorage.getJson(_kLoginData);
     final userData = await _localStorage.getJson(_kUserData);
-    final bindingData = await _localStorage.getJson(_kBindingData);
-    final levelMoneyData = await _localStorage.getJson(_kLevelMoneyData);
 
-    if (loginData == null ||
-        userData == null ||
-        bindingData == null ||
-        levelMoneyData == null) {
+    if (loginData == null || userData == null) {
       _isLogin.value = false;
       return this;
     }
@@ -85,8 +66,6 @@ class LoginService extends GetxService {
 
     _loginRes = LoginRes.fromJson(loginData);
     _info.value = UserModel.fromJson(userData);
-    _bindingInfo.value = BindingRes.fromJson(bindingData);
-    _levelMoneyInfo.value = LevelMoneyRes.fromJson(levelMoneyData);
 
     return this;
   }
@@ -235,34 +214,6 @@ class LoginService extends GetxService {
     // 保存登录信息, 后续接口需要根据请求头参数进行校验，保证先存到本地
     await _setupLoginData(loginRes: loginRes);
 
-    // 获取并保存绑定信息
-    final bindingRes = await fetchBindingInfo();
-    final bindingProcess = await bindingRes.whenAsync(success: (res) async {
-      // 保存用户绑定信息
-      await _setupBindingData(res: res);
-      return null;
-    }, failure: (errorMessage) async {
-      await _clearData();
-      return errorMessage;
-    });
-
-    if (bindingProcess != null) {
-      return ResultFailure(bindingProcess);
-    }
-
-    // // 获取并保存等级境修币信息
-    // final levelMoneyRes = await fetchLevelMoneyInfo();
-    // final levelMoneyProcess = await levelMoneyRes.whenAsync(success: (_) async {
-    //   return null;
-    // }, failure: (errorMessage) async {
-    //   await _clearData();
-    //   return errorMessage;
-    // });
-    //
-    // if (levelMoneyProcess != null) {
-    //   return ResultFailure(levelMoneyProcess);
-    // }
-
     // 获取用户信息并修改登录状态
     return await fetchMyInfo()
         .then((value) => value.whenAsync(success: (_) async {
@@ -307,45 +258,6 @@ class LoginService extends GetxService {
         },
         failure: (_) async {});
     return res;
-  }
-
-  /// 获取绑定信息（默认自动保存）
-  /// autoSave: 是否自动保存到本地
-  Future<Result<BindingRes, String>> fetchBindingInfo(
-      {bool autoSave = true}) async {
-    final res = await UserApi.getBindingInfo();
-    if (!res.isSuccess) {
-      return ResultFailure(res.errorMessage ?? "data error");
-    }
-
-    final data = res.data;
-    if (data == null) {
-      return const ResultFailure("data error");
-    }
-
-    if (autoSave) await _setupBindingData(res: data);
-
-    return ResultSuccess(data);
-  }
-
-  /// 获取等级境修币信息（默认自动保存）
-  /// autoSave: 是否自动保存到本地
-  Future<Result<LevelMoneyRes, String>> fetchLevelMoneyInfo(
-      {bool autoSave = true}) async {
-    return const ResultFailure("data error");
-    // final res = await UserApi.getLevelAndMoney();
-    // if (!res.isSuccess) {
-    //   return ResultFailure(res.errorMessage ?? "data error");
-    // }
-    //
-    // final data = res.data;
-    // if (data == null) {
-    //   return const ResultFailure("data error");
-    // }
-    //
-    // if (autoSave) await _setupLevelMoneyData(res: data);
-    //
-    // return ResultSuccess(data);
   }
 
   /// 用户退出登录
@@ -421,32 +333,12 @@ class LoginService extends GetxService {
     _info.value = userModel;
   }
 
-  Future<void> _setupBindingData({
-    required BindingRes res,
-  }) async {
-    await _localStorage.setJson(_kBindingData, res.toJson());
-
-    _bindingInfo.value = res;
-  }
-
-  Future<void> _setupLevelMoneyData({
-    required LevelMoneyRes res,
-  }) async {
-    await _localStorage.setJson(_kLevelMoneyData, res.toJson());
-
-    _levelMoneyInfo.value = res;
-  }
-
   Future<void> _clearData() async {
     await _localStorage.remove(_kLoginData);
     await _localStorage.remove(_kUserData);
-    await _localStorage.remove(_kBindingData);
-    await _localStorage.remove(_kLevelMoneyData);
 
     _loginRes = null;
     _info.value = null;
-    _bindingInfo.value = null;
-    _levelMoneyInfo.value = null;
 
     _isLogin.value = false;
   }

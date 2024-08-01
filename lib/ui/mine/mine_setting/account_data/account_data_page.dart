@@ -16,7 +16,7 @@ import 'package:guanjia/widgets/label_widget.dart';
 
 import 'account_data_controller.dart';
 
-///账户资料
+///个人信息
 class AccountDataPage extends StatelessWidget {
   AccountDataPage({super.key});
 

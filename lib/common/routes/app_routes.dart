@@ -31,7 +31,7 @@ abstract class AppRoutes {
   ///我的设置
   static const mineSettingPage = '/mineSettingPage';
 
-  ///账户资料
+  ///个人信息
   static const accountDataPage = '/accountDataPage';
 
   ///更改信息页

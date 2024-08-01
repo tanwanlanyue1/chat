@@ -3,7 +3,12 @@ import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/mine/widgets/mine_list_tile.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -17,6 +22,7 @@ import 'package:guanjia/widgets/system_ui.dart';
 
 import 'mine_controller.dart';
 import 'mine_state.dart';
+import 'widgets/activation_progression.dart';
 
 ///我的
 class MinePage extends StatefulWidget {
@@ -34,278 +40,295 @@ class _MinePageState extends State<MinePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SystemUI.dark(
-      child: Container(
-        color: AppColor.brown14,
-        child: Stack(
-          children: [
-            // AppImage.asset(
-            //   "assets/images/mine/mine_backage.png",
-            //   height: 236.rpx,
-            // ),
-            Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 44.rpx),
-                  height: 44.rpx,
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      Get.toNamed(AppRoutes.accountDataPage);
-                    },
-                    // child: Padding(
-                    //   padding: EdgeInsets.only(
-                    //       left: 24.rpx,
-                    //       right: 12.rpx,
-                    //       top: 10.rpx,
-                    //       bottom: 10.rpx),
-                    //   child: AppImage.asset(
-                    //     'assets/images/mine/compile.png',
-                    //     width: 24.rpx,
-                    //     height: 24.rpx,
-                    //   ),
-                    // ),
-                  ),
-                ),
-                Expanded(
-                  child: SmartRefresher(
-                    controller: controller.refreshController,
-                    onRefresh: controller.onRefresh,
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      children: [
-                        // _header(),
-                        SizedBox(height: 12.rpx),
-                        _discipline(),
-                        AdvertisingSwiper(
-                          position: 1,
-                          insets: EdgeInsets.symmetric(horizontal: 12.rpx),
-                        ),
-                        _personalService(),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// 头部
-  Widget _header() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Obx(() => Visibility(
-              visible: !controller.loginService.isLogin,
-              replacement: _logInHead(),
-              child: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: controller.onTapLogin,
-                child: Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 27.rpx, right: 8.rpx),
-                      child: AppImage.asset(
-                        "assets/images/mine/notLogIn.png",
-                        width: 58.rpx,
-                        height: 58.rpx,
-                      ),
-                    ),
-                    Text(
-                      "登录/注册",
-                      style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),
-                    )
-                  ],
-                ),
+    return SystemUI.light(
+      child: Column(
+        children: [
+          buildHeader(),
+          Expanded(
+            child: SmartRefresher(
+              controller: controller.refreshController,
+              onRefresh: controller.onRefresh,
+              child: ListView(
+                padding: FEdgeInsets(horizontal: 16.rpx, bottom: 24.rpx),
+                children: [
+                  buildBanner(),
+                  buildSectionOne(),
+                  buildSectionTwo(),
+                  buildLogoutButton(),
+                ],
               ),
-            )),
-      ],
-    );
-  }
-
-  /// 头像
-  Widget _logInHead() {
-    return Column(
-      children: [
-        Container(
-          height: 58.rpx,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(12.rpx),
             ),
           ),
-          padding: EdgeInsets.only(left: 27.rpx),
-          child: Obx(() {
-            return Row(
-              children: [
-                Obx(() {
-                  return GestureDetector(
-                    onTap: () => Get.toNamed(AppRoutes.accountDataPage),
-                    child: AppImage.network(
-                      controller.loginService.info?.avatar ?? "",
-                      width: 58.rpx,
-                      height: 58.rpx,
-                      shape: BoxShape.circle,
-                    ),
-                  );
-                }),
-                SizedBox(width: 8.rpx),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () => Get.toNamed(AppRoutes.accountDataPage),
-                        behavior: HitTestBehavior.translucent,
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: 8.rpx),
-                          child: Text(
-                            controller.loginService.info?.nickname ?? "",
-                            style: AppTextStyle.fs16m
-                                .copyWith(color: AppColor.gray5),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        child: Row(
-                          children: [
-                            Visibility(
-                              visible: false,
-                              child: Container(
-                                margin: EdgeInsets.only(right: 8.rpx),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: const Color(0x268D310F),
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(2.rpx))),
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: 3.rpx),
-                                height: 14.rpx,
-                                child: Text(
-                                  "",
-                                  style: AppTextStyle.fs10m.copyWith(
-                                      color: AppColor.red1, height: 1),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 2.rpx),
-                            AppImage.asset(
-                              "assets/images/mine/mine_down_arrow.png",
-                              width: 12.rpx,
-                              height: 12.rpx,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+        ],
+      ),
+    );
+  }
+
+  ///头部
+  Widget buildHeader() {
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        //背景
+        Container(
+          width: double.infinity,
+          height: 140.rpx + Get.mediaQuery.padding.top,
+          margin: FEdgeInsets(bottom: 28.rpx),
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppColor.gradientBackgroundBegin,
+                AppColor.gradientBackgroundEnd,
               ],
-            );
-          }),
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+          ),
+        ),
+        //用户信息
+        buildUserInfo(),
+      ],
+    );
+  }
+
+  ///用户信息
+  Widget buildUserInfo() {
+    return buildShadowBox(
+      width: double.infinity,
+      height: 130.rpx,
+      margin: FEdgeInsets(horizontal: 16.rpx),
+      padding: FEdgeInsets(horizontal: 16.rpx),
+      child: Row(
+        children: [
+          Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              AppImage.network(
+                width: 90.rpx,
+                height: 90.rpx,
+                shape: BoxShape.circle,
+                'https://pic1.zhimg.com/v2-dbbe270b44aebc392b71c83ad61b9ef1.jpg?source=8673f162',
+              ),
+              AppImage.asset(
+                'assets/images/mine/ic_vip.png',
+                width: 24.rpx,
+                height: 24.rpx,
+              ),
+            ],
+          ),
+          Spacing.w12,
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Landon',
+                  style: AppTextStyle.fs18m.copyWith(
+                    color: AppColor.gray5,
+                  ),
+                ),
+                Padding(
+                  padding: FEdgeInsets(vertical: 4.rpx),
+                  child: Text(
+                    '中国·北京',
+                    style: AppTextStyle.fs16m.copyWith(
+                      color: AppColor.gray9,
+                    ),
+                  ),
+                ),
+                Text(
+                  'ID:1754654458',
+                  style: AppTextStyle.fs12m.copyWith(
+                    color: AppColor.gray9,
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  ///广告
+  Widget buildBanner() {
+    return Padding(
+      padding: FEdgeInsets(vertical: 24.rpx),
+      child: AppImage.asset(
+        width: double.infinity,
+        fit: BoxFit.fitWidth,
+        'assets/images/mine/banner.png',
+      ),
+    );
+  }
+
+  ///阴影框
+  Widget buildShadowBox({
+    double? width,
+    double? height,
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? margin,
+    Widget? child,
+  }) {
+    return Container(
+      width: width,
+      height: height,
+      padding: padding,
+      margin: margin,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.rpx),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8.rpx,
+            offset: Offset(0, 8.rpx),
+          ),
+        ],
+      ),
+      child: child,
+    );
+  }
+
+  ///分组项
+  Widget buildSection({
+    required List<Widget> children,
+    EdgeInsetsGeometry? margin,
+  }) {
+    return buildShadowBox(
+      margin: margin,
+      width: double.infinity,
+      child: Column(
+        children: children.separated(const Divider(height: 0)).toList(),
+      ),
+    );
+  }
+
+  ///第1部分
+  Widget buildSectionOne() {
+    return buildSection(
+      children: [
+        //个人信息
+        MineListTile(
+          title: S.current.personalInformation,
+          icon: "assets/images/mine/personal_info.png",
+          pagePath: AppRoutes.accountDataPage,
+        ),
+        //我的钱包
+        MineListTile(
+          title: S.current.myWallet,
+          icon: "assets/images/mine/wallet.png",
+        ),
+        //我的VIP
+        MineListTile(
+          title: S.current.myVIP,
+          icon: "assets/images/mine/VIP.png",
+        ),
+        //我的评价
+        MineListTile(
+          title: S.current.myAssessment,
+          icon: "assets/images/mine/evaluate.png",
+          pagePath: AppRoutes.mineEvaluatePage,
+        ),
+        //意见反馈
+        MineListTile(
+          title: S.current.feedback,
+          icon: "assets/images/mine/feedback.png",
+          pagePath: AppRoutes.mineFeedbackPage,
+        ),
+        //我的设置
+        MineListTile(
+          title: S.current.mySettings,
+          icon: "assets/images/mine/setting.png",
+          pagePath: AppRoutes.mineSettingPage,
+        ),
+        //激活/进阶
+        MineListTile(
+          title: S.current.activationProgression,
+          icon: "assets/images/mine/activate.png",
+          trailing: '普通用户',
+          onTap: (){
+            ActivationProgression.show();
+          },
+        ),
+        //解约/进阶为经纪人
+        MineListTile(
+          title: S.current.cancelAdvanceToBroker,
+          icon: "assets/images/mine/cancel_a_contract.png",
+          trailing: '佳丽',
+        ),
+        //评价我的
+        MineListTile(
+          title: S.current.appraiseMe,
+          icon: "assets/images/mine/evaluate.png",
+          pagePath: AppRoutes.jiaEvaluatePage,
+        ),
+        //团队评价
+        MineListTile(
+          title: S.current.teamEvaluation,
+          icon: "assets/images/mine/evaluate.png",
+          pagePath: AppRoutes.mineTeamEvaluatePage,
+        ),
+        //我的团队
+        MineListTile(
+          title: S.current.myTeam,
+          icon: "assets/images/mine/my_team.png",
+          trailing: '经纪人',
+          pagePath: AppRoutes.mineMyTeamPage,
         ),
       ],
     );
   }
 
-  /// 修行之路
-  Widget _discipline() {
-    return Container(
-      padding: EdgeInsets.all(12.rpx),
-      child: GestureDetector(
-        onTap: () {
-          if (state.current.value == 0) {
-            state.current.value = 1;
-          } else {
-            state.current.value = 0;
-          }
-        },
-        child: Obx(() {
-          final value = state.current();
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Button(
-                width: 100.rpx,
-                child: Text('顾客'),
-                onPressed: value == 0 ? null : () => state.current.value = 0,
-              ),
-              Button(
-                width: 100.rpx,
-                child: Text('佳丽'),
-                onPressed: value == 1 ? null : () => state.current.value = 1,
-              ),
-              Button(
-                width: 100.rpx,
-                child: Text('经纪人'),
-                onPressed: value == 2 ? null : () => state.current.value = 2,
-              ),
-            ],
-          );
-        }),
-      ),
+  ///第2部分
+  Widget buildSectionTwo() {
+    return buildSection(
+      margin: FEdgeInsets(top: 16.rpx),
+      children: [
+        //谁看过我
+        MineListTile(
+          title: S.current.whoSeenMe,
+          icon: "assets/images/mine/examine.png",
+          pagePath: AppRoutes.haveSeenPage,
+        ),
+        //修改服务费
+        MineListTile(
+          title: S.current.modificationServiceCharge,
+          icon: "assets/images/mine/modification_service.png",
+          pagePath: AppRoutes.mineServiceChargePage,
+        ),
+        //查看契约单
+        MineListTile(
+          title: S.current.contractDetail,
+          icon: "assets/images/mine/look_contract.png",
+          pagePath: AppRoutes.contractListPage,
+        ),
+        //生成契约单
+        MineListTile(
+          title: S.current.generateContract,
+          icon: "assets/images/mine/look_contract.png",
+          pagePath: AppRoutes.contractGeneratePage,
+        ),
+        //我的消息
+        MineListTile(
+          title: S.current.myMessage,
+          icon: "assets/images/mine/message.png",
+          pagePath: AppRoutes.mineMessage,
+        ),
+      ],
     );
   }
 
-  /// 功能类型
-  Widget _personalService() {
-    return Container(
-      width: 351.rpx,
-      decoration: const BoxDecoration(),
-      padding: EdgeInsets.symmetric(horizontal: 12.rpx),
-      child: ScrollConfiguration(
-        behavior: ChatScrollBehavior(),
-        child: Obx(() => Column(
-              children: List.generate(
-                  state.current.value == 0
-                      ? state.commonFeature.length
-                      : state.current.value == 1
-                          ? state.jiaCommonFeature.length
-                          : state.brokerCommonFeature.length, (index) {
-                MineItemSource item = state.current.value == 0
-                    ? state.commonFeature[index]
-                    : state.current.value == 1
-                        ? state.jiaCommonFeature[index]
-                        : state.brokerCommonFeature[index];
-                return GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () => controller.onTapItem(item.type),
-                  child: SizedBox(
-                    height: 48.rpx,
-                    child: Row(
-                      children: [
-                        AppImage.asset(
-                          '${item.icon}',
-                          width: 24.rpx,
-                          height: 24.rpx,
-                        ),
-                        SizedBox(
-                          width: 12.rpx,
-                        ),
-                        Text(
-                          '${item.title}',
-                          style: AppTextStyle.fs14m
-                              .copyWith(color: AppColor.gray5),
-                        ),
-                        const Spacer(),
-                        AppImage.asset(
-                          'assets/images/mine/mine_right.png',
-                          width: 20.rpx,
-                          height: 20.rpx,
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }),
-            )),
+  Widget buildLogoutButton(){
+    return Center(
+      child: Button(
+        margin: FEdgeInsets(top: 24.rpx),
+        width: 200.rpx,
+        height: 46.rpx,
+        onPressed: controller.onTapSignOut,
+        child: Text('退出登录', style: AppTextStyle.fs16m),
       ),
     );
   }

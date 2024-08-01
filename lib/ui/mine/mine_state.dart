@@ -14,12 +14,12 @@ class MineState {
       icon: "assets/images/mine/personal_info.png",
     ),
     MineItemSource(
-      type: MineItemType.collection,
+      type: MineItemType.evaluate,
       title: S.current.myWallet,
       icon: "assets/images/mine/wallet.png",
     ),
     MineItemSource(
-      type: MineItemType.browsingHistory,
+      type: MineItemType.evaluate,
       title: S.current.myVIP,
       icon: "assets/images/mine/VIP.png",
     ),
@@ -53,17 +53,17 @@ class MineState {
   // 佳丽-常用功能
   List<MineItemSource> jiaCommonFeature = [
     MineItemSource(
-      type: MineItemType.myQuestionsAndAnswers,
+      type: MineItemType.evaluate,
       title: S.current.personalInformation,
       icon: "assets/images/mine/personal_info.png",
     ),
     MineItemSource(
-      type: MineItemType.collection,
+      type: MineItemType.evaluate,
       title: S.current.myWallet,
       icon: "assets/images/mine/wallet.png",
     ),
     MineItemSource(
-      type: MineItemType.browsingHistory,
+      type: MineItemType.evaluate,
       title: S.current.myVIP,
       icon: "assets/images/mine/VIP.png",
     ),
@@ -98,7 +98,7 @@ class MineState {
       icon: "assets/images/mine/setting.png",
     ),
     MineItemSource(
-      type: MineItemType.setting,
+      type: MineItemType.serviceCharge,
       title: S.current.modificationServiceCharge,
       icon: "assets/images/mine/modification_service.png",
     ),
@@ -124,24 +124,62 @@ class MineState {
     ),
   ];
 
+  //经纪人-常用功能
+  List<MineItemSource> brokerCommonFeature = [
+    MineItemSource(
+      type: MineItemType.evaluate,
+      title: S.current.personalInformation,
+      icon: "assets/images/mine/personal_info.png",
+    ),
+    MineItemSource(
+      type: MineItemType.evaluate,
+      title: S.current.myWallet,
+      icon: "assets/images/mine/wallet.png",
+    ),
+    MineItemSource(
+      type: MineItemType.evaluate,
+      title: S.current.myVIP,
+      icon: "assets/images/mine/VIP.png",
+    ),
+    MineItemSource(
+      type: MineItemType.teamEvaluation,
+      title: S.current.teamEvaluation,
+      icon: "assets/images/mine/evaluate.png",
+    ),
+    MineItemSource(
+      type: MineItemType.feedback,
+      title: S.current.feedback,
+      icon: "assets/images/mine/feedback.png",
+    ),
+    MineItemSource(
+      type: MineItemType.myTeam,
+      title: S.current.myTeam,
+      icon: "assets/images/mine/my_team.png",
+    ),
+    MineItemSource(
+      type: MineItemType.activation,
+      title: S.current.activationProgression,
+      icon: "assets/images/mine/cancel_a_contract.png",
+    ),
+    MineItemSource(
+      type: MineItemType.setting,
+      title: S.current.mySettings,
+      icon: "assets/images/mine/setting.png",
+    ),
+    MineItemSource(
+      type: MineItemType.generateContract,
+      title: S.current.generateContract,
+      icon: "assets/images/mine/look_contract.png",
+    ),
+  ];
   //0:客户，1:佳丽
   final current = 0.obs;
 }
 
 enum MineItemType {
   accountData, // 个人信息
-  homework, // 禅房功课
-  disabuse, // 解惑
-  invitation, // 邀请有奖
-  ranking, // 修行排行
-  myCreation, // 我的创作
-  collection, // 收藏
-  browsingHistory, // 浏览记录
   evaluate, // 我的评价
-  myQuestionsAndAnswers, // 我的问答
   message, // 消息
-  myArchive, // 我的档案
-  myAttention, // 我的关注
   feedback, // 问题反馈
   setting, // 设置
   jiaEvaluate, // 佳丽-评价我的
@@ -153,6 +191,9 @@ enum MineItemType {
   contractSign, //查看契约单-解约
   generateContract, //生成契约单
   contractList, //契约单列表
+  serviceCharge, //服务费
+  teamEvaluation, //经纪人-团队评价
+  myTeam, //经纪人-我的团队
 }
 
 class MineItemSource {

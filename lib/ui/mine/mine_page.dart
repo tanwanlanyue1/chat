@@ -173,7 +173,6 @@ class _MinePageState extends State<MinePage>
                         ),
                       ),
                       GestureDetector(
-                        onTap: controller.onTapPractice,
                         behavior: HitTestBehavior.translucent,
                         child: Row(
                           children: [
@@ -269,8 +268,8 @@ class _MinePageState extends State<MinePage>
       child: ScrollConfiguration(
         behavior: ChatScrollBehavior(),
         child: Obx(()=> Column(
-            children: List.generate(state.current.value == 0 ? state.commonFeature.length : state.jiaCommonFeature.length, (index) {
-              MineItemSource item = state.current.value == 0 ? state.commonFeature[index] : state.jiaCommonFeature[index];
+            children: List.generate(state.current.value == 0 ? state.commonFeature.length : state.current.value == 1 ? state.jiaCommonFeature.length : state.brokerCommonFeature.length, (index) {
+              MineItemSource item = state.current.value == 0 ? state.commonFeature[index] : state.current.value == 1 ? state.jiaCommonFeature[index] : state.brokerCommonFeature[index] ;
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () => controller.onTapItem(item.type),

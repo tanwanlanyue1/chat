@@ -9,12 +9,14 @@ import 'package:guanjia/widgets/common_gradient_button.dart';
 
 
 class ActivationProgression extends StatelessWidget {
-  const ActivationProgression({super.key});
+  ActivationProgression({super.key});
+
+  final index = 0.obs;
 
   //进阶弹窗
   static Future<bool?> show() {
     return Get.dialog(
-      const ActivationProgression(),
+      ActivationProgression(),
     );
   }
 
@@ -58,7 +60,7 @@ class ActivationProgression extends StatelessWidget {
                       color: AppColor.scaffoldBackground,
                     ),
                     Text("请选择您想要激活的身份",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
-                    Container(
+                    Obx(() => Container(
                       padding: EdgeInsets.all(24.rpx),
                       margin: EdgeInsets.symmetric(horizontal: 16.rpx,vertical: 24.rpx),
                       color: AppColor.scaffoldBackground,
@@ -67,23 +69,23 @@ class ActivationProgression extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: (){
-                              Get.back();
-                              Get.toNamed(AppRoutes.identityProgressionPage);
+                              index.value = 0;
                             },
                             child: Container(
                               width: 120.rpx,
                               height: 40.rpx,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: AppColor.primary,
+                                color: index.value == 0 ? AppColor.primary : Colors.white,
+                                border: Border.all(color: AppColor.primary, width: 1),
                                 borderRadius: BorderRadius.circular(24.rpx),
                               ),
-                              child: Text("佳丽",style: AppTextStyle.fs14m.copyWith(color: Colors.white),),
+                              child: Text("佳丽",style: AppTextStyle.fs14m.copyWith(color: index.value == 0 ? Colors.white : AppColor.primary),),
                             ),
                           ),
                           GestureDetector(
                             onTap: (){
-                              Get.toNamed(AppRoutes.identityProgressionPage);
+                              index.value = 1;
                             },
                             child: Container(
                               width: 120.rpx,
@@ -91,20 +93,25 @@ class ActivationProgression extends StatelessWidget {
                               alignment: Alignment.center,
                               margin: EdgeInsets.only(top: 16.rpx),
                               decoration: BoxDecoration(
-                                color: AppColor.primary,
+                                color: index.value == 1 ? AppColor.primary : Colors.white,
+                                border: Border.all(color: AppColor.primary, width: 1),
                                 borderRadius: BorderRadius.circular(24.rpx),
                               ),
-                              child: Text("经纪人",style: AppTextStyle.fs14m.copyWith(color: Colors.white),),
+                              child: Text("经纪人",style: AppTextStyle.fs14m.copyWith(color: index.value == 1 ? Colors.white : AppColor.primary),),
                             ),
                           ),
                         ],
                       ),
-                    ),
+                    )),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.rpx),
                       child: CommonGradientButton(
                         height: 50.rpx,
                         text: '确认',
+                        onTap: (){
+                          Get.back();
+                          Get.toNamed(AppRoutes.identityProgressionPage);
+                        },
                       ),
                     ),
                   ],

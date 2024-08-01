@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/button.dart';
 
 import 'identity_progression_controller.dart';
 
@@ -16,24 +19,46 @@ class IdentityProgressionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "身份进阶审核",
-          style: TextStyle(
-            color: const Color(0xff333333),
-            fontSize: 18.rpx,
+    return GetBuilder<IdentityProgressionController>(
+      builder: (_){
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: Stack(
+            children: [
+              Visibility(
+                visible: state.audit == 2,
+                child: AppImage.asset("assets/images/mine/lose_back.png",height: 346.rpx,),
+              ),
+              Column(
+                children: [
+                  AppBar(
+                    title: Text(
+                      state.audit != 2 ?
+                      "身份进阶审核":"审核失败",
+                      style: TextStyle(
+                        color: state.audit == 2 ? Colors.white : const Color(0xff333333),
+                        fontSize: 18.rpx,
+                      ),
+                    ),
+                    elevation: 5.rpx,
+                    shadowColor: AppColor.gray11,
+                    systemOverlayStyle: SystemUiOverlayStyle.light,
+                    leading: AppBackButton(brightness:state.audit == 2 ? Brightness.light : Brightness.dark),
+                    backgroundColor: state.audit == 2 ? Colors.transparent : Colors.white,
+                  ),
+                  Expanded(
+                    child: state.audit == 0 ?
+                    jiaAudit():
+                    state.audit == 1 ?
+                    auditSucceed():
+                    auditLose(),
+                  )
+                ],
+              ),
+            ],
           ),
-        ),
-        elevation: 5.rpx,
-        shadowColor: AppColor.gray11,
-      ),
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          jiaAudit(),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -43,10 +68,30 @@ class IdentityProgressionPage extends StatelessWidget {
       margin: EdgeInsets.only(top: 36.rpx),
       child: Column(
         children: [
-          AppImage.asset('assets/images/mine/wait.png',width: 70.rpx,height: 70.rpx,),
+          GestureDetector(
+            onTap: (){
+              controller.updateAudit();
+            },
+            child: AppImage.asset('assets/images/mine/wait.png',width: 70.rpx,height: 70.rpx,),
+          ),
           SizedBox(height: 24.rpx,),
           Text("申请资料已提交",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
-          Text("请耐心等待，可询问客服关注进度",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),textAlign: TextAlign.center,),
+          RichText(
+            text: TextSpan(
+              text: '请耐心等待，可',
+              style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),
+              children: <TextSpan>[
+                TextSpan(
+                  text: "询问客服",
+                  style: AppTextStyle.fs14m.copyWith(color: AppColor.primary),
+                ),
+                TextSpan(
+                  text: '关注进度',
+                  style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),
+                ),
+              ],
+            ),
+          ),
           Container(
             decoration: BoxDecoration(
               color: AppColor.scaffoldBackground,
@@ -58,6 +103,7 @@ class IdentityProgressionPage extends StatelessWidget {
             child: Row(
               children: [
                 AppImage.asset('assets/images/mine/prosperity.png',width: 16.rpx,height: 16.rpx,),
+                SizedBox(width: 8.rpx),
                 Text("已提交",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30)),
                 const Spacer(),
                 Text("2024.03.24 14:32",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
@@ -69,34 +115,97 @@ class IdentityProgressionPage extends StatelessWidget {
     );
   }
 
-
   //审核成功
   Widget auditSucceed(){
     return Container(
+      padding: EdgeInsets.only(top: 36.rpx,bottom: 100.rpx),
       child: Column(
         children: [
-          AppImage.asset('assets/images/mine/wait.png',width: 70.rpx,height: 70.rpx,),
-          SizedBox(height: 24.rpx,),
-          Text("恭喜您成为佳丽",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
           GestureDetector(
-            onTap: null,
-            child: Container(
-              height: 42.rpx,
-              decoration: BoxDecoration(
-                  color: AppColor.primary,
-                  borderRadius: BorderRadius.circular(8.rpx)),
-              margin: EdgeInsets.symmetric(horizontal: 38.rpx, vertical: 40.rpx),
+            onTap: (){
+              controller.updateCurrent();
+            },
+            child: AppImage.asset('assets/images/mine/wait.png',width: 70.rpx,height: 70.rpx,),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 24.rpx,bottom: 74.rpx),
+            child: Text("恭喜您成为佳丽",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
+          ),
+          ...List.generate(state.interests.length, (index) {
+            var item = state.interests[index];
+            return Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(bottom: 24.rpx),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "确定",
-                    style: TextStyle(color: Colors.white, fontSize: 16.rpx),
-                  )
+                  AppImage.asset(item['image'],width: 28.rpx,height: 28.rpx,),
+                  SizedBox(width: 12.rpx,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(item['title'],style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
+                      Text(item['remake'],style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+                    ],
+                  ),
                 ],
               ),
+            );
+          }),
+          const Spacer(),
+          Button(
+            height: 50.rpx,
+            onPressed: (){
+              controller.updateAudit();
+            },
+            margin: EdgeInsets.symmetric(horizontal: 38.rpx),
+            child: Text(
+              "进阶经纪人/普通用户",
+              style: TextStyle(color: Colors.white, fontSize: 16.rpx),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  //审核失败
+  Widget auditLose(){
+    return Container(
+      padding: EdgeInsets.only(top: 36.rpx,bottom: 100.rpx,left: 32.rpx,right: 32.rpx),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            child: AppImage.asset('assets/images/mine/be_defeated.png',width: 70.rpx,height: 70.rpx,),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 150.rpx,bottom: 12.rpx),
+            child: Text("审核驳回",style: AppTextStyle.fs20m.copyWith(color: AppColor.red53),),
+          ),
+          RichText(
+            text: TextSpan(
+              text: '审核过程中发现提交的信息存在缺失、‌矛盾或错误。‌例如，‌在填写申请表时漏填关键信息，‌或在..\n',
+              style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30,height: 1.4),
+              children: <TextSpan>[
+                TextSpan(
+                  text: "2024年03月24日 14:32提交",
+                  style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9,height: 1.4),
+                ),
+              ],
             ),
           ),
+          const Spacer(),
+          Button(
+            height: 50.rpx,
+            onPressed: (){
+              controller.updateAudit();
+            },
+            margin: EdgeInsets.symmetric(horizontal: 38.rpx),
+            child: Text(
+              "确定",
+              style: TextStyle(color: Colors.white, fontSize: 16.rpx),
+            ),
+          )
         ],
       ),
     );

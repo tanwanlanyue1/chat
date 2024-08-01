@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/ui/mine/mine_message/mine_message_state.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -21,7 +22,7 @@ class MineMessagePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.scaffoldBackground,
       appBar: AppBar(
-        title: const Text("我的消息"),
+        title: Text(S.current.myMessage),
       ),
       body: SmartRefresher(
         controller: controller.refreshController,

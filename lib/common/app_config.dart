@@ -1,4 +1,6 @@
 
+import 'package:guanjia/generated/l10n.dart';
+
 /// 应用全局配置
 class AppConfig{
   const AppConfig._();
@@ -53,7 +55,7 @@ class AppConfig{
   // static const geTuiMasterSecret = '9tu39eC5w97f8SmRtEOaD1';
 
   ///ICP备案号
-  static const icp = '粤ICP备2024188839号';
+  static String icp = S.current.guangdongICP;
   static const urlIcp = 'https://beian.miit.gov.cn';
 
 }

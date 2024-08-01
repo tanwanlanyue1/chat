@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 class AboutState {
 
@@ -10,19 +11,19 @@ class AboutState {
   ///协议列表
   List agreementList = [
     {
-      "title":"隐私服务",
+      "title": S.current.privacyService,
       "url": AppConfig.urlPrivacyPolicy,
     },
     {
-      "title":"服务协议",
+      "title": S.current.serviceAgreement,
       "url": AppConfig.urlUserService,
     },
     {
-      "title":"充值服务协议",
+      "title":S.current.rechargeService,
       "url": AppConfig.urlRechargeService,
     },
     {
-      "title":"检测新版本",
+      "title": S.current.detectNewVersions,
       "url": '',
     },
   ];

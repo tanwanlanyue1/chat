@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';
@@ -33,8 +34,10 @@ class IdentityProgressionPage extends StatelessWidget {
                 children: [
                   AppBar(
                     title: Text(
-                      state.audit != 2 ?
-                      "身份进阶审核":"审核失败",
+                      state.audit == 0 ?
+                      S.current.underReview:
+                      state.audit == 1 ? S.current.successfulAudit :
+                      S.current.auditFailure,
                       style: TextStyle(
                         color: state.audit == 2 ? Colors.white : const Color(0xff333333),
                         fontSize: 18.rpx,
@@ -75,18 +78,18 @@ class IdentityProgressionPage extends StatelessWidget {
             child: AppImage.asset('assets/images/mine/wait.png',width: 70.rpx,height: 70.rpx,),
           ),
           SizedBox(height: 24.rpx,),
-          Text("申请资料已提交",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
+          Text(S.current.dataSubmitted,style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
           RichText(
             text: TextSpan(
-              text: '请耐心等待，可',
+              text: S.current.patient,
               style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),
               children: <TextSpan>[
                 TextSpan(
-                  text: "询问客服",
+                  text: S.current.customerService,
                   style: AppTextStyle.fs14m.copyWith(color: AppColor.primary),
                 ),
                 TextSpan(
-                  text: '关注进度',
+                  text: S.current.monitorProgress,
                   style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),
                 ),
               ],
@@ -104,7 +107,7 @@ class IdentityProgressionPage extends StatelessWidget {
               children: [
                 AppImage.asset('assets/images/mine/prosperity.png',width: 16.rpx,height: 16.rpx,),
                 SizedBox(width: 8.rpx),
-                Text("已提交",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30)),
+                Text(S.current.submitted,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30)),
                 const Spacer(),
                 Text("2024.03.24 14:32",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
               ],
@@ -129,7 +132,7 @@ class IdentityProgressionPage extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.only(top: 24.rpx,bottom: 74.rpx),
-            child: Text("恭喜您成为佳丽",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
+            child: Text("${S.current.congratulations}${state.current == 0 ? S.current.goodGirl : state.current == 1 ? S.current.customer:S.current.brokerP}",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
           ),
           ...List.generate(state.interests.length, (index) {
             var item = state.interests[index];
@@ -158,7 +161,10 @@ class IdentityProgressionPage extends StatelessWidget {
             },
             margin: EdgeInsets.symmetric(horizontal: 38.rpx),
             child: Text(
-              "进阶经纪人/普通用户",
+              state.current == 0 ?
+              S.current.generalUser:
+              state.current == 1 ?
+              S.current.generalBroker:S.current.generalGood,
               style: TextStyle(color: Colors.white, fontSize: 16.rpx),
             ),
           )
@@ -180,11 +186,11 @@ class IdentityProgressionPage extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.only(top: 150.rpx,bottom: 12.rpx),
-            child: Text("审核驳回",style: AppTextStyle.fs20m.copyWith(color: AppColor.red53),),
+            child: Text(S.current.reviewReject,style: AppTextStyle.fs20m.copyWith(color: AppColor.red53),),
           ),
           RichText(
             text: TextSpan(
-              text: '审核过程中发现提交的信息存在缺失、‌矛盾或错误。‌例如，‌在填写申请表时漏填关键信息，‌或在..\n',
+              text: '${S.current.auditErrorPrompt}\n',
               style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30,height: 1.4),
               children: <TextSpan>[
                 TextSpan(
@@ -202,7 +208,7 @@ class IdentityProgressionPage extends StatelessWidget {
             },
             margin: EdgeInsets.symmetric(horizontal: 38.rpx),
             child: Text(
-              "确定",
+              S.current.confirm,
               style: TextStyle(color: Colors.white, fontSize: 16.rpx),
             ),
           )

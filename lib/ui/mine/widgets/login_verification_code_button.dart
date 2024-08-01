@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 ///获取验证码按钮
 class LoginVerificationCodeButton extends StatefulWidget {
@@ -52,7 +53,7 @@ class _LoginVerificationCodeButtonState extends State<LoginVerificationCodeButto
   Widget build(BuildContext context) {
     return Obx((){
       final seconds = countdown.secondsRx();
-      var text = (seconds ?? 0) == 0 ? '获取验证码' : '重新发送';
+      var text = (seconds ?? 0) == 0 ? S.current.getCode : S.current.resend;
       if ((seconds ?? 0) > 0) {
         text += ' ($seconds)';
       }

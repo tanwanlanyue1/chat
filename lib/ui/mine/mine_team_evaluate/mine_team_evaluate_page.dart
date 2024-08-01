@@ -45,7 +45,7 @@ class MineTeamEvaluatePage extends StatelessWidget {
       padding: EdgeInsets.only(left: 16.rpx),
       child: Row(
         children: [
-          Text("总评价",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
+          Text(S.current.overallMerit,style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
           SizedBox(width: 12.rpx,),
           Row(
             children: List.generate(5, (i) => Container(
@@ -59,7 +59,7 @@ class MineTeamEvaluatePage extends StatelessWidget {
               ),
             )),
           ),
-          Text("4.0分",style: AppTextStyle.fs14m.copyWith(color: AppColor.primary),),
+          Text("4.0${S.current.minute}",style: AppTextStyle.fs14m.copyWith(color: AppColor.primary),),
         ],
       ),
     );

@@ -4,6 +4,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 
@@ -53,13 +54,13 @@ class ActivationProgression extends StatelessWidget {
                           width: 24.rpx,height: 24.rpx,),
                       ),
                     ),
-                    Text("身份进阶",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
+                    Text(S.current.identityProgression,style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
                     Container(
                       height: 1.rpx,
                       margin: EdgeInsets.all(16.rpx),
                       color: AppColor.scaffoldBackground,
                     ),
-                    Text("请选择您想要激活的身份",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
+                    Text(S.current.pleaseSelectId,style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
                     Obx(() => Container(
                       padding: EdgeInsets.all(24.rpx),
                       margin: EdgeInsets.symmetric(horizontal: 16.rpx,vertical: 24.rpx),
@@ -80,7 +81,7 @@ class ActivationProgression extends StatelessWidget {
                                 border: Border.all(color: AppColor.primary, width: 1),
                                 borderRadius: BorderRadius.circular(24.rpx),
                               ),
-                              child: Text("佳丽",style: AppTextStyle.fs14m.copyWith(color: index.value == 0 ? Colors.white : AppColor.primary),),
+                              child: Text(S.current.goodGirl,style: AppTextStyle.fs14m.copyWith(color: index.value == 0 ? Colors.white : AppColor.primary),),
                             ),
                           ),
                           GestureDetector(
@@ -97,7 +98,7 @@ class ActivationProgression extends StatelessWidget {
                                 border: Border.all(color: AppColor.primary, width: 1),
                                 borderRadius: BorderRadius.circular(24.rpx),
                               ),
-                              child: Text("经纪人",style: AppTextStyle.fs14m.copyWith(color: index.value == 1 ? Colors.white : AppColor.primary),),
+                              child: Text(S.current.brokerP,style: AppTextStyle.fs14m.copyWith(color: index.value == 1 ? Colors.white : AppColor.primary),),
                             ),
                           ),
                         ],
@@ -107,7 +108,7 @@ class ActivationProgression extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 16.rpx),
                       child: CommonGradientButton(
                         height: 50.rpx,
-                        text: '确认',
+                        text: S.current.affirm,
                         onTap: (){
                           Get.back();
                           Get.toNamed(AppRoutes.identityProgressionPage);

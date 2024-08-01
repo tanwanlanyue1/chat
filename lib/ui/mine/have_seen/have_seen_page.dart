@@ -42,13 +42,13 @@ class HaveSeenPage extends StatelessWidget {
           margin: EdgeInsets.symmetric(vertical: 36.rpx),
           child: AppImage.asset("assets/images/mine/warning.png",width: 120.rpx,height: 120.rpx,),
         ),
-        Text("您还不是VIP，暂时无法使用该功能。\n点击下方按钮可立即充值",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,height: 1.4),textAlign: TextAlign.center,),
+        Text(S.current.seenVip,style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,height: 1.4),textAlign: TextAlign.center,),
         Button(
           onPressed: (){
             state.vip.value = true;
           },
           margin: EdgeInsets.all(37.rpx),
-          child: Text("立即前往充值VIP",style: AppTextStyle.fs16m.copyWith(color: Colors.white),),
+          child: Text(S.current.goNowToVIP,style: AppTextStyle.fs16m.copyWith(color: Colors.white),),
         )
       ],
     );

@@ -102,15 +102,16 @@ class _MinePageState extends State<MinePage>
   Widget buildUserInfo() {
     return Obx(() {
       final userInfo = SS.login.info;
-      final statusRx = state.beautifulStatusRx;
+      final status = state.beautifulStatusRx;
+      final userType = userTypeRx;
 
       return Padding(
         padding: FEdgeInsets(horizontal: 16.rpx),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (statusRx != null && userType.isBeauty)
-              BeautifulStatusTips(status: statusRx),
+            if (status != null && userType.isBeauty)
+              BeautifulStatusTips(status: status),
             buildShadowBox(
               width: double.infinity,
               height: 130.rpx,
@@ -178,11 +179,11 @@ class _MinePageState extends State<MinePage>
                       ],
                     ),
                   ),
-                  if (statusRx != null && userType.isBeauty)
+                  if (status != null && userType.isBeauty)
                     Padding(
                       padding: FEdgeInsets(left: 4.rpx),
                       child: BeautifulStatusSwitch(
-                        status: statusRx,
+                        status: status,
                         onChange: controller.onTapBeautifulStatus,
                       ),
                     ),
@@ -250,138 +251,144 @@ class _MinePageState extends State<MinePage>
     );
   }
 
-  UserType get userType => SS.login.info?.type ?? UserType.user;
+  UserType get userTypeRx => SS.login.info?.type ?? UserType.user;
 
   ///第1部分
   Widget buildSectionOne() {
-    return buildSection(
-      children: [
-        //个人信息
-        MineListTile(
-          title: S.current.personalInformation,
-          icon: "assets/images/mine/personal_info.png",
-          pagePath: AppRoutes.accountDataPage,
-        ),
-        //我的钱包
-        MineListTile(
-          title: S.current.myWallet,
-          icon: "assets/images/mine/wallet.png",
-        ),
-        //我的VIP
-        MineListTile(
-          title: S.current.myVIP,
-          icon: "assets/images/mine/VIP.png",
-        ),
-        //我的客户
-        if (userType.isBeauty)
+    return Obx((){
+      final userType = userTypeRx;
+      return buildSection(
+        children: [
+          //个人信息
           MineListTile(
-            title: S.current.myCustomer,
-            icon: "assets/images/mine/mine_client.png",
+            title: S.current.personalInformation,
+            icon: "assets/images/mine/personal_info.png",
+            pagePath: AppRoutes.accountDataPage,
           ),
-        //我的评价
-        if (userType.isUser)
+          //我的钱包
           MineListTile(
-            title: S.current.myAssessment,
-            icon: "assets/images/mine/evaluate.png",
-            pagePath: AppRoutes.mineEvaluatePage,
+            title: S.current.myWallet,
+            icon: "assets/images/mine/wallet.png",
           ),
-        //意见反馈
-        MineListTile(
-          title: S.current.feedback,
-          icon: "assets/images/mine/feedback.png",
-          pagePath: AppRoutes.mineFeedbackPage,
-        ),
-        //我的设置
-        MineListTile(
-          title: S.current.mySettings,
-          icon: "assets/images/mine/setting.png",
-          pagePath: AppRoutes.mineSettingPage,
-        ),
-        //激活/进阶
-        if (userType.isUser)
+          //我的VIP
           MineListTile(
-            title: S.current.activationProgression,
-            icon: "assets/images/mine/activate.png",
-            trailing: S.current.normalUser,
-            onTap: () {
-              ActivationProgression.show();
-            },
+            title: S.current.myVIP,
+            icon: "assets/images/mine/VIP.png",
           ),
-        //解约/进阶为经纪人
-        if (userType.isBeauty)
+          //我的客户
+          if (userType.isBeauty)
+            MineListTile(
+              title: S.current.myCustomer,
+              icon: "assets/images/mine/mine_client.png",
+            ),
+          //我的评价
+          if (userType.isUser)
+            MineListTile(
+              title: S.current.myAssessment,
+              icon: "assets/images/mine/evaluate.png",
+              pagePath: AppRoutes.mineEvaluatePage,
+            ),
+          //意见反馈
           MineListTile(
-            title: S.current.cancelAdvanceToBroker,
-            icon: "assets/images/mine/cancel_a_contract.png",
-            trailing: S.current.beautifulUser,
+            title: S.current.feedback,
+            icon: "assets/images/mine/feedback.png",
+            pagePath: AppRoutes.mineFeedbackPage,
           ),
-        //评价我的
-        if (userType.isBeauty)
+          //我的设置
           MineListTile(
-            title: S.current.appraiseMe,
-            icon: "assets/images/mine/evaluate.png",
-            pagePath: AppRoutes.jiaEvaluatePage,
+            title: S.current.mySettings,
+            icon: "assets/images/mine/setting.png",
+            pagePath: AppRoutes.mineSettingPage,
           ),
-        //团队评价
-        if (userType.isAgent)
-          MineListTile(
-            title: S.current.teamEvaluation,
-            icon: "assets/images/mine/evaluate.png",
-            pagePath: AppRoutes.mineTeamEvaluatePage,
-          ),
-        //我的团队
-        if (userType.isAgent)
-          MineListTile(
-            title: S.current.myTeam,
-            icon: "assets/images/mine/my_team.png",
-            trailing: S.current.brokerUser,
-            pagePath: AppRoutes.mineMyTeamPage,
-          ),
-      ],
-    );
+          //激活/进阶
+          if (userType.isUser)
+            MineListTile(
+              title: S.current.activationProgression,
+              icon: "assets/images/mine/activate.png",
+              trailing: S.current.normalUser,
+              onTap: () {
+                ActivationProgression.show();
+              },
+            ),
+          //解约/进阶为经纪人
+          if (userType.isBeauty)
+            MineListTile(
+              title: S.current.cancelAdvanceToBroker,
+              icon: "assets/images/mine/cancel_a_contract.png",
+              trailing: S.current.beautifulUser,
+            ),
+          //评价我的
+          if (userType.isBeauty)
+            MineListTile(
+              title: S.current.appraiseMe,
+              icon: "assets/images/mine/evaluate.png",
+              pagePath: AppRoutes.jiaEvaluatePage,
+            ),
+          //团队评价
+          if (userType.isAgent)
+            MineListTile(
+              title: S.current.teamEvaluation,
+              icon: "assets/images/mine/evaluate.png",
+              pagePath: AppRoutes.mineTeamEvaluatePage,
+            ),
+          //我的团队
+          if (userType.isAgent)
+            MineListTile(
+              title: S.current.myTeam,
+              icon: "assets/images/mine/my_team.png",
+              trailing: S.current.brokerUser,
+              pagePath: AppRoutes.mineMyTeamPage,
+            ),
+        ],
+      );
+    });
   }
 
   ///第2部分
   Widget buildSectionTwo() {
-    return buildSection(
-      margin: FEdgeInsets(top: 16.rpx),
-      children: [
-        //谁看过我
-        if (userType.isBeauty)
-          MineListTile(
-            title: S.current.whoSeenMe,
-            icon: "assets/images/mine/examine.png",
-            pagePath: AppRoutes.haveSeenPage,
-          ),
-        //修改服务费
-        if (userType.isBeauty)
-          MineListTile(
-            title: S.current.modificationServiceCharge,
-            icon: "assets/images/mine/modification_service.png",
-            pagePath: AppRoutes.mineServiceChargePage,
-          ),
-        //查看契约单
-        if (userType.isBeauty)
-          MineListTile(
-            title: S.current.contractDetail,
-            icon: "assets/images/mine/look_contract.png",
-            pagePath: AppRoutes.contractListPage,
-          ),
-        //生成契约单
-        if (userType.isAgent)
-          MineListTile(
-            title: S.current.generateContract,
-            icon: "assets/images/mine/look_contract.png",
-            pagePath: AppRoutes.contractGeneratePage,
-          ),
-        //我的消息
-        if (userType.isUser)
-          MineListTile(
-            title: S.current.myMessage,
-            icon: "assets/images/mine/message.png",
-            pagePath: AppRoutes.mineMessage,
-          ),
-      ],
-    );
+    return Obx((){
+      final userType = userTypeRx;
+      return buildSection(
+        margin: FEdgeInsets(top: 16.rpx),
+        children: [
+          //谁看过我
+          if (userType.isBeauty)
+            MineListTile(
+              title: S.current.whoSeenMe,
+              icon: "assets/images/mine/examine.png",
+              pagePath: AppRoutes.haveSeenPage,
+            ),
+          //修改服务费
+          if (userType.isBeauty)
+            MineListTile(
+              title: S.current.modificationServiceCharge,
+              icon: "assets/images/mine/modification_service.png",
+              pagePath: AppRoutes.mineServiceChargePage,
+            ),
+          //查看契约单
+          if (userType.isBeauty)
+            MineListTile(
+              title: S.current.contractDetail,
+              icon: "assets/images/mine/look_contract.png",
+              pagePath: AppRoutes.contractListPage,
+            ),
+          //生成契约单
+          if (userType.isAgent)
+            MineListTile(
+              title: S.current.generateContract,
+              icon: "assets/images/mine/look_contract.png",
+              pagePath: AppRoutes.contractGeneratePage,
+            ),
+          //我的消息
+          if (userType.isUser)
+            MineListTile(
+              title: S.current.myMessage,
+              icon: "assets/images/mine/message.png",
+              pagePath: AppRoutes.mineMessage,
+            ),
+        ],
+      );
+    });
   }
 
   Widget buildSignOutButton() {

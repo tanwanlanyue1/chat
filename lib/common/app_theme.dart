@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
+import 'package:material_color_generator/material_color_generator.dart';
 
-import '../widgets/app_image.dart';
 class AppTheme {
   const AppTheme._();
 
@@ -20,6 +20,8 @@ class AppTheme {
         return AppBackButtonIcon(brightness: brightness);
       },
     ),
+    scaffoldBackgroundColor: AppColor.scaffoldBackground,
+    primarySwatch: generateMaterialColor(color: AppColor.primary),
     appBarTheme: AppBarTheme(
       elevation: 0,
       scrolledUnderElevation: 0,

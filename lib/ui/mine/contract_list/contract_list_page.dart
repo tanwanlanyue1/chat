@@ -21,7 +21,6 @@ class ContractListPage extends GetView<ContractListController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(S.current.contractList)),
-      backgroundColor: AppColor.scaffoldBackground,
       body: SmartRefresher(
         controller: controller.pagingController.refreshController,
         onRefresh: controller.pagingController.onRefresh,

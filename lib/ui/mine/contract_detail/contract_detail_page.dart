@@ -22,7 +22,6 @@ class ContractDetailPage extends GetView<ContractDetailController> {
       appBar: AppBar(
         title: Text(state.title),
       ),
-      backgroundColor: AppColor.scaffoldBackground,
       body: SingleChildScrollView(
         padding: FEdgeInsets(horizontal: 16.rpx, vertical: 24.rpx),
         child: Container(

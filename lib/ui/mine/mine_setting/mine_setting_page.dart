@@ -28,7 +28,6 @@ class MineSettingPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(S.current.setting),
       ),
-      backgroundColor: AppColor.scaffoldBackground,
       body: Obx(() {
         return Column(
           children: [

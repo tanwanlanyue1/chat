@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/ui/chat/chat_page.dart';
 import 'package:guanjia/ui/mine/mine_page.dart';
 import 'package:guanjia/ui/plaza/plaza_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -19,7 +20,7 @@ class HomePage extends StatelessWidget {
           controller: controller.pageController,
           physics: const NeverScrollableScrollPhysics(),
           children: [
-            Container(),
+            ChatPage(),
             Container(),
             Container(),
             PlazaPage(),

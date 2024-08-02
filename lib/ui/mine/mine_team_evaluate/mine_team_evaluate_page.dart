@@ -22,7 +22,6 @@ class MineTeamEvaluatePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(S.current.teamEvaluation),
       ),
-      backgroundColor: AppColor.scaffoldBackground,
       body: Column(
         children: [
           overallMerit(),

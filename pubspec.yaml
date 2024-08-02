@@ -58,6 +58,7 @@ dependencies:
   intl_phone_field: ^3.2.0
   extended_image: ^8.2.1
   image_editor: ^1.5.1
+  material_color_generator: ^1.1.0
 
 dependency_overrides:
   http: ^1.2.1 # svgaplayer_flutter 和 flutter_cache_manager会冲突，强制使用flutter_cache_manager依赖版本

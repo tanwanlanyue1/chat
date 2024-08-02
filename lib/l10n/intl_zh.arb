@@ -179,5 +179,6 @@
   "securityDepositTips": "注：保证金在订单结束后会原路返回",
   "beautifulOfflineTips": "您已下线，再次点击切换继续接单哦。",
   "beautifulOnlineTips": "您已经开始接约啦~",
-  "copySuccess": "复制成功"
+  "copySuccess": "复制成功",
+  "chat": "聊天"
 }

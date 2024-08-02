@@ -21,7 +21,6 @@ class BindingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.scaffoldBackground,
       appBar: AppBar(
         title: Obx(() => Text(
           state.isPhone.value ? "绑定手机" : "绑定邮箱",

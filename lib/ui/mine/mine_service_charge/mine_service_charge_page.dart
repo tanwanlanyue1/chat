@@ -23,7 +23,6 @@ class MineServiceChargePage extends StatelessWidget {
         centerTitle: true,
         title: Text(S.current.modificationServiceCharge,style: TextStyle(color: const Color(0xff333333),fontSize: 18.rpx,),),
       ),
-      backgroundColor: AppColor.scaffoldBackground,
       body: Column(
         children: [
           SizedBox(height: 36.rpx),

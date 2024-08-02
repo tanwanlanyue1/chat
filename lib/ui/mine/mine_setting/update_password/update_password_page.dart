@@ -19,7 +19,6 @@ class UpdatePasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.scaffoldBackground,
       appBar: AppBar(
         title: Text(
           state.isLogin.value ? S.current.changingPassword : S.current.changingPaymentPassword,

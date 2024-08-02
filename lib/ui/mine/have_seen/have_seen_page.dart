@@ -24,7 +24,6 @@ class HaveSeenPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(S.current.whoSeenMe),
       ),
-      backgroundColor: AppColor.scaffoldBackground,
       body: Obx(() => Visibility(
         visible: !state.vip.value,
         replacement: buildClient(),

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/common/network/httpclient/api_response.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/common/utils/result.dart';
@@ -225,6 +226,27 @@ class LoginService extends GetxService {
               await _clearData();
               return ResultFailure(errorMessage);
             }));
+  }
+
+  /// 初始化用户信息
+  /// gender: 性别 1：男 2：女
+  /// birth：生日
+  /// likeSex：喜好性别 0：其它 1：男 2：女
+  /// likeStyle：喜好风格id 字符串格式 英文逗号拼接
+  Future<ApiResponse> initUserInfo({
+    int? gender,
+    String? birth,
+    int? likeSex,
+    String? likeStyle,
+  }) async {
+    final res = await UserApi.initUserInfo(
+      gender: gender,
+      birth: birth,
+      likeSex: likeSex,
+      likeStyle: likeStyle,
+    );
+
+    return res;
   }
 
   /// 根据id获取用户信息

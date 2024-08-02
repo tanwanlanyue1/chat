@@ -138,7 +138,7 @@ class UserCenterPage extends StatelessWidget {
                                 ),
                                 padding: EdgeInsets.only(left: 4.rpx, right: 4.rpx),
                                 height: 14.rpx,
-                                child: Text("Lv.${state.authorInfo.cavLevel}",style: TextStyle(fontSize: 10.rpx,color: Colors.white),),
+                                child: Text("Lv.0",style: TextStyle(fontSize: 10.rpx,color: Colors.white),),
                               ),
                             ],
                           ),

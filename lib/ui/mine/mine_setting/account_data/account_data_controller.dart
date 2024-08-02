@@ -18,9 +18,33 @@ class AccountDataController extends GetxController {
   final signatureController = TextEditingController();
 
   @override
+  void onInit() {
+    final userInfo = loginService.info;
+
+    state.yearRangeStart.value = userInfo?.likeAgeMin ?? 18;
+    state.yearRangeEnd.value = userInfo?.likeAgeMax ?? 40;
+
+    final idsList = userInfo?.likeStyle.split(',');
+
+    SS.appConfig.configRx.value?.labels?.forEach((element) {
+      state.labelItems.add(LabelItem(
+        id: element.id,
+        title: element.tag,
+        selected: idsList?.contains(element.id.toString()) ?? false,
+      ));
+    });
+
+    super.onInit();
+  }
+
+  @override
   void onClose() {
     signatureController.dispose();
     super.onClose();
+  }
+
+  void onTapSave() async {
+
   }
 
   void onTapJob() {}
@@ -39,20 +63,15 @@ class AccountDataController extends GetxController {
   Future<void> selectSex() async {
     Get.bottomSheet(
       CommonBottomSheet(
-        titles: const ["男", "女", "保密"],
+        titles: const [
+          "男",
+          "女",
+        ],
         onTap: (index) async {
-          int gender = 0;
-          switch (index) {
-            case 0:
-              gender = 1;
-              break;
-            case 1:
-              gender = 2;
-              break;
-          }
+          UserGender gender = UserGender.valueForIndex(index);
 
           Loading.show();
-          final res = await UserApi.modifyUserInfoNoCheck(gender: gender);
+          final res = await UserApi.modifyUserInfoNoCheck(gender: gender.index);
           Loading.dismiss();
 
           if (!res.isSuccess) {

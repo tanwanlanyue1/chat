@@ -18,6 +18,11 @@ enum UserType {
   static UserType valueForIndex(int index) {
     return UserType.values.elementAtOrNull(index) ?? UserType.user;
   }
+
+  bool get isUser => this == UserType.user;
+  bool get isBeauty => this == UserType.beauty;
+  bool get isAgent => this == UserType.agent;
+
 }
 
 class UserModel {
@@ -51,7 +56,7 @@ class UserModel {
   final int uid; // 用户id
   final int chatNo; // 用户编号
   UserType type; // 用户类型 0普通用户 1佳丽 2经纪人
-  final int state; // 在线状态 0不接约 1接约中 2约会进行中
+  int state; // 在线状态 0不接约 1接约中 2约会进行中
   String? avatar; // 头像
   final int serviceCharge; // 服务费
   String? nickname; // 昵称

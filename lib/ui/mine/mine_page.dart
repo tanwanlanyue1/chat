@@ -12,6 +12,7 @@ import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/beautiful_status_tips.dart';
 import 'package:guanjia/ui/mine/widgets/mine_list_tile.dart';
+import 'package:guanjia/ui/mine/widgets/role_visibility.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -107,7 +108,8 @@ class _MinePageState extends State<MinePage>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if(statusRx != null) BeautifulStatusTips(status: statusRx),
+            if (statusRx != null)
+              BeautyVisible(child: BeautifulStatusTips(status: statusRx)),
             buildShadowBox(
               width: double.infinity,
               height: 130.rpx,
@@ -148,15 +150,16 @@ class _MinePageState extends State<MinePage>
                             color: AppColor.gray5,
                           ),
                         ),
-                        if(userInfo?.position.isNotEmpty == true) Padding(
-                          padding: FEdgeInsets(top: 4.rpx),
-                          child: Text(
-                            userInfo?.position ?? '',
-                            style: AppTextStyle.fs16m.copyWith(
-                              color: AppColor.gray9,
+                        if (userInfo?.position?.isNotEmpty == true)
+                          Padding(
+                            padding: FEdgeInsets(top: 4.rpx),
+                            child: Text(
+                              userInfo?.position ?? '',
+                              style: AppTextStyle.fs16m.copyWith(
+                                color: AppColor.gray9,
+                              ),
                             ),
                           ),
-                        ),
                         if (userInfo?.chatNo != null)
                           GestureDetector(
                             onTap: () => '${userInfo?.chatNo}'.copy(),
@@ -175,11 +178,13 @@ class _MinePageState extends State<MinePage>
                     ),
                   ),
                   if (statusRx != null)
-                    Padding(
-                      padding: FEdgeInsets(left: 4.rpx),
-                      child: BeautifulStatusSwitch(
-                        status: statusRx,
-                        onChange: controller.onTapBeautifulStatus,
+                    BeautyVisible(
+                      child: Padding(
+                        padding: FEdgeInsets(left: 4.rpx),
+                        child: BeautifulStatusSwitch(
+                          status: statusRx,
+                          onChange: controller.onTapBeautifulStatus,
+                        ),
                       ),
                     ),
                 ],
@@ -266,11 +271,18 @@ class _MinePageState extends State<MinePage>
           title: S.current.myVIP,
           icon: "assets/images/mine/VIP.png",
         ),
-        //我的评价
+        //我的客户
         MineListTile(
-          title: S.current.myAssessment,
-          icon: "assets/images/mine/evaluate.png",
-          pagePath: AppRoutes.mineEvaluatePage,
+          title: S.current.myCustomer,
+          icon: "assets/images/mine/mine_client.png",
+        ),
+        //我的评价
+        UserVisible(
+          child: MineListTile(
+            title: S.current.myAssessment,
+            icon: "assets/images/mine/evaluate.png",
+            pagePath: AppRoutes.mineEvaluatePage,
+          ),
         ),
         //意见反馈
         MineListTile(

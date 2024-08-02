@@ -53,8 +53,8 @@ class MineController extends GetxController {
   }
 
   ///切换佳丽状态
-  void onTapBeautifulStatus(BeautifulStatus status) async{
-    if(status == BeautifulStatus.online) {
+  void onTapBeautifulStatus(UserStatus status) async{
+    if(status == UserStatus.online) {
       final result = await SecurityDepositDialog.show();
       if (!result) {
         return;
@@ -65,7 +65,7 @@ class MineController extends GetxController {
     Loading.dismiss();
     if(response.isSuccess){
       SS.login.setInfo((val) {
-        val?.state = status.value;
+        val?.state = status;
       });
     }else{
       response.showErrorMessage();

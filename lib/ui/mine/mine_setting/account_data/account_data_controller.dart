@@ -24,7 +24,7 @@ class AccountDataController extends GetxController {
     state.yearRangeStart.value = userInfo?.likeAgeMin ?? 18;
     state.yearRangeEnd.value = userInfo?.likeAgeMax ?? 40;
 
-    final idsList = userInfo?.likeStyle.split(',');
+    final idsList = userInfo?.likeStyle?.split(',');
 
     SS.appConfig.configRx.value?.labels?.forEach((element) {
       state.labelItems.add(LabelItem(
@@ -68,18 +68,8 @@ class AccountDataController extends GetxController {
           "女",
         ],
         onTap: (index) async {
+
           UserGender gender = UserGender.valueForIndex(index);
-
-          Loading.show();
-          final res = await UserApi.modifyUserInfoNoCheck(gender: gender.index);
-          Loading.dismiss();
-
-          if (!res.isSuccess) {
-            res.showErrorMessage();
-            return;
-          }
-
-          Loading.showToast("修改成功");
 
           loginService.setInfo((val) {
             val?.gender = gender;

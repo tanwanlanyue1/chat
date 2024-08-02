@@ -22,8 +22,6 @@ class QuestionController extends GetxController {
     super.onInit();
   }
 
-
-
   void onTapSkip() {
     _goHome();
   }
@@ -79,7 +77,6 @@ class QuestionController extends GetxController {
   }
 
   void _goHome() {
-    print("------跳转到登录");
     Get.offAllNamed(AppRoutes.home);
   }
 }

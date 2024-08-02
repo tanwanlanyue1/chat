@@ -10,6 +10,18 @@ import 'question_state.dart';
 class QuestionController extends GetxController {
   final QuestionState state = QuestionState();
 
+  @override
+  void onInit() {
+    SS.appConfig.configRx.value?.labels?.forEach((element) {
+      state.labelItems.add(LabelItem(
+        id: element.id,
+        title: element.tag,
+      ));
+    });
+
+    super.onInit();
+  }
+
   void onTapSkip() {
     Get.backToRoot();
   }
@@ -24,7 +36,12 @@ class QuestionController extends GetxController {
       return;
     }
 
-    if (state.likeGender.value == null) {
+    final selectedIdString = state.labelItems
+        .where((item) => item.selected)
+        .map((item) => item.id.toString())
+        .join(',');
+
+    if (state.likeGender.value == null && selectedIdString.isEmpty) {
       Get.backToRoot();
       return;
     }
@@ -32,6 +49,7 @@ class QuestionController extends GetxController {
     Loading.show();
     final res = await SS.login.initUserInfo(
       likeSex: state.likeGender.value,
+      likeStyle: selectedIdString.isEmpty ? null : selectedIdString,
     );
     Loading.dismiss();
 
@@ -39,6 +57,8 @@ class QuestionController extends GetxController {
       res.showErrorMessage();
       return;
     }
+
+    SS.login.fetchMyInfo();
 
     Get.backToRoot();
   }

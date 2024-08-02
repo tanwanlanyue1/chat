@@ -54,10 +54,13 @@ class AppConfigModel {
   int? serverTime;
   String? jumpLink;
   String? cancelAccountLink;
+
   ///一个境修币兑换多少人民币（单价）
   num? goldPrice;
+
   ///最低充值境修币数量
   int? minPayGold;
+
   ///充值提示语
   String? payGoldRule;
   List<LogTypeIcon>? logTypeIcon;
@@ -65,8 +68,12 @@ class AppConfigModel {
   List<Home>? home;
   List<dynamic>? resources;
   String? desc;
+
   ///佛经大全的头部文本
   List<String>? scriptures;
+
+  /// 拼接 标签
+  List<LabelModel>? labels;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -170,12 +177,38 @@ class LogTypeIcon {
   });
 
   factory LogTypeIcon.fromJson(dynamic json) => LogTypeIcon(
-    logType: json['logType'] ?? 0,
-    icon: json['icon'] ?? '',
-    name: json['name'] ?? '',
-  );
+        logType: json['logType'] ?? 0,
+        icon: json['icon'] ?? '',
+        name: json['name'] ?? '',
+      );
 
   final int logType;
   final String icon;
   final String name;
+}
+
+class LabelModel {
+  LabelModel({
+    required this.id,
+    required this.type,
+    required this.tag,
+  });
+
+  final int id;
+  final int type; // 类型 0通用 1男 2女
+  final String tag; // 风格类型
+
+  factory LabelModel.fromJson(Map<String, dynamic> json) {
+    return LabelModel(
+      id: json["id"] ?? 0,
+      type: json["type"] ?? 0,
+      tag: json["tag"] ?? "",
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "type": type,
+        "tag": tag,
+      };
 }

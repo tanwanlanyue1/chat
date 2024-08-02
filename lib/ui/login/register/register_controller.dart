@@ -29,8 +29,6 @@ class RegisterController extends GetxController {
 
   void onTapRegister() async {
     FocusScope.of(Get.context!).unfocus();
-    Get.toNamed(AppRoutes.loginQuestionPage);
-    return;
 
     if (passwordController.text != passwordAgainController.text) {
       Loading.showToast("两次输入的密码不一致");

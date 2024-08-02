@@ -6,10 +6,15 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 
 /// LabelItem 类型定义，用于存储标签的标题和选择状态
 class LabelItem {
+  final int id;
   final String title;
   bool selected;
 
-  LabelItem({required this.title, this.selected = false});
+  LabelItem({
+    required this.id,
+    required this.title,
+    this.selected = false,
+  });
 }
 
 /// 标签组件

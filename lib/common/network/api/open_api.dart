@@ -1,7 +1,5 @@
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/httpclient/http_client.dart';
-import 'package:guanjia/common/service/service.dart';
-import 'package:guanjia/common/utils/app_logger.dart';
 
 enum OpenApiLoginType {
   password,
@@ -151,6 +149,31 @@ class OpenApi {
           return AppUpdateVersionModel.fromJson(data);
         }
         return null;
+      },
+    );
+  }
+
+  /// 查询风格列表
+  /// - type 风格类型 0通用 1男 2女 示例值(0)
+  /// - page 页码（默认1）,示例值(1)
+  /// - size 每页数量（默认10）,示例值(999)
+  static Future<ApiResponse<List<LabelModel>>> getStyleList({
+    int type = 0,
+    int page = 1,
+    int size = 999,
+  }) {
+    return HttpClient.get(
+      '/openapi/getStyleList',
+      params: {
+        'type': type,
+        'page': page,
+        'size': size,
+      },
+      dataConverter: (data) {
+        if (data is List) {
+          return data.map((e) => LabelModel.fromJson(e)).toList();
+        }
+        return [];
       },
     );
   }

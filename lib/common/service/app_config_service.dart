@@ -14,8 +14,15 @@ class AppConfigService extends GetxService {
 
   Future<void> fetchData() async {
     final response = await OpenApi.getAppConfig();
-    if(response.isSuccess){
+    if (response.isSuccess) {
       configRx.value = response.data;
+    }
+
+    final labelRes = await OpenApi.getStyleList();
+    if (labelRes.isSuccess) {
+      configRx.update((val) {
+        val?.labels = labelRes.data;
+      });
     }
   }
 }

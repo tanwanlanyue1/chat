@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/widgets/label_widget.dart';
+import 'package:guanjia/widgets/loading.dart';
 
 import 'question_state.dart';
 
@@ -12,7 +14,7 @@ class QuestionController extends GetxController {
     Get.backToRoot();
   }
 
-  void onTapNext(int page) {
+  void onTapNext(int page) async {
     if (page < 1) {
       Get.toNamed(
         AppRoutes.loginQuestionPage,
@@ -21,6 +23,23 @@ class QuestionController extends GetxController {
       );
       return;
     }
+
+    if (state.likeGender.value == null) {
+      Get.backToRoot();
+      return;
+    }
+
+    Loading.show();
+    final res = await SS.login.initUserInfo(
+      likeSex: state.likeGender.value,
+    );
+    Loading.dismiss();
+
+    if (!res.isSuccess) {
+      res.showErrorMessage();
+      return;
+    }
+
     Get.backToRoot();
   }
 
@@ -28,10 +47,8 @@ class QuestionController extends GetxController {
     state.gender.value = gender;
   }
 
-  void onTapLikeGender(bool gender, int page) {
+  void onTapLikeGender(int gender, int page) {
     state.likeGender.value = gender;
-
-    onTapNext(page);
   }
 
   void onTapLabel(LabelItem item) {

@@ -78,13 +78,6 @@ class QuestionPage extends StatelessWidget {
   }
 
   Widget _questionWidget() {
-    Widget genderButton(bool isBoy) {
-      return Obx(() {
-        var isSelect = state.gender.value == isBoy;
-        return _genderButton(isBoy, isSelect);
-      });
-    }
-
     return Positioned(
       top: Get.mediaQuery.padding.top + kBottomNavigationBarHeight,
       left: 0,
@@ -113,8 +106,8 @@ class QuestionPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      genderButton(false),
-                      genderButton(true),
+                      _likeGenderButton(false),
+                      _likeGenderButton(true),
                     ],
                   ),
                   SizedBox(height: 60.rpx),
@@ -137,6 +130,7 @@ class QuestionPage extends StatelessWidget {
                           return LabelWidget(
                             onTap: () => controller.onTapLabel(item),
                             item: item,
+                            fontWeight: FontWeight.w600,
                           );
                         });
                       }),
@@ -239,45 +233,53 @@ class QuestionPage extends StatelessWidget {
     );
   }
 
-  GestureDetector _genderButton(bool isBoy, bool isSelect) {
-    return GestureDetector(
-      onTap: () => controller.onTapGender(isBoy, page),
-      child: Container(
-        height: 150.rpx,
-        width: 150.rpx,
-        decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8.rpx),
-          border: isSelect
-              ? Border.all(
-                  color: Colors.white,
-                  width: 1.5.rpx,
-                )
-              : null,
+  Widget _likeGenderButton(bool isMan) {
+    return Obx(() {
+      final bool isSelect;
+      if (isMan) {
+        isSelect = state.likeGender.value == 1;
+      } else {
+        isSelect = state.likeGender.value == 2;
+      }
+      return GestureDetector(
+        onTap: () => controller.onTapLikeGender(isMan ? 1 : 2, page),
+        child: Container(
+          height: 150.rpx,
+          width: 150.rpx,
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8.rpx),
+            border: isSelect
+                ? Border.all(
+                    color: Colors.white,
+                    width: 1.5.rpx,
+                  )
+                : null,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AppImage.asset(
+                isMan
+                    ? "assets/images/login/man.png"
+                    : "assets/images/login/woman.png",
+                width: 70.rpx,
+                height: 70.rpx,
+              ),
+              SizedBox(height: 16.rpx),
+              Text(
+                isMan ? S.current.questionMan : S.current.questionWoman,
+                style: AppTextStyle.st.medium
+                    .size(16.rpx)
+                    .textColor(
+                        isSelect ? Colors.white : Colors.white.withOpacity(0.5))
+                    .copyWith(height: 1),
+              ),
+            ],
+          ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AppImage.asset(
-              isBoy
-                  ? "assets/images/login/man.png"
-                  : "assets/images/login/woman.png",
-              width: 70.rpx,
-              height: 70.rpx,
-            ),
-            SizedBox(height: 16.rpx),
-            Text(
-              isBoy ? S.current.questionMan : S.current.questionWoman,
-              style: AppTextStyle.st.medium
-                  .size(16.rpx)
-                  .textColor(
-                      isSelect ? Colors.white : Colors.white.withOpacity(0.5))
-                  .copyWith(height: 1),
-            ),
-          ],
-        ),
-      ),
-    );
+      );
+    });
   }
 
 // Widget _createdQuestionWidget(int number) {

@@ -18,6 +18,7 @@ class LabelWidget extends StatelessWidget {
     super.key,
     required this.item,
     this.onTap,
+    this.fontWeight,
     this.textColor,
     this.selectedTextColor,
     this.selectedBackgroundColor,
@@ -26,6 +27,7 @@ class LabelWidget extends StatelessWidget {
 
   final LabelItem item;
   final Function? onTap;
+  final FontWeight? fontWeight;
   final Color? textColor;
   final Color? selectedTextColor;
   final Color? selectedBackgroundColor;
@@ -47,9 +49,12 @@ class LabelWidget extends StatelessWidget {
         ),
         child: Text(
           item.title,
-          style: AppTextStyle.st.semiBold.size(14.rpx).textColor(item.selected
-              ? selectedTextColor ?? AppColor.black3
-              : textColor ?? Colors.white),
+          style: AppTextStyle.st
+              .size(14.rpx)
+              .textColor(item.selected
+                  ? selectedTextColor ?? AppColor.black3
+                  : textColor ?? Colors.white)
+              .copyWith(fontWeight: fontWeight),
         ),
       ),
     );

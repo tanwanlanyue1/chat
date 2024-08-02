@@ -32,7 +32,7 @@ abstract class AppRoutes {
   static const mineSettingPage = '/mineSettingPage';
 
   ///个人信息
-  static const accountDataPage = '/accountDataPage';
+  static const accountDataPage = '$auth/accountDataPage';
 
   ///更改信息页
   static const updateInfoPage = '/updateInfoPage';

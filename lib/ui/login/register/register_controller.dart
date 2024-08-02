@@ -28,26 +28,26 @@ class RegisterController extends GetxController {
   }
 
   void onTapRegister() async {
-    // Get.toNamed(AppRoutes.loginQuestionPage);
-
     FocusScope.of(Get.context!).unfocus();
+    Get.toNamed(AppRoutes.loginQuestionPage);
+    return;
 
     if (passwordController.text != passwordAgainController.text) {
       Loading.showToast("两次输入的密码不一致");
       return;
     }
-    Loading.show();
 
+    Loading.show();
     Result<void, String> result = await SS.login.loginByRegister(
       account: userNameController.text,
       password: passwordController.text,
       phone: phoneController.text,
       email: emailController.text,
     );
-
     Loading.dismiss();
+
     result.when(success: (_) {
-      Get.backToRoot();
+      Get.toNamed(AppRoutes.loginQuestionPage);
     }, failure: (errorMessage) {
       Loading.showToast(errorMessage);
     });

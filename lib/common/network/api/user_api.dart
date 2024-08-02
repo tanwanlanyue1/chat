@@ -10,6 +10,28 @@ import 'package:guanjia/common/network/api/api.dart';
 class UserApi {
   const UserApi._();
 
+  /// 初始化用户信息
+  /// gender: 性别 1：男 2：女
+  /// birth：生日
+  /// likeSex：喜好性别 0：其它 1：男 2：女
+  /// likeStyle：喜好风格id 字符串格式 英文逗号拼接
+  static Future<ApiResponse> initUserInfo({
+    int? gender,
+    String? birth,
+    int? likeSex,
+    String? likeStyle,
+  }) {
+    return HttpClient.post(
+      '/api/user/initUserInfo',
+      data: {
+        "gender": gender,
+        "birth": birth,
+        "likeSex": likeSex,
+        "likeStyle": likeStyle,
+      },
+    );
+  }
+
   /// 绑定手机号或第三方
   /// type: 1.微信 2.苹果 3.手机号
   /// state：类型 0解绑 1绑定
@@ -421,7 +443,7 @@ class UserApi {
   }) {
     return HttpClient.post(
       '/api/user/deleteMessage',
-      data: {"ids":ids},
+      data: {"ids": ids},
       dataConverter: (json) => json,
     );
   }

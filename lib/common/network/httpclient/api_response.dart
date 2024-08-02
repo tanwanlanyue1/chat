@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:get/get.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 import 'app_exceptions.dart';
@@ -35,6 +36,7 @@ class ApiResponse<T> {
         }
       }
     }catch(ex){
+      AppLogger.w('数据解析失败, $ex');
       exception = JsonParseException(-1, '数据解析失败');
     }
 

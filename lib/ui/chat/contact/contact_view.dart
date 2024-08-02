@@ -1,6 +1,5 @@
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -8,6 +7,7 @@ import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/mine/widgets/client_card.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
@@ -37,6 +37,7 @@ class _ContactViewState extends State<ContactView>
           snap: false,
           floating: false,
           expandedHeight: 184.rpx,
+          toolbarHeight: 80.rpx,
           flexibleSpace: FlexibleSpaceBar(
             collapseMode: CollapseMode.pin,
             expandedTitleScale: 1.0,
@@ -45,19 +46,11 @@ class _ContactViewState extends State<ContactView>
             titlePadding: EdgeInsets.zero,
           ),
         ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              return Container(
-                color: index.isOdd ? Colors.white : Colors.black12,
-                height: 100.0,
-                child: Center(
-                  child: Text('$index', textScaler: const TextScaler.linear(5)),
-                ),
-              );
-            },
-            childCount: 20,
-          ),
+        SliverList.builder(
+          itemBuilder: (_, index) {
+            return ClientCard();
+          },
+          itemCount: 20,
         ),
       ],
     );
@@ -160,12 +153,26 @@ class _ContactViewState extends State<ContactView>
     return Container(
       width: double.infinity,
       height: 80.rpx,
+      padding: FEdgeInsets(left: 16.rpx, right: 8.rpx),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: AppColor.scaffoldBackground),
+        ),
+      ),
       child: Row(
         children: [
           Expanded(
             child: SizedBox(
               height: 40.rpx,
               child: TextField(
+                controller: controller.editingController,
+                maxLines: null,
+                expands: true,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                  LengthLimitingTextInputFormatter(16),
+                ],
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: AppColor.grayF7,
@@ -174,12 +181,34 @@ class _ContactViewState extends State<ContactView>
                     borderRadius: BorderRadius.circular(20.rpx),
                     gapPadding: 0,
                   ),
+                  hintStyle: AppTextStyle.fs14m.copyWith(
+                    color: AppColor.gray9,
+                  ),
+                  hintText: '搜索用户ID，可添加好友',
+                  contentPadding: FEdgeInsets(horizontal: 16.rpx),
+                  suffixIcon: AnimatedBuilder(
+                    animation: controller.editingController,
+                    builder: (_, child) {
+                      return Visibility(
+                        visible: controller.editingController.text.isNotEmpty,
+                        child: Button.icon(
+                          width: 40.rpx,
+                          onPressed: controller.editingController.clear,
+                          icon: AppImage.asset(
+                            'assets/images/mine/ic_clear.png',
+                            width: 24.rpx,
+                            height: 24.rpx,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: controller.doSearch,
             icon: AppImage.asset(
               'assets/images/mine/ic_search.png',
               width: 24.rpx,

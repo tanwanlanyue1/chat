@@ -189,7 +189,7 @@ class HttpClient {
 
   ///异常转换
   static ApiResponse<T> _errorResponse<T>(dynamic exception, Locale? locale) {
-    // TBLogger.e('_errorResponse=$exception');
+    // AppLogger.e('_errorResponse=$exception');
     AppException? appException;
     final isEnglish = locale?.languageCode == 'en';
     if (exception is DioException) {

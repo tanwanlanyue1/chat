@@ -24,6 +24,7 @@ import 'package:guanjia/widgets/advertising_swiper.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/system_ui.dart';
 
+import '../../common/network/api/model/user/talk_user.dart';
 import 'mine_controller.dart';
 import 'mine_state.dart';
 import 'widgets/activation_progression.dart';
@@ -108,8 +109,8 @@ class _MinePageState extends State<MinePage>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (statusRx != null)
-              BeautyVisible(child: BeautifulStatusTips(status: statusRx)),
+            if (statusRx != null && userType.isBeauty)
+              BeautifulStatusTips(status: statusRx),
             buildShadowBox(
               width: double.infinity,
               height: 130.rpx,
@@ -177,14 +178,12 @@ class _MinePageState extends State<MinePage>
                       ],
                     ),
                   ),
-                  if (statusRx != null)
-                    BeautyVisible(
-                      child: Padding(
-                        padding: FEdgeInsets(left: 4.rpx),
-                        child: BeautifulStatusSwitch(
-                          status: statusRx,
-                          onChange: controller.onTapBeautifulStatus,
-                        ),
+                  if (statusRx != null && userType.isBeauty)
+                    Padding(
+                      padding: FEdgeInsets(left: 4.rpx),
+                      child: BeautifulStatusSwitch(
+                        status: statusRx,
+                        onChange: controller.onTapBeautifulStatus,
                       ),
                     ),
                 ],
@@ -251,6 +250,8 @@ class _MinePageState extends State<MinePage>
     );
   }
 
+  UserType get userType => SS.login.info?.type ?? UserType.user;
+
   ///第1部分
   Widget buildSectionOne() {
     return buildSection(
@@ -272,18 +273,18 @@ class _MinePageState extends State<MinePage>
           icon: "assets/images/mine/VIP.png",
         ),
         //我的客户
-        MineListTile(
-          title: S.current.myCustomer,
-          icon: "assets/images/mine/mine_client.png",
-        ),
+        if (userType.isBeauty)
+          MineListTile(
+            title: S.current.myCustomer,
+            icon: "assets/images/mine/mine_client.png",
+          ),
         //我的评价
-        UserVisible(
-          child: MineListTile(
+        if (userType.isUser)
+          MineListTile(
             title: S.current.myAssessment,
             icon: "assets/images/mine/evaluate.png",
             pagePath: AppRoutes.mineEvaluatePage,
           ),
-        ),
         //意见反馈
         MineListTile(
           title: S.current.feedback,
@@ -297,39 +298,44 @@ class _MinePageState extends State<MinePage>
           pagePath: AppRoutes.mineSettingPage,
         ),
         //激活/进阶
-        MineListTile(
-          title: S.current.activationProgression,
-          icon: "assets/images/mine/activate.png",
-          trailing: S.current.normalUser,
-          onTap: () {
-            ActivationProgression.show();
-          },
-        ),
+        if (userType.isUser)
+          MineListTile(
+            title: S.current.activationProgression,
+            icon: "assets/images/mine/activate.png",
+            trailing: S.current.normalUser,
+            onTap: () {
+              ActivationProgression.show();
+            },
+          ),
         //解约/进阶为经纪人
-        MineListTile(
-          title: S.current.cancelAdvanceToBroker,
-          icon: "assets/images/mine/cancel_a_contract.png",
-          trailing: S.current.beautifulUser,
-        ),
+        if (userType.isBeauty)
+          MineListTile(
+            title: S.current.cancelAdvanceToBroker,
+            icon: "assets/images/mine/cancel_a_contract.png",
+            trailing: S.current.beautifulUser,
+          ),
         //评价我的
-        MineListTile(
-          title: S.current.appraiseMe,
-          icon: "assets/images/mine/evaluate.png",
-          pagePath: AppRoutes.jiaEvaluatePage,
-        ),
+        if (userType.isBeauty)
+          MineListTile(
+            title: S.current.appraiseMe,
+            icon: "assets/images/mine/evaluate.png",
+            pagePath: AppRoutes.jiaEvaluatePage,
+          ),
         //团队评价
-        MineListTile(
-          title: S.current.teamEvaluation,
-          icon: "assets/images/mine/evaluate.png",
-          pagePath: AppRoutes.mineTeamEvaluatePage,
-        ),
+        if (userType.isAgent)
+          MineListTile(
+            title: S.current.teamEvaluation,
+            icon: "assets/images/mine/evaluate.png",
+            pagePath: AppRoutes.mineTeamEvaluatePage,
+          ),
         //我的团队
-        MineListTile(
-          title: S.current.myTeam,
-          icon: "assets/images/mine/my_team.png",
-          trailing: S.current.brokerUser,
-          pagePath: AppRoutes.mineMyTeamPage,
-        ),
+        if (userType.isAgent)
+          MineListTile(
+            title: S.current.myTeam,
+            icon: "assets/images/mine/my_team.png",
+            trailing: S.current.brokerUser,
+            pagePath: AppRoutes.mineMyTeamPage,
+          ),
       ],
     );
   }
@@ -340,35 +346,40 @@ class _MinePageState extends State<MinePage>
       margin: FEdgeInsets(top: 16.rpx),
       children: [
         //谁看过我
-        MineListTile(
-          title: S.current.whoSeenMe,
-          icon: "assets/images/mine/examine.png",
-          pagePath: AppRoutes.haveSeenPage,
-        ),
+        if (userType.isBeauty)
+          MineListTile(
+            title: S.current.whoSeenMe,
+            icon: "assets/images/mine/examine.png",
+            pagePath: AppRoutes.haveSeenPage,
+          ),
         //修改服务费
-        MineListTile(
-          title: S.current.modificationServiceCharge,
-          icon: "assets/images/mine/modification_service.png",
-          pagePath: AppRoutes.mineServiceChargePage,
-        ),
+        if (userType.isBeauty)
+          MineListTile(
+            title: S.current.modificationServiceCharge,
+            icon: "assets/images/mine/modification_service.png",
+            pagePath: AppRoutes.mineServiceChargePage,
+          ),
         //查看契约单
-        MineListTile(
-          title: S.current.contractDetail,
-          icon: "assets/images/mine/look_contract.png",
-          pagePath: AppRoutes.contractListPage,
-        ),
+        if (userType.isBeauty)
+          MineListTile(
+            title: S.current.contractDetail,
+            icon: "assets/images/mine/look_contract.png",
+            pagePath: AppRoutes.contractListPage,
+          ),
         //生成契约单
-        MineListTile(
-          title: S.current.generateContract,
-          icon: "assets/images/mine/look_contract.png",
-          pagePath: AppRoutes.contractGeneratePage,
-        ),
+        if (userType.isAgent)
+          MineListTile(
+            title: S.current.generateContract,
+            icon: "assets/images/mine/look_contract.png",
+            pagePath: AppRoutes.contractGeneratePage,
+          ),
         //我的消息
-        MineListTile(
-          title: S.current.myMessage,
-          icon: "assets/images/mine/message.png",
-          pagePath: AppRoutes.mineMessage,
-        ),
+        if (userType.isUser)
+          MineListTile(
+            title: S.current.myMessage,
+            icon: "assets/images/mine/message.png",
+            pagePath: AppRoutes.mineMessage,
+          ),
       ],
     );
   }

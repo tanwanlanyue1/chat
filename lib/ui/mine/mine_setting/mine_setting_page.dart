@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/network/network.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_info.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/setting_item.dart';
@@ -73,29 +71,23 @@ class MineSettingPage extends StatelessWidget {
                   SettingItem(
                     bottom: 1.rpx,
                     title: S.current.changingPassword,
-                    callBack: () {
-                      Get.toNamed(AppRoutes.updatePasswordPage);
-                    },
+                    callBack: controller.updatePassword,
                   ),
                   SettingItem(
                     bottom: 1.rpx,
                     title: S.current.setPaymentPassword,
-                    callBack: () {
-                      Get.toNamed(AppRoutes.paymentPasswordPage);
-                    },
+                    callBack: controller.paymentPasswordPage,
                   ),
                   SettingItem(
                     title: S.current.changingPaymentPassword,
-                    callBack: () {
-                      Get.toNamed(AppRoutes.updatePasswordPage,arguments: {"login":false});
-                    },
+                    callBack: controller.paymentPasswordPage,
                   ),
                   SettingItem(
                     title: S.current.languageSwitch,
                     bottom: 1.rpx,
                     borderRadius: BorderRadius.circular(8.rpx),
                     callBack: () {
-                      Get.toNamed(AppRoutes.permissions);
+                      controller.selectLanguage();
                     },
                   ),
                   SettingItem(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/ui/discover/discover_page.dart';
 import 'package:guanjia/ui/chat/chat_page.dart';
 import 'package:guanjia/ui/mine/mine_page.dart';
 import 'package:guanjia/ui/plaza/plaza_page.dart';
@@ -22,8 +23,8 @@ class HomePage extends StatelessWidget {
           children: [
             ChatPage(),
             Container(),
-            Container(),
             PlazaPage(),
+            DiscoverPage(),
             MinePage(),
           ],
         ),

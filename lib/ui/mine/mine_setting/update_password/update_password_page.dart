@@ -51,8 +51,8 @@ class UpdatePasswordPage extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 15.rpx),
       child: Text(
         state.isPhone.value ?
-        '${S.current.phoneVerificationCode}138****8888${S.current.cellPhone}':
-        '${S.current.emailVerificationCode}1726****45.com${S.current.cellEmail}',
+        '${S.current.phoneVerificationCode}${controller.phoneNumberInputController.text}${S.current.cellPhone}':
+        S.current.emailVerificationCode+controller.phoneNumberInputController.text+S.current.cellEmail,
         style: TextStyle(
           fontSize: 12.rpx,
           color: AppColor.gray30,
@@ -64,9 +64,7 @@ class UpdatePasswordPage extends StatelessWidget {
   //验证方式
   Widget _buildVerificationMode() {
     return GestureDetector(
-      onTap: (){
-        state.isPhone.value = !state.isPhone.value;
-      },
+      onTap: controller.verificationMode,
       child: Container(
         alignment: Alignment.centerRight,
         margin: EdgeInsets.only(bottom: 24.rpx,top: 11.rpx),

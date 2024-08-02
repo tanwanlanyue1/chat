@@ -75,6 +75,7 @@ flutter:
     - assets/images/home/
     - assets/images/login/
     - assets/images/mine/
+    - assets/images/discover/
     - assets/js/
     #   - images/a_dot_ham.jpeg
 flutter_intl:

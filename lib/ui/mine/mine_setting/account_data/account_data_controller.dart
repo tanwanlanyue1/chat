@@ -15,7 +15,7 @@ class AccountDataController extends GetxController {
 
   final loginService = SS.login;
 
-  final signatureController = TextEditingController();
+  late final TextEditingController signatureController;
 
   @override
   void onInit() {
@@ -31,6 +31,8 @@ class AccountDataController extends GetxController {
       ));
     });
 
+    signatureController = TextEditingController(text: userInfo?.signature);
+
     super.onInit();
   }
 
@@ -41,9 +43,33 @@ class AccountDataController extends GetxController {
   }
 
   void onTapSave() async {
+    final info = state.info?.value;
+    if (info == null) return;
+
+    final data = info.toJson();
+
+    // 风格
+    final selectedIdString = state.labelItems
+        .where((item) => item.selected)
+        .map((item) => item.id.toString())
+        .join(',');
+
+    switch (info.type) {
+      case UserType.user:
+        if (selectedIdString.isNotEmpty) data["likeStyle"] = selectedIdString;
+        break;
+      case UserType.beauty:
+      case UserType.agent:
+        if (selectedIdString.isNotEmpty) data["style"] = selectedIdString;
+        break;
+    }
+
+    // 个人简介
+    data["signature"] = signatureController.text;
+
     Loading.show();
     final res = await UserApi.updateInfoFull(
-      data: state.info?.toJson(),
+      data: data,
     );
     Loading.dismiss();
 
@@ -79,9 +105,20 @@ class AccountDataController extends GetxController {
           "女",
         ],
         onTap: (index) async {
-          UserGender gender = UserGender.valueForIndex(index);
+          final UserGender gender;
+          switch (index) {
+            case 0:
+              gender = UserGender.male;
+              break;
+            case 1:
+              gender = UserGender.female;
+              break;
+            default:
+              gender = UserGender.unknown;
+              return;
+          }
 
-          loginService.setInfo((val) {
+          state.info?.update((val) {
             val?.gender = gender;
           });
         },

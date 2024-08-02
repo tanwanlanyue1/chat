@@ -1,9 +1,6 @@
-import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
@@ -280,6 +277,7 @@ class _MinePageState extends State<MinePage>
             MineListTile(
               title: S.current.myCustomer,
               icon: "assets/images/mine/mine_client.png",
+              pagePath: AppRoutes.mineClient,
             ),
           //我的评价
           if (userType.isUser)

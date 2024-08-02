@@ -55,11 +55,6 @@ class AccountDataPage extends StatelessWidget {
                         info.avatar ?? "",
                         width: 76.rpx,
                         height: 76.rpx,
-                        // placeholder: AppImage.asset(
-                        //   "assets/images/mine/user_head.png",
-                        //   width: 76.rpx,
-                        //   height: 76.rpx,
-                        // ),
                       ),
                     ),
                   ),
@@ -80,27 +75,23 @@ class AccountDataPage extends StatelessWidget {
                   ),
                   _padding(),
                   AccountDataItem(
-                    onTap: controller.selectSex,
                     title: "年龄",
-                    detail: state.getGenderString(info.gender),
+                    detail: "${info.age ?? ""}",
                   ),
                   _padding(),
                   AccountDataItem(
-                    onTap: controller.selectSex,
                     title: "我的位置",
-                    detail: state.getGenderString(info.gender),
+                    detail: info.position,
                   ),
                   _padding(),
                   AccountDataItem(
-                    onTap: controller.selectSex,
                     title: "联系电话",
-                    detail: state.getGenderString(info?.gender),
+                    detail: info.phone,
                   ),
                   _padding(),
                   AccountDataItem(
-                    onTap: controller.selectSex,
                     title: "我的邮箱",
-                    detail: state.getGenderString(info.gender),
+                    detail: info.email,
                   ),
                   _padding(height: 36.rpx),
                   _columnWidget(

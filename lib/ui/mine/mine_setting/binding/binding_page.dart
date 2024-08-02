@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/login_verification_code_button.dart';
 import 'package:guanjia/ui/mine/widgets/setting_text_field.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
@@ -23,7 +24,7 @@ class BindingPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Obx(() => Text(
-          state.isPhone.value ? "绑定手机" : "绑定邮箱",
+          state.isPhone.value ? S.current.bindPhone : S.current.bindEmail,
           style: TextStyle(
             color: const Color(0xff333333),
             fontSize: 18.rpx,
@@ -56,7 +57,7 @@ class BindingPage extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 12.rpx),
       child: Text(
-        '使用以下方式获取验证码，完成绑定',
+        S.current.userMethods,
         style: TextStyle(
           fontSize: 12.rpx,
           color: AppColor.black6,
@@ -65,6 +66,7 @@ class BindingPage extends StatelessWidget {
     );
   }
 
+  //绑定手机号
   Widget _buildPhoneField() {
     return Container(
       height: 50.rpx,
@@ -73,12 +75,12 @@ class BindingPage extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text("手机号码",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+          Text(S.current.phone,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
           Expanded(
             child: IntlPhoneField(
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: '请输入手机号码',
+                hintText: S.current.pleaseEnterPhone,
                 hintStyle: TextStyle(
                   fontSize: 14.rpx,
                   color: AppColor.gray9,
@@ -95,12 +97,12 @@ class BindingPage extends StatelessWidget {
               pickerDialogStyle: PickerDialogStyle(
                   backgroundColor: Colors.white,
                   searchFieldInputDecoration: InputDecoration(
-                      labelText: "搜索"
+                      labelText: S.current.search
                   )
               ),
               onChanged: (phone) {
-                print("phone==${phone.countryCode}");
-                print(phone.number);
+                print(phone);
+                controller.phoneNumberInputController.text = phone.countryCode.substring(1)+phone.number;
               },
             ),
           ),
@@ -113,21 +115,17 @@ class BindingPage extends StatelessWidget {
   Widget _buildMailboxField() {
     return SettingTextField(
       inputController: controller.phoneNumberInputController,
-      labelText: '我的邮箱',
-      hintText: '请输入邮箱',
+      labelText: S.current.myEmail,
+      hintText: S.current.pleaseEnterEmail,
       borderRadius: BorderRadius.zero,
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-        LengthLimitingTextInputFormatter(11),
-      ],
     );
   }
 
   Widget _buildVerificationCodeField() {
     return SettingTextField(
       inputController: controller.verificationInputController,
-      labelText: state.isPhone.value ? '手机验证码' : '邮箱验证码',
-      hintText: '请输入验证码',
+      labelText: state.isPhone.value ? S.current.cellPhoneVerificationCode : S.current.cellEmailVerificationCode,
+      hintText: S.current.pleaseEnterTheVerificationCode,
       borderRadius: BorderRadius.zero,
       keyboardType: TextInputType.number,
       inputFormatters: [
@@ -144,6 +142,7 @@ class BindingPage extends StatelessWidget {
   Widget _buildVerificationMode() {
     return GestureDetector(
       onTap: (){
+        controller.phoneNumberInputController.clear();
         state.isPhone.value = !state.isPhone.value;
       },
       child: Container(
@@ -151,15 +150,15 @@ class BindingPage extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 24.rpx,right: 16.rpx),
         child: RichText(
           text: TextSpan(
-            text: "收不到验证码? ",
+            text: "${S.current.notReceiveTheVerification}? ",
             style: TextStyle(
               fontSize: 12.rpx,
               color: AppColor.gray30,
             ),
-            children: const [
+            children: [
               TextSpan(
-                text: "换个验证方式",
-                style: TextStyle(
+                text: S.current.changeVerificationMethod,
+                style: const TextStyle(
                   decoration: TextDecoration.underline,
                 ),
               ),
@@ -185,7 +184,7 @@ class BindingPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "确定",
+                S.current.confirm,
                 style: TextStyle(color: Colors.white, fontSize: 16.rpx),
               )
             ],

@@ -23,7 +23,6 @@ class PaymentPasswordController extends GetxController {
 
   /// 提交修改
   void submit() async {
-    Get.toNamed(AppRoutes.bindingPage);
     // final phone = state.loginService.isLogin
     //     ? state.loginService.info?.phone ?? ""
     //     : phoneNumberInputController.text;

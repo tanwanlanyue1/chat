@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -35,12 +36,16 @@ class MineServiceChargePage extends StatelessWidget {
               lines: 1,
               fillColor: Colors.white,
               textAlign: TextAlign.center,
-              // inputController: controller.contentController,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+              ],
+              inputController: controller.contentController,
             ),
           ),
           Button(
             height: 50.rpx,
-            onPressed: (){},
+            onPressed: controller.getCommunityDetail,
             margin: EdgeInsets.symmetric(horizontal: 38.rpx).copyWith(top: 60.rpx),
             child: Text(
               S.current.confirm,

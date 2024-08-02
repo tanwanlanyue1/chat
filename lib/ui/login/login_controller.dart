@@ -64,7 +64,7 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
     }
 
     Loading.show();
-    final res = await SS.login.fetchSms(phone: accountController.text);
+    final res = await SS.login.fetchSms(type: 1,phone: accountController.text);
     Loading.dismiss();
     res.when(success: (_) {
       Loading.showToast("短信发送成功");
@@ -83,7 +83,6 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
       password: passwordController.text,
     );
     Loading.dismiss();
-
     result.when(success: (_) {
       Get.offAllNamed(AppRoutes.home);
     }, failure: (errorMessage) {

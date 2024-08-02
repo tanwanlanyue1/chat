@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/payment_password_keyboard.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///缴纳保证金对话框
@@ -48,7 +49,7 @@ class SecurityDepositDialog extends StatelessWidget {
                       child: CommonGradientButton(
                         height: 50.rpx,
                         text: S.current.depositNow,
-                        onTap: () => Get.back(result: true),
+                        onTap: depositNow,
                       ),
                     ),
                     Divider(
@@ -71,6 +72,14 @@ class SecurityDepositDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  ///立即缴纳
+  void depositNow() async{
+    final result = await PaymentPasswordKeyboard.show();
+    if(result != null){
+      Get.back(result: true);
+    }
   }
 
   Widget buildTitleBar() {

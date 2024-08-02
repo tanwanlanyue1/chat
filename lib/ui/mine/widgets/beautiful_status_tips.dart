@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
@@ -66,9 +67,9 @@ extension on BeautifulStatus {
   String get text {
     switch (this) {
       case BeautifulStatus.offline:
-        return '您已下线，再次点击切换继续接单哦。';
+        return S.current.beautifulOfflineTips;
       case BeautifulStatus.online:
-        return '您已经开始接约啦~';
+        return S.current.beautifulOnlineTips;
       default:
         return '';
     }

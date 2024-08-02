@@ -176,5 +176,7 @@
   "brokerUser": "经纪人",
   "securityDepositHint": "请先缴纳保证金{price}，点击 下方按钮立即缴纳！",
   "depositNow": "立即缴纳",
-  "securityDepositTips": "注：保证金在订单结束后会原路返回"
+  "securityDepositTips": "注：保证金在订单结束后会原路返回",
+  "beautifulOfflineTips": "您已下线，再次点击切换继续接单哦。",
+  "beautifulOnlineTips": "您已经开始接约啦~"
 }

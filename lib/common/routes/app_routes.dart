@@ -88,6 +88,9 @@ abstract class AppRoutes {
   /// 我的-意见反馈
   static const mineFeedbackPage = '$auth/mineFeedbackPage';
 
+  /// 佳丽-我的客户
+  static const mineClient = '/mineClient';
+
   /// 我的-帮助与客服
   static const mineHelpPage = '$auth/mineHelpPage';
 

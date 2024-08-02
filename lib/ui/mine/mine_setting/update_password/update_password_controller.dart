@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'update_password_state.dart';
 
@@ -20,7 +23,8 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
   /// 获取短信验证码
   Future<bool> fetchSms() async {
     final phone = state.loginService.isLogin
-        ? state.loginService.info?.phone ?? ""
+        ? state.loginService.info?.email ?? ""
+        // ? state.loginService.info?.phone ?? ""
         : phoneNumberInputController.text;
 
     if (phone.length != 11) {
@@ -29,7 +33,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
     }
 
     Loading.show();
-    final res = await state.loginService.fetchSms(phone: phone);
+    final res = await state.loginService.fetchSms(type: 1,phone: phone);
     Loading.dismiss();
 
     return res.when(success: (_) {
@@ -69,9 +73,17 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
   void onInit() {
     super.onInit();
 
+    print("loginService==${state.loginService}");
+    print("info==${jsonEncode(state.loginService.info)}");
+
+    if(state.loginService.info?.phone?.isNotEmpty ?? false){
+      state.isPhone.value = true;
+    }else{
+      state.isPhone.value = false;
+    }
     // 已登录需要显示带星号的电话号码
     final phoneString = state.loginService.isLogin
-        ? _maskPhoneNumber(state.loginService.info?.phone ?? "")
+        ? maskSubstring(state.isPhone.value ? (state.loginService.info?.phone ?? '') : (state.loginService.info?.email ?? ''))
         : "";
     phoneNumberInputController.text = phoneString;
 
@@ -103,12 +115,28 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
         confirmPasswordInputController.text.isNotEmpty;
   }
 
-  String _maskPhoneNumber(String phoneNumber) {
-    // 正则表达式匹配手机号码中间四位
-    RegExp regExp = RegExp(r'(\d{3})\d{4}(\d{4})');
-    // 使用replaceAllMapped方法进行替换
-    return phoneNumber.replaceAllMapped(regExp, (Match match) {
-      return '${match.group(1)}****${match.group(2)}';
-    });
+  //判断是否绑定了其他验证方式
+  void verificationMode(){
+    if(state.isPhone.value && (state.loginService.info?.email?.isNotEmpty ?? false)){
+      state.isPhone.value = !state.isPhone.value;
+    }else{
+      Loading.showToast("${S.current.unboundMailbox}，${S.current.pleaseBindFirst}");
+    }
+    if(!state.isPhone.value && (state.loginService.info?.phone?.isNotEmpty ?? false)){
+      state.isPhone.value = !state.isPhone.value;
+    }else{
+      Loading.showToast("${S.current.unboundPhone}，${S.current.pleaseBindFirst}");
+    }
+  }
+
+  //截取手机号/邮箱
+  String maskSubstring(String input) {
+    if (input.length < 8) {
+      return '${input.substring(0, 4)}****';
+    } else {
+      String prefix = input.substring(0, 4);
+      String suffix = input.substring(8);
+      return '$prefix****$suffix';
+    }
   }
 }

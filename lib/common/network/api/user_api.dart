@@ -32,31 +32,6 @@ class UserApi {
     );
   }
 
-  /// 绑定手机号或第三方
-  /// type: 1.微信 2.苹果 3.手机号
-  /// state：类型 0解绑 1绑定
-  /// code：第三方code
-  /// phone：手机号
-  /// verifyCode: 验证码
-  static Future<ApiResponse> binding({
-    required int type,
-    required int state,
-    String? code,
-    String? phone,
-    String? verifyCode,
-  }) {
-    return HttpClient.post(
-      '/api/user/isBind',
-      data: {
-        "type": type,
-        "state": state,
-        "code": code,
-        "phone": phone,
-        "verifyCode": verifyCode,
-      },
-    );
-  }
-
   /// 用户反馈
   /// type: 反馈类型
   /// contact：联系方式
@@ -537,6 +512,44 @@ class UserApi {
       data: {
         'state': state,
       },
+    );
+  }
+
+  /// 修改服务费
+  /// serviceCharge：服务费
+  static Future<ApiResponse> updateUserCharge({
+    required double serviceCharge,
+ }) {
+    return HttpClient.post(
+      '/api/user/updateUserCharge',
+      data: {
+        "type": 1,
+        "serviceCharge": serviceCharge,
+      },
+      dataConverter: (json) => json,
+    );
+  }
+
+  /// 绑定手机号或邮箱
+  /// type：1.绑定手机号 2.绑定邮箱
+  /// phone：手机号
+  /// email：邮箱
+  /// verifyCode：验证码
+  static Future<ApiResponse> userBind({
+    required int type,
+    String? phone,
+    String? email,
+    String? verifyCode,
+  }) {
+    return HttpClient.post(
+      '/api/user/bind',
+      data: {
+        "type": type,
+        "phone": phone,
+        "email": email,
+        "verifyCode": verifyCode,
+      },
+      dataConverter: (json) => json,
     );
   }
 }

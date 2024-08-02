@@ -1,4 +1,6 @@
 {
   "language": "Language",
-  "setting": "setting"
+  "setting": "setting",
+  "chinese": "中文",
+  "english": "english"
 }

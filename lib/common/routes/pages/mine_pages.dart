@@ -8,6 +8,7 @@ import 'package:guanjia/ui/mine/contract_generate/contract_generate_controller.d
 import 'package:guanjia/ui/mine/contract_generate/contract_generate_page.dart';
 import 'package:guanjia/ui/mine/contract_list/contract_list_controller.dart';
 import 'package:guanjia/ui/mine/contract_list/contract_list_page.dart';
+import 'package:guanjia/ui/mine/mine_client/mine_client_page.dart';
 import 'package:guanjia/ui/mine/mine_evaluate/jia_evaluate/jia_evaluate_page.dart';
 import 'package:guanjia/ui/mine/mine_evaluate/mine_evaluate_page.dart';
 import 'package:guanjia/ui/mine/mine_my_team/mine_my_team_page.dart';
@@ -135,6 +136,10 @@ class MinePages {
     GetPage(
       name: AppRoutes.mineMyTeamPage,
       page: () => MineMyTeamPage(),
+    ),
+    GetPage(
+      name: AppRoutes.mineClient,
+      page: () => MineClientPage(),
     ),
   ];
 }

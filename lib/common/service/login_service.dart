@@ -303,10 +303,12 @@ class LoginService extends GetxService {
 
   /// 发送手机验证码
   /// phone: 用户手机号
+  /// type: 类型(1.手机号 2.邮箱)
   Future<Result<void, String>> fetchSms({
     required String phone,
+    required int type,
   }) async {
-    final res = await OpenApi.sms(account: phone);
+    final res = await OpenApi.sms(type: type,account: phone);
     if (!res.isSuccess) {
       return ResultFailure(res.errorMessage ?? "data error");
     }

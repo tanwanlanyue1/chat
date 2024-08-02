@@ -73,13 +73,16 @@ class OpenApi {
   }
 
   /// 发送手机验证码
+  /// type: 类型(1.手机号 2.邮箱)
   /// account: 用户手机号
   static Future<ApiResponse> sms({
+    required int type,
     required String account,
   }) {
     return HttpClient.get(
       '/openapi/sendVerifyCodeKey',
       params: {
+        "type": type,
         "account": account,
       },
     );

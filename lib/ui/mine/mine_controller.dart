@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_state.dart';
 import 'package:guanjia/ui/mine/widgets/beautiful_status_switch.dart';
+import 'package:guanjia/widgets/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
@@ -62,13 +64,21 @@ class MineController extends GetxController {
   }
 
   void onTapSignOut() async {
-    Loading.show();
-    final res = await SS.login.signOut();
-    Loading.dismiss();
-    res.when(
-        success: (_) {},
-        failure: (errorMessage) {
-          Loading.showToast(errorMessage);
-        });
+    final result = await ConfirmDialog.show(
+      message: const Text('确定要退出登录吗？'),
+      cancelButtonText: const Text('取消'),
+      okButtonText: const Text('确定退出'),
+    );
+    if(result){
+      Loading.show();
+      final res = await SS.login.signOut();
+      Loading.dismiss();
+      res.when(
+          success: (_) {},
+          failure: (errorMessage) {
+            Loading.showToast(errorMessage);
+          });
+      Get.offAllNamed(AppRoutes.loginPage);
+    }
   }
 }

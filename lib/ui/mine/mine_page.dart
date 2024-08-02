@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/mine/widgets/beautiful_status_tips.dart';
 import 'package:guanjia/ui/mine/widgets/mine_list_tile.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -74,7 +75,7 @@ class _MinePageState extends State<MinePage>
         //背景
         Container(
           width: double.infinity,
-          height: 140.rpx + Get.mediaQuery.padding.top,
+          height: 150.rpx + Get.mediaQuery.padding.top,
           margin: FEdgeInsets(bottom: 28.rpx),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -95,68 +96,77 @@ class _MinePageState extends State<MinePage>
 
   ///用户信息
   Widget buildUserInfo() {
-    return buildShadowBox(
-      width: double.infinity,
-      height: 130.rpx,
-      margin: FEdgeInsets(horizontal: 16.rpx),
-      padding: FEdgeInsets(horizontal: 16.rpx),
-      child: Row(
-        children: [
-          Stack(
-            alignment: Alignment.bottomRight,
-            children: [
-              AppImage.network(
-                width: 90.rpx,
-                height: 90.rpx,
-                shape: BoxShape.circle,
-                'https://pic1.zhimg.com/v2-dbbe270b44aebc392b71c83ad61b9ef1.jpg?source=8673f162',
-              ),
-              AppImage.asset(
-                'assets/images/mine/ic_vip.png',
-                width: 24.rpx,
-                height: 24.rpx,
-              ),
-            ],
-          ),
-          Spacing.w12,
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Landon',
-                  style: AppTextStyle.fs18m.copyWith(
-                    color: AppColor.gray5,
+    return Obx(() {
+      return Padding(
+        padding: FEdgeInsets(horizontal: 16.rpx),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            BeautifulStatusTips(status: state.beautifulStatusRx()),
+            buildShadowBox(
+              width: double.infinity,
+              height: 130.rpx,
+              margin: FEdgeInsets(top: 8.rpx),
+              padding: FEdgeInsets(horizontal: 16.rpx),
+              child: Row(
+                children: [
+                  Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      AppImage.network(
+                        width: 90.rpx,
+                        height: 90.rpx,
+                        shape: BoxShape.circle,
+                        'https://pic1.zhimg.com/v2-dbbe270b44aebc392b71c83ad61b9ef1.jpg?source=8673f162',
+                      ),
+                      AppImage.asset(
+                        'assets/images/mine/ic_vip.png',
+                        width: 24.rpx,
+                        height: 24.rpx,
+                      ),
+                    ],
                   ),
-                ),
-                Padding(
-                  padding: FEdgeInsets(vertical: 4.rpx),
-                  child: Text(
-                    '中国·北京',
-                    style: AppTextStyle.fs16m.copyWith(
-                      color: AppColor.gray9,
+                  Spacing.w12,
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Landon',
+                          style: AppTextStyle.fs18m.copyWith(
+                            color: AppColor.gray5,
+                          ),
+                        ),
+                        Padding(
+                          padding: FEdgeInsets(vertical: 4.rpx),
+                          child: Text(
+                            '中国·北京',
+                            style: AppTextStyle.fs16m.copyWith(
+                              color: AppColor.gray9,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'ID:1754654458',
+                          style: AppTextStyle.fs12m.copyWith(
+                            color: AppColor.gray9,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                Text(
-                  'ID:1754654458',
-                  style: AppTextStyle.fs12m.copyWith(
-                    color: AppColor.gray9,
+                  BeautifulStatusSwitch(
+                    status: state.beautifulStatusRx(),
+                    onChange: controller.onTapBeautifulStatus,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          ObxValue((statusRx) {
-            return BeautifulStatusSwitch(
-              status: statusRx(),
-              onChange: controller.onTapBeautifulStatus,
-            );
-          }, state.beautifulStatusRx),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 
   ///广告

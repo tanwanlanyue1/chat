@@ -455,4 +455,15 @@ class UserApi {
       dataConverter: (json) => json,
     );
   }
+
+  /// 接约状态修改
+  ///- state 接约状态 0不接约 1接约中 2约会进行中
+  static Future<ApiResponse> updateState(int state) {
+    return HttpClient.post(
+      '/api/user/updateState',
+      data: {
+        'state': state,
+      },
+    );
+  }
 }

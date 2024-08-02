@@ -44,31 +44,31 @@ abstract class AppRoutes {
   static const bindingPage = '/BindingPage';
 
   ///我的-评价
-  static const mineEvaluatePage = '/mineEvaluatePage';
+  static const mineEvaluatePage = '$auth/mineEvaluatePage';
 
   ///佳丽-评价我的
-  static const jiaEvaluatePage = '/jiaEvaluatePage';
+  static const jiaEvaluatePage = '$auth/jiaEvaluatePage';
 
   ///设置-修改登录密码
   static const updatePasswordPage = '/updatePasswordPage';
 
   ///设置-支付密码
-  static const paymentPasswordPage = '/paymentPasswordPage';
+  static const paymentPasswordPage = '$auth/paymentPasswordPage';
 
   ///设置-身份进阶
-  static const identityProgressionPage = '/identityProgressionPage';
+  static const identityProgressionPage = '$auth/identityProgressionPage';
 
   ///我的-谁看过我
-  static const haveSeenPage = '/haveSeenPage';
+  static const haveSeenPage = '$auth/haveSeenPage';
 
   ///我的-修改服务费
-  static const mineServiceChargePage = '/mineServiceChargePage';
+  static const mineServiceChargePage = '$auth/mineServiceChargePage';
 
   ///我的-经纪人-团队评价
-  static const mineTeamEvaluatePage = '/mineTeamEvaluatePage';
+  static const mineTeamEvaluatePage = '$auth/mineTeamEvaluatePage';
 
   ///我的-经纪人-我的团队
-  static const mineMyTeamPage = '/mineMyTeamPage';
+  static const mineMyTeamPage = '$auth/mineMyTeamPage';
 
   ///设置-账户黑名单
   static const accountBlacklistPage = '/accountBlacklistPage';
@@ -86,19 +86,19 @@ abstract class AppRoutes {
   static const webPage = '/webPage';
 
   /// 我的-意见反馈
-  static const mineFeedbackPage = '/mineFeedbackPage';
+  static const mineFeedbackPage = '$auth/mineFeedbackPage';
 
   /// 我的-帮助与客服
   static const mineHelpPage = '$auth/mineHelpPage';
 
   /// 我的-消息
-  static const mineMessage = '/mineMessage';
+  static const mineMessage = '$auth/mineMessage';
 
   /// 消息-会话
-  static const messageSessionPage = '/messageSessionPage';
+  static const messageSessionPage = '$auth/messageSessionPage';
 
   /// 消息-通知
-  static const messageNotice = '/messageNotice';
+  static const messageNotice = '$auth/messageNotice';
 
   /// 我的-内购
   static const minePurchase = '$auth/minePurchase';
@@ -125,11 +125,11 @@ abstract class AppRoutes {
   static const launchAd = '/launchAd';
 
   ///生成契约单
-  static const contractGeneratePage = '/ContractGeneratePage';
+  static const contractGeneratePage = '$auth/ContractGeneratePage';
 
   ///契约单详情
-  static const contractDetailPage = '/ContractDetailPage';
+  static const contractDetailPage = '$auth/ContractDetailPage';
 
   ///契约单列表
-  static const contractListPage = '/ContractListPage';
+  static const contractListPage = '$auth/ContractListPage';
 }

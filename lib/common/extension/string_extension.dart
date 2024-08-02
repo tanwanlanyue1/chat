@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'package:common_utils/common_utils.dart';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/services.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/widgets/widgets.dart';
 import 'package:uuid/uuid.dart';
 
 extension StringExtension on String {
@@ -26,5 +29,13 @@ extension StringExtension on String {
   }
 
   String get uuid => const Uuid().v5(Uuid.NAMESPACE_URL, this);
+
+  Future<void> copy({String? message}) async{
+    await Clipboard.setData(ClipboardData(text: this));
+    if(message != null && message.isEmpty){
+      return;
+    }
+    Loading.showToast(message ?? S.current.copySuccess);
+  }
 
 }

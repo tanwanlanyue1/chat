@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/network/config/server_config.dart';
 import 'package:guanjia/common/network/httpclient/interceptor/header_interceptor.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -182,8 +183,7 @@ class JsInjector{
   void _copyText(String method, int uuid, Map data) async{
     final message = data.getString('message');
     if(message.isNotEmpty){
-      Clipboard.setData(ClipboardData(text: message));
-      Loading.showToast('复制成功');
+      message.copy();
     }
     await _invokeJavaScript(method, null, uuid);
   }

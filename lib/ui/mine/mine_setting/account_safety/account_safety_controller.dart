@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/widgets/loading.dart';
@@ -14,10 +15,7 @@ class AccountSafetyController extends GetxController {
   final loginService = SS.login;
 
   void onTapCopyAccountId() async {
-    await Clipboard.setData(
-        ClipboardData(text: "${loginService.info?.chatNo}"));
-
-    Loading.showToast("复制成功");
+    "${loginService.info?.chatNo}".copy();
   }
 
   void onTapBinding() {

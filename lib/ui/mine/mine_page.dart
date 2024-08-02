@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/beautiful_status_tips.dart';
@@ -97,12 +99,15 @@ class _MinePageState extends State<MinePage>
   ///用户信息
   Widget buildUserInfo() {
     return Obx(() {
+      final userInfo = SS.login.info;
+      final statusRx = state.beautifulStatusRx;
+
       return Padding(
         padding: FEdgeInsets(horizontal: 16.rpx),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            BeautifulStatusTips(status: state.beautifulStatusRx()),
+            if(statusRx != null) BeautifulStatusTips(status: statusRx),
             buildShadowBox(
               width: double.infinity,
               height: 130.rpx,
@@ -110,21 +115,24 @@ class _MinePageState extends State<MinePage>
               padding: FEdgeInsets(horizontal: 16.rpx),
               child: Row(
                 children: [
-                  Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      AppImage.network(
-                        width: 90.rpx,
-                        height: 90.rpx,
-                        shape: BoxShape.circle,
-                        'https://pic1.zhimg.com/v2-dbbe270b44aebc392b71c83ad61b9ef1.jpg?source=8673f162',
-                      ),
-                      AppImage.asset(
-                        'assets/images/mine/ic_vip.png',
-                        width: 24.rpx,
-                        height: 24.rpx,
-                      ),
-                    ],
+                  GestureDetector(
+                    onTap: () => Get.toNamed(AppRoutes.accountDataPage),
+                    child: Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        AppImage.network(
+                          userInfo?.avatar ?? '',
+                          width: 90.rpx,
+                          height: 90.rpx,
+                          shape: BoxShape.circle,
+                        ),
+                        AppImage.asset(
+                          'assets/images/mine/ic_vip.png',
+                          width: 24.rpx,
+                          height: 24.rpx,
+                        ),
+                      ],
+                    ),
                   ),
                   Spacing.w12,
                   Expanded(
@@ -132,34 +140,48 @@ class _MinePageState extends State<MinePage>
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Landon',
+                        AutoSizeText(
+                          minFontSize: 10,
+                          maxLines: 2,
+                          userInfo?.nickname ?? '',
                           style: AppTextStyle.fs18m.copyWith(
                             color: AppColor.gray5,
                           ),
                         ),
-                        Padding(
-                          padding: FEdgeInsets(vertical: 4.rpx),
+                        if(userInfo?.position.isNotEmpty == true) Padding(
+                          padding: FEdgeInsets(top: 4.rpx),
                           child: Text(
-                            '中国·北京',
+                            userInfo?.position ?? '',
                             style: AppTextStyle.fs16m.copyWith(
                               color: AppColor.gray9,
                             ),
                           ),
                         ),
-                        Text(
-                          'ID:1754654458',
-                          style: AppTextStyle.fs12m.copyWith(
-                            color: AppColor.gray9,
+                        if (userInfo?.chatNo != null)
+                          GestureDetector(
+                            onTap: () => '${userInfo?.chatNo}'.copy(),
+                            behavior: HitTestBehavior.translucent,
+                            child: Padding(
+                              padding: FEdgeInsets(top: 4.rpx),
+                              child: Text(
+                                'ID:${userInfo?.chatNo}',
+                                style: AppTextStyle.fs12m.copyWith(
+                                  color: AppColor.gray9,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
                       ],
                     ),
                   ),
-                  BeautifulStatusSwitch(
-                    status: state.beautifulStatusRx(),
-                    onChange: controller.onTapBeautifulStatus,
-                  ),
+                  if (statusRx != null)
+                    Padding(
+                      padding: FEdgeInsets(left: 4.rpx),
+                      child: BeautifulStatusSwitch(
+                        status: statusRx,
+                        onChange: controller.onTapBeautifulStatus,
+                      ),
+                    ),
                 ],
               ),
             ),

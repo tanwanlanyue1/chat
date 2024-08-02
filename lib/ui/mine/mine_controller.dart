@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_state.dart';
 import 'package:guanjia/ui/mine/widgets/beautiful_status_switch.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -53,13 +54,21 @@ class MineController extends GetxController {
 
   ///切换佳丽状态
   void onTapBeautifulStatus(BeautifulStatus status) async{
-    if(status == BeautifulStatus.online){
+    if(status == BeautifulStatus.online) {
       final result = await SecurityDepositDialog.show();
-      if(result){
-        state.beautifulStatusRx.value = status;
+      if (!result) {
+        return;
       }
+    }
+    Loading.show();
+    final response = await UserApi.updateState(status.value);
+    Loading.dismiss();
+    if(response.isSuccess){
+      SS.login.setInfo((val) {
+        val?.state = status.value;
+      });
     }else{
-      state.beautifulStatusRx.value = status;
+      response.showErrorMessage();
     }
   }
 

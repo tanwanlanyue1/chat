@@ -48,17 +48,24 @@ class BeautifulStatusSwitch extends StatelessWidget {
 
 ///佳丽状态
 enum BeautifulStatus {
-  ///下线(不接单)
+  ///下线(不接单) 0
   offline,
 
-  ///上线（接单中）
+  ///上线（接单中）1
   online,
 
-  ///约会中
+  ///约会中 2
   inProgress,
 }
 
-extension on BeautifulStatus {
+extension BeautifulStatusX on BeautifulStatus {
+
+  static BeautifulStatus? valueOf(int value){
+    return BeautifulStatus.values.elementAtOrNull(value);
+  }
+
+  int get value => index;
+
   String get label {
     switch (this) {
       case BeautifulStatus.offline:
@@ -81,11 +88,21 @@ extension on BeautifulStatus {
     }
   }
 
+  ///只切换上线，下线
   BeautifulStatus next() {
-    var i = index + 1;
-    if (i >= BeautifulStatus.values.length) {
-      i = 0;
+    switch (this) {
+      case BeautifulStatus.offline:
+        return BeautifulStatus.online;
+      case BeautifulStatus.online:
+        return BeautifulStatus.offline;
+      case BeautifulStatus.inProgress:
+        return this;
     }
-    return BeautifulStatus.values[i];
+
+    // var i = index + 1;
+    // if (i >= BeautifulStatus.values.length) {
+    //   i = 0;
+    // }
+    // return BeautifulStatus.values[i];
   }
 }

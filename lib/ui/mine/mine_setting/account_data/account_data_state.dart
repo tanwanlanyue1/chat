@@ -1,14 +1,14 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/widgets/label_widget.dart';
 
 class AccountDataState {
+  final info = SS.login.info?.copyWith().obs;
+
   final gender = Rxn<UserGender>(); // 性别
 
   final likeGender = Rxn<UserGender>(); // 喜好性别
-
-  final yearRangeStart = 18.obs;
-  final yearRangeEnd = 40.obs;
 
   final List<LabelItem> labelItems = [];
 

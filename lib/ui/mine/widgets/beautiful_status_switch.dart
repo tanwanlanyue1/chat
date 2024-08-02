@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///佳丽状态切换按钮
 class BeautifulStatusSwitch extends StatelessWidget {
-  final BeautifulStatus status;
-  final ValueChanged<BeautifulStatus>? onChange;
+  final UserStatus status;
+  final ValueChanged<UserStatus>? onChange;
 
   const BeautifulStatusSwitch({
     super.key,
@@ -18,7 +19,7 @@ class BeautifulStatusSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget text = Text(status.label);
-    if (status == BeautifulStatus.offline) {
+    if (status == UserStatus.offline) {
       text = Text.rich(
         TextSpan(
           style: AppTextStyle.fs12m,
@@ -46,56 +47,44 @@ class BeautifulStatusSwitch extends StatelessWidget {
   }
 }
 
-///佳丽状态
-enum BeautifulStatus {
-  ///下线(不接单) 0
-  offline,
+extension BeautifulStatusX on UserStatus {
 
-  ///上线（接单中）1
-  online,
-
-  ///约会中 2
-  inProgress,
-}
-
-extension BeautifulStatusX on BeautifulStatus {
-
-  static BeautifulStatus? valueOf(int value){
-    return BeautifulStatus.values.elementAtOrNull(value);
+  static UserStatus? valueOf(int value){
+    return UserStatus.values.elementAtOrNull(value);
   }
 
   int get value => index;
 
   String get label {
     switch (this) {
-      case BeautifulStatus.offline:
+      case UserStatus.offline:
         return '当前不接约';
-      case BeautifulStatus.online:
+      case UserStatus.online:
         return '接约中···';
-      case BeautifulStatus.inProgress:
+      case UserStatus.inProgress:
         return '约会中';
     }
   }
 
   Color get backgroundColor {
     switch (this) {
-      case BeautifulStatus.offline:
+      case UserStatus.offline:
         return AppColor.gray9;
-      case BeautifulStatus.online:
+      case UserStatus.online:
         return AppColor.purple6;
-      case BeautifulStatus.inProgress:
+      case UserStatus.inProgress:
         return const Color(0xFF4166F2);
     }
   }
 
   ///只切换上线，下线
-  BeautifulStatus next() {
+  UserStatus next() {
     switch (this) {
-      case BeautifulStatus.offline:
-        return BeautifulStatus.online;
-      case BeautifulStatus.online:
-        return BeautifulStatus.offline;
-      case BeautifulStatus.inProgress:
+      case UserStatus.offline:
+        return UserStatus.online;
+      case UserStatus.online:
+        return UserStatus.offline;
+      case UserStatus.inProgress:
         return this;
     }
 

@@ -19,12 +19,9 @@ class AccountDataController extends GetxController {
 
   @override
   void onInit() {
-    final userInfo = loginService.info;
+    final userInfo = SS.login.info?.copyWith();
 
-    state.yearRangeStart.value = userInfo?.likeAgeMin ?? 18;
-    state.yearRangeEnd.value = userInfo?.likeAgeMax ?? 40;
-
-    final idsList = userInfo?.likeStyle.split(',');
+    final idsList = userInfo?.likeStyle?.split(',');
 
     SS.appConfig.configRx.value?.labels?.forEach((element) {
       state.labelItems.add(LabelItem(
@@ -44,7 +41,21 @@ class AccountDataController extends GetxController {
   }
 
   void onTapSave() async {
+    Loading.show();
+    final res = await UserApi.updateInfoFull(
+      data: state.info?.toJson(),
+    );
+    Loading.dismiss();
 
+    if (!res.isSuccess) {
+      res.showErrorMessage();
+      return;
+    }
+
+    // 更新本地缓存
+    loginService.fetchMyInfo();
+
+    Loading.showToast("成功");
   }
 
   void onTapJob() {}
@@ -70,17 +81,6 @@ class AccountDataController extends GetxController {
         onTap: (index) async {
           UserGender gender = UserGender.valueForIndex(index);
 
-          Loading.show();
-          final res = await UserApi.modifyUserInfoNoCheck(gender: gender.index);
-          Loading.dismiss();
-
-          if (!res.isSuccess) {
-            res.showErrorMessage();
-            return;
-          }
-
-          Loading.showToast("修改成功");
-
           loginService.setInfo((val) {
             val?.gender = gender;
           });
@@ -103,6 +103,6 @@ class AccountDataController extends GetxController {
       return;
     }
 
-    Loading.showToast("已提交审核");
+    Loading.showToast("成功");
   }
 }

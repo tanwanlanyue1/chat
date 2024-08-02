@@ -31,7 +31,8 @@ class AccountDataPage extends StatelessWidget {
         title: Text(S.current.personalInformation),
       ),
       body: Obx(() {
-        final info = controller.loginService.info;
+        final info = state.info?.value;
+        if (info == null) return const SizedBox();
 
         return Column(
           children: [
@@ -51,7 +52,7 @@ class AccountDataPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4.rpx),
                       ),
                       child: AppImage.network(
-                        info?.avatar ?? "",
+                        info.avatar ?? "",
                         width: 76.rpx,
                         height: 76.rpx,
                         // placeholder: AppImage.asset(
@@ -69,25 +70,25 @@ class AccountDataPage extends StatelessWidget {
                           arguments: {"type": 1});
                     },
                     title: "昵称",
-                    detail: info?.nickname,
+                    detail: info.nickname,
                   ),
                   _padding(),
                   AccountDataItem(
                     onTap: controller.selectSex,
                     title: "性别",
-                    detail: state.getGenderString(info?.gender),
+                    detail: state.getGenderString(info.gender),
                   ),
                   _padding(),
                   AccountDataItem(
                     onTap: controller.selectSex,
                     title: "年龄",
-                    detail: state.getGenderString(info?.gender),
+                    detail: state.getGenderString(info.gender),
                   ),
                   _padding(),
                   AccountDataItem(
                     onTap: controller.selectSex,
                     title: "我的位置",
-                    detail: state.getGenderString(info?.gender),
+                    detail: state.getGenderString(info.gender),
                   ),
                   _padding(),
                   AccountDataItem(
@@ -99,51 +100,51 @@ class AccountDataPage extends StatelessWidget {
                   AccountDataItem(
                     onTap: controller.selectSex,
                     title: "我的邮箱",
-                    detail: state.getGenderString(info?.gender),
+                    detail: state.getGenderString(info.gender),
                   ),
                   _padding(height: 36.rpx),
-                  Obx(() {
-                    return _columnWidget(
-                      title: "喜好年龄",
-                      detail:
-                          "${state.yearRangeStart.toInt()}-${state.yearRangeEnd.toInt()}",
-                      child: Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          RangeSlider(
-                            values: RangeValues(
-                              state.yearRangeStart.value.toDouble(),
-                              state.yearRangeEnd.value.toDouble(),
+                  _columnWidget(
+                    title: "喜好年龄",
+                    detail: "${info.likeAgeMin}-${info.likeAgeMax}",
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        RangeSlider(
+                          values: RangeValues(
+                            info.likeAgeMin.toDouble(),
+                            info.likeAgeMax.toDouble(),
+                          ),
+                          min: 16,
+                          max: 65,
+                          onChanged: (value) {
+                            debugPrint(value.toString());
+
+                            state.info?.update((val) {
+                              val?.likeAgeMin = value.start.toInt();
+                              val?.likeAgeMax = value.end.toInt();
+                            });
+                          },
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "16",
+                              style: AppTextStyle.st.medium
+                                  .size(14.rpx)
+                                  .textColor(AppColor.black9),
                             ),
-                            min: 16,
-                            max: 65,
-                            onChanged: (value) {
-                              debugPrint(value.toString());
-                              state.yearRangeStart.value = value.start.toInt();
-                              state.yearRangeEnd.value = value.end.toInt();
-                            },
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "16",
-                                style: AppTextStyle.st.medium
-                                    .size(14.rpx)
-                                    .textColor(AppColor.black9),
-                              ),
-                              Text(
-                                "65",
-                                style: AppTextStyle.st.medium
-                                    .size(14.rpx)
-                                    .textColor(AppColor.black9),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
+                            Text(
+                              "65",
+                              style: AppTextStyle.st.medium
+                                  .size(14.rpx)
+                                  .textColor(AppColor.black9),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                   _padding(height: 36.rpx),
                   _columnWidget(
                     title: "喜好职业",
@@ -218,7 +219,7 @@ class AccountDataPage extends StatelessWidget {
                 ),
               ]),
               child: CommonGradientButton(
-                onTap: null,
+                onTap: controller.onTapSave,
                 text: "保存",
                 height: 50.rpx,
               ),

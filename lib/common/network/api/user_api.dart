@@ -117,6 +117,79 @@ class UserApi {
     );
   }
 
+  /// 修改用户信息（new）增量修改
+  /// avatar：头像
+  /// nickname：昵称
+  /// signature：个性签名
+  /// gender：性别 0：保密 1：男 2：女
+  /// birth：生日yyyy-MM-dd
+  /// age：年龄
+  /// position：位置
+  /// email：邮箱
+  /// phone：手机号
+  /// occupation：职业
+  /// style：风格
+  /// likeSex：喜好性别 0：其它 1：男 2：女
+  /// likeAgeMin：最小年龄
+  /// likeAgeMax：最大年龄
+  /// likeOccupation：喜好职业 1在职人员 2学生
+  /// likeStyle：喜好风格
+  /// images：个人图片 "1, 2, 4" 逗号隔开
+  static Future<ApiResponse> updateInfoPartial({
+    String? avatar,
+    String? nickname,
+    String? signature,
+    int? gender,
+    String? birth,
+    int? age,
+    String? position,
+    String? email,
+    String? phone,
+    int? occupation,
+    String? style,
+    int? likeSex,
+    int? likeAgeMin,
+    int? likeAgeMax,
+    int? likeOccupation,
+    String? likeStyle,
+    String? images,
+  }) {
+    return HttpClient.post(
+      '/api/user/updateInfo',
+      data: {
+        "avatar": avatar,
+        "nickname": nickname,
+        "signature": signature,
+        "gender": gender,
+        "birth": birth,
+        "age": age,
+        "position": position,
+        "email": email,
+        "phone": phone,
+        "occupation": occupation,
+        "style": style,
+        "likeSex": likeSex,
+        "likeAgeMin": likeAgeMin,
+        "likeAgeMax": likeAgeMax,
+        "likeOccupation": likeOccupation,
+        "likeStyle": likeStyle,
+        "images": images,
+      },
+    );
+  }
+
+  /// 修改用户信息（new）全量修改
+  /// type: 修改类型(1:昵称 2:头像 3:个性签名)
+  /// content：修改内容
+  static Future<ApiResponse> updateInfoFull({
+    required Map<String, dynamic>? data,
+  }) {
+    return HttpClient.post(
+      '/api/user/updateInfo',
+      data: data,
+    );
+  }
+
   /// 是否关注
   /// uid: 查询对象的uid
   static Future<ApiResponse> isAttention({

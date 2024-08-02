@@ -22,8 +22,10 @@ class QuestionController extends GetxController {
     super.onInit();
   }
 
+
+
   void onTapSkip() {
-    Get.backToRoot();
+    _goHome();
   }
 
   void onTapNext(int page) async {
@@ -42,7 +44,7 @@ class QuestionController extends GetxController {
         .join(',');
 
     if (state.likeGender.value == null && selectedIdString.isEmpty) {
-      Get.backToRoot();
+      _goHome();
       return;
     }
 
@@ -60,7 +62,7 @@ class QuestionController extends GetxController {
 
     SS.login.fetchMyInfo();
 
-    Get.backToRoot();
+    _goHome();
   }
 
   void onTapGender(bool gender, int page) {
@@ -74,5 +76,10 @@ class QuestionController extends GetxController {
   void onTapLabel(LabelItem item) {
     item.selected = !item.selected;
     update();
+  }
+
+  void _goHome() {
+    print("------跳转到登录");
+    Get.offAllNamed(AppRoutes.home);
   }
 }

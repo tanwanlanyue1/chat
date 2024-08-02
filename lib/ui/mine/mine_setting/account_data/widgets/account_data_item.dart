@@ -29,7 +29,7 @@ class AccountDataItem extends StatelessWidget {
   Widget build(BuildContext context) {
     detailWidget() {
       return Text(
-        detail ?? detailHintText ?? "请选择",
+        detail ?? detailHintText ?? "",
         style: AppTextStyle.st.medium
             .size(14.rpx)
             .textColor(detail != null ? AppColor.black3 : AppColor.black9),

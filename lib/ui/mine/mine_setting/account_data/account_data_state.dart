@@ -1,20 +1,22 @@
 import 'package:get/get.dart';
+import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/widgets/label_widget.dart';
 
 class AccountDataState {
+  final gender = Rxn<UserGender>(); // 性别
 
-  final yearRangeStart = 20.0.obs;
-  final yearRangeEnd = 30.0.obs;
+  final likeGender = Rxn<UserGender>(); // 喜好性别
+
+  final yearRangeStart = 18.obs;
+  final yearRangeEnd = 40.obs;
 
   final List<LabelItem> labelItems = [];
 
-  String? getGenderString(int? gender) {
+  String? getGenderString(UserGender? gender) {
     switch (gender) {
-      case 0:
-        return "保密";
-      case 1:
+      case UserGender.male:
         return "男";
-      case 2:
+      case UserGender.female:
         return "女";
       default:
         return null;

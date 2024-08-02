@@ -33,8 +33,6 @@ class AccountDataPage extends StatelessWidget {
       body: Obx(() {
         final info = controller.loginService.info;
 
-        final birth = info?.birth?.dateTime?.formatYMD ?? "未设置";
-
         return Column(
           children: [
             Expanded(
@@ -114,15 +112,15 @@ class AccountDataPage extends StatelessWidget {
                         children: [
                           RangeSlider(
                             values: RangeValues(
-                              state.yearRangeStart.value,
-                              state.yearRangeEnd.value,
+                              state.yearRangeStart.value.toDouble(),
+                              state.yearRangeEnd.value.toDouble(),
                             ),
                             min: 16,
                             max: 65,
                             onChanged: (value) {
                               debugPrint(value.toString());
-                              state.yearRangeStart.value = value.start;
-                              state.yearRangeEnd.value = value.end;
+                              state.yearRangeStart.value = value.start.toInt();
+                              state.yearRangeEnd.value = value.end.toInt();
                             },
                           ),
                           Row(

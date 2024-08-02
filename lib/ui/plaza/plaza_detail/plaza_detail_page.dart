@@ -217,7 +217,7 @@ class PlazaDetailPage extends StatelessWidget {
                               borderRadius: BorderRadius.all(Radius.circular(2.rpx))
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 4.rpx,vertical: 2.rpx),
-                          child: Text("Lv.${state.authorInfo.value.cavLevel}",style: TextStyle(fontSize: 10.rpx,color: Colors.white),),
+                          child: Text("Lv.0",style: TextStyle(fontSize: 10.rpx,color: Colors.white),),
                         ),
                       ],
                     ),

@@ -233,7 +233,7 @@ class AccountDataPage extends StatelessWidget {
               ]),
               child: CommonGradientButton(
                 onTap: controller.onTapSave,
-                text: "保存",
+                text: S.current.save,
                 height: 50.rpx,
               ),
             ),
@@ -281,7 +281,7 @@ class AccountDataPage extends StatelessWidget {
   Widget _genderButton(UserGender gender, UserModel info) {
     final bool isSelect = info.likeSex == gender;
 
-    final String title = gender.isMale ? "男" : "女";
+    final String title = gender.isMale ? S.current.male : S.current.female;
     const String normalPath = "assets/images/mine/choose_normal.png";
     const String selectPath = "assets/images/mine/choose_select.png";
 
@@ -316,19 +316,17 @@ class AccountDataPage extends StatelessWidget {
     final String selectPath;
     switch (occupation) {
       case UserOccupation.employees:
-        // title = S.current.questionMan;
-        title = "在职人员";
+        title = S.current.employees;
         normalPath = "assets/images/mine/job_worker_normal.png";
         selectPath = "assets/images/mine/job_worker_select.png";
         break;
       case UserOccupation.student:
-        // title = S.current.questionWoman;
-        title = "学生";
+        title = S.current.student;
         normalPath = "assets/images/mine/job_student_normal.png";
         selectPath = "assets/images/mine/job_student_select.png";
         break;
       default:
-        throw Exception("job title error");
+        throw Exception("occupation is not exit");
     }
 
     return GestureDetector(

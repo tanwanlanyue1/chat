@@ -214,8 +214,11 @@
   "userGroupStyle": "团队风格",
   "userSignature": "个人简介",
   "userSignatureHint": "在这里输入内容",
+  "employees": "在职人员",
+  "student": "学生",
   "male": "男",
   "female": "女",
+  "save": "保存",
   "success": "成功",
   "fail": "失败",
   "cancel": "取消"

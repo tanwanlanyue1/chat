@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/ui/ad/ad_manager.dart';
 import 'package:guanjia/ui/welcome/welcome_storage.dart';
 
@@ -15,7 +16,10 @@ class RouteWelcomeMiddleware extends GetMiddleware {
       if(ADManager.instance.getLaunchAd() != null){
         return const RouteSettings(name: AppRoutes.launchAd);
       }
-      return const RouteSettings(name: AppRoutes.home);
+      if (SS.login.isLogin) {
+        return const RouteSettings(name: AppRoutes.home);
+      }
+      return const RouteSettings(name: AppRoutes.loginPage);
     }
   }
 }

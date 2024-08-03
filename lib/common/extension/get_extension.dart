@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/service.dart';
 
 extension GetExtension on GetInterface {
   ///Get.arguments未map类型时，尝试获取指定key的值
@@ -70,6 +71,14 @@ extension GetExtension on GetInterface {
 
   void backToRoot() {
     Get.until((route) => Get.currentRoute == AppRoutes.home);
+  }
+
+  void navigateToHomeOrLogin() {
+    if (SS.login.isLogin) {
+      Get.offAllNamed(AppRoutes.home);
+    } else {
+      Get.offAllNamed(AppRoutes.loginPage);
+    }
   }
 
   EdgeInsets get padding => mediaQuery.padding;
@@ -148,7 +157,6 @@ class ObxValue2<T1 extends RxInterface, T2 extends RxInterface>
     });
   }
 }
-
 
 extension TextEditingControllerX on TextEditingController {
   VoidCallback bindTextRx(RxString textRx) {

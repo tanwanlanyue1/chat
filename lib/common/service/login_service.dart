@@ -378,7 +378,7 @@ class LoginService extends GetxService {
       okButtonText: const Text('重新登录'),
     );
     await signOut(userAction: false);
-    Get.backToRoot();
+    Get.navigateToHomeOrLogin();
     if (result) {
       Future.delayed(
         const Duration(milliseconds: 100),

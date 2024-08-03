@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
+import 'package:guanjia/common/network/config/dev_server_switch.dart';
+import 'package:guanjia/common/network/config/server_config.dart';
+import 'package:guanjia/common/utils/app_info.dart';
 import 'package:guanjia/ui/login/widgets/login_text_field.dart';
-import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
@@ -30,7 +32,28 @@ class LoginPage extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        leading: AppBackButton.light(),
+        actions: [
+          if (!AppInfo.isRelease)
+            DevServerSwitch(
+              additionServers: [
+                //颜鹏
+                Server(
+                  api: Uri.parse('http://192.168.2.18:20000'),
+                  ws: Uri.parse(''),
+                ),
+                //杨文
+                Server(
+                  api: Uri.parse('http://192.168.2.117:20000'),
+                  ws: Uri.parse(''),
+                ),
+                //安伟
+                Server(
+                  api: Uri.parse('http://192.168.2.114:20000'),
+                  ws: Uri.parse(''),
+                ),
+              ],
+            ),
+        ],
       ),
       body: Stack(
         children: [

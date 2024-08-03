@@ -77,6 +77,6 @@ class QuestionController extends GetxController {
   }
 
   void _goHome() {
-    Get.offAllNamed(AppRoutes.home);
+    Get.navigateToHomeOrLogin();
   }
 }

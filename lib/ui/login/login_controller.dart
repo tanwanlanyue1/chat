@@ -84,7 +84,7 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
     );
     Loading.dismiss();
     result.when(success: (_) {
-      Get.offAllNamed(AppRoutes.home);
+      Get.navigateToHomeOrLogin();
     }, failure: (errorMessage) {
       Loading.showToast(errorMessage);
     });

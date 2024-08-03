@@ -304,9 +304,7 @@ class _MinePageState extends State<MinePage>
               title: S.current.activationProgression,
               icon: "assets/images/mine/activate.png",
               trailing: S.current.normalUser,
-              onTap: () {
-                ActivationProgression.show();
-              },
+              onTap: controller.onTapUserAdvanced,
             ),
           //解约/进阶为经纪人
           if (userType.isBeauty)
@@ -314,6 +312,7 @@ class _MinePageState extends State<MinePage>
               title: S.current.cancelAdvanceToBroker,
               icon: "assets/images/mine/cancel_a_contract.png",
               trailing: S.current.beautifulUser,
+              onTap: controller.onTapUserAdvanced,
             ),
           //评价我的
           if (userType.isBeauty)

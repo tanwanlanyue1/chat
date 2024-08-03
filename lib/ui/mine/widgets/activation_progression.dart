@@ -2,27 +2,61 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/network/api/model/user/user_model.dart';
+import 'package:guanjia/common/network/api/user_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
+import 'package:guanjia/widgets/loading.dart';
 
 
 class ActivationProgression extends StatelessWidget {
-  ActivationProgression({super.key});
+  Function(int index)? callBack;
+  ActivationProgression({super.key,this.callBack});
 
+  UserType type = SS.login.info?.type ?? UserType.user;
   final index = 0.obs;
+  //身份数组
+  List idList = [
+    {
+      "name": S.current.customer,
+      "type": UserType.user,
+      "index": 0,
+    },
+    {
+      "name": S.current.goodGirl,
+      "type": UserType.beauty,
+      "index": 1,
+    },
+    {
+      "name": S.current.brokerP,
+      "type": UserType.agent,
+      "index": 2,
+    },
+  ];
+
+  void setId(){
+    for (var element in idList) {
+      if(element['type'] == type){
+        idList.remove(element);
+        break;
+      }
+    }
+  }
 
   //进阶弹窗
-  static Future<bool?> show() {
+  static Future<bool?> show({Function(int val)? callBack}) {
     return Get.dialog(
-      ActivationProgression(),
+      ActivationProgression(callBack: callBack,),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    setId();
     return GestureDetector(
       onTap: (){
         Get.back();
@@ -68,39 +102,23 @@ class ActivationProgression extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Column(
                         children: [
-                          GestureDetector(
+                          ...List.generate(idList.length, (i) => GestureDetector(
                             onTap: (){
-                              index.value = 0;
+                              index.value = i;
                             },
                             child: Container(
                               width: 120.rpx,
                               height: 40.rpx,
                               alignment: Alignment.center,
+                              margin: EdgeInsets.only(bottom: 16.rpx),
                               decoration: BoxDecoration(
-                                color: index.value == 0 ? AppColor.primary : Colors.white,
+                                color: index.value == i ? AppColor.primary : Colors.white,
                                 border: Border.all(color: AppColor.primary, width: 1),
                                 borderRadius: BorderRadius.circular(24.rpx),
                               ),
-                              child: Text(S.current.goodGirl,style: AppTextStyle.fs14m.copyWith(color: index.value == 0 ? Colors.white : AppColor.primary),),
+                              child: Text(idList[i]['name'],style: AppTextStyle.fs14m.copyWith(color: index.value == i ? Colors.white : AppColor.primary),),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: (){
-                              index.value = 1;
-                            },
-                            child: Container(
-                              width: 120.rpx,
-                              height: 40.rpx,
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.only(top: 16.rpx),
-                              decoration: BoxDecoration(
-                                color: index.value == 1 ? AppColor.primary : Colors.white,
-                                border: Border.all(color: AppColor.primary, width: 1),
-                                borderRadius: BorderRadius.circular(24.rpx),
-                              ),
-                              child: Text(S.current.brokerP,style: AppTextStyle.fs14m.copyWith(color: index.value == 1 ? Colors.white : AppColor.primary),),
-                            ),
-                          ),
+                          ))
                         ],
                       ),
                     )),
@@ -109,10 +127,7 @@ class ActivationProgression extends StatelessWidget {
                       child: CommonGradientButton(
                         height: 50.rpx,
                         text: S.current.affirm,
-                        onTap: (){
-                          Get.back();
-                          Get.toNamed(AppRoutes.identityProgressionPage);
-                        },
+                        onTap: () =>callBack?.call(idList[index.value]['index']),
                       ),
                     ),
                   ],

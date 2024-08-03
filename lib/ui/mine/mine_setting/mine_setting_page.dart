@@ -46,6 +46,7 @@ class MineSettingPage extends StatelessWidget {
                           trackColor: AppColor.gray9,
                           onChanged: (value){
                             state.shake.value = value;
+                            controller.setEnabled();
                           },
                         ),
                       ),
@@ -63,6 +64,7 @@ class MineSettingPage extends StatelessWidget {
                           trackColor: AppColor.gray9,
                           onChanged: (value){
                             state.bell.value = value;
+                            controller.setBell();
                           },
                         ),
                       ),

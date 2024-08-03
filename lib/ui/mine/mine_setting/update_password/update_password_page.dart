@@ -34,7 +34,11 @@ class UpdatePasswordPage extends StatelessWidget {
           _buildPhoneNumberTips(),
           _buildVerificationCodeField(),
           _buildVerificationMode(),
-          _buildNewPasswordField(),
+          Visibility(
+            visible: state.isLogin.value,
+            replacement: _buildPaymentPasswordField(),
+            child: _buildNewPasswordField(),
+          ),
           _buildConfirmPasswordField(),
           _buildSubmitButton(),
         ].separated(SizedBox(
@@ -89,6 +93,7 @@ class UpdatePasswordPage extends StatelessWidget {
     );
   }
 
+  //验证码输入框
   Widget _buildVerificationCodeField() {
     return Obx(() => SettingTextField(
       inputController: controller.verificationInputController,
@@ -106,6 +111,7 @@ class UpdatePasswordPage extends StatelessWidget {
     ));
   }
 
+  //新密码输入框
   Widget _buildNewPasswordField() {
     return SettingTextField(
       labelText: S.current.enterYourPIN,
@@ -119,6 +125,22 @@ class UpdatePasswordPage extends StatelessWidget {
     );
   }
 
+  //支付输入密码
+  Widget _buildPaymentPasswordField() {
+    return SettingTextField(
+      labelText: S.current.enterYourPIN,
+      inputController: controller.newPasswordInputController,
+      hintText: S.current.sixPaymentPassword,
+      readOnly: true,
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(6),
+      ],
+      onTapCall: controller.setPayPassword,
+      obscureText: true,
+    );
+  }
+
+  //确认密码输入框
   Widget _buildConfirmPasswordField() {
     return SettingTextField(
       labelText: S.current.pleaseConfirmThePassword,
@@ -129,13 +151,15 @@ class UpdatePasswordPage extends StatelessWidget {
         LengthLimitingTextInputFormatter(16),
       ],
       obscureText: true,
+      readOnly: !state.isLogin.value,
+      onTapCall: ()=> !state.isLogin.value ? controller.setPayPassword(affirm: true) : null,
     );
   }
 
   Widget _buildSubmitButton() {
     return Obx(() {
       return GestureDetector(
-        onTap: state.isVisible.value ? controller.submit : null,
+        onTap: state.isVisible.value ? (state.isLogin.value ? controller.submit : controller.submitPayment) : null,
         child: Container(
           height: 42.rpx,
           decoration: BoxDecoration(

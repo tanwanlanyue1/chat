@@ -107,11 +107,11 @@ class AccountDataController extends GetxController {
   }
 
   void onTapPhone() {
-    Get.toNamed(AppRoutes.bindingPage);
+    Get.toNamed(AppRoutes.bindingPage,arguments: {"currentIndex":0});
   }
 
   void onTapEmail() {
-    Get.toNamed(AppRoutes.bindingPage);
+    Get.toNamed(AppRoutes.bindingPage,arguments: {"currentIndex":1});
   }
 
   void onTapLikeGender(UserGender gender) {

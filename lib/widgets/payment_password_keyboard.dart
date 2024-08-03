@@ -10,11 +10,12 @@ import 'package:guanjia/widgets/widgets.dart';
 
 ///支付密码键盘对话框
 class PaymentPasswordKeyboard extends StatefulWidget {
-  const PaymentPasswordKeyboard._({super.key});
+  String? titleStr;
+  PaymentPasswordKeyboard._({super.key,this.titleStr});
 
-  static Future<String?> show() async {
+  static Future<String?> show({String? titleStr}) async {
     return Get.bottomSheet<String>(
-      const PaymentPasswordKeyboard._(),
+      PaymentPasswordKeyboard._(titleStr: titleStr,),
       ignoreSafeArea: true,
       backgroundColor: Colors.white,
       isScrollControlled: true,
@@ -70,7 +71,7 @@ class _PaymentPasswordKeyboardState extends State<PaymentPasswordKeyboard> {
             ),
           ),
           child: Text(
-            S.current.enterYourPIN,
+            widget.titleStr ?? S.current.enterYourPIN,
             textAlign: TextAlign.center,
             style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),
           ),

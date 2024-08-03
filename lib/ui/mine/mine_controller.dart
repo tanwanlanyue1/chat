@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -88,6 +89,39 @@ class MineController extends GetxController {
             Loading.showToast(errorMessage);
           });
       Get.offAllNamed(AppRoutes.loginPage);
+    }
+  }
+
+  //用户进阶查询
+  void onTapUserAdvanced() async {
+    Loading.show();
+    final response = await UserApi.getUserAdvanced();
+    Loading.dismiss();
+    if(response.isSuccess){
+      if(response.data != null){
+        Get.toNamed(AppRoutes.identityProgressionPage);
+      }else{
+        ActivationProgression.show(
+          callBack: (val)=>onTapActivation(val)
+        );
+      }
+    }else{
+      response.showErrorMessage();
+    }
+  }
+
+  //用户进阶
+  void onTapActivation(int index) async {
+    Loading.show();
+    final response = await UserApi.userAdvanced(
+        type: index
+    );
+    Loading.dismiss();
+    if(response.isSuccess){
+      Get.back();
+      Get.toNamed(AppRoutes.identityProgressionPage);
+    }else{
+      response.showErrorMessage();
     }
   }
 }

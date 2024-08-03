@@ -59,11 +59,11 @@ class UserCenterController extends GetxController {
 
   ///获取关注数和粉丝数和创作数
   Future<void> getFollowFansCount() async {
-    final response = await UserApi.getFollowFansCount(uid: state.authorId);
-    if (response.isSuccess) {
-      state.creation = response.data;
-      update(['userInfo']);
-    }
+    // final response = await UserApi.getFollowFansCount(uid: state.authorId);
+    // if (response.isSuccess) {
+    //   state.creation = response.data;
+    //   update(['userInfo']);
+    // }
   }
 
   ///是否关注作者

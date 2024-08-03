@@ -71,12 +71,7 @@ class IdentityProgressionPage extends StatelessWidget {
       margin: EdgeInsets.only(top: 36.rpx),
       child: Column(
         children: [
-          GestureDetector(
-            onTap: (){
-              controller.updateAudit();
-            },
-            child: AppImage.asset('assets/images/mine/wait.png',width: 70.rpx,height: 70.rpx,),
-          ),
+          AppImage.asset('assets/images/mine/wait.png',width: 70.rpx,height: 70.rpx,),
           SizedBox(height: 24.rpx,),
           Text(S.current.dataSubmitted,style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
           RichText(
@@ -109,7 +104,7 @@ class IdentityProgressionPage extends StatelessWidget {
                 SizedBox(width: 8.rpx),
                 Text(S.current.submitted,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30)),
                 const Spacer(),
-                Text("2024.03.24 14:32",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+                Text(state.advanced.createTime ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
               ],
             ),
           )
@@ -124,15 +119,10 @@ class IdentityProgressionPage extends StatelessWidget {
       padding: EdgeInsets.only(top: 36.rpx,bottom: 100.rpx),
       child: Column(
         children: [
-          GestureDetector(
-            onTap: (){
-              controller.updateCurrent();
-            },
-            child: AppImage.asset('assets/images/mine/wait.png',width: 70.rpx,height: 70.rpx,),
-          ),
+          AppImage.asset('assets/images/mine/wait.png',width: 70.rpx,height: 70.rpx,),
           Container(
             margin: EdgeInsets.only(top: 24.rpx,bottom: 74.rpx),
-            child: Text("${S.current.congratulations}${state.current == 0 ? S.current.goodGirl : state.current == 1 ? S.current.customer:S.current.brokerP}",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
+            child: Text("${S.current.congratulations}${state.current == 0 ? S.current.customer : state.current == 1 ? S.current.goodGirl:S.current.brokerP}",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
           ),
           ...List.generate(state.interests.length, (index) {
             var item = state.interests[index];
@@ -162,9 +152,10 @@ class IdentityProgressionPage extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 38.rpx),
             child: Text(
               state.current == 0 ?
-              S.current.generalUser:
+              S.current.generalBroker:
               state.current == 1 ?
-              S.current.generalBroker:S.current.generalGood,
+              S.current.generalUser:
+              S.current.generalGood,
               style: TextStyle(color: Colors.white, fontSize: 16.rpx),
             ),
           )
@@ -190,11 +181,11 @@ class IdentityProgressionPage extends StatelessWidget {
           ),
           RichText(
             text: TextSpan(
-              text: '${S.current.auditErrorPrompt}\n',
+              text: '${state.advanced.remark ?? ''}\n',
               style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30,height: 1.4),
               children: <TextSpan>[
                 TextSpan(
-                  text: "2024年03月24日 14:32提交",
+                  text: state.advanced.createTime ?? '',
                   style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9,height: 1.4),
                 ),
               ],
@@ -208,7 +199,11 @@ class IdentityProgressionPage extends StatelessWidget {
             },
             margin: EdgeInsets.symmetric(horizontal: 38.rpx),
             child: Text(
-              S.current.confirm,
+              state.current == 0 ?
+              S.current.generalBroker:
+              state.current == 1 ?
+              S.current.generalUser:
+              S.current.generalGood,
               style: TextStyle(color: Colors.white, fontSize: 16.rpx),
             ),
           )

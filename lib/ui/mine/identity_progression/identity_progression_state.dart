@@ -1,10 +1,16 @@
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 
-class IdentityProgressionState {
+import '../../../common/network/api/api.dart';
 
+class IdentityProgressionState {
+  //用户信息
+  final loginInfo = SS.login.info;
+  //上一次的进阶
+  UserAdvanced advanced = UserAdvanced.fromJson({});
   //0审核中，1成功，2失败
   int audit = 0;
-  //0:佳丽 1:客户，2:经纪人
+  //0:客户 1: 佳丽，2:经纪人
   int current = 0;
   //权益
   List interests = [];

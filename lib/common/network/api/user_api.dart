@@ -262,95 +262,6 @@ class UserApi {
     );
   }
 
-  /// 获取等级境修币信息
-  static Future<ApiResponse<LevelMoneyRes>> getLevelAndMoney() {
-    return HttpClient.get(
-      '/api/user/levelAndMoney',
-      dataConverter: (json) {
-        return LevelMoneyRes.fromJson(json);
-      },
-    );
-  }
-
-  /// 获取用户 功德值 或 修行值 等级机制
-  /// type: 0:功德值 1:修行值
-  static Future<ApiResponse<List<LevelRes>>> getLevelList({
-    required int type,
-  }) {
-    return HttpClient.get(
-      '/api/user/getLevel',
-      params: {
-        "type": type,
-      },
-      dataConverter: (json) {
-        if (json is List) {
-          return json.map((e) => LevelRes.fromJson(e)).toList();
-        }
-        return [];
-      },
-    );
-  }
-
-  /// 获取关注数和粉丝数和创作数
-  /// uid: 用户id
-  static Future<ApiResponse> getFollowFansCount({
-    required int uid,
-  }) {
-    return HttpClient.get(
-      '/api/user/getFollowFansCount',
-      params: {
-        "uid": uid,
-      },
-    );
-  }
-
-  /// 获取收藏列表
-  /// uid: 用户id
-  /// page 页码（默认1）
-  /// size 每页数量（默认10）,示例值(10)
-  static Future<ApiResponse<List<PlazaListModel>>> getCollectList({
-    required int uid,
-    int page = 1,
-    int size = 10,
-  }) {
-    return HttpClient.get(
-      '/api/user/getCollectList',
-      params: {
-        "uid": uid,
-        "page": page,
-        "size": size,
-      },
-      dataConverter: (data) {
-        if (data is List) {
-          return data.map((e) => PlazaListModel.fromJson(e)).toList();
-        }
-        return [];
-      },
-    );
-  }
-
-  /// 用户功德记录
-  /// month: 月份
-  /// page 页码（默认1）
-  /// size 每页数量（默认10）,示例值(10)
-  static Future<ApiResponse<MeritVirtueList>> getMeritVirtueList({
-    required String month,
-    int page = 1,
-    int size = 10,
-  }) {
-    return HttpClient.get(
-      '/api/user/meritList',
-      params: {
-        "month": month,
-        "page": page,
-        "size": size,
-      },
-      dataConverter: (data) {
-        return MeritVirtueList.fromJson(data);
-      },
-    );
-  }
-
   /// 用户退出登录
   static Future<ApiResponse> signOut() {
     return HttpClient.get(
@@ -391,26 +302,6 @@ class UserApi {
         "birthPlace": birthPlace,
         "currentResidence": currentResidence,
         "timeZone": timeZone,
-      },
-    );
-  }
-
-  /// 用户档案列表
-  static Future<ApiResponse<List<ArchivesInfo>>> archiveList({
-    int? page,
-    int? size,
-  }) {
-    return HttpClient.get(
-      '/api/user/ProfilesList',
-      params: {
-        "page": page,
-        "size": size,
-      },
-      dataConverter: (json) {
-        if (json is List) {
-          return json.map((e) => ArchivesInfo.fromJson(e)).toList();
-        }
-        return [];
       },
     );
   }
@@ -550,6 +441,63 @@ class UserApi {
         "verifyCode": verifyCode,
       },
       dataConverter: (json) => json,
+    );
+  }
+
+  /// 修改支付密码
+  /// 第一次设置支付密码-不传递手机号与邮箱
+  /// type: 验证类型 1手机号 2邮箱
+  /// phone: 用户手机号
+  /// email: 用户邮箱
+  /// verifyCode：验证码
+  /// password：用户密码
+  /// confirmPassword：确认密码
+  static Future<ApiResponse> updatePayPwd({
+    int? type,
+    String? phone,
+    String? email,
+    String? verifyCode,
+    required String password,
+    required String confirmPassword,
+  }) {
+    return HttpClient.post(
+      '/api/user/updatePayPwd',
+      data: {
+        "type": type,
+        "phone": phone,
+        "email": email,
+        "verifyCode": verifyCode,
+        "password": password,
+        "confirmPassword": confirmPassword,
+      },
+      dataConverter: (json) => json,
+    );
+  }
+
+  /// 用户进阶
+  /// type: 用户类型 0普通用户 1佳丽 2经纪人
+  static Future<ApiResponse> userAdvanced({
+    int? type,
+  }) {
+    return HttpClient.post(
+      '/api/user/userAdvanced',
+      data: {
+        "type": type,
+      },
+      dataConverter: (json) => json,
+    );
+  }
+
+  /// 用户进阶查询
+  static Future<ApiResponse<UserAdvanced?>> getUserAdvanced() {
+    return HttpClient.get(
+      '/api/user/getUserAdvanced',
+      dataConverter: (data) {
+        if(data is Map) {
+          return UserAdvanced.fromJson(data);
+        }
+        return null;
+      },
     );
   }
 }

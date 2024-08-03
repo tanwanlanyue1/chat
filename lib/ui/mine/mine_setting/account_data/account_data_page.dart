@@ -3,8 +3,6 @@ import 'package:flutter_pickers/pickers.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
-import 'package:guanjia/common/extension/date_time_extension.dart';
-import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/generated/l10n.dart';
@@ -47,16 +45,11 @@ class AccountDataPage extends StatelessWidget {
                     onTap: controller.onTapHeader,
                     title: "头像",
                     height: 100.rpx,
-                    trailing: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(4.rpx),
-                      ),
-                      child: AppImage.network(
-                        info.avatar ?? "",
-                        width: 76.rpx,
-                        height: 76.rpx,
-                      ),
+                    trailing: AppImage.network(
+                      info.avatar ?? "",
+                      borderRadius: BorderRadius.circular(4.rpx),
+                      width: 76.rpx,
+                      height: 76.rpx,
                     ),
                   ),
                   _padding(),
@@ -90,18 +83,21 @@ class AccountDataPage extends StatelessWidget {
                   ),
                   _padding(),
                   AccountDataItem(
+                    onTap: controller.onTapPosition,
                     title: "我的位置",
                     detail: info.position,
                   ),
                   _padding(),
                   AccountDataItem(
+                    onTap: controller.onTapPhone,
                     title: "联系电话",
-                    detail: info.phone,
+                    detail: info.phone ?? controller.loginService.info?.phone,
                   ),
                   _padding(),
                   AccountDataItem(
+                    onTap: controller.onTapEmail,
                     title: "我的邮箱",
-                    detail: info.email,
+                    detail: info.email ?? controller.loginService.info?.email,
                   ),
                   _padding(height: 36.rpx),
                   _columnWidget(

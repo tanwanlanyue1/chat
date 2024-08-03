@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/widgets/label_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:guanjia/common/network/api/api.dart';
@@ -82,6 +83,18 @@ class AccountDataController extends GetxController {
     loginService.fetchMyInfo();
 
     Loading.showToast("成功");
+  }
+
+  void onTapPosition() {
+    Loading.showToast("待定");
+  }
+  
+  void onTapPhone() {
+    Get.toNamed(AppRoutes.bindingPage);
+  }
+
+  void onTapEmail() {
+    Get.toNamed(AppRoutes.bindingPage);
   }
 
   void onTapJob() {}

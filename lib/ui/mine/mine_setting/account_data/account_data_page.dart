@@ -45,7 +45,7 @@ class AccountDataPage extends StatelessWidget {
                   // header
                   AccountDataItem(
                     onTap: controller.onTapHeader,
-                    title: "头像",
+                    title: S.current.userAvatar,
                     height: 100.rpx,
                     trailing: AppImage.network(
                       info.avatar ?? "",
@@ -61,14 +61,14 @@ class AccountDataPage extends StatelessWidget {
                       Get.toNamed(AppRoutes.updateInfoPage,
                           arguments: {"type": 1});
                     },
-                    title: "昵称",
+                    title: S.current.userNickName,
                     detail: info.nickname,
                   ),
                   _padding(),
                   // gender
                   AccountDataItem(
                     onTap: controller.onTapGender,
-                    title: "性别",
+                    title: S.current.userGender,
                     detail: state.getGenderString(info.gender),
                   ),
                   _padding(),
@@ -83,34 +83,34 @@ class AccountDataPage extends StatelessWidget {
                         data: List.generate(50, (index) => index + 16),
                       );
                     },
-                    title: "年龄",
+                    title: S.current.userAge,
                     detail: "${info.age ?? ""}",
                   ),
                   _padding(),
                   // position
                   AccountDataItem(
                     onTap: controller.onTapPosition,
-                    title: "我的位置",
+                    title: S.current.userPosition,
                     detail: info.position,
                   ),
                   _padding(),
                   // phone
                   AccountDataItem(
                     onTap: controller.onTapPhone,
-                    title: "联系电话",
+                    title: S.current.userPhone,
                     detail: info.phone ?? controller.loginService.info?.phone,
                   ),
                   _padding(),
                   // email
                   AccountDataItem(
                     onTap: controller.onTapEmail,
-                    title: "我的邮箱",
+                    title: S.current.userEmail,
                     detail: info.email ?? controller.loginService.info?.email,
                   ),
                   // likeSex
                   if (info.type.isUser)
                     _columnWidget(
-                      title: "喜好性别",
+                      title: S.current.userLikeGender,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -197,7 +197,7 @@ class AccountDataPage extends StatelessWidget {
                   ),
                   // signature
                   _columnWidget(
-                    title: "个人简介",
+                    title: S.current.userSignature,
                     child: Container(
                       height: 150.rpx,
                       padding: EdgeInsets.symmetric(
@@ -207,7 +207,7 @@ class AccountDataPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.rpx),
                       ),
                       child: InputWidget(
-                        hintText: '在这里输入内容',
+                        hintText: S.current.userSignatureHint,
                         maxLength: 200,
                         lines: 100,
                         fillColor: Colors.transparent,

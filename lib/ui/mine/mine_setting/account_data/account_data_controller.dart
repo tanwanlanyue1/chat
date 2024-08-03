@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/label_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:guanjia/common/network/api/api.dart';
@@ -90,7 +91,7 @@ class AccountDataController extends GetxController {
     // 更新本地缓存
     loginService.fetchMyInfo();
 
-    Loading.showToast("成功");
+    Loading.showToast(S.current.success);
   }
 
   void onTapPosition() {
@@ -134,9 +135,9 @@ class AccountDataController extends GetxController {
   void onTapGender() {
     Get.bottomSheet(
       CommonBottomSheet(
-        titles: const [
-          "男",
-          "女",
+        titles: [
+          S.current.male,
+          S.current.female,
         ],
         onTap: (index) async {
           final UserGender gender;

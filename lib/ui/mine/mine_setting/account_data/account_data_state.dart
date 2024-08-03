@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/label_widget.dart';
 
 class AccountDataState {
@@ -14,9 +15,9 @@ class AccountDataState {
   String? getGenderString(UserGender? gender) {
     switch (gender) {
       case UserGender.male:
-        return "男";
+        return S.current.male;
       case UserGender.female:
-        return "女";
+        return S.current.female;
       default:
         return null;
     }
@@ -26,30 +27,30 @@ class AccountDataState {
     switch (type) {
       case UserType.user:
       case UserType.beauty:
-        return "喜好年龄";
+        return S.current.userLikeAge;
       case UserType.agent:
-        return "团队年龄范围";
+        return S.current.userGroupAge;
     }
   }
 
   String getOccupationTitle(UserType type) {
     switch (type) {
       case UserType.user:
-        return "喜好职业";
+        return S.current.userLikeOccupation;
       case UserType.beauty:
       case UserType.agent:
-        return "我的身份";
+        return S.current.userOccupation;
     }
   }
 
   String getStyleTitle(UserType type) {
     switch (type) {
       case UserType.user:
-        return "喜好风格";
+        return S.current.userLikeStyle;
       case UserType.beauty:
-        return "我的风格";
+        return S.current.userStyle;
       case UserType.agent:
-        return "团队风格";
+        return S.current.userGroupStyle;
     }
   }
 }

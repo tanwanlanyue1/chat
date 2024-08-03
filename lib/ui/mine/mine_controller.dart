@@ -17,6 +17,7 @@ import 'package:guanjia/widgets/web/web_page.dart';
 import 'mine_state.dart';
 import 'widgets/activation_progression.dart';
 import 'widgets/security_deposit_dialog.dart';
+import 'widgets/sign_out_dialog.dart';
 
 class MineController extends GetxController {
   final MineState state = MineState();
@@ -73,12 +74,8 @@ class MineController extends GetxController {
   }
 
   void onTapSignOut() async {
-    final result = await ConfirmDialog.show(
-      message: const Text('确定要退出登录吗？'),
-      cancelButtonText: const Text('取消'),
-      okButtonText: const Text('确定退出'),
-    );
-    if(result){
+    final result = await SignOutDialog.show();
+    if(result == true){
       Loading.show();
       final res = await SS.login.signOut();
       Loading.dismiss();

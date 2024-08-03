@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/widgets/spacing.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'session_list_controller.dart';
 
@@ -19,7 +21,19 @@ class _SessionListViewState extends State<SessionListView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container();
+    return Obx((){
+      if(state.isReadyRx()){
+        return ZIMKitConversationListView(
+          onPressed: (context, conversation, defaultAction) {
+            Get.to(() => ZIMKitMessageListPage(
+              conversationID: conversation.id,
+              conversationType: conversation.type,
+            ));
+          },
+        );
+      }
+      return Spacing.blank;
+    });
   }
 
   @override

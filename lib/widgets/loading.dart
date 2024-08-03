@@ -23,12 +23,11 @@ class Loading {
     return EasyLoading.init(builder: builder);
   }
 
-
   static Future<void> show({String? message, bool? dismissOnTap}) {
     return EasyLoading.show(status: message, dismissOnTap: dismissOnTap);
   }
 
-  static Future<void> dismiss() async{
+  static Future<void> dismiss() async {
     return EasyLoading.dismiss();
   }
 
@@ -44,50 +43,23 @@ class Loading {
   static Future<void> dismissToast() async {
     await Fluttertoast.cancel();
   }
-
 }
 
 class LoadingIndicator extends StatelessWidget {
   final double? size;
+
   const LoadingIndicator({super.key, this.size});
 
   @override
   Widget build(BuildContext context) {
-    const scale = 6/7;
     final size = this.size ?? 70.rpx;
-    final iconSize = size * scale;
     return SizedBox.square(
       dimension: size,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          SpinKitSpinningLines(
-            color: const Color(0xFFE8DDCB),
-            size: size,
-          ),
-          RepeatAnimatedBuilder(
-            upperBound: 1.1,
-            lowerBound: 0.8,
-            duration: const Duration(milliseconds: 1000),
-            reverse: true,
-            // child: AppImage.asset(
-            //   'assets/images/common/ic_loading.png',
-            //   width: iconSize,
-            //   height: iconSize,
-            //   fit: BoxFit.contain,
-            //   alignment: Alignment.center,
-            // ),
-            child: const SizedBox(),
-            builder: (_, value, child) {
-              return Transform.scale(
-                scale: value,
-                child: child,
-              );
-            },
-          ),
-        ],
+      child: AppImage.svga(
+        'assets/images/common/loading.svga',
+        width: size,
+        height: size,
       ),
     );
   }
 }
-

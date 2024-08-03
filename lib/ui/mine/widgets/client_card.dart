@@ -4,10 +4,12 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/button.dart';
 
 ///客户项
 class ClientCard extends StatelessWidget {
-  const ClientCard({super.key});
+  final VoidCallback? onTap;
+  const ClientCard({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -59,14 +61,11 @@ class ClientCard extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColor.purple6,
-                  borderRadius: BorderRadius.circular(20.rpx),
-                ),
+              Button.stadium(
+                onPressed: onTap,
                 width: 82.rpx,
                 height: 28.rpx,
-                alignment: Alignment.center,
+                backgroundColor: AppColor.purple6,
                 child: Text(S.current.getTouchWith,style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
               )
             ],

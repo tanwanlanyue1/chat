@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'contact_state.dart';
 
@@ -29,6 +31,17 @@ class ContactController extends GetxController {
 
   void doSearch() async{
 
+  }
+
+  void onTapItem(int index){
+    final users = [19,20,21];
+    final id = users.elementAtOrNull(index);
+    if(id != null && id != SS.login.userId){
+      Get.to(() => ZIMKitMessageListPage(
+        conversationID: id.toString(),
+        conversationType: ZIMConversationType.peer,
+      ));
+    }
   }
 
 }

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/string_extension.dart';
+import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -54,10 +55,13 @@ class _ContactViewState extends State<ContactView>
           ),
           PagedSliverList(
             pagingController: controller.pagingController,
-            builderDelegate: PagedChildBuilderDelegate(
-              itemBuilder: (_, item, index){
-                return ClientCard();
-              }
+            builderDelegate: DefaultPagedChildBuilderDelegate(
+              pagingController: controller.pagingController,
+              itemBuilder: (_, item, index) {
+                return ClientCard(
+                  onTap: () => controller.onTapItem(index),
+                );
+              },
             ),
           ),
         ],

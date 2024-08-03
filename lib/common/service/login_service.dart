@@ -6,11 +6,13 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/httpclient/api_response.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/common/utils/result.dart';
 import 'package:guanjia/ui/home/home_page.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/widgets.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 import '../event/login_event.dart';
 import 'service.dart';
@@ -54,6 +56,20 @@ class LoginService extends GetxService {
   static const _kUserData = 'userData';
   final _localStorage = LocalStorage('LoginService');
 
+  LoginService() {
+    ever(_isLogin, (isLogin) {
+      if (isLogin) {
+        ZIMKit().connectUser(
+          id: userId.toString(),
+          name: info?.nickname ?? '',
+          avatarUrl: info?.avatar ?? '',
+        );
+      } else {
+        ZIMKit().disconnectUser();
+      }
+    });
+  }
+
   Future<LoginService> init() async {
     final loginData = await _localStorage.getJson(_kLoginData);
     final userData = await _localStorage.getJson(_kUserData);
@@ -63,10 +79,10 @@ class LoginService extends GetxService {
       return this;
     }
 
-    _isLogin.value = true;
-
     _loginRes = LoginRes.fromJson(loginData);
     _info.value = UserModel.fromJson(userData);
+
+    _isLogin.value = true;
 
     return this;
   }
@@ -308,7 +324,7 @@ class LoginService extends GetxService {
     required String phone,
     required int type,
   }) async {
-    final res = await OpenApi.sms(type: type,account: phone);
+    final res = await OpenApi.sms(type: type, account: phone);
     if (!res.isSuccess) {
       return ResultFailure(res.errorMessage ?? "data error");
     }

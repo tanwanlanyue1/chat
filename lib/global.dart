@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/network/httpclient/http_client.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/ui/ad/ad_manager.dart';
 import 'package:guanjia/ui/welcome/welcome_storage.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 import 'common/app_localization.dart';
 import 'common/service/service.dart';
 
@@ -75,11 +77,19 @@ class Global {
 
   ///用户同意隐私政策之后执行初始化，androidId，第三方sdk等敏感信息需要用户同意隐私政策才可以获取，否则应用市场审核不过
   static Future<void> _initAfterPrivacyPolicy() async {
+
+    //ZEGO 即时通信
+    await ZIMKit().init(
+      appID: AppConfig.zegoAppId,
+      appSign: AppConfig.zegoAppSign,
+    );
+
     //初始化服务
     await SS.initServices();
 
     //广告
     await ADManager.instance.initialize();
+
   }
 
   static Future<Map<String, dynamic>> getAuthorizedHeaders() async {

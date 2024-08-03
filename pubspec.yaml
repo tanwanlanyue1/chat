@@ -59,10 +59,13 @@ dependencies:
   extended_image: ^8.2.1
   image_editor: ^1.5.1
   material_color_generator: ^1.1.0
+  zego_zimkit: 1.18.10
 
 dependency_overrides:
   http: ^1.2.1 # svgaplayer_flutter 和 flutter_cache_manager会冲突，强制使用flutter_cache_manager依赖版本
   webview_flutter_android: 3.16.1
+  intl: 0.18.1
+  win32: 5.5.0
 
 dev_dependencies:
   flutter_test:

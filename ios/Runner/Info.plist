@@ -51,7 +51,9 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>头像上传、发布创作信息时选择图片上传需要使用你的手机相机功能</string>
+    <string>We require camera access to connect to a call</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>We require microphone access to connect to a call</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>允许保存图片至本地相册，需要获取权限</string>
 	<key>NSPhotoLibraryUsageDescription</key>

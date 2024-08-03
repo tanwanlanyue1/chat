@@ -7,6 +7,9 @@ enum UserGender {
   static UserGender valueForIndex(int index) {
     return UserGender.values.elementAtOrNull(index) ?? UserGender.unknown;
   }
+
+  bool get isMale => this == UserGender.male;
+  bool get isFemale => this == UserGender.female;
 }
 
 /// 用户类型

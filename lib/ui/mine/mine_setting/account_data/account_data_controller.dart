@@ -22,7 +22,11 @@ class AccountDataController extends GetxController {
   void onInit() {
     final userInfo = SS.login.info?.copyWith();
 
-    final idsList = userInfo?.likeStyle?.split(',');
+    final List<String>? idsList = userInfo != null
+        ? userInfo.type.isUser
+            ? userInfo.likeStyle?.split(',')
+            : userInfo.style?.split(',')
+        : null;
 
     SS.appConfig.configRx.value?.labels?.forEach((element) {
       state.labelItems.add(LabelItem(
@@ -44,10 +48,8 @@ class AccountDataController extends GetxController {
   }
 
   void onTapSave() async {
-    final info = state.info?.value;
+    final info = state.info?.value.copyWith();
     if (info == null) return;
-
-    final data = info.toJson();
 
     // 风格
     final selectedIdString = state.labelItems
@@ -57,16 +59,22 @@ class AccountDataController extends GetxController {
 
     switch (info.type) {
       case UserType.user:
-        if (selectedIdString.isNotEmpty) data["likeStyle"] = selectedIdString;
+        if (selectedIdString.isNotEmpty) info.likeStyle = selectedIdString;
         break;
       case UserType.beauty:
       case UserType.agent:
-        if (selectedIdString.isNotEmpty) data["style"] = selectedIdString;
+        if (selectedIdString.isNotEmpty) info.style = selectedIdString;
         break;
     }
 
     // 个人简介
-    data["signature"] = signatureController.text;
+    info.signature = signatureController.text;
+
+    // 下面两个属性需要进行绑定操作，保存不需要进行修改
+    info.phone = null;
+    info.email = null;
+
+    final data = info.toJson();
 
     Loading.show();
     final res = await UserApi.updateInfoFull(
@@ -88,7 +96,7 @@ class AccountDataController extends GetxController {
   void onTapPosition() {
     Loading.showToast("待定");
   }
-  
+
   void onTapPhone() {
     Get.toNamed(AppRoutes.bindingPage);
   }
@@ -97,7 +105,26 @@ class AccountDataController extends GetxController {
     Get.toNamed(AppRoutes.bindingPage);
   }
 
-  void onTapJob() {}
+  void onTapLikeGender(UserGender gender) {
+    state.info?.update((val) {
+      val?.likeSex = gender;
+    });
+  }
+
+  void onChangeLikeAge(int likeAgeMin, int likeAgeMax) {
+    state.info?.update((val) {
+      val?.likeAgeMin = likeAgeMin;
+      val?.likeAgeMax = likeAgeMax;
+    });
+  }
+
+  void onTapOccupation(UserOccupation occupation, UserModel info) {
+    state.info?.update((val) {
+      info.type.isUser
+          ? val?.likeOccupation = occupation
+          : val?.occupation = occupation;
+    });
+  }
 
   void onTapLabel(LabelItem item) {
     item.selected = !item.selected;

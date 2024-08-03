@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pickers/pickers.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -43,7 +44,7 @@ class AccountDataPage extends StatelessWidget {
                 ),
                 children: [
                   AccountDataItem(
-                    onTap: controller.selectCamera,
+                    onTap: controller.onTapHeader,
                     title: "头像",
                     height: 100.rpx,
                     trailing: Container(
@@ -69,12 +70,21 @@ class AccountDataPage extends StatelessWidget {
                   ),
                   _padding(),
                   AccountDataItem(
-                    onTap: controller.selectSex,
+                    onTap: controller.onTapGender,
                     title: "性别",
                     detail: state.getGenderString(info.gender),
                   ),
                   _padding(),
                   AccountDataItem(
+                    onTap: () {
+                      Pickers.showSinglePicker(
+                        context,
+                        onConfirm: (value, __) {
+                          controller.onConfirmAge(value);
+                        },
+                        data: List.generate(50, (index) => index + 16),
+                      );
+                    },
                     title: "年龄",
                     detail: "${info.age ?? ""}",
                   ),

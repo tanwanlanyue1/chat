@@ -91,13 +91,7 @@ class AccountDataController extends GetxController {
     update();
   }
 
-  /// 选择图片或者拍照
-  void selectCamera() {
-    PhotoAndCameraBottomSheet.show(
-        onUploadUrls: _updateHead, limit: 1, isCrop: true);
-  }
-
-  Future<void> selectSex() async {
+  void onTapGender() {
     Get.bottomSheet(
       CommonBottomSheet(
         titles: const [
@@ -126,20 +120,20 @@ class AccountDataController extends GetxController {
     );
   }
 
-  Future<void> selectBirth(int year, int month, int day) async {
-    final date = DateTime(year, month, day);
+  void onConfirmAge(int age) {
+    state.info?.update((val) {
+      val?.age = age;
+    });
+  }
+
+  void onTapHeader() {
+    PhotoAndCameraBottomSheet.show(
+        onUploadUrls: _updateHead, limit: 1, isCrop: true);
   }
 
   void _updateHead(List<String> urls) async {
-    Loading.show();
-    final infoRes = await UserApi.modifyUserInfo(type: 2, content: urls.first);
-    Loading.dismiss();
-
-    if (!infoRes.isSuccess) {
-      infoRes.showErrorMessage();
-      return;
-    }
-
-    Loading.showToast("成功");
+    state.info?.update((val) {
+      val?.avatar = urls.first;
+    });
   }
 }

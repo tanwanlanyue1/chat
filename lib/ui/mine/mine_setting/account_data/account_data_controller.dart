@@ -17,6 +17,7 @@ class AccountDataController extends GetxController {
 
   final loginService = SS.login;
 
+  late final TextEditingController nicknameController;
   late final TextEditingController signatureController;
 
   @override
@@ -37,6 +38,7 @@ class AccountDataController extends GetxController {
       ));
     });
 
+    nicknameController = TextEditingController(text: userInfo?.nickname);
     signatureController = TextEditingController(text: userInfo?.signature);
 
     super.onInit();
@@ -44,13 +46,19 @@ class AccountDataController extends GetxController {
 
   @override
   void onClose() {
+    nicknameController.dispose();
     signatureController.dispose();
     super.onClose();
   }
 
   void onTapSave() async {
+    FocusScope.of(Get.context!).unfocus();
+
     final info = state.info?.value.copyWith();
     if (info == null) return;
+
+    // 昵称
+    info.nickname = nicknameController.text;
 
     // 风格
     final selectedIdString = state.labelItems

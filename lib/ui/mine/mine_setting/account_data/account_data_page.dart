@@ -57,12 +57,14 @@ class AccountDataPage extends StatelessWidget {
                   _padding(),
                   // nickname
                   AccountDataItem(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.updateInfoPage,
-                          arguments: {"type": 1});
-                    },
                     title: S.current.userNickName,
-                    detail: info.nickname,
+                    trailing: InputWidget(
+                      inputController: controller.nicknameController,
+                      hintText: "",
+                      textAlign: TextAlign.right,
+                      fillColor: Colors.transparent,
+                      contentPadding: EdgeInsets.zero,
+                    ),
                   ),
                   _padding(),
                   // gender

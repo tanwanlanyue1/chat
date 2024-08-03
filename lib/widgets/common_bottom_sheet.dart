@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/list_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 class CommonBottomSheet extends StatelessWidget {
   /// titles: 名称
@@ -71,7 +72,7 @@ class CommonBottomSheet extends StatelessWidget {
                           width: 1.rpx, color: const Color(0XffF6F7F9))),
                 ),
                 child: Text(
-                  '取消',
+                  S.current.cancel,
                   style: TextStyle(
                       fontSize: 14.rpx, color: const Color(0xff999999)),
                   textAlign: TextAlign.center,

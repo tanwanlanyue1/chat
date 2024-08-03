@@ -41,7 +41,10 @@ class BindingPage extends StatelessWidget {
             child: _buildPhoneField(),
           ),
           _buildVerificationCodeField(),
-          _buildVerificationMode(),
+          Visibility(
+            visible: state.currentIndex == -1,
+            child: _buildVerificationMode(),
+          ),
           _buildSubmitButton(),
         ]
             .separated(
@@ -102,7 +105,8 @@ class BindingPage extends StatelessWidget {
               ),
               onChanged: (phone) {
                 print(phone);
-                controller.phoneNumberInputController.text = phone.countryCode.substring(1)+phone.number;
+                controller.phoneNumberInputController.text = phone.number;
+                // controller.phoneNumberInputController.text = phone.countryCode.substring(1)+phone.number;
               },
             ),
           ),
@@ -179,7 +183,7 @@ class BindingPage extends StatelessWidget {
               color: AppColor.primary
                   .withOpacity(state.isVisible.value ? 1 : 0.15),
               borderRadius: BorderRadius.circular(8.rpx)),
-          margin: EdgeInsets.symmetric(horizontal: 8.rpx, vertical: 40.rpx),
+          margin: EdgeInsets.symmetric(horizontal: 38.rpx, vertical: 40.rpx),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
+import 'package:guanjia/common/network/api/user_api.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
+import 'package:guanjia/widgets/payment_password_keyboard.dart';
 import 'update_password_state.dart';
 
 class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
@@ -22,18 +25,12 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
 
   /// 获取短信验证码
   Future<bool> fetchSms() async {
-    final phone = state.loginService.isLogin
-        ? state.loginService.info?.email ?? ""
-        // ? state.loginService.info?.phone ?? ""
-        : phoneNumberInputController.text;
-
-    if (phone.length != 11) {
-      Loading.showToast('请输入手机号码');
-      return false;
-    }
 
     Loading.show();
-    final res = await state.loginService.fetchSms(type: 1,phone: phone);
+    final res = await state.loginService.fetchSms(
+        type: state.isPhone.value ? 1 : 2,
+        phone: state.phone
+    );
     Loading.dismiss();
 
     return res.when(success: (_) {
@@ -43,18 +40,17 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
     });
   }
 
-  /// 提交修改
+  /// 提交修改-登录密码
   void submit() async {
-    final phone = state.loginService.isLogin
-        ? state.loginService.info?.phone ?? ""
-        : phoneNumberInputController.text;
     final verifyCode = verificationInputController.text;
     final newPassword = newPasswordInputController.text;
     final confirmPassword = confirmPasswordInputController.text;
 
     Loading.show();
     final res = await state.loginService.forgotOrResetPassword(
-      phone: phone,
+      type: state.isPhone.value ? 1 : 2,
+      phone: state.phone,
+      email: state.phone,
       verifyCode: verifyCode,
       password: newPassword,
       confirmPassword: confirmPassword,
@@ -69,21 +65,41 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
     });
   }
 
+  /// 提交修改-支付密码
+  void submitPayment() async {
+    Loading.show();
+    final response = await UserApi.updatePayPwd(
+      type: state.isPhone.value ? 1 : 2,
+      phone: state.phone,
+      email: state.phone,
+      verifyCode: verificationInputController.text,
+      password: newPasswordInputController.text,
+      confirmPassword: confirmPasswordInputController.text,
+    );
+    Loading.dismiss();
+    if(response.isSuccess){
+      Loading.showToast(S.current.setSuccessfully);
+      Get.back();
+    }else{
+      response.showErrorMessage();
+    }
+    SS.login.fetchMyInfo();
+  }
+
   @override
   void onInit() {
     super.onInit();
 
-    print("loginService==${state.loginService}");
-    print("info==${jsonEncode(state.loginService.info)}");
-
     if(state.loginService.info?.phone?.isNotEmpty ?? false){
       state.isPhone.value = true;
+      state.phone = state.loginService.info?.phone ?? '';
     }else{
       state.isPhone.value = false;
+      state.phone = state.loginService.info?.email ?? '';
     }
-    // 已登录需要显示带星号的电话号码
+    // 已登录需要显示带星号的电话号码 phone
     final phoneString = state.loginService.isLogin
-        ? maskSubstring(state.isPhone.value ? (state.loginService.info?.phone ?? '') : (state.loginService.info?.email ?? ''))
+        ? maskSubstring(state.phone)
         : "";
     phoneNumberInputController.text = phoneString;
 
@@ -117,15 +133,32 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
 
   //判断是否绑定了其他验证方式
   void verificationMode(){
-    if(state.isPhone.value && (state.loginService.info?.email?.isNotEmpty ?? false)){
+    if((state.loginService.info?.email?.isNotEmpty ?? false) && (state.loginService.info?.phone?.isNotEmpty ?? false)){
       state.isPhone.value = !state.isPhone.value;
     }else{
-      Loading.showToast("${S.current.unboundMailbox}，${S.current.pleaseBindFirst}");
+      if(state.isPhone.value){
+        Loading.showToast("${S.current.unboundMailbox}，${S.current.pleaseBindFirst}");
+      }else{
+        Loading.showToast("${S.current.unboundPhone}，${S.current.pleaseBindFirst}");
+      }
     }
-    if(!state.isPhone.value && (state.loginService.info?.phone?.isNotEmpty ?? false)){
-      state.isPhone.value = !state.isPhone.value;
-    }else{
-      Loading.showToast("${S.current.unboundPhone}，${S.current.pleaseBindFirst}");
+  }
+
+  //设置支付密码 affirm确认
+  void setPayPassword({bool affirm = false}) async{
+    final result = await PaymentPasswordKeyboard.show(
+        titleStr: S.current.pleaseEnterYourPaymentPassword
+    );
+    if(result != null){
+      if(affirm){
+        if(result == newPasswordInputController.text){
+          confirmPasswordInputController.text = result;
+        }else{
+          Loading.showToast(S.current.enteredPasswordsDiffer);
+        }
+      }else{
+        newPasswordInputController.text = result;
+      }
     }
   }
 

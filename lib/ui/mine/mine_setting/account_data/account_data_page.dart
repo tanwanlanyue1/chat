@@ -3,10 +3,8 @@ import 'package:flutter_pickers/pickers.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
-import 'package:guanjia/common/extension/date_time_extension.dart';
-import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
-import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/mine_setting/account_data/widgets/account_data_item.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -22,6 +20,7 @@ class AccountDataPage extends StatelessWidget {
   AccountDataPage({super.key});
 
   final controller = Get.put(AccountDataController());
+
   final state = Get.find<AccountDataController>().state;
 
   @override
@@ -43,38 +42,39 @@ class AccountDataPage extends StatelessWidget {
                   top: 24.rpx,
                 ),
                 children: [
+                  // header
                   AccountDataItem(
-                    onTap: controller.onTapHeader,
-                    title: "头像",
+                    onTap: controller.onTapAvatar,
+                    title: S.current.userAvatar,
                     height: 100.rpx,
-                    trailing: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(4.rpx),
-                      ),
-                      child: AppImage.network(
-                        info.avatar ?? "",
-                        width: 76.rpx,
-                        height: 76.rpx,
-                      ),
+                    trailing: AppImage.network(
+                      controller.avatarController.avatar.value,
+                      borderRadius: BorderRadius.circular(4.rpx),
+                      width: 76.rpx,
+                      height: 76.rpx,
                     ),
                   ),
                   _padding(),
+                  // nickname
                   AccountDataItem(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.updateInfoPage,
-                          arguments: {"type": 1});
-                    },
-                    title: "昵称",
-                    detail: info.nickname,
+                    title: S.current.userNickName,
+                    trailing: InputWidget(
+                      inputController: controller.nicknameController,
+                      hintText: "",
+                      textAlign: TextAlign.right,
+                      fillColor: Colors.transparent,
+                      contentPadding: EdgeInsets.zero,
+                    ),
                   ),
                   _padding(),
+                  // gender
                   AccountDataItem(
                     onTap: controller.onTapGender,
-                    title: "性别",
+                    title: S.current.userGender,
                     detail: state.getGenderString(info.gender),
                   ),
                   _padding(),
+                  // age
                   AccountDataItem(
                     onTap: () {
                       Pickers.showSinglePicker(
@@ -85,27 +85,45 @@ class AccountDataPage extends StatelessWidget {
                         data: List.generate(50, (index) => index + 16),
                       );
                     },
-                    title: "年龄",
+                    title: S.current.userAge,
                     detail: "${info.age ?? ""}",
                   ),
                   _padding(),
+                  // position
                   AccountDataItem(
-                    title: "我的位置",
+                    onTap: controller.onTapPosition,
+                    title: S.current.userPosition,
                     detail: info.position,
                   ),
                   _padding(),
+                  // phone
                   AccountDataItem(
-                    title: "联系电话",
-                    detail: info.phone,
+                    onTap: controller.onTapPhone,
+                    title: S.current.userPhone,
+                    detail: info.phone ?? controller.loginService.info?.phone,
                   ),
                   _padding(),
+                  // email
                   AccountDataItem(
-                    title: "我的邮箱",
-                    detail: info.email,
+                    onTap: controller.onTapEmail,
+                    title: S.current.userEmail,
+                    detail: info.email ?? controller.loginService.info?.email,
                   ),
-                  _padding(height: 36.rpx),
+                  // likeSex
+                  if (info.type.isUser)
+                    _columnWidget(
+                      title: S.current.userLikeGender,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _genderButton(UserGender.male, info),
+                          _genderButton(UserGender.female, info),
+                        ],
+                      ),
+                    ),
+                  // likeAge
                   _columnWidget(
-                    title: "喜好年龄",
+                    title: state.getLikeAgeTitle(info.type),
                     detail: "${info.likeAgeMin}-${info.likeAgeMax}",
                     child: Stack(
                       alignment: Alignment.bottomCenter,
@@ -115,28 +133,24 @@ class AccountDataPage extends StatelessWidget {
                             info.likeAgeMin.toDouble(),
                             info.likeAgeMax.toDouble(),
                           ),
-                          min: 16,
-                          max: 65,
+                          min: state.ageMin.toDouble(),
+                          max: state.ageMax.toDouble(),
                           onChanged: (value) {
-                            debugPrint(value.toString());
-
-                            state.info?.update((val) {
-                              val?.likeAgeMin = value.start.toInt();
-                              val?.likeAgeMax = value.end.toInt();
-                            });
+                            controller.onChangeLikeAge(
+                                value.start.toInt(), value.end.toInt());
                           },
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "16",
+                              state.ageMin.toString(),
                               style: AppTextStyle.st.medium
                                   .size(14.rpx)
                                   .textColor(AppColor.black9),
                             ),
                             Text(
-                              "65",
+                              state.ageMax.toString(),
                               style: AppTextStyle.st.medium
                                   .size(14.rpx)
                                   .textColor(AppColor.black9),
@@ -146,20 +160,20 @@ class AccountDataPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  _padding(height: 36.rpx),
+                  // occupation
                   _columnWidget(
-                    title: "喜好职业",
+                    title: state.getOccupationTitle(info.type),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _jobButton(0, false),
-                        _jobButton(1, false),
+                        _jobButton(UserOccupation.employees, info),
+                        _jobButton(UserOccupation.student, info),
                       ],
                     ),
                   ),
-                  _padding(height: 36.rpx),
+                  // style
                   _columnWidget(
-                    title: "喜好风格",
+                    title: state.getStyleTitle(info.type),
                     child: SizedBox(
                       width: double.infinity,
                       child: Wrap(
@@ -183,9 +197,9 @@ class AccountDataPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  _padding(height: 36.rpx),
+                  // signature
                   _columnWidget(
-                    title: "个人简介",
+                    title: S.current.userSignature,
                     child: Container(
                       height: 150.rpx,
                       padding: EdgeInsets.symmetric(
@@ -195,7 +209,7 @@ class AccountDataPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.rpx),
                       ),
                       child: InputWidget(
-                        hintText: '在这里输入内容',
+                        hintText: S.current.userSignatureHint,
                         maxLength: 200,
                         lines: 100,
                         fillColor: Colors.transparent,
@@ -221,7 +235,7 @@ class AccountDataPage extends StatelessWidget {
               ]),
               child: CommonGradientButton(
                 onTap: controller.onTapSave,
-                text: "保存",
+                text: S.current.save,
                 height: 50.rpx,
               ),
             ),
@@ -242,6 +256,7 @@ class AccountDataPage extends StatelessWidget {
   }) {
     return Column(
       children: [
+        _padding(height: 36.rpx),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -265,29 +280,59 @@ class AccountDataPage extends StatelessWidget {
     );
   }
 
-  GestureDetector _jobButton(int type, bool isSelect) {
+  Widget _genderButton(UserGender gender, UserModel info) {
+    final bool isSelect = info.likeSex == gender;
+
+    final String title = gender.isMale ? S.current.male : S.current.female;
+    const String normalPath = "assets/images/mine/choose_normal.png";
+    const String selectPath = "assets/images/mine/choose_select.png";
+
+    return GestureDetector(
+      onTap: () => controller.onTapLikeGender(gender),
+      behavior: HitTestBehavior.opaque,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AppImage.asset(
+            isSelect ? selectPath : normalPath,
+            width: 24.rpx,
+            height: 24.rpx,
+          ),
+          SizedBox(width: 4.rpx),
+          Text(title,
+              style: AppTextStyle.st.medium
+                  .size(14.rpx)
+                  .textColor(AppColor.black3)),
+        ],
+      ),
+    );
+  }
+
+  Widget _jobButton(UserOccupation occupation, UserModel info) {
+    final bool isSelect = info.type.isUser
+        ? info.likeOccupation == occupation
+        : info.occupation == occupation;
+
     final String title;
     final String normalPath;
     final String selectPath;
-    switch (type) {
-      case 0:
-        // title = S.current.questionMan;
-        title = "在职人员";
+    switch (occupation) {
+      case UserOccupation.employees:
+        title = S.current.employees;
         normalPath = "assets/images/mine/job_worker_normal.png";
         selectPath = "assets/images/mine/job_worker_select.png";
         break;
-      case 1:
-        // title = S.current.questionWoman;
-        title = "学生";
+      case UserOccupation.student:
+        title = S.current.student;
         normalPath = "assets/images/mine/job_student_normal.png";
         selectPath = "assets/images/mine/job_student_select.png";
         break;
       default:
-        throw Exception("job title error");
+        throw Exception("occupation is not exit");
     }
 
     return GestureDetector(
-      onTap: () => controller.onTapJob(),
+      onTap: () => controller.onTapOccupation(occupation, info),
       behavior: HitTestBehavior.opaque,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

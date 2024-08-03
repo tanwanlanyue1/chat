@@ -50,7 +50,7 @@ abstract class AppRoutes {
   static const jiaEvaluatePage = '$auth/jiaEvaluatePage';
 
   ///设置-修改登录密码
-  static const updatePasswordPage = '/updatePasswordPage';
+  static const updatePasswordPage = '$auth/updatePasswordPage';
 
   ///设置-支付密码
   static const paymentPasswordPage = '$auth/paymentPasswordPage';
@@ -135,4 +135,10 @@ abstract class AppRoutes {
 
   ///契约单列表
   static const contractListPage = '$auth/ContractListPage';
+
+  /// 个人头像
+  static const avatarPage = '$auth/avatarPage';
+
+  /// 钱包
+  static const walletPage = '$auth/walletPage';
 }

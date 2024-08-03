@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:guanjia/ui/mine/avatar/avatar_page.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_controller.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_page.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_state.dart';
@@ -13,6 +14,7 @@ import 'package:guanjia/ui/mine/mine_evaluate/jia_evaluate/jia_evaluate_page.dar
 import 'package:guanjia/ui/mine/mine_evaluate/mine_evaluate_page.dart';
 import 'package:guanjia/ui/mine/mine_my_team/mine_my_team_page.dart';
 import 'package:guanjia/ui/mine/mine_service_charge/mine_service_charge_page.dart';
+import 'package:guanjia/ui/mine/mine_setting/binding/binding_controller.dart';
 import 'package:guanjia/ui/mine/mine_setting/binding/binding_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/payment_password/payment_password_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/update_password/update_password_controller.dart';
@@ -25,7 +27,6 @@ import '../../../ui/mine/mine_help/mine_help_page.dart';
 import '../../../ui/mine/mine_setting/about/about_page.dart';
 import '../../../ui/mine/mine_setting/account_blacklist/account_blacklist_page.dart';
 import '../../../ui/mine/mine_setting/account_data/account_data_page.dart';
-import '../../../ui/mine/mine_setting/account_safety/account_safety_page.dart';
 import '../../../ui/mine/mine_setting/mine_permissions/mine_permissions_page.dart';
 import '../../../ui/mine/mine_setting/mine_setting_page.dart';
 import '../../../ui/mine/mine_setting/update_info/update_info_page.dart';
@@ -60,10 +61,6 @@ class MinePages {
       ),
     ),
     GetPage(
-      name: AppRoutes.accountSafetyPage,
-      page: () => AccountSafetyPage(),
-    ),
-    GetPage(
       name: AppRoutes.updatePasswordPage,
       page: () => UpdatePasswordPage(),
       binding: BindingsBuilder.put(() => UpdatePasswordController(
@@ -85,6 +82,9 @@ class MinePages {
     GetPage(
       name: AppRoutes.bindingPage,
       page: () => BindingPage(),
+      binding: BindingsBuilder.put(() => BindingController(
+        currentIndex: Get.tryGetArgs('currentIndex'),
+      )),
     ),
     GetPage(
       name: AppRoutes.mineEvaluatePage,
@@ -140,6 +140,10 @@ class MinePages {
     GetPage(
       name: AppRoutes.mineClient,
       page: () => MineClientPage(),
+    ),
+    GetPage(
+      name: AppRoutes.avatarPage,
+      page: () => AvatarPage(),
     ),
   ];
 }

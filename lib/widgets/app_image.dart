@@ -14,6 +14,7 @@ class AppImage extends StatelessWidget {
   ///本地图片资源
   AppImage.asset(
     String name, {
+    double? length, // 当宽高一致时方便调用，有值时width和height的设置无效
     double? width,
     double? height,
     Color? color,
@@ -24,8 +25,8 @@ class AppImage extends StatelessWidget {
     super.key,
   }) : child = Image.asset(
           name,
-          width: width,
-          height: height,
+          width: length ?? width,
+          height: length ?? height,
           color: color,
           opacity: opacity,
           fit: fit,
@@ -36,6 +37,7 @@ class AppImage extends StatelessWidget {
   ///本地图片文件
   AppImage.file(
     File file, {
+    double? length, // 当宽高一致时方便调用，有值时width和height的设置无效
     double? width,
     double? height,
     Color? color,
@@ -45,8 +47,8 @@ class AppImage extends StatelessWidget {
     super.key,
   }) : child = Image.file(
           file,
-          width: width,
-          height: height,
+          width: length ?? width,
+          height: length ?? height,
           color: color,
           opacity: opacity,
           fit: fit,
@@ -63,6 +65,7 @@ class AppImage extends StatelessWidget {
   ///网络图片
   AppImage.network(
     String url, {
+    double? length, // 当宽高一致时方便调用，有值时width和height的设置无效
     double? width,
     double? height,
     double? memCacheWidth,
@@ -79,20 +82,20 @@ class AppImage extends StatelessWidget {
     double opacity = 1,
     super.key,
   }) : child = CachedNetworkImage(
-          memCacheWidth: _toInt(memCacheWidth ?? width),
-          memCacheHeight: _toInt(memCacheHeight ?? height),
-          width: width,
-          height: height,
+          memCacheWidth: _toInt(memCacheWidth ?? length ?? width),
+          memCacheHeight: _toInt(memCacheHeight ?? length ?? height),
+          width: length ?? width,
+          height: length ?? height,
           imageUrl: resizeImage
               ? url.getResizeImageUrl(
-                  width: memCacheWidth ?? width,
-                  height: memCacheHeight ?? height)
+                  width: memCacheWidth ?? length ?? width,
+                  height: memCacheHeight ?? length ?? height)
               : url,
           alignment: align,
           imageBuilder: (context, imageProvider) {
             return Container(
-              width: width,
-              height: height,
+              width: length ?? width,
+              height: length ?? height,
               decoration: BoxDecoration(
                 borderRadius: borderRadius,
                 border: border,
@@ -110,8 +113,8 @@ class AppImage extends StatelessWidget {
           placeholder: placeholder != null
               ? (context, url) => placeholder
               : (context, url) => Container(
-                    width: width,
-                    height: width,
+                    width: length ?? width,
+                    height: length ?? height,
                     decoration: BoxDecoration(
                       borderRadius: borderRadius,
                       border: border,
@@ -122,8 +125,8 @@ class AppImage extends StatelessWidget {
           errorWidget: placeholder != null
               ? (context, url, obj) => placeholder
               : (context, url, obj) => Container(
-                    width: width,
-                    height: width,
+                    width: length ?? width,
+                    height: length ?? height,
                     decoration: BoxDecoration(
                       borderRadius: borderRadius,
                       border: border,

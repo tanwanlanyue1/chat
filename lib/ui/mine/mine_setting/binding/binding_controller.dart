@@ -8,6 +8,11 @@ import 'package:guanjia/widgets/loading.dart';
 import 'binding_state.dart';
 
 class BindingController extends GetxController {
+  BindingController({
+    int? currentIndex,
+  }){// //0:手机，1:邮箱
+    state.currentIndex = currentIndex ?? -1;
+  }
   final BindingState state = BindingState();
 
   final phoneNumberInputController = TextEditingController();
@@ -59,6 +64,7 @@ class BindingController extends GetxController {
 
     phoneNumberInputController.addListener(_checkFields);
     verificationInputController.addListener(_checkFields);
+    state.isPhone.value = (state.currentIndex == 1 ? false : true);
   }
 
   @override

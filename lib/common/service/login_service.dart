@@ -333,18 +333,23 @@ class LoginService extends GetxService {
   }
 
   /// 忘记密码或者修改密码
+  /// type: 验证类型 1手机号 2邮箱
   /// phone: 用户手机号
   /// verifyCode：验证码
   /// password：用户密码
   /// confirmPassword：确认密码
   Future<Result<void, String>> forgotOrResetPassword({
-    required String phone,
+    required int type,
+    String? phone,
+    String? email,
     required String verifyCode,
     required String password,
     required String confirmPassword,
   }) async {
     final res = await OpenApi.forgotOrResetPassword(
+      type: type,
       phone: phone,
+      email: email,
       verifyCode: verifyCode,
       password: password,
       confirmPassword: confirmPassword,

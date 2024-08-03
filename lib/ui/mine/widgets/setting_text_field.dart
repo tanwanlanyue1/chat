@@ -16,6 +16,7 @@ class SettingTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final BorderRadiusGeometry? borderRadius;
   final BoxBorder? border;
+  final GestureTapCallback? onTapCall;
 
   const SettingTextField({
     Key? key,
@@ -31,6 +32,7 @@ class SettingTextField extends StatelessWidget {
     this.keyboardType,
     this.borderRadius,
     this.border,
+    this.onTapCall,
   }) : super(key: key);
 
   @override
@@ -55,6 +57,7 @@ class SettingTextField extends StatelessWidget {
         obscuringCharacter: '*',
         obscureText: obscureText,
         onChanged: (val){},
+        onTap: onTapCall,
         decoration: InputDecoration(
           prefixIconConstraints: BoxConstraints(minHeight: height),
           prefixIcon: labelText != null ? Padding(

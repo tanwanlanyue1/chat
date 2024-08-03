@@ -39,30 +39,36 @@ class PaymentPasswordPage extends StatelessWidget {
     );
   }
 
-
+  //输入密码
   Widget _buildNewPasswordField() {
     return SettingTextField(
       labelText: S.current.enterYourPIN,
       inputController: controller.newPasswordInputController,
-      hintText: S.current.pleaseEnterYourPaymentPassword,
+      hintText: S.current.sixPaymentPassword,
+      readOnly: true,
       inputFormatters: [
         FilteringTextInputFormatter.deny(RegExp(r'\s')),
         LengthLimitingTextInputFormatter(16),
       ],
       obscureText: true,
+      onTapCall: controller.setPayPassword,
     );
   }
 
+  //确认密码
   Widget _buildConfirmPasswordField() {
     return SettingTextField(
       labelText: S.current.pleaseConfirmThePassword,
       inputController: controller.confirmPasswordInputController,
       hintText: S.current.confirmPayment,
+      readOnly: true,
       inputFormatters: [
-        FilteringTextInputFormatter.deny(RegExp(r'\s')),
-        LengthLimitingTextInputFormatter(16),
+        LengthLimitingTextInputFormatter(6),
       ],
       obscureText: true,
+      onTapCall: (){
+        controller.setPayPassword(affirm: true);
+      },
     );
   }
 

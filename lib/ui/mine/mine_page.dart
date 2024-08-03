@@ -266,6 +266,7 @@ class _MinePageState extends State<MinePage>
           MineListTile(
             title: S.current.myWallet,
             icon: "assets/images/mine/wallet.png",
+            pagePath: AppRoutes.walletPage,
           ),
           //我的VIP
           MineListTile(

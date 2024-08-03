@@ -138,4 +138,7 @@ abstract class AppRoutes {
 
   /// 个人头像
   static const avatarPage = '$auth/avatarPage';
+
+  /// 钱包
+  static const walletPage = '$auth/walletPage';
 }

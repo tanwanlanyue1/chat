@@ -10,6 +10,8 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/mine/widgets/client_card.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'contact_controller.dart';
 
@@ -29,30 +31,37 @@ class _ContactViewState extends State<ContactView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          automaticallyImplyLeading: false,
-          pinned: true,
-          snap: false,
-          floating: false,
-          expandedHeight: 184.rpx,
-          toolbarHeight: 80.rpx,
-          flexibleSpace: FlexibleSpaceBar(
-            collapseMode: CollapseMode.pin,
-            expandedTitleScale: 1.0,
-            background: buildUserInfo(),
-            title: buildSearch(),
-            titlePadding: EdgeInsets.zero,
+
+    return SmartRefresher(
+      controller: controller.pagingController.refreshController,
+      onRefresh: controller.pagingController.onRefresh,
+      child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            automaticallyImplyLeading: false,
+            pinned: true,
+            snap: false,
+            floating: false,
+            expandedHeight: 184.rpx,
+            toolbarHeight: 80.rpx,
+            flexibleSpace: FlexibleSpaceBar(
+              collapseMode: CollapseMode.pin,
+              expandedTitleScale: 1.0,
+              background: buildUserInfo(),
+              title: buildSearch(),
+              titlePadding: EdgeInsets.zero,
+            ),
           ),
-        ),
-        SliverList.builder(
-          itemBuilder: (_, index) {
-            return ClientCard();
-          },
-          itemCount: 20,
-        ),
-      ],
+          PagedSliverList(
+            pagingController: controller.pagingController,
+            builderDelegate: PagedChildBuilderDelegate(
+              itemBuilder: (_, item, index){
+                return ClientCard();
+              }
+            ),
+          ),
+        ],
+      ),
     );
   }
 

@@ -47,7 +47,7 @@ class BeautifulStatusSwitch extends StatelessWidget {
   }
 }
 
-extension BeautifulStatusX on UserStatus {
+extension UserStatusX on UserStatus {
 
   static UserStatus? valueOf(int value){
     return UserStatus.values.elementAtOrNull(value);

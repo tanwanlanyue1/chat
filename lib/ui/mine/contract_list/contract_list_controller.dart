@@ -21,7 +21,6 @@ class ContractListController extends GetxController {
     super.onInit();
   }
 
-  ///获取收藏列表
   void fetchPage(int page) async {
     final items = [
       ContractModel(id: '2', broker: 'Alma Washington', date: '', status: 1),

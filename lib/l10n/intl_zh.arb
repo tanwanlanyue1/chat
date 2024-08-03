@@ -198,6 +198,7 @@
   "chat": "聊天",
   "setSuccessfully": "设置成功",
   "enteredPasswordsDiffer": "两次密码不一致",
+  "userAvatarTitle": "个人头像",
   "userAvatar": "头像",
   "userNickName": "昵称",
   "userGender": "性别",

@@ -5,7 +5,6 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
-import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/mine_setting/account_data/widgets/account_data_item.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -21,6 +20,7 @@ class AccountDataPage extends StatelessWidget {
   AccountDataPage({super.key});
 
   final controller = Get.put(AccountDataController());
+
   final state = Get.find<AccountDataController>().state;
 
   @override
@@ -44,11 +44,11 @@ class AccountDataPage extends StatelessWidget {
                 children: [
                   // header
                   AccountDataItem(
-                    onTap: controller.onTapHeader,
+                    onTap: controller.onTapAvatar,
                     title: S.current.userAvatar,
                     height: 100.rpx,
                     trailing: AppImage.network(
-                      info.avatar ?? "",
+                      controller.avatarController.avatar.value,
                       borderRadius: BorderRadius.circular(4.rpx),
                       width: 76.rpx,
                       height: 76.rpx,

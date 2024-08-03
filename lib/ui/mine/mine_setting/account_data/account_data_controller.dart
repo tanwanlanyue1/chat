@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/mine/avatar/avatar_controller.dart';
 import 'package:guanjia/widgets/label_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
 import 'package:guanjia/widgets/loading.dart';
-import 'package:guanjia/widgets/photo_and_camera_bottom_sheet.dart';
 import 'account_data_state.dart';
 
 class AccountDataController extends GetxController {
@@ -16,6 +16,8 @@ class AccountDataController extends GetxController {
   final ImagePicker picker = ImagePicker();
 
   final loginService = SS.login;
+
+  final avatarController = Get.put(AvatarController());
 
   late final TextEditingController nicknameController;
   late final TextEditingController signatureController;
@@ -56,6 +58,8 @@ class AccountDataController extends GetxController {
 
     final info = state.info?.value.copyWith();
     if (info == null) return;
+
+    info.avatar = avatarController.avatar.value;
 
     // 昵称
     info.nickname = nicknameController.text;
@@ -107,11 +111,11 @@ class AccountDataController extends GetxController {
   }
 
   void onTapPhone() {
-    Get.toNamed(AppRoutes.bindingPage,arguments: {"currentIndex":0});
+    Get.toNamed(AppRoutes.bindingPage, arguments: {"currentIndex": 0});
   }
 
   void onTapEmail() {
-    Get.toNamed(AppRoutes.bindingPage,arguments: {"currentIndex":1});
+    Get.toNamed(AppRoutes.bindingPage, arguments: {"currentIndex": 1});
   }
 
   void onTapLikeGender(UserGender gender) {
@@ -175,14 +179,7 @@ class AccountDataController extends GetxController {
     });
   }
 
-  void onTapHeader() {
-    PhotoAndCameraBottomSheet.show(
-        onUploadUrls: _updateHead, limit: 1, isCrop: true);
-  }
-
-  void _updateHead(List<String> urls) async {
-    state.info?.update((val) {
-      val?.avatar = urls.first;
-    });
+  void onTapAvatar() {
+    Get.toNamed(AppRoutes.avatarPage);
   }
 }

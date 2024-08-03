@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:guanjia/ui/mine/avatar/avatar_page.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_controller.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_page.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_state.dart';
@@ -139,6 +140,10 @@ class MinePages {
     GetPage(
       name: AppRoutes.mineClient,
       page: () => MineClientPage(),
+    ),
+    GetPage(
+      name: AppRoutes.avatarPage,
+      page: () => AvatarPage(),
     ),
   ];
 }

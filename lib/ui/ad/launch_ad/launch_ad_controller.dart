@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:get/get.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/ui/ad/ad_manager.dart';
 
@@ -16,7 +17,7 @@ class LaunchAdController extends GetxController {
     super.onReady();
     final iconUrl = state.ad?.image ?? '';
     if(iconUrl.isEmpty){
-      Get.offNamed(AppRoutes.home);
+      Get.navigateToHomeOrLogin();
     }else{
       _startCountdown();
     }
@@ -43,7 +44,7 @@ class LaunchAdController extends GetxController {
 
   void jumpHomePage(){
     _stopCountdown();
-    Get.offAndToNamed(AppRoutes.home);
+    Get.navigateToHomeOrLogin();
   }
 
   @override

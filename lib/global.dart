@@ -1,19 +1,15 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/string_extension.dart';
-import 'package:guanjia/common/network/config/server_config.dart';
 import 'package:guanjia/common/network/httpclient/http_client.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/ui/ad/ad_manager.dart';
 import 'package:guanjia/ui/welcome/welcome_storage.dart';
-
-import 'common/app_config.dart';
 import 'common/app_localization.dart';
-import 'common/routes/app_pages.dart';
 import 'common/service/service.dart';
 
 /// 全局静态数据
@@ -72,7 +68,8 @@ class Global {
   static Future<void> agreePrivacyPolicy() async{
     await WelcomeStorage.savePrivacyAgree();
     await _initAfterPrivacyPolicy();
-    Get.offNamed(AppRoutes.home);
+
+    Get.navigateToHomeOrLogin();
   }
 
 

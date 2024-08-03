@@ -137,7 +137,7 @@ class JsInjector{
   ///注销后清除缓存
   void _clearCache(String method, int uuid) async{
     SS.login.signOut(userAction: false).then((value) => {
-    Get.backToRoot()
+      Get.navigateToHomeOrLogin()
     });
     await _invokeJavaScript(method, null, uuid);
   }

@@ -98,7 +98,7 @@ class LoginPhoneBindingController extends GetxController {
     }
     Loading.dismiss();
     result.when(success: (_) {
-      Get.backToRoot();
+      Get.navigateToHomeOrLogin();
     }, failure: (errorMessage) {
       Loading.showToast(errorMessage);
     });

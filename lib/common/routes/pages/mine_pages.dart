@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:guanjia/ui/chat/message_list/message_list_controller.dart';
+import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/mine/avatar/avatar_page.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_controller.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_page.dart';
@@ -19,6 +21,7 @@ import 'package:guanjia/ui/mine/mine_setting/binding/binding_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/payment_password/payment_password_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/update_password/update_password_controller.dart';
 import 'package:guanjia/ui/mine/mine_team_evaluate/mine_team_evaluate_page.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 import '../app_pages.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/ui/mine/mine_message/mine_message_page.dart';
@@ -64,8 +67,8 @@ class MinePages {
       name: AppRoutes.updatePasswordPage,
       page: () => UpdatePasswordPage(),
       binding: BindingsBuilder.put(() => UpdatePasswordController(
-        login: Get.tryGetArgs('login'),
-      )),
+            login: Get.tryGetArgs('login'),
+          )),
     ),
     GetPage(
       name: AppRoutes.accountBlacklistPage,
@@ -83,8 +86,8 @@ class MinePages {
       name: AppRoutes.bindingPage,
       page: () => BindingPage(),
       binding: BindingsBuilder.put(() => BindingController(
-        currentIndex: Get.tryGetArgs('currentIndex'),
-      )),
+            currentIndex: Get.tryGetArgs('currentIndex'),
+          )),
     ),
     GetPage(
       name: AppRoutes.mineEvaluatePage,
@@ -144,6 +147,16 @@ class MinePages {
     GetPage(
       name: AppRoutes.avatarPage,
       page: () => AvatarPage(),
+    ),
+    GetPage(
+      name: AppRoutes.messageListPage,
+      page: () => MessageListPage(
+        conversationId: Get.getArgs('conversationId', ''),
+        conversationType: Get.getArgs(
+          'conversationType',
+          ZIMConversationType.peer,
+        ),
+      ),
     ),
   ];
 }

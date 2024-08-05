@@ -144,4 +144,7 @@ abstract class AppRoutes {
 
   /// 钱包
   static const orderPage = '/orderPage';
+
+  ///1V1聊天消息列表页
+  static const messageListPage = '/MessageListPage';
 }

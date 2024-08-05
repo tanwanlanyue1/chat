@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
@@ -26,22 +27,20 @@ class ContactController extends GetxController {
 
   void fetchPage(int page) async {
     await Future.delayed(500.milliseconds);
-    pagingController.appendPageData(List.generate(10, (index) => index + pagingController.length));
+    pagingController.appendPageData(
+        List.generate(10, (index) => index + pagingController.length));
   }
 
-  void doSearch() async{
+  void doSearch() async {}
 
-  }
-
-  void onTapItem(int index){
-    final users = [19,20,21];
+  void onTapItem(int index) {
+    final users = [19, 20, 21];
     final id = users.elementAtOrNull(index);
-    if(id != null && id != SS.login.userId){
-      Get.to(() => ZIMKitMessageListPage(
-        conversationID: id.toString(),
+    if (id != null && id != SS.login.userId) {
+      MessageListPage.go(
+        conversationId: id.toString(),
         conversationType: ZIMConversationType.peer,
-      ));
+      );
     }
   }
-
 }

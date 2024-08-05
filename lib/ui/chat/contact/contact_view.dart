@@ -48,6 +48,7 @@ class _ContactViewState extends State<ContactView>
             toolbarHeight: 80.rpx,
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.pin,
+              stretchModes: [StretchMode.blurBackground],
               expandedTitleScale: 1.0,
               background: buildUserInfo(),
               title: buildSearch(),

@@ -8,6 +8,7 @@ import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
+import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
@@ -38,11 +39,10 @@ class ConversationListTile extends StatelessWidget {
       Get.toNamed(AppRoutes.mineMessage);
       return;
     }
-
-    Get.to(() => ZIMKitMessageListPage(
-          conversationID: conversation.id,
-          conversationType: conversation.type,
-        ));
+    MessageListPage.go(
+      conversationId: conversation.id,
+      conversationType: conversation.type,
+    );
   }
 
   @override

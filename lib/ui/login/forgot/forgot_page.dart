@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_constant.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
@@ -40,7 +41,7 @@ class ForgotPage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: kBottomNavigationBarHeight + Get.mediaQuery.padding.top,
+            top: kNavigationBarHeight + Get.mediaQuery.padding.top,
             bottom: Get.mediaQuery.padding.bottom,
             left: 0,
             right: 0,

@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/ui/discover/discover_page.dart';
 import 'package:guanjia/ui/chat/chat_page.dart';
 import 'package:guanjia/ui/mine/mine_page.dart';
@@ -36,22 +38,27 @@ class HomePage extends StatelessWidget {
   //底部
   Widget buildBottomNavigationBar() {
     return Obx(() {
+      final currentPage = state.currentPageRx();
+      final chatUnread = state.messageUnreadRx();
+      final chatUnreadText = chatUnread > 100 ? '+99' : chatUnread.toString();
       return BottomNavigationBar(
         backgroundColor: Colors.white,
         type: BottomNavigationBarType.fixed,
         onTap: controller.setCurrentPage,
-        currentIndex: state.currentPageRx(),
-        items: state.allBottomNavItems.map((item) {
+        currentIndex: currentPage,
+        selectedItemColor: AppColor.blue6,
+        items: state.allBottomNavItems.mapIndexed((index, item) {
           return BottomNavigationBarItem(
-            icon: AppImage.asset(
-              item.icon,
-              width: 32.rpx,
-              height: 32.rpx,
-            ),
-            activeIcon: AppImage.asset(
-              item.activeIcon,
-              width: 32.rpx,
-              height: 32.rpx,
+            icon: Badge(
+              label: Text(chatUnreadText),
+              backgroundColor: AppColor.red6,
+              isLabelVisible: index == 0 && chatUnread > 0,
+              child: AppImage.asset(
+                item.icon,
+                width: 32.rpx,
+                height: 32.rpx,
+                color: currentPage == index ? AppColor.blue6 : null,
+              ),
             ),
             label: item.title,
           );

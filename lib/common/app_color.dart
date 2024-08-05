@@ -93,6 +93,7 @@ class AppColor {
 
   static const red1 = Color(0xFF8D310F);
   static const red7 = Color(0xFFC41717);
+  static const red6 = Color(0xFFF23030);
   static const red8 = Color(0xFF8B383C);
   static const red53 = Color(0xffE5393C);
   static const red58 = Color(0xFFCC5258);

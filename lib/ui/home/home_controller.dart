@@ -7,6 +7,7 @@ import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/ui/mine/mine_setting/app_update/app_update_manager.dart';
 import 'package:guanjia/ui/mine/mine_setting/push_setting/notification_permission_util.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 import 'home_state.dart';
 
 class HomeController extends GetxController {
@@ -30,7 +31,13 @@ class HomeController extends GetxController {
       NotificationPermissionUtil.instance.initialize();
     }
 
-    // pagingController.addPageRequestListener(fetchPage);
+    //监听消息未读数
+    final messageUnread = ZIMKit.instance.getTotalUnreadMessageCount();
+    state.messageUnreadRx.value = messageUnread.value;
+    messageUnread.addListener(() {
+      state.messageUnreadRx.value = messageUnread.value;
+    });
+
     super.onInit();
   }
 

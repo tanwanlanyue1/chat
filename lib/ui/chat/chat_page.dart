@@ -4,7 +4,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/contact/contact_view.dart';
-import 'package:guanjia/ui/chat/session_list/session_list_view.dart';
+import 'package:guanjia/ui/chat/conversation_list/conversation_list_view.dart';
 
 import 'chat_controller.dart';
 
@@ -44,7 +44,7 @@ class _ChatPageState extends State<ChatPage>
       body: TabBarView(
         controller: controller.tabController,
         children: const [
-          SessionListView(),
+          ConversationListView(),
           ContactView(),
         ],
       ),

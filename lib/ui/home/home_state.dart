@@ -3,33 +3,37 @@ import 'package:get/get.dart';
 class HomeState {
   List<AppBarItem> allBottomNavItems = [
     const AppBarItem(
-      icon: 'assets/images/home/chat_none.png',
-      activeIcon: 'assets/images/home/chat.png',
+      icon: 'assets/images/home/tab_chat.png',
+      activeIcon: 'assets/images/home/tab_chat_active.png',
       title: '聊天',
     ),
     const AppBarItem(
-      icon: 'assets/images/home/order_form_none.png',
-      activeIcon: 'assets/images/home/order_form.png',
+      icon: 'assets/images/home/tab_order.png',
+      activeIcon: 'assets/images/home/tab_order_active.png',
       title: '订单',
     ),
     const AppBarItem(
-        icon: 'assets/images/home/dating_hall_none.png',
-        activeIcon: 'assets/images/home/dating_hall.png',
+        icon: 'assets/images/home/tab_community.png',
+        activeIcon: 'assets/images/home/tab_community_active.png',
         title: '交友大厅',
     ),
     const AppBarItem(
-        icon: 'assets/images/home/discover_none.png',
-        activeIcon: 'assets/images/home/discover.png',
+        icon: 'assets/images/home/tab_discovery.png',
+        activeIcon: 'assets/images/home/tab_discovery_active.png',
         title: '发现',
     ),
     const AppBarItem(
-        icon: 'assets/images/home/mine_none.png',
-        activeIcon: 'assets/images/home/mine.png',
+        icon: 'assets/images/home/tab_mine.png',
+        activeIcon: 'assets/images/home/tab_mine_active.png',
         title: '我的',
     ),
   ];
-  //默认下标
+
+  ///默认下标
   final currentPageRx = 0.obs;
+
+  ///聊天消息未读数
+  final messageUnreadRx = 0.obs;
 
 }
 

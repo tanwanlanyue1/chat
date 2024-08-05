@@ -80,6 +80,7 @@ flutter:
     - assets/images/mine/
     - assets/images/discover/
     - assets/images/wallet/
+    - assets/images/chat/
     - assets/js/
     #   - images/a_dot_ham.jpeg
 flutter_intl:

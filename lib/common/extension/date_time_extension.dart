@@ -2,7 +2,6 @@ import 'package:common_utils/common_utils.dart';
 
 ///日期扩展
 extension DateTimeExtension on DateTime {
-
   ///日期格式化 HH:mm
   String get formatHHmm => DateUtil.formatDate(this, format: 'HH:mm');
 
@@ -30,5 +29,28 @@ extension DateTimeExtension on DateTime {
   ///是否是同一天
   bool isSameDay(DateTime other) {
     return year == other.year && month == other.month && day == other.day;
+  }
+
+  ///友好显示时间
+  String get friendlyTime {
+    String fmtNumber(int value) {
+      return value.toString().padLeft(2, '0');
+    }
+    final now = DateTime.now();
+    final duration = now.difference(this);
+    var timeStr = '';
+    if (duration.inMinutes < 1) {
+      timeStr = '刚刚';
+    } else if (duration.inHours < 1) {
+      timeStr = '${duration.inMinutes} 分钟前';
+    } else if (duration.inDays < 1) {
+      timeStr = '${duration.inHours} 小时前';
+    } else if (now.year == year) {
+      timeStr = '$month月$day日 ${fmtNumber(hour)}:${fmtNumber(minute)}';
+    } else {
+      timeStr = '$year年$month月$day日 ${fmtNumber(hour)}:${fmtNumber(minute)}';
+    }
+
+    return timeStr;
   }
 }

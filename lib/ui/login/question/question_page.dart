@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_constant.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -79,7 +80,7 @@ class QuestionPage extends StatelessWidget {
 
   Widget _questionWidget() {
     return Positioned(
-      top: Get.mediaQuery.padding.top + kBottomNavigationBarHeight,
+      top: Get.mediaQuery.padding.top + kNavigationBarHeight,
       left: 0,
       right: 0,
       bottom: Get.mediaQuery.padding.bottom,

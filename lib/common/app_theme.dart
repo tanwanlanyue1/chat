@@ -34,6 +34,7 @@ class AppTheme {
       ),
       centerTitle: true,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
+      toolbarHeight: 44,
     ),
   );
 

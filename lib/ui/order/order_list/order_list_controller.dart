@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -29,6 +30,10 @@ class OrderListController extends GetxController {
   void onClose() {
     pagingController.dispose();
     super.onClose();
+  }
+
+  void onTapItem() {
+    Get.toNamed(AppRoutes.orderDetailPage);
   }
 
   void _fetchPage(int page) async {

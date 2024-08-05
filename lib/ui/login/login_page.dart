@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_constant.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/network/config/dev_server_switch.dart';
@@ -64,7 +65,7 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: kBottomNavigationBarHeight + Get.mediaQuery.padding.top,
+            top: kNavigationBarHeight + Get.mediaQuery.padding.top,
             bottom: Get.mediaQuery.padding.bottom,
             left: 0,
             right: 0,

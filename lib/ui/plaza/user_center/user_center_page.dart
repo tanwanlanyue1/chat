@@ -1,5 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -24,352 +29,258 @@ class UserCenterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        AppImage.asset(
-          "assets/images/plaza/user_center_back.png",
-          fit: BoxFit.fitWidth,
-        ),
-        Column(
-          children: [
-            topBar(),
-            userInfo(),
-            Expanded(
-              child: creativeDynamics(),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          Expanded(
+            child: CustomScrollView(
+              controller: controller.scrollController,
+              slivers: <Widget>[
+                Obx(() => SliverAppBar(
+                  pinned: true,
+                  leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
+                  actions: [
+                    GestureDetector(
+                      onTap: controller.upload,
+                      child: AppImage.asset("assets/images/plaza/uploading.png",width: 24.rpx,height: 24.rpx,color: state.isAppBarExpanded.value ? Colors.black :Colors.white,),
+                    ),
+                    GestureDetector(
+                      child: Container(
+                        padding: EdgeInsets.only(right: 16.rpx,left: 12.rpx),
+                        child: AppImage.asset("assets/images/discover/more.png",width: 24.rpx,height: 24.rpx,color: state.isAppBarExpanded.value ? Colors.black :Colors.white,),
+                      ),
+                    ),
+                  ],
+                  expandedHeight: 260.rpx,
+                  flexibleSpace: FlexibleSpaceBar(
+                    titlePadding: EdgeInsets.zero,
+                    expandedTitleScale: 1.0,
+                    title: Container(
+                      height: 16.rpx,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(24.rpx),
+                          topRight: Radius.circular(24.rpx),
+                        ),
+                      ),
+                    ),
+                    collapseMode: CollapseMode.parallax,
+                    background: backImage(),
+                  ),
+                )),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      userInfo(),
+                      creativeDynamics(),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        )
-      ],
+          ),
+          voiceContainer()
+        ],
+      ),
     );
   }
 
-  ///头部
-  Widget topBar() {
-    return Container(
-      margin: EdgeInsets.only(
-          right: 12.rpx, top: Get.mediaQuery.padding.top + 12.rpx),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          AppBackButton.dark(),
-          // Container(
-          //   width: 40.rpx,
-          //   height: 50.rpx, // 设置高度
-          //   alignment: Alignment.center,
-          //   child: PopupMenuButton(
-          //     offset: Offset(0, 40.rpx),
-          //     icon: AppImage.asset(
-          //       "assets/images/plaza/more.png",
-          //       width: 24.rpx,
-          //       height: 24.rpx,
-          //     ),
-          //     itemBuilder: (_) => ['举报', '拉黑'].map((e) {
-          //       return PopupMenuItem<String>(
-          //         value: e,
-          //         child: Text(e,style: TextStyle(color: Color(0xff333333),fontSize: 14.rpx),),
-          //       );
-          //     }).toList(),
-          //     onSelected: (value) async {
-          //       if (value == '举报') {
-          //         ShowBottomSheet.reportType();
-          //       } else if (value == '拉黑') {
-          //       }
-          //     },
-          //   ),
-          // ),
-        ],
+  ///背景
+  Widget backImage(){
+    return SizedBox(
+      height: 300.rpx,
+      child: Swiper(
+        autoplay: true,
+        loop: false,
+        itemBuilder: (BuildContext context, int index) {
+          return AppImage.asset(
+            'assets/images/plaza/back_image.png',
+            // align: Alignment.topCenter,
+            // borderRadius: BorderRadius.circular(8.rpx),
+            width: Get.width,
+            height: 300.rpx,
+            fit: BoxFit.fitWidth,
+          );
+        },
+        itemCount: 3,
+        pagination: SwiperPagination(
+            alignment:  Alignment.bottomRight,
+            margin: EdgeInsets.only(bottom: 30.rpx,right: 16.rpx),
+            builder: DotSwiperPaginationBuilder(
+              color: const Color(0xffD1D8E6),
+              size: 8.rpx,
+              activeSize:8.rpx,
+              space: 8.rpx,
+              activeColor: AppColor.primary,
+            )
+        ),
+        onTap: (i){
+          print("i====$i");
+        },
       ),
     );
   }
 
   ///用户信息
   Widget userInfo(){
-    return GetBuilder<UserCenterController>(
-      id: "userInfo",
-      builder: (_){
-        return Container(
-          margin: EdgeInsets.only(top: 8.rpx),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 12.rpx),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AppImage.network(
-                      state.authorInfo.avatar ?? "",
-                      width: 40.rpx,
-                      height: 40.rpx,
-                      shape: BoxShape.circle,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(24.rpx),
+          topRight: Radius.circular(24.rpx),
+        ),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 16.rpx),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(bottom: 16.rpx),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    margin: EdgeInsets.only(right: 76.rpx,top: 8.rpx),
+                    child: AppImage.asset(
+                      "assets/images/mine/head_photo.png",
+                      width: 80.rpx,
+                      height: 80.rpx,
+                      fit: BoxFit.fitWidth,
                     ),
-                    SizedBox(width: 8.rpx),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            state.authorInfo.nickname ?? "",
-                            style: TextStyle(
-                                fontSize: 16.rpx,
-                                fontWeight: FontWeight.bold
-                            ),
-                          ),
-                          SizedBox(height: 4.rpx,),
-                          Row(
-                            children: [
-                              Visibility(
-                                visible: state.authorInfo.star != null && state.authorInfo.star!.isNotEmpty,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xff8D310F),
-                                      borderRadius: BorderRadius.all(Radius.circular(2.rpx))
-                                  ),
-                                  margin: EdgeInsets.only(right: 6.rpx),
-                                  padding: EdgeInsets.only(left: 4.rpx, right: 4.rpx),
-                                  height: 14.rpx,
-                                  child: Text(state.authorInfo.star ?? "",style: TextStyle(fontSize: 10.rpx,color: Colors.white,height: 1.3),),
-                                ),
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: const Color(0xffEEC88A),
-                                    borderRadius: BorderRadius.all(Radius.circular(2.rpx))
-                                ),
-                                padding: EdgeInsets.only(left: 4.rpx, right: 4.rpx),
-                                height: 14.rpx,
-                                child: Text("Lv.0",style: TextStyle(fontSize: 10.rpx,color: Colors.white),),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Visibility(
-                      visible: SS.login.userId != state.authorInfo.uid,
-                      child: GestureDetector(
-                        onTap: controller.attention,
-                        child: Container(
-                          width: 56.rpx,
-                          height: 26.rpx,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: state.isAttention ? AppColor.gray39 : Colors.transparent,
-                              border: Border.all(width: 1.rpx,color: state.isAttention ? Colors.transparent : Color(0xff8D310F)),
-                              borderRadius: BorderRadius.all(Radius.circular(13.rpx))
-                          ),
-                          child: Visibility(
-                            visible: state.isAttention,
-                            replacement: Text("+关注",style: TextStyle(color: const Color(0xff8D310F),fontSize: 12.rpx),),
-                            child: Text("已关注",style: TextStyle(color: AppColor.gray5,fontSize: 12.rpx),),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                  margin: EdgeInsets.all(12.rpx),
-                  child: Text(state.authorInfo.signature ?? "",style: TextStyle(color: const Color(0xff684326),fontSize: 12.rpx),)
-              ),
-              // Container(
-              //   margin: EdgeInsets.symmetric(horizontal: 12.rpx),
-              //   child: Row(
-              //     children: List.generate(4, (index) => Container(
-              //       height: 14.rpx,
-              //       decoration: BoxDecoration(
-              //         color: const Color(0xffEBDACD),
-              //         border: Border.all(width: 1.rpx,color: const Color(0xff8D310F)),
-              //         borderRadius: BorderRadius.only(
-              //           bottomLeft: Radius.circular(4.rpx),
-              //           topRight: Radius.circular(4.rpx),
-              //         ),
-              //       ),
-              //       padding: EdgeInsets.only(left: 4.rpx,right: 4.rpx),
-              //       margin: EdgeInsets.only(right: 6.rpx),
-              //       child: Text("摩羯座",style: TextStyle(fontSize: 10.rpx,color: const Color(0xff8D310F),height: 1.199999999),),
-              //     )),
-              //   ),
-              // ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20.rpx),
-                    bottomRight: Radius.circular(20.rpx),
                   ),
                 ),
-                height: 40.rpx,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("创作:",style: TextStyle(
-                      color: const Color(0xff999999),
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.rpx,
-                    ),),
-                    Container(
-                      margin: EdgeInsets.only(left: 8.rpx,right: 12.rpx),
-                      padding: EdgeInsets.only(right: 24.rpx),
-                      decoration: BoxDecoration(
-                        border: Border(right: BorderSide(width: 1.rpx, color: const Color(0XffEFEFEF))),
-                      ),
-                      child: Text("${state.creation['creationCount'] ?? 0}",style: TextStyle(
-                        color: const Color(0xff333333),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14.rpx,
-                      ),),
-                    ),
-                    Text("粉丝:",style: TextStyle(
-                      color: const Color(0xff999999),
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.rpx,
-                    ),),
-                    Container(
-                      margin: EdgeInsets.only(left: 8.rpx,right: 12.rpx),
-                      padding: EdgeInsets.only(right: 24.rpx),
-                      decoration: BoxDecoration(
-                        border: Border(right: BorderSide(width: 1.rpx, color: const Color(0XffEFEFEF))),
-                      ),
-                      child: Text("${state.creation['fansCount'] ?? 0}",style: TextStyle(
-                        color: const Color(0xff333333),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14.rpx,
-                      ),),
-                    ),
-                    Text("关注:",style: TextStyle(
-                      color: const Color(0xff999999),
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.rpx,
-                    ),),
-                    Container(
-                      margin: EdgeInsets.only(left: 8.rpx),
-                      child: Text("${state.creation['followCount'] ?? 0}",style: TextStyle(
-                        color: const Color(0xff333333),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14.rpx,
-                      ),),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 12.rpx,left: 12.rpx),
-                color: AppColor.scaffoldBackground,
-                alignment: Alignment.centerLeft,
-                child: Text("创作动态",style: TextStyle(fontSize: 14.rpx,fontWeight: FontWeight.bold),),
-              ),
+                AppImage.asset("assets/images/plaza/attention.png",width: 24.rpx,height: 24.rpx,),
+                Container(
+                  padding: EdgeInsets.only(left: 4.rpx),
+                  child: Text("关注",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),
+                )
+              ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Jeremy Lawrence",style: AppTextStyle.fs20b.copyWith(color: AppColor.gray5),),
+              SizedBox(width: 8.rpx),
+              AppImage.asset("assets/images/mine/safety.png",width: 16.rpx,height: 16.rpx,),
             ],
           ),
-        );
-      },
+          Text("${S.current.goodGirl} 北京",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: List.generate(state.userBasics.length, (i) => SizedBox(
+              height: 85.rpx,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text("${state.userBasics[i]['name']}",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray9),),
+                  Text("${state.userBasics[i]['data']}",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
+                ],
+              ),
+            )),
+          ),
+          Container(
+            height: 2.rpx,
+            color: AppColor.scaffoldBackground,
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
+            child: Text("个人简介",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
+          ),
+          RichText(
+            text: TextSpan(
+              text: '超级可爱的小魔仙，对各种新鲜事物非常感兴趣。超级可爱的小魔仙，对各种新鲜事物非常感兴趣。超级可爱的小魔仙，对各种新鲜事物...',
+              style: TextStyle(
+                color: const Color(0xff333333),
+                fontSize: 14.rpx,
+              ),
+              children: [
+                TextSpan(
+                  text: 'Read more',
+                  style: TextStyle(
+                    color: AppColor.primary,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14.rpx,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: 2.rpx,
+            margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
+            color: AppColor.scaffoldBackground,
+          ),
+        ],
+      ),
     );
   }
 
-  ///创作动态
+  ///个人帖子
   Widget creativeDynamics(){
     return Container(
       color: AppColor.scaffoldBackground,
-      padding: EdgeInsets.symmetric(horizontal: 12.rpx,vertical: 10.rpx),
-      child: SmartRefresher(
-        controller: controller.pagingController.refreshController,
-        onRefresh: controller.pagingController.onRefresh,
-        child: PagedListView(
-          pagingController: controller.pagingController,
-          builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
-              pagingController: controller.pagingController,
-              itemBuilder: (_,item,index){
-                var prevItem = controller.pagingController.itemList?.tryGet(index - 1);
-                return Column(
-                  children: [
-                    Visibility(
-                      visible: controller.acquisitionMonth(item) != controller.acquisitionMonth(prevItem),
-                      child: Row(
-                        children: [
-                          Column(
-                            children: [
-                              Container(
-                                width: 2.rpx,
-                                height: 9.rpx,
-                                color:  index != 0 ? const Color(0xffE6DADA):null,
-                              ),
-                              Container(
-                                width: 6.rpx,
-                                height: 6.rpx,
-                                decoration: const BoxDecoration(color: Color(0xff8D310F),shape: BoxShape.circle,),
-                              ),
-                              Container(
-                                width: 2.rpx,
-                                height: 9.rpx,
-                                color: const Color(0xffE6DADA),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            width: 50.rpx,
-                            height: 24.rpx,
-                            decoration: BoxDecoration(
-                                color: const Color.fromRGBO(205, 205, 205, 0.15),
-                                borderRadius: BorderRadius.all(Radius.circular(8.rpx))
-                            ),
-                            margin: EdgeInsets.only(left: 8.rpx),
-                            alignment: Alignment.center,
-                            child: RichText(
-                              text: TextSpan(
-                                text: '${controller.acquisitionMonth(item)} ',
-                                // text: '${item['month']} ',
-                                style: TextStyle(
-                                  color: const Color(0xff333333),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18.rpx,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: '月',
-                                    style: TextStyle(
-                                      color: const Color(0xff999999),
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14.rpx,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),),
-                        ],
-                      ),
-                    ),
-                    IntrinsicHeight(
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 2.rpx,
-                            color: const Color(0xffE6DADA),
-                            margin: EdgeInsets.only(left: 2.rpx,right: 12.rpx),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 8.rpx),
-                              child: PlazaCard(
-                                item: item,
-                                user: true,
-                                isCollect: (collect){
-                                  controller.getCommentCollect(collect,index);
-                                },
-                                isLike: (like){
-                                  controller.getCommentLike(like, index);
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              }
+      child: Column(
+        children: [
+          Container(
+            color: Colors.white,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(left: 16.rpx),
+            child: Text("个人帖子",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
           ),
-        ),
+          ...List.generate(4, (index) => PlazaCard())
+        ],
+      ),
+    );
+  }
+
+  ///语音
+  Widget voiceContainer(){
+    return Container(
+      height: 112.rpx,
+      padding: EdgeInsets.symmetric(horizontal: 16.rpx,vertical: 12.rpx),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+              color: Colors.grey,
+              offset: Offset(0.0, 12.0),
+              blurRadius: 15.0,
+              spreadRadius: 4.0
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('想了解我更多，跟我1对1私聊吧！',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.rpx),
+            child: Row(
+              children: [
+                Container(
+                  width: 60.rpx,
+                  margin: EdgeInsets.only(right: 8.rpx),
+                  child: CommonGradientButton(
+                    height: 50.rpx,
+                    text: "实时\n语音",
+                  ),
+                ),
+                Expanded(
+                  child: CommonGradientButton(
+                    height: 50.rpx,
+                    text: "视频1V1聊天",
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

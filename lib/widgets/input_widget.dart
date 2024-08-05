@@ -15,6 +15,7 @@ class InputWidget extends StatelessWidget {
   final Color? fillColor;
   final bool isPassWord;
   final String hintText;
+  final TextStyle? textStyle;
   final TextStyle? hintStyle;
   final TextAlign? textAlign;
   final String hintVal;
@@ -36,6 +37,7 @@ class InputWidget extends StatelessWidget {
     this.hintText = "请输入",
     this.hintVal = '',
     this.lines = 1,
+    this.textStyle,
     this.hintStyle,
     this.textAlign,
     this.maxLength,
@@ -84,7 +86,7 @@ class InputWidget extends StatelessWidget {
             },
             keyboardType: keyboardType ?? TextInputType.text,
             obscureText: isPassWord,
-            style: TextStyle(
+            style: textStyle ?? TextStyle(
               color: const Color(0XFF2E2F33),
               fontSize: 14.rpx,
             ),

@@ -136,6 +136,9 @@ abstract class AppRoutes {
   ///契约单列表
   static const contractListPage = '$auth/ContractListPage';
 
+  ///发现-发布邀约
+  static const releaseInvitation = '/releaseInvitation';
+
   /// 个人头像
   static const avatarPage = '$auth/avatarPage';
 

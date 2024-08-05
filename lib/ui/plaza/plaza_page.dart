@@ -7,6 +7,7 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/plaza/fortune_square/fortune_square_view.dart';
 import 'package:guanjia/widgets/app_image.dart';
 
+import 'dating_hall/dating_hall_view.dart';
 import 'plaza_controller.dart';
 ///广场
 class PlazaPage extends StatefulWidget {
@@ -26,25 +27,50 @@ class _PlazaPageState extends State<PlazaPage> with AutomaticKeepAliveClientMixi
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: AppColor.brown32,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        title: Text("运势广场",style: AppTextStyle.fs18b.copyWith(color: AppColor.gray5),),
-        centerTitle: false,
-        actions: [
-          GestureDetector(
-            child: Container(
-              margin: EdgeInsets.only(right: 16.rpx),
-              child: AppImage.asset(
-                "assets/images/plaza/conversation.png",
-                width: 24.rpx,
-                height: 24.rpx,
+        title: Row(
+          children: List.generate(state.tabBarList.length, (index) {
+            return GestureDetector(
+              onTap: (){
+                controller.tabController.index = index;
+              },
+              child: ShaderMask(
+                  shaderCallback: (Rect bounds) {
+                    return LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [controller.tabController.index == index ? AppColor.gradientBegin: AppColor.gray30,controller.tabController.index == index ? AppColor.gradientEnd : AppColor.gray30],
+                    ).createShader(Offset.zero & bounds.size);
+                  },
+                  blendMode: BlendMode.srcATop,
+                  child: Container(
+                    margin: EdgeInsets.only(right: 36.rpx),
+                    child: Text(
+                      state.tabBarList[index]['name'],
+                      style:controller.tabController.index == index ? AppTextStyle.fs18b:AppTextStyle.fs16m,
+                    ),
+                  )
               ),
-            )
-          ),
-       ],
+            );
+          },
+        )),
       ),
-      body: FortuneSquareView(),
+      body: TabBarView(
+          controller: controller.tabController,
+          physics: const NeverScrollableScrollPhysics(),
+          children: <Widget>[
+            DatingHallView(),
+            Column(
+              children: [
+                Expanded(
+                  child: FortuneSquareView(),
+                )
+              ],
+            ),
+            Container(
+              child: const Text("12313"),
+            ),
+          ]
+      ),
     );
   }
 
@@ -52,3 +78,4 @@ class _PlazaPageState extends State<PlazaPage> with AutomaticKeepAliveClientMixi
   bool get wantKeepAlive => true;
 
 }
+//FortuneSquareView

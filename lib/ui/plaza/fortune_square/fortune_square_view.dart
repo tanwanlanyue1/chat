@@ -44,10 +44,10 @@ class FortuneSquareView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    buildTopic(),
-                    hotTopic(),
-                    AdvertisingSwiper(position: 2,),
-                    topicClassify(),
+                    // buildTopic(),
+                    // hotTopic(),
+                    // AdvertisingSwiper(position: 2,),
+                    // topicClassify(),
                   ],
                 ),
               ),

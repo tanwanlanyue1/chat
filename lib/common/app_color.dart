@@ -18,6 +18,7 @@ class AppColor {
   static const black6 = Color(0xFF666666);
   static const black9 = Color(0xFF999999);
   static const black92 = Color(0xFF929DB2);
+  static const black1A = Color(0x1A929DB2);
 
   /// 按钮渐变色
   static const gradientBegin = Color(0xff0F73ED);

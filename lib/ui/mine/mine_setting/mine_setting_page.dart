@@ -11,6 +11,7 @@ import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
+import 'app_update/app_update_manager.dart';
 import 'mine_setting_controller.dart';
 
 ///我的设置
@@ -117,7 +118,9 @@ class MineSettingPage extends StatelessWidget {
                       bottomLeft: Radius.circular(8.rpx),
                       bottomRight: Radius.circular(8.rpx),
                     ),
-                    // callBack: () => controller.onTapClearCache(),
+                    callBack: (){
+                      AppUpdateManager.instance.checkAppUpdate(userAction: true);
+                    },
                   ),
 
                   SettingItem(

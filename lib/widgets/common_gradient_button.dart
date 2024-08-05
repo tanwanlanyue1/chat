@@ -8,6 +8,7 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 /// onTap 点击事件
 /// text 按钮文字
 /// textStyle 按钮文字样式 默认为 AppTextStyle.st.medium.size(14.rpx).textColor(Colors.white)
+/// width 按钮宽度
 /// height 按钮高度
 /// padding 按钮内边距
 /// borderRadius 圆角 默认为 all 8.rpx

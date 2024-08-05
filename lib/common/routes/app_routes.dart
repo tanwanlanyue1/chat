@@ -141,4 +141,7 @@ abstract class AppRoutes {
 
   /// 钱包
   static const walletPage = '$auth/walletPage';
+
+  /// 钱包
+  static const orderPage = '/orderPage';
 }

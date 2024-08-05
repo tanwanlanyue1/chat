@@ -4,6 +4,7 @@ import 'package:guanjia/common/routes/middlewares/auth_middleware.dart';
 import 'package:guanjia/common/routes/middlewares/route_welcome.dart';
 import 'package:guanjia/common/routes/pages/login_pages.dart';
 import 'package:guanjia/common/routes/pages/mine_pages.dart';
+import 'package:guanjia/common/routes/pages/order_pages.dart';
 import 'package:guanjia/common/routes/pages/wallet_pages.dart';
 import 'package:guanjia/ui/ad/launch_ad/launch_ad_page.dart';
 import 'package:guanjia/ui/home/home_page.dart';
@@ -25,6 +26,7 @@ class AppPages {
     ...LoginPages.routes,
     ...MinePages.routes,
     ...WalletPages.routes,
+    ...OrderPages.routes,
     GetPage(
       name: AppRoutes.home,
       page: () => HomePage(),

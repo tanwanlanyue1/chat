@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/wallet/wallet_controller.dart';
 import 'package:guanjia/widgets/app_image.dart';
-
-import 'wallet_controller.dart';
 
 class WalletPage extends StatelessWidget {
   WalletPage({super.key});

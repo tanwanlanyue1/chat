@@ -8,6 +8,7 @@ import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart'
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/client_card.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -197,7 +198,7 @@ class _ContactViewState extends State<ContactView>
                   hintStyle: AppTextStyle.fs14m.copyWith(
                     color: AppColor.gray9,
                   ),
-                  hintText: '搜索用户ID，可添加好友',
+                  hintText: S.current.contactSearchHint,
                   contentPadding: FEdgeInsets(horizontal: 16.rpx),
                   suffixIcon: AnimatedBuilder(
                     animation: controller.editingController,

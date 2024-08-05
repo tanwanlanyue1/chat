@@ -35,9 +35,9 @@ class _ChatPageState extends State<ChatPage>
           labelStyle: AppTextStyle.fs14m,
           labelColor: AppColor.primary,
           unselectedLabelColor: AppColor.black92,
-          tabs: const [
-            Tab(text: '消息'),
-            Tab(text: '通讯录'),
+          tabs: [
+            Tab(text: S.current.message),
+            Tab(text: S.current.contact),
           ],
         ),
       ),

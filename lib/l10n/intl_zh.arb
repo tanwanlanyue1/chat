@@ -223,5 +223,8 @@
   "save": "保存",
   "success": "成功",
   "fail": "失败",
-  "cancel": "取消"
+  "cancel": "取消",
+  "message": "取消",
+  "contact": "通讯录",
+  "contactSearchHint": "搜索用户ID，可添加好友"
 }

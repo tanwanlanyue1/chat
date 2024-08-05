@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/ui/discover/discover_page.dart';
 import 'package:guanjia/ui/chat/chat_page.dart';
 import 'package:guanjia/ui/mine/mine_page.dart';
+import 'package:guanjia/ui/order/order_page.dart';
 import 'package:guanjia/ui/plaza/plaza_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -24,7 +25,7 @@ class HomePage extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           children: [
             ChatPage(),
-            Container(),
+            OrderPage(),
             PlazaPage(),
             DiscoverPage(),
             MinePage(),

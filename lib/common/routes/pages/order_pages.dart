@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/ui/wallet/wallet_page.dart';
+import 'package:guanjia/ui/order/order_page.dart';
 
-class WalletPages {
+class OrderPages {
   static final routes = [
     GetPage(
-      name: AppRoutes.walletPage,
+      name: AppRoutes.orderPage,
       page: () {
-        return WalletPage();
+        return OrderPage();
       },
     ),
   ];

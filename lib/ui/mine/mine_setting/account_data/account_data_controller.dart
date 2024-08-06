@@ -24,7 +24,7 @@ class AccountDataController extends GetxController {
 
   @override
   void onInit() {
-    final userInfo = SS.login.info?.copyWith();
+    final userInfo = loginService.info?.copyWith();
 
     final List<String>? idsList = userInfo != null
         ? userInfo.type.isUser

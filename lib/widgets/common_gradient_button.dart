@@ -26,6 +26,7 @@ class CommonGradientButton extends StatelessWidget {
     this.borderRadius,
     this.begin,
     this.end,
+    this.widget,
   });
 
   final VoidCallback? onTap;
@@ -37,6 +38,7 @@ class CommonGradientButton extends StatelessWidget {
   final BorderRadius? borderRadius;
   final AlignmentGeometry? begin;
   final AlignmentGeometry? end;
+  final Widget? widget;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class CommonGradientButton extends StatelessWidget {
               ],
             )),
         alignment: Alignment.center,
-        child: Text(
+        child: widget ?? Text(
           text ?? "",
           style: textStyle ??
               AppTextStyle.st.medium.size(16.rpx).textColor(Colors.white),

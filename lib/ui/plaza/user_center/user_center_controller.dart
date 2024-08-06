@@ -1,15 +1,19 @@
 import 'package:common_utils/common_utils.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 import '../../../common/network/api/api.dart';
+import '../widgets/upload_cover.dart';
 import 'user_center_state.dart';
 
 class UserCenterController extends GetxController {
   final UserCenterState state = UserCenterState();
+  final ScrollController scrollController = ScrollController();
 
   final pagingController = DefaultPagingController<PlazaListModel>(
     firstPage: 1,
@@ -17,19 +21,18 @@ class UserCenterController extends GetxController {
     refreshController: RefreshController(),
   );
 
-  //获取月份
-  int acquisitionMonth(PlazaListModel? item) {
-    return DateUtil.getDateTime(item?.createTime ?? '')?.month ?? 0;
+  void upload(){
+    UploadCoverDialog.show();
   }
 
   @override
   void onInit() {
-    
-    state.authorId = Get.arguments?['userId'] ?? (SS.login.userId ?? 0);
-    getUserInfo();
-    getIsAttention();
-    getFollowFansCount();
-    pagingController.addPageRequestListener(fetchPage);
+    scrollController.addListener(() {
+      double offset = scrollController.offset;
+      double appBarHeight = 260.rpx;
+      state.isAppBarExpanded.value = (appBarHeight - kToolbarHeight) < offset;
+    });
+
     super.onInit();
   }
 
@@ -52,7 +55,7 @@ class UserCenterController extends GetxController {
   Future<void> getUserInfo() async {
     final response = await UserApi.info(uid: state.authorId);
     if (response.isSuccess) {
-      state.authorInfo = response.data ?? UserModel.fromJson({});
+      // state.authorInfo = response.data ?? UserModel.fromJson({});
       update(['userInfo']);
     }
   }

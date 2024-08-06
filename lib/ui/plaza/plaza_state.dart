@@ -1,4 +1,9 @@
 class PlazaState {
+  List tabBarList = [
+    {"name":"推荐"},
+    {"name":"附近"},
+    {"name":"社区"},
+  ];
   //内容反馈
   List feedback = [
     {

@@ -1,5 +1,6 @@
+import 'package:get/get.dart';
+import 'package:guanjia/ui/wallet/enum/wallet_enum.dart';
+
 class WalletState {
-  WalletState() {
-    ///Initialize variables
-  }
+  final typeIndex = WalletOperationType.normal.obs;
 }

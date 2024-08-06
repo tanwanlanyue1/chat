@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 
-import 'rectify_the_workplace_controller.dart';
+import 'dating_hall_controller.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-///整顿职场
-class RectifyTheWorkplaceView extends StatelessWidget {
-  RectifyTheWorkplaceView({super.key});
+/// 推荐
+class DatingHallView extends StatelessWidget {
+  DatingHallView({super.key});
 
   final controller = Get.put(RectifyTheWorkplaceController());
   final state = Get.find<RectifyTheWorkplaceController>().state;

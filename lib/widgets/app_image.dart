@@ -181,11 +181,15 @@ class AppImage extends StatelessWidget {
 }
 
 class AppDecorations {
-  static DecorationImage backgroundImage(String assetName,
-      {BoxFit fit = BoxFit.fill}) {
+  static DecorationImage backgroundImage(
+    String assetName, {
+    BoxFit fit = BoxFit.fill,
+    Rect? centerSlice,
+  }) {
     return DecorationImage(
       image: AppAssetImage(assetName),
       fit: fit,
+      centerSlice: centerSlice,
     );
   }
 }

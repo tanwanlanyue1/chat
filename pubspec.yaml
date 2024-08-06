@@ -82,6 +82,7 @@ flutter:
     - assets/images/mine/
     - assets/images/discover/
     - assets/images/wallet/
+    - assets/images/plaza/
     - assets/images/chat/
     - assets/images/order/
     - assets/js/

@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 import 'friend_date_controller.dart';
+import 'widget/draft_dialog.dart';
 
+///发现-征友约会
 class FriendDatePage extends StatelessWidget {
   FriendDatePage({Key? key}) : super(key: key);
 
@@ -49,9 +52,7 @@ class FriendDatePage extends StatelessWidget {
               replacement: CommonGradientButton(
                 text: "发布邀约",
                 textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
-                onTap: (){
-                  print("123123");
-                },
+                onTap: controller.onTapInvitation,
               ),
               child: GestureDetector(
                 onTap: (){
@@ -92,10 +93,15 @@ class FriendDatePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Row(
-            children: [
-              Container(
-                margin: EdgeInsets.only(right: 8.rpx),
-                child: AppImage.asset("assets/images/mine/head_photo.png",width: 40.rpx,height: 40.rpx,),
+            children: [//
+              GestureDetector(
+                onTap: (){
+                  Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":0});
+                },
+                child: Container(
+                  margin: EdgeInsets.only(right: 8.rpx),
+                  child: AppImage.asset("assets/images/mine/head_photo.png",width: 40.rpx,height: 40.rpx,),
+                ),
               ),
               SizedBox(
                 height: 40.rpx,
@@ -128,9 +134,12 @@ class FriendDatePage extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              Container(
-                padding: EdgeInsets.only(bottom: 16.rpx),
-                child: AppImage.asset("assets/images/discover/more.png",width: 24.rpx,height: 24.rpx,),
+              GestureDetector(
+                onTap: controller.selectMore,
+                child: Container(
+                  padding: EdgeInsets.only(bottom: 16.rpx),
+                  child: AppImage.asset("assets/images/discover/more.png",width: 24.rpx,height: 24.rpx,),
+                ),
               ),
             ],
           ),
@@ -173,7 +182,17 @@ class FriendDatePage extends StatelessWidget {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 8.rpx),
-                  child: Text("7/22 18:00-7/22 23:00",style: AppTextStyle.fs10m.copyWith(color: AppColor.gray9),),
+                  child: Row(
+                    children: [
+                      AppImage.asset("assets/images/discover/location.png",width: 16.rpx,height: 16.rpx,),
+                      Container(
+                        margin: EdgeInsets.only(left: 2.rpx),
+                        child: Text("创意园2.3km",style: AppTextStyle.fs10m.copyWith(color: AppColor.gray5),),
+                      ),
+                      const Spacer(),
+                      Text("7/22 18:00-7/22 23:00",style: AppTextStyle.fs10m.copyWith(color: AppColor.gray9),),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -187,7 +206,7 @@ class FriendDatePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(32.rpx),
               textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
               onTap: (){
-                print("123123");
+                DraftDialog.show();
               },
             ),
           )

@@ -11,4 +11,13 @@ class WalletController extends GetxController {
   void onTapOperation(WalletOperationType type) {
     state.typeIndex.value = type;
   }
+
+  void onTapSubmitTopUp() {}
+
+  void onTapSubmitOtherTopUp() {}
+
+  void onTapSubmitTransfer() {}
+
+  void onTapReload() {}
+
 }

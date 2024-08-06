@@ -199,7 +199,7 @@ class _OrderListPageState extends State<OrderListPage>
                       "待您接单",
                       style: AppTextStyle.st
                           .size(14.rpx)
-                          .textColor(AppColor.blue6),
+                          .textColor(AppColor.textBlue),
                     ),
                     SizedBox(width: 8.rpx),
                     Flexible(

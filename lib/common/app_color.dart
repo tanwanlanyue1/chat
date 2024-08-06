@@ -27,6 +27,13 @@ class AppColor {
   static const gradientBackgroundBegin = Color(0xff226EF0);
   static const gradientBackgroundEnd = Color(0xffBD3CFF);
 
+  /// 文本特殊颜色
+  static const textYellow = Color(0xFFF7BF4B);
+  static const textRed = Color(0xFFE5393C);
+  static const textPurple = Color(0xFFC644FC);
+  static const textBlue = Color(0xFF4166F2);
+  static const textGreen = Color(0xFF3CB236);
+
   /// old
   static const gray1 = Color(0x38FFFFFF);
   static const gray2 = Color(0x99FFFFFF);

@@ -22,7 +22,7 @@ class FortuneSquareController extends GetxController
 
   @override
   void onInit() {
-    tabController = TabController(length: 2, vsync: this, initialIndex: 1);
+    tabController = TabController(length: state.communityTitle.length, vsync: this,);
     pagingController.addPageRequestListener(_fetchPage);
     startupCarousel();
     super.onInit();
@@ -44,10 +44,6 @@ class FortuneSquareController extends GetxController
   /// 获取列表数据
   /// page: 第几页
   void _fetchPage(int page) async {
-    if (page == 1) {
-      getZoneList();
-      getTopicList();
-    }
     getCommunityList(page: page);
   }
 
@@ -65,22 +61,6 @@ class FortuneSquareController extends GetxController
       pagingController.appendPageData(items);
     } else {
       pagingController.error = response.errorMessage;
-    }
-  }
-
-  ///获取专区列表
-  Future<void> getZoneList() async {
-    final response = await PlazaApi.getZoneList();
-    if (response.isSuccess) {
-      state.topicList.value = response.data ?? [];
-    }
-  }
-
-  ///获取话题列表
-  Future<void> getTopicList() async {
-    final response = await PlazaApi.getTopicList();
-    if (response.isSuccess) {
-      state.hotTopic.value = response.data ?? [];
     }
   }
 

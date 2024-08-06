@@ -9,6 +9,8 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/common_bottom_sheet.dart';
+import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/photo_view_gallery_page.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 
@@ -65,32 +67,22 @@ class PlazaCard extends StatelessWidget {
     });
   }
 
-  //查询详情
-  Future<void> getDetail(PlazaListModel item) async {
-
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            padding: EdgeInsets.all(12.rpx),
-            color: Colors.white,
-            margin: EdgeInsets.only(bottom: 2.rpx),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // _header(),
-                _buildBody(),
-                _imageViews(context),
-                _createBottom(),
-              ],
-            ),
-          ),
-        ),
-      ],
+    return  Container(
+      padding: EdgeInsets.all(12.rpx),
+      color: Colors.white,
+      margin: EdgeInsets.only(bottom: 2.rpx),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _header(),
+          _buildBody(),
+          _imageViews(context),
+          _createBottom(),
+          _comment(),
+        ],
+      ),
     );
   }
 
@@ -103,7 +95,7 @@ class PlazaCard extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              // Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item?.uid});
+              Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item?.uid});
             },
             child: AppImage.network(
               item?.avatar ?? "",
@@ -117,39 +109,14 @@ class PlazaCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item?.uid});
-                      },
-                      child: Text(
-                        "${item?.nickname}",
-                        style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
-                      ),
-                    ),
-                    SizedBox(width: 6.rpx),
-                    Visibility(
-                      visible: item?.star != null && item!.star!.isNotEmpty,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: const Color(0xff8D310F),
-                            borderRadius: BorderRadius.all(Radius.circular(2.rpx))
-                        ),
-                        margin: EdgeInsets.only(right: 6.rpx),
-                        padding: EdgeInsets.symmetric(vertical: 1.rpx,horizontal: 4.rpx),
-                        child: Text("${item?.star}",style: TextStyle(fontSize: 10.rpx,color: Colors.white,height: 1.333333),),
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: AppColor.gold,
-                          borderRadius: BorderRadius.all(Radius.circular(2.rpx))
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 2.rpx,horizontal: 4.rpx),
-                      child: Text("Lv.${item?.cavLevel ?? 1}",style: TextStyle(fontSize: 10.rpx,color: Colors.white),),
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item?.uid});
+                  },
+                  child: Text(
+                    "${item?.nickname}",
+                    style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
+                  ),
                 ),
                 Text(
                   '${CommonUtils.getPostTime(time: item?.createTime,yearsFlag: true) }',
@@ -161,16 +128,21 @@ class PlazaCard extends StatelessWidget {
               ],
             ),
           ),
-          // GestureDetector(
-          //   child: AppImage.asset(
-          //     "assets/images/plaza/more.png",
-          //     width: 20.rpx,
-          //     height: 20.rpx,
-          //   ),
-          //   onTap: (){
-          //     ShowBottomSheet.show();
-          //   },
-          // ),
+          GestureDetector(
+            child: AppImage.asset(
+              "assets/images/discover/more.png",
+              width: 20.rpx,
+              height: 20.rpx,
+            ),
+            onTap: (){
+              Get.bottomSheet(
+                CommonBottomSheet(
+                  titles: ["不看Ta的", "删除(个人发布者)", "取消关注","发起聊天"],
+                  onTap: (index) async {},
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
@@ -180,14 +152,13 @@ class PlazaCard extends StatelessWidget {
   Widget _buildBody(){
     return InkWell(
       child: Container(
-        // margin: EdgeInsets.only(top: user ? 0 : 10.rpx),
+        margin: EdgeInsets.only(top: user ? 0 : 10.rpx),
         alignment: Alignment.centerLeft,
         child: Text(
           item?.content ?? '超级可爱的小魔仙，对各种新鲜事物非常感兴趣。超级可爱的小魔仙，可爱的小魔仙，可爱的小魔仙，可爱...',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray8),maxLines: 3,overflow: TextOverflow.ellipsis,
         )
       ),
       onTap: (){
-        getDetail(item ?? PlazaListModel.fromJson({}));
         Get.toNamed(AppRoutes.plazaDetailPage,arguments: {"communityId":item?.postId,"userId":item?.uid});
       },
     );
@@ -197,18 +168,23 @@ class PlazaCard extends StatelessWidget {
   Widget _imageViews(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        getDetail(item ?? PlazaListModel.fromJson({}));
         Get.toNamed(AppRoutes.plazaDetailPage,arguments: {"communityId":item?.postId,"userId":item?.uid});
       },
       child: Container(
         padding: EdgeInsets.only(bottom: 12.rpx,top: 10.rpx),
         alignment: Alignment.centerLeft,
-        color: Colors.transparent,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: List.generate(2, (index) => Expanded(
-            child: Padding(
-              // children: List.generate(jsonDecode(item?.images).length, (index) => Padding(
+        child: GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: user ? 2 : 5,
+          padding: EdgeInsets.zero,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: user ? 2 : 3,
+              childAspectRatio: 1,
+              mainAxisSpacing: 8.rpx
+          ),
+          itemBuilder: (BuildContext context, int index) {
+            return  Padding(
               padding: EdgeInsets.only(left: index == 0 ? 0 : 14.rpx),
               child: GestureDetector(
                 onTap: () {
@@ -222,14 +198,12 @@ class PlazaCard extends StatelessWidget {
                 },
                 // child: AppImage.network("${jsonDecode(item?.images)[index]}",
                 child: AppImage.asset("assets/images/plaza/back_image.png",
-                  // width: 100.rpx,
-                  height: 110.rpx,
                   fit: BoxFit.cover,
                   // borderRadius: BorderRadius.circular(4.rpx),
                 ),
               ),
-            ),
-          )),
+            );
+          },
         ),
       ),
     );
@@ -241,12 +215,14 @@ class PlazaCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text("刚刚发布",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
         Visibility(
           visible: user,
           child: Text("${CommonUtils.getCommonTime(time: item?.createTime,hideYears: true) }",style: TextStyle(color: Color(0xff999999),fontSize: 12.rpx),),
         ),
-        const Spacer(),
+        Visibility(
+          visible: user,
+          child: const Spacer(),
+        ),
         GestureDetector(
           onTap: (){
             getCommentCollect();
@@ -267,7 +243,6 @@ class PlazaCard extends StatelessWidget {
         ),
         GestureDetector(
           onTap: (){
-            getDetail(item ?? PlazaListModel.fromJson({}));
             Get.toNamed(AppRoutes.plazaDetailPage,arguments: {"communityId":item?.postId,"userId":item?.uid});
           },
           child: Container(
@@ -283,7 +258,55 @@ class PlazaCard extends StatelessWidget {
             ),
           ),
         ),
+        Visibility(
+          visible: !user,
+          child: const Spacer(),
+        ),
+        CommonGradientButton(
+          width: 80.rpx,
+          height: 30.rpx,
+          text: "发起聊天",
+        ),
       ],
+    );
+  }
+
+
+  ///评论
+  Widget _comment(){
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColor.scaffoldBackground,
+        borderRadius: BorderRadius.circular(8.rpx),
+      ),
+      padding: EdgeInsets.all(16.rpx),
+      margin: EdgeInsets.only(top: 16.rpx),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          ...List.generate(2, (index) => Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("隔壁老王：",style: AppTextStyle.fs12b.copyWith(color: AppColor.gray5),),
+                  Expanded(child: Text("小姐姐，真美呀！晚上约一下？",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),)),
+                ],
+              ),
+              Visibility(
+                visible: index == 0,
+                child: Container(
+                  height: 1.rpx,
+                  color: Colors.white,
+                  margin: EdgeInsets.symmetric(vertical: 16.rpx),
+                ),
+              )
+            ],
+          )),
+          SizedBox(height: 12.rpx,),
+          Text("查看全部>",style: AppTextStyle.fs12m.copyWith(color: AppColor.primary),),
+        ],
+      ),
     );
   }
 }

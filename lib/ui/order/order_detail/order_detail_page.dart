@@ -182,12 +182,15 @@ class OrderDetailPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: 38.rpx, vertical: 24.rpx),
-                    child: CommonGradientButton(
-                      text: "指派订单",
-                      height: 50.rpx,
+                  GestureDetector(
+                    onTap: controller.onTapConfirm,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: 38.rpx, vertical: 24.rpx),
+                      child: CommonGradientButton(
+                        text: "指派订单",
+                        height: 50.rpx,
+                      ),
                     ),
                   )
                 ],

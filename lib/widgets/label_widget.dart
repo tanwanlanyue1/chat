@@ -26,6 +26,7 @@ class LabelWidget extends StatelessWidget {
     this.fontWeight,
     this.textColor,
     this.selectedTextColor,
+    this.backgroundColor,
     this.selectedBackgroundColor,
     this.borderColor,
   });
@@ -35,6 +36,7 @@ class LabelWidget extends StatelessWidget {
   final FontWeight? fontWeight;
   final Color? textColor;
   final Color? selectedTextColor;
+  final Color? backgroundColor;
   final Color? selectedBackgroundColor;
   final Color? borderColor;
 
@@ -45,7 +47,7 @@ class LabelWidget extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 24.rpx, vertical: 16.rpx),
         decoration: BoxDecoration(
-          color: item.selected ? selectedBackgroundColor ?? Colors.white : null,
+          color: item.selected ? selectedBackgroundColor ?? Colors.white : backgroundColor,
           border: Border.all(
             color: borderColor ?? Colors.white,
             width: 1.rpx,

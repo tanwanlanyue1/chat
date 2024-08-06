@@ -10,7 +10,6 @@ import 'package:guanjia/widgets/common_gradient_button.dart';
 class DraftDialog extends StatelessWidget {
   const DraftDialog({super.key});
 
-  //进阶弹窗
   static Future<bool?> show() {
     return Get.dialog(
       DraftDialog(),

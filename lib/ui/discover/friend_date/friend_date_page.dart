@@ -93,7 +93,7 @@ class FriendDatePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Row(
-            children: [//
+            children: [
               GestureDetector(
                 onTap: (){
                   Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":0});

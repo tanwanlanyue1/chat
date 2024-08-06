@@ -233,7 +233,9 @@ class UserCenterPage extends StatelessWidget {
             padding: EdgeInsets.only(left: 16.rpx),
             child: Text("个人帖子",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
           ),
-          ...List.generate(4, (index) => PlazaCard())
+          ...List.generate(4, (index) => PlazaCard(
+            user: true,
+          ))
         ],
       ),
     );

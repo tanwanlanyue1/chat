@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -10,6 +8,9 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/wallet/enum/wallet_enum.dart';
 import 'package:guanjia/ui/wallet/wallet_controller.dart';
+import 'package:guanjia/ui/wallet/widgets/wallet_top_up_widget.dart';
+import 'package:guanjia/ui/wallet/widgets/wallet_transfer_widget.dart';
+import 'package:guanjia/ui/wallet/widgets/wallet_withdrawal_widget.dart';
 import 'package:guanjia/widgets/app_image.dart';
 
 class WalletPage extends StatelessWidget {
@@ -46,11 +47,7 @@ class WalletPage extends StatelessWidget {
               children: [
                 _buildCard(),
                 _buildOperationWidget(),
-                Expanded(
-                  child: Container(
-                    color: Colors.yellow,
-                  ),
-                ),
+                _buildBottom(),
               ],
             );
           }),
@@ -298,6 +295,32 @@ class WalletPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildBottom() {
+    final Widget widget;
+
+    switch (state.typeIndex.value) {
+      case WalletOperationType.normal:
+        widget = Container(color: Colors.red);
+        break;
+      case WalletOperationType.topUp:
+        widget = WalletTopUpWidget();
+        break;
+      case WalletOperationType.transfer:
+        widget = WalletTransferWidget();
+        break;
+      case WalletOperationType.withdrawal:
+        widget = WalletWithdrawalWidget();
+        break;
+      case WalletOperationType.record:
+        widget = Container(color: Colors.purple);
+        break;
+    }
+
+    return Expanded(
+      child: widget,
     );
   }
 }

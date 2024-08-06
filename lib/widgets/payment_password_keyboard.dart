@@ -13,6 +13,7 @@ class PaymentPasswordKeyboard extends StatefulWidget {
   String? titleStr;
   PaymentPasswordKeyboard._({super.key,this.titleStr});
 
+  /// - return 返回支付密码
   static Future<String?> show({String? titleStr}) async {
     return Get.bottomSheet<String>(
       PaymentPasswordKeyboard._(titleStr: titleStr,),

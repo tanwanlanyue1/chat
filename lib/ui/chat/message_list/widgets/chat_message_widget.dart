@@ -1,4 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/date_time_extension.dart';
+import 'package:guanjia/common/utils/screen_adapt.dart';
 
 import 'package:zego_zim/zego_zim.dart';
 
@@ -8,9 +13,9 @@ import 'package:zego_zimkit/src/components/messages/file_message.dart';
 import 'package:zego_zimkit/src/components/messages/image_message.dart';
 import 'package:zego_zimkit/src/services/services.dart';
 
-class MessageWidget extends StatelessWidget {
-  const MessageWidget({
-    Key? key,
+class ChatMessageWidget extends StatelessWidget {
+  const ChatMessageWidget({
+    super.key,
     required this.message,
     this.onPressed,
     this.onLongPress,
@@ -18,25 +23,25 @@ class MessageWidget extends StatelessWidget {
     this.avatarBuilder,
     this.timestampBuilder,
     this.messageContentBuilder,
-  }) : super(key: key);
+  });
 
   final ZIMKitMessage message;
 
   final Widget Function(
-      BuildContext context, ZIMKitMessage message, Widget defaultWidget)?
-  avatarBuilder;
+          BuildContext context, ZIMKitMessage message, Widget defaultWidget)?
+      avatarBuilder;
   final Widget Function(
-      BuildContext context, ZIMKitMessage message, Widget defaultWidget)?
-  statusBuilder;
+          BuildContext context, ZIMKitMessage message, Widget defaultWidget)?
+      statusBuilder;
   final Widget Function(
-      BuildContext context, ZIMKitMessage message, Widget defaultWidget)?
-  timestampBuilder;
+          BuildContext context, ZIMKitMessage message, Widget defaultWidget)?
+      timestampBuilder;
   final Widget Function(
-      BuildContext context, ZIMKitMessage message, Widget defaultWidget)?
-  messageContentBuilder;
+          BuildContext context, ZIMKitMessage message, Widget defaultWidget)?
+      messageContentBuilder;
   final void Function(
-      BuildContext context, ZIMKitMessage message, Function defaultAction)?
-  onPressed;
+          BuildContext context, ZIMKitMessage message, Function defaultAction)?
+      onPressed;
   final void Function(BuildContext context, LongPressStartDetails details,
       ZIMKitMessage message, Function defaultAction)? onLongPress;
 
@@ -78,73 +83,104 @@ class MessageWidget extends StatelessWidget {
         return Text(message.toString());
     }
     return messageContentBuilder?.call(
-      context,
-      message,
-      defaultMessageContent,
-    ) ??
+          context,
+          message,
+          defaultMessageContent,
+        ) ??
         defaultMessageContent;
   }
 
   Widget buildStatus(BuildContext context) {
     final Widget defaultStatusWidget = ZIMKitMessageStatusDot(message);
     return statusBuilder?.call(
-      context,
-      message,
-      defaultStatusWidget,
-    ) ??
+          context,
+          message,
+          defaultStatusWidget,
+        ) ??
         defaultStatusWidget;
   }
 
   Widget buildAvatar(BuildContext context) {
-    final Widget defaultAvatarWidget = ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(avatarWidth)),
+    final Widget defaultAvatarWidget = ClipOval(
       child: ZIMKitAvatar(
         userID: message.info.senderUserID,
-        width: avatarWidth,
-        height: avatarHeight,
+        width: 40.rpx,
+        height: 40.rpx,
       ),
     );
 
     return avatarBuilder?.call(
-      context,
-      message,
-      defaultAvatarWidget,
-    ) ??
+          context,
+          message,
+          defaultAvatarWidget,
+        ) ??
         defaultAvatarWidget;
   }
 
   Widget localMessage(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        buildStatus(context),
-        buildMessageContent(context),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (message.info.sentStatus != ZIMMessageSentStatus.success)
+              buildStatus(context),
+            buildMessageContent(context),
+          ],
+        ),
+        buildTime(horizontalPadding: 8.rpx)
       ],
     );
   }
 
   Widget remoteMessage(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildAvatar(context),
-        const SizedBox(width: 4),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              buildNickName(context),
-              buildMessageContent(context),
-            ],
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(right: 8.rpx),
+              child: buildAvatar(context),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  buildNickName(context),
+                  buildMessageContent(context),
+                ],
+              ),
+            ),
+          ],
         ),
+        buildTime(horizontalPadding : 56.rpx),
       ],
+    );
+  }
+
+  Widget buildTime({double horizontalPadding = 0}) {
+    return Padding(
+      padding:
+          EdgeInsets.symmetric(vertical: 8.rpx, horizontal: horizontalPadding),
+      child: Text(
+        DateTime.fromMillisecondsSinceEpoch(message.info.timestamp)
+            .friendlyTime,
+        style: AppTextStyle.fs12m.copyWith(
+          color: AppColor.black92,
+          height: 1.0001,
+        ),
+      ),
     );
   }
 
@@ -182,14 +218,14 @@ class MessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: itemHorizontalMargin,
-        vertical: itemVerticalMargin,
+      padding: EdgeInsets.symmetric(
+        horizontal: 16.rpx,
+        vertical: 8.rpx,
       ),
       child: FractionallySizedBox(
-        widthFactor: 0.77,
+        widthFactor: message.isMine ? 0.87 : 1.0,
         alignment:
-        message.isMine ? Alignment.centerRight : Alignment.centerLeft,
+            message.isMine ? Alignment.centerRight : Alignment.centerLeft,
         child: message.isMine ? localMessage(context) : remoteMessage(context),
       ),
     );

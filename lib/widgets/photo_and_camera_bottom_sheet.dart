@@ -104,8 +104,8 @@ class PhotoAndCameraBottomSheet extends StatelessWidget {
           files.addAll(fs);
         }
 
+        //未选择图片
         if (files.isEmpty) {
-          Loading.showToast("发生了错误，请重新选择图片");
           return;
         }
 

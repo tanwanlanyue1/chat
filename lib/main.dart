@@ -1,3 +1,4 @@
+import 'package:extended_text_field/extended_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ import 'generated/l10n.dart';
 import 'widgets/loading.dart';
 
 Future<void> main() async {
+  TextInputBinding();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const App());
   // AppCatchError.run(() => runApp(const App()));
@@ -49,6 +51,7 @@ class App extends StatelessWidget {
                   initialRoute: AppPages.initial,
                   builder: Loading.init(),
                   getPages: AppPages.routes,
+                  navigatorObservers: [AppPages.routeObserver],
                   localizationsDelegates: const [
                     S.delegate,
                     RefreshLocalizations.delegate,

@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
@@ -7,7 +9,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 
 class PhotoViewGalleryPage extends StatefulWidget {
-  final List images;
+  final List<String> images;
   final int index;
   final String heroTag;
 
@@ -57,10 +59,11 @@ class _PhotoViewGalleryPageState extends State<PhotoViewGalleryPage> {
               child: PhotoViewGallery.builder(
                 scrollPhysics: const AlwaysScrollableScrollPhysics(),
                 builder: (BuildContext context, int index) {
+                  final item = widget.images[index];
+                  final isNetworkUrl = item.startsWith('http');
                   return PhotoViewGalleryPageOptions(
-                    imageProvider: CachedNetworkImageProvider(
-                      widget.images[index],
-                    ),
+                    minScale: PhotoViewComputedScale.contained,
+                    imageProvider: isNetworkUrl ? CachedNetworkImageProvider(item) : FileImage(File(item)) as ImageProvider,
                     heroAttributes: (widget.heroTag.isNotEmpty)
                         ? PhotoViewHeroAttributes(tag: widget.heroTag)
                         : null,
@@ -78,7 +81,7 @@ class _PhotoViewGalleryPageState extends State<PhotoViewGalleryPage> {
               ),
             ),
           ),
-          Positioned(
+          if(widget.images.length > 1) Positioned(
             //图片index显示
             top: MediaQuery.of(context).padding.top + 15.rpx,
             width: MediaQuery.of(context).size.width,

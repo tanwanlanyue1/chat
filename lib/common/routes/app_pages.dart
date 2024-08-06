@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/routes/middlewares/auth_middleware.dart';
@@ -19,6 +20,7 @@ part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
+  static final routeObserver = RouteObserver<ModalRoute<void>>();
   static const initial = AppRoutes.welcome;
   // static const initial = AppRoutes.home;
 

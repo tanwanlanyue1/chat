@@ -12,6 +12,7 @@ import 'package:guanjia/widgets/input_widget.dart';
 
 import '../widget/discover_item.dart';
 import '../widget/discover_radio.dart';
+import '../widget/time_dialog.dart';
 import 'release_invitation_controller.dart';
 
 ///发现-发布邀约
@@ -75,10 +76,9 @@ class ReleaseInvitationPage extends StatelessWidget {
   Widget dateType(){
     return Obx(() {
       int current = state.typeIndex.value;
-      return Padding(
-        padding: EdgeInsets.only(bottom: 16.rpx),
+      return SizedBox(
+        height: 100.rpx,
         child: GridView.builder(
-          scrollDirection: Axis.vertical,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -153,6 +153,9 @@ class ReleaseInvitationPage extends StatelessWidget {
         ),
         DiscoverItem(
           title: "开始时间",
+          callBack: (){
+            TimeDialog.show();
+          },
           trailing: Text(
             "今天07/22 7:20",
             style: TextStyle(fontSize: 14.rpx, color: AppColor.gray5,fontWeight: FontWeight.bold),

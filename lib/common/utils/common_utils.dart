@@ -111,7 +111,8 @@ class CommonUtils {
   }
 
   ///日期显示(04月16日 星期二)
-  static String dateString(String matchTime) {
+  ///lineFeed：换行
+  static String dateString(String matchTime,{bool lineFeed = false}) {
     if (matchTime.isEmpty) {
       return "";
     }
@@ -125,7 +126,9 @@ class CommonUtils {
     )}";
 
     // "今天 04月16日 星期二"
-    return "$today${DateUtil.formatDate(date, format: 'yyyy' + "-" + 'MM' + "-" + 'dd')} ${weekday.toUpperCase()}";
+    return lineFeed ?
+     "${today.isNotEmpty ? today : weekday.toUpperCase()} \n ${DateUtil.formatDate(date, format: 'MM' + "/" + 'dd')}":
+     "$today${DateUtil.formatDate(date, format: 'yyyy' + "-" + 'MM' + "-" + 'dd')} ${weekday.toUpperCase()}";
   }
 
 

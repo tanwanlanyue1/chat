@@ -159,7 +159,6 @@ class PlazaCard extends StatelessWidget {
         )
       ),
       onTap: (){
-        Get.toNamed(AppRoutes.plazaDetailPage,arguments: {"communityId":item?.postId,"userId":item?.uid});
       },
     );
   }
@@ -168,7 +167,6 @@ class PlazaCard extends StatelessWidget {
   Widget _imageViews(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Get.toNamed(AppRoutes.plazaDetailPage,arguments: {"communityId":item?.postId,"userId":item?.uid});
       },
       child: Container(
         padding: EdgeInsets.only(bottom: 12.rpx,top: 10.rpx),
@@ -243,7 +241,7 @@ class PlazaCard extends StatelessWidget {
         ),
         GestureDetector(
           onTap: (){
-            Get.toNamed(AppRoutes.plazaDetailPage,arguments: {"communityId":item?.postId,"userId":item?.uid});
+            Get.toNamed(AppRoutes.allCommentsPage,);
           },
           child: Container(
             color: Colors.transparent,
@@ -304,7 +302,12 @@ class PlazaCard extends StatelessWidget {
             ],
           )),
           SizedBox(height: 12.rpx,),
-          Text("查看全部>",style: AppTextStyle.fs12m.copyWith(color: AppColor.primary),),
+          GestureDetector(
+            onTap: (){
+              Get.toNamed(AppRoutes.allCommentsPage,);
+            },
+            child: Text("查看全部>",style: AppTextStyle.fs12m.copyWith(color: AppColor.primary),),
+          ),
         ],
       ),
     );

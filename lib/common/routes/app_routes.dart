@@ -22,11 +22,8 @@ abstract class AppRoutes {
   ///广场-用户中心
   static const userCenterPage = '$auth/userCenterPage';
 
-  ///广场详情页
-  static const plazaDetailPage = '/plazaDetailPage';
-
-  ///广场-历史浏览
-  static const plazaHistoryPage = '$auth/plazaHistoryPage';
+  ///全部评论
+  static const allCommentsPage = '/allCommentsPage';
 
   ///我的设置
   static const mineSettingPage = '/mineSettingPage';

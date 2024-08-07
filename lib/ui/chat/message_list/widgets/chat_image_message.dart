@@ -75,12 +75,7 @@ class ChatImageMessage extends StatelessWidget {
     if (originSize.isEmpty) {
       return constraints.smallest;
     }
-    //px转dp
-    final size = Size(
-      originSize.width / Get.pixelRatio,
-      originSize.height / Get.pixelRatio,
-    );
-    return constraints.constrainSizeAndAttemptToPreserveAspectRatio(size);
+    return constraints.constrainSizeAndAttemptToPreserveAspectRatio(originSize);
   }
 
   @override

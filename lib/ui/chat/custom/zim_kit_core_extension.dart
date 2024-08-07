@@ -12,6 +12,8 @@ import 'package:guanjia/common/utils/app_logger.dart';
 extension ZIMKitCoreExtension on ZIMKitCore{
 
   ///发送媒体消息，可携带扩展字段
+  ///- localExtendedData 消息扩展字段（本地）
+  ///- extendedData 消息扩展字段（远程）
   Future<void> sendMediaMessageExt(
       String conversationID,
       ZIMConversationType conversationType,
@@ -21,6 +23,7 @@ extension ZIMKitCoreExtension on ZIMKitCore{
         Function(ZIMKitMessage message)? onMessageSent,
         int audioDuration = 0,
         String? localExtendedData,
+        String? extendedData,
       }) async {
     if (mediaPath.isEmpty || !(await File(mediaPath).exists())) {
       AppLogger.w(
@@ -51,6 +54,10 @@ extension ZIMKitCoreExtension on ZIMKitCore{
     if(localExtendedData != null){
       kitMessage.localExtendedData.value = localExtendedData;
       kitMessage.zim.localExtendedData = localExtendedData;
+    }
+
+    if(extendedData != null){
+      kitMessage.zim.extendedData = extendedData;
     }
 
     final sendConfig = ZIMMessageSendConfig();

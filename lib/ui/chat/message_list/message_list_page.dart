@@ -8,13 +8,10 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_state.dart';
 import 'package:guanjia/ui/chat/message_list/message_sender_util.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
-import 'package:guanjia/ui/chat/message_list/widgets/chat_image_message.dart';
-import 'package:guanjia/ui/chat/message_list/widgets/chat_text_message.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
-import 'message_input.dart';
 import 'message_list_controller.dart';
 import 'message_list_view.dart';
 import 'widgets/chat_input_view.dart';

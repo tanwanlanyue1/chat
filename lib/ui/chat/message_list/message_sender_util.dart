@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
@@ -52,8 +53,8 @@ extension MessageSenderUtil on MessageListController{
         final size = await ImageSizeGetter.getSizeAsync(input);
         if(size.width > 0 && size.height > 0){
           localExtendedData = jsonEncode({
-            'width': size.width,
-            'height': size.height,
+            'width': size.needRotate ? size.height : size.width,
+            'height': size.needRotate ? size.width : size.height,
           });
         }
 
@@ -86,11 +87,32 @@ extension MessageSenderUtil on MessageListController{
     if (file == null) {
       return;
     }
-    await ZIMKitCore.instance.sendMediaMessage(
+
+    String? extendedData;
+    try{
+      final videoInfo = await FlutterVideoInfo().getVideoInfo(file.path);
+      final durationMs = videoInfo?.duration ?? 0;
+      if(videoInfo != null && durationMs > 0){
+        final needRotate = [90, 270].contains(videoInfo.orientation);
+        final width = videoInfo.width ?? 0;
+        final height = videoInfo.height ?? 0;
+
+        extendedData = jsonEncode({
+          'duration': (durationMs / 1000).ceil(), //毫秒转成秒
+          'width': needRotate ? height : width,
+          'height': needRotate ? width : height,
+        });
+      }
+    }catch(ex){
+      AppLogger.w('获取视频信息失败，$ex');
+    }
+
+    await ZIMKitCore.instance.sendMediaMessageExt(
       state.conversationId,
       state.conversationType,
       file.path,
       ZIMMessageType.video,
+      extendedData: extendedData,
     );
     scrollController.jumpTo(0);
   }

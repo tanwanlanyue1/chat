@@ -18,6 +18,7 @@ import 'package:zego_zimkit/src/services/services.dart';
 
 import 'chat_image_message.dart';
 import 'chat_text_message.dart';
+import 'chat_video_message.dart';
 
 class ChatMessageWidget extends StatelessWidget {
   const ChatMessageWidget({

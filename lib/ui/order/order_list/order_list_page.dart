@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -7,9 +8,9 @@ import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart'
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/order_list/order_list_state.dart';
+import 'package:guanjia/ui/order/widgets/order_operation_buttons.dart';
 import 'package:guanjia/ui/order/widgets/order_operation_number_widget.dart';
 import 'package:guanjia/widgets/app_image.dart';
-import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -87,10 +88,10 @@ class _OrderListPageState extends State<OrderListPage>
             padding: EdgeInsets.symmetric(vertical: 8.rpx),
             sliver: PagedSliverList.separated(
               pagingController: controller.pagingController,
-              builderDelegate: DefaultPagedChildBuilderDelegate(
+              builderDelegate: DefaultPagedChildBuilderDelegate<OrderListItem>(
                 pagingController: controller.pagingController,
                 itemBuilder: (_, item, index) {
-                  return _buildItem();
+                  return _buildItem(item, index);
                 },
               ),
               separatorBuilder: (_, int index) {
@@ -103,12 +104,15 @@ class _OrderListPageState extends State<OrderListPage>
     );
   }
 
-  Widget _buildItem() {
+  Widget _buildItem(OrderListItem item, int index) {
+    Widget operationWidget = OrderOperationButtons(
+        type: widget.type, operationType: item.operationType);
+
     return GestureDetector(
       onTap: controller.onTapItem,
       child: Container(
         height: 186.rpx,
-        padding: EdgeInsets.all(16.rpx),
+        padding: EdgeInsets.all(16.rpx).copyWith(bottom: 0),
         color: Colors.white,
         child: Column(
           children: [
@@ -184,36 +188,27 @@ class _OrderListPageState extends State<OrderListPage>
                 ),
               ],
             ),
+            SizedBox(height: 12.rpx),
             Divider(
-              height: 25.rpx,
+              height: 1.rpx,
               thickness: 1.rpx,
               color: AppColor.scaffoldBackground,
             ),
-            const Spacer(),
-            SizedBox(
-              height: 26.rpx,
+            Expanded(
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "待您接单",
-                      style: AppTextStyle.st
-                          .size(14.rpx)
-                          .textColor(AppColor.textBlue),
-                    ),
-                    SizedBox(width: 8.rpx),
-                    Flexible(
-                      child: CommonGradientButton(
-                        text: "立即接单",
-                        width: 60.rpx,
-                        height: 26.rpx,
-                        borderRadius: BorderRadius.circular(4.rpx),
-                        textStyle: AppTextStyle.st
-                            .size(12.rpx)
-                            .textColor(Colors.white),
-                      ),
-                    ),
-                  ]),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    item.stateText,
+                    style:
+                        AppTextStyle.st.size(14.rpx).textColor(item.stateColor),
+                  ),
+                  SizedBox(width: 8.rpx),
+                  Flexible(
+                    child: operationWidget,
+                  ),
+                ],
+              ),
             )
           ],
         ),

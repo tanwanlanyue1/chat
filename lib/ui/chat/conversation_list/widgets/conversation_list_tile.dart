@@ -8,6 +8,7 @@ import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
+import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -35,7 +36,7 @@ class ConversationListTile extends StatelessWidget {
   }
 
   void onTap() {
-    if(conversation.customMessageType == CustomMessageType.sysNotice){
+    if(isSysNotice){
       Get.toNamed(AppRoutes.mineMessage);
       return;
     }
@@ -45,10 +46,15 @@ class ConversationListTile extends StatelessWidget {
     );
   }
 
+  ///是否是系统通知
+  bool get isSysNotice{
+    return conversation.lastMessage?.customType == CustomMessageType.sysNotice;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      enabled: conversation.customMessageType != CustomMessageType.sysNotice,
+      enabled: !isSysNotice,
       key: ValueKey(conversation.id),
       endActionPane: ActionPane(
         extentRatio: 0.3,
@@ -93,7 +99,7 @@ class ConversationListTile extends StatelessWidget {
       text = '99+';
     }
     var icon = conversation.icon;
-    if(conversation.customMessageType == CustomMessageType.sysNotice){
+    if(isSysNotice){
       icon = AppImage.asset('assets/images/chat/ic_sys_notice.png');
     }
 
@@ -207,26 +213,27 @@ class ConversationListTile extends StatelessWidget {
 extension on ZIMKitConversation{
   String? toStringValue(){
     switch(lastMessage?.type){
+      case ZIMMessageType.image:
+        return '[图片]';
+      case ZIMMessageType.video:
+        return '[视频]';
       case ZIMMessageType.custom:
-        switch(customMessageType){
-          case CustomMessageType.sysNotice:
-            return lastMessage?.customContent?.message ?? '';
-          default:
-            break;
-        }
+        return _customMsgStringValue(lastMessage?.customType);
       default:
         return lastMessage?.toStringValue();
     }
-    return null;
   }
 
-  ///自定义消息类型
-  CustomMessageType? get customMessageType{
-    final customContent = lastMessage?.customContent;
-    if(customContent != null) {
-      return CustomMessageTypeX.valueOf(customContent.type);
+  String? _customMsgStringValue(CustomMessageType? type){
+    switch(type){
+      case CustomMessageType.sysNotice:
+        return lastMessage?.customContent?.message ?? '';
+      case CustomMessageType.redPacket:
+        return '[红包]';
+      default:
+        return '[未知类型]';
     }
-    return null;
   }
+
 
 }

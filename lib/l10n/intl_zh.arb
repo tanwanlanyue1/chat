@@ -229,5 +229,6 @@
   "contact": "通讯录",
   "contactSearchHint": "搜索用户ID，可添加好友",
   "videoDating": "视频速配",
-  "voiceDating": "语音速配"
+  "voiceDating": "语音速配",
+  "enterPaymentPassword": "请输入支付密码"
 }

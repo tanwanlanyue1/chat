@@ -157,4 +157,7 @@ abstract class AppRoutes {
 
   ///1V1聊天消息列表页
   static const messageListPage = '/MessageListPage';
+
+  ///发红包
+  static const redPacketPage = '/RedPacketPage';
 }

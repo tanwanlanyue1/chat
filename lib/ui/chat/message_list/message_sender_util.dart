@@ -1,7 +1,15 @@
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:get/get.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
+import 'package:guanjia/ui/chat/custom/zim_kit_core_extension.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_size_getter/file_input.dart';
+import 'package:image_size_getter/image_size_getter.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'message_list_controller.dart';
@@ -9,7 +17,7 @@ import 'widgets/chat_feature_panel.dart';
 
 
 ///消息发送功能
-extension MessageSendFeature on MessageListController{
+extension MessageSenderUtil on MessageListController{
   ///发送文本消息
   Future<void> sendTextMessage(String text) async {
     await ZIMKit().sendTextMessage(
@@ -37,11 +45,28 @@ extension MessageSendFeature on MessageListController{
     }
 
     for (final file in files) {
-      await ZIMKitCore.instance.sendMediaMessage(
+
+      String? localExtendedData;
+      try{
+        final input = AsyncImageInput.input(FileInput(File(file.path)));
+        final size = await ImageSizeGetter.getSizeAsync(input);
+        if(size.width > 0 && size.height > 0){
+          localExtendedData = jsonEncode({
+            'width': size.width,
+            'height': size.height,
+          });
+        }
+
+      }catch(ex){
+        AppLogger.w('获取图片尺寸信息失败，$ex');
+      }
+
+      await ZIMKitCore.instance.sendMediaMessageExt(
         state.conversationId,
         state.conversationType,
         file.path,
         ZIMMessageType.image,
+        localExtendedData: localExtendedData
       );
     }
     scrollController.jumpTo(0);
@@ -70,6 +95,17 @@ extension MessageSendFeature on MessageListController{
     scrollController.jumpTo(0);
   }
 
+  ///发红包消息
+  void sendRedPacketMessage(){
+    Get.toNamed(
+      AppRoutes.redPacketPage,
+      arguments: {
+        'conversationId': state.conversationId,
+        'conversationType': state.conversationType,
+      },
+    );
+  }
+
   ///点击聊天功能面板
   void onTapFeatureAction(ChatFeatureAction action) {
     switch (action) {
@@ -82,6 +118,7 @@ extension MessageSendFeature on MessageListController{
       case ChatFeatureAction.location:
         break;
       case ChatFeatureAction.redPacket:
+        sendRedPacketMessage();
         break;
       case ChatFeatureAction.voiceCall:
         break;

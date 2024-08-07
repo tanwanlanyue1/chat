@@ -6,7 +6,7 @@ import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_state.dart';
-import 'package:guanjia/ui/chat/message_list/message_send_feature.dart';
+import 'package:guanjia/ui/chat/message_list/message_sender_util.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_image_message.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_text_message.dart';
@@ -100,7 +100,6 @@ class MessageListPage extends GetView<MessageListController> {
       conversationType: conversationType,
       // onPressed: widget.onMessageItemPressed,
       itemBuilder: buildMessageItem,
-      messageContentBuilder: buildMessageContent,
       backgroundBuilder: buildBackground,
       listViewPadding: FEdgeInsets(top: ChatDateView.height),
     );
@@ -176,16 +175,4 @@ class MessageListPage extends GetView<MessageListController> {
     );
   }
 
-  ///消息内容
-  Widget buildMessageContent(_, ZIMKitMessage message, Widget defaultChild) {
-    switch (message.type) {
-      case ZIMMessageType.text:
-        return ChatTextMessage(message: message);
-      case ZIMMessageType.image:
-        return ChatImageMessage(message: message);
-      default:
-        break;
-    }
-    return defaultChild;
-  }
 }

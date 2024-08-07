@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:guanjia/ui/chat/message_list/widgets/chat_feature_panel.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
-import '../../../common/utils/permissions_utils.dart';
 import 'message_list_state.dart';
 
 class MessageListController extends GetxController {

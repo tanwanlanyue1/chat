@@ -110,4 +110,5 @@ class AppColor {
   static const green2 = Color(0xff2E9959);
 
   static const purple6 = Color(0xffC644FC);
+  static const orange6 = Color(0xFFFA9D3B);
 }

@@ -4,6 +4,9 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
+import 'package:guanjia/ui/chat/custom/message_extension.dart';
+import 'package:guanjia/ui/chat/message_list/widgets/chat_red_packet_message.dart';
 
 import 'package:zego_zim/zego_zim.dart';
 
@@ -12,6 +15,9 @@ import 'package:zego_zimkit/src/components/defines.dart';
 import 'package:zego_zimkit/src/components/messages/file_message.dart';
 import 'package:zego_zimkit/src/components/messages/image_message.dart';
 import 'package:zego_zimkit/src/services/services.dart';
+
+import 'chat_image_message.dart';
+import 'chat_text_message.dart';
 
 class ChatMessageWidget extends StatelessWidget {
   const ChatMessageWidget({
@@ -50,7 +56,7 @@ class ChatMessageWidget extends StatelessWidget {
 
     switch (message.type) {
       case ZIMMessageType.text:
-        defaultMessageContent = ZIMKitTextMessage(
+        defaultMessageContent = ChatTextMessage(
             onLongPress: onLongPress, onPressed: onPressed, message: message);
         break;
       case ZIMMessageType.audio:
@@ -66,18 +72,30 @@ class ChatMessageWidget extends StatelessWidget {
             onLongPress: onLongPress, onPressed: onPressed, message: message);
         break;
       case ZIMMessageType.image:
-        defaultMessageContent = ZIMKitImageMessage(
+        defaultMessageContent = ChatImageMessage(
             onLongPress: onLongPress, onPressed: onPressed, message: message);
         break;
       case ZIMMessageType.revoke:
         defaultMessageContent = const Text('Recalled a message.');
         break;
       case ZIMMessageType.custom:
-        defaultMessageContent = const Flexible(
-          child: Text(
-            'This is a customMessage, please use messageContentBuilder to build it.',
-          ),
-        );
+        final customType = message.customType;
+        switch (customType) {
+          case CustomMessageType.redPacket:
+            defaultMessageContent = ChatRedPacketMessage(
+              onLongPress: onLongPress,
+              onPressed: onPressed,
+              message: message,
+            );
+            break;
+          default:
+            defaultMessageContent = const Flexible(
+              child: Text(
+                '不支持的消息类型',
+              ),
+            );
+            break;
+        }
         break;
       default:
         return Text(message.toString());
@@ -164,7 +182,7 @@ class ChatMessageWidget extends StatelessWidget {
             ),
           ],
         ),
-        buildTime(horizontalPadding : 56.rpx),
+        buildTime(horizontalPadding: 56.rpx),
       ],
     );
   }

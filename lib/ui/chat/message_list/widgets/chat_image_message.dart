@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -30,8 +31,62 @@ class ChatImageMessage extends StatelessWidget {
     Function defaultAction,
   )? onLongPress;
 
+  ///获取图片原始大小(px)
+  Size getOriginalPixelSize() {
+    final imageContent = message.imageContent!;
+    var size = Size(
+      imageContent.originalImageWidth.toDouble(),
+      imageContent.originalImageHeight.toDouble(),
+    );
+    if (!size.isEmpty) {
+      return size;
+    }
+    //图片发送中，ZIMKitMessageImageContent没有图片尺寸信息，需从本地扩展字段中获取原始宽高
+    final extData = message.zim.localExtendedData;
+    if (extData.isNotEmpty) {
+      try {
+        final data = jsonDecode(extData);
+        if (data is Map) {
+          size = Size(
+            double.tryParse("${data['width']}") ?? 0,
+            double.tryParse("${data['height']}") ?? 0,
+          );
+          if (!size.isEmpty) {
+            imageContent.originalImageWidth = size.width.toInt();
+            imageContent.originalImageHeight = size.height.toInt();
+          }
+        }
+      } catch (ex) {
+        //e
+      }
+    }
+    return size;
+  }
+
+  ///获取图片最佳显示大小
+  Size getBestDisplaySize() {
+    final originSize = getOriginalPixelSize();
+    final constraints = BoxConstraints(
+      minWidth: 60.rpx,
+      minHeight: 60.rpx,
+      maxWidth: Get.width * 0.6,
+      maxHeight: Get.width * 0.6,
+    );
+    if (originSize.isEmpty) {
+      return constraints.smallest;
+    }
+    //px转dp
+    final size = Size(
+      originSize.width / Get.pixelRatio,
+      originSize.height / Get.pixelRatio,
+    );
+    return constraints.constrainSizeAndAttemptToPreserveAspectRatio(size);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final imageContent = message.imageContent!;
+    final displaySize = getBestDisplaySize();
     return Flexible(
       child: GestureDetector(
         onTap: () async {
@@ -48,52 +103,60 @@ class ChatImageMessage extends StatelessWidget {
           message,
           () {},
         ),
-        child: AspectRatio(
-          aspectRatio: message.imageContent!.aspectRatio,
-          child: LayoutBuilder(builder: (context, BoxConstraints constraints) {
-            final cacheWidth =
-                constraints.maxWidth * Get.mediaQuery.devicePixelRatio;
-            final cacheHeight =
-                constraints.maxHeight * Get.mediaQuery.devicePixelRatio;
-
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(8.rpx),
-              child: message.isMine
-                  ? FutureBuilder(
-                      future:
-                          File(message.imageContent!.fileLocalPath).exists(),
-                      builder: (context, snapshot) {
-                        return snapshot.hasData && snapshot.data!
-                            ? Image.file(
-                                File(message.imageContent!.fileLocalPath),
-                                cacheHeight: cacheHeight.floor(),
-                                cacheWidth: cacheWidth.floor(),
-                              )
-                            : AppImage.network(
-                                message.isNetworkUrl
-                                    ? message.imageContent!.fileDownloadUrl
-                                    : message
-                                        .imageContent!.largeImageDownloadUrl,
-                                fit: BoxFit.cover,
-                                memCacheHeight: cacheHeight,
-                                memCacheWidth: cacheWidth,
-                              );
-                      },
-                    )
-                  : AppImage.network(
-                      message.isNetworkUrl
-                          ? message.imageContent!.fileDownloadUrl
-                          : message.imageContent!.largeImageDownloadUrl,
-                      fit: BoxFit.cover,
-                      memCacheHeight: cacheHeight,
-                      memCacheWidth: cacheWidth,
-                    ),
-            );
-          }),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8.rpx),
+          child: message.isMine
+              ? FutureBuilder(
+                  future: File(imageContent.fileLocalPath).exists(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return buildNetworkImage(imageContent, displaySize);
+                    }
+                    if (snapshot.hasData) {
+                      return buildLocalImage(imageContent, displaySize);
+                    }
+                    //placeholder
+                    return buildImagePlaceholder(imageContent, displaySize);
+                  },
+                )
+              : buildNetworkImage(imageContent, displaySize),
         ),
       ),
     );
   }
+
+  Widget buildLocalImage(ZIMKitMessageImageContent imageContent, Size size) {
+    return Image.file(
+      File(imageContent.fileLocalPath),
+      width: size.width,
+      height: size.height,
+      cacheWidth: (size.width * Get.pixelRatio).floor(),
+      cacheHeight: (size.height * Get.pixelRatio).floor(),
+      fit: BoxFit.cover,
+    );
+  }
+
+  Widget buildNetworkImage(ZIMKitMessageImageContent imageContent, Size size) {
+    return AppImage.network(
+      message.isNetworkUrl
+          ? imageContent.fileDownloadUrl
+          : imageContent.largeImageDownloadUrl,
+      fit: BoxFit.cover,
+      width: size.width,
+      height: size.height,
+      memCacheWidth: size.width,
+      memCacheHeight: size.height,
+    );
+  }
+
+  Widget buildImagePlaceholder(ZIMKitMessageImageContent imageContent, Size size) {
+    return Container(
+      width: size.width,
+      height: size.height,
+      color: Colors.white,
+    );
+  }
+
 
   void showPhotoView() async {
     final imageContent = message.imageContent;

@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_controller.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
+import 'package:guanjia/ui/chat/red_packet/red_packet_controller.dart';
+import 'package:guanjia/ui/chat/red_packet/red_packet_page.dart';
 import 'package:guanjia/ui/mine/avatar/avatar_page.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_controller.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_page.dart';
@@ -156,6 +158,18 @@ class MinePages {
           'conversationType',
           ZIMConversationType.peer,
         ),
+      ),
+    ),
+    GetPage(
+      name: AppRoutes.redPacketPage,
+      page: () => const RedPacketPage(),
+      binding: BindingsBuilder.put(
+        () => RedPacketController(
+            conversationId: Get.getArgs('conversationId', ''),
+            conversationType: Get.getArgs(
+              'conversationType',
+              ZIMConversationType.peer,
+            )),
       ),
     ),
   ];

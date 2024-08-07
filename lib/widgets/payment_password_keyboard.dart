@@ -72,7 +72,7 @@ class _PaymentPasswordKeyboardState extends State<PaymentPasswordKeyboard> {
             ),
           ),
           child: Text(
-            widget.titleStr ?? S.current.enterYourPIN,
+            widget.titleStr ?? S.current.enterPaymentPassword,
             textAlign: TextAlign.center,
             style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),
           ),

@@ -55,11 +55,11 @@ class AppImage extends StatelessWidget {
           alignment: alignment,
         );
 
-  static int? _toInt(double? value) {
-    if (value == double.infinity) {
+  static int? _toInt(double? value, double scale) {
+    if (value == null || value == double.infinity) {
       return null;
     }
-    return value?.toInt();
+    return (value * scale).toInt();
   }
 
   ///网络图片
@@ -82,8 +82,8 @@ class AppImage extends StatelessWidget {
     double opacity = 1,
     super.key,
   }) : child = CachedNetworkImage(
-          memCacheWidth: _toInt(memCacheWidth ?? length ?? width),
-          memCacheHeight: _toInt(memCacheHeight ?? length ?? height),
+          memCacheWidth: _toInt(memCacheWidth ?? length ?? width, Get.pixelRatio),
+          memCacheHeight: _toInt(memCacheHeight ?? length ?? height, Get.pixelRatio),
           width: length ?? width,
           height: length ?? height,
           imageUrl: resizeImage

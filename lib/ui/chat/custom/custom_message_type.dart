@@ -2,8 +2,13 @@
 
 ///自定义消息类型
 enum CustomMessageType{
-  ///系统通知
+
+  ///系统通知 0
   sysNotice,
+
+  ///红包 1
+  redPacket,
+
 }
 
 extension CustomMessageTypeX on CustomMessageType{

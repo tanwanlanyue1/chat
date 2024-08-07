@@ -84,7 +84,7 @@ class FortuneSquareView extends StatelessWidget {
         indicatorWeight: 2.rpx,
         labelPadding: EdgeInsets.only(bottom: 12.rpx),
         onTap: (val){
-          print("val==$val");
+          controller.update(['floating']);
         },
         tabs: List.generate(
           state.communityTitle.length,
@@ -96,7 +96,7 @@ class FortuneSquareView extends StatelessWidget {
 
   ///浮动按钮
   Widget floatingAction(){
-    return GetBuilder(
+    return GetBuilder<FortuneSquareController>(
       id: 'floating',
       builder: (_) {
       return Visibility(

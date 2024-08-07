@@ -41,6 +41,9 @@ class LoginService extends GetxService {
   // 用户 token
   String? get token => _loginRes?.token;
 
+  // 用户类型
+  UserType? get userType => _info.value?.type;
+
   /// Private 防止外部修改
 
   // 当前用户登录模型

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:guanjia/widgets/input_widget.dart';
 import 'package:guanjia/widgets/upload_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 
+import '../widgets/publish_success.dart';
 import 'release_dynamic_controller.dart';
 
 ///发布动态
@@ -18,96 +22,88 @@ class ReleaseDynamicPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: TabBar(
-            controller: controller.tabController,
-            indicatorSize: TabBarIndicatorSize.label,
-            // indicatorPadding: EdgeInsets.only(bottom: 4.rpx,left: 8.rpx,right: 8.rpx),
-            isScrollable: true,
-            labelColor: Colors.black,
-            labelStyle: TextStyle(fontSize: 14.rpx),
-            unselectedLabelColor: Colors.black,
-            unselectedLabelStyle: TextStyle(fontSize: 14.rpx),
-            indicatorColor:Colors.black,
-            indicatorWeight: 3.rpx,
-            labelPadding: EdgeInsets.only(bottom: 8.rpx,right: 12.rpx),
-            overlayColor: MaterialStateProperty.resolveWith((states) {
-              return Colors.transparent;
-            }),
-            tabs: ["动态","创作"].map((item) {
-              return Text("${item}");
-            }).toList()
-        ),
-        actions: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.black12,
-              borderRadius: BorderRadius.circular(4.rpx),
-            ),
-            width: 56.rpx,
-            height: 12.rpx,
-            margin: EdgeInsets.only(right: 12.rpx,top: 12.rpx,bottom: 12.rpx),
-            child: Center(child: Text("发布",style: TextStyle(color: Colors.white),)),
-          ),
-        ],
+        title: const Text("新帖子"),
       ),
-      body: TabBarView(
-        controller: controller.tabController,
-        children: [
-          buildDynamic(),
-          buildDynamic(),
-        ],
-      ),
+      backgroundColor: AppColor.scaffoldBackground,
+      body: buildDynamic(),
     );
   }
 
   ///动态
   Widget buildDynamic(){
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.all(12.rpx),
+          padding: EdgeInsets.only(top: 12.rpx,bottom: 16.rpx),
+          margin: EdgeInsets.only(top: 12.rpx),
+          color: Colors.white,
           child: InputWidget(
-              hintText: '分享我近期的动态...',
-              fillColor: Colors.black12,
+              hintText: '请输入内容',
+              fillColor: Colors.white,
+              maxLength: 100,
               lines: 8,
               onChanged: (val) {
                 print("val===$val");
               }
           ),
         ),
-        GestureDetector(
-          child: Container(
-            color: Colors.red,
-            child: Icon(Icons.add),
+        Container(
+          margin: EdgeInsets.only(top: 2.rpx),
+          padding: EdgeInsets.only(left: 16.rpx,top: 16.rpx),
+          color: Colors.white,
+          alignment: Alignment.centerLeft,
+          child: RichText(
+            text: TextSpan(
+              text: '上传照片',
+              style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),
+              children: <TextSpan>[
+                TextSpan(
+                  text: '(最多9张)',
+                  style: AppTextStyle.fs14m.copyWith(color: AppColor.red53,),
+                ),
+              ],
+            ),
           ),
-          onTap: () async{
-            print("object====");
-            final ImagePicker picker = ImagePicker();
-
-            // final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-
-            final XFile? photo = await picker.pickImage(source: ImageSource.camera);
-
-            print("object====${photo?.path}");
-            // getLostData();
-          },
+        ),
+        Expanded(
+          child: Container(
+            margin: EdgeInsets.only(left: 12.rpx),
+            color: Colors.white,
+            alignment: Alignment.topLeft,
+            child: UploadImage(
+              imgList: [],
+              // imgList: controller.state.imgList,
+              callback: (val) {
+                // controller.state.imgList = val;
+                // controller.update(['upload']);
+              },
+            ),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(bottom: Get.mediaQuery.padding.bottom,left: 38.rpx,right: 38.rpx,top: 14.rpx),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0.0, 12.0), //阴影xy轴偏移量
+                  blurRadius: 15.0, //阴影模糊程度
+                  spreadRadius: 4.0 //阴影扩散程度
+              ),
+            ],
+          ),
+          child: CommonGradientButton(
+            onTap: (){
+              PublishSuccess.show();
+            },
+            height: 50.rpx,
+            text: "立即发布",
+          ),
         ),
       ],
     );
   }
-  Future<void> getLostData() async {
-    final ImagePicker picker = ImagePicker();
-    final LostDataResponse response = await picker.retrieveLostData();
-    if (response.isEmpty) {
-      return;
-    }
-    final List<XFile>? files = response.files;
-    print("files=====$files");
-    // if (files != null) {
-    //   _handleLostFiles(files);
-    // } else {
-    //   _handleError(response.exception);
-    // }
-  }
+
 }

@@ -154,6 +154,12 @@ abstract class AppRoutes {
   /// 订单 - 评价
   static const orderEvaluationPage = '$auth/orderEvaluationPage';
 
+  /// 订单 - 支付订单
+  static const orderPaymentPage = '$auth/orderPaymentPage';
+
+  /// 订单 - 支付订单结果
+  static const orderPaymentResultPage = '$auth/orderPaymentResultPage';
+
 
   ///1V1聊天消息列表页
   static const messageListPage = '/MessageListPage';

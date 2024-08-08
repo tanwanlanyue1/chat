@@ -14,8 +14,10 @@ class UserCenterState {
   // UserModel authorInfo = UserModel.fromJson({});
   //创作数
   Map creation = {};
+
   //上传封面图
-  List<File> imgList = [];
+  List<String> imgList = [];
+
   //用户基础信息
   List userBasics = [
     {

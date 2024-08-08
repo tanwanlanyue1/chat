@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/discover/friend_date/friend_date_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 
@@ -21,7 +22,7 @@ class DiscoverPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("发现",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
+        title: Text(S.current.discover,style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -65,8 +66,8 @@ class DiscoverPage extends StatelessWidget {
         labelPadding: EdgeInsets.only(bottom: 12.rpx),
         onTap: (val){},
         tabs: [
-          Text("热门活动"),
-          Text("征友约会"),
+          Text(S.current.hotActivity),
+          Text(S.current.dating),
         ],
       ),
     );

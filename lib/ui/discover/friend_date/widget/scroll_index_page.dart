@@ -8,7 +8,8 @@ import 'package:guanjia/widgets/app_image.dart';
 //横向滚动，自动选择中间的
 class ScrollIndexPage extends StatefulWidget {
   int currentSelectIndex;
-  ScrollIndexPage({super.key,required this.currentSelectIndex});
+  final Function? callBack;
+  ScrollIndexPage({super.key,required this.currentSelectIndex,this.callBack});
 
   @override
   _ScrollIndexPageState createState() => _ScrollIndexPageState();
@@ -16,7 +17,6 @@ class ScrollIndexPage extends StatefulWidget {
 
 class _ScrollIndexPageState extends State<ScrollIndexPage> {
   int _currentSelectIndex = 0;
-
   bool first = true;
 
   //滑动控制器
@@ -72,11 +72,6 @@ class _ScrollIndexPageState extends State<ScrollIndexPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // InkWell(
-        //   child: Text("当前选中的Itme ${_currentSelectIndex+3}"),
-        //   onTap: (){
-        //   },
-        // ),
         buildSingleChildScrollView(),
         Container(
           alignment: Alignment.center,
@@ -96,17 +91,22 @@ class _ScrollIndexPageState extends State<ScrollIndexPage> {
         double scrollOffset = pixels % _itemWidth;
         //当前选中
         _currentSelectIndex = scrollIndex.round();
-
         if(scrollOffset != 0.0){
-          Future.delayed(Duration.zero, () {
-            _scrollController.animateTo(
-              _currentSelectIndex * _itemWidth,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.linear,
-            );
-          });
+          if(_currentSelectIndex * _itemWidth < _scrollController.position.maxScrollExtent){
+            Future.delayed(Duration.zero, () {
+              _scrollController.animateTo(
+                _currentSelectIndex * _itemWidth,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.linear,
+              );
+            });
+            widget.callBack?.call(_currentSelectIndex);
+          }else{
+            widget.callBack?.call(_currentSelectIndex);
+          }
+        }else{
+          widget.callBack?.call(_currentSelectIndex);
         }
-
         setState(() {});
         return true;
       },
@@ -134,6 +134,7 @@ class _ScrollIndexPageState extends State<ScrollIndexPage> {
       width: _itemWidth,
       child: Visibility(
         visible: data[index] >= 0 && data[index] < 24,
+        replacement: Container(width: 2.rpx,),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

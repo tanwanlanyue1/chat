@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 
+import '../../../../common/network/api/api.dart';
+
 //征友约会-弹窗
 class DraftDialog extends StatelessWidget {
-  const DraftDialog({super.key});
+  AppointmentModel item;
+  DraftDialog({super.key,required this.item});
 
-  static Future<bool?> show() {
+  static Future<bool?> show({required AppointmentModel item}) {
     return Get.dialog(
-      DraftDialog(),
+      DraftDialog(item: item),
     );
   }
 
@@ -41,16 +45,23 @@ class DraftDialog extends StatelessWidget {
                 ),
                 Wrap(
                   spacing: -13.rpx,
-                  children: List.generate(2, (index) {
-                    return AppImage.asset(
-                      "assets/images/mine/head_photo.png",
+                  children: [
+                    AppImage.network(
+                      item.userInfo?.avatar ?? '',
                       width: 60.rpx,
                       height: 60.rpx,
-                    );
-                  }),
+                      shape: BoxShape.circle,
+                    ),
+                    AppImage.network(
+                      SS.login.info?.avatar ?? '',
+                      width: 60.rpx,
+                      height: 60.rpx,
+                      shape: BoxShape.circle,
+                    )
+                  ],
                 ),
                 SizedBox(height: 12.rpx),
-                Text("同意和Susie Jenkins约会？",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
+                Text("同意和${item.userInfo?.nickname ?? ''}约会？",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 12.rpx),
                   child: Text("注：为保障权益，约会双方均需缴纳保证金，保证金在订单结束后将会原路退回。",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
@@ -71,7 +82,7 @@ class DraftDialog extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("服务费",style: AppTextStyle.fs14m.copyWith(color: AppColor.black6),),
-                            Text("\$650",style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),),
+                            Text("\$${item.serviceCharge ?? 0}",style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),),
                           ],
                         ),
                       ),

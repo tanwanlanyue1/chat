@@ -1,42 +1,69 @@
 import 'package:get/get.dart';
+import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 class FriendDateState {
-
+  final userInfo = SS.login.info;
+  //约会类型
   final typeIndex = 0.obs;
+  //排序类型
+  final sortIndex = 0.obs;
 
   //约会类型
   List<Map<String, dynamic>> typeList = [
     {
-      "title": "边玩边吃",
-      "type": 0,
-    },
-    {
-      "title": "同城周边",
+      "title": S.current.playEat,
       "type": 1,
     },
     {
-      "title": "双飞国外",
+      "title": S.current.cityPerimeter,
       "type": 2,
     },
     {
-      "title": "海上游轮",
+      "title": S.current.flyAbroad,
       "type": 3,
     },
     {
-      "title": "自驾游",
+      "title": S.current.seaCruise,
       "type": 4,
     },
     {
-      "title": "商务陪伴",
+      "title": S.current.selfDrivingTour,
       "type": 5,
     },
     {
-      "title": "饭局宴席",
-      "type": 5,
+      "title": S.current.businessCompanionship,
+      "type": 6,
     },
     {
-      "title": "发布邀约",
-      "type": 5,
+      "title": S.current.dinnerBanquet,
+      "type": 7,
     },
+    {
+      "title": S.current.releaseInvitation,
+    },
+  ];
+
+  //排序类型
+  List sortList = [
+    {
+      "name": S.current.newest,
+      "type": 1,
+    },
+    {
+      "name": S.current.ladiesOnly,
+      "type": 2,
+    },
+    {
+      "name": S.current.provideService,
+      "type": 3,
+    },
+  ];
+
+  //更多
+  List<String> more = [
+    S.current.privateOne,
+    S.current.deletePublisher,
+    S.current.reportComplaint,
   ];
 }

@@ -76,7 +76,7 @@ class UserModel {
     required this.likeAgeMax,
     required this.likeOccupation,
     required this.likeStyle,
-    required this.payPwd,
+    this.payPwd,
   });
 
   final int uid; // 用户id
@@ -103,7 +103,7 @@ class UserModel {
   int likeAgeMax; // 最大喜好年龄
   UserOccupation likeOccupation; // 喜好职业 1在职人员 2学生
   String? likeStyle; // 喜好风格 "1, 2, 4" 逗号隔开
-  final bool payPwd; // 是否设置支付密码 true已设置 false未设置
+  bool? payPwd; // 是否设置支付密码 true已设置 false未设置
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -131,7 +131,7 @@ class UserModel {
       likeAgeMax: json["likeAgeMax"] ?? 40,
       likeOccupation: UserOccupation.valueForIndex(json["likeOccupation"] ?? 0),
       likeStyle: json["likeStyle"],
-      payPwd: json["payPwd"],
+      payPwd: json["payPwd"] ?? false,
     );
   }
 

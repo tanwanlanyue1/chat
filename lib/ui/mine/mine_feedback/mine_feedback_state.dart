@@ -8,29 +8,29 @@ class MineFeedbackState {
   List<Map<String, dynamic>> typeList = [
     {
       "title": S.current.VIPSystem,
-      "type": 0,
-    },
-    {
-      "title": S.current.serviceProcess,
       "type": 1,
     },
     {
-      "title": S.current.activeMarketing,
+      "title": S.current.serviceProcess,
       "type": 2,
     },
     {
-      "title": S.current.afterSalesService,
+      "title": S.current.activeMarketing,
       "type": 3,
     },
     {
-      "title": S.current.iHaveAComplaint,
+      "title": S.current.afterSalesService,
       "type": 4,
     },
     {
+      "title": S.current.iHaveAComplaint,
+      "type": 5,
+    },
+    {
       "title": S.current.other,
-      "type": 999,
+      "type": 6,
     },
   ];
 
-  List<File> imgList = [];
+  List<String> imgList = [];
 }

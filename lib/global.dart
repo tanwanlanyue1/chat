@@ -10,9 +10,12 @@ import 'package:guanjia/common/network/httpclient/http_client.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/ui/ad/ad_manager.dart';
 import 'package:guanjia/ui/welcome/welcome_storage.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 import 'common/app_localization.dart';
 import 'common/service/service.dart';
+import 'ui/chat/chat_manager.dart';
 
 /// 全局静态数据
 class Global {
@@ -78,11 +81,8 @@ class Global {
   ///用户同意隐私政策之后执行初始化，androidId，第三方sdk等敏感信息需要用户同意隐私政策才可以获取，否则应用市场审核不过
   static Future<void> _initAfterPrivacyPolicy() async {
 
-    //ZEGO 即时通信
-    await ZIMKit().init(
-      appID: AppConfig.zegoAppId,
-      appSign: AppConfig.zegoAppSign,
-    );
+    //初始化IM服务
+    await ChatManager().init();
 
     //初始化服务
     await SS.initServices();

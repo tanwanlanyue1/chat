@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/httpclient/api_response.dart';
@@ -9,9 +10,12 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/common/utils/result.dart';
+import 'package:guanjia/ui/chat/chat_manager.dart';
 import 'package:guanjia/ui/home/home_page.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/widgets.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import '../event/login_event.dart';
@@ -60,15 +64,17 @@ class LoginService extends GetxService {
   final _localStorage = LocalStorage('LoginService');
 
   LoginService() {
-    ever(_isLogin, (isLogin) {
+    ever(_isLogin, (isLogin) async{
       if (isLogin) {
-        ZIMKit().connectUser(
-          id: userId.toString(),
-          name: info?.nickname ?? '',
-          avatarUrl: info?.avatar ?? '',
+        //连接到IM服务
+        ChatManager().connect(
+          userId: userId.toString(),
+          nickname: info?.nickname ?? '',
+          avatar: info?.avatar ?? '',
         );
       } else {
-        ZIMKit().disconnectUser();
+        //断开IM连接
+        ChatManager().disconnect();
       }
     });
   }

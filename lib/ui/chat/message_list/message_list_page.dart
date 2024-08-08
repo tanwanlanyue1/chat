@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -8,8 +9,10 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_state.dart';
 import 'package:guanjia/ui/chat/message_list/message_sender_helper.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
+import 'package:guanjia/ui/chat/message_list/widgets/chat_feature_panel.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'message_list_controller.dart';
@@ -55,18 +58,19 @@ class MessageListPage extends GetView<MessageListController> {
       tag: tag,
       builder: (controller) {
         return Scaffold(
-          appBar: buildAppBar(),
+          appBar: buildAppBar(context),
           resizeToAvoidBottomInset: true,
           body: Stack(
             children: [
               Positioned.fill(
                 child: Column(
                   children: [
-                    Expanded(child: messageListView()),
+                    Expanded(child: buildMessageListView()),
                     ChatInputView(
                       onSend: controller.sendTextMessage,
                       onTapFeatureAction: controller.onTapFeatureAction,
                       featureActions: state.featureActions,
+                      featureItemBuilder: buildFeatureItem,
                     ),
                     // messageInput(),
                   ],
@@ -84,7 +88,33 @@ class MessageListPage extends GetView<MessageListController> {
     );
   }
 
-  Widget messageListView() {
+  Widget buildFeatureItem(BuildContext context, Widget defaultWidget, ChatFeatureAction action) {
+    if ([ChatFeatureAction.voiceCall, ChatFeatureAction.videoCall]
+        .contains(action)) {
+      return Stack(
+        alignment: Alignment.center,
+        children: [
+          defaultWidget,
+          ZegoSendCallInvitationButton(
+            iconVisible: false,
+            isVideoCall: action == ChatFeatureAction.videoCall,
+            invitees: [
+              ZegoUIKitUser(
+                id: conversationId,
+                name: state.conversationRx()?.name ?? '',
+              ),
+            ],
+            onPressed: (String code, String message, List<String> errorInvitees) {
+              onCallInvitationSent(context, code, message, errorInvitees);
+            },
+          ),
+        ],
+      );
+    }
+    return defaultWidget;
+  }
+
+  Widget buildMessageListView() {
     return MessageListView(
       key: ValueKey(
         'ZIMKitMessageListView:${Object.hash(
@@ -103,31 +133,26 @@ class MessageListPage extends GetView<MessageListController> {
   }
 
   ///AppBar
-  AppBar? buildAppBar() {
+  AppBar? buildAppBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      title: ValueListenableBuilder<ZIMKitConversation>(
-        valueListenable: ZIMKit().getConversation(
-          state.conversationId,
-          state.conversationType,
-        ),
-        builder: (context, conversation, child) {
-          return Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(conversation.name),
-              Padding(
-                padding: FEdgeInsets(left: 4.rpx),
-                child: AppImage.asset(
-                  "assets/images/mine/safety.png",
-                  width: 16.rpx,
-                  height: 16.rpx,
-                ),
+      title: Obx(() {
+        final conversation = state.conversationRx();
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(conversation?.name ?? ''),
+            Padding(
+              padding: FEdgeInsets(left: 4.rpx),
+              child: AppImage.asset(
+                "assets/images/mine/safety.png",
+                width: 16.rpx,
+                height: 16.rpx,
               ),
-            ],
-          );
-        },
-      ),
+            ),
+          ],
+        );
+      }),
       actions: [
         IconButton(
           onPressed: () => controller.showMoreBottomSheet(),
@@ -138,6 +163,22 @@ class MessageListPage extends GetView<MessageListController> {
           ),
         ),
       ],
+    );
+  }
+
+  void onCallInvitationSent(BuildContext context, String code, String message,
+      List<String> errorInvitees) {
+    late String log;
+    if (errorInvitees.isNotEmpty) {
+      log = "User doesn't exist or is offline: ${errorInvitees[0]}";
+      if (code.isNotEmpty) {
+        log += ', code: $code, message:$message';
+      }
+    } else if (code.isNotEmpty) {
+      log = 'code: $code, message:$message';
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(log)),
     );
   }
 
@@ -171,5 +212,4 @@ class MessageListPage extends GetView<MessageListController> {
       ],
     );
   }
-
 }

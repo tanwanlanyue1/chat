@@ -10,16 +10,25 @@ class MessageListController extends GetxController {
 
   final recordProcessor = ZIMKitRecordStatus();
   final scrollController = ScrollController();
+  ValueNotifier<ZIMKitConversation>? _conversationNotifier;
 
   @override
   void onInit() {
     super.onInit();
     recordProcessor.register();
+    _conversationNotifier = ZIMKit().getConversation(state.conversationId, state.conversationType);
+    _conversationNotifier?.addListener(_onConversationChanged);
+    _onConversationChanged();
+  }
+
+  void _onConversationChanged(){
+    state.conversationRx.value = _conversationNotifier?.value;
   }
 
   @override
   void onClose() {
-    super.dispose();
+    super.onClose();
+    _conversationNotifier?.removeListener(_onConversationChanged);
     recordProcessor.unregister();
     scrollController.dispose();
   }

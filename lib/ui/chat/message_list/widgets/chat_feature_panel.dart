@@ -5,15 +5,23 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
 
+typedef ChatFeatureItemBuilder = Widget Function(
+  BuildContext context,
+  Widget defaultWidgit,
+  ChatFeatureAction action,
+);
+
 ///聊天更多功能面板
 class ChatFeaturePanel extends StatelessWidget {
   final Function(ChatFeatureAction action)? onTap;
   final List<ChatFeatureAction> actions;
+  final ChatFeatureItemBuilder? itemBuilder;
 
   const ChatFeaturePanel({
     super.key,
     required this.onTap,
     required this.actions,
+    this.itemBuilder,
   });
 
   @override
@@ -23,18 +31,18 @@ class ChatFeaturePanel extends StatelessWidget {
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
-          childAspectRatio: MediaQuery.of(context).size.width/4/90,
+          childAspectRatio: MediaQuery.of(context).size.width / 4 / 90,
         ),
         itemCount: actions.length,
         itemBuilder: (_, index) {
-          return buildItem(actions[index]);
+          return buildItem(context, actions[index]);
         },
       ),
     );
   }
 
-  Widget buildItem(ChatFeatureAction item) {
-    return GestureDetector(
+  Widget buildItem(BuildContext context, ChatFeatureAction item) {
+    Widget child = GestureDetector(
       onTap: () => onTap?.call(item),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -58,6 +66,7 @@ class ChatFeaturePanel extends StatelessWidget {
         ],
       ),
     );
+    return itemBuilder?.call(context, child, item) ?? child;
   }
 }
 

@@ -16,12 +16,14 @@ class ChatInputView extends StatefulWidget {
   final ValueChanged<ChatFeatureAction>? onTapFeatureAction;
   ///更多功能面板
   final List<ChatFeatureAction> featureActions;
+  final ChatFeatureItemBuilder? featureItemBuilder;
 
   const ChatInputView({
     super.key,
     this.onSend,
     this.onTapFeatureAction,
     required this.featureActions,
+    this.featureItemBuilder,
   });
 
   @override
@@ -177,6 +179,7 @@ class _ChatInputViewState extends State<ChatInputView>
             widget.onTapFeatureAction?.call(item);
           },
           actions: widget.featureActions,
+          itemBuilder: widget.featureItemBuilder,
         ),
       );
     }, featurePanelVisibleRx);

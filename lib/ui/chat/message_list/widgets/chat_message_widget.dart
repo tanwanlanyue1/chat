@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -7,13 +6,9 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_red_packet_message.dart';
-
 import 'package:zego_zim/zego_zim.dart';
-
 import 'package:zego_zimkit/src/components/components.dart';
-import 'package:zego_zimkit/src/components/defines.dart';
 import 'package:zego_zimkit/src/components/messages/file_message.dart';
-import 'package:zego_zimkit/src/components/messages/image_message.dart';
 import 'package:zego_zimkit/src/services/services.dart';
 
 import 'chat_image_message.dart';
@@ -65,7 +60,7 @@ class ChatMessageWidget extends StatelessWidget {
             onLongPress: onLongPress, onPressed: onPressed, message: message);
         break;
       case ZIMMessageType.video:
-        defaultMessageContent = ZIMKitVideoMessage(
+        defaultMessageContent = ChatVideoMessage(
             onLongPress: onLongPress, onPressed: onPressed, message: message);
         break;
       case ZIMMessageType.file:

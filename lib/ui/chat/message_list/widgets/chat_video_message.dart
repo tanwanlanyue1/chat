@@ -3,14 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
-
-import 'package:zego_zimkit/src/components/messages/video_message_player.dart';
-import 'package:zego_zimkit/src/components/messages/video_message_preview.dart';
-import 'package:zego_zimkit/src/services/logger_service.dart';
 import 'package:zego_zimkit/src/services/services.dart';
 
 import 'chat_video_message_player.dart';

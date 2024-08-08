@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:io';
 
@@ -6,6 +5,8 @@ import 'package:flutter/material.dart';
 
 import 'package:chewie/chewie.dart';
 import 'package:flutter/services.dart';
+import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/paging/default_status_indicators/first_page_progress_indicator.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:video_player/video_player.dart';
 
@@ -21,81 +22,74 @@ class ChatVideoMessagePlayer extends StatefulWidget {
   final ZIMKitMessage message;
 
   @override
-  State<ChatVideoMessagePlayer> createState() =>
-      _ChatVideoMessagePlayerState();
+  State<ChatVideoMessagePlayer> createState() => _ChatVideoMessagePlayerState();
 }
 
 class _ChatVideoMessagePlayerState extends State<ChatVideoMessagePlayer> {
   late VideoPlayerController videoPlayerController;
-  late ChewieController chewieController;
-
-  late Future<void> initing;
+  ChewieController? chewieController;
 
   @override
   Future<void> dispose() async {
     videoPlayerController.dispose();
-    chewieController.dispose();
-
+    chewieController?.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
-    if (widget.message.videoContent!.fileLocalPath.isNotEmpty &&
-        (widget.message.videoContent!.fileLocalPath.endsWith('mp4') ||
-            widget.message.videoContent!.fileLocalPath.endsWith('mov')) &&
-        File(widget.message.videoContent!.fileLocalPath).existsSync()) {
+    super.initState();
+    initializePlayer();
+  }
+
+  Future<void> initializePlayer() async {
+    final videoContent = widget.message.videoContent!;
+    if (videoContent.fileLocalPath.isNotEmpty &&
+        (videoContent.fileLocalPath.endsWith('mp4') ||
+            videoContent.fileLocalPath.endsWith('mov')) &&
+        File(videoContent.fileLocalPath).existsSync()) {
       ZIMKitLogger.fine('ZIMKitVideoMessagePlayer: initPlayer from local '
-          'file: ${widget.message.videoContent!.fileLocalPath}');
+          'file: ${videoContent.fileLocalPath}');
       videoPlayerController = VideoPlayerController.file(
-        File(
-          /*Uri.encodeComponent*/
-          widget.message.videoContent!.fileLocalPath,
-        ),
+        File(videoContent.fileLocalPath),
       );
     } else {
       ZIMKitLogger.fine(
         'ZIMKitVideoMessagePlayer: initPlayer from network: '
-            '${widget.message.videoContent!.fileDownloadUrl}',
+        '${videoContent.fileDownloadUrl}',
       );
       videoPlayerController = VideoPlayerController.networkUrl(
-        Uri.parse(widget.message.videoContent!.fileDownloadUrl),
+        Uri.parse(videoContent.fileDownloadUrl),
       );
     }
+    await videoPlayerController.initialize();
+    createChewieController();
+    setState(() {});
+  }
 
+  void createChewieController() {
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
-      looping: true,
+      looping: false,
+      autoPlay: true,
+      autoInitialize: true,
       showControlsOnInitialize: false,
-      customControls: const ZIMKitCustomControls(),
-      placeholder: Center(
-        child: ZIMKitVideoMessagePreview(
-          widget.message,
-          key: ValueKey(widget.message.info.messageID),
-        ),
-      ),
-    )
-      ..setVolume(1.0)
-      ..play();
-
-    initing = videoPlayerController.initialize();
-
-    Future.delayed(const Duration(seconds: 4)).then(
-          (value) {
-        if (!chewieController.videoPlayerController.value.isInitialized) {
-          ZIMKitLogger.severe(
-              'videoPlayerController is not initialized, ${widget.message.videoContent!.fileLocalPath}');
-          ZIMKitLogger.shout(context,
-              "Seems Can't play this video, ${widget.message.videoContent!.fileLocalPath}");
-        }
-      },
+      allowedScreenSleep: false,
+      showOptions: false,
+      allowFullScreen: false,
+      customControls: const MaterialControls(),
+      // materialProgressColors: ChewieProgressColors(
+      //   backgroundColor: Colors.white,
+      //   bufferedColor: AppColor.primary.withOpacity(0.1),
+      //   playedColor: AppColor.primary,
+      // ),
+      placeholder: const FirstPageProgressIndicator(),
     );
-
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final chewieController = this.chewieController;
     return Scaffold(
       appBar: AppBar(
         leading: AppBackButton.light(),
@@ -105,26 +99,13 @@ class _ChatVideoMessagePlayerState extends State<ChatVideoMessagePlayer> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.black,
-      body: FutureBuilder(
-        future: initing,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            ZIMKitLogger.fine(
-                'ZIMKitVideoMessagePlayer: videoPlayerController initialize done');
-            return Chewie(
+      body: (chewieController != null &&
+              chewieController.videoPlayerController.value.isInitialized)
+          ? Chewie(
               key: ValueKey(widget.message.info.messageID),
               controller: chewieController,
-            );
-          } else {
-            ZIMKitLogger.fine(
-                'ZIMKitVideoMessagePlayer: videoPlayerController initializing...');
-            return Chewie(
-              key: ValueKey(snapshot.hashCode),
-              controller: chewieController,
-            );
-          }
-        },
-      ),
+            )
+          : const FirstPageProgressIndicator(),
     );
   }
 }

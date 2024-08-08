@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/order_list/order_list_state.dart';
@@ -46,44 +46,7 @@ class _OrderListPageState extends State<OrderListPage>
       onRefresh: controller.pagingController.onRefresh,
       child: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            automaticallyImplyLeading: false,
-            pinned: true,
-            snap: false,
-            floating: false,
-            expandedHeight: 64.rpx,
-            toolbarHeight: 64.rpx,
-            flexibleSpace: FlexibleSpaceBar(
-              collapseMode: CollapseMode.pin,
-              expandedTitleScale: 1.0,
-              titlePadding: EdgeInsets.zero,
-              title: Container(
-                margin: EdgeInsets.only(top: 1.rpx),
-                // height: 64.rpx,
-                color: Colors.white,
-                child: Row(children: [
-                  Expanded(
-                    child: OrderOperationNumberWidget(
-                      number: 1,
-                      title: "等待超时",
-                    ),
-                  ),
-                  Expanded(
-                    child: OrderOperationNumberWidget(
-                      number: 1,
-                      title: "对方取消",
-                    ),
-                  ),
-                  Expanded(
-                    child: OrderOperationNumberWidget(
-                      number: 1,
-                      title: "主动取消",
-                    ),
-                  ),
-                ]),
-              ),
-            ),
-          ),
+          _buildTop(),
           SliverPadding(
             padding: EdgeInsets.symmetric(vertical: 8.rpx),
             sliver: PagedSliverList.separated(
@@ -100,6 +63,83 @@ class _OrderListPageState extends State<OrderListPage>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTop() {
+    final userType = SS.login.userType;
+
+    Widget? content;
+
+    if (widget.type == OrderListType.cancel && !userType.isUser) {
+      content = const Row(
+        children: [
+          Expanded(
+            child: OrderOperationNumberWidget(
+              number: 1,
+              title: "等待超时",
+            ),
+          ),
+          Expanded(
+            child: OrderOperationNumberWidget(
+              number: 1,
+              title: "对方取消",
+            ),
+          ),
+          Expanded(
+            child: OrderOperationNumberWidget(
+              number: 1,
+              title: "主动取消",
+            ),
+          ),
+        ],
+      );
+    } else if (widget.type == OrderListType.finish && userType.isBeauty) {
+      content = const Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Expanded(flex: 1, child: SizedBox()),
+          Expanded(
+            flex: 2,
+            child: OrderOperationNumberWidget(
+              number: 1,
+              title: "待评价",
+              numberColor: AppColor.textGreen,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: OrderOperationNumberWidget(
+              number: 1,
+              title: "已完成",
+              numberColor: AppColor.textGreen,
+            ),
+          ),
+          Expanded(flex: 1, child: SizedBox()),
+        ],
+      );
+    }
+
+    if (content == null) return const SliverToBoxAdapter();
+
+    return SliverAppBar(
+      automaticallyImplyLeading: false,
+      pinned: true,
+      snap: false,
+      floating: false,
+      expandedHeight: 64.rpx,
+      toolbarHeight: 64.rpx,
+      flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.pin,
+        expandedTitleScale: 1.0,
+        titlePadding: EdgeInsets.zero,
+        title: Container(
+          margin: EdgeInsets.only(top: 1.rpx),
+          // height: 64.rpx,
+          color: Colors.white,
+          child: content,
+        ),
       ),
     );
   }
@@ -135,16 +175,16 @@ class _OrderListPageState extends State<OrderListPage>
                     SizedBox(width: 8.rpx),
                   ],
                 ),
-                Flexible(
-                  child: Text(
-                    "剩余等待 29:59",
-                    style: AppTextStyle.st
-                        .size(12.rpx)
-                        .textColor(AppColor.primary),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
+                // Flexible(
+                //   child: Text(
+                //     "剩余等待 29:59",
+                //     style: AppTextStyle.st
+                //         .size(12.rpx)
+                //         .textColor(AppColor.primary),
+                //     maxLines: 1,
+                //     overflow: TextOverflow.ellipsis,
+                //   ),
+                // ),
               ],
             ),
             Divider(

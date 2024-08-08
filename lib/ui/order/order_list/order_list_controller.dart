@@ -23,7 +23,6 @@ class OrderListController extends GetxController {
 
   @override
   void onInit() {
-    print(type);
     pagingController.addPageRequestListener(_fetchPage);
     super.onInit();
   }
@@ -50,7 +49,9 @@ class OrderListController extends GetxController {
 
   void onTapFinish() {}
 
-  void onTapEvaluation() {}
+  void onTapEvaluation() {
+    Get.toNamed(AppRoutes.orderEvaluationPage);
+  }
 
   void _fetchPage(int page) async {
     await Future.delayed(500.milliseconds);

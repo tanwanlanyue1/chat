@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/order/order_list/order_list_page.dart';
 
@@ -19,7 +20,7 @@ class OrderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("订单"),
+        title: Text(SS.login.userType.isAgent ? "我的订单" : "我的订单"),
         elevation: 4,
         shadowColor: Colors.black.withOpacity(0.2),
         bottom: TabBar(
@@ -29,7 +30,7 @@ class OrderPage extends StatelessWidget {
           unselectedLabelColor: AppColor.black92,
           tabs: List.generate(
             state.titleList.length,
-            (index) => Tab(text: state.titleList[index]),
+            (index) => Tab(text: state.titleList[index])
           ),
         ),
       ),

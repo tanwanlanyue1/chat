@@ -1,12 +1,17 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../common/network/api/api.dart';
 import 'friend_date_controller.dart';
 import 'widget/draft_dialog.dart';
 
@@ -19,12 +24,31 @@ class FriendDatePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Padding(
       padding: EdgeInsets.all(16.rpx),
-      children: [
-        dateType(),
-        ...List.generate(5, (index) => dateCard(index)),
-      ],
+      child: SmartRefresher(
+        controller: controller.pagingController.refreshController,
+        onRefresh: controller.pagingController.onRefresh,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+                child: dateType()
+            ),
+            SliverToBoxAdapter(
+                child: classifyTab()
+            ),
+            PagedSliverList(
+              pagingController: controller.pagingController,
+              builderDelegate: DefaultPagedChildBuilderDelegate<AppointmentModel>(
+                pagingController: controller.pagingController,
+                itemBuilder: (_, item, index) {
+                  return dateCard(item);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -33,7 +57,7 @@ class FriendDatePage extends StatelessWidget {
     return Obx(() {
       int current = state.typeIndex.value;
       return Padding(
-        padding: EdgeInsets.only(bottom: 16.rpx),
+        padding: EdgeInsets.only(bottom: 12.rpx),
         child: GridView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
@@ -49,14 +73,18 @@ class FriendDatePage extends StatelessWidget {
             var item = state.typeList[index];
             return Visibility(
               visible: index != state.typeList.length-1,
-              replacement: CommonGradientButton(
-                text: "发布邀约",
-                textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
-                onTap: controller.onTapInvitation,
+              replacement: Visibility(
+                // visible: state.userInfo?.type.index == 0,
+                child: CommonGradientButton(
+                  text: state.typeList[index]['title'],
+                  textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
+                  onTap: controller.onTapInvitation,
+                ),
               ),
               child: GestureDetector(
                 onTap: (){
                   state.typeIndex.value = index;
+                  controller.pagingController.onRefresh();
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -80,8 +108,43 @@ class FriendDatePage extends StatelessWidget {
     });
   }
 
+  //分类
+  Widget classifyTab() {
+    return Obx(() =>
+        Row(
+      children: List.generate(state.sortList.length, (index) =>
+          GestureDetector(
+            onTap: (){
+              state.sortIndex.value = index;
+              controller.fetchPage(1);
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.only(right: 16.rpx),
+                  child: Text("${state.sortList[index]['name']}",
+                    style: TextStyle(color: index == state.sortIndex.value
+                        ? AppColor.primary
+                        : AppColor.gray30, fontSize: 14.rpx,
+                        fontWeight: index == state.sortIndex.value ? FontWeight.bold : FontWeight.normal
+                    ),),
+                ),
+                Container(
+                  height: 2.rpx,
+                  margin: EdgeInsets.only(right: 16.rpx,top: 4.rpx,bottom: 8.rpx),
+                  color: index == state.sortIndex.value ? AppColor.primary : Colors.transparent,
+                  child: Text("${state.sortList[index]['name']}",style: TextStyle(fontSize: 10.rpx),),
+                )
+              ],
+            ),
+          ),),
+    ));
+  }
+
   //约会卡片
-  Widget dateCard(int index){
+  Widget dateCard(AppointmentModel item){
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -100,7 +163,7 @@ class FriendDatePage extends StatelessWidget {
                 },
                 child: Container(
                   margin: EdgeInsets.only(right: 8.rpx),
-                  child: AppImage.asset("assets/images/mine/head_photo.png",width: 40.rpx,height: 40.rpx,),
+                  child: AppImage.network(item.userInfo?.avatar ?? '',width: 40.rpx,height: 40.rpx,),
                 ),
               ),
               SizedBox(
@@ -109,15 +172,16 @@ class FriendDatePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Alma Washington",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+                    Text(item.userInfo?.nickname ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
                     Row(
                       children: [
                         Visibility(
+                          visible: item.userInfo?.gender.index == 2,
                           replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
                           child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
                         ),
                         SizedBox(width: 8.rpx),
-                        Text("35",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                        Text('${item.userInfo?.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
                         Container(
                           width: 4.rpx,
                           height: 4.rpx,
@@ -135,7 +199,7 @@ class FriendDatePage extends StatelessWidget {
               ),
               const Spacer(),
               GestureDetector(
-                onTap: controller.selectMore,
+                onTap: ()=> controller.selectMore(item.uid,item.id!),
                 child: Container(
                   padding: EdgeInsets.only(bottom: 16.rpx),
                   child: AppImage.asset("assets/images/discover/more.png",width: 24.rpx,height: 24.rpx,),
@@ -154,6 +218,7 @@ class FriendDatePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       width: 40.rpx,
@@ -164,18 +229,19 @@ class FriendDatePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.rpx),
                       ),
                       alignment: Alignment.center,
-                      child: Text(index %2 == 0 ?
-                      "自驾游":"边吃\n边玩",style: AppTextStyle.fs12b.copyWith(color: Colors.white),),
+                      child: Text(
+                      controller.typeTitle(item.type ?? 1),style: AppTextStyle.fs12b.copyWith(color: Colors.white),),
                     ),
-                    SizedBox(
-                      height: 40.rpx,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("风情小吃街玩游戏找陪，活泼能聊...",style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),),
-                          Text("#仅限同城",style: AppTextStyle.fs12m.copyWith(color: AppColor.primary),),
-                        ],
+                    Expanded(
+                      child: SizedBox(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(item.content ?? '',style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),),
+                            Text("#${item.tag}",style: AppTextStyle.fs12m.copyWith(color: AppColor.primary),),
+                          ],
+                        ),
                       ),
                     )
                   ],
@@ -187,27 +253,29 @@ class FriendDatePage extends StatelessWidget {
                       AppImage.asset("assets/images/discover/location.png",width: 16.rpx,height: 16.rpx,),
                       Container(
                         margin: EdgeInsets.only(left: 2.rpx),
-                        child: Text("创意园2.3km",style: AppTextStyle.fs10m.copyWith(color: AppColor.gray5),),
+                        child: Text("${item.location} 2.3km",style: AppTextStyle.fs10m.copyWith(color: AppColor.gray5),),
                       ),
                       const Spacer(),
-                      Text("7/22 18:00-7/22 23:00",style: AppTextStyle.fs10m.copyWith(color: AppColor.gray9),),
+                      Text('${DateUtil.formatDateStr(item.startTime ?? '', format: 'MM/dd HH:00')}-${DateUtil.formatDateStr(item.endTime ?? '', format: 'MM/dd HH:00')}',
+                          style: AppTextStyle.fs10m.copyWith(color: AppColor.gray9)),
                     ],
                   ),
                 ),
               ],
             ),
-          ),
-          Container(
-            width: 68.rpx,
-            height: 30.rpx,
-            margin: EdgeInsets.only(top: 8.rpx),
-            child: CommonGradientButton(
-              text: "参与",
-              borderRadius: BorderRadius.circular(32.rpx),
-              textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
-              onTap: (){
-                DraftDialog.show();
-              },
+          ),//userInfo
+          Visibility(
+            visible: state.userInfo?.uid != item.userInfo?.uid,
+            child: Container(
+              width: 68.rpx,
+              height: 30.rpx,
+              margin: EdgeInsets.only(top: 8.rpx),
+              child: CommonGradientButton(
+                text: "参与",
+                borderRadius: BorderRadius.circular(32.rpx),
+                textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
+                onTap: ()=> controller.onTapParticipation(item),
+              ),
             ),
           )
         ],

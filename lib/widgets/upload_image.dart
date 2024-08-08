@@ -7,6 +7,8 @@ import 'package:guanjia/widgets/photo_and_camera_bottom_sheet.dart';
 import 'package:guanjia/widgets/photo_view_gallery_page.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 
+import '../common/network/api/user_api.dart';
+
 ///上传图片
 ///callback:回调
 ///closeIcon:是否开启修改
@@ -20,9 +22,9 @@ class UploadImage extends StatefulWidget {
     this.limit,
   });
 
-  final void Function(List<File>)? callback;
+  final void Function(List<String>)? callback;
   final bool closeIcon;
-  final List<File> imgList;
+  final List<String> imgList;
   final String? url;
   final int? limit; // 选择图片最大数量
 
@@ -31,13 +33,29 @@ class UploadImage extends StatefulWidget {
 }
 
 class _UploadImageState extends State<UploadImage> {
-  List<File> _imagesList = []; // 图片数组
+  List<String> _imagesList = []; // 图片数组
   final ImagePicker picker = ImagePicker();
 
   @override
   void initState() {
     _imagesList = widget.imgList;
     super.initState();
+  }
+
+  //上传文件
+  Future<void> uploadImage(List<File> images) async {
+
+    for (var element in images) {
+      final res = await UserApi.upload(filePath: element.path);
+
+      final data = res.data;
+
+      if (res.isSuccess && data != null) {
+        _imagesList.add(data);
+        setState(() {});
+      }
+    }
+    widget.callback?.call(_imagesList);
   }
 
   @override
@@ -63,16 +81,14 @@ class _UploadImageState extends State<UploadImage> {
               for (var item in image) {
                 res.add(File(item.path));
               }
-              _imagesList.addAll(res);
-              widget.callback?.call(_imagesList);
+              uploadImage(res);
             }
             break;
           case 1:
             final XFile? photo =
                 await picker.pickImage(source: ImageSource.camera);
             if (photo != null) {
-              _imagesList.add(File(photo.path));
-              widget.callback?.call(_imagesList);
+              uploadImage([File(photo.path)]);
             }
             break;
 
@@ -124,7 +140,7 @@ class _UploadImageState extends State<UploadImage> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.rpx),
-                  child: AppImage.file(
+                  child: AppImage.network(
                     _imagesList[index],
                     width: 80.rpx,
                     height: 80.rpx,

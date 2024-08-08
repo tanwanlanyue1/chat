@@ -1,48 +1,58 @@
 import 'package:get/get.dart';
+import 'package:guanjia/generated/l10n.dart';
+
+import '../../../../common/network/api/api.dart';
 
 class ReleaseInvitationState {
 
   //约会类型下标
   final typeIndex = 0.obs;
   //标签
-  final labelList = [0,4].obs;
+  final labelList = [].obs;
 
   final serve = false.obs;
+
+  //时间选择
+  int time = 0;
+  int hour = 0;
+  int startTime = 0;
+  int endTime = 0;
+  int startHour = 0;
+  int endHour = 0;
+  List<String> timeList = [];
 
   //约会类型
   List<Map<String, dynamic>> typeList = [
     {
-      "title": "边玩边吃",
-      "type": 0,
-    },
-    {
-      "title": "同城周边",
+      "title": S.current.playEat,
       "type": 1,
     },
     {
-      "title": "双飞国外",
+      "title": S.current.cityPerimeter,
       "type": 2,
     },
     {
-      "title": "海上游轮",
+      "title": S.current.flyAbroad,
       "type": 3,
     },
     {
-      "title": "自驾游",
+      "title": S.current.seaCruise,
       "type": 4,
     },
     {
-      "title": "商务陪伴",
+      "title": S.current.selfDrivingTour,
       "type": 5,
     },
     {
-      "title": "饭局宴席",
-      "type": 5,
+      "title": S.current.businessCompanionship,
+      "type": 6,
+    },
+    {
+      "title": S.current.dinnerBanquet,
+      "type": 7,
     },
   ];
+
   //标签
-  List label = [
-    "限女士1人", "限男士1人", "1人不限男女", "仅限同城",
-    "夜不归", "放开玩", "我全包", "各自AA", "报销路费",
-  ];
+  List<LabelModel> label = [];
 }

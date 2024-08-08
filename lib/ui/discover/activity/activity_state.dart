@@ -1,5 +1,6 @@
+import '../../../common/network/api/api.dart';
+
 class ActivityState {
-  ActivityState() {
-    ///Initialize variables
-  }
+  //活动列表
+  List<AdvertisingStartupModel> adList = [];
 }

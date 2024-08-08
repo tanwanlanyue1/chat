@@ -16,21 +16,6 @@ class MineFeedbackController extends GetxController {
   TextEditingController contentController = TextEditingController(); //问题控制器
   TextEditingController contactController = TextEditingController(); //联系方式控制器
 
-  Future<List<String>> uploadImage() async {
-    List<String> list = [];
-
-    for (var element in state.imgList) {
-      final res = await UserApi.upload(filePath: element.path);
-
-      final data = res.data;
-
-      if (res.isSuccess && data != null) {
-        list.add(data);
-      }
-    }
-
-    return list;
-  }
 
   void submit() async {
     final content = contentController.text;
@@ -39,11 +24,10 @@ class MineFeedbackController extends GetxController {
       return;
     }
 
-    final type = state.typeList.safeElementAt(state.typeIndex)?["type"] ?? 999;
+    final type = state.typeList.safeElementAt(state.typeIndex)?["type"] ?? 6;
 
     Loading.show();
-    final imageList = await uploadImage();
-    final images = jsonEncode(imageList);
+    final images = jsonEncode(state.imgList);
     final res = await UserApi.feedback(
       type: type,
       content: content,

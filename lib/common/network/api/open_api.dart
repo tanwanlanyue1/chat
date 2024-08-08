@@ -114,7 +114,7 @@ class OpenApi {
 
   /// 轮播
   /// type: 类型（1：启动页，2：轮播，3：弹窗，4：广播）
-  /// 轮播：1我的 2广场弹窗：1占卜主页 2取名主页 3星座主页 4运势主页 5解梦 6心愿阁 7广场 8禅房主页 9思亲河主页 10供灯祈福主页 11请符法坛主页广播：1占卜 2取名 3星座 4运势 5解梦
+  /// 轮播：1我的 2广场弹窗：1占卜主页
   static Future<ApiResponse<List<AdvertisingStartupModel>>> startupAdvertList({
     int type = 1,
     int size = 10,
@@ -163,7 +163,7 @@ class OpenApi {
   }
 
   /// 查询风格列表
-  /// - type 风格类型 0通用 1男 2女 示例值(0)
+  /// - type 风格类型 0通用 1男 2女 示例值(0) 3:征友约会
   /// - page 页码（默认1）,示例值(1)
   /// - size 每页数量（默认10）,示例值(999)
   static Future<ApiResponse<List<LabelModel>>> getStyleList({
@@ -185,5 +185,16 @@ class OpenApi {
         return [];
       },
     );
+  }
+
+  /// 获取所有活动
+  static Future<ApiResponse<List<AdvertisingStartupModel>>> getAdList() {
+    return HttpClient.get('/openapi/getAdList',
+      dataConverter: (data) {
+      if (data is List) {
+        return data.map((e) => AdvertisingStartupModel.fromJson(e)).toList();
+      }
+      return [];
+    });
   }
 }

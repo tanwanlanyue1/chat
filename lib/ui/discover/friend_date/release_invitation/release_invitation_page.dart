@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -32,6 +33,7 @@ class ReleaseInvitationPage extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.all(16.rpx),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: ListView(
@@ -43,29 +45,13 @@ class ReleaseInvitationPage extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 8.rpx),
+            Text("最多发布一个!",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
+            SizedBox(height: 6.rpx,),
+            CommonGradientButton(
               height: 50.rpx,
-              child: CommonGradientButton(
-                textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
-                widget: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        margin: EdgeInsets.only(right: 36.rpx),
-                        child: Text("立即发布",style: AppTextStyle.fs16b.copyWith(color: Colors.white),),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 16.rpx),
-                      child: Text("最多发布（0/1）",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
-                    ),
-                  ],
-                ),
-                onTap: controller.onTapRelease,
-              ),
-            )
+              text: '立即发布',
+              onTap: controller.onTapRelease,
+            ),
           ],
         ),
       ),
@@ -157,16 +143,19 @@ class ReleaseInvitationPage extends StatelessWidget {
             TimeDialog.show();
           },
           trailing: Text(
-            "今天07/22 7:20",
+            DateUtil.formatDateStr('${controller.timeDate(time: state.startTime,hour: state.startHour)}', format: 'yyyy MM/dd HH:00'),
             style: TextStyle(fontSize: 14.rpx, color: AppColor.gray5,fontWeight: FontWeight.bold),
           ),
         ),
         DiscoverItem(
           title: "结束时间",
           trailing: Text(
-            "(必选)",
-            style: TextStyle(fontSize: 14.rpx, color: AppColor.gray9,fontWeight: FontWeight.bold),
+            DateUtil.formatDateStr('${controller.timeDate(time: state.endTime,hour: state.endHour)}', format: 'yyyy MM/dd HH:00'),
+            style: TextStyle(fontSize: 14.rpx, color: AppColor.gray5,fontWeight: FontWeight.bold),
           ),
+          callBack: (){
+            TimeDialog.show(star: false);
+          },
         ),
       ],
     );
@@ -199,7 +188,7 @@ class ReleaseInvitationPage extends StatelessWidget {
                   ),
                   height: 38.rpx,
                   padding: EdgeInsets.symmetric(horizontal: 12.rpx).copyWith(top: 6.rpx),
-                  child: Text("$item",style: AppTextStyle.fs14b.copyWith(color: state.labelList.contains(i) ? Colors.white : AppColor.primary),),
+                  child: Text(item.tag,style: AppTextStyle.fs14b.copyWith(color: state.labelList.contains(i) ? Colors.white : AppColor.primary),),
                 ),
               );
             }),
@@ -242,7 +231,7 @@ class ReleaseInvitationPage extends StatelessWidget {
                           inputFormatters: <TextInputFormatter>[
                             FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
                           ],
-                          inputController: controller.contentController,
+                          inputController: controller.serviceController,
                         ),
                       ),
                     ],

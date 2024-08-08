@@ -8,6 +8,7 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
 import 'package:guanjia/ui/chat/custom/zim_kit_core_extension.dart';
+import 'package:guanjia/ui/order/widgets/order_create_dialog.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_size_getter/file_input.dart';
 import 'package:image_size_getter/image_size_getter.dart';
@@ -18,7 +19,7 @@ import 'widgets/chat_feature_panel.dart';
 
 
 ///消息发送功能
-extension MessageSenderUtil on MessageListController{
+extension MessageSenderHelper on MessageListController{
   ///发送文本消息
   Future<void> sendTextMessage(String text) async {
     await ZIMKit().sendTextMessage(
@@ -147,6 +148,7 @@ extension MessageSenderUtil on MessageListController{
       case ChatFeatureAction.videoCall:
         break;
       case ChatFeatureAction.date:
+        OrderCreateDialog.show();
         break;
       case ChatFeatureAction.transfer:
         break;

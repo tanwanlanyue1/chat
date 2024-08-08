@@ -11,8 +11,8 @@ import 'package:guanjia/widgets/widgets.dart';
 class OrderCreateDialog extends StatelessWidget {
   const OrderCreateDialog._({super.key});
 
-  static Future<bool?> show() {
-    return Get.dialog(
+  static void show() {
+    Get.dialog(
       const OrderCreateDialog._(),
     );
   }

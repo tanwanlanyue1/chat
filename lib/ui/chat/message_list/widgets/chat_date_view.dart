@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
-import 'package:guanjia/ui/order/widgets/order_accept_dialog.dart';
-import 'package:guanjia/ui/order/widgets/order_create_dialog.dart';
-import 'package:guanjia/ui/order/widgets/order_security_deposit_beauty_dialog.dart';
 import 'package:guanjia/ui/order/widgets/order_security_deposit_user_dialog.dart';
 import 'package:guanjia/widgets/widgets.dart';
 

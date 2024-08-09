@@ -2,31 +2,23 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:guanjia/common/extension/functions_extension.dart';
+import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/string_extension.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/beautiful_status_tips.dart';
 import 'package:guanjia/ui/mine/widgets/mine_list_tile.dart';
-import 'package:guanjia/ui/mine/widgets/role_visibility.dart';
+import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:guanjia/common/app_color.dart';
-import 'package:guanjia/common/app_text_style.dart';
-import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/common/utils/screen_adapt.dart';
-import 'package:guanjia/common/utils/un_listview.dart';
-import 'package:guanjia/widgets/advertising_swiper.dart';
-import 'package:guanjia/widgets/app_image.dart';
-import 'package:guanjia/widgets/system_ui.dart';
 
 import '../../common/network/api/model/user/talk_user.dart';
 import 'mine_controller.dart';
-import 'mine_state.dart';
-import 'widgets/activation_progression.dart';
 import 'widgets/beautiful_status_switch.dart';
-import 'widgets/security_deposit_dialog.dart';
 
 ///我的
 class MinePage extends StatefulWidget {

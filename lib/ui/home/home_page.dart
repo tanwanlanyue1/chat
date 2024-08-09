@@ -56,8 +56,8 @@ class HomePage extends StatelessWidget {
               isLabelVisible: index == 0 && chatUnread > 0,
               child: AppImage.asset(
                 item.icon,
-                width: 32.rpx,
-                height: 32.rpx,
+                width: 28,
+                height: 28,
                 color: currentPage == index ? AppColor.blue6 : null,
               ),
             ),

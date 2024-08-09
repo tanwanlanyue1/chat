@@ -64,8 +64,14 @@ class ChatManager {
         //自定义文本内容
         innerText: ZegoCallInvitationInnerText(),
         requireConfig: _requireCallConfig,
-        config: ZegoCallInvitationConfig(),
+        config: ZegoCallInvitationConfig(
+          //发起者离开，通话结束
+          endCallWhenInitiatorLeave: true,
+        ),
         uiConfig: _callInvitationUIConfig(),
+        invitationEvents: ZegoUIKitPrebuiltCallInvitationEvents(
+
+        ),
       );
     } else {
       AppLogger.w('连接IM失败，code=$ret');

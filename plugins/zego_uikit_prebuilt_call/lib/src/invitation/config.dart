@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:flutter/services.dart';
 import 'package:zego_uikit/zego_uikit.dart';
 
 // Project imports:
@@ -67,6 +68,8 @@ class ZegoCallInvitationConfig {
 class ZegoCallInvitationUIConfig {
   ZegoCallInvitationUIConfig({
     this.prebuiltWithSafeArea = true,
+    this.invitationWithSafeArea = true,
+    this.systemUiOverlayStyle,
     ZegoCallInvitationInviterUIConfig? inviter,
     ZegoCallInvitationInviteeUIConfig? invitee,
   })  : inviter = inviter ?? ZegoCallInvitationInviterUIConfig(),
@@ -74,6 +77,12 @@ class ZegoCallInvitationUIConfig {
 
   /// does [ZegoUIKitPrebuiltCall] display with SafeArea or not
   bool prebuiltWithSafeArea;
+
+  /// 邀请中界面是否使用safeArea
+  bool invitationWithSafeArea;
+
+  ///系统UI样式(状态栏，导航栏)
+  SystemUiOverlayStyle? systemUiOverlayStyle;
 
   ZegoCallInvitationInviterUIConfig inviter;
   ZegoCallInvitationInviteeUIConfig invitee;

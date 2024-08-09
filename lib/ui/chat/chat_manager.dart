@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
@@ -72,13 +74,12 @@ class ChatManager {
 
   ///音视频通话呼叫过程中的UI配置
   ZegoCallInvitationUIConfig _callInvitationUIConfig() {
-
     //背景
     Widget? backgroundBuilder(
-        BuildContext context,
-        Size size,
-        ZegoCallingBuilderInfo info,
-        ){
+      BuildContext context,
+      Size size,
+      ZegoCallingBuilderInfo info,
+    ) {
       return AppImage.asset(
         width: size.width,
         height: size.height,
@@ -88,6 +89,9 @@ class ChatManager {
     }
 
     return ZegoCallInvitationUIConfig(
+      prebuiltWithSafeArea: false,
+      invitationWithSafeArea: false,
+      systemUiOverlayStyle: SystemUiOverlayStyle.light,
       //邀请人
       inviter: ZegoCallInvitationInviterUIConfig(
         backgroundBuilder: backgroundBuilder,
@@ -171,6 +175,10 @@ class ChatManager {
     //画中画布局
     config.layout = ZegoLayoutPictureInPictureConfig(
       isSmallViewShowOnlyVideo: true,
+      margin: EdgeInsets.only(
+        top: Get.mediaQuery.padding.top + 44.rpx,
+        right: 16.rpx,
+      ),
     );
 
     config.background = AppImage.asset(

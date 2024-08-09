@@ -40,9 +40,6 @@ class AuthenticationInterceptor extends Interceptor{
         final apiResponse = ApiResponse.fromJson(data);
         if([401, 4].contains(apiResponse.code)){
           onUnauthorized?.call();
-        }else if(apiResponse.code == 1103){
-          Loading.dismiss();
-          return;
         }
       }
     }

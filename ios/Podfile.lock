@@ -44,6 +44,8 @@ PODS:
   - flutter_logs (0.0.1):
     - Flutter
     - ZIPFoundation
+  - flutter_video_info (1.1.0):
+    - Flutter
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -114,6 +116,7 @@ DEPENDENCIES:
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
   - flutter_logs (from `.symlinks/plugins/flutter_logs/ios`)
+  - flutter_video_info (from `.symlinks/plugins/flutter_video_info/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - image_editor_common (from `.symlinks/plugins/image_editor_common/ios`)
   - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
@@ -162,6 +165,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_logs:
     :path: ".symlinks/plugins/flutter_logs/ios"
+  flutter_video_info:
+    :path: ".symlinks/plugins/flutter_video_info/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   image_editor_common:
@@ -216,6 +221,7 @@ SPEC CHECKSUMS:
   file_picker: 09aa5ec1ab24135ccd7a1621c46c84134bfd6655
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_logs: 5d0dca26963e0f30b11a995a764744ef77d5d428
+  flutter_video_info: a932e1b0da369bba95c3a14b7f61d5f8b0d03280
   fluttertoast: 9f2f8e81bb5ce18facb9748d7855bf5a756fe3db
   image_editor_common: d6f6644ae4a6de80481e89fe6d0a8c49e30b4b43
   image_gallery_saver: cb43cc43141711190510e92c460eb1655cd343cb

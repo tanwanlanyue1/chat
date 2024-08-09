@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/widgets/label_widget.dart';
 
@@ -34,5 +35,16 @@ class OrderEvaluationController extends GetxController {
     state.starIndex.value = index;
   }
 
-  void onTapSubmit() {}
+  void onTapSubmit() async {
+    final args = Get.arguments;
+    if (args is! int) {
+      return;
+    }
+
+    final res = await OrderApi.evaluate(orderId: args, score: 5);
+    if (res.isSuccess) {
+      res.showErrorMessage();
+      return;
+    }
+  }
 }

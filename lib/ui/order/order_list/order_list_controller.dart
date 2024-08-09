@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
+import 'package:guanjia/widgets/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'order_list_state.dart';
@@ -33,52 +33,124 @@ class OrderListController extends GetxController {
     super.onClose();
   }
 
-  void onTapItem() {
+  void onTapToOrderDetail(int orderId) {
     Get.toNamed(AppRoutes.orderDetailPage);
   }
 
-  void onTapCancel() {}
+  Future<bool> onTapOrderAdd(int uid) async {
+    Loading.show();
+    final res = await OrderApi.add(uid: uid);
+    Loading.dismiss();
+    if (!res.isSuccess) {
+      res.showErrorMessage();
+      return false;
+    }
+    return true;
+  }
 
-  void onTapPayment() {}
+  Future<bool> onTapOrderCancel(int orderId) async {
+    Loading.show();
+    final res = await OrderApi.cancel(orderId: orderId);
+    Loading.dismiss();
+    if (!res.isSuccess) {
+      res.showErrorMessage();
+      return false;
+    }
+    return true;
+  }
 
-  void onTapConnect() {}
+  Future<bool> onTapOrderPayment(int orderId) async {
+    // TODO: 弹出密码框
+    Loading.show();
+    final res = await OrderApi.pay(orderId: orderId, password: "123456");
+    Loading.dismiss();
+    if (!res.isSuccess) {
+      res.showErrorMessage();
+      return false;
+    }
+    return true;
+  }
 
-  void onTapConfirm() {}
+  void onTapOrderConnect() {}
 
-  void onTapAssign() {}
+  Future<bool> onTapOrderAcceptOrReject(bool isAccept, int orderId) async {
+    Loading.show();
+    final res =
+        await OrderApi.acceptOrReject(type: isAccept ? 1 : 2, orderId: orderId);
+    Loading.dismiss();
+    if (!res.isSuccess) {
+      res.showErrorMessage();
+      return false;
+    }
+    return true;
+  }
 
-  void onTapFinish() {}
+  Future<bool> onTapOrderAssign(int orderId) async {
+    // TODO: 选择指派佳丽
+    Loading.show();
+    final res = await OrderApi.assign(orderId: orderId, receiveId: 1);
+    Loading.dismiss();
+    if (!res.isSuccess) {
+      res.showErrorMessage();
+      return false;
+    }
+    return true;
+  }
 
-  void onTapEvaluation() {
-    Get.toNamed(AppRoutes.orderEvaluationPage);
+  Future<bool> onTapOrderFinish(int orderId) async {
+    Loading.show();
+    final res = await OrderApi.finish(orderId: orderId);
+    Loading.dismiss();
+    if (!res.isSuccess) {
+      res.showErrorMessage();
+      return false;
+    }
+    return true;
+  }
+
+  void onTapOrderEvaluation(int orderId) {
+    Get.toNamed(AppRoutes.orderEvaluationPage, arguments: orderId);
   }
 
   void _fetchPage(int page) async {
-    await Future.delayed(500.milliseconds);
+    final res = await OrderApi.getList(
+      state: type.stateValue,
+      page: page,
+      size: pagingController.pageSize,
+    );
 
-    switch (type) {
-      case OrderListType.going:
-        pagingController.appendPageData([
-          OrderListItem(itemType: OrderItemType.waitingConfirm),
-          OrderListItem(itemType: OrderItemType.waitingPaymentForUser),
-          OrderListItem(itemType: OrderItemType.waitingPaymentForBeauty),
-          OrderListItem(itemType: OrderItemType.going),
-          OrderListItem(itemType: OrderItemType.waitingAssign),
-        ]);
-        break;
-      case OrderListType.cancel:
-        pagingController.appendPageData([
-          OrderListItem(itemType: OrderItemType.cancelForUser),
-          OrderListItem(itemType: OrderItemType.cancelForBeauty),
-          OrderListItem(itemType: OrderItemType.timeOut),
-        ]);
-        break;
-      case OrderListType.finish:
-        pagingController.appendPageData([
-          OrderListItem(itemType: OrderItemType.finish),
-          OrderListItem(itemType: OrderItemType.waitingEvaluation),
-        ]);
-        break;
+    if (res.isSuccess) {
+      final items = res.data?.list ?? [];
+
+      pagingController.appendPageData(
+          items.map((e) => OrderListItem(itemModel: e)).toList());
+    } else {
+      pagingController.error = res.errorMessage;
     }
+
+    // switch (type) {
+    //   case OrderListType.going:
+    //     pagingController.appendPageData([
+    //       OrderListItem(itemType: OrderItemType.waitingConfirm),
+    //       OrderListItem(itemType: OrderItemType.waitingPaymentForUser),
+    //       OrderListItem(itemType: OrderItemType.waitingPaymentForBeauty),
+    //       OrderListItem(itemType: OrderItemType.going),
+    //       OrderListItem(itemType: OrderItemType.waitingAssign),
+    //     ]);
+    //     break;
+    //   case OrderListType.cancel:
+    //     pagingController.appendPageData([
+    //       OrderListItem(itemType: OrderItemType.cancelForUser),
+    //       OrderListItem(itemType: OrderItemType.cancelForBeauty),
+    //       OrderListItem(itemType: OrderItemType.timeOut),
+    //     ]);
+    //     break;
+    //   case OrderListType.finish:
+    //     pagingController.appendPageData([
+    //       OrderListItem(itemType: OrderItemType.finish),
+    //       OrderListItem(itemType: OrderItemType.waitingEvaluation),
+    //     ]);
+    //     break;
+    // }
   }
 }

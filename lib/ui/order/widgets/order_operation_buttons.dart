@@ -6,6 +6,7 @@ import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/order_list/order_list_controller.dart';
+import 'package:guanjia/ui/order/order_list/order_list_state.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 
@@ -13,12 +14,12 @@ class OrderOperationButtons extends StatelessWidget {
   OrderOperationButtons({
     super.key,
     required this.type,
-    required this.operationType,
+    required this.item,
   });
 
-  final OrderListType type;
+  final OrderListType type; // 订单列表类型，用于查找对应的控制器
 
-  final OrderOperationType operationType;
+  final OrderListItem item; // 订单模型数据
 
   late final controller = Get.find<OrderListController>(tag: type.name);
 
@@ -26,56 +27,64 @@ class OrderOperationButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> children = [];
 
-    switch (operationType) {
-      case OrderOperationType.confirm:
+    switch (item.operationType) {
+      case OrderOperationType.accept:
         children.addAll([
-          _buildCancel(),
+          _buildLeft(
+            onTap: () => controller.onTapOrderAcceptOrReject(false, item.id),
+          ),
           SizedBox(width: 24.rpx),
-          _buildButton(
-            onTap: controller.onTapConfirm,
+          _buildRight(
+            onTap: () => controller.onTapOrderAcceptOrReject(true, item.id),
             text: "立即接单",
           ),
         ]);
         break;
       case OrderOperationType.assign:
         children.addAll([
-          _buildCancel(),
+          _buildLeft(),
           SizedBox(width: 24.rpx),
-          _buildButton(
-            onTap: controller.onTapAssign,
+          _buildRight(
+            onTap: () => controller.onTapOrderAssign(item.id),
             text: "指派接单",
           ),
         ]);
         break;
       case OrderOperationType.payment:
         children.addAll([
-          _buildCancel(),
+          _buildLeft(),
           SizedBox(width: 24.rpx),
-          _buildButton(
-            onTap: controller.onTapPayment,
+          _buildRight(
+            onTap: () => controller.onTapOrderPayment(item.id),
             text: "立即缴纳",
           ),
         ]);
         break;
-      case OrderOperationType.finish:
+      case OrderOperationType.cancelAndFinish:
         children.addAll([
-          _buildCancel(),
+          _buildLeft(),
           SizedBox(width: 24.rpx),
-          _buildButton(
-            onTap: controller.onTapFinish,
+          _buildRight(
+            onTap: () => controller.onTapOrderFinish(item.id),
             text: "确认完成",
           ),
         ]);
         break;
+      case OrderOperationType.finish:
+        children.add(_buildRight(
+          onTap: () => controller.onTapOrderFinish(item.id),
+          text: "确认完成",
+        ));
+        break;
       case OrderOperationType.cancel:
-        children.add(_buildCancel());
+        children.add(_buildLeft());
         break;
       case OrderOperationType.connect:
         children.add(_buildConnect());
         break;
       case OrderOperationType.evaluation:
-        children.add(_buildButton(
-          onTap: controller.onTapEvaluation,
+        children.add(_buildRight(
+          onTap: controller.onTapOrderEvaluation,
           text: "立即评价",
         ));
         break;
@@ -89,9 +98,12 @@ class OrderOperationButtons extends StatelessWidget {
     );
   }
 
-  Widget _buildCancel() {
+  Widget _buildLeft({
+    VoidCallback? onTap,
+    String? text,
+  }) {
     return GestureDetector(
-      onTap: controller.onTapCancel,
+      onTap: onTap ?? () => controller.onTapOrderCancel(item.id),
       child: Container(
         width: 60.rpx,
         height: 26.rpx,
@@ -103,14 +115,14 @@ class OrderOperationButtons extends StatelessWidget {
         ),
         alignment: Alignment.center,
         child: Text(
-          "取消订单",
+          text ?? "取消订单",
           style: AppTextStyle.st.size(12.rpx).textColor(AppColor.black6),
         ),
       ),
     );
   }
 
-  Widget _buildButton({
+  Widget _buildRight({
     required VoidCallback? onTap,
     required String text,
   }) {
@@ -126,7 +138,7 @@ class OrderOperationButtons extends StatelessWidget {
 
   Widget _buildConnect() {
     return GestureDetector(
-      onTap: controller.onTapConnect,
+      onTap: () => controller.onTapOrderConnect(),
       behavior: HitTestBehavior.opaque,
       child: SizedBox(
         width: 48.rpx,

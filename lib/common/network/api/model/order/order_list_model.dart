@@ -1,5 +1,55 @@
 import 'package:guanjia/common/network/api/model/user/user_model.dart';
 
+enum OrderType {
+  normal(1), // 普通订单
+  friend(2); // 征友订单
+
+  final int type;
+
+  const OrderType(this.type);
+
+  static final _typeToOrderMap = Map<int, OrderType>.fromIterable(
+    OrderType.values,
+    key: (e) => e.type,
+  );
+
+  static OrderType valueForType(int type) {
+    return _typeToOrderMap[type] ?? OrderType.normal;
+  }
+
+  bool get isNormal => this == OrderType.normal;
+  bool get isFriend => this == OrderType.friend;
+}
+
+enum OrderState {
+  waitingAcceptance, // 待接受
+  waitingPayment, // 已接受(待双方缴费)
+  going, // 进行中
+  finish, // 完成
+  cancel; // 取消
+
+  static OrderState valueForIndex(int index) {
+    return OrderState.values.elementAtOrNull(index) ?? OrderState.finish;
+  }
+}
+
+enum OrderUserState {
+  waitingPayment, // 待支付
+  payment, // 已支付
+  confirm, // 已确认
+  cancel; // 已取消
+
+  static OrderUserState valueForIndex(int index) {
+    return OrderUserState.values.elementAtOrNull(index) ??
+        OrderUserState.confirm;
+  }
+
+  bool get isWaitingPayment => this == OrderUserState.waitingPayment;
+  bool get isPayment => this == OrderUserState.payment;
+  bool get isConfirm => this == OrderUserState.confirm;
+  bool get isCancel => this == OrderUserState.cancel;
+}
+
 class OrderListModel {
   OrderListModel({
     required this.list,
@@ -93,29 +143,29 @@ class OrderItemModel {
 
   final int id; // 订单id
   final String number; // 订单编号
-  final int type; // 订单类型 1普通订单 2征友约会
-  final int state; // 订单状态 0待接约 1已接约(待双方缴费) 2进行中 3已完成 4已取消
-  final int requestState; // 下单用户状态 0待支付 1已支付 2已确认 3已取消
+  final OrderType type; // 订单类型 1普通订单 2征友约会
+  final OrderState state; // 订单状态 0待接约 1已接约(待双方缴费) 2进行中 3已完成 4已取消
+  final OrderUserState requestState; // 下单用户状态 0待支付 1已支付 2已确认 3已取消
   final int requestId; // 下单用户id
   final String requestName; // 下单用户姓名
   final String requestAvatar; // 下单用户头像
-  final int receiveState; // 接单人状态 0待支付 1已支付 2已确认 3已取消
+  final OrderUserState receiveState; // 接单人状态 0待支付 1已支付 2已确认 3已取消
   final int receiveId; // 接单人id
   final String receiveName; // 接单人姓名
   final String receiveAvatar; // 接单人头像
   final int introducerId; // 经纪人id
   final String introducerName; // 经纪人姓名
   final String introducerAvatar; // 经纪人头像
-  final int deposit; // 保证金
-  final int serviceCharge; // 服务费
-  final int proportionBreach; // 违约金比例%
-  final int breachAmount; // 违约金
-  final int proportionPlatform; // 平台收取比例%
-  final int platformAmount; // 平台费
-  final int proportionBroker; // 经纪人收取比例%
-  final int brokerAmount; // 经纪人介绍费
-  final int proportionBeauty; // 佳丽收取比例%
-  final int beautyAmount; // 佳丽实收金额
+  final num deposit; // 保证金
+  final num serviceCharge; // 服务费
+  final num proportionBreach; // 违约金比例%
+  final num breachAmount; // 违约金
+  final num proportionPlatform; // 平台收取比例%
+  final num platformAmount; // 平台费
+  final num proportionBroker; // 经纪人收取比例%
+  final num brokerAmount; // 经纪人介绍费
+  final num proportionBeauty; // 佳丽收取比例%
+  final num beautyAmount; // 佳丽实收金额
   final String remark; // 备注
   final String createTime; // 创建时间
   final String receiveTime; // 佳丽接单时间
@@ -132,13 +182,13 @@ class OrderItemModel {
     return OrderItemModel(
       id: json["id"] ?? 0,
       number: json["number"] ?? "",
-      type: json["type"] ?? 0,
-      state: json["state"] ?? 0,
-      requestState: json["requestState"] ?? 0,
+      type: OrderType.valueForType(json["type"] ?? 1),
+      state: OrderState.valueForIndex(json["state"] ?? 0),
+      requestState: OrderUserState.valueForIndex(json["requestState"] ?? 0),
       requestId: json["requestId"] ?? 0,
       requestName: json["requestName"] ?? "",
       requestAvatar: json["requestAvatar"] ?? "",
-      receiveState: json["receiveState"] ?? 0,
+      receiveState: OrderUserState.valueForIndex(json["receiveState"] ?? 0),
       receiveId: json["receiveId"] ?? 0,
       receiveName: json["receiveName"] ?? "",
       receiveAvatar: json["receiveAvatar"] ?? "",
@@ -172,13 +222,13 @@ class OrderItemModel {
   Map<String, dynamic> toJson() => {
         "id": id,
         "number": number,
-        "type": type,
-        "state": state,
-        "requestState": requestState,
+        "type": type.type,
+        "state": state.index,
+        "requestState": requestState.index,
         "requestId": requestId,
         "requestName": requestName,
         "requestAvatar": requestAvatar,
-        "receiveState": receiveState,
+        "receiveState": receiveState.index,
         "receiveId": receiveId,
         "receiveName": receiveName,
         "receiveAvatar": receiveAvatar,

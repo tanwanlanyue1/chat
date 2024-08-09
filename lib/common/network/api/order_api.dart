@@ -43,9 +43,9 @@ class OrderApi {
     );
   }
 
-  /// 确认订单
+  /// 完成订单
   /// - orderId	订单id
-  static Future<ApiResponse> confirm({
+  static Future<ApiResponse> finish({
     required int orderId,
   }) {
     return HttpClient.post(
@@ -116,7 +116,7 @@ class OrderApi {
 
   /// 获取团队已完成订单列表
   /// - day	统计天数
-  static Future<ApiResponse<List<OrderListModel>>> getStyleList({
+  static Future<ApiResponse<List<OrderListModel>>> getTeamList({
     int day = 0,
   }) {
     return HttpClient.get(
@@ -139,7 +139,7 @@ class OrderApi {
   /// - page 页码 默认1,示例值(1)
   /// - size 每页数量（默认10）,示例值(999)
   static Future<ApiResponse<OrderListModel>> getList({
-    int state = 0,
+    required int state,
     int? day,
     int page = 1,
     int size = 10,

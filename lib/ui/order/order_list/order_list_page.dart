@@ -145,11 +145,11 @@ class _OrderListPageState extends State<OrderListPage>
   }
 
   Widget _buildItem(OrderListItem item, int index) {
-    Widget operationWidget = OrderOperationButtons(
-        type: widget.type, operationType: item.operationType);
+    Widget operationWidget =
+        OrderOperationButtons(type: widget.type, item: item);
 
     return GestureDetector(
-      onTap: controller.onTapItem,
+      onTap: () => controller.onTapToOrderDetail(item.id),
       child: Container(
         height: 186.rpx,
         padding: EdgeInsets.all(16.rpx).copyWith(bottom: 0),
@@ -241,7 +241,7 @@ class _OrderListPageState extends State<OrderListPage>
                   Text(
                     item.stateText,
                     style:
-                        AppTextStyle.st.size(14.rpx).textColor(item.stateColor),
+                        AppTextStyle.st.size(14.rpx).textColor(item.stateTextColor),
                   ),
                   SizedBox(width: 8.rpx),
                   Flexible(

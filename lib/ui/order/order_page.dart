@@ -28,10 +28,8 @@ class OrderPage extends StatelessWidget {
           labelStyle: AppTextStyle.st.size(14.rpx),
           labelColor: AppColor.primary,
           unselectedLabelColor: AppColor.black92,
-          tabs: List.generate(
-            state.titleList.length,
-            (index) => Tab(text: state.titleList[index])
-          ),
+          tabs: List.generate(state.titleList.length,
+              (index) => Tab(text: state.titleList[index])),
         ),
       ),
       body: TabBarView(

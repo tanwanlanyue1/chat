@@ -78,6 +78,8 @@ class ApiResponse<T> {
     if([401, 4].contains(code)){
       return;
     }else if(code == 1103){
+      // TODO: 支付余额不足后续改为显示统一的弹窗
+      Loading.showToast("余额不足");
       return;
     }
     final msg = errorMessage;

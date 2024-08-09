@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/widgets/app_image.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
@@ -62,13 +63,40 @@ class ChatManager {
         innerText: ZegoCallInvitationInnerText(),
         requireConfig: _requireCallConfig,
         config: ZegoCallInvitationConfig(),
-        uiConfig: ZegoCallInvitationUIConfig(
-          inviter: ZegoCallInvitationInviterUIConfig(),
-        )
+        uiConfig: _callInvitationUIConfig(),
       );
     } else {
       AppLogger.w('连接IM失败，code=$ret');
     }
+  }
+
+  ///音视频通话呼叫过程中的UI配置
+  ZegoCallInvitationUIConfig _callInvitationUIConfig() {
+
+    //背景
+    Widget? backgroundBuilder(
+        BuildContext context,
+        Size size,
+        ZegoCallingBuilderInfo info,
+        ){
+      return AppImage.asset(
+        width: size.width,
+        height: size.height,
+        'assets/images/chat/call_background.png',
+        fit: BoxFit.cover,
+      );
+    }
+
+    return ZegoCallInvitationUIConfig(
+      //邀请人
+      inviter: ZegoCallInvitationInviterUIConfig(
+        backgroundBuilder: backgroundBuilder,
+      ),
+      //被邀请人
+      invitee: ZegoCallInvitationInviteeUIConfig(
+        backgroundBuilder: backgroundBuilder,
+      ),
+    );
   }
 
   ///音视频通话配置
@@ -107,29 +135,49 @@ class ChatManager {
       hideAutomatically: false,
       margin: const EdgeInsets.only(bottom: 48),
       buttons: [
-        if(isVideoCall) ZegoCallMenuBarButtonName.toggleCameraButton,
+        if (isVideoCall) ZegoCallMenuBarButtonName.toggleCameraButton,
         ZegoCallMenuBarButtonName.toggleMicrophoneButton,
         ZegoCallMenuBarButtonName.hangUpButton,
         ZegoCallMenuBarButtonName.switchAudioOutputButton,
-        if(isVideoCall) ZegoCallMenuBarButtonName.switchCameraButton,
+        if (isVideoCall) ZegoCallMenuBarButtonName.switchCameraButton,
       ],
     );
 
     //布局配置
     config.audioVideoView = ZegoCallAudioVideoViewConfig(
-      //是否在视图上显示麦克风状态。默认显示
-      showMicrophoneStateOnView: false,
-      //是否在视图上显示摄像头状态。默认显示
-      showCameraStateOnView: false,
-      //是否在视图上显示用户名。默认显示。
-      showUserNameOnView: false,
-      //是否裁剪视频，填充整个屏幕
-      useVideoViewAspectFill: false,
-    );
+        //是否在视图上显示麦克风状态。默认显示
+        showMicrophoneStateOnView: false,
+        //是否在视图上显示摄像头状态。默认显示
+        showCameraStateOnView: false,
+        //是否在视图上显示用户名。默认显示。
+        showUserNameOnView: false,
+        //是否裁剪视频，填充整个屏幕
+        useVideoViewAspectFill: true,
+        //通话界面背景
+        backgroundBuilder: (
+          BuildContext context,
+          Size size,
+          ZegoUIKitUser? user,
+          Map<String, dynamic> extraInfo,
+        ) {
+          return AppImage.asset(
+            width: size.width,
+            height: size.height,
+            'assets/images/chat/call_background.png',
+            fit: BoxFit.cover,
+          );
+        });
 
     //画中画布局
     config.layout = ZegoLayoutPictureInPictureConfig(
       isSmallViewShowOnlyVideo: true,
+    );
+
+    config.background = AppImage.asset(
+      width: Get.width,
+      height: Get.height,
+      'assets/images/chat/call_background.png',
+      fit: BoxFit.cover,
     );
 
     return config;

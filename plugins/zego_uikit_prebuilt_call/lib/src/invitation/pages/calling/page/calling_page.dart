@@ -141,9 +141,11 @@ class _ZegoCallingPageState extends State<ZegoCallingPage> {
                   declineButtonConfig:
                       widget.callInvitationData.uiConfig.invitee.declineButton,
                 ));
-        view = SafeArea(
-          child: invitationView,
-        );
+        // UPDATE 去掉顶部黑边
+        // view = SafeArea(
+        //   child: invitationView,
+        // );
+        view = invitationView;
         break;
       case CallingState.kOnlineAudioVideo:
         view = prebuiltCallPage();
@@ -158,11 +160,8 @@ class _ZegoCallingPageState extends State<ZegoCallingPage> {
         }
       },
       child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light, //UPDATE 黑色UI
-        child: ColoredBox(
-          color: Colors.black,
-          child: view,
-        ),
+        value: SystemUiOverlayStyle.light, //UPDATE 白色状态栏文字和图标
+        child: view,
       ),
     );
   }

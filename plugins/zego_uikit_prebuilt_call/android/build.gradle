@@ -3,6 +3,12 @@ version '1.0'
 
 buildscript {
     repositories {
+        maven {
+            url 'https://maven.aliyun.com/repository/public/'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/central'
+        }
         google()
         mavenCentral()
     }
@@ -14,6 +20,12 @@ buildscript {
 
 rootProject.allprojects {
     repositories {
+        maven {
+            url 'https://maven.aliyun.com/repository/public/'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/central'
+        }
         google()
         mavenCentral()
     }

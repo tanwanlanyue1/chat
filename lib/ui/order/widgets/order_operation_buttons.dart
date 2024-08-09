@@ -84,7 +84,7 @@ class OrderOperationButtons extends StatelessWidget {
         break;
       case OrderOperationType.evaluation:
         children.add(_buildRight(
-          onTap: controller.onTapOrderEvaluation,
+          onTap: () => controller.onTapOrderEvaluation(item.id),
           text: "立即评价",
         ));
         break;

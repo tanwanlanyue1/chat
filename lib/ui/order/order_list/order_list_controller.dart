@@ -108,8 +108,8 @@ class OrderListController extends GetxController {
     return true;
   }
 
-  void onTapOrderEvaluation() {
-    Get.toNamed(AppRoutes.orderEvaluationPage);
+  void onTapOrderEvaluation(int orderId) {
+    Get.toNamed(AppRoutes.orderEvaluationPage, arguments: orderId);
   }
 
   void _fetchPage(int page) async {

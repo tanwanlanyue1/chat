@@ -253,7 +253,7 @@ class FriendDatePage extends StatelessWidget {
                       AppImage.asset("assets/images/discover/location.png",width: 16.rpx,height: 16.rpx,),
                       Container(
                         margin: EdgeInsets.only(left: 2.rpx),
-                        child: Text("${item.location} 2.3km",style: AppTextStyle.fs10m.copyWith(color: AppColor.gray5),),
+                        child: Text("${item.location} ${item.distance ?? 0}km",style: AppTextStyle.fs10m.copyWith(color: AppColor.gray5),),
                       ),
                       const Spacer(),
                       Text('${DateUtil.formatDateStr(item.startTime ?? '', format: 'MM/dd HH:00')}-${DateUtil.formatDateStr(item.endTime ?? '', format: 'MM/dd HH:00')}',

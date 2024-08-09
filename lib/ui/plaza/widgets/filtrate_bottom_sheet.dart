@@ -20,7 +20,7 @@ class FiltrateBottomSheet extends StatelessWidget {
       builder: (controller){
         var state = controller.state;
         return Container(
-          padding: EdgeInsets.all(16.rpx).copyWith(bottom: Get.mediaQuery.padding.bottom),
+          padding: EdgeInsets.all(16.rpx).copyWith(bottom: Get.mediaQuery.padding.bottom+16.rpx),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -118,6 +118,7 @@ class FiltrateBottomSheet extends StatelessWidget {
                   );
                 },
               ),
+              SizedBox(height: 24.rpx,),
               CommonGradientButton(
                 height: 50.rpx,
                 text: S.current.confirm,

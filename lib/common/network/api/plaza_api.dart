@@ -34,45 +34,6 @@ class PlazaApi{
     );
   }
 
-  /// 获取专区列表
-  static Future<ApiResponse<List<TopicModel>>> getZoneList() {
-    return HttpClient.get(
-      '/api/community/zone',
-      dataConverter: (data) {
-        if(data is List) {
-          return data.map((e) => TopicModel.fromJson(e)).toList();
-        }
-        return [];
-      },
-    );
-  }
-
-  /// 获取话题列表
-  static Future<ApiResponse<List<TopicModel>>> getTopicList() {
-    return HttpClient.get(
-      '/api/community/topic',
-      dataConverter: (data) {
-        if(data is List) {
-          return data.map((e) => TopicModel.fromJson(e)).toList();
-        }
-        return [];
-      },
-    );
-  }
-
-  /// 获取动态详情
-  static Future<ApiResponse<PlazaListModel>> getCommunityDetail({
-    required int id,
-}) {
-    return HttpClient.get(
-      '/api/community/detail',
-      params: {
-        "id":id
-      },
-      dataConverter: (json) => PlazaListModel.fromJson(json),
-    );
-  }
-
   /// 点赞或者取消点赞（点赞成功返回0，取消成功返回1）
   /// id:数据id
   /// type:点赞类型（1动态2评论）
@@ -149,4 +110,62 @@ class PlazaApi{
     );
   }
 
+  /// 获取自己的帖子列表
+  /// uid:用户id
+  static Future<ApiResponse<List<PlazaListModel>>> getMyPostList({
+    int? page,
+    int? size,
+  }) {
+    return HttpClient.get(
+      '/api/community/getMyPostList',
+      params: {
+        "page": page,
+        "size": size,
+      },
+      dataConverter: (data) {
+        if (data is List) {
+          return data.map((e) => PlazaListModel.fromJson(e)).toList();
+        }
+        return [];
+      },
+    );
+  }
+
+  /// 发布帖子
+  static Future<ApiResponse> addCommunity({
+    required String content,
+    required String images,
+    String? video
+}) {
+    return HttpClient.post(
+      '/api/community/add',
+      data: {
+        // "title":title,
+        "content":content,
+        "images":images,
+        "video":video,
+      },
+      dataConverter: (data) => data,
+    );
+  }
+
+  /// 获取关注帖子列表
+  static Future<ApiResponse<List<PlazaListModel>>> followList({
+    int? page,
+    int? size,
+  }) {
+    return HttpClient.get(
+      '/api/community/followList',
+      params: {
+        "page":page,
+        "size":size,
+      },
+      dataConverter: (data) {
+        if (data is List) {
+          return data.map((e) => PlazaListModel.fromJson(e)).toList();
+        }
+        return [];
+      },
+    );
+  }
 }

@@ -9,7 +9,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 
 class PhotoViewGalleryPage extends StatefulWidget {
-  final List<String> images;
+  final List images;
   final int index;
   final String heroTag;
 

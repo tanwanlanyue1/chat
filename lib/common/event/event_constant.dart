@@ -2,3 +2,9 @@
 //事件名称统一定义
 
 const kEventLogin = 'kEventLogin';
+
+//监听约会发布成功
+const kEventReleaseSuccess = 'kEventReleaseSuccess';
+
+//监听帖子发布成功
+const kEventInvitationSuccess = 'kEventInvitationSuccess';

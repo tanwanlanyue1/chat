@@ -60,10 +60,4 @@ class FriendDateState {
     },
   ];
 
-  //更多
-  List<String> more = [
-    S.current.privateOne,
-    S.current.deletePublisher,
-    S.current.reportComplaint,
-  ];
 }

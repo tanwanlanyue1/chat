@@ -1,5 +1,4 @@
 class ReleaseDynamicState {
-  ReleaseDynamicState() {
-    ///Initialize variables
-  }
+  //图片
+  List<String> imgList = [];
 }

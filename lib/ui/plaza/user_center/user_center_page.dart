@@ -8,15 +8,11 @@ import 'package:guanjia/generated/l10n.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/app_color.dart';
-import 'package:guanjia/common/extension/iterable_extension.dart';
-import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
-import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/ui/plaza/widgets/plaza_card.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
-import '../../../common/network/api/model/talk_model.dart';
 import 'user_center_controller.dart';
 
 ///广场-用户中心
@@ -52,7 +48,7 @@ class UserCenterPage extends StatelessWidget {
                       ),
                     ),
                   ],
-                  expandedHeight: 260.rpx,
+                  expandedHeight: 250.rpx,
                   flexibleSpace: FlexibleSpaceBar(
                     titlePadding: EdgeInsets.zero,
                     expandedTitleScale: 1.0,
@@ -145,8 +141,8 @@ class UserCenterPage extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.centerRight,
                     margin: EdgeInsets.only(right: 76.rpx,top: 8.rpx),
-                    child: AppImage.asset(
-                      "assets/images/mine/head_photo.png",
+                    child: AppImage.network(
+                      state.authorInfo.avatar ?? '',
                       width: 80.rpx,
                       height: 80.rpx,
                       fit: BoxFit.fitWidth,
@@ -164,7 +160,7 @@ class UserCenterPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Jeremy Lawrence",style: AppTextStyle.fs20b.copyWith(color: AppColor.gray5),),
+              Text(state.authorInfo.nickname ?? '',style: AppTextStyle.fs20b.copyWith(color: AppColor.gray5),),
               SizedBox(width: 8.rpx),
               AppImage.asset("assets/images/mine/safety.png",width: 16.rpx,height: 16.rpx,),
             ],

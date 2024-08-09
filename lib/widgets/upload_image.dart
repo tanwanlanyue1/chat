@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/widgets/loading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/photo_and_camera_bottom_sheet.dart';
@@ -75,11 +76,13 @@ class _UploadImageState extends State<UploadImage> {
               imageQuality: 9,
               limit: widget.limit,
             );
-
             if (image.isNotEmpty) {
               List<File> res = [];
-              for (var item in image) {
+              for (var item in image.take(widget.limit ?? 9)) {
                 res.add(File(item.path));
+              }
+              if(image.length > (widget.limit ?? 9)){
+                Loading.showToast("最多选择${widget.limit}张图片");
               }
               uploadImage(res);
             }

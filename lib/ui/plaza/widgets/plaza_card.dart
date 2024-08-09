@@ -26,8 +26,7 @@ class PlazaCard extends StatelessWidget {
   PlazaListModel? item;
   final Function()? isSelectCall;//点击删除回调
   final Function(bool like)? isLike;//点击点赞
-  final Function(bool collect)? isCollect;//点收藏回调
-  PlazaCard({super.key,this.user = false,this.delete = false,this.item,this.isSelectCall,this.isLike,this.isCollect});
+  PlazaCard({super.key,this.user = false,this.delete = false,this.item,this.isSelectCall,this.isLike});
 
   ///点赞或者取消点赞
   /// type:点赞类型（1动态2评论）
@@ -42,24 +41,6 @@ class PlazaCard extends StatelessWidget {
           isLike?.call(true);
         }else{
           isLike?.call(false);
-        }
-      }else{
-        response.showErrorMessage();
-      }
-    });
-  }
-
-  ///收藏或者取消收藏
-  Future<void> getCommentCollect() async {
-    SS.login.requiredAuthorized(() async{
-      final response = await PlazaApi.getCommentCollect(
-        id: item!.postId!,
-      );
-      if(response.isSuccess){
-        if(response.data == 0){
-          isCollect?.call(true);
-        }else{
-          isCollect?.call(false);
         }
       }else{
         response.showErrorMessage();
@@ -118,13 +99,34 @@ class PlazaCard extends StatelessWidget {
                     style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
                   ),
                 ),
-                Text(
-                  '${CommonUtils.getPostTime(time: item?.createTime,yearsFlag: true) }',
-                  style: TextStyle(
-                    fontSize: 12.rpx,
-                    color: const Color(0xff999999),
-                  ),
+                Row(
+                  children: [
+                    Visibility(
+                      visible: item?.gender == 2,
+                      replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
+                      child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
+                    ),
+                    SizedBox(width: 8.rpx),
+                    Text('${item?.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                    Container(
+                      width: 4.rpx,
+                      height: 4.rpx,
+                      margin: EdgeInsets.symmetric(horizontal: 8.rpx),
+                      decoration: const BoxDecoration(
+                        color: AppColor.black6,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    Text("个人",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                  ],
                 ),
+                // Text(
+                //   '${CommonUtils.getPostTime(time: item?.createTime,yearsFlag: true) }',
+                //   style: TextStyle(
+                //     fontSize: 12.rpx,
+                //     color: const Color(0xff999999),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -155,7 +157,7 @@ class PlazaCard extends StatelessWidget {
         margin: EdgeInsets.only(top: user ? 0 : 10.rpx),
         alignment: Alignment.centerLeft,
         child: Text(
-          item?.content ?? '超级可爱的小魔仙，对各种新鲜事物非常感兴趣。超级可爱的小魔仙，可爱的小魔仙，可爱的小魔仙，可爱...',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray8),maxLines: 3,overflow: TextOverflow.ellipsis,
+          item?.content ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray8),maxLines: 3,overflow: TextOverflow.ellipsis,
         )
       ),
       onTap: (){
@@ -165,7 +167,8 @@ class PlazaCard extends StatelessWidget {
 
   ///图片
   Widget _imageViews(BuildContext context) {
-    return GestureDetector(
+    return item?.images != null ?
+    GestureDetector(
       onTap: (){
       },
       child: Container(
@@ -174,37 +177,41 @@ class PlazaCard extends StatelessWidget {
         child: GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: user ? 2 : 5,
+          itemCount: user ? 2 : jsonDecode(item!.images!).length,
           padding: EdgeInsets.zero,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: user ? 2 : 3,
               childAspectRatio: 1,
-              mainAxisSpacing: 8.rpx
+              mainAxisSpacing: 8.rpx,
+              mainAxisExtent: 109.rpx
           ),
           itemBuilder: (BuildContext context, int index) {
-            return  Padding(
-              padding: EdgeInsets.only(left: index == 0 ? 0 : 14.rpx),
+            return Padding(
+              padding: EdgeInsets.only(left: 14.rpx),
               child: GestureDetector(
                 onTap: () {
                   PhotoViewGalleryPage.show(
                       context,
                       PhotoViewGalleryPage(
-                        images: jsonDecode(item?.images),
+                        images: jsonDecode(item?.images ?? ''),
                         index: index,
                         heroTag: '',
                       ));
                 },
-                // child: AppImage.network("${jsonDecode(item?.images)[index]}",
-                child: AppImage.asset("assets/images/plaza/back_image.png",
+                child: AppImage.network("${jsonDecode(item?.images ?? '')?[index]}",
                   fit: BoxFit.cover,
-                  // borderRadius: BorderRadius.circular(4.rpx),
-                ),
+                  borderRadius: BorderRadius.circular(8.rpx),
+                  placeholder:  AppImage.asset("assets/images/plaza/back_image.png",
+                    fit: BoxFit.cover,
+                  ),
+                )
               ),
             );
           },
         ),
       ),
-    );
+    ):
+    Container();
   }
 
   ///底部
@@ -223,7 +230,7 @@ class PlazaCard extends StatelessWidget {
         ),
         GestureDetector(
           onTap: (){
-            getCommentCollect();
+            getCommentLike();
           },
           child: Container(
             color: Colors.transparent,
@@ -264,6 +271,7 @@ class PlazaCard extends StatelessWidget {
           width: 80.rpx,
           height: 30.rpx,
           text: "发起聊天",
+          textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
         ),
       ],
     );

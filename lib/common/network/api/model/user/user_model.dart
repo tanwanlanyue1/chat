@@ -76,6 +76,8 @@ class UserModel {
     required this.likeAgeMax,
     required this.likeOccupation,
     required this.likeStyle,
+    this.praiseRate,
+    this.dealNum,
     this.payPwd,
   });
 
@@ -103,6 +105,8 @@ class UserModel {
   int likeAgeMax; // 最大喜好年龄
   UserOccupation likeOccupation; // 喜好职业 1在职人员 2学生
   String? likeStyle; // 喜好风格 "1, 2, 4" 逗号隔开
+  String? praiseRate; // 	好评率
+  int? dealNum; // 成交单数 30天内的
   bool? payPwd; // 是否设置支付密码 true已设置 false未设置
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -131,6 +135,8 @@ class UserModel {
       likeAgeMax: json["likeAgeMax"] ?? 40,
       likeOccupation: UserOccupation.valueForIndex(json["likeOccupation"] ?? 0),
       likeStyle: json["likeStyle"],
+      praiseRate: json["praiseRate"],
+      dealNum: json["dealNum"],
       payPwd: json["payPwd"] ?? false,
     );
   }
@@ -160,6 +166,8 @@ class UserModel {
         "likeAgeMax": likeAgeMax,
         "likeOccupation": likeOccupation.index,
         "likeStyle": likeStyle,
+        "praiseRate": praiseRate,
+        "dealNum": dealNum,
         "payPwd": payPwd,
       };
 
@@ -188,6 +196,8 @@ class UserModel {
     int? likeAgeMax,
     UserOccupation? likeOccupation,
     String? likeStyle,
+    String? praiseRate,
+    int? dealNum,
     bool? payPwd,
   }) {
     return UserModel(
@@ -215,6 +225,8 @@ class UserModel {
       likeAgeMax: likeAgeMax ?? this.likeAgeMax,
       likeOccupation: likeOccupation ?? this.likeOccupation,
       likeStyle: likeStyle ?? this.likeStyle,
+      praiseRate: praiseRate ?? this.praiseRate,
+      dealNum: dealNum ?? this.dealNum,
       payPwd: payPwd ?? this.payPwd,
     );
   }

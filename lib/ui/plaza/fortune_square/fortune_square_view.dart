@@ -44,9 +44,6 @@ class FortuneSquareView extends StatelessWidget {
                             padding: EdgeInsets.symmetric(horizontal: 12.rpx),
                             child: PlazaCard(
                               item: item,
-                              isCollect: (collect){
-                                controller.getCommentCollect(collect,index);
-                              },
                               isLike: (like){
                                 controller.getCommentLike(like, index);
                               },
@@ -84,6 +81,7 @@ class FortuneSquareView extends StatelessWidget {
         indicatorWeight: 2.rpx,
         labelPadding: EdgeInsets.only(bottom: 12.rpx),
         onTap: (val){
+          controller.pagingController.onRefresh();
           controller.update(['floating']);
         },
         tabs: List.generate(

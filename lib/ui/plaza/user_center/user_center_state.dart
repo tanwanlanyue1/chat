@@ -11,7 +11,7 @@ class UserCenterState {
 
   final isAppBarExpanded = false.obs;
   //作者信息
-  // UserModel authorInfo = UserModel.fromJson({});
+  UserModel authorInfo = UserModel.fromJson({});
   //创作数
   Map creation = {};
 

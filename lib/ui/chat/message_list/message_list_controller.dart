@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/utils/permissions_utils.dart';
+import 'package:guanjia/ui/chat/message_list/widgets/chat_call_dialog.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'message_list_state.dart';
@@ -16,12 +20,13 @@ class MessageListController extends GetxController {
   void onInit() {
     super.onInit();
     recordProcessor.register();
-    _conversationNotifier = ZIMKit().getConversation(state.conversationId, state.conversationType);
+    _conversationNotifier =
+        ZIMKit().getConversation(state.conversationId, state.conversationType);
     _conversationNotifier?.addListener(_onConversationChanged);
     _onConversationChanged();
   }
 
-  void _onConversationChanged(){
+  void _onConversationChanged() {
     state.conversationRx.value = _conversationNotifier?.value;
   }
 
@@ -41,6 +46,30 @@ class MessageListController extends GetxController {
           conversationType: conversationType,
         );
 
+  ///音视频通话呼出前调用
+  Future<bool> onWillOutgoingCall(bool isVideoCall) async{
+    var hasPermission = false;
+    if (isVideoCall) {
+      hasPermission = await PermissionsUtils.requestPermissions([
+        Permission.camera,
+        Permission.microphone,
+      ], hintText: '需要开启相机和麦克风权限');
+    } else {
+      hasPermission = await PermissionsUtils.requestPermission(
+        Permission.microphone,
+        hintText: '需要开启麦克风权限',
+      );
+    }
+    if(!hasPermission){
+      return false;
+    }
+
+    //发起聊天
+    final result = await ChatCallDialog.show(isVideoCall: isVideoCall);
+
+
+    return result == true;
+  }
 
   void showMoreBottomSheet() {
     Get.bottomSheet(
@@ -49,7 +78,18 @@ class MessageListController extends GetxController {
           '查看个人主页',
           '关注',
         ],
-        onTap: (index) {},
+        onTap: (index) {
+          switch(index){
+            case 0:
+              Get.toNamed(AppRoutes.userCenterPage, arguments: {
+                'userId': state.conversationId,
+              });
+              break;
+            case 1:
+              //TODO 关注
+              break;
+          }
+        },
       ),
     );
   }

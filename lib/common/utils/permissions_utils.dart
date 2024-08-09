@@ -12,21 +12,21 @@ class PermissionsUtils {
   /// 请求相册权限
   static Future<bool> requestPhotosPermission(
       {bool isOpenSetting = true}) async {
-    return await _requestPermission(Permission.photos,
+    return await requestPermission(Permission.photos,
         isOpenSetting: isOpenSetting);
   }
 
   /// 请求相机权限
   static Future<bool> requestCameraPermission(
       {bool isOpenSetting = true}) async {
-    return await _requestPermission(Permission.camera,
+    return await requestPermission(Permission.camera,
         isOpenSetting: isOpenSetting);
   }
 
   /// 请求存储权限（保存图片到本地）
   static Future<bool> requestStoragePermission(
       {bool isOpenSetting = true}) async {
-    return await _requestPermission(
+    return await requestPermission(
         GetPlatform.isIOS ? Permission.photosAddOnly : Permission.storage,
         isOpenSetting: isOpenSetting);
   }
@@ -34,7 +34,7 @@ class PermissionsUtils {
   /// 请求通知权限
   static Future<bool> requestNotificationPermission(
       {bool isOpenSetting = true}) async {
-    return await _requestPermission(Permission.notification,
+    return await requestPermission(Permission.notification,
         isOpenSetting: isOpenSetting);
   }
 
@@ -65,8 +65,11 @@ class PermissionsUtils {
   }
 
   // 请求单个权限
-  static Future<bool> _requestPermission(Permission permissionType,
-      {bool isOpenSetting = true}) async {
+  static Future<bool> requestPermission(
+    Permission permissionType, {
+    bool isOpenSetting = true,
+    String? hintText,
+  }) async {
     var status = await permissionType.status;
     if (status.isDenied) {
       status = await permissionType.request();
@@ -76,9 +79,32 @@ class PermissionsUtils {
 
     // 如果权限被限制 并且 允许打开跳转 跳转到系统设置权限界面
     if (!isGranted && isOpenSetting) {
-      const message = '需要同意权限才可以该功能';
+      final message = hintText ?? '需要同意权限才可以该功能';
       final result = await ConfirmDialog.show(
-          message: const Text(message), okButtonText: const Text('前往设置'));
+          message: Text(message), okButtonText: const Text('前往设置'));
+      if (result) {
+        Future.delayed(const Duration(milliseconds: 300), openAppSettings);
+      }
+    }
+
+    return isGranted;
+  }
+
+  /// 请求多个权限
+  static Future<bool> requestPermissions(
+    List<Permission> permissions, {
+    bool isOpenSetting = true,
+    String? hintText,
+  }) async {
+    final result = await permissions.request();
+    final isGranted =
+        result.values.every((element) => _processingStatus(element));
+
+    // 如果权限被限制 并且 允许打开跳转 跳转到系统设置权限界面
+    if (!isGranted && isOpenSetting) {
+      final message = hintText ?? '需要同意权限才可以该功能';
+      final result = await ConfirmDialog.show(
+          message: Text(message), okButtonText: const Text('前往设置'));
       if (result) {
         Future.delayed(const Duration(milliseconds: 300), openAppSettings);
       }

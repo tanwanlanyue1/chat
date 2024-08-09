@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:guanjia/common/network/api/api.dart';
@@ -76,7 +77,7 @@ class AppUpdateManager {
   void downloadAndInstall(AppUpdateVersionModel info) async {
     final dir = await getTemporaryDirectory();
     var tempPath = join(dir.path, '${info.version}.tmp');
-    final targetPath = join(dir.path, '${info.version}.apk');
+    final targetPath = join(dir.path, '${info.link.md5String}.apk');
 
     //文件已存在，直接安装
     if (await File(targetPath).exists()) {

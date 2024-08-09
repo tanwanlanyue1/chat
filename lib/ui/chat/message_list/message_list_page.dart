@@ -4,6 +4,9 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/app_info.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_state.dart';
 import 'package:guanjia/ui/chat/message_list/message_sender_helper.dart';
@@ -29,10 +32,17 @@ class MessageListPage extends GetView<MessageListController> {
     required this.conversationType,
   });
 
+  ///跳转聊天
+  ///- conversationId 用户ID
   static void go({
     required String conversationId,
     required ZIMConversationType? conversationType,
   }) {
+    if(conversationId == SS.login.userId.toString()){
+      AppLogger.w('不可和自己聊天');
+      return;
+    }
+
     Get.toNamed(
       AppRoutes.messageListPage,
       arguments: {
@@ -90,19 +100,21 @@ class MessageListPage extends GetView<MessageListController> {
   Widget buildFeatureItem(BuildContext context, Widget defaultWidget, ChatFeatureAction action) {
     if ([ChatFeatureAction.voiceCall, ChatFeatureAction.videoCall]
         .contains(action)) {
+      final isVideoCall = action == ChatFeatureAction.videoCall;
       return Stack(
         alignment: Alignment.center,
         children: [
           defaultWidget,
           ZegoSendCallInvitationButton(
             iconVisible: false,
-            isVideoCall: action == ChatFeatureAction.videoCall,
+            isVideoCall: isVideoCall,
             invitees: [
               ZegoUIKitUser(
                 id: conversationId,
                 name: state.conversationRx()?.name ?? '',
               ),
             ],
+            onWillPressed: () => controller.onWillOutgoingCall(isVideoCall),
             onPressed: (String code, String message, List<String> errorInvitees) {
               onCallInvitationSent(context, code, message, errorInvitees);
             },

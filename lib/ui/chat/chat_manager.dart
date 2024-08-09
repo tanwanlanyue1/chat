@@ -19,6 +19,9 @@ class ChatManager {
 
   var _isInit = false;
 
+  ///通话时长
+  var callDuration = Duration.zero;
+
   ///初始化
   Future<void> init() async {
     if (_isInit) {
@@ -67,10 +70,18 @@ class ChatManager {
         config: ZegoCallInvitationConfig(
           //发起者离开，通话结束
           endCallWhenInitiatorLeave: true,
+          permissions: [],
         ),
         uiConfig: _callInvitationUIConfig(),
-        invitationEvents: ZegoUIKitPrebuiltCallInvitationEvents(
+        events: ZegoUIKitPrebuiltCallEvents(
+          user: ZegoCallUserEvents(
 
+          ),
+          onCallEnd: (ZegoCallEndEvent event, VoidCallback defaultAction){
+            // if(event.callID)
+
+            defaultAction.call();
+          }
         ),
       );
     } else {
@@ -187,11 +198,11 @@ class ChatManager {
       ),
     );
 
-    config.background = AppImage.asset(
-      width: Get.width,
-      height: Get.height,
-      'assets/images/chat/call_background.png',
-      fit: BoxFit.cover,
+    //通话时长回调
+    config.duration = ZegoCallDurationConfig(
+      onDurationUpdate: (duration){
+
+      }
     );
 
     return config;

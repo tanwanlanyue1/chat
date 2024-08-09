@@ -10,7 +10,6 @@ class DiscoverItem extends StatelessWidget {
   final String title;
   final double? bottom;
   final Function? callBack;
-  final Widget? foregoing;
   final Widget? trailing;
   final Widget? right;
   final BorderRadiusGeometry? borderRadius;
@@ -20,7 +19,6 @@ class DiscoverItem extends StatelessWidget {
     required this.title,
     this.bottom,
     this.callBack,
-    this.foregoing,
     this.trailing,
     this.right,
     this.borderRadius,
@@ -49,17 +47,11 @@ class DiscoverItem extends StatelessWidget {
             SizedBox(width: 1.rpx),
             Expanded(
               child: Align(
-                alignment: Alignment.centerLeft,
-                child: foregoing ?? Container(),
-              ),
-            ),
-            Expanded(
-              child: Align(
                 alignment: Alignment.centerRight,
                 child: trailing ?? Container(),
               ),
             ),
-            SizedBox(width: 8.rpx),
+            SizedBox(width: 2.rpx),
             right ??
                 AppImage.asset(
                   "assets/images/mine/mine_right.png",

@@ -186,8 +186,7 @@ class ReleaseInvitationPage extends StatelessWidget {
                       border: Border.all(color: AppColor.primary),
                       borderRadius: BorderRadius.all(Radius.circular(8.rpx))
                   ),
-                  height: 38.rpx,
-                  padding: EdgeInsets.symmetric(horizontal: 12.rpx).copyWith(top: 6.rpx),
+                  padding: EdgeInsets.symmetric(horizontal: 12.rpx,vertical: 6.rpx),
                   child: Text(item.tag,style: AppTextStyle.fs14b.copyWith(color: state.labelList.contains(i) ? Colors.white : AppColor.primary),),
                 ),
               );
@@ -204,6 +203,9 @@ class ReleaseInvitationPage extends StatelessWidget {
                   unselectColor: AppColor.gray9,
                   titleCall: (bool? val) {
                     state.serve.value = val ?? false;
+                    if(val ?? false){
+                      controller.serviceController.clear();
+                    }
                   }
               ),
               Expanded(
@@ -212,17 +214,18 @@ class ReleaseInvitationPage extends StatelessWidget {
                   height: 34.rpx,
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: AppColor.primary,width: 2.rpx),
+                      border: Border.all(color: !state.serve.value ? AppColor.primary : AppColor.gray9,width: 2.rpx),
                       borderRadius: BorderRadius.all(Radius.circular(4.rpx))
                   ),
                   padding: EdgeInsets.all(6.rpx),
                   child: Row(
                     children: [
-                      Text("\$",style: AppTextStyle.fs16b.copyWith(color: AppColor.primary),),
+                      Text("\$",style: AppTextStyle.fs16b.copyWith(color: !state.serve.value ? AppColor.primary : AppColor.gray9),),
                       Expanded(
                         child: InputWidget(
                           hintText: '',
                           lines: 1,
+                          disabled: !state.serve.value,
                           fillColor: Colors.white,
                           textAlign: TextAlign.center,
                           keyboardType: const TextInputType.numberWithOptions(decimal: true),

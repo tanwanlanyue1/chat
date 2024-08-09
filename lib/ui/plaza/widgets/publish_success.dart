@@ -68,6 +68,7 @@ class PublishSuccess extends StatelessWidget {
                 GestureDetector(
                   onTap: (){
                     Get.back();
+                    Get.back();
                   },
                   child: Container(
                     height: 50.rpx,

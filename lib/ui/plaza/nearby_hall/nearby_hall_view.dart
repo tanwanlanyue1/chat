@@ -135,43 +135,61 @@ class NearbyHallView extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20.rpx),
           child: Row(
             children: [
-              ShaderMask(
-                  shaderCallback: (Rect bounds) {
-                    return const LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [AppColor.gradientBegin, AppColor.gradientEnd],
-                    ).createShader(Offset.zero & bounds.size);
-                  },
-                  blendMode: BlendMode.srcATop,
-                  child: Container(
-                    margin: EdgeInsets.only(right: 8.rpx),
-                    child: Text(
-                      "地图",
-                      style:AppTextStyle.fs12m,
-                    ),
-                  )
-              ),
-              AppImage.asset("assets/images/plaza/map.png",width: 24.rpx,height: 24.rpx,),
-              const Spacer(),
-              ShaderMask(
-                  shaderCallback: (Rect bounds) {
-                    return const LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [AppColor.gradientBegin, AppColor.gradientEnd],
-                    ).createShader(Offset.zero & bounds.size);
-                  },
-                  blendMode: BlendMode.srcATop,
-                  child: Container(
-                    margin: EdgeInsets.only(right: 8.rpx),
-                    child: Text(
-                      "筛选",
-                      style:AppTextStyle.fs12m,
-                    ),
-                  )
-              ),
-              AppImage.asset("assets/images/plaza/filtrate.png",width: 24.rpx,height: 24.rpx,),
+             Expanded(
+               child: GestureDetector(
+                 child: Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: [
+                     ShaderMask(
+                         shaderCallback: (Rect bounds) {
+                           return const LinearGradient(
+                             begin: Alignment.centerLeft,
+                             end: Alignment.centerRight,
+                             colors: [AppColor.gradientBegin, AppColor.gradientEnd],
+                           ).createShader(Offset.zero & bounds.size);
+                         },
+                         blendMode: BlendMode.srcATop,
+                         child: Container(
+                           margin: EdgeInsets.only(right: 8.rpx),
+                           child: Text(
+                             "地图",
+                             style:AppTextStyle.fs12m,
+                           ),
+                         )
+                     ),
+                     AppImage.asset("assets/images/plaza/map.png",width: 24.rpx,height: 24.rpx,)
+                   ],
+                 ),
+               ),
+             ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: controller.onTapFiltrate,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            return const LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [AppColor.gradientBegin, AppColor.gradientEnd],
+                            ).createShader(Offset.zero & bounds.size);
+                          },
+                          blendMode: BlendMode.srcATop,
+                          child: Container(
+                            margin: EdgeInsets.only(right: 8.rpx),
+                            child: Text(
+                              "筛选",
+                              style:AppTextStyle.fs12m,
+                            ),
+                          )
+                      ),
+                      AppImage.asset("assets/images/plaza/filtrate.png",width: 24.rpx,height: 24.rpx,),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),

@@ -54,5 +54,5 @@ class ReleaseInvitationState {
   ];
 
   //标签
-  List<LabelModel> label = [];
+  final label = <LabelModel>[].obs;
 }

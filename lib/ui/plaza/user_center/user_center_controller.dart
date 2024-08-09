@@ -32,14 +32,14 @@ class UserCenterController extends GetxController {
       double appBarHeight = 260.rpx;
       state.isAppBarExpanded.value = (appBarHeight - kToolbarHeight) < offset;
     });
-
+    getUserInfo();
     super.onInit();
   }
 
   ///获取创作列表
+  ///16
   void fetchPage(int page) async {
-    final response = await UserApi.getCreateList(
-      id: state.authorId,
+    final response = await PlazaApi.getMyPostList(
       page: page,
       size: pagingController.pageSize,
     );
@@ -53,9 +53,10 @@ class UserCenterController extends GetxController {
 
   ///获取作者信息
   Future<void> getUserInfo() async {
-    final response = await UserApi.info(uid: state.authorId);
+    final response = await UserApi.info(uid: 22);//16
+    // final response = await UserApi.info(uid: state.authorId);
     if (response.isSuccess) {
-      // state.authorInfo = response.data ?? UserModel.fromJson({});
+      state.authorInfo = response.data ?? UserModel.fromJson({});
       update(['userInfo']);
     }
   }
@@ -102,15 +103,15 @@ class UserCenterController extends GetxController {
   void getCommentLike(bool like, int index) async {
     var itemList = List.of(pagingController.itemList!);
     if (like) {
-      itemList[index] = itemList[index]
-          .copyWith(
-          isLike: like,
-          likeNum: (itemList[index].likeNum ?? 0) + 1);
+      // itemList[index] = itemList[index]
+      //     .copyWith(
+      //     isLike: like,
+      //     likeNum: (itemList[index].likeNum ?? 0) + 1);
     } else {
-      itemList[index] = itemList[index]
-          .copyWith(
-          isLike: like,
-          likeNum: (itemList[index].likeNum ?? 0) - 1);
+      // itemList[index] = itemList[index]
+      //     .copyWith(
+      //     isLike: like,
+      //     likeNum: (itemList[index].likeNum ?? 0) - 1);
     }
     pagingController.itemList = itemList;
   }
@@ -119,17 +120,17 @@ class UserCenterController extends GetxController {
   void getCommentCollect(bool collect, int index) async {
     var itemList = List.of(pagingController.itemList!);
     if (collect) {
-      itemList[index] = itemList[index]
-          .copyWith(
-          isCollect: collect,
-          collectNum:
-          (itemList[index].collectNum ?? 0) + 1);
+      // itemList[index] = itemList[index]
+      //     .copyWith(
+      //     isCollect: collect,
+      //     collectNum:
+      //     (itemList[index].collectNum ?? 0) + 1);
     } else {
-      itemList[index] = itemList[index]
-          .copyWith(
-          isCollect: collect,
-          collectNum:
-          (itemList[index].collectNum ?? 0) - 1);
+      // itemList[index] = itemList[index]
+      //     .copyWith(
+      //     isCollect: collect,
+      //     collectNum:
+      //     (itemList[index].collectNum ?? 0) - 1);
     }
     pagingController.itemList = itemList;
   }

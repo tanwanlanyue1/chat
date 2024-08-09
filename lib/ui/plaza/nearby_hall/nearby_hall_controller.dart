@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/ui/plaza/widgets/filtrate_bottom_sheet.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'nearby_hall_state.dart';
@@ -25,4 +26,11 @@ class NearbyHallController extends GetxController {
         List.generate(10, (index) => index + pagingController.length));
   }
 
+  //筛选
+  void onTapFiltrate(){
+    Get.bottomSheet(
+        isScrollControlled: true,
+        FiltrateBottomSheet()
+    );
+  }
 }

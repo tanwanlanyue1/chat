@@ -229,29 +229,6 @@ class UserApi {
     );
   }
 
-  /// 我的-获取创作列表
-  /// uid:用户id
-  static Future<ApiResponse<List<PlazaListModel>>> getCreateList({
-    required int id,
-    int? page,
-    int? size,
-  }) {
-    return HttpClient.get(
-      '/api/user/getCreateList',
-      params: {
-        "uid": id,
-        "page": page,
-        "size": size,
-      },
-      dataConverter: (data) {
-        if (data is List) {
-          return data.map((e) => PlazaListModel.fromJson(e)).toList();
-        }
-        return [];
-      },
-    );
-  }
-
   /// 获取绑定信息
   static Future<ApiResponse<BindingRes>> getBindingInfo() {
     return HttpClient.get(

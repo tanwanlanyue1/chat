@@ -1,5 +1,9 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/event/event_bus.dart';
+import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/widgets/loading.dart';
 
@@ -33,7 +37,7 @@ class ReleaseInvitationController extends GetxController {
         type: 3,
     );
     if (response.isSuccess) {
-      state.label = response.data ?? [];
+      state.label.value = response.data ?? [];
       update();
     }else{
       response.showErrorMessage();
@@ -92,6 +96,7 @@ class ReleaseInvitationController extends GetxController {
       );
       Loading.dismiss();
       if (response.isSuccess) {
+        EventBus().emit(kEventReleaseSuccess);
         ReleaseSuccess.show();
       }else{
         response.showErrorMessage();

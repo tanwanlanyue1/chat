@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/event/event_bus.dart';
+import 'package:guanjia/common/event/event_constant.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/generated/l10n.dart';
@@ -13,7 +16,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../common/network/api/api.dart';
 import 'friend_date_state.dart';
 
-class FriendDateController extends GetxController {
+class FriendDateController extends GetxController with GetAutoDisposeMixin{
   final FriendDateState state = FriendDateState();
 
   //分页控制器
@@ -41,6 +44,11 @@ class FriendDateController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
+    autoDisposeWorker(
+      EventBus().listen(kEventReleaseSuccess,(val){
+        fetchPage(1);
+      })
+    );
     pagingController.addPageRequestListener(fetchPage);
     super.onInit();
   }
@@ -81,11 +89,11 @@ class FriendDateController extends GetxController {
 
   //选择更多
   Future<void> selectMore(int? uid,int id) async {
-    var more = (uid == state.userInfo?.uid) ? state.more : [S.current.privateOne, S.current.reportComplaint];
+    var more = (uid == state.userInfo?.uid) ? [S.current.deletePublisher,] : [S.current.privateOne, S.current.reportComplaint];
     Get.bottomSheet(
       CommonBottomSheet(
         titles: more,
-        hasCancel: false,
+        // hasCancel: false,
         onTap: (index) async {
           if(uid == state.userInfo?.uid && index == 1){
             delAppointment(id);

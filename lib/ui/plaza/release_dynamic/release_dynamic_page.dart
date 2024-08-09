@@ -40,12 +40,10 @@ class ReleaseDynamicPage extends StatelessWidget {
           color: Colors.white,
           child: InputWidget(
               hintText: '请输入内容',
+              inputController: controller.contentController,
               fillColor: Colors.white,
               maxLength: 100,
               lines: 8,
-              onChanged: (val) {
-                print("val===$val");
-              }
           ),
         ),
         Container(
@@ -72,32 +70,30 @@ class ReleaseDynamicPage extends StatelessWidget {
             color: Colors.white,
             alignment: Alignment.topLeft,
             child: UploadImage(
-              imgList: [],
-              // imgList: controller.state.imgList,
+              imgList: state.imgList,
+              limit: 9,
               callback: (val) {
-                // controller.state.imgList = val;
-                // controller.update(['upload']);
+                controller.state.imgList = val;
+                controller.update(['upload']);
               },
             ),
           ),
         ),
         Container(
-          padding: EdgeInsets.only(bottom: Get.mediaQuery.padding.bottom,left: 38.rpx,right: 38.rpx,top: 14.rpx),
+          padding: EdgeInsets.only(bottom: Get.mediaQuery.padding.bottom+14.rpx,left: 38.rpx,right: 38.rpx,top: 14.rpx),
           decoration: const BoxDecoration(
             color: Colors.white,
             boxShadow: [
               BoxShadow(
                   color: Colors.grey,
-                  offset: Offset(0.0, 12.0), //阴影xy轴偏移量
-                  blurRadius: 15.0, //阴影模糊程度
-                  spreadRadius: 4.0 //阴影扩散程度
+                  offset: Offset(0.0, 12.0),
+                  blurRadius: 15.0,
+                  spreadRadius: 4.0
               ),
             ],
           ),
           child: CommonGradientButton(
-            onTap: (){
-              PublishSuccess.show();
-            },
+            onTap: controller.addCommunity,
             height: 50.rpx,
             text: "立即发布",
           ),

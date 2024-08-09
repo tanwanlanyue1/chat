@@ -74,7 +74,7 @@ class DiscoverApi {
   static Future<ApiResponse<AppointmentModel>> getOneself() {
     return HttpClient.get(
         '/api/Appointment/getOneself',
-        dataConverter: (data) => AppointmentModel.fromJson(data ?? {})
+        dataConverter: (data) => AppointmentModel.fromJson(data)
     );
   }
 

@@ -73,52 +73,56 @@ class _OrderListPageState extends State<OrderListPage>
     Widget? content;
 
     if (widget.type == OrderListType.cancel && !userType.isUser) {
-      content = const Row(
-        children: [
-          Expanded(
-            child: OrderOperationNumberWidget(
-              number: 1,
-              title: "等待超时",
+      content = Obx(() {
+        return Row(
+          children: [
+            Expanded(
+              child: OrderOperationNumberWidget(
+                number: state.waitTimeCount.value,
+                title: "等待超时",
+              ),
             ),
-          ),
-          Expanded(
-            child: OrderOperationNumberWidget(
-              number: 1,
-              title: "对方取消",
+            Expanded(
+              child: OrderOperationNumberWidget(
+                number: state.otherCancelCount.value,
+                title: "对方取消",
+              ),
             ),
-          ),
-          Expanded(
-            child: OrderOperationNumberWidget(
-              number: 1,
-              title: "主动取消",
+            Expanded(
+              child: OrderOperationNumberWidget(
+                number: state.selfCancelCount.value,
+                title: "主动取消",
+              ),
             ),
-          ),
-        ],
-      );
+          ],
+        );
+      });
     } else if (widget.type == OrderListType.finish && userType.isBeauty) {
-      content = const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Expanded(flex: 1, child: SizedBox()),
-          Expanded(
-            flex: 2,
-            child: OrderOperationNumberWidget(
-              number: 1,
-              title: "待评价",
-              numberColor: AppColor.textGreen,
+      content = Obx(() {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            const Expanded(flex: 1, child: SizedBox()),
+            Expanded(
+              flex: 2,
+              child: OrderOperationNumberWidget(
+                number: state.evaluateCount.value,
+                title: "待评价",
+                numberColor: AppColor.textGreen,
+              ),
             ),
-          ),
-          Expanded(
-            flex: 2,
-            child: OrderOperationNumberWidget(
-              number: 1,
-              title: "已完成",
-              numberColor: AppColor.textGreen,
+            Expanded(
+              flex: 2,
+              child: OrderOperationNumberWidget(
+                number: state.completeCount.value,
+                title: "已完成",
+                numberColor: AppColor.textGreen,
+              ),
             ),
-          ),
-          Expanded(flex: 1, child: SizedBox()),
-        ],
-      );
+            const Expanded(flex: 1, child: SizedBox()),
+          ],
+        );
+      });
     }
 
     if (content == null) return const SliverToBoxAdapter();

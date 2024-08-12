@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -121,7 +122,18 @@ class OrderListController extends GetxController {
     );
 
     if (res.isSuccess) {
-      final items = res.data?.list ?? [];
+      final listModel = res.data;
+
+      if (listModel != null) {
+        state.waitTimeCount.value = listModel.waitTimeCount;
+        state.otherCancelCount.value = listModel.otherCancelCount;
+        state.selfCancelCount.value = listModel.selfCancelCount;
+        state.evaluateCount.value = listModel.evaluateCount;
+        state.completeCount.value = listModel.completeCount;
+        state.allCompleteCount.value = listModel.allCompleteCount;
+      }
+
+      final items = listModel?.list ?? [];
 
       pagingController.appendPageData(
           items.map((e) => OrderListItem(itemModel: e)).toList());

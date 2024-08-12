@@ -63,8 +63,8 @@ class _ZegoTextIconButtonState extends State<ZegoTextIconButton> {
       onTap: onPressed,
       onLongPress: onPressed,
       child: Container(
-        width: widget.buttonSize?.width ?? 120,
-        height: widget.buttonSize?.height ?? 120,
+        width: widget.buttonSize?.width,
+        height: widget.buttonSize?.height,
         margin: widget.margin,
         padding: widget.padding,
         decoration: BoxDecoration(
@@ -104,17 +104,17 @@ class _ZegoTextIconButtonState extends State<ZegoTextIconButton> {
     }
 
     return Container(
-      width: widget.iconSize?.width ?? 74,
-      height: widget.iconSize?.height ?? 74,
+      width: widget.iconSize?.width,
+      height: widget.iconSize?.height,
       decoration: BoxDecoration(
         color: widget.icon?.backgroundColor ?? Colors.transparent,
         border: Border.all(
             color: widget.iconBorderColor ?? Colors.transparent, width: 1),
         borderRadius:
-            BorderRadius.all(Radius.circular(widget.iconSize?.width ?? 74 / 2)),
+            BorderRadius.all(Radius.circular(widget.iconSize?.width ?? 0 / 2)),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(widget.iconSize?.width ?? 74 / 2),
+        borderRadius: BorderRadius.circular(widget.iconSize?.width ?? 0 / 2),
         child: widget.icon?.icon,
       ),
     );

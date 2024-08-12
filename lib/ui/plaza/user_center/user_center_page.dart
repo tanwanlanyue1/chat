@@ -5,6 +5,7 @@ import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/chat/message_list/widgets/chat_call_button.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -264,18 +265,31 @@ class UserCenterPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 8.rpx),
             child: Row(
               children: [
-                Container(
+                ChatCallButton(
                   width: 60.rpx,
-                  margin: EdgeInsets.only(right: 8.rpx),
-                  child: CommonGradientButton(
-                    height: 50.rpx,
-                    text: "实时\n语音",
+                  height: 50.rpx,
+                  userId: state.authorId,
+                  isVideoCall: false,
+                  nickname: state.authorInfo.nickname,
+                  child: Container(
+                    width: 60.rpx,
+                    margin: EdgeInsets.only(right: 8.rpx),
+                    child: CommonGradientButton(
+                      height: 50.rpx,
+                      text: "实时\n语音",
+                    ),
                   ),
                 ),
                 Expanded(
-                  child: CommonGradientButton(
+                  child: ChatCallButton(
                     height: 50.rpx,
-                    text: "视频1V1聊天",
+                    userId: state.authorId,
+                    isVideoCall: true,
+                    nickname: state.authorInfo.nickname,
+                    child: CommonGradientButton(
+                      height: 50.rpx,
+                      text: "视频1V1聊天",
+                    ),
                   ),
                 )
               ],

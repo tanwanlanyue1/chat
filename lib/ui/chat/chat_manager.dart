@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -218,4 +220,23 @@ class ChatManager {
     ZIMKit().disconnectUser();
     ZegoUIKitPrebuiltCallInvitationService().uninit();
   }
+
+  ///跳转聊天页面
+  ///- 用户ID
+  void toChatPage({required int userId}){
+    if(userId == SS.login.userId){
+      AppLogger.w('不能与自己聊天');
+      return;
+    }
+
+    Get.toNamed(
+      AppRoutes.messageListPage,
+      arguments: {
+        'conversationId': userId.toString(),
+        'conversationType': ZIMConversationType.peer,
+      },
+    );
+  }
+
+
 }

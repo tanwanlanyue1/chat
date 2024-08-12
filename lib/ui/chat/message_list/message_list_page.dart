@@ -5,7 +5,6 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
-import 'package:guanjia/common/utils/app_info.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_state.dart';
@@ -14,11 +13,11 @@ import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_feature_panel.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
-import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'message_list_controller.dart';
 import 'message_list_view.dart';
+import 'widgets/chat_call_button.dart';
 import 'widgets/chat_input_view.dart';
 
 ///消息列表（聊天页）
@@ -100,25 +99,12 @@ class MessageListPage extends GetView<MessageListController> {
     if ([ChatFeatureAction.voiceCall, ChatFeatureAction.videoCall]
         .contains(action)) {
       final isVideoCall = action == ChatFeatureAction.videoCall;
-      return Stack(
-        alignment: Alignment.center,
-        children: [
-          defaultWidget,
-          ZegoSendCallInvitationButton(
-            iconVisible: false,
-            isVideoCall: isVideoCall,
-            invitees: [
-              ZegoUIKitUser(
-                id: conversationId,
-                name: state.conversationRx()?.name ?? '',
-              ),
-            ],
-            onWillPressed: () => controller.onWillOutgoingCall(isVideoCall),
-            onPressed: (String code, String message, List<String> errorInvitees) {
-              onCallInvitationSent(context, code, message, errorInvitees);
-            },
-          ),
-        ],
+      return ChatCallButton(
+        isVideoCall: isVideoCall,
+        userId: int.parse(conversationId),
+        nickname: state.conversationRx()?.name ?? '',
+        onWillPressed: () => controller.onWillOutgoingCall(isVideoCall),
+        child: defaultWidget,
       );
     }
     return defaultWidget;
@@ -173,22 +159,6 @@ class MessageListPage extends GetView<MessageListController> {
           ),
         ),
       ],
-    );
-  }
-
-  void onCallInvitationSent(BuildContext context, String code, String message,
-      List<String> errorInvitees) {
-    late String log;
-    if (errorInvitees.isNotEmpty) {
-      log = "User doesn't exist or is offline: ${errorInvitees[0]}";
-      if (code.isNotEmpty) {
-        log += ', code: $code, message:$message';
-      }
-    } else if (code.isNotEmpty) {
-      log = 'code: $code, message:$message';
-    }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(log)),
     );
   }
 

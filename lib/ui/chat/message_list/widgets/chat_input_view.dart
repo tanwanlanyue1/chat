@@ -172,7 +172,7 @@ class _ChatInputViewState extends State<ChatInputView>
   Widget _buildFeaturePanel() {
     return ObxValue<RxBool>((data) {
       return Visibility(
-        visible: data.isTrue,
+        visible: data(),
         child: ChatFeaturePanel(
           onTap: (item) {
             toggleFeaturePanelVisible(requestFocus: false);

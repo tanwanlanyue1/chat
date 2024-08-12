@@ -167,7 +167,7 @@ class _OrderListPageState extends State<OrderListPage>
                     ),
                     SizedBox(width: 8.rpx),
                     Text(
-                      "2021-12-20 16:33",
+                      item.time,
                       style: AppTextStyle.st
                           .size(12.rpx)
                           .textColor(AppColor.black9),
@@ -194,13 +194,10 @@ class _OrderListPageState extends State<OrderListPage>
             ),
             Row(
               children: [
-                Container(
-                  width: 60.rpx,
-                  height: 60.rpx,
-                  decoration: BoxDecoration(
-                    color: AppColor.primary,
-                    shape: BoxShape.circle,
-                  ),
+                AppImage.network(
+                  item.avatar,
+                  length: 60.rpx,
+                  shape: BoxShape.circle,
                 ),
                 SizedBox(width: 8.rpx),
                 Expanded(
@@ -208,7 +205,7 @@ class _OrderListPageState extends State<OrderListPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "订单编号：883437307502375017",
+                        item.number,
                         style: AppTextStyle.st
                             .size(14.rpx)
                             .textColor(AppColor.black6),
@@ -216,13 +213,22 @@ class _OrderListPageState extends State<OrderListPage>
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        "接约人：Kiko",
+                        item.nick,
                         style: AppTextStyle.st
                             .size(14.rpx)
                             .textColor(AppColor.black6),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
+                      if (item.nickWithAgent != null)
+                        Text(
+                          item.nickWithAgent ?? "",
+                          style: AppTextStyle.st
+                              .size(14.rpx)
+                              .textColor(AppColor.black6),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                     ],
                   ),
                 ),
@@ -240,8 +246,9 @@ class _OrderListPageState extends State<OrderListPage>
                 children: [
                   Text(
                     item.stateText,
-                    style:
-                        AppTextStyle.st.size(14.rpx).textColor(item.stateTextColor),
+                    style: AppTextStyle.st
+                        .size(14.rpx)
+                        .textColor(item.stateTextColor),
                   ),
                   SizedBox(width: 8.rpx),
                   Flexible(

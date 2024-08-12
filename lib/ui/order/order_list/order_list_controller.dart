@@ -23,6 +23,7 @@ class OrderListController extends GetxController {
 
   @override
   void onInit() {
+    // onTapOrderAdd(31);
     pagingController.addPageRequestListener(_fetchPage);
     super.onInit();
   }
@@ -127,30 +128,5 @@ class OrderListController extends GetxController {
     } else {
       pagingController.error = res.errorMessage;
     }
-
-    // switch (type) {
-    //   case OrderListType.going:
-    //     pagingController.appendPageData([
-    //       OrderListItem(itemType: OrderItemType.waitingConfirm),
-    //       OrderListItem(itemType: OrderItemType.waitingPaymentForUser),
-    //       OrderListItem(itemType: OrderItemType.waitingPaymentForBeauty),
-    //       OrderListItem(itemType: OrderItemType.going),
-    //       OrderListItem(itemType: OrderItemType.waitingAssign),
-    //     ]);
-    //     break;
-    //   case OrderListType.cancel:
-    //     pagingController.appendPageData([
-    //       OrderListItem(itemType: OrderItemType.cancelForUser),
-    //       OrderListItem(itemType: OrderItemType.cancelForBeauty),
-    //       OrderListItem(itemType: OrderItemType.timeOut),
-    //     ]);
-    //     break;
-    //   case OrderListType.finish:
-    //     pagingController.appendPageData([
-    //       OrderListItem(itemType: OrderItemType.finish),
-    //       OrderListItem(itemType: OrderItemType.waitingEvaluation),
-    //     ]);
-    //     break;
-    // }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 
+/// 订单总列表类型
 enum OrderListType {
   going(1),
   cancel(4),
@@ -28,7 +29,18 @@ enum OrderListType {
   bool get isFinish => this == OrderListType.finish;
 }
 
-enum OrderItemType {
+/// 订单item用户类型
+enum OrderItemUserType {
+  request, // 发送方
+  receive; // 接收方
+
+  bool get isRequest => this == OrderItemUserType.request;
+  bool get isReceive => this == OrderItemUserType.receive;
+}
+
+/// 订单item状态
+enum OrderItemState {
+  unknown, // 未知状态
   waitingAcceptance, // 等待确认
   waitingAssign, // 指派
   waitingPaymentForRequest, // 等待发送方支付（用户）
@@ -41,11 +53,12 @@ enum OrderItemType {
   finish, // 完成
   waitingEvaluation; // 等待评价 目前只有用户普通订单存在评价
 
-  static OrderItemType valueForIndex(int index) {
-    return OrderItemType.values.elementAtOrNull(index) ?? OrderItemType.finish;
+  static OrderItemState valueForIndex(int index) {
+    return OrderItemState.values.elementAtOrNull(index) ?? OrderItemState.finish;
   }
 }
 
+/// 订单操作类型
 enum OrderOperationType {
   none, // 无操作
   accept, // 接单

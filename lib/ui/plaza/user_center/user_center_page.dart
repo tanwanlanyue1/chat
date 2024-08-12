@@ -17,8 +17,7 @@ import 'user_center_controller.dart';
 
 ///广场-用户中心
 class UserCenterPage extends StatelessWidget {
-  final String? userId; //用户id
-  UserCenterPage({Key? key,this.userId}) : super(key: key);
+  UserCenterPage({Key? key}) : super(key: key);
 
   final controller = Get.put(UserCenterController());
   final state = Get.find<UserCenterController>().state;
@@ -146,10 +145,14 @@ class UserCenterPage extends StatelessWidget {
                       width: 80.rpx,
                       height: 80.rpx,
                       fit: BoxFit.fitWidth,
+                      shape: BoxShape.circle,
                     ),
                   ),
                 ),
-                AppImage.asset("assets/images/plaza/attention.png",width: 24.rpx,height: 24.rpx,),
+                GestureDetector(
+                  onTap: controller.attention,
+                  child: AppImage.asset("assets/images/plaza/attention.png",width: 24.rpx,height: 24.rpx,),
+                ),
                 Container(
                   padding: EdgeInsets.only(left: 4.rpx),
                   child: Text("关注",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),

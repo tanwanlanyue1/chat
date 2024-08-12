@@ -72,23 +72,24 @@ class ChatManager {
         config: ZegoCallInvitationConfig(
           //发起者离开，通话结束
           endCallWhenInitiatorLeave: true,
+          canInvitingInCalling: false,
           permissions: [],
         ),
         uiConfig: _callInvitationUIConfig(),
         events: ZegoUIKitPrebuiltCallEvents(
           user: ZegoCallUserEvents(
             onEnter: (user){
-              AppLogger.d('onEnter: ${user.name}');
+              AppLogger.d('ZegoUIKitPrebuiltCallEvents onEnter: ${user.name}');
             },
             onLeave: (user){
-              AppLogger.d('onLeave: ${user.name}');
+              AppLogger.d('ZegoUIKitPrebuiltCallEvents onLeave: ${user.name}');
             }
           ),
           onCallEnd: (ZegoCallEndEvent event, VoidCallback defaultAction){
             // if(event.callID)
 
             defaultAction.call();
-          }
+          },
         ),
       );
     } else {
@@ -238,5 +239,11 @@ class ChatManager {
     );
   }
 
+
+}
+
+
+///音视频通话状态信息
+class ChatCallState{
 
 }

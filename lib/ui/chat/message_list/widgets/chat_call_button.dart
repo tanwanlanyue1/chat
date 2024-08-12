@@ -22,6 +22,9 @@ class ChatCallButton extends StatelessWidget {
   final double? width;
   final double? height;
 
+
+
+
   const ChatCallButton({
     super.key,
     this.width,
@@ -47,6 +50,9 @@ class ChatCallButton extends StatelessWidget {
             children: [
               child,
               ZegoSendCallInvitationButton(
+                onCallId: (callId){
+
+                },
                 buttonSize: Size(width, height),
                 iconVisible: false,
                 isVideoCall: isVideoCall,

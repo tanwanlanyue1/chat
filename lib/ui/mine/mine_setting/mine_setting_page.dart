@@ -186,10 +186,10 @@ class MineSettingPage extends StatelessWidget {
                 ws: Uri.parse(''),
               ),
               //杨文
-              Server(
-                api: Uri.parse('http://192.168.2.117:20000'),
-                ws: Uri.parse(''),
-              ),
+              // Server(
+              //   api: Uri.parse('http://192.168.2.117:20000'),
+              //   ws: Uri.parse(''),
+              // ),
               //安伟
               Server(
                 api: Uri.parse('http://192.168.2.114:20000'),

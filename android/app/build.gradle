@@ -72,8 +72,8 @@ android {
             signingConfig signingConfigs.release
         }
         release {
-//            shrinkResources false
-            minifyEnabled true //混淆
+            shrinkResources false
+            minifyEnabled false //混淆
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

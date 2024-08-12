@@ -22,17 +22,16 @@ class WelcomePage extends StatelessWidget {
         height: Get.height,
         padding: FEdgeInsets(bottom: max(48.rpx, Get.mediaQuery.padding.bottom)),
         alignment: Alignment.bottomCenter,
-        // decoration: const BoxDecoration(
-        //   image: DecorationImage(
-        //     fit: BoxFit.cover,
-        //     image: AppAssetImage('assets/images/common/ls_welcome.png'),
-        //   ),
-        // ),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AppAssetImage('assets/images/home/launch_image.png'),
+          ),
+        ),
         child: Button.stadium(
           onPressed: PrivacyDialog.show,
           width: 156.rpx,
           height: 42.rpx,
-          // image: AppImage.asset('assets/images/common/experience.png'),
           child: Text(
             "立即体验",
             style: AppTextStyle.fs18m.copyWith(

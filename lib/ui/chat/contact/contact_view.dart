@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/string_extension.dart';
+import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -16,6 +17,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'contact_controller.dart';
+import 'widgets/contact_list_tile.dart';
 
 ///通讯录
 class ContactView extends StatefulWidget {
@@ -57,11 +59,11 @@ class _ContactViewState extends State<ContactView>
           ),
           PagedSliverList(
             pagingController: controller.pagingController,
-            builderDelegate: DefaultPagedChildBuilderDelegate(
+            builderDelegate: DefaultPagedChildBuilderDelegate<UserModel>(
               pagingController: controller.pagingController,
               itemBuilder: (_, item, index) {
-                return ClientCard(
-                  onTap: () => controller.onTapItem(index),
+                return ContactListTile(
+                  userModel: item,
                 );
               },
             ),

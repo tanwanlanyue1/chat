@@ -75,7 +75,12 @@ class ChatManager {
         uiConfig: _callInvitationUIConfig(),
         events: ZegoUIKitPrebuiltCallEvents(
           user: ZegoCallUserEvents(
-
+            onEnter: (user){
+              AppLogger.d('onEnter: ${user.name}');
+            },
+            onLeave: (user){
+              AppLogger.d('onLeave: ${user.name}');
+            }
           ),
           onCallEnd: (ZegoCallEndEvent event, VoidCallback defaultAction){
             // if(event.callID)

@@ -477,4 +477,14 @@ class UserApi {
       },
     );
   }
+
+
+  /// 根据账号ID查找用户
+  static Future<ApiResponse<UserModel?>> queryUserByChatNo(int chatNo) {
+    return HttpClient.get(
+      '/api/user/queryUserByChatNo',
+      params: {'chatNo': chatNo},
+      dataConverter: (json) => UserModel.fromJson(json),
+    );
+  }
 }

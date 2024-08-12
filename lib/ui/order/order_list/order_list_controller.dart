@@ -4,6 +4,7 @@ import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
+import 'package:guanjia/ui/order/widgets/assign_agent_dialog/order_assign_agent_dialog.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -87,16 +88,11 @@ class OrderListController extends GetxController {
     return true;
   }
 
-  Future<bool> onTapOrderAssign(int orderId) async {
-    // TODO: 选择指派佳丽
-    Loading.show();
-    final res = await OrderApi.assign(orderId: orderId, receiveId: 1);
-    Loading.dismiss();
-    if (!res.isSuccess) {
-      res.showErrorMessage();
-      return false;
+  Future<void> onTapOrderAssign(int orderId) async {
+    final res = await OrderAssignAgentDialog.show(orderId);
+    if (res == true) {
+      pagingController.refresh();
     }
-    return true;
   }
 
   Future<bool> onTapOrderFinish(int orderId) async {

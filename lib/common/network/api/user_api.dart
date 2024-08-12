@@ -387,7 +387,7 @@ class UserApi {
   /// serviceCharge：服务费
   static Future<ApiResponse> updateUserCharge({
     required double serviceCharge,
- }) {
+  }) {
     return HttpClient.post(
       '/api/user/updateUserCharge',
       data: {
@@ -470,7 +470,7 @@ class UserApi {
     return HttpClient.get(
       '/api/user/getUserAdvanced',
       dataConverter: (data) {
-        if(data is Map) {
+        if (data is Map) {
           return UserAdvanced.fromJson(data);
         }
         return null;
@@ -478,17 +478,36 @@ class UserApi {
     );
   }
 
-
   /// 根据账号ID查找用户
   static Future<ApiResponse<UserModel?>> queryUserByChatNo(int chatNo) {
     return HttpClient.get(
       '/api/user/queryUserByChatNo',
       params: {'chatNo': chatNo},
-      dataConverter: (json){
-        if(json != null){
+      dataConverter: (json) {
+        if (json != null) {
           return UserModel.fromJson(json);
         }
         return null;
+      },
+    );
+  }
+
+  /// 契约单 - 获取经纪人团队列表
+  static Future<ApiResponse<List<UserModel>>> getTeamUserList({
+    int page = 1,
+    int size = 10,
+  }) {
+    return HttpClient.get(
+      '/api/user/getTeamUserList',
+      params: {
+        "page": page,
+        "size": size,
+      },
+      dataConverter: (json) {
+        if (json is List) {
+          return json.map((e) => UserModel.fromJson(e)).toList();
+        }
+        return [];
       },
     );
   }

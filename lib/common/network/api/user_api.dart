@@ -484,7 +484,12 @@ class UserApi {
     return HttpClient.get(
       '/api/user/queryUserByChatNo',
       params: {'chatNo': chatNo},
-      dataConverter: (json) => UserModel.fromJson(json),
+      dataConverter: (json){
+        if(json != null){
+          return UserModel.fromJson(json);
+        }
+        return null;
+      },
     );
   }
 }

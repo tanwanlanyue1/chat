@@ -86,7 +86,7 @@ class ContactListTile extends StatelessWidget {
                           )
                         ],
                         Text(
-                          "${S.current.yesterday} 09:35",
+                          userModel.type.label,
                           style: AppTextStyle.fs12m
                               .copyWith(color: AppColor.gray30),
                         ),
@@ -100,7 +100,7 @@ class ContactListTile extends StatelessWidget {
                 onPressed: onTap,
                 width: 82.rpx,
                 height: 28.rpx,
-                backgroundColor: AppColor.purple6,
+                backgroundColor: userModel.gender == UserGender.female ? AppColor.purple6 : AppColor.blue6,
                 child: Text(
                   S.current.getTouchWith,
                   style: AppTextStyle.fs12m.copyWith(color: Colors.white),
@@ -117,5 +117,18 @@ class ContactListTile extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+extension on UserType {
+  String get label{
+    switch(this){
+      case UserType.user:
+        return '个人';
+      case UserType.beauty:
+        return '佳丽';
+      case UserType.agent:
+        return '经纪人';
+    }
   }
 }

@@ -10,6 +10,7 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/mine/widgets/client_card.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -64,6 +65,9 @@ class _ContactViewState extends State<ContactView>
               itemBuilder: (_, item, index) {
                 return ContactListTile(
                   userModel: item,
+                  onTap: (){
+                    MessageListPage.go(userId: item.uid);
+                  },
                 );
               },
             ),

@@ -33,12 +33,11 @@ class MessageListPage extends GetView<MessageListController> {
   });
 
   ///跳转聊天
-  ///- conversationId 用户ID
+  ///- userId 用户ID
   static void go({
-    required String conversationId,
-    required ZIMConversationType? conversationType,
+    required int userId,
   }) {
-    if(conversationId == SS.login.userId.toString()){
+    if(userId == SS.login.userId){
       AppLogger.w('不可和自己聊天');
       return;
     }
@@ -46,8 +45,8 @@ class MessageListPage extends GetView<MessageListController> {
     Get.toNamed(
       AppRoutes.messageListPage,
       arguments: {
-        'conversationId': conversationId,
-        'conversationType': conversationType,
+        'conversationId': userId.toString(),
+        'conversationType': ZIMConversationType.peer,
       },
     );
   }

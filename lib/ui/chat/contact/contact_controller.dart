@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
-import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
+
 import 'contact_state.dart';
 
 class ContactController extends GetxController {
@@ -31,20 +33,20 @@ class ContactController extends GetxController {
       page: page,
       size: pagingController.pageSize,
     );
-    if(response.isSuccess){
+    if (response.isSuccess) {
       pagingController.appendPageData(response.data ?? []);
-    }else{
+    } else {
       pagingController.error = response.errorMessage;
     }
   }
 
   void doSearch() async {
     final text = editingController.text.trim();
-    if(text.isEmpty){
+    if (text.isEmpty) {
       return;
     }
     final chatNo = int.tryParse(text);
-    if(chatNo == null){
+    if (chatNo == null) {
       Loading.showToast('用户ID无效');
       return;
     }
@@ -52,10 +54,17 @@ class ContactController extends GetxController {
     Loading.show();
     final response = await UserApi.queryUserByChatNo(chatNo);
     Loading.dismiss();
-    if(response.isSuccess){
+    if (response.isSuccess) {
       final userId = response.data?.uid;
-
-    }else{
+      if (userId != null) {
+        CommonUtils.hideSoftKeyboard();
+        Get.toNamed(AppRoutes.userCenterPage, arguments: {
+          'userId': userId,
+        });
+      } else {
+        Loading.showToast('用户不存在');
+      }
+    } else {
       response.showErrorMessage();
     }
   }
@@ -64,10 +73,7 @@ class ContactController extends GetxController {
     final users = [19, 20, 21];
     final id = users.elementAtOrNull(index);
     if (id != null && id != SS.login.userId) {
-      MessageListPage.go(
-        conversationId: id.toString(),
-        conversationType: ZIMConversationType.peer,
-      );
+      MessageListPage.go(userId: id);
     }
   }
 }

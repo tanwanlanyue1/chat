@@ -41,8 +41,7 @@ class ConversationListTile extends StatelessWidget {
       return;
     }
     MessageListPage.go(
-      conversationId: conversation.id,
-      conversationType: conversation.type,
+      userId: int.parse(conversation.id),
     );
   }
 

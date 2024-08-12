@@ -12,6 +12,13 @@ import '../widgets/upload_cover.dart';
 import 'user_center_state.dart';
 
 class UserCenterController extends GetxController {
+  UserCenterController({
+    int? userId //用户id
+  }){
+    print("state.authorId==$userId");
+    state.authorId = userId ?? 0;
+  }
+
   final UserCenterState state = UserCenterState();
   final ScrollController scrollController = ScrollController();
 
@@ -33,11 +40,11 @@ class UserCenterController extends GetxController {
       state.isAppBarExpanded.value = (appBarHeight - kToolbarHeight) < offset;
     });
     getUserInfo();
+    getIsAttention();
     super.onInit();
   }
 
   ///获取创作列表
-  ///16
   void fetchPage(int page) async {
     final response = await PlazaApi.getMyPostList(
       page: page,
@@ -53,21 +60,11 @@ class UserCenterController extends GetxController {
 
   ///获取作者信息
   Future<void> getUserInfo() async {
-    final response = await UserApi.info(uid: 22);//16
-    // final response = await UserApi.info(uid: state.authorId);
+    final response = await UserApi.info(uid: state.authorId);
     if (response.isSuccess) {
       state.authorInfo = response.data ?? UserModel.fromJson({});
       update(['userInfo']);
     }
-  }
-
-  ///获取关注数和粉丝数和创作数
-  Future<void> getFollowFansCount() async {
-    // final response = await UserApi.getFollowFansCount(uid: state.authorId);
-    // if (response.isSuccess) {
-    //   state.creation = response.data;
-    //   update(['userInfo']);
-    // }
   }
 
   ///是否关注作者
@@ -89,11 +86,7 @@ class UserCenterController extends GetxController {
       response.showErrorMessage();
       return;
     }else{
-      if(response.data == 0){
-        state.creation['fansCount'] = state.creation['fansCount']+1;
-      }else{
-        state.creation['fansCount'] = state.creation['fansCount']-1;
-      }
+
     }
     state.isAttention = !state.isAttention;
     update(['userInfo']);

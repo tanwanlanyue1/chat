@@ -12,6 +12,7 @@ import 'package:guanjia/ui/discover/friend_date/release_invitation/release_invit
 import 'package:guanjia/ui/home/home_page.dart';
 import 'package:guanjia/ui/plaza/all_comments/all_comments_page.dart';
 import 'package:guanjia/ui/plaza/release_dynamic/release_dynamic_page.dart';
+import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_page.dart';
 import 'package:guanjia/ui/welcome/welcome_page.dart';
 import 'package:guanjia/widgets/web/web_page.dart';
@@ -38,9 +39,10 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.userCenterPage,
-      page: () => UserCenterPage(
-        userId: Get.getArgs('userId', null),
-      ),
+      page: () => UserCenterPage(),
+      binding: BindingsBuilder.put(() => UserCenterController(
+        userId: Get.tryGetArgs('userId'),
+      )),
     ),
     GetPage(
       name: AppRoutes.allCommentsPage,

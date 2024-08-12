@@ -20,6 +20,7 @@ class MessageListView extends StatefulWidget {
     this.onPressed,
     this.itemBuilder,
     this.messageContentBuilder,
+    this.avatarBuilder,
     this.backgroundBuilder,
     this.loadingBuilder,
     this.onLongPress,
@@ -39,30 +40,42 @@ class MessageListView extends StatefulWidget {
     ZIMKitMessage message,
     Function defaultAction,
   )? onPressed;
+
   final void Function(
     BuildContext context,
     LongPressStartDetails details,
     ZIMKitMessage message,
     Function defaultAction,
   )? onLongPress;
+
   final Widget Function(
     BuildContext context,
     ZIMKitMessage message,
     Widget defaultWidget,
   )? itemBuilder;
+
   final Widget Function(
     BuildContext context,
     ZIMKitMessage message,
     Widget defaultWidget,
   )? messageContentBuilder;
+
+  final Widget Function(
+    BuildContext context,
+    ZIMKitMessage message,
+    Widget defaultWidget,
+  )? avatarBuilder;
+
   final Widget Function(
     BuildContext context,
     Widget defaultWidget,
   )? errorBuilder;
+
   final Widget Function(
     BuildContext context,
     Widget defaultWidget,
   )? loadingBuilder;
+
   final Widget Function(
     BuildContext context,
     Widget defaultWidget,
@@ -240,6 +253,7 @@ class _MessageListViewState extends State<MessageListView> {
           onPressed: widget.onPressed,
           onLongPress: widget.onLongPress,
           messageContentBuilder: widget.messageContentBuilder,
+          avatarBuilder: widget.avatarBuilder,
         ),
       ),
     );

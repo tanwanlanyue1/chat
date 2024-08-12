@@ -27,10 +27,10 @@ class ChatInputView extends StatefulWidget {
   });
 
   @override
-  State<ChatInputView> createState() => _ChatInputViewState();
+  State<ChatInputView> createState() => ChatInputViewState();
 }
 
-class _ChatInputViewState extends State<ChatInputView>
+class ChatInputViewState extends State<ChatInputView>
     with AutoDisposeMixin
     implements RouteAware {
   final focusNode = TextInputFocusNode()..ignoreSystemKeyboardShow = false;

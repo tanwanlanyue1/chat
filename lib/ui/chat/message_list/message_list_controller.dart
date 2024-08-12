@@ -8,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'message_list_state.dart';
+import 'widgets/chat_input_view.dart';
 
 class MessageListController extends GetxController {
   final MessageListState state;
@@ -15,6 +16,7 @@ class MessageListController extends GetxController {
   final recordProcessor = ZIMKitRecordStatus();
   final scrollController = ScrollController();
   ValueNotifier<ZIMKitConversation>? _conversationNotifier;
+  final chatInputViewKey = GlobalKey<ChatInputViewState>();
 
   @override
   void onInit() {

@@ -63,12 +63,7 @@ class _ContactViewState extends State<ContactView>
             builderDelegate: DefaultPagedChildBuilderDelegate<UserModel>(
               pagingController: controller.pagingController,
               itemBuilder: (_, item, index) {
-                return ContactListTile(
-                  userModel: item,
-                  onTap: (){
-                    MessageListPage.go(userId: item.uid);
-                  },
-                );
+                return ContactListTile(userModel: item);
               },
             ),
           ),

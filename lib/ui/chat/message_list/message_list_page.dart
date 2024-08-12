@@ -36,7 +36,7 @@ class MessageListPage extends GetView<MessageListController> {
   static void go({
     required int userId,
   }) {
-    if(userId == SS.login.userId){
+    if (userId == SS.login.userId) {
       AppLogger.w('不可和自己聊天');
       return;
     }
@@ -72,8 +72,17 @@ class MessageListPage extends GetView<MessageListController> {
               Positioned.fill(
                 child: Column(
                   children: [
-                    Expanded(child: buildMessageListView()),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: (){
+                          controller
+                              .chatInputViewKey.currentState?.closePanel();
+                        },
+                        child: buildMessageListView(),
+                      ),
+                    ),
                     ChatInputView(
+                      key: controller.chatInputViewKey,
                       onSend: controller.sendTextMessage,
                       onTapFeatureAction: controller.onTapFeatureAction,
                       featureActions: state.featureActions,
@@ -95,7 +104,8 @@ class MessageListPage extends GetView<MessageListController> {
     );
   }
 
-  Widget buildFeatureItem(BuildContext context, Widget defaultWidget, ChatFeatureAction action) {
+  Widget buildFeatureItem(
+      BuildContext context, Widget defaultWidget, ChatFeatureAction action) {
     if ([ChatFeatureAction.voiceCall, ChatFeatureAction.videoCall]
         .contains(action)) {
       final isVideoCall = action == ChatFeatureAction.videoCall;
@@ -121,8 +131,8 @@ class MessageListPage extends GetView<MessageListController> {
       scrollController: controller.scrollController,
       conversationID: conversationId,
       conversationType: conversationType,
-      // onPressed: widget.onMessageItemPressed,
       itemBuilder: buildMessageItem,
+      avatarBuilder: buildAvatar,
       backgroundBuilder: buildBackground,
       listViewPadding: FEdgeInsets(top: ChatDateView.height),
     );
@@ -190,6 +200,15 @@ class MessageListPage extends GetView<MessageListController> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget buildAvatar(_, ZIMKitMessage message, Widget defaultChild) {
+    return GestureDetector(
+      onTap: () => Get.toNamed(AppRoutes.userCenterPage, arguments: {
+        'userId': int.tryParse(message.info.senderUserID),
+      }),
+      child: defaultChild,
     );
   }
 }

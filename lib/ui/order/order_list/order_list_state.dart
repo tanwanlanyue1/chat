@@ -1,20 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/network/api/api.dart';
-import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 
-class OrderListState {}
+class OrderListState {
+  final waitTimeCount = 0.obs; // 等待超时
+  final otherCancelCount = 0.obs; // 对方取消
+  final selfCancelCount = 0.obs; // 主动取消
+  final evaluateCount = 0.obs; // 已完成待评价
+  final completeCount = 0.obs; // 已完成已评价
+  final allCompleteCount = 0.obs; // 已完成
+}
 
-class OrderListItemState {
-  final String text;
-  final Color color;
-  final OrderOperationType operation;
+class OrderListItemWrapper {
+  final String avatar; // 头像
+  final String nick; // 昵称
+  final String? nickWithAgent; // 经纪人下拓展昵称
+  final String stateText; // 订单状态文本
+  final Color stateTextColor; // 订单状态文本颜色
+  final OrderOperationType operation; // 订单操作类型
 
-  OrderListItemState({
-    required this.text,
-    required this.color,
+  OrderListItemWrapper({
+    required this.avatar,
+    required this.nick,
+    this.nickWithAgent,
+    required this.stateText,
+    required this.stateTextColor,
     this.operation = OrderOperationType.none,
   });
 }
@@ -22,257 +35,528 @@ class OrderListItemState {
 class OrderListItem {
   OrderListItem({
     required this.itemModel,
-  })  : id = itemModel.id,
-        itemType = _getType(itemModel),
-        state = _getState(_getType(itemModel));
+  }) {
+    /// 优先保证初始化itemUserType，下方顺序很重要
+    itemUserType = itemModel.requestId == SS.login.userId
+        ? OrderItemUserType.request
+        : OrderItemUserType.receive;
+    itemType = _getType(itemModel, itemUserType);
+    _wrapper = _getState(itemModel, itemType, itemUserType);
+  }
 
+  // 原始数据
   final OrderItemModel itemModel;
 
-  // 订单类型
-  final OrderItemType itemType;
+  // 订单用户类型
+  late final OrderItemUserType itemUserType;
 
-  // 订单界面状态
-  final OrderListItemState state;
+  // 订单类型
+  late final OrderItemState itemType;
 
   // 订单id
-  final int id;
+  int get id => itemModel.id;
+
+  // 订单界面包装器
+  late final OrderListItemWrapper _wrapper;
+
+  String get time => itemModel.createTime;
+
+  // 订单编号
+  String get number => "订单编号：${itemModel.number}";
+
+  // 订单头像
+  String get avatar => _wrapper.avatar;
+
+  // 订单不同状态昵称
+  String get nick => _wrapper.nick;
+
+  // 订单接约人，订单类型为普通订单时，并且角色为经纪人的某些状态下会有值
+  String? get nickWithAgent => _wrapper.nickWithAgent;
 
   // 订单状态文本
-  String get stateText => state.text;
+  String get stateText => _wrapper.stateText;
 
   // 订单状态文本颜色
-  Color get stateTextColor => state.color;
+  Color get stateTextColor => _wrapper.stateTextColor;
 
-  OrderOperationType get operationType => state.operation;
+  // 订单操作类型
+  OrderOperationType get operationType => _wrapper.operation;
 
   /// 根据订单模型组装新的订单类型
-  static OrderItemType _getType(OrderItemModel model) {
+  static OrderItemState _getType(
+      OrderItemModel model, OrderItemUserType itemUserType) {
     final userType = SS.login.userType;
     final orderType = model.type;
     final orderState = model.state;
     final requestState = model.requestState;
     final receiveState = model.receiveState;
 
-    switch (orderState) {
-      case OrderState.waitingAcceptance:
-        if (userType.isAgent) {
-          // 当前用户是经纪人，接收方为空时，改为指派状态
-          return model.receiveId == 0
-              ? OrderItemType.waitingAssign
-              : OrderItemType.waitingAcceptance;
-        }
-        return OrderItemType.waitingAcceptance;
+    if (orderType.isNormal) {
+      switch (orderState) {
+        case OrderState.waitingAcceptance:
+          if (userType.isAgent) {
+            // 当前用户是经纪人，接收方为空时，改为指派状态
+            return model.receiveId == 0
+                ? OrderItemState.waitingAssign
+                : OrderItemState.waitingAcceptance;
+          }
+          return OrderItemState.waitingAcceptance;
 
-      case OrderState.waitingPayment:
-        // 根据用户类型和订单状态确定订单项类型
-        return userType.isBeauty
-            ? (receiveState.isWaitingPayment
-                ? OrderItemType.waitingPaymentForReceive
-                : OrderItemType.waitingPaymentForRequest)
-            : (requestState.isWaitingPayment
-                ? OrderItemType.waitingPaymentForRequest
-                : OrderItemType.waitingPaymentForReceive);
+        case OrderState.waitingPayment:
+          // 根据用户类型和订单状态确定订单项类型
+          return userType.isBeauty
+              ? (receiveState.isWaitingPayment
+                  ? OrderItemState.waitingPaymentForReceive
+                  : OrderItemState.waitingPaymentForRequest)
+              : (requestState.isWaitingPayment
+                  ? OrderItemState.waitingPaymentForRequest
+                  : OrderItemState.waitingPaymentForReceive);
 
-      case OrderState.going:
-        return receiveState.isConfirm
-            ? OrderItemType.waitingConfirmForRequest
-            : OrderItemType.waitingConfirmForReceive;
+        case OrderState.going:
+          return receiveState.isConfirm
+              ? OrderItemState.waitingConfirmForRequest
+              : OrderItemState.waitingConfirmForReceive;
 
-      case OrderState.cancel:
-        // 优先显示请求方取消状态
-        return requestState.isCancel
-            ? OrderItemType.cancelForRequest
-            : OrderItemType.cancelForReceive;
+        case OrderState.cancel:
+          // 优先显示请求方取消状态
+          return requestState.isCancel
+              ? OrderItemState.cancelForRequest
+              : OrderItemState.cancelForReceive;
 
-      case OrderState.finish:
-        // 当订单类型是正常订单 并且 当前用户是普通用户，且评价星值为0时，改为等待评价状态
-        print(orderType.isNormal);
-        print(userType.isUser);
-        print(model.evaluateScore);
-        if (orderType.isNormal && model.evaluateScore == 0) {
-          return OrderItemType.waitingEvaluation;
-        }
-        return OrderItemType.finish;
+        case OrderState.finish:
+          // 评价星值为0时，改为等待评价状态
+          return model.evaluateScore == 0
+              ? OrderItemState.waitingEvaluation
+              : OrderItemState.finish;
+      }
+    } else {
+      switch (orderState) {
+        case OrderState.waitingAcceptance:
+          // 征友订单不存在等待接受的状态
+          return OrderItemState.unknown;
+
+        case OrderState.waitingPayment:
+          // 根据用户类型和订单状态确定订单项类型
+          return itemUserType.isReceive
+              ? (receiveState.isWaitingPayment
+                  ? OrderItemState.waitingPaymentForReceive
+                  : OrderItemState.waitingPaymentForRequest)
+              : (requestState.isWaitingPayment
+                  ? OrderItemState.waitingPaymentForRequest
+                  : OrderItemState.waitingPaymentForReceive);
+
+        case OrderState.going:
+          // 接受方需要先确认订单后再进行请求方确认
+          return receiveState.isConfirm
+              ? OrderItemState.waitingConfirmForRequest
+              : OrderItemState.waitingConfirmForReceive;
+
+        case OrderState.cancel:
+          // 优先显示请求方取消状态
+          return requestState.isCancel
+              ? OrderItemState.cancelForRequest
+              : OrderItemState.cancelForReceive;
+
+        case OrderState.finish:
+          return OrderItemState.finish;
+      }
     }
   }
 
   /// 根据订单类型组装新的 订单界面状态
-  static OrderListItemState _getState(OrderItemType type) {
-    final userType = SS.login.userType;
-    return stateMap[type]?[userType] ??
-        OrderListItemState(
-          text: "未知状态",
-          color: Colors.grey,
+  static OrderListItemWrapper _getState(
+      OrderItemModel model, OrderItemState state, OrderItemUserType userType) {
+    final OrderListItemWrapper? wrapper;
+
+    if (model.type.isNormal) {
+      final userType = SS.login.userType;
+      wrapper = buildNormalWrapperMap(model)[state]?[userType];
+    } else {
+      wrapper = buildFriendWrapperMap(model)[state]?[userType];
+    }
+
+    return wrapper ??
+        OrderListItemWrapper(
+          avatar: "",
+          nick: "",
+          stateText: "未知状态",
+          stateTextColor: Colors.grey,
         );
   }
 
-  static final Map<OrderItemType, Map<UserType, OrderListItemState>> stateMap =
-      {
-    OrderItemType.waitingAcceptance: {
-      UserType.user: OrderListItemState(
-        text: "等待对方接单",
-        color: AppColor.textYellow,
-        operation: OrderOperationType.cancel,
-      ),
-      UserType.beauty: OrderListItemState(
-        text: "待您接单",
-        color: AppColor.textBlue,
-        operation: OrderOperationType.accept,
-      ),
-      UserType.agent: OrderListItemState(
-        text: "等待佳丽接单",
-        color: AppColor.textRed,
-        operation: OrderOperationType.connect,
-      ),
-    },
-    OrderItemType.waitingAssign: {
-      UserType.agent: OrderListItemState(
-        text: "待您指派接单",
-        color: AppColor.textBlue,
-        operation: OrderOperationType.assign,
-      ),
-    },
-    OrderItemType.waitingPaymentForRequest: {
-      UserType.user: OrderListItemState(
-        text: "待您缴费",
-        color: AppColor.textBlue,
-        operation: OrderOperationType.payment,
-      ),
-      UserType.beauty: OrderListItemState(
-        text: "等待用户缴费",
-        color: AppColor.textYellow,
-        operation: OrderOperationType.cancel,
-      ),
-      UserType.agent: OrderListItemState(
-        text: "等待用户缴费",
-        color: AppColor.textYellow,
-        operation: OrderOperationType.none,
-      ),
-    },
-    OrderItemType.waitingPaymentForReceive: {
-      UserType.user: OrderListItemState(
-        text: "等待佳丽缴纳保证金",
-        color: AppColor.textYellow,
-        operation: OrderOperationType.cancel,
-      ),
-      UserType.beauty: OrderListItemState(
-        text: "待您缴纳保证金",
-        color: AppColor.textBlue,
-        operation: OrderOperationType.payment,
-      ),
-      UserType.agent: OrderListItemState(
-        text: "等待佳丽缴纳保证金",
-        color: AppColor.textRed,
-        operation: OrderOperationType.connect,
-      ),
-    },
-    OrderItemType.waitingConfirmForRequest: {
-      UserType.user: OrderListItemState(
-        text: "约会进行中",
-        color: AppColor.textPurple,
-        operation: OrderOperationType.finish,
-      ),
-      UserType.beauty: OrderListItemState(
-        text: "约会进行中",
-        color: AppColor.textPurple,
-        operation: OrderOperationType.none,
-      ),
-      UserType.agent: OrderListItemState(
-        text: "约会进行中",
-        color: AppColor.textPurple,
-        operation: OrderOperationType.connect,
-      ),
-    },
-    OrderItemType.waitingConfirmForReceive: {
-      UserType.user: OrderListItemState(
-        text: "约会进行中",
-        color: AppColor.textPurple,
-        operation: OrderOperationType.cancel,
-      ),
-      UserType.beauty: OrderListItemState(
-        text: "约会进行中",
-        color: AppColor.textPurple,
-        operation: OrderOperationType.cancelAndFinish,
-      ),
-      UserType.agent: OrderListItemState(
-        text: "约会进行中",
-        color: AppColor.textPurple,
-        operation: OrderOperationType.connect,
-      ),
-    },
-    OrderItemType.cancelForRequest: {
-      UserType.user: OrderListItemState(
-        text: "您主动取消订单",
-        color: AppColor.black9,
-      ),
-      UserType.beauty: OrderListItemState(
-        text: "对方已取消订单",
-        color: AppColor.black9,
-      ),
-      UserType.agent: OrderListItemState(
-        text: "用户已取消订单",
-        color: AppColor.black9,
-        operation: OrderOperationType.connect,
-      ),
-    },
-    OrderItemType.cancelForReceive: {
-      UserType.user: OrderListItemState(
-        text: "对方已取消订单",
-        color: AppColor.black9,
-      ),
-      UserType.beauty: OrderListItemState(
-        text: "您主动取消订单",
-        color: AppColor.black9,
-      ),
-      UserType.agent: OrderListItemState(
-        text: "佳丽已取消订单",
-        color: AppColor.black9,
-        operation: OrderOperationType.connect,
-      ),
-    },
-    OrderItemType.timeOut: {
-      UserType.user: OrderListItemState(
-        text: "等待超时",
-        color: AppColor.black9,
-      ),
-      UserType.beauty: OrderListItemState(
-        text: "等待超时",
-        color: AppColor.black9,
-      ),
-      UserType.agent: OrderListItemState(
-        text: "等待超时",
-        color: AppColor.black9,
-        operation: OrderOperationType.connect,
-      ),
-    },
-    OrderItemType.finish: {
-      UserType.user: OrderListItemState(
-        text: "订单已完成",
-        color: AppColor.textGreen,
-      ),
-      UserType.beauty: OrderListItemState(
-        text: "订单已完成",
-        color: AppColor.textGreen,
-      ),
-      UserType.agent: OrderListItemState(
-        text: "订单已完成",
-        color: AppColor.textGreen,
-      ),
-    },
-    OrderItemType.waitingEvaluation: {
-      UserType.user: OrderListItemState(
-        text: "已确认完成，待评价",
-        color: AppColor.textBlue,
-        operation: OrderOperationType.evaluation,
-      ),
-      UserType.beauty: OrderListItemState(
-        text: "已确认完成，待用户评价",
-        color: AppColor.textGreen,
-      ),
-      UserType.agent: OrderListItemState(
-        text: "已确认完成，待用户评价",
-        color: AppColor.textGreen,
-      ),
-    },
-  };
+  static Map<OrderItemState, Map<UserType, OrderListItemWrapper>>
+      buildNormalWrapperMap(OrderItemModel model) {
+    final requestName = model.requestName;
+
+    return {
+      OrderItemState.waitingAcceptance: {
+        UserType.user: OrderListItemWrapper(
+          avatar: model.receiveId == 0
+              ? model.introducerAvatar
+              : model.receiveAvatar,
+          nick: model.receiveId == 0
+              ? "接约人：${model.introducerName}"
+              : "接约人：${model.receiveName}",
+          stateText: "等待对方接单",
+          stateTextColor: AppColor.textYellow,
+          operation: OrderOperationType.cancel,
+        ),
+        UserType.beauty: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          stateText: "待您接单",
+          stateTextColor: AppColor.textBlue,
+          operation: OrderOperationType.accept,
+        ),
+        UserType.agent: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          nickWithAgent: "接约人：${model.receiveName}",
+          stateText: "等待佳丽接单",
+          stateTextColor: AppColor.textRed,
+          operation: OrderOperationType.connect,
+        ),
+      },
+      OrderItemState.waitingAssign: {
+        UserType.agent: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          stateText: "待您指派接单",
+          stateTextColor: AppColor.textBlue,
+          operation: OrderOperationType.assign,
+        ),
+      },
+      OrderItemState.waitingPaymentForRequest: {
+        UserType.user: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "接约人：${model.receiveName}",
+          stateText: "待您缴费",
+          stateTextColor: AppColor.textBlue,
+          operation: OrderOperationType.payment,
+        ),
+        UserType.beauty: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          stateText: "等待用户缴费",
+          stateTextColor: AppColor.textYellow,
+          operation: OrderOperationType.cancel,
+        ),
+        UserType.agent: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          nickWithAgent: "接约人：${model.receiveName}",
+          stateText: "等待用户缴费",
+          stateTextColor: AppColor.textYellow,
+          operation: OrderOperationType.none,
+        ),
+      },
+      OrderItemState.waitingPaymentForReceive: {
+        UserType.user: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "接约人：${model.receiveName}",
+          stateText: "等待佳丽缴纳保证金",
+          stateTextColor: AppColor.textYellow,
+          operation: OrderOperationType.cancel,
+        ),
+        UserType.beauty: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          stateText: "待您缴纳保证金",
+          stateTextColor: AppColor.textBlue,
+          operation: OrderOperationType.payment,
+        ),
+        UserType.agent: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          nickWithAgent: "接约人：${model.receiveName}",
+          stateText: "等待佳丽缴纳保证金",
+          stateTextColor: AppColor.textRed,
+          operation: OrderOperationType.connect,
+        ),
+      },
+      OrderItemState.waitingConfirmForRequest: {
+        UserType.user: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "接约人：${model.receiveName}",
+          stateText: "约会进行中",
+          stateTextColor: AppColor.textPurple,
+          operation: OrderOperationType.finish,
+        ),
+        UserType.beauty: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          stateText: "约会进行中",
+          stateTextColor: AppColor.textPurple,
+          operation: OrderOperationType.none,
+        ),
+        UserType.agent: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          nickWithAgent: "接约人：${model.receiveName}",
+          stateText: "约会进行中",
+          stateTextColor: AppColor.textPurple,
+          operation: OrderOperationType.connect,
+        ),
+      },
+      OrderItemState.waitingConfirmForReceive: {
+        UserType.user: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "接约人：${model.receiveName}",
+          stateText: "约会进行中",
+          stateTextColor: AppColor.textPurple,
+          operation: OrderOperationType.cancel,
+        ),
+        UserType.beauty: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          stateText: "约会进行中",
+          stateTextColor: AppColor.textPurple,
+          operation: OrderOperationType.cancelAndFinish,
+        ),
+        UserType.agent: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          nickWithAgent: "接约人：${model.receiveName}",
+          stateText: "约会进行中",
+          stateTextColor: AppColor.textPurple,
+          operation: OrderOperationType.connect,
+        ),
+      },
+      OrderItemState.cancelForRequest: {
+        UserType.user: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "接约人：${model.receiveName}",
+          stateText: "您主动取消订单",
+          stateTextColor: AppColor.black9,
+        ),
+        UserType.beauty: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          stateText: "对方已取消订单",
+          stateTextColor: AppColor.black9,
+        ),
+        UserType.agent: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          nickWithAgent: "接约人：${model.receiveName}",
+          stateText: "用户已取消订单",
+          stateTextColor: AppColor.black9,
+          operation: OrderOperationType.connect,
+        ),
+      },
+      OrderItemState.cancelForReceive: {
+        UserType.user: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "接约人：${model.receiveName}",
+          stateText: "对方已取消订单",
+          stateTextColor: AppColor.black9,
+        ),
+        UserType.beauty: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          stateText: "您主动取消订单",
+          stateTextColor: AppColor.black9,
+        ),
+        UserType.agent: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          nickWithAgent: "接约人：${model.receiveName}",
+          stateText: "佳丽已取消订单",
+          stateTextColor: AppColor.black9,
+          operation: OrderOperationType.connect,
+        ),
+      },
+      OrderItemState.timeOut: {
+        UserType.user: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "接约人：${model.receiveName}",
+          stateText: "等待超时",
+          stateTextColor: AppColor.black9,
+        ),
+        UserType.beauty: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          stateText: "等待超时",
+          stateTextColor: AppColor.black9,
+        ),
+        UserType.agent: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          nickWithAgent: "接约人：${model.receiveName}",
+          stateText: "等待超时",
+          stateTextColor: AppColor.black9,
+          operation: OrderOperationType.connect,
+        ),
+      },
+      OrderItemState.finish: {
+        UserType.user: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "接约人：${model.receiveName}",
+          stateText: "订单已完成",
+          stateTextColor: AppColor.textGreen,
+        ),
+        UserType.beauty: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          stateText: "订单已完成",
+          stateTextColor: AppColor.textGreen,
+        ),
+        UserType.agent: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          nickWithAgent: "接约人：${model.receiveName}",
+          stateText: "订单已完成",
+          stateTextColor: AppColor.textGreen,
+        ),
+      },
+      OrderItemState.waitingEvaluation: {
+        UserType.user: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "接约人：${model.receiveName}",
+          stateText: "已确认完成，待评价",
+          stateTextColor: AppColor.textBlue,
+          operation: OrderOperationType.evaluation,
+        ),
+        UserType.beauty: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          stateText: "已确认完成，待用户评价",
+          stateTextColor: AppColor.textGreen,
+        ),
+        UserType.agent: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "下单用户：${model.requestName}",
+          nickWithAgent: "接约人：${model.receiveName}",
+          stateText: "已确认完成，待用户评价",
+          stateTextColor: AppColor.textGreen,
+        ),
+      },
+    };
+  }
+
+  static Map<OrderItemState, Map<OrderItemUserType, OrderListItemWrapper>>
+      buildFriendWrapperMap(OrderItemModel model) {
+    return {
+      OrderItemState.waitingPaymentForRequest: {
+        OrderItemUserType.request: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "参与约会：${model.receiveName}",
+          stateText: "待您缴费",
+          stateTextColor: AppColor.textBlue,
+          operation: OrderOperationType.payment,
+        ),
+        OrderItemUserType.receive: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "征友约会：${model.requestName}",
+          stateText: "等待用户缴费",
+          stateTextColor: AppColor.textYellow,
+          operation: OrderOperationType.cancel,
+        ),
+      },
+      OrderItemState.waitingPaymentForReceive: {
+        OrderItemUserType.request: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "参与约会：${model.receiveName}",
+          stateText: "等待用户缴费",
+          stateTextColor: AppColor.textYellow,
+          operation: OrderOperationType.cancel,
+        ),
+        OrderItemUserType.receive: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "征友约会：${model.requestName}",
+          stateText: "待您缴费",
+          stateTextColor: AppColor.textBlue,
+          operation: OrderOperationType.payment,
+        ),
+      },
+      OrderItemState.waitingConfirmForRequest: {
+        OrderItemUserType.request: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "参与约会：${model.receiveName}",
+          stateText: "约会进行中",
+          stateTextColor: AppColor.textPurple,
+          operation: OrderOperationType.finish,
+        ),
+        OrderItemUserType.receive: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "征友约会：${model.requestName}",
+          stateText: "约会进行中",
+          stateTextColor: AppColor.textPurple,
+          operation: OrderOperationType.none,
+        ),
+      },
+      OrderItemState.waitingConfirmForReceive: {
+        OrderItemUserType.request: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "参与约会：${model.receiveName}",
+          stateText: "约会进行中",
+          stateTextColor: AppColor.textPurple,
+          operation: OrderOperationType.cancel,
+        ),
+        OrderItemUserType.receive: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "征友约会：${model.requestName}",
+          stateText: "约会进行中",
+          stateTextColor: AppColor.textPurple,
+          operation: OrderOperationType.cancelAndFinish,
+        ),
+      },
+      OrderItemState.cancelForRequest: {
+        OrderItemUserType.request: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "参与约会：${model.receiveName}",
+          stateText: "您主动取消订单",
+          stateTextColor: AppColor.black9,
+        ),
+        OrderItemUserType.receive: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "征友约会：${model.requestName}",
+          stateText: "对方已取消订单",
+          stateTextColor: AppColor.black9,
+        ),
+      },
+      OrderItemState.cancelForReceive: {
+        OrderItemUserType.request: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "参与约会：${model.receiveName}",
+          stateText: "对方已取消订单",
+          stateTextColor: AppColor.black9,
+        ),
+        OrderItemUserType.receive: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "征友约会：${model.requestName}",
+          stateText: "您主动取消订单",
+          stateTextColor: AppColor.black9,
+        ),
+      },
+      OrderItemState.timeOut: {
+        OrderItemUserType.request: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "参与约会：${model.receiveName}",
+          stateText: "等待超时",
+          stateTextColor: AppColor.black9,
+        ),
+        OrderItemUserType.receive: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "征友约会：${model.requestName}",
+          stateText: "等待超时",
+          stateTextColor: AppColor.black9,
+        ),
+      },
+      OrderItemState.finish: {
+        OrderItemUserType.request: OrderListItemWrapper(
+          avatar: model.receiveAvatar,
+          nick: "参与约会：${model.receiveName}",
+          stateText: "订单已完成",
+          stateTextColor: AppColor.textGreen,
+        ),
+        OrderItemUserType.receive: OrderListItemWrapper(
+          avatar: model.requestAvatar,
+          nick: "征友约会：${model.requestName}",
+          stateText: "订单已完成",
+          stateTextColor: AppColor.textGreen,
+        ),
+      },
+    };
+  }
 }

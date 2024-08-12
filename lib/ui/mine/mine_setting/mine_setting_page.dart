@@ -37,6 +37,10 @@ class MineSettingPage extends StatelessWidget {
                   SettingItem(
                     bottom: 1.rpx,
                     title: S.current.vibrationReminder,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8.rpx),
+                      topRight: Radius.circular(8.rpx),
+                    ),
                     right: SizedBox(
                       width: 46.rpx,
                       child: Transform.scale(
@@ -55,6 +59,10 @@ class MineSettingPage extends StatelessWidget {
                   ),
                   SettingItem(
                     title: S.current.bellReminder,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8.rpx),
+                      bottomRight: Radius.circular(8.rpx),
+                    ),
                     right: SizedBox(
                       width: 46.rpx,
                       child: Transform.scale(
@@ -75,20 +83,37 @@ class MineSettingPage extends StatelessWidget {
                     bottom: 1.rpx,
                     title: S.current.changingPassword,
                     callBack: controller.updatePassword,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8.rpx),
+                      topRight: Radius.circular(8.rpx),
+                    ),
                   ),
-                  SettingItem(
-                    bottom: 1.rpx,
-                    title: S.current.setPaymentPassword,
-                    callBack: controller.paymentPasswordPage,
-                  ),
-                  SettingItem(
-                    title: S.current.changingPaymentPassword,
-                    callBack: controller.paymentPasswordPage,
+                  Visibility(
+                    visible: !(state.loginService.info?.payPwd ?? false),
+                    replacement: SettingItem(
+                      title: S.current.changingPaymentPassword,
+                      callBack: controller.paymentPasswordPage,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(8.rpx),
+                        bottomRight: Radius.circular(8.rpx),
+                      ),
+                    ),
+                    child: SettingItem(
+                      title: S.current.setPaymentPassword,
+                      callBack: controller.paymentPasswordPage,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(8.rpx),
+                        bottomRight: Radius.circular(8.rpx),
+                      ),
+                    ),
                   ),
                   SettingItem(
                     title: S.current.languageSwitch,
                     bottom: 1.rpx,
-                    borderRadius: BorderRadius.circular(8.rpx),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8.rpx),
+                      topRight: Radius.circular(8.rpx),
+                    ),
                     callBack: () {
                       controller.selectLanguage();
                     },
@@ -101,10 +126,7 @@ class MineSettingPage extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 14.rpx, color: const Color(0xff999999)),
                     ),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(8.rpx),
-                      bottomRight: Radius.circular(8.rpx),
-                    ),
+                    borderRadius: BorderRadius.zero,
                     callBack: () => controller.onTapClearCache(),
                   ),
                   SettingItem(

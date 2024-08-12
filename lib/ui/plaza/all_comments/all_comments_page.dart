@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 
+import '../widgets/review_dialog.dart';
 import 'all_comments_controller.dart';
 
 ///全部评论
@@ -26,6 +25,7 @@ class AllCommentsPage extends StatelessWidget {
           commentItem(),
         ],
       ),
+      bottomNavigationBar: bottomComment(),
     );
   }
 
@@ -88,7 +88,6 @@ class AllCommentsPage extends StatelessWidget {
   Widget commentItem(){
     return Container(
       color: Colors.white,
-      height: 98.rpx,
       padding: EdgeInsets.all(16.rpx),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,8 +124,35 @@ class AllCommentsPage extends StatelessWidget {
               Text(" 09:35",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
             ],
           ),
+          SizedBox(height: 12.rpx,),
           Text("小姐姐，晚上可以约吗？",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
         ],
+      ),
+    );
+  }
+
+  //底部评论
+  Widget bottomComment(){
+    return Container(
+      height: 68.rpx,
+      color: Colors.white,
+      padding: EdgeInsets.only(right: 16.rpx,left: 16.rpx),
+      child: GestureDetector(
+        onTap: (){
+          ReviewDialog.show();
+        },
+        child: Center(
+          child: Container(
+            height: 36.rpx,
+            decoration: BoxDecoration(
+              color: AppColor.gray14,
+              borderRadius: BorderRadius.circular(8.rpx),
+            ),
+            padding: EdgeInsets.only(left: 16.rpx),
+            alignment: Alignment.centerLeft,
+            child: Text("写下你的评论",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray10),),
+          ),
+        ),
       ),
     );
   }

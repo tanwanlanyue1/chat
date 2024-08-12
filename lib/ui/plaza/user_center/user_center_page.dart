@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_button.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -14,6 +18,7 @@ import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
+import '../../../common/network/api/api.dart';
 import 'user_center_controller.dart';
 
 ///广场-用户中心
@@ -27,58 +32,75 @@ class UserCenterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Expanded(
-            child: CustomScrollView(
-              controller: controller.scrollController,
-              slivers: <Widget>[
-                Obx(() => SliverAppBar(
-                  pinned: true,
-                  leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
-                  actions: [
-                    GestureDetector(
-                      onTap: controller.upload,
-                      child: AppImage.asset("assets/images/plaza/uploading.png",width: 24.rpx,height: 24.rpx,color: state.isAppBarExpanded.value ? Colors.black :Colors.white,),
-                    ),
-                    GestureDetector(
-                      child: Container(
-                        padding: EdgeInsets.only(right: 16.rpx,left: 12.rpx),
-                        child: AppImage.asset("assets/images/discover/more.png",width: 24.rpx,height: 24.rpx,color: state.isAppBarExpanded.value ? Colors.black :Colors.white,),
+      body: SmartRefresher(
+        controller: controller.pagingController.refreshController,
+        onRefresh: controller.pagingController.onRefresh,
+        child: Column(
+          children: [
+            Expanded(
+              child: CustomScrollView(
+                controller: controller.scrollController,
+                slivers: <Widget>[
+                  Obx(() => SliverAppBar(
+                    pinned: true,
+                    leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
+                    actions: [
+                      GestureDetector(
+                        onTap: controller.upload,
+                        child: AppImage.asset("assets/images/plaza/uploading.png",width: 24.rpx,height: 24.rpx,color: state.isAppBarExpanded.value ? Colors.black :Colors.white,),
                       ),
-                    ),
-                  ],
-                  expandedHeight: 250.rpx,
-                  flexibleSpace: FlexibleSpaceBar(
-                    titlePadding: EdgeInsets.zero,
-                    expandedTitleScale: 1.0,
-                    title: Container(
-                      height: 16.rpx,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(24.rpx),
-                          topRight: Radius.circular(24.rpx),
+                      GestureDetector(
+                        child: Container(
+                          padding: EdgeInsets.only(right: 16.rpx,left: 12.rpx),
+                          child: AppImage.asset("assets/images/discover/more.png",width: 24.rpx,height: 24.rpx,color: state.isAppBarExpanded.value ? Colors.black :Colors.white,),
                         ),
                       ),
-                    ),
-                    collapseMode: CollapseMode.parallax,
-                    background: backImage(),
-                  ),
-                )),
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      userInfo(),
-                      creativeDynamics(),
                     ],
+                    expandedHeight: 250.rpx,
+                    flexibleSpace: FlexibleSpaceBar(
+                      titlePadding: EdgeInsets.zero,
+                      expandedTitleScale: 1.0,
+                      title: Container(
+                        height: 16.rpx,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(24.rpx),
+                            topRight: Radius.circular(24.rpx),
+                          ),
+                        ),
+                      ),
+                      collapseMode: CollapseMode.parallax,
+                      background: backImage(),
+                    ),
+                  )),
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        userInfo(),
+                        creativeDynamics(),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  PagedSliverList(
+                    pagingController: controller.pagingController,
+                    builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
+                      pagingController: controller.pagingController,
+                      itemBuilder: (_, item, index) {
+                        return PlazaCard(
+                          user: true,
+                          item: item,
+                          // onTap: () => controller.onTapItem(index),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          voiceContainer()
-        ],
+            voiceContainer()
+          ],
+        ),
       ),
     );
   }
@@ -93,8 +115,6 @@ class UserCenterPage extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return AppImage.asset(
             'assets/images/plaza/back_image.png',
-            // align: Alignment.topCenter,
-            // borderRadius: BorderRadius.circular(8.rpx),
             width: Get.width,
             height: 300.rpx,
             fit: BoxFit.fitWidth,
@@ -121,122 +141,117 @@ class UserCenterPage extends StatelessWidget {
 
   ///用户信息
   Widget userInfo(){
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24.rpx),
-          topRight: Radius.circular(24.rpx),
+    return GetBuilder<UserCenterController>(
+      id: 'userInfo',
+      builder: (_) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24.rpx),
+            topRight: Radius.circular(24.rpx),
+          ),
         ),
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 16.rpx),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: 16.rpx),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    margin: EdgeInsets.only(right: 76.rpx,top: 8.rpx),
-                    child: AppImage.network(
-                      state.authorInfo.avatar ?? '',
-                      width: 80.rpx,
-                      height: 80.rpx,
-                      fit: BoxFit.fitWidth,
-                      shape: BoxShape.circle,
+        padding: EdgeInsets.symmetric(horizontal: 16.rpx),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(bottom: 16.rpx),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(top: 8.rpx,left: SS.login.userId != state.authorId ? (36.rpx) : 0),
+                      child: AppImage.network(
+                        state.authorInfo.avatar ?? '',
+                        width: 80.rpx,
+                        height: 80.rpx,
+                        fit: BoxFit.fitWidth,
+                        shape: BoxShape.circle,
+                      ),
                     ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: controller.attention,
-                  child: AppImage.asset("assets/images/plaza/attention.png",width: 24.rpx,height: 24.rpx,),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 4.rpx),
-                  child: Text("关注",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),
-                )
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(state.authorInfo.nickname ?? '',style: AppTextStyle.fs20b.copyWith(color: AppColor.gray5),),
-              SizedBox(width: 8.rpx),
-              AppImage.asset("assets/images/mine/safety.png",width: 16.rpx,height: 16.rpx,),
-            ],
-          ),
-          Text("${S.current.goodGirl} 北京",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(state.userBasics.length, (i) => SizedBox(
-              height: 85.rpx,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text("${state.userBasics[i]['name']}",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray9),),
-                  Text("${state.userBasics[i]['data']}",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
+                  Visibility(
+                    visible: SS.login.userId != state.authorId,
+                    child: GestureDetector(
+                      onTap: controller.attention,
+                      child: Row(
+                        children: [
+                          Visibility(
+                            visible: state.isAttention,
+                            replacement: AppImage.asset("assets/images/plaza/attention_no.png",width: 24.rpx,height: 24.rpx,),
+                            child: AppImage.asset("assets/images/plaza/attention.png",width: 24.rpx,height: 24.rpx,),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: 6.rpx),
+                            child: Text("关注",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            )),
-          ),
-          Container(
-            height: 2.rpx,
-            color: AppColor.scaffoldBackground,
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-            child: Text("个人简介",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
-          ),
-          RichText(
-            text: TextSpan(
-              text: '超级可爱的小魔仙，对各种新鲜事物非常感兴趣。超级可爱的小魔仙，对各种新鲜事物非常感兴趣。超级可爱的小魔仙，对各种新鲜事物...',
-              style: TextStyle(
-                color: const Color(0xff333333),
-                fontSize: 14.rpx,
-              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextSpan(
-                  text: 'Read more',
-                  style: TextStyle(
-                    color: AppColor.primary,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14.rpx,
-                  ),
-                ),
+                Text(state.authorInfo.nickname,style: AppTextStyle.fs20b.copyWith(color: AppColor.gray5),),
+                SizedBox(width: 8.rpx),
+                AppImage.asset("assets/images/mine/safety.png",width: 16.rpx,height: 16.rpx,),
               ],
             ),
-          ),
-          Container(
-            height: 2.rpx,
-            margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-            color: AppColor.scaffoldBackground,
-          ),
-        ],
-      ),
-    );
+            Container(
+              margin: EdgeInsets.only(right: 14.rpx),
+              child: Text("${S.current.goodGirl} ${state.authorInfo.position ?? ''}",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: List.generate(state.userBasics.length, (i) {
+                return SizedBox(
+                  height: 85.rpx,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text("${state.userBasics[i]['name']}",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray9),),
+                      Text(controller.basicsInfo(index: i),style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
+                    ],
+                  ),
+                );
+              }),
+            ),
+            Container(
+              height: 2.rpx,
+              color: AppColor.scaffoldBackground,
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
+              child: Text("个人简介",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
+            ),
+            Text(state.authorInfo.signature ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+            Container(
+              height: 2.rpx,
+              margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
+              color: AppColor.scaffoldBackground,
+            ),
+          ],
+        ),
+      );
+    },);
   }
 
   ///个人帖子
   Widget creativeDynamics(){
     return Container(
       color: AppColor.scaffoldBackground,
-      child: Column(
-        children: [
-          Container(
-            color: Colors.white,
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(left: 16.rpx),
-            child: Text("个人帖子",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
-          ),
-          ...List.generate(4, (index) => PlazaCard(
-            user: true,
-          ))
-        ],
+      child: Container(
+        color: Colors.white,
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(left: 16.rpx),
+        child: Text("个人帖子",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
       ),
     );
   }

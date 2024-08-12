@@ -8,3 +8,6 @@ const kEventReleaseSuccess = 'kEventReleaseSuccess';
 
 //监听帖子发布成功
 const kEventInvitationSuccess = 'kEventInvitationSuccess';
+
+//监听关注操作
+const kEventIsAttention = 'kEventIsAttention';

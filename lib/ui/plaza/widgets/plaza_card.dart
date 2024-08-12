@@ -23,17 +23,17 @@ import '../../../common/network/api/model/talk_model.dart';
 class PlazaCard extends StatelessWidget {
   final bool user;
   final bool delete;
-  PlazaListModel? item;
+  PlazaListModel item;
   final Function()? isSelectCall;//点击删除回调
   final Function(bool like)? isLike;//点击点赞
-  PlazaCard({super.key,this.user = false,this.delete = false,this.item,this.isSelectCall,this.isLike});
+  PlazaCard({super.key,this.user = false,this.delete = false,required this.item,this.isSelectCall,this.isLike});
 
   ///点赞或者取消点赞
   /// type:点赞类型（1动态2评论）
   Future<void> getCommentLike() async {
     SS.login.requiredAuthorized(() async{
       final response = await PlazaApi.getCommentLike(
-          id: item!.postId!,
+          id: item.postId!,
           type: 1
       );
       if(response.isSuccess){
@@ -76,10 +76,10 @@ class PlazaCard extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item?.uid});
+              Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item.uid});
             },
             child: AppImage.network(
-              item?.avatar ?? "",
+              item.avatar ?? "",
               width: 36.rpx,
               height: 36.rpx,
               shape: BoxShape.circle,
@@ -92,22 +92,22 @@ class PlazaCard extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item?.uid});
+                    Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item.uid});
                   },
                   child: Text(
-                    "${item?.nickname}",
+                    "${item.nickname}",
                     style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
                   ),
                 ),
                 Row(
                   children: [
                     Visibility(
-                      visible: item?.gender == 2,
+                      visible: item.gender == 2,
                       replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
                       child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
                     ),
                     SizedBox(width: 8.rpx),
-                    Text('${item?.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                    Text('${item.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
                     Container(
                       width: 4.rpx,
                       height: 4.rpx,
@@ -120,13 +120,6 @@ class PlazaCard extends StatelessWidget {
                     Text("个人",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
                   ],
                 ),
-                // Text(
-                //   '${CommonUtils.getPostTime(time: item?.createTime,yearsFlag: true) }',
-                //   style: TextStyle(
-                //     fontSize: 12.rpx,
-                //     color: const Color(0xff999999),
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -152,22 +145,18 @@ class PlazaCard extends StatelessWidget {
 
   ///卡片内容
   Widget _buildBody(){
-    return InkWell(
-      child: Container(
+    return Container(
         margin: EdgeInsets.only(top: user ? 0 : 10.rpx),
         alignment: Alignment.centerLeft,
         child: Text(
-          item?.content ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray8),maxLines: 3,overflow: TextOverflow.ellipsis,
+          item.content ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray8),maxLines: 3,overflow: TextOverflow.ellipsis,
         )
-      ),
-      onTap: (){
-      },
     );
   }
 
   ///图片
   Widget _imageViews(BuildContext context) {
-    return item?.images != null ?
+    return item.images != null ?
     GestureDetector(
       onTap: (){
       },
@@ -177,7 +166,7 @@ class PlazaCard extends StatelessWidget {
         child: GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: user ? 2 : jsonDecode(item!.images!).length,
+          itemCount: user ? (jsonDecode(item.images!).length > 2 ? 2 : jsonDecode(item.images!).length) : jsonDecode(item.images!).length,
           padding: EdgeInsets.zero,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: user ? 2 : 3,
@@ -193,12 +182,12 @@ class PlazaCard extends StatelessWidget {
                   PhotoViewGalleryPage.show(
                       context,
                       PhotoViewGalleryPage(
-                        images: jsonDecode(item?.images ?? ''),
+                        images: jsonDecode(item.images ?? ''),
                         index: index,
                         heroTag: '',
                       ));
                 },
-                child: AppImage.network("${jsonDecode(item?.images ?? '')?[index]}",
+                child: AppImage.network("${jsonDecode(item.images ?? '')?[index]}",
                   fit: BoxFit.cover,
                   borderRadius: BorderRadius.circular(8.rpx),
                   placeholder:  AppImage.asset("assets/images/plaza/back_image.png",
@@ -222,7 +211,7 @@ class PlazaCard extends StatelessWidget {
       children: [
         Visibility(
           visible: user,
-          child: Text("${CommonUtils.getCommonTime(time: item?.createTime,hideYears: true) }",style: TextStyle(color: Color(0xff999999),fontSize: 12.rpx),),
+          child: Text("${CommonUtils.getCommonTime(time: item.createTime,hideYears: true) }",style: TextStyle(color: Color(0xff999999),fontSize: 12.rpx),),
         ),
         Visibility(
           visible: user,
@@ -240,8 +229,9 @@ class PlazaCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                AppImage.asset((item?.isCollect ?? false) ? "assets/images/plaza/attention.png":"assets/images/plaza/attention_no.png",width: 16.rpx,height: 16.rpx,),
-                Text(' ${item?.collectNum ?? 0}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
+                AppImage.asset((item.isLike ?? false) ? "assets/images/plaza/attention.png":"assets/images/plaza/attention_no.png",width: 16.rpx,height: 16.rpx,),
+                SizedBox(width: 6.rpx,),
+                Text(' ${item.collectNum ?? 0}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
               ],
             ),
           ),
@@ -253,12 +243,13 @@ class PlazaCard extends StatelessWidget {
           child: Container(
             color: Colors.transparent,
             height: 28.rpx,
-            padding: EdgeInsets.only(top: 4.rpx,left: 4.rpx,right: 4.rpx),
+            padding: EdgeInsets.only(top: 4.rpx,left: 20.rpx,right: 4.rpx),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AppImage.asset("assets/images/plaza/comment.png",width: 16.rpx,height: 16.rpx,),
-                Text(' 评论',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
+                SizedBox(width: 6.rpx,),
+                Text('评论',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
               ],
             ),
           ),
@@ -267,16 +258,18 @@ class PlazaCard extends StatelessWidget {
           visible: !user,
           child: const Spacer(),
         ),
-        CommonGradientButton(
-          width: 80.rpx,
-          height: 30.rpx,
-          text: "发起聊天",
-          textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
+        Visibility(
+          visible: !user,
+          child: CommonGradientButton(
+            width: 80.rpx,
+            height: 30.rpx,
+            text: "发起聊天",
+            textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
+          ),
         ),
       ],
     );
   }
-
 
   ///评论
   Widget _comment(){
@@ -290,7 +283,7 @@ class PlazaCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          ...List.generate(2, (index) => Column(
+          ...List.generate(item.commentList?.length ?? 0, (index) => Column(
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

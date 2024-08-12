@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/event/event_bus.dart';
+import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
@@ -15,7 +19,6 @@ class UserCenterController extends GetxController {
   UserCenterController({
     int? userId //用户id
   }){
-    print("state.authorId==$userId");
     state.authorId = userId ?? 0;
   }
 
@@ -41,12 +44,14 @@ class UserCenterController extends GetxController {
     });
     getUserInfo();
     getIsAttention();
+    pagingController.addPageRequestListener(fetchPage);
     super.onInit();
   }
 
   ///获取创作列表
   void fetchPage(int page) async {
     final response = await PlazaApi.getMyPostList(
+      uid: state.authorId,
       page: page,
       size: pagingController.pageSize,
     );
@@ -65,6 +70,17 @@ class UserCenterController extends GetxController {
       state.authorInfo = response.data ?? UserModel.fromJson({});
       update(['userInfo']);
     }
+  }
+
+  //简介信息
+  String basicsInfo({required int index}){
+    var info = jsonDecode(jsonEncode(state.authorInfo))[state.userBasics[index]['data']] ?? '-';
+    if(index == 1){
+      info = (info == 1) ? "男":"女";
+    }else if(info == '0.00'){
+      info = '-';
+    }
+    return info.toString();
   }
 
   ///是否关注作者
@@ -86,9 +102,9 @@ class UserCenterController extends GetxController {
       response.showErrorMessage();
       return;
     }else{
-
+      state.isAttention = !state.isAttention;
+      EventBus().emit(kEventIsAttention,state.isAttention);
     }
-    state.isAttention = !state.isAttention;
     update(['userInfo']);
   }
 
@@ -109,22 +125,4 @@ class UserCenterController extends GetxController {
     pagingController.itemList = itemList;
   }
 
-  ///收藏或者取消收藏
-  void getCommentCollect(bool collect, int index) async {
-    var itemList = List.of(pagingController.itemList!);
-    if (collect) {
-      // itemList[index] = itemList[index]
-      //     .copyWith(
-      //     isCollect: collect,
-      //     collectNum:
-      //     (itemList[index].collectNum ?? 0) + 1);
-    } else {
-      // itemList[index] = itemList[index]
-      //     .copyWith(
-      //     isCollect: collect,
-      //     collectNum:
-      //     (itemList[index].collectNum ?? 0) - 1);
-    }
-    pagingController.itemList = itemList;
-  }
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/model/talk_model.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 class UserCenterState {
   //作者id
@@ -21,20 +22,20 @@ class UserCenterState {
   //用户基础信息
   List userBasics = [
     {
-      "name":"年龄",
-      "data":"22",
+      "name": S.current.userAge,
+      "data":"age",
     },
     {
-      "name":"性别",
-      "data":"女",
+      "name": S.current.userGender,
+      "data":"gender",
     },
     {
-      "name":"好评率",
-      "data":"98%",
+      "name": S.current.favorableRate,
+      "data":"praiseRate",
     },
     {
-      "name":"成交单数",
-      "data":"22",
+      "name": S.current.numberTransactions,
+      "data":"dealNum",
     },
   ];
 }

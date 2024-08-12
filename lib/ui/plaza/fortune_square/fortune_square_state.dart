@@ -1,5 +1,4 @@
-import 'package:get/get.dart';
-import 'package:guanjia/common/network/api/model/talk_model.dart';
+
 
 class FortuneSquareState {
 

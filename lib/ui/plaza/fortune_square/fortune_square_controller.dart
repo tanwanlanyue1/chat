@@ -6,6 +6,7 @@ import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/widgets/ad_dialog.dart';
 
@@ -25,7 +26,7 @@ class FortuneSquareController extends GetxController
 
   void onTapTitle(){
     if(tabController.index == 2){
-      // myFetchPage();
+
     }else{
 
     }
@@ -59,6 +60,7 @@ class FortuneSquareController extends GetxController
   ///获取我的帖子列表
   void myFetchPage(int page) async {
     final response = await PlazaApi.getMyPostList(
+      uid: SS.login.info?.uid ?? 0,
       page: page,
       size: pagingController.pageSize,
     );

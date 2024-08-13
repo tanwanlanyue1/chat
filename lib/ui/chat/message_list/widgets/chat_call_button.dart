@@ -107,7 +107,7 @@ class ChatCallButton extends StatelessWidget {
     }
 
     if(jumpToChatPage){
-      await ChatManager().toChatPage(userId: userId);
+      ChatManager().toChatPage(userId: userId);
       await Future.delayed(const Duration(milliseconds: 200));
     }
 

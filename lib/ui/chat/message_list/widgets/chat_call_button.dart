@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/permissions_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/chat_manager.dart';
 import 'package:guanjia/widgets/loading.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+
+import 'chat_call_dialog.dart';
 
 ///音视频通话按钮
 class ChatCallButton extends StatelessWidget {
+
   final Widget child;
 
   ///是否是视频通话
@@ -24,6 +28,9 @@ class ChatCallButton extends StatelessWidget {
   final double? width;
   final double? height;
 
+  ///是否先跳转聊天页面
+  final bool jumpToChatPage;
+
   const ChatCallButton({
     super.key,
     this.width,
@@ -33,6 +40,7 @@ class ChatCallButton extends StatelessWidget {
     required this.userId,
     required this.nickname,
     this.onWillPressed,
+    this.jumpToChatPage = false,
   });
 
   @override
@@ -69,8 +77,9 @@ class ChatCallButton extends StatelessWidget {
     });
   }
 
+  ///音视频通话呼出前调用
   Future<bool> _onWillPressed() async {
-    final result = await onWillPressed?.call() ?? true;
+    final result = await onWillPressed?.call() ?? await _defaultOnWillPressed();
     if (result) {
       ChatManager().setChatCallInfo(
         invitee: userId.toString(),
@@ -79,6 +88,35 @@ class ChatCallButton extends StatelessWidget {
     }
     return result;
   }
+
+  Future<bool> _defaultOnWillPressed() async{
+    var hasPermission = false;
+    if (isVideoCall) {
+      hasPermission = await PermissionsUtils.requestPermissions([
+        Permission.camera,
+        Permission.microphone,
+      ], hintText: '需要开启相机和麦克风权限');
+    } else {
+      hasPermission = await PermissionsUtils.requestPermission(
+        Permission.microphone,
+        hintText: '需要开启麦克风权限',
+      );
+    }
+    if(!hasPermission){
+      return false;
+    }
+
+    if(jumpToChatPage){
+      await ChatManager().toChatPage(userId: userId);
+      await Future.delayed(const Duration(milliseconds: 200));
+    }
+
+    //发起聊天
+    final result = await ChatCallDialog.show(isVideoCall: isVideoCall);
+
+    return result == true;
+  }
+
 
   ///错误信息显示
   void onCallInvitationSent(

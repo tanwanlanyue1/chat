@@ -267,13 +267,13 @@ class ChatManager {
 
   ///跳转聊天页面
   ///- 用户ID
-  void toChatPage({required int userId}) {
+  Future<void> toChatPage({required int userId}) async{
     if (userId == SS.login.userId) {
       AppLogger.w('不能与自己聊天');
       return;
     }
 
-    Get.toNamed(
+    await Get.toNamed(
       AppRoutes.messageListPage,
       arguments: {
         'conversationId': userId.toString(),

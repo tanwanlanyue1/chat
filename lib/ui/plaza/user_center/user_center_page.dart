@@ -286,6 +286,7 @@ class UserCenterPage extends StatelessWidget {
                   userId: state.authorId,
                   isVideoCall: false,
                   nickname: state.authorInfo.nickname,
+                  jumpToChatPage: true,
                   child: Container(
                     width: 60.rpx,
                     margin: EdgeInsets.only(right: 8.rpx),
@@ -301,6 +302,7 @@ class UserCenterPage extends StatelessWidget {
                     userId: state.authorId,
                     isVideoCall: true,
                     nickname: state.authorInfo.nickname,
+                    jumpToChatPage: true,
                     child: CommonGradientButton(
                       height: 50.rpx,
                       text: "视频1V1聊天",

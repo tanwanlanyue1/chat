@@ -25,7 +25,7 @@ class OrderListController extends GetxController {
 
   @override
   void onInit() {
-    // onTapOrderAdd(31);
+    // onTapOrderAdd(30);
     pagingController.addPageRequestListener(_fetchPage);
     super.onInit();
   }
@@ -40,72 +40,73 @@ class OrderListController extends GetxController {
     Get.toNamed(AppRoutes.orderDetailPage);
   }
 
-  Future<bool> onTapOrderAdd(int uid) async {
+  Future<void> onTapOrderAdd(int uid) async {
     Loading.show();
     final res = await OrderApi.add(uid: uid);
     Loading.dismiss();
     if (!res.isSuccess) {
       res.showErrorMessage();
-      return false;
+      return;
     }
-    return true;
+    _refreshTypeList(OrderListType.going);
   }
 
-  Future<bool> onTapOrderCancel(int orderId) async {
+  Future<void> onTapOrderCancel(int orderId) async {
     Loading.show();
     final res = await OrderApi.cancel(orderId: orderId);
     Loading.dismiss();
     if (!res.isSuccess) {
       res.showErrorMessage();
-      return false;
+      return;
     }
-    return true;
+    _refreshTypeList(OrderListType.going);
+    _refreshTypeList(OrderListType.cancel);
   }
 
-  Future<bool> onTapOrderPayment(int orderId) async {
+  Future<void> onTapOrderPayment(int orderId) async {
     // TODO: 弹出密码框
     Loading.show();
     final res = await OrderApi.pay(orderId: orderId, password: "123456");
     Loading.dismiss();
     if (!res.isSuccess) {
       res.showErrorMessage();
-      return false;
+      return;
     }
-    return true;
+    _refreshTypeList(OrderListType.going);
   }
 
   void onTapOrderConnect(int uid) {
     MessageListPage.go(userId: uid);
   }
 
-  Future<bool> onTapOrderAcceptOrReject(bool isAccept, int orderId) async {
+  Future<void> onTapOrderAcceptOrReject(bool isAccept, int orderId) async {
     Loading.show();
     final res =
         await OrderApi.acceptOrReject(type: isAccept ? 1 : 2, orderId: orderId);
     Loading.dismiss();
     if (!res.isSuccess) {
       res.showErrorMessage();
-      return false;
+      return;
     }
-    return true;
+    _refreshTypeList(OrderListType.going);
+    if (isAccept) _refreshTypeList(OrderListType.cancel);
   }
 
   Future<void> onTapOrderAssign(int orderId) async {
     final res = await OrderAssignAgentDialog.show(orderId);
-    if (res == true) {
-      pagingController.refresh();
-    }
+    if (res == true) _refreshTypeList(OrderListType.going);
   }
 
-  Future<bool> onTapOrderFinish(int orderId) async {
+  Future<void> onTapOrderFinish(int orderId) async {
     Loading.show();
     final res = await OrderApi.finish(orderId: orderId);
     Loading.dismiss();
     if (!res.isSuccess) {
       res.showErrorMessage();
-      return false;
+      return;
     }
-    return true;
+    _refreshTypeList(OrderListType.going);
+    _refreshTypeList(OrderListType.finish);
   }
 
   void onTapOrderEvaluation(int orderId) {
@@ -137,6 +138,14 @@ class OrderListController extends GetxController {
           items.map((e) => OrderListItem(itemModel: e)).toList());
     } else {
       pagingController.error = res.errorMessage;
+    }
+  }
+
+  // 刷新不同类型的订单列表
+  void _refreshTypeList(OrderListType type) {
+    if (Get.isRegistered<OrderListController>(tag: type.name)) {
+      final c = Get.find<OrderListController>(tag: type.name);
+      c.pagingController.refresh();
     }
   }
 }

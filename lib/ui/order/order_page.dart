@@ -31,6 +31,7 @@ class OrderPage extends StatelessWidget {
           tabs: List.generate(state.titleList.length,
               (index) => Tab(text: state.titleList[index])),
         ),
+        actions: [],
       ),
       body: TabBarView(
         controller: controller.tabController,

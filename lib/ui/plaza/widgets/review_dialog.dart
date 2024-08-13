@@ -3,21 +3,46 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/widgets/loading.dart';
+
+import '../../../common/network/api/api.dart';
 
 ///评论回复对话框
 ///callBack回调，消息回复中使用
 class ReviewDialog extends StatelessWidget {
+  int pid;
   final void Function(String? str)? callBack;
-  ReviewDialog({super.key,this.callBack});
-  // late PlazaDetailController controller;
+  ReviewDialog({super.key,this.callBack,required this.pid});
 
   ///发布成功后返回true,否则返回null
-  static Future<bool?> show({ Function(String? str)? callBack}) {
+  static Future<bool?> show({ Function(String? str)? callBack,required int pid}) {
     return Get.dialog<bool>(
       ReviewDialog(
+        pid: pid,
         callBack: callBack,
       ),
     );
+  }
+
+  ///评论
+  /// pid:根评论id
+  /// postId:帖子id
+  Future<void> postComment({int? pid,int? replyId,}) async {
+      if(textController.text.isEmpty){
+        Loading.showToast("请输入评论内容");
+      }else{
+        final response = await PlazaApi.postComment(
+          postId: pid,
+          content: textController.text,
+        );
+        if(response.isSuccess){
+          Loading.showToast(response.data);
+          chatFocusNode.unfocus();
+          Get.back();
+        }else{
+          response.showErrorMessage();
+        }
+      }
   }
 
   final TextEditingController textController = TextEditingController();
@@ -60,10 +85,9 @@ class ReviewDialog extends StatelessWidget {
                 SizedBox(width: 12.rpx,),
                 GestureDetector(
                   onTap: (){
-                    // callBack == null ?
-                    // controller.postComment():
-                    // callBack?.call(textController.text);
-                    },
+                    callBack?.call('123');
+                    // postComment();
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       color: AppColor.brown8,

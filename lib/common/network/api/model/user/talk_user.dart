@@ -6,3 +6,4 @@ export 'merit_virtue_list.dart';
 export 'level_res.dart';
 export 'message_list.dart';
 export 'user_advanced.dart';
+export 'visit_list.dart';

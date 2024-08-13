@@ -44,12 +44,13 @@ class ContactListTile extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text(
-                            userModel.nickname,
-                            style: AppTextStyle.fs14m
-                                .copyWith(color: AppColor.gray5),
+                          Container(
+                            margin: EdgeInsets.only(right: 8.rpx),
+                            constraints: BoxConstraints(
+                                maxWidth: Get.width-200.rpx
+                            ),
+                            child: Text(userModel.nickname,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),maxLines: 1,overflow: TextOverflow.ellipsis,),
                           ),
-                          SizedBox(width: 8.rpx),
                           AppImage.asset(
                             "assets/images/mine/safety.png",
                             width: 16.rpx,

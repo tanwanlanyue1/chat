@@ -511,4 +511,25 @@ class UserApi {
       },
     );
   }
+
+  /// 谁看过我
+  static Future<ApiResponse<List<VisitList>>> getVisitList({
+    int page = 1,
+    int size = 10,
+  }) {
+    return HttpClient.get(
+      '/api/user/getVisitList',
+      params: {
+        "page": page,
+        "size": size,
+      },
+      dataConverter: (json) {
+        if (json is List) {
+          return json.map((e) => VisitList.fromJson(e)).toList();
+        }
+        return [];
+      },
+    );
+  }
+
 }

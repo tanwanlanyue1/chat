@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/mine_evaluate/widget/evaluate_card.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../../common/network/api/api.dart';
 import 'jia_evaluate_controller.dart' ;
 
 //佳丽-评价我的
@@ -41,13 +45,33 @@ class JiaEvaluatePage extends StatelessWidget {
         children: [
           personInfo(),
           Expanded(
-            child: ListView(
-              children: [
-                mineLabel(),
-                customerEvaluation(),
+            child: SmartRefresher(
+            controller: controller.pagingController.refreshController,
+            onRefresh: controller.pagingController.onRefresh,
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                    child: mineLabel()
+                ),
+                SliverToBoxAdapter(
+                    child: customerEvaluation()
+                ),
+                PagedSliverList(
+                  pagingController: controller.pagingController,
+                  builderDelegate: DefaultPagedChildBuilderDelegate<EvaluationItemModel>(
+                    pagingController: controller.pagingController,
+                    itemBuilder: (_, item, index) {
+                      return EvaluateCard(
+                        index: index,
+                        item: item,
+                        margin: EdgeInsets.only(bottom: 1.rpx),
+                      );
+                    },
+                  ),
+                ),
               ],
-            ),
-          ),
+            )
+            ),)
         ],
       ),
     );
@@ -82,10 +106,11 @@ class JiaEvaluatePage extends StatelessWidget {
           padding: EdgeInsets.all(16.rpx),
           child: Row(
             children: [
-              AppImage.asset(
+              AppImage.network(
                 width: 60.rpx,
                 height: 60.rpx,
-                'assets/images/mine/head_photo.png',
+                state.loginService?.avatar ?? '',
+                shape: BoxShape.circle,
               ),
               SizedBox(width: 12.rpx,),
               Expanded(
@@ -96,14 +121,15 @@ class JiaEvaluatePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Landon",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
+                      Text(state.loginService?.nickname ?? '',style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
+                      SizedBox(width: 4.rpx),
                       Row(
                         children: [
                           Text(S.current.synthesize,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
                           ...List.generate(5, (i) => AppImage.asset(
                             width: 16.rpx,
                             height: 16.rpx,
-                            i == 4 ?
+                            i == (state.evaluation?.totalScore ?? 0) ?
                             'assets/images/mine/star_none.png':
                             'assets/images/mine/star.png',
                           ))
@@ -119,7 +145,7 @@ class JiaEvaluatePage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text("88",style: AppTextStyle.fs18m.copyWith(color: AppColor.primary,fontWeight: FontWeight.w500),),
+                      Text("${state.evaluation?.totalAppointment ?? 0}",style: AppTextStyle.fs18m.copyWith(color: AppColor.primary,fontWeight: FontWeight.w500),),
                       Text(S.current.cumulativeNumber,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w500),),
                     ],
                   ),
@@ -134,7 +160,7 @@ class JiaEvaluatePage extends StatelessWidget {
 
   //我的标签
   Widget mineLabel(){
-    return Container(
+    return Obx(() => Container(
       color: Colors.white,
       padding: EdgeInsets.all(16.rpx),
       margin: EdgeInsets.symmetric(vertical: 8.rpx),
@@ -148,11 +174,12 @@ class JiaEvaluatePage extends StatelessWidget {
           Wrap(
             spacing: 12.rpx,
             runSpacing: 12.rpx,
+            alignment: WrapAlignment.start,
             children: List.generate(state.label.length, (i) {
               var item = state.label[i];
               return Container(
                 decoration: BoxDecoration(
-                  color: AppColor.blue36,
+                    color: AppColor.blue36,
                     borderRadius: BorderRadius.all(Radius.circular(8.rpx))
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 24.rpx,vertical: 12.rpx),
@@ -162,26 +189,18 @@ class JiaEvaluatePage extends StatelessWidget {
           )
         ],
       ),
-    );
+    ));
   }
 
   //客户评价
   Widget customerEvaluation(){
-    return Column(
-      children: [
-        Container(
-          height: 46.rpx,
-          color: Colors.white,
-          alignment: Alignment.centerLeft,
-          margin: EdgeInsets.only(bottom: 1.rpx),
-          padding: EdgeInsets.only(left: 16.rpx),
-          child: Text(S.current.clientEvaluation,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
-        ),
-        ...List.generate(4, (index) => EvaluateCard(
-          index: index,
-          margin: EdgeInsets.only(bottom: 1.rpx),
-        ))
-      ],
+    return Container(
+      height: 46.rpx,
+      color: Colors.white,
+      alignment: Alignment.centerLeft,
+      margin: EdgeInsets.only(bottom: 1.rpx),
+      padding: EdgeInsets.only(left: 16.rpx),
+      child: Text(S.current.clientEvaluation,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
     );
   }
 }

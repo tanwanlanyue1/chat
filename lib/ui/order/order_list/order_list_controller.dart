@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
+import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/widgets/assign_agent_dialog/order_assign_agent_dialog.dart';
 import 'package:guanjia/widgets/loading.dart';
@@ -74,7 +74,9 @@ class OrderListController extends GetxController {
     return true;
   }
 
-  void onTapOrderConnect() {}
+  void onTapOrderConnect(int uid) {
+    MessageListPage.go(userId: uid);
+  }
 
   Future<bool> onTapOrderAcceptOrReject(bool isAccept, int orderId) async {
     Loading.show();

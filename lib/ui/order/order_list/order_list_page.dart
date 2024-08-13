@@ -180,13 +180,10 @@ class _OrderListPageState extends State<OrderListPage>
                     SizedBox(width: 8.rpx),
                   ],
                 ),
-                if (item.itemModel.countDown > 0)
+                if (item.countDown != null)
                   Flexible(
                     child: Text(
-                      "剩余等待 ${CommonUtils.convertCountdownToHMS(
-                        item.itemModel.countDown,
-                        hasHours: false,
-                      )}",
+                      item.countDown!,
                       style: AppTextStyle.st
                           .size(12.rpx)
                           .textColor(AppColor.primary),

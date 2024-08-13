@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 
 class OrderListState {
@@ -56,9 +57,15 @@ class OrderListItem {
   // 订单id
   int get id => itemModel.id;
 
+  // 订单倒计时 不为空就显示
+  String? get countDown => itemModel.countDown > 0
+      ? "剩余等待 ${CommonUtils.convertCountdownToHMS(itemModel.countDown, hasHours: false)}"
+      : null;
+
   // 订单界面包装器
   late final OrderListItemWrapper _wrapper;
 
+  // 订单创建时间
   String get time => itemModel.createTime;
 
   // 订单编号

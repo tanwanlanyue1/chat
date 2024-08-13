@@ -222,7 +222,7 @@ class OrderApi {
   /// - type 1我评价的 2评价我的 3团队评价
   /// - page 页码 默认1,示例值(1)
   /// - size 每页数量（默认10）,示例值(999)
-  static Future<ApiResponse<OrderListModel>> getEvaluateList({
+  static Future<ApiResponse<EvaluationListModel>> getEvaluateList({
     required int type,
     int page = 1,
     int size = 10,
@@ -235,7 +235,7 @@ class OrderApi {
         'size': size,
       },
       dataConverter: (data) {
-        return OrderListModel.fromJson(data);
+        return EvaluationListModel.fromJson(data ?? {});
       },
     );
   }

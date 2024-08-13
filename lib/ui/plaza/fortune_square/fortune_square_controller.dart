@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,13 +26,6 @@ class FortuneSquareController extends GetxController
     refreshController: RefreshController(),
   );
 
-  void onTapTitle(){
-    if(tabController.index == 2){
-
-    }else{
-
-    }
-  }
 
   @override
   void onInit() {
@@ -50,7 +45,9 @@ class FortuneSquareController extends GetxController
     if(page == 1){
       pagingController.itemList?.clear();
     }
-    if(tabController.index == 2){
+    if(tabController.index == 1){
+      myFollowListPage(page);
+    }else if(tabController.index == 2){
       myFetchPage(page);
     }else{
       getCommunityList(page: page);
@@ -61,6 +58,20 @@ class FortuneSquareController extends GetxController
   void myFetchPage(int page) async {
     final response = await PlazaApi.getMyPostList(
       uid: SS.login.info?.uid ?? 0,
+      page: page,
+      size: pagingController.pageSize,
+    );
+    if (response.isSuccess) {
+      final items = response.data ?? [];
+      pagingController.appendPageData(items);
+    } else {
+      pagingController.error = response.errorMessage;
+    }
+  }
+
+  ///我的关注帖子列表
+  void myFollowListPage(int page) async {
+    final response = await PlazaApi.followList(
       page: page,
       size: pagingController.pageSize,
     );
@@ -92,18 +103,28 @@ class FortuneSquareController extends GetxController
   ///点赞或者取消点赞
   void getCommentLike(bool like, int index) async {
     final itemList = List.of(pagingController.itemList!);
-    // if (like) {
-    //   itemList[index] = itemList[index]
-    //       .copyWith(
-    //           isLike: like,
-    //           likeNum: (itemList[index].likeNum ?? 0) + 1);
-    // } else {
-    //   itemList[index] = itemList[index]
-    //       .copyWith(
-    //           isLike: like,
-    //           likeNum: ((itemList[index].likeNum ?? 1) - 1) < 0 ? 0 : ((itemList[index].likeNum ?? 1) - 1)) ;
-    // }
+    if (like) {
+      itemList[index] = itemList[index]
+          .copyWith(
+              isLike: like,
+              likeNum: (itemList[index].likeNum ?? 0) + 1);
+    } else {
+      itemList[index] = itemList[index]
+          .copyWith(
+              isLike: like,
+              likeNum: ((itemList[index].likeNum ?? 1) - 1) < 0 ? 0 : ((itemList[index].likeNum ?? 1) - 1)) ;
+    }
     pagingController.itemList = itemList;
   }
 
+  ///评论信息
+  void setComment(String str, int index) async {
+    final itemList = List.of(pagingController.itemList!);
+    List<CommentListModel> comment = itemList[index].commentList ?? [];
+    comment.insert(0, CommentListModel.fromJson({"content":str}));
+    itemList[index] = itemList[index].copyWith(
+        commentList: comment
+    );
+    pagingController.itemList = itemList;
+  }
 }

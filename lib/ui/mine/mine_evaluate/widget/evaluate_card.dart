@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
+
+import '../../../../common/network/api/api.dart';
 
 //评价项
 class EvaluateCard extends StatelessWidget {
   int index;
   bool team;
+  bool client;
+  EvaluationItemModel item;
   EdgeInsetsGeometry? margin;
-  EvaluateCard({super.key,required this.index,this.margin,this.team = false});
+  EvaluateCard({super.key,required this.index,required this.item,this.margin,this.client = false,this.team = false});
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +28,10 @@ class EvaluateCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              AppImage.asset(
+              AppImage.network(
                 width: 50.rpx,
                 height: 50.rpx,
-                'assets/images/mine/head_photo.png',
+                client ? item.toImg : item.fromImg,
               ),
               SizedBox(width: 8.rpx,),
               Expanded(
@@ -36,17 +41,18 @@ class EvaluateCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Alma Washington",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w500),),
-                          Text("2024年12月12日",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+                          Expanded(
+                            child: Text(client ? item.toName : item.fromName,style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w500),),
+                          ),
+                          Text(CommonUtils.getPostTime(time: item.createTime,),style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
                         ],
                       ),
                       Row(
                         children: List.generate(5, (i) => AppImage.asset(
                           width: 16.rpx,
                           height: 16.rpx,
-                          i == 4 ?
+                          i == item.star ?
                           'assets/images/mine/star_none.png':
                           'assets/images/mine/star.png',
                         )),
@@ -59,7 +65,7 @@ class EvaluateCard extends StatelessWidget {
           ),
           Container(
               margin: EdgeInsets.only(top: 16.rpx),
-              child: Text("非常温柔的小姐姐，一次特别的体验，令人难忘。"*(index+1),style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),)
+              child: Text(item.content,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),)
           ),
           team ?
           Container(

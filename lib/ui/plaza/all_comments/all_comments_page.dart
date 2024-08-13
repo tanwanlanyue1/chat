@@ -139,7 +139,7 @@ class AllCommentsPage extends StatelessWidget {
       padding: EdgeInsets.only(right: 16.rpx,left: 16.rpx),
       child: GestureDetector(
         onTap: (){
-          ReviewDialog.show();
+          ReviewDialog.show(pid: 1);
         },
         child: Center(
           child: Container(

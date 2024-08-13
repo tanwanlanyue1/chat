@@ -6,6 +6,7 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 
+import '../../../common/network/api/api.dart';
 import '../mine_evaluate/widget/evaluate_card.dart';
 import 'mine_team_evaluate_controller.dart';
 
@@ -28,6 +29,7 @@ class MineTeamEvaluatePage extends StatelessWidget {
           ... List.generate(2, (index) => EvaluateCard(
             index: index,
             team: true,
+            item: EvaluationItemModel.fromJson({}),
             margin: EdgeInsets.only(bottom: 1.rpx),
           )),
         ],

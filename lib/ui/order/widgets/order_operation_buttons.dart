@@ -66,7 +66,7 @@ class OrderOperationButtons extends StatelessWidget {
           SizedBox(width: 24.rpx),
           _buildRight(
             onTap: () => controller.onTapOrderFinish(item.id),
-            text: "确认完成",
+            text: "我已到位",
           ),
         ]);
         break;
@@ -138,7 +138,7 @@ class OrderOperationButtons extends StatelessWidget {
 
   Widget _buildConnect() {
     return GestureDetector(
-      onTap: () => controller.onTapOrderConnect(),
+      onTap: () => controller.onTapOrderConnect(item.itemModel.receiveId),
       behavior: HitTestBehavior.opaque,
       child: SizedBox(
         width: 48.rpx,

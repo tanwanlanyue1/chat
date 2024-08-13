@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/order_list/order_list_state.dart';
@@ -179,16 +180,17 @@ class _OrderListPageState extends State<OrderListPage>
                     SizedBox(width: 8.rpx),
                   ],
                 ),
-                // Flexible(
-                //   child: Text(
-                //     "剩余等待 29:59",
-                //     style: AppTextStyle.st
-                //         .size(12.rpx)
-                //         .textColor(AppColor.primary),
-                //     maxLines: 1,
-                //     overflow: TextOverflow.ellipsis,
-                //   ),
-                // ),
+                if (item.countDown != null)
+                  Flexible(
+                    child: Text(
+                      item.countDown!,
+                      style: AppTextStyle.st
+                          .size(12.rpx)
+                          .textColor(AppColor.primary),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
               ],
             ),
             Divider(

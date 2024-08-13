@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/chat/chat_manager.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
@@ -22,9 +24,6 @@ class ChatCallButton extends StatelessWidget {
   final double? width;
   final double? height;
 
-
-
-
   const ChatCallButton({
     super.key,
     this.width,
@@ -38,41 +37,47 @@ class ChatCallButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (_, constraints){
-        final width = this.width ?? constraints.constrainWidth();
-        final height = this.height ?? constraints.constrainHeight(50.rpx);
-        return SizedBox(
-          width: width,
-          height: height,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              child,
-              ZegoSendCallInvitationButton(
-                onCallId: (callId){
+    return LayoutBuilder(builder: (_, constraints) {
+      final width = this.width ?? constraints.constrainWidth();
+      final height = this.height ?? constraints.constrainHeight(50.rpx);
+      return SizedBox(
+        width: width,
+        height: height,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            child,
+            ZegoSendCallInvitationButton(
+              buttonSize: Size(width, height),
+              iconVisible: false,
+              isVideoCall: isVideoCall,
+              invitees: [
+                ZegoUIKitUser(
+                  id: userId.toString(),
+                  name: nickname,
+                ),
+              ],
+              onWillPressed: _onWillPressed,
+              onPressed:
+                  (String code, String message, List<String> errorInvitees) {
+                onCallInvitationSent(code, message, errorInvitees);
+              },
+            ),
+          ],
+        ),
+      );
+    });
+  }
 
-                },
-                buttonSize: Size(width, height),
-                iconVisible: false,
-                isVideoCall: isVideoCall,
-                invitees: [
-                  ZegoUIKitUser(
-                    id: userId.toString(),
-                    name: nickname,
-                  ),
-                ],
-                onWillPressed: onWillPressed ?? () async => true,
-                onPressed:
-                    (String code, String message, List<String> errorInvitees) {
-                  onCallInvitationSent(code, message, errorInvitees);
-                },
-              ),
-            ],
-          ),
-        );
-      }
-    );
+  Future<bool> _onWillPressed() async {
+    final result = await onWillPressed?.call() ?? true;
+    if (result) {
+      ChatManager().setChatCallInfo(
+        invitee: userId.toString(),
+        isVideoCall: isVideoCall,
+      );
+    }
+    return result;
   }
 
   ///错误信息显示

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guanjia/common/utils/file_logger.dart';
 
 ///适配像素类工具封装
 class ScreenAdapt extends StatelessWidget {
@@ -28,6 +29,9 @@ class ScreenAdapt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    if(size.isEmpty){
+      return const SizedBox.shrink();
+    }
     _ratio = Size(size.width / designSize.width, size.height / designSize.height);
     return builder.call(context);
   }

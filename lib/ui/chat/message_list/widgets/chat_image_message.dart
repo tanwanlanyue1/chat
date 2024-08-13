@@ -128,6 +128,9 @@ class ChatImageMessage extends StatelessWidget {
       cacheWidth: (size.width * Get.pixelRatio).floor(),
       cacheHeight: (size.height * Get.pixelRatio).floor(),
       fit: BoxFit.cover,
+      errorBuilder: (_, __, errorStack){
+        return buildNetworkImage(imageContent, size);
+      },
     );
   }
 

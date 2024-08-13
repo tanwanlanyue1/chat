@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -159,24 +160,40 @@ class ChatVideoMessage extends StatelessWidget {
             )
           : null,
       child: videoContent.videoFirstFrameLocalPath.isNotEmpty
-          ? Image.file(
-              File(videoContent.videoFirstFrameLocalPath),
-              fit: BoxFit.cover,
-              width: displaySize.width,
-              height: displaySize.height,
-            )
-          : AppImage.network(
-              videoContent.videoFirstFrameDownloadUrl,
-              key: ValueKey(message.info.messageID),
-              fit: BoxFit.cover,
-              width: displaySize.width,
-              height: displaySize.height,
-              placeholder: Container(
-                width: displaySize.width,
-                height: displaySize.height,
-                color: Colors.white,
-              ),
-            ),
+          ? buildLocalImage(videoContent, displaySize)
+          : buildNetworkImage(videoContent, displaySize),
+    );
+  }
+
+  Widget buildLocalImage(ZIMKitMessageVideoContent videoContent, Size size) {
+    return Image.file(
+      File(videoContent.videoFirstFrameLocalPath),
+      fit: BoxFit.cover,
+      width: size.width,
+      height: size.height,
+      errorBuilder: (_, __, errorStack) {
+        return buildNetworkImage(videoContent, size);
+      },
+    );
+  }
+
+  Widget buildNetworkImage(ZIMKitMessageVideoContent videoContent, Size size) {
+    return AppImage.network(
+      videoContent.videoFirstFrameDownloadUrl,
+      key: ValueKey(message.info.messageID),
+      fit: BoxFit.cover,
+      width: size.width,
+      height: size.height,
+      placeholder: buildImagePlaceholder(videoContent, size),
+    );
+  }
+
+  Widget buildImagePlaceholder(
+      ZIMKitMessageVideoContent videoContent, Size size) {
+    return Container(
+      width: size.width,
+      height: size.height,
+      color: Colors.white,
     );
   }
 

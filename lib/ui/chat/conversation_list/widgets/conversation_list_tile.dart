@@ -36,7 +36,7 @@ class ConversationListTile extends StatelessWidget {
   }
 
   void onTap() {
-    if(isSysNotice){
+    if (isSysNotice) {
       Get.toNamed(AppRoutes.mineMessage);
       return;
     }
@@ -46,7 +46,7 @@ class ConversationListTile extends StatelessWidget {
   }
 
   ///是否是系统通知
-  bool get isSysNotice{
+  bool get isSysNotice {
     return conversation.lastMessage?.customType == CustomMessageType.sysNotice;
   }
 
@@ -98,7 +98,7 @@ class ConversationListTile extends StatelessWidget {
       text = '99+';
     }
     var icon = conversation.icon;
-    if(isSysNotice){
+    if (isSysNotice) {
       icon = AppImage.asset('assets/images/chat/ic_sys_notice.png');
     }
 
@@ -112,8 +112,7 @@ class ConversationListTile extends StatelessWidget {
         isLabelVisible: conversation.unreadMessageCount > 0,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8.rpx),
-          child:
-          SizedBox(width: 40.rpx, height: 40.rpx, child: icon),
+          child: SizedBox(width: 40.rpx, height: 40.rpx, child: icon),
         ),
       ),
     );
@@ -209,30 +208,36 @@ class ConversationListTile extends StatelessWidget {
   }
 }
 
-extension on ZIMKitConversation{
-  String? toStringValue(){
-    switch(lastMessage?.type){
+extension on ZIMKitConversation {
+  String? toStringValue() {
+    final message = lastMessage;
+    if (message == null) {
+      return null;
+    }
+    switch (message.type) {
       case ZIMMessageType.image:
         return '[图片]';
       case ZIMMessageType.video:
         return '[视频]';
       case ZIMMessageType.custom:
-        return _customMsgStringValue(lastMessage?.customType);
+        return _customMsgStringValue(message);
       default:
         return lastMessage?.toStringValue();
     }
   }
 
-  String? _customMsgStringValue(CustomMessageType? type){
-    switch(type){
+  String? _customMsgStringValue(ZIMKitMessage message) {
+    switch (message.customType) {
       case CustomMessageType.sysNotice:
-        return lastMessage?.customContent?.message ?? '';
+        return message.customContent?.message ?? '';
       case CustomMessageType.redPacket:
         return '[红包]';
+      case CustomMessageType.callEnd:
+        return message.callEndContent?.isVideoCall == true
+            ? '[视频聊天]'
+            : '[语音聊天]';
       default:
         return '[未知类型]';
     }
   }
-
-
 }

@@ -5,6 +5,7 @@ import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
+import 'package:guanjia/ui/chat/message_list/widgets/chat_call_end_message.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_red_packet_message.dart';
 import 'package:zego_zim/zego_zim.dart';
 import 'package:zego_zimkit/src/components/components.dart';
@@ -13,6 +14,7 @@ import 'package:zego_zimkit/src/services/services.dart';
 
 import 'chat_image_message.dart';
 import 'chat_text_message.dart';
+import 'chat_unknown_message.dart';
 import 'chat_video_message.dart';
 
 class ChatMessageWidget extends StatelessWidget {
@@ -84,17 +86,24 @@ class ChatMessageWidget extends StatelessWidget {
               message: message,
             );
             break;
+          case CustomMessageType.callEnd:
+            defaultMessageContent = ChatCallEndMessage(
+              onLongPress: onLongPress,
+              onPressed: onPressed,
+              message: message,
+            );
+            break;
           default:
-            defaultMessageContent = const Flexible(
-              child: Text(
-                '不支持的消息类型',
-              ),
+            defaultMessageContent = ChatUnknownMessage(
+              message: message,
             );
             break;
         }
         break;
       default:
-        return Text(message.toString());
+        defaultMessageContent = ChatUnknownMessage(
+          message: message,
+        );
     }
     return messageContentBuilder?.call(
           context,

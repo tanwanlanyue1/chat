@@ -54,3 +54,13 @@ extension DateTimeExtension on DateTime {
     return timeStr;
   }
 }
+
+extension DurationExtension on Duration{
+  ///格式化 HH:mm:ss
+  String get formatHHmmss{
+    final hh = inHours.toString().padLeft(2, '0');
+    final mm = (inMinutes % 60).toString().padLeft(2, '0');
+    final ss = (inSeconds % 60).toString().padLeft(2, '0');
+    return '$hh:$mm:$ss';
+  }
+}

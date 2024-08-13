@@ -9,6 +9,9 @@ enum CustomMessageType{
   ///红包 1
   redPacket,
 
+  ///通话结束 2
+  callEnd,
+
 }
 
 extension CustomMessageTypeX on CustomMessageType{

@@ -15,6 +15,7 @@ import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 import 'common/app_localization.dart';
 import 'common/service/service.dart';
+import 'common/utils/file_logger.dart';
 import 'ui/chat/chat_manager.dart';
 
 /// 全局静态数据
@@ -25,23 +26,23 @@ class Global {
 
   /// 初始化
   static Future<bool> initialize() async {
-    if (_completer?.isCompleted == true) {
-      return true;
-    }
-    final completer = _completer;
-    if (completer != null) {
-      return completer.future;
-    }
-    _completer = Completer<bool>();
-
-    //android状态栏透明
-    if (Platform.isAndroid) {
-      SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
-      );
-    }
-
     try {
+
+      if (_completer?.isCompleted == true) {
+        return true;
+      }
+      final completer = _completer;
+      if (completer != null) {
+        return completer.future;
+      }
+      _completer = Completer<bool>();
+
+      //android状态栏透明
+      if (Platform.isAndroid) {
+        SystemChrome.setSystemUIOverlayStyle(
+          const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+        );
+      }
 
       //多语言支持
       await AppLocalization.instance.initialize();
@@ -73,8 +74,6 @@ class Global {
   static Future<void> agreePrivacyPolicy() async{
     await WelcomeStorage.savePrivacyAgree();
     await _initAfterPrivacyPolicy();
-
-    Get.navigateToHomeOrLogin();
   }
 
 

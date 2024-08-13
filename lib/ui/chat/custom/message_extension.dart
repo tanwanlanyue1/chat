@@ -4,6 +4,7 @@ import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
+import 'message_call_end_content.dart';
 import 'message_red_packet_content.dart';
 
 extension ZIMKitMessageExt on ZIMKitMessage {
@@ -35,5 +36,24 @@ extension ZIMKitMessageExt on ZIMKitMessage {
     }
     return null;
   }
+
+  ///通话结束消息内容
+  MessageCallEndContent? get callEndContent {
+    try {
+      final msg = customContent?.message ?? '';
+      if (msg.isEmpty) {
+        return null;
+      }
+      final json = jsonDecode(msg);
+      if (json == null) {
+        return null;
+      }
+      return MessageCallEndContent.fromJson(json);
+    } catch (ex) {
+      AppLogger.w('解析通话结束消息内容发生错误，$ex');
+    }
+    return null;
+  }
+
 
 }

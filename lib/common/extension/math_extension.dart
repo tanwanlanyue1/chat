@@ -7,5 +7,10 @@ extension DoubleX on double{
   String toStringAsTrimZero(){
     return NumberFormat('#.##').format(this);
   }
+
+  ///百分比
+  String toPercent(){
+    return '${(this * 100).toStringAsTrimZero()}%';
+  }
   
 }

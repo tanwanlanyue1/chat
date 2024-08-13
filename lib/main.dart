@@ -17,8 +17,8 @@ import 'widgets/loading.dart';
 Future<void> main() async {
   TextInputBinding();
   WidgetsFlutterBinding.ensureInitialized();
+  await Global.initialize();
   runApp(const App());
-  // AppCatchError.run(() => runApp(const App()));
 }
 
 class App extends StatelessWidget {
@@ -29,42 +29,30 @@ class App extends StatelessWidget {
     return ScreenAdapt(
       designSize: const Size(375, 812),
       builder: (_) {
-        return FutureBuilder(
-          future: Global.initialize(),
-          builder: (_, snapshot) {
-            if (snapshot.data != true) {
-              return Container(
-                alignment: Alignment.center,
-                color: const Color(0xffF7EFE6),
-                child: const LoadingIndicator(),
-              );
-            }
-            return RefreshConfiguration(
-              headerBuilder: () => ClassicHeader(
-                refreshingIcon: LoadingIndicator(size: 24.rpx),
-              ),
-              child: DismissKeyboard(
-                child: GetMaterialApp(
-                  theme: AppTheme.light,
-                  darkTheme: AppTheme.dark,
-                  debugShowCheckedModeBanner: false,
-                  initialRoute: AppPages.initial,
-                  builder: Loading.init(),
-                  getPages: AppPages.routes,
-                  navigatorObservers: [AppPages.routeObserver],
-                  localizationsDelegates: const [
-                    S.delegate,
-                    RefreshLocalizations.delegate,
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                  ],
-                  supportedLocales: S.delegate.supportedLocales,
-                  locale: AppLocalization.instance.locale,
-                ),
-              ),
-            );
-          },
+        return RefreshConfiguration(
+          headerBuilder: () => ClassicHeader(
+            refreshingIcon: LoadingIndicator(size: 24.rpx),
+          ),
+          child: DismissKeyboard(
+            child: GetMaterialApp(
+              theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+              debugShowCheckedModeBanner: false,
+              initialRoute: AppPages.initial,
+              builder: Loading.init(),
+              getPages: AppPages.routes,
+              navigatorObservers: [AppPages.routeObserver],
+              localizationsDelegates: const [
+                S.delegate,
+                RefreshLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: S.delegate.supportedLocales,
+              locale: AppLocalization.instance.locale,
+            ),
+          ),
         );
       },
     );

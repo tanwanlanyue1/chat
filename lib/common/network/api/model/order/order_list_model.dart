@@ -139,6 +139,7 @@ class OrderItemModel {
     required this.evaluateTag,
     required this.evaluateContent,
     required this.evaluateScore,
+    required this.countDown,
   });
 
   final int id; // 订单id
@@ -177,6 +178,7 @@ class OrderItemModel {
   final String evaluateTag; // 评价标签
   final String evaluateContent; // 评价内容
   final int evaluateScore; // 评级星级
+  final int countDown; // 倒计时
 
   factory OrderItemModel.fromJson(Map<String, dynamic> json) {
     return OrderItemModel(
@@ -216,6 +218,7 @@ class OrderItemModel {
       evaluateTag: json["evaluateTag"] ?? "",
       evaluateContent: json["evaluateContent"] ?? "",
       evaluateScore: json["evaluateScore"] ?? 0,
+      countDown: json["countDown"] ?? 0,
     );
   }
 
@@ -256,5 +259,6 @@ class OrderItemModel {
         "evaluateTag": evaluateTag,
         "evaluateContent": evaluateContent,
         "evaluateScore": evaluateScore,
+        "countDown": countDown,
       };
 }

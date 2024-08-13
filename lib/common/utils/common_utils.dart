@@ -112,7 +112,7 @@ class CommonUtils {
 
   ///日期显示(04月16日 星期二)
   ///lineFeed：换行
-  static String dateString(String matchTime,{bool lineFeed = false}) {
+  static String dateString(String matchTime, {bool lineFeed = false}) {
     if (matchTime.isEmpty) {
       return "";
     }
@@ -126,18 +126,26 @@ class CommonUtils {
     )}";
 
     // "今天 04月16日 星期二"
-    return lineFeed ?
-     "${today.isNotEmpty ? today : weekday.toUpperCase()} \n ${DateUtil.formatDate(date, format: 'MM' + "/" + 'dd')}":
-     "$today${DateUtil.formatDate(date, format: 'yyyy' + "-" + 'MM' + "-" + 'dd')} ${weekday.toUpperCase()}";
+    return lineFeed
+        ? "${today.isNotEmpty ? today : weekday.toUpperCase()} \n ${DateUtil.formatDate(date, format: 'MM' + "/" + 'dd')}"
+        : "$today${DateUtil.formatDate(date, format: 'yyyy' + "-" + 'MM' + "-" + 'dd')} ${weekday.toUpperCase()}";
   }
 
-
   // 倒计时转换为时分秒
-  static String convertCountdownToHMS(int seconds) {
+  static String convertCountdownToHMS(
+    int seconds, {
+    bool hasHours = true,
+    bool hasSeconds = true,
+  }) {
     int hours = seconds ~/ 3600;
     int minutes = (seconds % 3600) ~/ 60;
     int remainingSeconds = seconds % 60;
-    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+
+    String hoursStr = hasHours ? "${hours.toString().padLeft(2, '0')}:" : "";
+    String minutesStr = minutes.toString().padLeft(2, '0');
+    String secondsStr =
+        hasSeconds ? ":${remainingSeconds.toString().padLeft(2, '0')}" : "";
+    return '$hoursStr$minutesStr$secondsStr';
   }
 
   static void saveImage({

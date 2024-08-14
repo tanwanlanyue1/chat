@@ -18,15 +18,6 @@ class LoginPages {
       },
     ),
     GetPage(
-      name: AppRoutes.loginPage,
-      page: () {
-        var args = Get.tryGetArgs("type");
-        return (args != null && args is int)
-            ? LoginPage(type: args)
-            : LoginPage();
-      },
-    ),
-    GetPage(
       name: AppRoutes.loginRegisterPage,
       page: () {
         return RegisterPage();

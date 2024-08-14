@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/ui/order/order_detail/order_detail_controller.dart';
 import 'package:guanjia/ui/order/order_detail/order_detail_page.dart';
 import 'package:guanjia/ui/order/order_evaluation/order_evaluation_page.dart';
 import 'package:guanjia/ui/order/order_page.dart';
@@ -19,6 +21,11 @@ class OrderPages {
       page: () {
         return OrderDetailPage();
       },
+      binding: BindingsBuilder(() {
+        var args = Get.tryGetArgs("orderId");
+        return Get.lazyPut(() =>
+            OrderDetailController((args != null && args is int) ? args : 0));
+      }),
     ),
     GetPage(
       name: AppRoutes.orderEvaluationPage,

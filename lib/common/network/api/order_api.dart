@@ -160,7 +160,7 @@ class OrderApi {
 
   /// 获取订单详情
   /// - orderId 订单id
-  static Future<ApiResponse<OrderItemModel?>> get({
+  static Future<ApiResponse<OrderItemModel>> get({
     required int orderId,
   }) {
     return HttpClient.get(
@@ -169,10 +169,7 @@ class OrderApi {
         'orderId': orderId,
       },
       dataConverter: (data) {
-        if (data is Map<String, dynamic>) {
-          return OrderItemModel.fromJson(data);
-        }
-        return null;
+        return OrderItemModel.fromJson(data);
       },
     );
   }

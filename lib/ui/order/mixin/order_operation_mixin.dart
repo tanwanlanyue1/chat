@@ -94,7 +94,7 @@ mixin OrderOperationMixin {
   /// 跳转订单详情
   /// orderId: 订单id
   void onTapToOrderDetail(int orderId) {
-    Get.toNamed(AppRoutes.orderDetailPage);
+    Get.toNamed(AppRoutes.orderDetailPage, arguments: {"orderId": orderId});
   }
 
   /// 跳转评价订单

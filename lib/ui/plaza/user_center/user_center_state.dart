@@ -7,8 +7,6 @@ import 'package:guanjia/generated/l10n.dart';
 class UserCenterState {
   //作者id
   int authorId = 0;
-  //是否关注
-  bool isAttention = false;
 
   final isAppBarExpanded = false.obs;
   //作者信息

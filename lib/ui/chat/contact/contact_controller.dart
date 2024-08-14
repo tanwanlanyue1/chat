@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/event/event_bus.dart';
+import 'package:guanjia/common/event/event_constant.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
@@ -8,11 +11,10 @@ import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'contact_state.dart';
 
-class ContactController extends GetxController {
+class ContactController extends GetxController with GetAutoDisposeMixin {
   final ContactState state = ContactState();
   final editingController = TextEditingController();
 
@@ -25,6 +27,9 @@ class ContactController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    autoDisposeWorker(EventBus().listen(kEventIsAttention, (data) {
+      pagingController.refresh();
+    }));
   }
 
   void fetchPage(int page) async {

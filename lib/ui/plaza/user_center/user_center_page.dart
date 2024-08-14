@@ -176,14 +176,18 @@ class UserCenterPage extends StatelessWidget {
                   Visibility(
                     visible: SS.login.userId != state.authorId,
                     child: GestureDetector(
-                      onTap: controller.attention,
+                      onTap: (){
+                        controller.toggleAttention(state.authorId);
+                      },
                       child: Row(
                         children: [
-                          Visibility(
-                            visible: state.isAttention,
-                            replacement: AppImage.asset("assets/images/plaza/attention_no.png",width: 24.rpx,height: 24.rpx,),
-                            child: AppImage.asset("assets/images/plaza/attention.png",width: 24.rpx,height: 24.rpx,),
-                          ),
+                          ObxValue((isAttentionRx){
+                            return Visibility(
+                              visible: isAttentionRx(),
+                              replacement: AppImage.asset("assets/images/plaza/attention_no.png",width: 24.rpx,height: 24.rpx,),
+                              child: AppImage.asset("assets/images/plaza/attention.png",width: 24.rpx,height: 24.rpx,),
+                            );
+                          }, controller.isAttentionRx),
                           Container(
                             padding: EdgeInsets.only(left: 6.rpx),
                             child: Text("关注",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),

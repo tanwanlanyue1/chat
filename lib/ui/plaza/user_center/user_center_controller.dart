@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
@@ -15,7 +16,7 @@ import '../../../common/network/api/api.dart';
 import '../widgets/upload_cover.dart';
 import 'user_center_state.dart';
 
-class UserCenterController extends GetxController {
+class UserCenterController extends GetxController with UserAttentionMixin, GetAutoDisposeMixin{
   UserCenterController({
     int? userId //用户id
   }){
@@ -43,7 +44,7 @@ class UserCenterController extends GetxController {
       state.isAppBarExpanded.value = (appBarHeight - kToolbarHeight) < offset;
     });
     getUserInfo();
-    getIsAttention();
+    getIsAttention(state.authorId);
     pagingController.addPageRequestListener(fetchPage);
     super.onInit();
   }
@@ -83,31 +84,6 @@ class UserCenterController extends GetxController {
     return info.toString();
   }
 
-  ///是否关注作者
-  Future<void> getIsAttention() async {
-    final response = await UserApi.isAttention(uid: state.authorId);
-    if (response.isSuccess) {
-      state.isAttention = response.data;
-      update(['userInfo']);
-    }
-  }
-
-  ///关注作者
-  Future<void> attention() async {
-    Loading.show();
-    final response = await UserApi.attention(uid: state.authorId);
-    Loading.dismiss();
-
-    if (!response.isSuccess) {
-      response.showErrorMessage();
-      return;
-    }else{
-      state.isAttention = !state.isAttention;
-      EventBus().emit(kEventIsAttention,state.isAttention);
-    }
-    update(['userInfo']);
-  }
-
   ///点赞或者取消点赞
   void getCommentLike(bool like, int index) async {
     var itemList = List.of(pagingController.itemList!);
@@ -124,5 +100,46 @@ class UserCenterController extends GetxController {
     }
     pagingController.itemList = itemList;
   }
+
+}
+
+///用户关注Mixin
+mixin UserAttentionMixin on GetxController implements GetAutoDisposeMixin{
+
+  ///是否已关注
+  final isAttentionRx = false.obs;
+
+  @override
+  void onInit(){
+    super.onInit();
+    autoDisposeWorker(EventBus().listen(kEventIsAttention, (data) {
+      isAttentionRx.value = data == true;
+    }));
+  }
+
+  ///是否已关注该用户
+  Future<bool> getIsAttention(int userId) async {
+    final response = await UserApi.isAttention(uid: userId);
+    if (response.isSuccess) {
+      isAttentionRx.value = response.data;
+    }
+    return isAttentionRx();
+  }
+
+  ///切换 关注，取消关注
+  ///- return true关注，false取消关注
+  Future<bool> toggleAttention(int userId) async {
+    Loading.show();
+    final response = await UserApi.attention(uid: userId);
+    Loading.dismiss();
+    if (!response.isSuccess) {
+      response.showErrorMessage();
+    }else{
+      isAttentionRx.value = response.data == 0;
+      EventBus().emit(kEventIsAttention,isAttentionRx());
+    }
+    return isAttentionRx();
+  }
+
 
 }

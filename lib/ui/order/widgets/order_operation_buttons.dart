@@ -84,7 +84,7 @@ class OrderOperationButtons extends StatelessWidget {
         break;
       case OrderOperationType.evaluation:
         children.add(_buildRight(
-          onTap: () => controller.onTapOrderEvaluation(item.id),
+          onTap: () => controller.onTapToOrderEvaluation(item.id),
           text: "立即评价",
         ));
         break;
@@ -138,7 +138,7 @@ class OrderOperationButtons extends StatelessWidget {
 
   Widget _buildConnect() {
     return GestureDetector(
-      onTap: () => controller.onTapOrderConnect(item.itemModel.receiveId),
+      onTap: () => controller.onTapToOrderConnect(item.itemModel.receiveId),
       behavior: HitTestBehavior.opaque,
       child: SizedBox(
         width: 48.rpx,

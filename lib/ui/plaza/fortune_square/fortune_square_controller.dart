@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
@@ -9,10 +8,11 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
+import 'package:guanjia/widgets/common_bottom_sheet.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:guanjia/widgets/ad_dialog.dart';
 
-import '../../../common/network/api/model/plaza/talk_plaza.dart';
 import 'fortune_square_state.dart';
 
 class FortuneSquareController extends GetxController
@@ -100,6 +100,24 @@ class FortuneSquareController extends GetxController
     }
   }
 
+  //选择更多
+  Future<void> selectMore(int? uid,int id) async {
+    var more = (uid == state.userInfo?.uid) ? [S.current.deletePublisher,'取消关注','发起聊天'] : ['取消关注','发起聊天'];
+    Get.bottomSheet(
+      CommonBottomSheet(
+        titles: more,
+        onTap: (index) async {
+          if(uid == state.userInfo?.uid && index == 0){
+            deleteCommunity(id);
+          }
+          if(index == 1){
+            MessageListPage.go(userId: uid!);
+          }
+        },
+      ),
+    );
+  }
+
   ///点赞或者取消点赞
   void getCommentLike(bool like, int index) async {
     final itemList = List.of(pagingController.itemList!);
@@ -121,10 +139,34 @@ class FortuneSquareController extends GetxController
   void setComment(String str, int index) async {
     final itemList = List.of(pagingController.itemList!);
     List<CommentListModel> comment = itemList[index].commentList ?? [];
-    comment.insert(0, CommentListModel.fromJson({"content":str}));
+    comment.insert(0, CommentListModel.fromJson({
+          "content":str,
+          "nickname":SS.login.info?.nickname,
+    }));
     itemList[index] = itemList[index].copyWith(
         commentList: comment
     );
     pagingController.itemList = itemList;
+  }
+
+  ///删除帖子
+  void deleteCommunity(int id) async {
+    final response = await PlazaApi.deleteCommunity(
+        id: id
+    );
+    if (response.isSuccess) {
+      var itemList = List.of(pagingController.itemList!);
+      PlazaListModel? item;
+      for (var element in itemList) {
+        if(element.postId == id){
+          item = element;
+          break;
+        }
+      }
+      itemList.remove(item);
+      pagingController.itemList = itemList;
+    } else {
+      pagingController.error = response.errorMessage;
+    }
   }
 }

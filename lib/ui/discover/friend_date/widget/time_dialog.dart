@@ -47,9 +47,14 @@ class TimeDialog extends StatelessWidget {
                 padding: EdgeInsets.all(16.rpx),
                 child: Column(
                   children: [
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: AppImage.asset('assets/images/common/close.png',width: 24.rpx,height: 24.rpx,),
+                    GestureDetector(
+                      onTap: (){
+                        Get.back();
+                      },
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        child: AppImage.asset('assets/images/common/close.png',width: 24.rpx,height: 24.rpx,),
+                      ),
                     ),
                     SizedBox(height: 8.rpx),
                     GridView.builder(

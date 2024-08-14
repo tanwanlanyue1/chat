@@ -53,8 +53,8 @@ class EvaluateCard extends StatelessWidget {
                           width: 16.rpx,
                           height: 16.rpx,
                           i == item.star ?
-                          'assets/images/mine/star_none.png':
-                          'assets/images/mine/star.png',
+                          'assets/images/mine/star.png':
+                          'assets/images/mine/star_none.png',
                         )),
                       ),
                     ],

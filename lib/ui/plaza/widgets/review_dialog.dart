@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 import '../../../common/network/api/api.dart';
@@ -27,7 +28,7 @@ class ReviewDialog extends StatelessWidget {
   ///评论
   /// pid:根评论id
   /// postId:帖子id
-  Future<void> postComment({int? pid,int? replyId,}) async {
+  Future<void> postComment() async {
       if(textController.text.isEmpty){
         Loading.showToast("请输入评论内容");
       }else{
@@ -36,6 +37,7 @@ class ReviewDialog extends StatelessWidget {
           content: textController.text,
         );
         if(response.isSuccess){
+          callBack?.call(textController.text);
           Loading.showToast(response.data);
           chatFocusNode.unfocus();
           Get.back();
@@ -83,22 +85,14 @@ class ReviewDialog extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 12.rpx,),
-                GestureDetector(
+                CommonGradientButton(
+                  width: 76.rpx,
+                  height: 36.rpx,
+                  text: "发送",
                   onTap: (){
-                    callBack?.call('123');
-                    // postComment();
+                    postComment();
                   },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColor.brown8,
-                      borderRadius: BorderRadius.circular(18.rpx),
-                    ),
-                    width: 76.rpx,
-                    height: 36.rpx,
-                    alignment: Alignment.center,
-                    child: Text("发送",style: AppTextStyle.fs14m.copyWith(color: AppColor.red1),),
-                  ),
-                ),
+                )
               ],
             ),
           ),

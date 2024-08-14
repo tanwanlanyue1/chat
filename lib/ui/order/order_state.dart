@@ -7,9 +7,19 @@ class OrderState {
     '已完成',
   ];
 
-  final selectedIndex = 0.obs;
+  final selectIndex = 0.obs;
 
-  OrderState() {
-    ///Initialize variables
-  }
+  final days = [
+    {'label': '汇总当天', 'value': 0},
+    {'label': '3天', 'value': 3},
+    {'label': '7天', 'value': 7},
+    {'label': '15天', 'value': 15},
+    {'label': '30天', 'value': 30},
+  ];
+
+  // 当前选择天数
+  var selectDay = 0.obs;
+
+  // 是否显示天数选择器
+  final isShowDay = false.obs;
 }

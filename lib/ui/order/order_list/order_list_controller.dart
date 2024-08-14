@@ -4,6 +4,7 @@ import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
+import 'package:guanjia/ui/order/order_controller.dart';
 import 'package:guanjia/ui/order/widgets/assign_agent_dialog/order_assign_agent_dialog.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -13,6 +14,9 @@ import 'order_list_state.dart';
 class OrderListController extends GetxController {
   final OrderListType type;
   OrderListController(this.type);
+
+  // 上级界面状态
+  final orderState = Get.find<OrderController>().state;
 
   final OrderListState state = OrderListState();
 
@@ -26,6 +30,7 @@ class OrderListController extends GetxController {
   @override
   void onInit() {
     // onTapOrderAdd(30);
+    orderState.selectDay.listen(_changeSelectDay);
     pagingController.addPageRequestListener(_fetchPage);
     super.onInit();
   }
@@ -116,6 +121,7 @@ class OrderListController extends GetxController {
   void _fetchPage(int page) async {
     final res = await OrderApi.getList(
       state: type.stateValue,
+      day: orderState.isShowDay.value ? orderState.selectDay.value : null,
       page: page,
       size: pagingController.pageSize,
     );
@@ -146,6 +152,13 @@ class OrderListController extends GetxController {
     if (Get.isRegistered<OrderListController>(tag: type.name)) {
       final c = Get.find<OrderListController>(tag: type.name);
       c.pagingController.refresh();
+    }
+  }
+
+  // 切换日期 刷新列表
+  void _changeSelectDay(int page) {
+    if (type.index == orderState.selectIndex.value) {
+      _refreshTypeList(type);
     }
   }
 }

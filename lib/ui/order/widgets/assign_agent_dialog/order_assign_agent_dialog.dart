@@ -43,7 +43,7 @@ class OrderAssignAgentDialog extends GetView<OrderAssignAgentController> {
             Align(
               alignment: Alignment.centerRight,
               child: IconButton(
-                onPressed: () => Get.back(result: false),
+                onPressed: () => Get.back(),
                 icon: AppImage.asset(
                   'assets/images/common/close.png',
                   width: 24.rpx,

@@ -3,6 +3,7 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/mixin/order_operation_mixin.dart';
+import 'package:guanjia/ui/order/model/order_list_item.dart';
 import 'package:guanjia/ui/order/order_controller.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 

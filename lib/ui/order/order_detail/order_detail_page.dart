@@ -16,7 +16,7 @@ import 'order_detail_controller.dart';
 class OrderDetailPage extends StatelessWidget {
   OrderDetailPage({super.key});
 
-  final controller = Get.put(OrderDetailController());
+  final controller = Get.find<OrderDetailController>();
   final state = Get.find<OrderDetailController>().state;
 
   @override

@@ -5,8 +5,8 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
+import 'package:guanjia/ui/order/model/order_list_item.dart';
 import 'package:guanjia/ui/order/order_list/order_list_controller.dart';
-import 'package:guanjia/ui/order/order_list/order_list_state.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 

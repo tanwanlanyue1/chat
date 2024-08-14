@@ -42,7 +42,7 @@ enum OrderItemUserType {
 enum OrderItemState {
   unknown, // 未知状态
   waitingAcceptance, // 等待确认
-  waitingAssign, // 指派
+  waitingAssign, // 等待指派
   waitingPaymentForRequest, // 等待发送方支付（用户）
   waitingPaymentForReceive, // 等待接收方支付（佳丽或者用户）
   waitingConfirmForRequest, // 等待发送方确认完成

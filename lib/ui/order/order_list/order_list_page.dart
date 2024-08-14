@@ -7,6 +7,7 @@ import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart'
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
+import 'package:guanjia/ui/order/model/order_list_item.dart';
 import 'package:guanjia/ui/order/order_list/order_list_state.dart';
 import 'package:guanjia/ui/order/widgets/order_operation_buttons.dart';
 import 'package:guanjia/ui/order/widgets/order_operation_number_widget.dart';

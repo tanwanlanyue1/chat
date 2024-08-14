@@ -37,19 +37,15 @@ class OrderListItem {
   OrderListItem({
     required this.itemModel,
   }) {
-    /// 优先保证初始化itemUserType，下方顺序很重要
-    itemUserType = itemModel.requestId == SS.login.userId
-        ? OrderItemUserType.request
-        : OrderItemUserType.receive;
-    itemType = _getType(itemModel, itemUserType);
-    _wrapper = _getState(itemModel, itemType, itemUserType);
+    itemType = _getType(itemModel);
+    _wrapper = _getState(itemModel, itemType);
   }
 
   // 原始数据
   final OrderItemModel itemModel;
 
-  // 订单用户类型
-  late final OrderItemUserType itemUserType;
+  // 当前订单用户类型 用于征友订单
+  late final OrderItemUserType friendUserType;
 
   // 订单类型
   late final OrderItemState itemType;
@@ -90,15 +86,20 @@ class OrderListItem {
   OrderOperationType get operationType => _wrapper.operation;
 
   /// 根据订单模型组装新的订单类型
-  static OrderItemState _getType(
-      OrderItemModel model, OrderItemUserType itemUserType) {
-    final userType = SS.login.userType;
+  static OrderItemState _getType(OrderItemModel model) {
     final orderType = model.type;
     final orderState = model.state;
     final requestState = model.requestState;
     final receiveState = model.receiveState;
 
     if (orderType.isNormal) {
+      final userId = SS.login.userId;
+      final userType = userId == model.requestId
+          ? UserType.user
+          : userId == model.receiveId
+              ? UserType.beauty
+              : UserType.agent;
+
       switch (orderState) {
         case OrderState.waitingAcceptance:
           if (userType.isAgent) {
@@ -137,6 +138,10 @@ class OrderListItem {
               : OrderItemState.finish;
       }
     } else {
+      final itemUserType = model.requestId == SS.login.userId
+          ? OrderItemUserType.request
+          : OrderItemUserType.receive;
+
       switch (orderState) {
         case OrderState.waitingAcceptance:
           // 征友订单不存在等待接受的状态
@@ -172,13 +177,23 @@ class OrderListItem {
 
   /// 根据订单类型组装新的 订单界面状态
   static OrderListItemWrapper _getState(
-      OrderItemModel model, OrderItemState state, OrderItemUserType userType) {
+    OrderItemModel model,
+    OrderItemState state,
+  ) {
     final OrderListItemWrapper? wrapper;
 
     if (model.type.isNormal) {
-      final userType = SS.login.userType;
+      final userId = SS.login.userId;
+      final userType = userId == model.requestId
+          ? UserType.user
+          : userId == model.receiveId
+              ? UserType.beauty
+              : UserType.agent;
       wrapper = buildNormalWrapperMap(model)[state]?[userType];
     } else {
+      final userType = model.requestId == SS.login.userId
+          ? OrderItemUserType.request
+          : OrderItemUserType.receive;
       wrapper = buildFriendWrapperMap(model)[state]?[userType];
     }
 

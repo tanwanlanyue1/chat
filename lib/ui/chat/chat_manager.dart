@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_pickers/time_picker/model/date_time_data.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
-import 'package:guanjia/common/event/event_bus.dart';
-import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
@@ -30,8 +27,10 @@ class ChatManager {
 
   var _isInit = false;
 
-  ///音视频通话信息
+  ///当前音视频通话信息
   var _callInfo = ChatCallInfo();
+  ///等待通话结束，显示对话框
+  var _isWaitCallEndDialog = false;
 
   ///初始化
   Future<void> init() async {
@@ -63,7 +62,7 @@ class ChatManager {
         }
         final kitMessage = message.toKIT();
         if (kitMessage.customType == CustomMessageType.callEnd) {
-          _onReceiveCallEndMessage(kitMessage);
+          _showCallEndDialog(kitMessage);
           break;
         }
       }
@@ -128,6 +127,7 @@ class ChatManager {
           AppLogger.d(
               'ZegoUIKitPrebuiltCallInvitationEvents>onOutgoingCallAccepted: callID=${callID}, info=$_callInfo');
           if (_callInfo.invitee == callee.id) {
+            _isWaitCallEndDialog = true;
             _callInfo = _callInfo.copyWith(
               beginTime: DateTime.now(),
               inviter: SS.login.userId.toString(),
@@ -143,6 +143,7 @@ class ChatManager {
           List<ZegoCallUser> callees,
           String customData,
         ) {
+          _isWaitCallEndDialog = true;
           _callInfo = ChatCallInfo(
             beginTime: DateTime.now(),
             isVideoCall: callType == ZegoCallInvitationType.videoCall,
@@ -282,6 +283,7 @@ class ChatManager {
   Future<void> disconnect() async {
     ZIMKit().disconnectUser();
     ZegoUIKitPrebuiltCallInvitationService().uninit();
+    _isWaitCallEndDialog = false;
   }
 
   ///跳转聊天页面
@@ -336,17 +338,18 @@ class ChatManager {
       customType: CustomMessageType.callEnd.value,
       customMessage: content.toJsonString(),
       onMessageSent: (message){
-        _onReceiveCallEndMessage(message);
+        _showCallEndDialog(message);
       }
     );
   }
 
-  ///接收到音视频通话结束消息
-  void _onReceiveCallEndMessage(ZIMKitMessage message) {
+  ///显示通话结束对话框
+  void _showCallEndDialog(ZIMKitMessage message) {
     final callEndContent = message.callEndContent;
-    if(callEndContent == null){
+    if(callEndContent == null || !_isWaitCallEndDialog){
       return;
     }
+    _isWaitCallEndDialog = false;
     Future.delayed(const Duration(milliseconds: 400), (){
       ChatCallEndDialog.show(message: message);
     });

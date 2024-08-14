@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:guanjia/common/event/event_bus.dart';
-import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
+import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/common/network/api/user_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/ui/chat/custom/message_extension.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'message_list_state.dart';
-import 'widgets/chat_call_end_dialog.dart';
+import 'widgets/chat_feature_panel.dart';
 import 'widgets/chat_input_view.dart';
 
 class MessageListController extends GetxController
@@ -31,8 +31,34 @@ class MessageListController extends GetxController
     _conversationNotifier?.addListener(_onConversationChanged);
     _onConversationChanged();
 
+    //监听用户信息，更新底部actions列表
+    autoDisposeWorker(ever(state.userInfoRx, (userInfo){
+      final actions = [...ChatFeatureAction.values];
+      //当前登录用户不是普通用户或者对方是普通用户，则不显示发起约会
+      if(!SS.login.userType.isUser || userInfo?.type.isUser == true){
+        actions.remove(ChatFeatureAction.date);
+      }
+      if(actions.length != state.featureActionsRx.length){
+        state.featureActionsRx.value = actions;
+      }
+    }));
+
+    _fetchData();
+  }
+
+  void _fetchData() async{
+    final userId = int.parse(state.conversationId);
+
     //获取用户关注状态
-    getIsAttention(int.parse(state.conversationId));
+    getIsAttention(userId);
+
+    //获取用户信息
+    final response = await UserApi.info(uid: userId);
+    if (response.isSuccess) {
+      state.userInfoRx.value = response.data;
+    }else{
+      response.showErrorMessage();
+    }
   }
 
   void _onConversationChanged() {

@@ -81,21 +81,28 @@ class MessageListPage extends GetView<MessageListController> {
                         child: buildMessageListView(),
                       ),
                     ),
-                    ChatInputView(
-                      key: controller.chatInputViewKey,
-                      onSend: controller.sendTextMessage,
-                      onTapFeatureAction: controller.onTapFeatureAction,
-                      featureActions: state.featureActions,
-                      featureItemBuilder: buildFeatureItem,
-                    ),
+                    ObxValue((dataRx){
+                      return ChatInputView(
+                        key: controller.chatInputViewKey,
+                        onSend: controller.sendTextMessage,
+                        onTapFeatureAction: controller.onTapFeatureAction,
+                        featureActions: dataRx(),
+                        featureItemBuilder: buildFeatureItem,
+                      );
+                    }, state.featureActionsRx),
                     // messageInput(),
                   ],
                 ),
               ),
-              //TODO 对方是佳丽或者经纪人才需要显示
-              const Positioned.fill(
+              Positioned.fill(
                 bottom: null,
-                child: ChatDateView(),
+                child: ObxValue((userRx){
+                  final user = userRx();
+                  if(user == null){
+                    return Spacing.blank;
+                  }
+                  return ChatDateView(user: user, isFriendDate: false);
+                }, state.userInfoRx),
               ),
             ],
           ),

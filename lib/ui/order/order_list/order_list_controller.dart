@@ -1,18 +1,19 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
-import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
-import 'package:guanjia/ui/order/widgets/assign_agent_dialog/order_assign_agent_dialog.dart';
-import 'package:guanjia/widgets/loading.dart';
+import 'package:guanjia/ui/order/mixin/order_operation_mixin.dart';
+import 'package:guanjia/ui/order/order_controller.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'order_list_state.dart';
 
-class OrderListController extends GetxController {
+class OrderListController extends GetxController with OrderOperationMixin {
   final OrderListType type;
   OrderListController(this.type);
+
+  // 上级界面状态
+  final orderState = Get.find<OrderController>().state;
 
   final OrderListState state = OrderListState();
 
@@ -26,6 +27,7 @@ class OrderListController extends GetxController {
   @override
   void onInit() {
     // onTapOrderAdd(30);
+    orderState.selectDay.listen(_changeSelectDay);
     pagingController.addPageRequestListener(_fetchPage);
     super.onInit();
   }
@@ -36,86 +38,54 @@ class OrderListController extends GetxController {
     super.onClose();
   }
 
-  void onTapToOrderDetail(int orderId) {
-    Get.toNamed(AppRoutes.orderDetailPage);
-  }
-
-  Future<void> onTapOrderAdd(int uid) async {
-    Loading.show();
-    final res = await OrderApi.add(uid: uid);
-    Loading.dismiss();
-    if (!res.isSuccess) {
-      res.showErrorMessage();
-      return;
+  @override
+  Future<bool> onTapOrderCancel(int orderId) async {
+    final res = await super.onTapOrderCancel(orderId);
+    if (res) {
+      _refreshTypeList(OrderListType.going);
+      _refreshTypeList(OrderListType.cancel);
     }
-    _refreshTypeList(OrderListType.going);
+    return res;
   }
 
-  Future<void> onTapOrderCancel(int orderId) async {
-    Loading.show();
-    final res = await OrderApi.cancel(orderId: orderId);
-    Loading.dismiss();
-    if (!res.isSuccess) {
-      res.showErrorMessage();
-      return;
+  @override
+  Future<bool> onTapOrderPayment(int orderId) async {
+    final res = await super.onTapOrderPayment(orderId);
+    if (res) _refreshTypeList(OrderListType.going);
+    return res;
+  }
+
+  @override
+  Future<bool> onTapOrderAcceptOrReject(bool isAccept, int orderId) async {
+    final res = await super.onTapOrderAcceptOrReject(isAccept, orderId);
+    if (res) {
+      _refreshTypeList(OrderListType.going);
+      if (isAccept) _refreshTypeList(OrderListType.cancel);
     }
-    _refreshTypeList(OrderListType.going);
-    _refreshTypeList(OrderListType.cancel);
+    return res;
   }
 
-  Future<void> onTapOrderPayment(int orderId) async {
-    // TODO: 弹出密码框
-    Loading.show();
-    final res = await OrderApi.pay(orderId: orderId, password: "123456");
-    Loading.dismiss();
-    if (!res.isSuccess) {
-      res.showErrorMessage();
-      return;
+  @override
+  Future<bool> onTapOrderAssign(int orderId) async {
+    final res = await super.onTapOrderAssign(orderId);
+    if (res) _refreshTypeList(OrderListType.going);
+    return res;
+  }
+
+  @override
+  Future<bool> onTapOrderFinish(int orderId) async {
+    final res = await super.onTapOrderFinish(orderId);
+    if (res) {
+      _refreshTypeList(OrderListType.going);
+      _refreshTypeList(OrderListType.finish);
     }
-    _refreshTypeList(OrderListType.going);
-  }
-
-  void onTapOrderConnect(int uid) {
-    MessageListPage.go(userId: uid);
-  }
-
-  Future<void> onTapOrderAcceptOrReject(bool isAccept, int orderId) async {
-    Loading.show();
-    final res =
-        await OrderApi.acceptOrReject(type: isAccept ? 1 : 2, orderId: orderId);
-    Loading.dismiss();
-    if (!res.isSuccess) {
-      res.showErrorMessage();
-      return;
-    }
-    _refreshTypeList(OrderListType.going);
-    if (isAccept) _refreshTypeList(OrderListType.cancel);
-  }
-
-  Future<void> onTapOrderAssign(int orderId) async {
-    final res = await OrderAssignAgentDialog.show(orderId);
-    if (res == true) _refreshTypeList(OrderListType.going);
-  }
-
-  Future<void> onTapOrderFinish(int orderId) async {
-    Loading.show();
-    final res = await OrderApi.finish(orderId: orderId);
-    Loading.dismiss();
-    if (!res.isSuccess) {
-      res.showErrorMessage();
-      return;
-    }
-    _refreshTypeList(OrderListType.going);
-    _refreshTypeList(OrderListType.finish);
-  }
-
-  void onTapOrderEvaluation(int orderId) {
-    Get.toNamed(AppRoutes.orderEvaluationPage, arguments: orderId);
+    return res;
   }
 
   void _fetchPage(int page) async {
     final res = await OrderApi.getList(
       state: type.stateValue,
+      day: orderState.isShowDay.value ? orderState.selectDay.value : null,
       page: page,
       size: pagingController.pageSize,
     );
@@ -146,6 +116,13 @@ class OrderListController extends GetxController {
     if (Get.isRegistered<OrderListController>(tag: type.name)) {
       final c = Get.find<OrderListController>(tag: type.name);
       c.pagingController.refresh();
+    }
+  }
+
+  // 切换日期 刷新列表
+  void _changeSelectDay(int page) {
+    if (type.index == orderState.selectIndex.value) {
+      _refreshTypeList(type);
     }
   }
 }

@@ -75,7 +75,7 @@ class ReleaseInvitationController extends GetxController {
   void onTapRelease() async {
     int comparison = timeDate(hour: state.endTime, time: state.endHour).compareTo( timeDate(hour: state.startTime, time: state.startHour));
     if(contentController.text.isEmpty){
-      Loading.showToast("");
+      Loading.showToast("约会内容不能为空");
     }else if(comparison < 0){
       Loading.showToast("结束日期不能早于开始时间");
     }else{

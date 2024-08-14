@@ -29,14 +29,14 @@ class PlazaCard extends StatelessWidget {
   PlazaListModel item;
   final Function(bool like)? isLike;//点击点赞
   final Function(String? str)? callBack;//评论回复
-  PlazaCard({super.key,this.user = false,this.attention = false,required this.item,this.isLike,this.callBack});
+  final Function()? more;//更多
+  PlazaCard({super.key,this.user = false,this.attention = false,required this.item,this.isLike,this.callBack,this.more});
 
   ///点赞或者取消点赞
   /// type:点赞类型（1动态2评论）
   Future<void> getCommentLike() async {
     final response = await PlazaApi.getCommentLike(
         id: item.postId!,
-        type: 1
     );
     if(response.isSuccess){
       if(response.data == 0){
@@ -60,12 +60,16 @@ class PlazaCard extends StatelessWidget {
         children: [
           _header(),
           if(attention)...[
+            _backImage(),
             _buildBody(),
-            backImage(),
-          ].reversed,
-          if(!attention)...[
+          ],
+          if(user)...[
+            _imageViews(),
             _buildBody(),
-            _imageViews(context),
+          ],
+          if(!attention && !user)...[
+            _buildBody(),
+            _imageViews(),
           ],
           _createBottom(),
           _comment(),
@@ -140,14 +144,7 @@ class PlazaCard extends StatelessWidget {
               width: 20.rpx,
               height: 20.rpx,
             ),
-            onTap: (){
-              Get.bottomSheet(
-                CommonBottomSheet(
-                  titles: ["删除(个人发布者)", "取消关注","发起聊天"],
-                  onTap: (index) async {},
-                ),
-              );
-            },
+            onTap: () => more?.call(),
           ),
         ],
       ),
@@ -166,7 +163,7 @@ class PlazaCard extends StatelessWidget {
   }
 
   ///关注轮播图
-  Widget backImage(){
+  Widget _backImage(){
     return item.images != null ?
     Container(
       height: 250.rpx,
@@ -200,7 +197,7 @@ class PlazaCard extends StatelessWidget {
   }
 
   ///图片
-  Widget _imageViews(BuildContext context) {
+  Widget _imageViews() {
     return item.images != null ?
     Container(
       padding: EdgeInsets.only(bottom: 12.rpx,top: 10.rpx),
@@ -214,15 +211,16 @@ class PlazaCard extends StatelessWidget {
             crossAxisCount: user ? 2 : 3,
             childAspectRatio: 1,
             mainAxisSpacing: 8.rpx,
-            mainAxisExtent: 109.rpx
+            mainAxisExtent: 109.rpx,
+            crossAxisSpacing: 8.rpx
         ),
-        itemBuilder: (BuildContext context, int index) {
+        itemBuilder: (_, int index) {
           return Padding(
-            padding: EdgeInsets.only(left: 14.rpx),
+            padding: EdgeInsets.only(left: 0.rpx),
             child: GestureDetector(
                 onTap: () {
                   PhotoViewGalleryPage.show(
-                      context,
+                      Get.context!,
                       PhotoViewGalleryPage(
                         images: jsonDecode(item.images ?? ''),
                         index: index,
@@ -357,7 +355,7 @@ class PlazaCard extends StatelessWidget {
             visible: item.commentList!.length > 1,
             child: GestureDetector(
               onTap: (){
-                Get.toNamed(AppRoutes.allCommentsPage,);
+                Get.toNamed(AppRoutes.allCommentsPage,arguments: {"postId": item.postId, "userId": item.uid});
               },
               child: Container(
                 margin: EdgeInsets.only(top: 12.rpx),

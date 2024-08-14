@@ -54,7 +54,8 @@ enum OrderItemState {
   waitingEvaluation; // 等待评价 目前只有用户普通订单存在评价
 
   static OrderItemState valueForIndex(int index) {
-    return OrderItemState.values.elementAtOrNull(index) ?? OrderItemState.finish;
+    return OrderItemState.values.elementAtOrNull(index) ??
+        OrderItemState.finish;
   }
 }
 
@@ -71,4 +72,22 @@ enum OrderOperationType {
   finish, // 完成
   connect, // 联系
   evaluation, // 评价
+}
+
+/// 订单详情显示类型
+enum OrderDetailDisplayType {
+  number, // 订单编号
+  request, // 下单用户
+  receive, // 接单用户
+  requestTime, // 下单时间
+  receiveTime, // 接单时间
+  finishTime, // 结束时间
+  reason, // 原因
+  margin, // 保证金
+  requestServiceFee, // 用户缴纳服务费
+  platformFeeProportion, // 平台收取比例
+  platformFee, // 平台费
+  agentFeeProportion, // 经纪人收取比例
+  agentFee, // 经纪人介绍费
+  amount, // 实收金额
 }

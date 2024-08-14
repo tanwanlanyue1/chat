@@ -36,16 +36,13 @@ class PlazaApi{
 
   /// 点赞或者取消点赞（点赞成功返回0，取消成功返回1）
   /// id:数据id
-  /// type:点赞类型（1动态2评论）
   static Future<ApiResponse> getCommentLike({
     required int id,
-    required int type,
   }) {
     return HttpClient.get(
       '/api/community/like',
       params: {
-        "id":id,
-        "type":type,
+        "postId":id,
       },
       dataConverter: (data) => data,
     );
@@ -70,7 +67,7 @@ class PlazaApi{
   /// id:类型（默认0热门，1最新，2最早）
   static Future<ApiResponse<List<CommentListModel>>> getCommentList({
     required int id,
-    int type = 0,
+    int type = 1,
   }) {
     return HttpClient.get(
       '/api/community/commentList',
@@ -168,6 +165,19 @@ class PlazaApi{
         }
         return [];
       },
+    );
+  }
+
+  /// 删除帖子
+  static Future<ApiResponse> deleteCommunity({
+    required int id,
+  }) {
+    return HttpClient.get(
+      '/api/community/delete',
+      params: {
+        "id":id,
+      },
+      dataConverter: (data) => data,
     );
   }
 }

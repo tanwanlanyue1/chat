@@ -9,6 +9,7 @@ import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/upload_image.dart';
 
+import '../../../common/network/api/api.dart';
 import '../user_center/user_center_controller.dart';
 
 //上传封面图-弹窗
@@ -55,6 +56,7 @@ class UploadCoverDialog extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(left: 12.rpx),
                       child: UploadImage(
+                        limit: 6,
                         imgList: controller.state.imgList,
                         callback: (val) {
                           controller.state.imgList = val;
@@ -66,9 +68,7 @@ class UploadCoverDialog extends StatelessWidget {
                     CommonGradientButton(
                       height: 50.rpx,
                       text: "确定上传",
-                      onTap: (){
-                        print("123");
-                      },
+                      onTap: controller.updateInfoImage,
                     )
                   ],
                 ),

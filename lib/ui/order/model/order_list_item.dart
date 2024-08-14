@@ -28,7 +28,7 @@ class OrderListItem {
     required this.itemModel,
   }) {
     itemType = getType(itemModel);
-    _wrapper = _getState(itemModel, itemType);
+    _wrapper = _getWrapper(itemModel, itemType);
   }
 
   // 原始数据
@@ -84,8 +84,8 @@ class OrderListItem {
       final userType = userId == model.requestId
           ? UserType.user
           : userId == model.receiveId
-          ? UserType.beauty
-          : UserType.agent;
+              ? UserType.beauty
+              : UserType.agent;
 
       switch (orderState) {
         case OrderState.waitingAcceptance:
@@ -98,14 +98,14 @@ class OrderListItem {
           return OrderItemState.waitingAcceptance;
 
         case OrderState.waitingPayment:
-        // 根据用户类型和订单状态确定订单项类型
+          // 根据用户类型和订单状态确定订单项类型
           return userType.isBeauty
               ? (receiveState.isWaitingPayment
-              ? OrderItemState.waitingPaymentForReceive
-              : OrderItemState.waitingPaymentForRequest)
+                  ? OrderItemState.waitingPaymentForReceive
+                  : OrderItemState.waitingPaymentForRequest)
               : (requestState.isWaitingPayment
-              ? OrderItemState.waitingPaymentForRequest
-              : OrderItemState.waitingPaymentForReceive);
+                  ? OrderItemState.waitingPaymentForRequest
+                  : OrderItemState.waitingPaymentForReceive);
 
         case OrderState.going:
           return receiveState.isConfirm
@@ -113,13 +113,13 @@ class OrderListItem {
               : OrderItemState.waitingConfirmForReceive;
 
         case OrderState.cancel:
-        // 优先显示请求方取消状态
+          // 优先显示请求方取消状态
           return requestState.isCancel
               ? OrderItemState.cancelForRequest
               : OrderItemState.cancelForReceive;
 
         case OrderState.finish:
-        // 评价星值为0时，改为等待评价状态
+          // 评价星值为0时，改为等待评价状态
           return model.evaluateScore == 0
               ? OrderItemState.waitingEvaluation
               : OrderItemState.finish;
@@ -131,27 +131,27 @@ class OrderListItem {
 
       switch (orderState) {
         case OrderState.waitingAcceptance:
-        // 征友订单不存在等待接受的状态
+          // 征友订单不存在等待接受的状态
           return OrderItemState.unknown;
 
         case OrderState.waitingPayment:
-        // 根据用户类型和订单状态确定订单项类型
+          // 根据用户类型和订单状态确定订单项类型
           return itemUserType.isReceive
               ? (receiveState.isWaitingPayment
-              ? OrderItemState.waitingPaymentForReceive
-              : OrderItemState.waitingPaymentForRequest)
+                  ? OrderItemState.waitingPaymentForReceive
+                  : OrderItemState.waitingPaymentForRequest)
               : (requestState.isWaitingPayment
-              ? OrderItemState.waitingPaymentForRequest
-              : OrderItemState.waitingPaymentForReceive);
+                  ? OrderItemState.waitingPaymentForRequest
+                  : OrderItemState.waitingPaymentForReceive);
 
         case OrderState.going:
-        // 接受方需要先确认订单后再进行请求方确认
+          // 接受方需要先确认订单后再进行请求方确认
           return receiveState.isConfirm
               ? OrderItemState.waitingConfirmForRequest
               : OrderItemState.waitingConfirmForReceive;
 
         case OrderState.cancel:
-        // 优先显示请求方取消状态
+          // 优先显示请求方取消状态
           return requestState.isCancel
               ? OrderItemState.cancelForRequest
               : OrderItemState.cancelForReceive;
@@ -162,11 +162,11 @@ class OrderListItem {
     }
   }
 
-  /// 根据订单类型组装新的 订单界面状态
-  static OrderListItemWrapper _getState(
-      OrderItemModel model,
-      OrderItemState state,
-      ) {
+  /// 根据订单类型和状态进行组装
+  static OrderListItemWrapper _getWrapper(
+    OrderItemModel model,
+    OrderItemState state,
+  ) {
     final OrderListItemWrapper? wrapper;
 
     if (model.type.isNormal) {
@@ -174,8 +174,8 @@ class OrderListItem {
       final userType = userId == model.requestId
           ? UserType.user
           : userId == model.receiveId
-          ? UserType.beauty
-          : UserType.agent;
+              ? UserType.beauty
+              : UserType.agent;
       wrapper = buildNormalWrapperMap(model)[state]?[userType];
     } else {
       final userType = model.requestId == SS.login.userId
@@ -194,9 +194,7 @@ class OrderListItem {
   }
 
   static Map<OrderItemState, Map<UserType, OrderListItemWrapper>>
-  buildNormalWrapperMap(OrderItemModel model) {
-    final requestName = model.requestName;
-
+      buildNormalWrapperMap(OrderItemModel model) {
     return {
       OrderItemState.waitingAcceptance: {
         UserType.user: OrderListItemWrapper(
@@ -444,7 +442,7 @@ class OrderListItem {
   }
 
   static Map<OrderItemState, Map<OrderItemUserType, OrderListItemWrapper>>
-  buildFriendWrapperMap(OrderItemModel model) {
+      buildFriendWrapperMap(OrderItemModel model) {
     return {
       OrderItemState.waitingPaymentForRequest: {
         OrderItemUserType.request: OrderListItemWrapper(

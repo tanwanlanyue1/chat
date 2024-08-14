@@ -10,6 +10,10 @@ class CommentListModel {
     int? replyId,
     //	帖子id
     int? postId,
+    //	年龄
+    int? age,
+    //用户性别 0：保密 1：男 2：女
+    int? gender,
     //用户uid
     int? uid,
     //头像
@@ -36,6 +40,8 @@ class CommentListModel {
     _pid = pid;
     _replyId = replyId;
     _postId = postId;
+    _age = age;
+    _gender = gender;
     _uid = uid;
     _content = content;
     _cavLevel = cavLevel;
@@ -54,6 +60,8 @@ class CommentListModel {
     _pid = json['pid'];
     _replyId = json['replyId'];
     _postId = json['postId'];
+    _age = json['age'];
+    _gender = json['gender'];
     _uid = json['uid'];
     _content = json['content'];
     _cavLevel = json['cavLevel'];
@@ -75,6 +83,8 @@ class CommentListModel {
   int? _pid;
   int? _replyId;
   int? _postId;
+  int? _age;
+  int? _gender;
   int? _uid;
   String? _content;
   int? _cavLevel;
@@ -90,6 +100,8 @@ CommentListModel copyWith({  int? id,
   int? pid,
   int? replyId,
   int? postId,
+  int? age,
+  int? gender,
   int? uid,
   String? content,
   int? cavLevel,
@@ -105,6 +117,8 @@ CommentListModel copyWith({  int? id,
   pid: pid ?? _pid,
   replyId: replyId ?? _replyId,
   postId: postId ?? _postId,
+  age: age ?? _age,
+  gender: gender ?? _gender,
   uid: uid ?? _uid,
   content: content ?? _content,
   cavLevel: cavLevel ?? _cavLevel,
@@ -121,6 +135,8 @@ CommentListModel copyWith({  int? id,
   int? get pid => _pid;
   int? get replyId => _replyId;
   int? get postId => _postId;
+  int? get age => _age;
+  int? get gender => _gender;
   int? get uid => _uid;
   String? get content => _content;
   int? get cavLevel => _cavLevel;
@@ -139,6 +155,8 @@ CommentListModel copyWith({  int? id,
     map['pid'] = _pid;
     map['replyId'] = _replyId;
     map['postId'] = _postId;
+    map['age'] = _age;
+    map['gender'] = _gender;
     map['uid'] = _uid;
     map['content'] = _content;
     map['cavLevel'] = _cavLevel;

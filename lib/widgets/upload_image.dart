@@ -67,27 +67,29 @@ class _UploadImageState extends State<UploadImage> {
 
   ///选择图片或者拍照
   void selectCamera() {
+    int limit = widget.limit ?? 9;
     PhotoAndCameraBottomSheet.show(
       autoUpload: false,
       onTapIndex: (index) async {
         switch (index) {
           case 0:
             final List<XFile> image = await picker.pickMultiImage(
-              imageQuality: 9,
+              imageQuality: 100,
               limit: widget.limit,
             );
             if (image.isNotEmpty) {
               List<File> res = [];
-              for (var item in image.take(widget.limit ?? 9)) {
+              for (var item in image.take(limit-_imagesList.length)) {
                 res.add(File(item.path));
-              }
-              if(image.length > (widget.limit ?? 9)){
-                Loading.showToast("最多选择${widget.limit}张图片");
               }
               uploadImage(res);
             }
             break;
           case 1:
+            if(_imagesList.length == limit){
+              Loading.showToast("最多选择${widget.limit}张图片");
+              return;
+            }
             final XFile? photo =
                 await picker.pickImage(source: ImageSource.camera);
             if (photo != null) {

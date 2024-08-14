@@ -11,8 +11,6 @@ class UserCenterState {
   final isAppBarExpanded = false.obs;
   //作者信息
   UserModel authorInfo = UserModel.fromJson({});
-  //创作数
-  Map creation = {};
 
   //上传封面图
   List<String> imgList = [];

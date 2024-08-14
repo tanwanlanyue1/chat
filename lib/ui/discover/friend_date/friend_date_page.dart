@@ -74,7 +74,7 @@ class FriendDatePage extends StatelessWidget {
             return Visibility(
               visible: index != state.typeList.length-1,
               replacement: Visibility(
-                // visible: state.userInfo?.type.index == 0,
+                visible: state.userInfo?.type.index == 0,
                 child: CommonGradientButton(
                   text: state.typeList[index]['title'],
                   textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
@@ -159,7 +159,7 @@ class FriendDatePage extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: (){
-                  Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":0});
+                  Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item.uid});
                 },
                 child: Container(
                   margin: EdgeInsets.only(right: 8.rpx),

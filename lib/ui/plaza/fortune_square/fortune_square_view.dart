@@ -45,11 +45,14 @@ class FortuneSquareView extends StatelessWidget {
                             child: PlazaCard(
                               item: item,
                               attention: controller.tabController.index == 1,
+                              more: () {
+                                controller.selectMore(item.uid,item.postId!);
+                              },
                               isLike: (like){
                                 controller.getCommentLike(like, index);
                               },
                               callBack: (val){
-                                controller.setComment('',index);
+                                controller.setComment(val ?? '',index);
                               },
                             ),
                           );

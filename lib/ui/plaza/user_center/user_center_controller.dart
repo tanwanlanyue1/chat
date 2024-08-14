@@ -33,14 +33,16 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
   );
 
   void upload(){
-    UploadCoverDialog.show();
+    if(SS.login.userId == state.authorId){
+      UploadCoverDialog.show();
+    }
   }
 
   @override
   void onInit() {
     scrollController.addListener(() {
       double offset = scrollController.offset;
-      double appBarHeight = 260.rpx;
+      double appBarHeight = 250.rpx;
       state.isAppBarExpanded.value = (appBarHeight - kToolbarHeight) < offset;
     });
     getUserInfo();
@@ -69,6 +71,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
     final response = await UserApi.info(uid: state.authorId);
     if (response.isSuccess) {
       state.authorInfo = response.data ?? UserModel.fromJson({});
+      state.imgList = response.data?.images != null ? List<String>.from(jsonDecode(response.data?.images ?? '')) : [];
       update(['userInfo']);
     }
   }
@@ -88,19 +91,50 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
   void getCommentLike(bool like, int index) async {
     var itemList = List.of(pagingController.itemList!);
     if (like) {
-      // itemList[index] = itemList[index]
-      //     .copyWith(
-      //     isLike: like,
-      //     likeNum: (itemList[index].likeNum ?? 0) + 1);
+      itemList[index] = itemList[index]
+          .copyWith(
+          isLike: like,
+          likeNum: (itemList[index].likeNum ?? 0) + 1);
     } else {
-      // itemList[index] = itemList[index]
-      //     .copyWith(
-      //     isLike: like,
-      //     likeNum: (itemList[index].likeNum ?? 0) - 1);
+      itemList[index] = itemList[index]
+          .copyWith(
+          isLike: like,
+          likeNum: (itemList[index].likeNum ?? 0) - 1);
     }
     pagingController.itemList = itemList;
   }
 
+  ///评论信息
+  void setComment(String str, int index) async {
+    final itemList = List.of(pagingController.itemList!);
+    List<CommentListModel> comment = itemList[index].commentList ?? [];
+    comment.insert(0, CommentListModel.fromJson({
+      "content":str,
+      "nickname":SS.login.info?.nickname,
+    }));
+    itemList[index] = itemList[index].copyWith(
+        commentList: comment
+    );
+    pagingController.itemList = itemList;
+  }
+
+  //上传封面图
+  void updateInfoImage() async {
+    if(state.imgList.isEmpty){
+      Loading.showToast("请选择要上传的图片");
+    }else{
+      final res = await UserApi.updateInfoFull(
+        data: {
+          "images": jsonEncode(state.imgList)
+        },
+      );
+      if(res.isSuccess){
+        Get.back();
+      }else{
+        res.showErrorMessage();
+      }
+    }
+  }
 }
 
 ///用户关注Mixin

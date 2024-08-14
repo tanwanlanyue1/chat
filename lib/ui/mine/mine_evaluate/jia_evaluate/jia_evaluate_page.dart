@@ -130,8 +130,8 @@ class JiaEvaluatePage extends StatelessWidget {
                             width: 16.rpx,
                             height: 16.rpx,
                             i == (state.evaluation?.totalScore ?? 0) ?
-                            'assets/images/mine/star_none.png':
-                            'assets/images/mine/star.png',
+                            'assets/images/mine/star.png':
+                            'assets/images/mine/star_none.png',
                           ))
                         ],
                       ),
@@ -177,13 +177,16 @@ class JiaEvaluatePage extends StatelessWidget {
             alignment: WrapAlignment.start,
             children: List.generate(state.label.length, (i) {
               var item = state.label[i];
-              return Container(
-                decoration: BoxDecoration(
-                    color: AppColor.blue36,
-                    borderRadius: BorderRadius.all(Radius.circular(8.rpx))
+              return Visibility(
+                visible: item.isNotEmpty,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: AppColor.blue36,
+                      borderRadius: BorderRadius.all(Radius.circular(8.rpx))
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 24.rpx,vertical: 12.rpx),
+                  child: Text("$item",style: AppTextStyle.fs14m.copyWith(color: AppColor.primary)),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 24.rpx,vertical: 12.rpx),
-                child: Text("$item",style: AppTextStyle.fs14m.copyWith(color: AppColor.primary)),
               );
             }),
           )

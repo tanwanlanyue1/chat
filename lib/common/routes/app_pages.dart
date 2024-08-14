@@ -10,6 +10,7 @@ import 'package:guanjia/common/routes/pages/wallet_pages.dart';
 import 'package:guanjia/ui/ad/launch_ad/launch_ad_page.dart';
 import 'package:guanjia/ui/discover/friend_date/release_invitation/release_invitation_page.dart';
 import 'package:guanjia/ui/home/home_page.dart';
+import 'package:guanjia/ui/plaza/all_comments/all_comments_controller.dart';
 import 'package:guanjia/ui/plaza/all_comments/all_comments_page.dart';
 import 'package:guanjia/ui/plaza/release_dynamic/release_dynamic_page.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
@@ -47,6 +48,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.allCommentsPage,
       page: () => AllCommentsPage(),
+      binding: BindingsBuilder.put(() => AllCommentsController(
+        postId: Get.tryGetArgs('postId'),
+        userId: Get.tryGetArgs('userId'),
+      )),
     ),
     GetPage(
       name: AppRoutes.webPage,

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
@@ -8,6 +7,7 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/discover/friend_date/widget/draft_dialog.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
 import 'package:guanjia/widgets/loading.dart';
@@ -93,10 +93,12 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin{
     Get.bottomSheet(
       CommonBottomSheet(
         titles: more,
-        // hasCancel: false,
         onTap: (index) async {
-          if(uid == state.userInfo?.uid && index == 1){
+          if(uid == state.userInfo?.uid && index == 0){
             delAppointment(id);
+          }
+          if(index == 0){
+            MessageListPage.go(userId: uid!);
           }
         },
       ),

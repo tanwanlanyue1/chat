@@ -4,6 +4,7 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/order/widgets/assign_agent_dialog/order_assign_agent_dialog.dart';
 import 'package:guanjia/widgets/loading.dart';
+import 'package:guanjia/widgets/payment_password_keyboard.dart';
 
 /// 订单操作Mixin
 mixin OrderOperationMixin {
@@ -36,9 +37,11 @@ mixin OrderOperationMixin {
   /// 支付订单
   /// orderId: 订单id
   Future<bool> onTapOrderPayment(int orderId) async {
-    // TODO: 弹出密码框
+    final password = await PaymentPasswordKeyboard.show();
+    if (password == null) return false;
+
     Loading.show();
-    final res = await OrderApi.pay(orderId: orderId, password: "123456");
+    final res = await OrderApi.pay(orderId: orderId, password: password);
     Loading.dismiss();
     if (!res.isSuccess) {
       res.showErrorMessage();

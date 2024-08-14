@@ -74,14 +74,14 @@ class MessageListPage extends GetView<MessageListController> {
                   children: [
                     Expanded(
                       child: GestureDetector(
-                        onTap: (){
-                          controller
-                              .chatInputViewKey.currentState?.closePanel();
+                        onTap: () {
+                          controller.chatInputViewKey.currentState
+                              ?.closePanel();
                         },
                         child: buildMessageListView(),
                       ),
                     ),
-                    ObxValue((dataRx){
+                    ObxValue((dataRx) {
                       return ChatInputView(
                         key: controller.chatInputViewKey,
                         onSend: controller.sendTextMessage,
@@ -96,13 +96,18 @@ class MessageListPage extends GetView<MessageListController> {
               ),
               Positioned.fill(
                 bottom: null,
-                child: ObxValue((userRx){
-                  final user = userRx();
-                  if(user == null){
+                child: Obx(() {
+                  final user = state.userInfoRx();
+                  var order = state.orderRx();
+                  if (user == null || order == null) {
                     return Spacing.blank;
                   }
-                  return ChatDateView(user: user, isFriendDate: false);
-                }, state.userInfoRx),
+                  return ChatDateView(
+                    user: user,
+                    order: order.id != 0 ? order : null,
+                    isFriendDate: false,
+                  );
+                }),
               ),
             ],
           ),

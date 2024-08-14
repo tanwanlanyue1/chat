@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/api/user_api.dart';
@@ -9,6 +10,7 @@ import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
+import '../../../common/network/network.dart';
 import 'message_list_state.dart';
 import 'widgets/chat_feature_panel.dart';
 import 'widgets/chat_input_view.dart';
@@ -32,13 +34,22 @@ class MessageListController extends GetxController
     _onConversationChanged();
 
     //监听用户信息，更新底部actions列表
-    autoDisposeWorker(ever(state.userInfoRx, (userInfo){
+    autoDisposeWorker(everAll([state.userInfoRx, state.orderRx], (_) {
+      final userInfo = state.userInfoRx();
+      final order = state.orderRx();
       final actions = [...ChatFeatureAction.values];
       //当前登录用户不是普通用户或者对方是普通用户，则不显示发起约会
-      if(!SS.login.userType.isUser || userInfo?.type.isUser == true){
+      if (!SS.login.userType.isUser || userInfo?.type.isUser == true) {
         actions.remove(ChatFeatureAction.date);
       }
-      if(actions.length != state.featureActionsRx.length){
+
+      //有进行中的订单，不能发起约会
+      if (order != null &&
+          ![OrderState.cancel, OrderState.finish].contains(order.state)) {
+        actions.remove(ChatFeatureAction.date);
+      }
+
+      if (actions.length != state.featureActionsRx.length) {
         state.featureActionsRx.value = actions;
       }
     }));
@@ -46,18 +57,26 @@ class MessageListController extends GetxController
     _fetchData();
   }
 
-  void _fetchData() async{
+  void _fetchData() async {
     final userId = int.parse(state.conversationId);
+    final responses = await Future.wait([
+      //获取用户关注状态
+      getIsAttention(userId),
+      //用户信息
+      UserApi.info(uid: userId),
+      //订单信息
+      OrderApi.getLastByUid(otherUid: userId),
+    ]);
 
-    //获取用户关注状态
-    getIsAttention(userId);
-
-    //获取用户信息
-    final response = await UserApi.info(uid: userId);
-    if (response.isSuccess) {
-      state.userInfoRx.value = response.data;
-    }else{
-      response.showErrorMessage();
+    //用户信息
+    final userResponse = responses[1] as ApiResponse<UserModel>;
+    if (userResponse.isSuccess) {
+      state.userInfoRx.value = userResponse.data;
+    }
+    //订单信息
+    final orderResponse = responses[2] as ApiResponse<OrderItemModel?>;
+    if (orderResponse.isSuccess) {
+      state.orderRx.value = orderResponse.data ?? OrderItemModel.fromJson({});
     }
   }
 

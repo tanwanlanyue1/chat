@@ -143,7 +143,7 @@ extension MessageSenderHelper on MessageListController {
       case ChatFeatureAction.videoCall:
         break;
       case ChatFeatureAction.date:
-        OrderCreateDialog.show();
+        OrderCreateDialog.show(userId: int.parse(state.conversationId));
         break;
       case ChatFeatureAction.transfer:
         break;

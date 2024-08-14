@@ -61,9 +61,11 @@ enum OrderItemState {
 /// 订单操作类型
 enum OrderOperationType {
   none, // 无操作
+  create, // 发起约会
   accept, // 接单
   assign, // 分配
   payment, // 支付
+  confirm, //佳丽确认已到位
   cancel, // 取消
   cancelAndFinish, // 取消和完成
   finish, // 完成

@@ -89,6 +89,8 @@ class OrderOperationButtons extends StatelessWidget {
         ));
         break;
       case OrderOperationType.none:
+      case OrderOperationType.create:
+      case OrderOperationType.confirm:
         break;
     }
 

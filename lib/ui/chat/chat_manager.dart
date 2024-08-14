@@ -3,10 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_pickers/time_picker/model/date_time_data.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/common/event/event_bus.dart';
+import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/chat/custom/message_extension.dart';
+import 'package:guanjia/ui/chat/message_list/widgets/chat_call_end_dialog.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
@@ -49,6 +53,21 @@ class ChatManager {
         [ZegoUIKitSignalingPlugin()],
       );
     });
+
+    //监听通话结束消息
+    ZIMEventHandler.onReceivePeerMessage =
+        (ZIM zim, List<ZIMMessage> messageList, String fromUserID) {
+      for (var message in messageList) {
+        if (message is! ZIMCustomMessage) {
+          continue;
+        }
+        final kitMessage = message.toKIT();
+        if (kitMessage.customType == CustomMessageType.callEnd) {
+          _onReceiveCallEndMessage(kitMessage);
+          break;
+        }
+      }
+    };
   }
 
   ///连接到IM服务
@@ -267,7 +286,7 @@ class ChatManager {
 
   ///跳转聊天页面
   ///- 用户ID
-  Future<void> toChatPage({required int userId}) async{
+  Future<void> toChatPage({required int userId}) async {
     if (userId == SS.login.userId) {
       AppLogger.w('不能与自己聊天');
       return;
@@ -316,8 +335,23 @@ class ChatManager {
       ZIMConversationType.peer,
       customType: CustomMessageType.callEnd.value,
       customMessage: content.toJsonString(),
+      onMessageSent: (message){
+        _onReceiveCallEndMessage(message);
+      }
     );
   }
+
+  ///接收到音视频通话结束消息
+  void _onReceiveCallEndMessage(ZIMKitMessage message) {
+    final callEndContent = message.callEndContent;
+    if(callEndContent == null){
+      return;
+    }
+    Future.delayed(const Duration(milliseconds: 400), (){
+      ChatCallEndDialog.show(message: message);
+    });
+  }
+
 }
 
 ///音视频通话状态信息

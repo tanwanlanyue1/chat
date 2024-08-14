@@ -9,6 +9,7 @@ import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/message_call_end_content.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
+import 'package:guanjia/ui/chat/message_list/widgets/chat_call_end_dialog.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
@@ -40,7 +41,10 @@ class ChatCallEndMessage extends StatelessWidget {
 
     return Flexible(
       child: GestureDetector(
-        onTap: () => onPressed?.call(context, message, () {}),
+        onTap: (){
+          onPressed?.call(context, message, () {});
+          ChatCallEndDialog.show(message: message);
+        },
         onLongPressStart: (details) => onLongPress?.call(
           context,
           details,

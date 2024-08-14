@@ -1,16 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/event/event_bus.dart';
+import 'package:guanjia/common/event/event_constant.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/common/utils/permissions_utils.dart';
-import 'package:guanjia/ui/chat/message_list/widgets/chat_call_dialog.dart';
+import 'package:guanjia/ui/chat/custom/message_extension.dart';
+import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'message_list_state.dart';
+import 'widgets/chat_call_end_dialog.dart';
 import 'widgets/chat_input_view.dart';
 
-class MessageListController extends GetxController {
+class MessageListController extends GetxController
+    with UserAttentionMixin, GetAutoDisposeMixin {
   final MessageListState state;
 
   final recordProcessor = ZIMKitRecordStatus();
@@ -26,6 +30,9 @@ class MessageListController extends GetxController {
         ZIMKit().getConversation(state.conversationId, state.conversationType);
     _conversationNotifier?.addListener(_onConversationChanged);
     _onConversationChanged();
+
+    //获取用户关注状态
+    getIsAttention(int.parse(state.conversationId));
   }
 
   void _onConversationChanged() {
@@ -48,47 +55,22 @@ class MessageListController extends GetxController {
           conversationType: conversationType,
         );
 
-  ///音视频通话呼出前调用
-  Future<bool> onWillOutgoingCall(bool isVideoCall) async{
-    var hasPermission = false;
-    if (isVideoCall) {
-      hasPermission = await PermissionsUtils.requestPermissions([
-        Permission.camera,
-        Permission.microphone,
-      ], hintText: '需要开启相机和麦克风权限');
-    } else {
-      hasPermission = await PermissionsUtils.requestPermission(
-        Permission.microphone,
-        hintText: '需要开启麦克风权限',
-      );
-    }
-    if(!hasPermission){
-      return false;
-    }
-
-    //发起聊天
-    final result = await ChatCallDialog.show(isVideoCall: isVideoCall);
-
-
-    return result == true;
-  }
-
   void showMoreBottomSheet() {
     Get.bottomSheet(
       CommonBottomSheet(
         titles: [
           '查看个人主页',
-          '关注',
+          isAttentionRx.isTrue ? '取消关注' : '关注',
         ],
         onTap: (index) {
-          switch(index){
+          switch (index) {
             case 0:
               Get.toNamed(AppRoutes.userCenterPage, arguments: {
-                'userId': state.conversationId,
+                'userId': int.parse(state.conversationId),
               });
               break;
             case 1:
-              //TODO 关注
+              toggleAttention(int.parse(state.conversationId));
               break;
           }
         },

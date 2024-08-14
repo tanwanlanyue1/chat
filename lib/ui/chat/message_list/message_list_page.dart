@@ -113,7 +113,6 @@ class MessageListPage extends GetView<MessageListController> {
         isVideoCall: isVideoCall,
         userId: int.parse(conversationId),
         nickname: state.conversationRx()?.name ?? '',
-        onWillPressed: () => controller.onWillOutgoingCall(isVideoCall),
         child: defaultWidget,
       );
     }

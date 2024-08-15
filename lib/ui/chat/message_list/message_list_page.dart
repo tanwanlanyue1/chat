@@ -115,7 +115,8 @@ class MessageListPage extends GetView<MessageListController> {
                     user: user,
                     order: order.id != 0 ? order : null,
                     isFriendDate: state.isFromFriend,
-                    onTapAction: controller.onTapOrderAction,
+                    onTapOrderAction: controller.onTapOrderAction,
+                    onTapOrder: (order) => controller.onTapToOrderDetail(order.id),
                   );
                 }),
               ),

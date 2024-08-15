@@ -5,49 +5,43 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
-import 'package:guanjia/ui/order/mixin/order_operation_mixin.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///约会状态View（显示在消息列表顶部）
-class ChatDateView extends StatefulWidget {
+class ChatDateView extends StatelessWidget {
+  static double get height => 66.rpx;
+
   final UserModel user;
   final OrderItemModel? order;
-  final void Function(OrderOperationType operation, OrderItemModel? order)? onTapAction;
+
+  ///点击订单操作
+  final void Function(OrderOperationType operation, OrderItemModel? order)?
+      onTapOrderAction;
+
+  ///点击订单详情
+  final void Function(OrderItemModel order)? onTapOrder;
 
   //是否来自征友页面
   final bool isFriendDate;
+
+  ///对方用户类型
+  UserType get targetType => user.type;
+
+  ///当前登录用户类型
+  UserType get selfType => SS.login.userType;
 
   const ChatDateView({
     super.key,
     required this.user,
     required this.isFriendDate,
     this.order,
-    this.onTapAction,
+    this.onTapOrderAction,
+    this.onTapOrder,
   });
 
-  static double get height => 66.rpx;
-
-  @override
-  State<ChatDateView> createState() => _ChatDateViewState();
-}
-
-class _ChatDateViewState extends State<ChatDateView> with OrderOperationMixin {
-
-  ///对方用户类型
-  late UserType targetType;
-
-  ///当前登录用户类型
-  late UserType selfType;
-
-  @override
-  void initState() {
-    super.initState();
-    targetType = widget.user.type;
-    selfType = SS.login.userType;
-  }
-
-  Map<OrderItemState, Map<UserType, _UIState>> get uiStateMap {
+  ///普通订单UI状态
+  Map<OrderItemState, Map<UserType, _UIState>> get _uiStateNormal {
     return {
       OrderItemState.waitingAcceptance: {
         UserType.user: _UIState(
@@ -107,70 +101,131 @@ class _ChatDateViewState extends State<ChatDateView> with OrderOperationMixin {
     };
   }
 
-  _UIState? getUIState(final OrderItemModel? order){
+  ///征友订单UI状态
+  Map<OrderItemState, Map<OrderItemUserType, _UIState>> get _uiStateFriend {
+    return {
+      OrderItemState.waitingPaymentForRequest: {
+        OrderItemUserType.request: _UIState(
+          desc: '对方已参与您的征友约会，请您及时缴纳保证金和服务费',
+          button: '立即缴纳',
+          operation: OrderOperationType.payment,
+        ),
+        OrderItemUserType.receive: _UIState(
+          desc: '对方正在缴纳保证金和服务费，请您耐心等待',
+        ),
+      },
+      OrderItemState.waitingPaymentForReceive: {
+        OrderItemUserType.request: _UIState(
+          desc: '对方正在缴纳保证金和服务费，请您耐心等待',
+        ),
+        OrderItemUserType.receive: _UIState(
+          desc: '您已参与Ta的征友约会，请您及时缴纳保证金',
+          button: '立即缴纳',
+          operation: OrderOperationType.payment,
+        ),
+      },
+      OrderItemState.waitingConfirmForReceive: {
+        OrderItemUserType.request: _UIState(
+          desc: '约会已开始',
+        ),
+        OrderItemUserType.receive: _UIState(
+          desc: '点击“我已到位”，约会便正式开始哦～',
+          button: '我已到位',
+          operation: OrderOperationType.confirm,
+        ),
+      },
+      OrderItemState.waitingConfirmForRequest: {
+        OrderItemUserType.request: _UIState(
+          desc: '约会已开始，约会结束后记得点击右侧按钮结束订单哦～',
+          button: '确认完成订单',
+          operation: OrderOperationType.finish,
+        ),
+        OrderItemUserType.receive: _UIState(desc: '约会已开始'),
+      },
+    };
+  }
 
+  ///获取普通订单UI状态
+  _UIState? _getUIState(final OrderItemModel? order) {
     //双方都是佳丽或者经纪人,不显示
     if (!targetType.isUser && !selfType.isUser) {
       return null;
     }
 
-    //订单为空，佳丽和经纪人不显示
-    if(order == null){
-      if(selfType.isUser && !targetType.isUser){
-        return  _UIState.createOrder();
+    //订单为空，或者订单已完结 佳丽和经纪人不显示
+    if (order == null ||
+        [OrderState.finish, OrderState.cancel].contains(order.state)) {
+      if (selfType.isUser && !targetType.isUser) {
+        return _UIState(
+          desc: '点击右侧按钮，发起约会吧！',
+          button: '发起约会',
+          operation: OrderOperationType.create,
+        );
       }
       return null;
     }
 
-    if([OrderState.finish, OrderState.cancel].contains(order.state)){
-      return _UIState.createOrder();
-    }
-
-    final userId = SS.login.userId;
-    final userType = userId == order.requestId
-        ? UserType.user
-        : userId == order.receiveId
-        ? UserType.beauty
-        : UserType.agent;
     final orderState = OrderListItem.getType(order);
-    return uiStateMap[orderState]?[userType];
+    if (order.type.isNormal) {
+      final userId = SS.login.userId;
+      final userType = userId == order.requestId
+          ? UserType.user
+          : userId == order.receiveId
+              ? UserType.beauty
+              : UserType.agent;
+      return _uiStateNormal[orderState]?[userType];
+    } else {
+      final userType = order.requestId == SS.login.userId
+          ? OrderItemUserType.request
+          : OrderItemUserType.receive;
+      return _uiStateFriend[orderState]?[userType];
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
-    final uiState = getUIState(widget.order);
+    final uiState = _getUIState(order);
     if (uiState == null) {
       return Spacing.blank;
     }
-    return Container(
-      height: ChatDateView.height,
-      color: AppColor.grayF7,
-      padding: FEdgeInsets(horizontal: 16.rpx),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Text(
-              uiState.desc,
-              textAlign: uiState.button != null ? TextAlign.left : TextAlign.center,
-              style: AppTextStyle.fs14m.copyWith(
-                color: AppColor.gray5,
+    return GestureDetector(
+      onTap: () {
+        if (order != null &&
+            ![OrderState.cancel, OrderState.finish].contains(order?.state)) {
+          onTapOrder?.call(order!);
+        }
+      },
+      child: Container(
+        height: ChatDateView.height,
+        color: AppColor.grayF7,
+        padding: FEdgeInsets(horizontal: 16.rpx),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Text(
+                uiState.desc,
+                textAlign:
+                    uiState.button != null ? TextAlign.left : TextAlign.center,
+                style: AppTextStyle.fs14m.copyWith(
+                  color: AppColor.gray5,
+                ),
               ),
             ),
-          ),
-          if(uiState.button != null) Padding(
-            padding: FEdgeInsets(left: 16.rpx),
-            child: CommonGradientButton(
-              onTap: () => widget.onTapAction?.call(uiState.operation, widget.order),
-              height: 37.rpx,
-              padding: FEdgeInsets(horizontal: 16.rpx),
-              borderRadius: BorderRadius.zero,
-              text: uiState.button,
-              textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
-            ),
-          ),
-        ],
+            if (uiState.button != null)
+              Padding(
+                padding: FEdgeInsets(left: 16.rpx),
+                child: CommonGradientButton(
+                  onTap: () => onTapOrderAction?.call(uiState.operation, order),
+                  height: 37.rpx,
+                  padding: FEdgeInsets(horizontal: 16.rpx),
+                  borderRadius: BorderRadius.zero,
+                  text: uiState.button,
+                  textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -191,12 +246,4 @@ class _UIState {
     this.button,
     this.operation = OrderOperationType.none,
   });
-
-  factory _UIState.createOrder(){
-    return _UIState(
-      desc: '点击右侧按钮，发起约会吧！',
-      button: '发起约会',
-      operation: OrderOperationType.create,
-    );
-  }
 }

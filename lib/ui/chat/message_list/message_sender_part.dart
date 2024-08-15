@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
@@ -145,14 +146,15 @@ extension MessageSenderPart on MessageListController {
         onTapOrderAction(OrderOperationType.create, null);
         break;
       case ChatFeatureAction.transfer:
-        Uint8List cmdMessage = utf8.encode('自定义指令');
-        final message = ZIMCommandMessage(message: cmdMessage);
-        ZIM.getInstance()?.sendMessage(
-              message,
-              state.conversationId,
-              state.conversationType,
-              ZIMMessageSendConfig(),
-            );
+        OpenApi.sendSignallingMsg();
+        // Uint8List cmdMessage = utf8.encode('自定义指令');
+        // final message = ZIMCommandMessage(message: cmdMessage);
+        // ZIM.getInstance()?.sendMessage(
+        //       message,
+        //       state.conversationId,
+        //       state.conversationType,
+        //       ZIMMessageSendConfig(),
+        //     );
 
         break;
     }

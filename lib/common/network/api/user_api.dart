@@ -541,7 +541,7 @@ class UserApi {
   /// 	style: 风格
   static Future<ApiResponse<List<RecommendModel>>> recommendList({
     String? location,
-    int distance = 10,
+    int? distance,
     int? gender,
     int? minAge,
     int? maxAge,

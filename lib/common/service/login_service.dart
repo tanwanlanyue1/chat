@@ -48,6 +48,9 @@ class LoginService extends GetxService {
   // 用户类型 默认用户
   UserType get userType => _info.value?.type ?? UserType.user;
 
+  // 用户绑定信息
+  bool get userBind => ((info?.phone?.isNotEmpty ?? false) || (info?.email?.isNotEmpty ?? false));
+
   /// Private 防止外部修改
 
   // 当前用户登录模型

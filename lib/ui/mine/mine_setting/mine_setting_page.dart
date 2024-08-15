@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/network/network.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_info.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/setting_item.dart';
@@ -88,8 +89,8 @@ class MineSettingPage extends StatelessWidget {
                       topRight: Radius.circular(8.rpx),
                     ),
                   ),
-                  Visibility(
-                    visible: !(state.loginService.info?.payPwd ?? false),
+                  Obx(() => Visibility(
+                    visible: !(SS.login.info?.payPwd ?? false),
                     replacement: SettingItem(
                       title: S.current.changingPaymentPassword,
                       callBack: controller.paymentPasswordPage,
@@ -106,7 +107,7 @@ class MineSettingPage extends StatelessWidget {
                         bottomRight: Radius.circular(8.rpx),
                       ),
                     ),
-                  ),
+                  )),
                   SettingItem(
                     title: S.current.languageSwitch,
                     bottom: 1.rpx,

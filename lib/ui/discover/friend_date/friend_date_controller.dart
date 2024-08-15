@@ -99,6 +99,9 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin{
           }
           if(index == 0){
             MessageListPage.go(userId: uid!);
+          }else{
+            Get.toNamed(AppRoutes.mineFeedbackPage);
+            // AppRoutes.mineFeedbackPage
           }
         },
       ),

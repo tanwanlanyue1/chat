@@ -109,7 +109,7 @@ class _MinePageState extends State<MinePage>
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () => Get.toNamed(AppRoutes.accountDataPage),
+                    onTap: () => Get.toNamed(AppRoutes.userCenterPage,arguments: {'userId': userInfo!.uid}),
                     child: Stack(
                       alignment: Alignment.bottomRight,
                       children: [

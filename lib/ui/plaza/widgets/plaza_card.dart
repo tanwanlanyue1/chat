@@ -25,12 +25,12 @@ import 'review_dialog.dart';
 ///item: 广场项 isSelect
 class PlazaCard extends StatelessWidget {
   final bool user;
-  final bool attention;
+  final int? plazaIndex;
   PlazaListModel item;
   final Function(bool like)? isLike;//点击点赞
   final Function(String? str)? callBack;//评论回复
   final Function()? more;//更多
-  PlazaCard({super.key,this.user = false,this.attention = false,required this.item,this.isLike,this.callBack,this.more});
+  PlazaCard({super.key,this.user = false,this.plazaIndex = 0,required this.item,this.isLike,this.callBack,this.more});
 
   ///点赞或者取消点赞
   /// type:点赞类型（1动态2评论）
@@ -59,7 +59,7 @@ class PlazaCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _header(),
-          if(attention)...[
+          if(plazaIndex == 1)...[
             _backImage(),
             _buildBody(),
           ],
@@ -67,7 +67,7 @@ class PlazaCard extends StatelessWidget {
             _imageViews(),
             _buildBody(),
           ],
-          if(!attention && !user)...[
+          if(!(plazaIndex == 1) && !user)...[
             _buildBody(),
             _imageViews(),
           ],
@@ -138,13 +138,16 @@ class PlazaCard extends StatelessWidget {
               ),
             ),
           ),
-          GestureDetector(
-            child: AppImage.asset(
-              "assets/images/discover/more.png",
-              width: 20.rpx,
-              height: 20.rpx,
+          Visibility(
+            visible: plazaIndex! > 0,
+            child: GestureDetector(
+              child: AppImage.asset(
+                "assets/images/discover/more.png",
+                width: 20.rpx,
+                height: 20.rpx,
+              ),
+              onTap: () => more?.call(),
             ),
-            onTap: () => more?.call(),
           ),
         ],
       ),
@@ -302,14 +305,17 @@ class PlazaCard extends StatelessWidget {
         ),
         Visibility(
           visible: SS.login.userId != item.uid!,
-          child: CommonGradientButton(
-            width: 80.rpx,
-            height: 30.rpx,
-            text: "发起聊天",
-            onTap: (){
-              MessageListPage.go(userId: item.uid!);
-            },
-            textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
+          child: Padding(
+            padding: EdgeInsets.only(left: 6.rpx),
+            child: CommonGradientButton(
+              width: 80.rpx,
+              height: 30.rpx,
+              text: "发起聊天",
+              onTap: (){
+                MessageListPage.go(userId: item.uid!);
+              },
+              textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
+            ),
           ),
         ),
       ],

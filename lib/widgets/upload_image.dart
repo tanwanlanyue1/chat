@@ -174,7 +174,7 @@ class _UploadImageState extends State<UploadImage> {
               PhotoViewGalleryPage.show(
                   context,
                   PhotoViewGalleryPage(
-                    images: [],
+                    images: _imagesList,
                     index: index,
                     heroTag: '',
                   ));

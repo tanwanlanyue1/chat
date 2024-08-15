@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/button.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../common/network/api/api.dart';
 import 'dating_hall_controller.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -83,52 +89,18 @@ class DatingHallView extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: List.generate(5, (index) => Container(
-                padding: EdgeInsets.symmetric(vertical: 12.rpx,horizontal: 16.rpx),
-                color: AppColor.scaffoldBackground,
-                margin: EdgeInsets.only(bottom: 8.rpx),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 8.rpx),
-                      child: AppImage.asset("assets/images/plaza/hall_head.png",width: 100.rpx,height: 100.rpx,),
-                    ),
-                    SizedBox(
-                      height: 100.rpx,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text("Alma Washington",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
-                          Row(
-                            children: [
-                              Text("27岁 ",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
-                              Text("| 性感",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
-                            ],
-                          ),
-                          Row(
-                            children: List.generate(3, (index) => Container(
-                              margin: EdgeInsets.only(right: 6.rpx),
-                              child: AppImage.asset("assets/images/plaza/hall_head.png",width: 40.rpx,height: 40.rpx,),
-                            )),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    Button.stadium(
-                      onPressed: (){},
-                      width: 82.rpx,
-                      height: 28.rpx,
-                      backgroundColor: AppColor.purple6,
-                      child: Text(S.current.getTouchWith,style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
-                    )
-                  ],
+            child: SmartRefresher(
+              controller: controller.pagingController.refreshController,
+              onRefresh: controller.pagingController.onRefresh,
+              child: PagedListView(
+                pagingController: controller.pagingController,
+                builderDelegate: DefaultPagedChildBuilderDelegate<RecommendModel>(
+                  pagingController: controller.pagingController,
+                  itemBuilder: (_, item, index) {
+                    return friendsItem(item);
+                  },
                 ),
-              )),
+              ),
             )
           ),
         ],
@@ -136,4 +108,55 @@ class DatingHallView extends StatelessWidget {
     );
   }
 
+  //交友项
+  Widget friendsItem(RecommendModel item){
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 12.rpx,horizontal: 16.rpx),
+      color: AppColor.scaffoldBackground,
+      margin: EdgeInsets.only(bottom: 8.rpx),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () => Get.toNamed(AppRoutes.userCenterPage,arguments: {'userId': item.uid}),
+            child: Container(
+              margin: EdgeInsets.only(right: 8.rpx),
+              child: AppImage.network(item.avatar ?? '',width: 100.rpx,height: 100.rpx,borderRadius: BorderRadius.circular(8.rpx),),
+            ),
+          ),
+          Expanded(child: SizedBox(
+            height: 100.rpx,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(item.nickname ?? '',style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
+                Row(
+                  children: [
+                    Text("${item.age ?? ''}岁 ",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                    Expanded(child: Text("| ${item.style ?? ''}",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                  ],
+                ),
+                Row(
+                  children: List.generate(3, (index) => Container(
+                    margin: EdgeInsets.only(right: 6.rpx),
+                    child: AppImage.asset("assets/images/plaza/hall_head.png",width: 40.rpx,height: 40.rpx,),
+                  )),
+                ),
+              ],
+            ),
+          )),
+          Button.stadium(
+            onPressed: (){
+              MessageListPage.go(userId: item.uid!);
+            },
+            width: 82.rpx,
+            height: 28.rpx,
+            backgroundColor: AppColor.purple6,
+            child: Text(S.current.getTouchWith,style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+          )
+        ],
+      ),
+    );
+  }
 }

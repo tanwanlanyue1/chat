@@ -10,6 +10,7 @@ import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart'
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_button.dart';
+import 'package:guanjia/widgets/photo_view_gallery_page.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -36,70 +37,86 @@ class UserCenterPage extends StatelessWidget {
       body: SmartRefresher(
         controller: controller.pagingController.refreshController,
         onRefresh: controller.pagingController.onRefresh,
-        child: CustomScrollView(
-          controller: controller.scrollController,
-          slivers: <Widget>[
-            Obx(() => SliverAppBar(
-              pinned: true,
-              leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
-              actions: [
-                Visibility(
-                  visible: SS.login.userId == state.authorId,
-                  child: GestureDetector(
-                    onTap: controller.upload,
-                    child: AppImage.asset("assets/images/plaza/uploading.png",width: 24.rpx,height: 24.rpx,color: state.isAppBarExpanded.value ? Colors.black :Colors.white,),
+        child: Stack(
+          children: [
+            CustomScrollView(
+              controller: controller.scrollController,
+              slivers: <Widget>[
+                Obx(() => SliverAppBar(
+                  pinned: true,
+                  leadingWidth: 0,
+                  leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
+                  expandedHeight: 258.rpx,
+                  flexibleSpace: FlexibleSpaceBar(
+                    titlePadding: EdgeInsets.zero,
+                    expandedTitleScale: 1.0,
+                    title: Container(
+                      height: 16.rpx,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(24.rpx),
+                          topRight: Radius.circular(24.rpx),
+                        ),
+                      ),
+                    ),
+                    collapseMode: CollapseMode.parallax,
+                    background: backImage(),
+                  ),
+                )),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      userInfo(),
+                      creativeDynamics(),
+                    ],
                   ),
                 ),
-                GestureDetector(
-                  child: Container(
-                    padding: EdgeInsets.only(right: 16.rpx,left: 12.rpx),
-                    child: AppImage.asset("assets/images/discover/more.png",width: 24.rpx,height: 24.rpx,color: state.isAppBarExpanded.value ? Colors.black :Colors.white,),
+                PagedSliverList(
+                  pagingController: controller.pagingController,
+                  builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
+                    pagingController: controller.pagingController,
+                    itemBuilder: (_, item, index) {
+                      return PlazaCard(
+                        user: true,
+                        item: item,
+                        isLike: (like){
+                          controller.getCommentLike(like, index);
+                        },
+                        callBack: (val){
+                          controller.setComment(val ?? '',index);
+                        },
+                      );
+                    },
                   ),
                 ),
               ],
-              expandedHeight: 258.rpx,
-              flexibleSpace: FlexibleSpaceBar(
-                titlePadding: EdgeInsets.zero,
-                expandedTitleScale: 1.0,
-                title: Container(
-                  height: 16.rpx,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24.rpx),
-                      topRight: Radius.circular(24.rpx),
+            ),
+            Container(
+              height: 44.rpx+Get.mediaQuery.padding.top,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [AppColor.gray40, Color(0x00000000)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                //Color(0x4D000000)
+              ),
+              child: AppBar(
+                backgroundColor: Colors.transparent,
+                leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
+                actions: [
+                  Visibility(
+                    visible: SS.login.userId == state.authorId,
+                    child: InkWell(
+                      onTap: controller.upload,
+                      child: Container(
+                        padding: EdgeInsets.only(right: 16.rpx,left: 12.rpx),
+                        child: AppImage.asset("assets/images/plaza/uploading.png",width: 24.rpx,height: 24.rpx,color: state.isAppBarExpanded.value ? Colors.black :Colors.white,),
+                      ),
                     ),
                   ),
-                ),
-                collapseMode: CollapseMode.parallax,
-                background: backImage(),
-              ),
-            )),
-            SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  userInfo(),
-                  creativeDynamics(),
                 ],
-              ),
-            ),
-            PagedSliverList(
-              pagingController: controller.pagingController,
-              builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
-                pagingController: controller.pagingController,
-                itemBuilder: (_, item, index) {
-                  return PlazaCard(
-                    user: true,
-                    item: item,
-                    isLike: (like){
-                      controller.getCommentLike(like, index);
-                    },
-                    callBack: (val){
-                      controller.setComment(val ?? '',index);
-                    },
-                    // onTap: () => controller.onTapItem(index),
-                  );
-                },
               ),
             ),
           ],
@@ -141,7 +158,13 @@ class UserCenterPage extends StatelessWidget {
                 )
             ),
             onTap: (i){
-
+              PhotoViewGalleryPage.show(
+                  Get.context!,
+                  PhotoViewGalleryPage(
+                    images: jsonDecode(state.authorInfo.images!),
+                    index: i,
+                    heroTag: '',
+                  ));
             },
           ):
           GestureDetector(
@@ -191,21 +214,22 @@ class UserCenterPage extends StatelessWidget {
                       onTap: (){
                         controller.toggleAttention(state.authorId);
                       },
-                      child: Row(
-                        children: [
-                          ObxValue((isAttentionRx){
-                            return Visibility(
+                      child: ObxValue((isAttentionRx){
+                        return Row(
+                          children: [
+                            Visibility(
                               visible: isAttentionRx(),
                               replacement: AppImage.asset("assets/images/plaza/attention_no.png",width: 24.rpx,height: 24.rpx,),
                               child: AppImage.asset("assets/images/plaza/attention.png",width: 24.rpx,height: 24.rpx,),
-                            );
-                          }, controller.isAttentionRx),
-                          Container(
-                            padding: EdgeInsets.only(left: 6.rpx),
-                            child: Text("关注",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),
-                          )
-                        ],
-                      ),
+                            ),
+                            Container(
+                              width: 50.rpx,
+                              alignment: Alignment.center,
+                              child: Text(isAttentionRx() ? "已关注" : '关注',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),
+                            )
+                          ],
+                        );
+                      },controller.isAttentionRx),
                     ),
                   ),
                 ],

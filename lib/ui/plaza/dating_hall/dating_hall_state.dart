@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/ui/plaza/fortune_square/fortune_square_state.dart';
+
+import '../../../common/network/api/api.dart';
 
 class RectifyTheWorkplaceState {
-
+  final info = SS.login.info?.copyWith().obs;
   //速配
   List speedDating = [
     {
@@ -30,14 +32,10 @@ class RectifyTheWorkplaceState {
       "activeImage":"assets/images/plaza/woman.png",
     },
   ];
-
+  final int ageMin = 16;
+  final int ageMax = 65;
   //风格
-  List styleList = [
-    "温柔可人",
-    "温柔可人",
-    "温柔可人",
-    "温柔可人",
-    "温柔可人",
-    "其他",
-  ];
+  List<LabelModel> styleList = [];
+  //风格-标签
+  List<int> labelList = [];
 }

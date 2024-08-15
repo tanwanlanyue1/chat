@@ -50,11 +50,11 @@ class BindingController extends GetxController {
     Loading.dismiss();
     if(response.isSuccess){
       Loading.showToast(S.current.bindingSuccessful);
+      loginService.fetchMyInfo();
       Get.back();
     }else{
       response.showErrorMessage();
     }
-    loginService.fetchMyInfo();
 
   }
 

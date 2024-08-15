@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
@@ -27,9 +28,16 @@ class ClientCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                margin: EdgeInsets.only(right: 8.rpx),
-                child: AppImage.network(item?.avatar ?? '',width: 40.rpx,height: 40.rpx,),
+              GestureDetector(
+                onTap: (){
+                  Get.toNamed(AppRoutes.userCenterPage, arguments: {
+                    'userId': item!.uid,
+                  });
+                },
+                child: Container(
+                  margin: EdgeInsets.only(right: 8.rpx),
+                  child: AppImage.network(item?.avatar ?? '',width: 40.rpx,height: 40.rpx,shape: BoxShape.circle,),
+                ),
               ),
               Expanded(
                 child: SizedBox(

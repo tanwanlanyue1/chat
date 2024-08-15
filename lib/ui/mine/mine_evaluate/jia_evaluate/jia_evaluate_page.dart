@@ -41,39 +41,42 @@ class JiaEvaluatePage extends StatelessWidget {
         ),
       ),
       backgroundColor: AppColor.grayF7,
-      body: Column(
-        children: [
-          personInfo(),
-          Expanded(
-            child: SmartRefresher(
-            controller: controller.pagingController.refreshController,
-            onRefresh: controller.pagingController.onRefresh,
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                    child: mineLabel()
-                ),
-                SliverToBoxAdapter(
-                    child: customerEvaluation()
-                ),
-                PagedSliverList(
-                  pagingController: controller.pagingController,
-                  builderDelegate: DefaultPagedChildBuilderDelegate<EvaluationItemModel>(
-                    pagingController: controller.pagingController,
-                    itemBuilder: (_, item, index) {
-                      return EvaluateCard(
-                        index: index,
-                        item: item,
-                        margin: EdgeInsets.only(bottom: 1.rpx),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            )
-            ),)
-        ],
-      ),
+      body: GetBuilder<JiaEvaluateController>(
+        builder: (_) {
+        return Column(
+          children: [
+            personInfo(),
+            Expanded(
+              child: SmartRefresher(
+                  controller: controller.pagingController.refreshController,
+                  onRefresh: controller.pagingController.onRefresh,
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                          child: mineLabel()
+                      ),
+                      SliverToBoxAdapter(
+                          child: customerEvaluation()
+                      ),
+                      PagedSliverList(
+                        pagingController: controller.pagingController,
+                        builderDelegate: DefaultPagedChildBuilderDelegate<EvaluationItemModel>(
+                          pagingController: controller.pagingController,
+                          itemBuilder: (_, item, index) {
+                            return EvaluateCard(
+                              index: index,
+                              item: item,
+                              margin: EdgeInsets.only(bottom: 1.rpx),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  )
+              ),)
+          ],
+        );
+      },),
     );
   }
 
@@ -130,8 +133,8 @@ class JiaEvaluatePage extends StatelessWidget {
                             width: 16.rpx,
                             height: 16.rpx,
                             i == (state.evaluation?.totalScore ?? 0) ?
-                            'assets/images/mine/star.png':
-                            'assets/images/mine/star_none.png',
+                            'assets/images/mine/star_none.png':
+                            'assets/images/mine/star.png',
                           ))
                         ],
                       ),

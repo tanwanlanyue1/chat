@@ -19,13 +19,32 @@ class RectifyTheWorkplaceController extends GetxController {
   void onTapFiltrate(){
     Get.bottomSheet(
       isScrollControlled: true,
-        FiltrateBottomSheet()
+        const FiltrateBottomSheet()
     );
+  }
+
+  //设置标签
+  void setLabel(int index){
+    if(state.labelList.contains(index)){
+      state.labelList.remove(index);
+    }else{
+      state.labelList.add(index);
+    }
+    update(['bottomSheet']);
+  }
+
+  //年龄筛选
+  void onChangeLikeAge(int likeAgeMin, int likeAgeMax) {
+    state.info?.update((val) {
+      val?.likeAgeMin = likeAgeMin;
+      val?.likeAgeMax = likeAgeMax;
+    });
   }
 
   @override
   void onInit() {
     pagingController.addPageRequestListener(_fetchPage);
+    additionLabel();
     super.onInit();
   }
 
@@ -35,15 +54,36 @@ class RectifyTheWorkplaceController extends GetxController {
     if(page == 1){
       pagingController.itemList?.clear();
     }
+    String tag = "";
+    for(var i = 0; i < state.labelList.length; i++){
+      tag += "${state.styleList[state.labelList[i]].id},";
+    }
     final response = await UserApi.recommendList(
+      gender: state.filtrateIndex,
+      minAge: state.ageMin,
+      maxAge: state.ageMax,
+      style: tag,
       page: page,
-      size: pagingController.pageSize,
     );
     if (response.isSuccess) {
       final items = response.data ?? [];
       pagingController.appendPageData(items);
     } else {
       pagingController.error = response.errorMessage;
+    }
+  }
+
+  //附加标签
+  void additionLabel() async {
+    final response = await OpenApi.getStyleList(
+      type: state.filtrateIndex,
+    );
+    if (response.isSuccess) {
+      state.styleList = response.data ?? [];
+      state.labelList.clear();
+      update(['bottomSheet']);
+    }else{
+      response.showErrorMessage();
     }
   }
 

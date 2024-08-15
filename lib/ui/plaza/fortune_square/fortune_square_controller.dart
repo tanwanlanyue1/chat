@@ -10,13 +10,14 @@ import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
+import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'fortune_square_state.dart';
 
 class FortuneSquareController extends GetxController
-    with GetSingleTickerProviderStateMixin,GetAutoDisposeMixin {
+    with GetSingleTickerProviderStateMixin,GetAutoDisposeMixin, UserAttentionMixin{
   final FortuneSquareState state = FortuneSquareState();
   late TabController tabController;
 
@@ -102,7 +103,7 @@ class FortuneSquareController extends GetxController
 
   //选择更多
   Future<void> selectMore(int? uid,int id) async {
-    var more = (uid == state.userInfo?.uid) ? [S.current.deletePublisher,'取消关注','发起聊天'] : ['取消关注','发起聊天'];
+    var more = (uid == state.userInfo?.uid) ? [S.current.deletePublisher] : ['取消关注','发起聊天'];
     Get.bottomSheet(
       CommonBottomSheet(
         titles: more,
@@ -110,7 +111,11 @@ class FortuneSquareController extends GetxController
           if(uid == state.userInfo?.uid && index == 0){
             deleteCommunity(id);
           }
-          if(index == 1){
+          if(index == 0) {
+            toggleAttention(uid!).then((value) => {
+              pagingController.onRefresh()
+            });
+          }else if(index == 1){
             MessageListPage.go(userId: uid!);
           }
         },

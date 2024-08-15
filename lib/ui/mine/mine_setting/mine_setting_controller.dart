@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:guanjia/common/app_localization.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/login_service.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_info.dart';
 import 'package:guanjia/common/utils/image_cache_utils.dart';
@@ -65,15 +67,12 @@ class MineSettingController extends GetxController {
     version.value = await AppInfo.getVersion();
     cacheSize.value = ImageCacheUtils.getAllSizeOfCacheImages();
     getEnabled();
-    if((state.loginService.info?.phone?.isNotEmpty ?? false) || (state.loginService.info?.email?.isNotEmpty ?? false)){
-      state.userBind = true;
-    }
     super.onInit();
   }
 
   //修改登录密码-未绑定手机号/邮箱需要先绑定
   void updatePassword(){
-    if(state.userBind){
+    if(SS.login.userBind){
       Get.toNamed(AppRoutes.updatePasswordPage);
     }else{
       Get.toNamed(AppRoutes.bindingPage);
@@ -82,8 +81,8 @@ class MineSettingController extends GetxController {
 
   //设置支付密码-未绑定手机号/邮箱需要先绑定 payPwd
   void paymentPasswordPage(){
-    if(state.userBind){
-      if(state.loginService.info?.payPwd ?? false){
+    if(SS.login.userBind){
+      if(SS.login.info?.payPwd ?? false){
         Get.toNamed(AppRoutes.updatePasswordPage,arguments: {"login":false});
       }else{
         Get.toNamed(AppRoutes.paymentPasswordPage);

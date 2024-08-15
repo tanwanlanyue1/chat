@@ -32,9 +32,14 @@ class FiltrateBottomSheet extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                alignment: Alignment.centerRight,
-                child: AppImage.asset('assets/images/common/close.png',width: 24.rpx,height: 24.rpx,),
+              GestureDetector(
+                onTap: (){
+                  Get.back();
+                },
+                child: Container(
+                  alignment: Alignment.centerRight,
+                  child: AppImage.asset('assets/images/common/close.png',width: 24.rpx,height: 24.rpx,),
+                ),
               ),
               Text("想看",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w700),),
               SizedBox(height: 16.rpx),
@@ -42,48 +47,54 @@ class FiltrateBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(state.filtrateType.length, (index) => GestureDetector(
                   onTap: (){
-                    state.filtrateIndex = index;
-                    controller.update(['bottomSheet']);
+                    state.filtrateIndex = index+1;
+                    controller.additionLabel();
                   },
                   child: Column(
                     children: [
-                      AppImage.asset(state.filtrateIndex == index ? state.filtrateType[index]['activeImage']:state.filtrateType[index]['image'],width: 60.rpx,height: 60.rpx,),
+                      AppImage.asset(state.filtrateIndex == index+1 ? state.filtrateType[index]['activeImage']:state.filtrateType[index]['image'],width: 60.rpx,height: 60.rpx,),
                       Text(state.filtrateType[index]['name'],style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
                     ],
                   ),
                 )),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-                child: Text("年龄",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w700),),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
+                    child: Text("年龄",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w700),),
+                  ),
+                  Obx(() => Container(
+                    margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
+                    child: Text("${state.info?.value.likeAgeMin}-${state.info?.value.likeAgeMax}",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w700),),
+                  )),
+                ],
               ),
               Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
-                  RangeSlider(
+                  Obx(() => RangeSlider(
                     values: RangeValues(
-                      18,24
-                      // info.likeAgeMin.toDouble(),
-                      // info.likeAgeMax.toDouble(),
+                      state.info?.value.likeAgeMin.toDouble() ?? 20.0,
+                      state.info?.value.likeAgeMax.toDouble() ?? 40.0,
                     ),
-                    min: 16,
-                    max: 45,
+                    min: state.ageMin.toDouble(),
+                    max: state.ageMax.toDouble(),
                     onChanged: (value) {
-                      // controller.onChangeLikeAge(
-                      //     value.start.toInt(), value.end.toInt());
+                      controller.onChangeLikeAge(
+                          value.start.toInt(), value.end.toInt());
                     },
-                  ),
+                  )),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "16",
-                        // state.ageMin.toString(),
+                        state.ageMin.toString(),
                         style: AppTextStyle.fs14m.copyWith(color: AppColor.black9),
                       ),
                       Text(
-                        "24",
-        // state.ageMax.toString()
+                          state.ageMax.toString(),
                           style: AppTextStyle.fs14m.copyWith(color: AppColor.black9)
                       ),
                     ],
@@ -107,14 +118,16 @@ class FiltrateBottomSheet extends StatelessWidget {
                 itemBuilder: (_, index) {
                   var item = state.styleList[index];
                   return GestureDetector(
+                    onTap: () => controller.setLabel(index),
                     child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.rpx),
-                          border: Border.all(width: 1.rpx, color: AppColor.primary),
-                        ),
-                        child: Text(item,style: AppTextStyle.fs14m,)),
-                    onTap: (){},
+                      decoration: BoxDecoration(
+                          color: state.labelList.contains(index) ? AppColor.primary : Colors.white,
+                          border: Border.all(color: AppColor.primary),
+                          borderRadius: BorderRadius.all(Radius.circular(8.rpx))
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(item.tag,style: AppTextStyle.fs14b.copyWith(color: state.labelList.contains(index) ? Colors.white : AppColor.primary),),
+                    ),
                   );
                 },
               ),
@@ -122,6 +135,10 @@ class FiltrateBottomSheet extends StatelessWidget {
               CommonGradientButton(
                 height: 50.rpx,
                 text: S.current.confirm,
+                onTap: (){
+                  Get.back();
+                  controller.pagingController.onRefresh();
+                },
               )
             ],
           ),

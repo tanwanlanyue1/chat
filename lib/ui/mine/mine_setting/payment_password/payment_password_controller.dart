@@ -32,11 +32,11 @@ class PaymentPasswordController extends GetxController {
     Loading.dismiss();
     if(response.isSuccess){
       Loading.showToast(S.current.setSuccessfully);
+      SS.login.fetchMyInfo();
       Get.back();
     }else{
       response.showErrorMessage();
     }
-    SS.login.fetchMyInfo();
   }
 
   void _checkFields() {

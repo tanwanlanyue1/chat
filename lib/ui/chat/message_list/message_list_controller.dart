@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
-import 'package:guanjia/common/network/api/api.dart';
-import 'package:guanjia/common/network/api/user_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/ui/chat/message_list/message_order_part.dart';

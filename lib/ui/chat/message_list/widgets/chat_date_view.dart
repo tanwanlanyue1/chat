@@ -7,7 +7,6 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/mixin/order_operation_mixin.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
-import 'package:guanjia/ui/order/widgets/order_create_dialog.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///约会状态View（显示在消息列表顶部）
@@ -118,13 +117,13 @@ class _ChatDateViewState extends State<ChatDateView> with OrderOperationMixin {
     //订单为空，佳丽和经纪人不显示
     if(order == null){
       if(selfType.isUser && !targetType.isUser){
-        return  _UIState(
-          desc: '点击右侧按钮，发起约会吧！',
-          button: '发起约会',
-          operation: OrderOperationType.create,
-        );
+        return  _UIState.createOrder();
       }
       return null;
+    }
+
+    if([OrderState.finish, OrderState.cancel].contains(order.state)){
+      return _UIState.createOrder();
     }
 
     final userId = SS.login.userId;
@@ -192,4 +191,12 @@ class _UIState {
     this.button,
     this.operation = OrderOperationType.none,
   });
+
+  factory _UIState.createOrder(){
+    return _UIState(
+      desc: '点击右侧按钮，发起约会吧！',
+      button: '发起约会',
+      operation: OrderOperationType.create,
+    );
+  }
 }

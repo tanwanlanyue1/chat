@@ -114,7 +114,6 @@ class _MessageListViewState extends State<MessageListView> {
       if (_scrollController.position.pixels >=
           0.8 * _scrollController.position.maxScrollExtent) {
         _loadMoreCompleter = Completer();
-        print('scrollControllerListener loadMoreMessage');
         if (0 ==
             await ZIMKit().loadMoreMessage(
                 widget.conversationID, widget.conversationType)) {

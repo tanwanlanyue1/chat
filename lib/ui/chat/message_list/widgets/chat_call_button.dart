@@ -6,6 +6,7 @@ import 'package:guanjia/widgets/loading.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
+import '../message_list_page.dart';
 import 'chat_call_dialog.dart';
 
 ///音视频通话按钮
@@ -107,7 +108,7 @@ class ChatCallButton extends StatelessWidget {
     }
 
     if(jumpToChatPage){
-      ChatManager().toChatPage(userId: userId);
+      MessageListPage.go(userId: userId);
       await Future.delayed(const Duration(milliseconds: 200));
     }
 

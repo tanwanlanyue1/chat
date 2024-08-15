@@ -1,8 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
-import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -15,6 +16,7 @@ import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
+import 'chat_event_notifier.dart';
 import 'custom/custom_message_type.dart';
 import 'custom/message_call_end_content.dart';
 
@@ -56,9 +58,8 @@ class ChatManager {
     });
 
     //监听通话结束消息
-    ZIMEventHandler.onReceivePeerMessage =
-        (ZIM zim, List<ZIMMessage> messageList, String fromUserID) {
-      for (var message in messageList) {
+    ChatEventNotifier().onReceivePeerMessage.listen((event) {
+      for (var message in event.messageList) {
         if (message is! ZIMCustomMessage) {
           continue;
         }
@@ -68,7 +69,8 @@ class ChatManager {
           break;
         }
       }
-    };
+    });
+
   }
 
   ///连接到IM服务
@@ -280,23 +282,6 @@ class ChatManager {
     ZIMKit().disconnectUser();
     ZegoUIKitPrebuiltCallInvitationService().uninit();
     _isWaitCallEndDialog = false;
-  }
-
-  ///跳转聊天页面
-  ///- 用户ID
-  Future<void> toChatPage({required int userId}) async {
-    if (userId == SS.login.userId) {
-      AppLogger.w('不能与自己聊天');
-      return;
-    }
-
-    await Get.toNamed(
-      AppRoutes.messageListPage,
-      arguments: {
-        'conversationId': userId.toString(),
-        'conversationType': ZIMConversationType.peer,
-      },
-    );
   }
 
   ///设置通话ID

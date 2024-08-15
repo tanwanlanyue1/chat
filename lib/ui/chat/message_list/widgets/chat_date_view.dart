@@ -9,6 +9,7 @@ import 'package:guanjia/ui/order/model/order_list_item.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///约会状态View（显示在消息列表顶部）
+///TODO 佳丽未开启接单时，提示开启接单
 class ChatDateView extends StatelessWidget {
   static double get height => 66.rpx;
 

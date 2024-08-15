@@ -47,6 +47,7 @@ extension MessageOrderPart on MessageListController {
         order?.let(_acceptOrder);
         break;
       case OrderOperationType.assign:
+        order?.let(_assignOrder);
         break;
       case OrderOperationType.payment:
         order?.let(_paymentOrder);
@@ -83,6 +84,15 @@ extension MessageOrderPart on MessageListController {
     }
     final result = await onTapOrderAcceptOrReject(isAccept, order.id);
     if (result) {
+      //成功，刷新订单状态
+      fetchOrder();
+    }
+  }
+
+  ///经纪人指派订单给佳丽
+  void _assignOrder(OrderItemModel order) async{
+    final ret = await onTapOrderAssign(order.id);
+    if(ret){
       //成功，刷新订单状态
       fetchOrder();
     }

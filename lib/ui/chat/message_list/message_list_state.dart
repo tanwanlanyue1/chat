@@ -13,6 +13,9 @@ class MessageListState {
   ///会话类型
   final ZIMConversationType conversationType;
 
+  ///来自征友约会
+  final bool isFromFriend;
+
   ///会话信息
   final conversationRx = Rxn<ZIMKitConversation>();
 
@@ -30,6 +33,7 @@ class MessageListState {
   MessageListState({
     required this.conversationId,
     required this.conversationType,
+    required this.isFromFriend,
   });
 
 }

@@ -4,6 +4,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 
@@ -120,7 +121,14 @@ class DraftDialog extends StatelessWidget {
                   height: 50.rpx,
                   text: "同意约会",
                   onTap: (){
-                    print("123");
+                    Get.back();
+                    final userId = item.userInfo?.uid;
+                    if(userId != null){
+                      MessageListPage.go(
+                        userId: userId,
+                        isFromFriend: true,
+                      );
+                    }
                   },
                 )
               ],

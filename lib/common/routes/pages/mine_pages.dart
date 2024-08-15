@@ -155,9 +155,9 @@ class MinePages {
       page: () => MessageListPage(
         conversationId: Get.getArgs('conversationId', ''),
         conversationType: Get.getArgs(
-          'conversationType',
-          ZIMConversationType.peer,
+          'conversationType', ZIMConversationType.peer,
         ),
+        isFromFriend: Get.getArgs('isFromFriend', false),
       ),
     ),
     GetPage(

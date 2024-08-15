@@ -7,6 +7,7 @@ import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_end_message.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_red_packet_message.dart';
+import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:zego_zim/zego_zim.dart';
 import 'package:zego_zimkit/src/components/components.dart';
 import 'package:zego_zimkit/src/components/messages/file_message.dart';
@@ -125,8 +126,8 @@ class ChatMessageWidget extends StatelessWidget {
 
   Widget buildAvatar(BuildContext context) {
     final Widget defaultAvatarWidget = ClipOval(
-      child: ZIMKitAvatar(
-        userID: message.info.senderUserID,
+      child: ChatAvatar(
+        userId: message.info.senderUserID,
         width: 40.rpx,
         height: 40.rpx,
       ),

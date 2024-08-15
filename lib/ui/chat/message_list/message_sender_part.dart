@@ -4,12 +4,11 @@ import 'dart:io';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
-import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
-import 'package:guanjia/ui/chat/custom/message_call_end_content.dart';
 import 'package:guanjia/ui/chat/custom/zim_kit_core_extension.dart';
+import 'package:guanjia/ui/chat/message_list/message_order_part.dart';
+import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/widgets/order_create_dialog.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_size_getter/file_input.dart';
@@ -17,11 +16,10 @@ import 'package:image_size_getter/image_size_getter.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'message_list_controller.dart';
-import 'widgets/chat_call_end_dialog.dart';
 import 'widgets/chat_feature_panel.dart';
 
 ///消息发送功能
-extension MessageSenderHelper on MessageListController {
+extension MessageSenderPart on MessageListController {
   ///发送文本消息
   Future<void> sendTextMessage(String text) async {
     await ZIMKit().sendTextMessage(
@@ -143,7 +141,7 @@ extension MessageSenderHelper on MessageListController {
       case ChatFeatureAction.videoCall:
         break;
       case ChatFeatureAction.date:
-        OrderCreateDialog.show(userId: int.parse(state.conversationId));
+        onTapOrderAction(OrderOperationType.create, null);
         break;
       case ChatFeatureAction.transfer:
         break;

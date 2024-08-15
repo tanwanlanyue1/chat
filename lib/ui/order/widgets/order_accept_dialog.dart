@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
+import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
 import 'package:guanjia/widgets/app_image.dart';
-import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///佳丽接单对话框
 class OrderAcceptDialog extends StatelessWidget {
-  const OrderAcceptDialog._({super.key});
+  final int userId;
+  const OrderAcceptDialog._({super.key, required this.userId});
 
   ///接单对话框
-  ///- true接受， false拒绝
-  static Future<bool?> show() {
-    //Security deposit
+  ///- true接受， false拒绝， null关闭对话框
+  static Future<bool?> show({required int userId}) {
     return Get.dialog<bool>(
-      const OrderAcceptDialog._(),
+      OrderAcceptDialog._(userId: userId),
     );
   }
 
@@ -45,21 +47,14 @@ class OrderAcceptDialog extends StatelessWidget {
             ),
             Wrap(
               spacing: -13.rpx,
-              children: List.generate(2, (index) {
-                return AppImage.asset(
-                  "assets/images/mine/head_photo.png",
-                  width: 60.rpx,
-                  height: 60.rpx,
-                );
-              }),
+              children: [
+                buildUserAvatar(),
+                buildSelfAvatar(),
+              ]
             ),
             Padding(
               padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
-              child: Text(
-                "同意和Susie Jenkins发起约会？",
-                textAlign: TextAlign.center,
-                style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
-              ),
+              child: buildDesc(),
             ),
             Padding(
               padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
@@ -103,5 +98,34 @@ class OrderAcceptDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget buildSelfAvatar() {
+    return AppImage.network(
+      SS.login.info?.avatar ?? '',
+      width: 60.rpx,
+      height: 60.rpx,
+      shape: BoxShape.circle,
+    );
+  }
+
+  Widget buildUserAvatar() {
+    return ChatAvatar.circle(
+      userId: userId.toString(),
+      width: 60.rpx,
+      height: 60.rpx,
+    );
+  }
+
+  Widget buildDesc() {
+    return ChatUserBuilder(userId: userId.toString(), builder: (info){
+      return Text(
+        '同意和 ${info?.baseInfo.userName} 发起约会？',
+        style: AppTextStyle.fs14m.copyWith(
+          color: AppColor.gray5,
+          height: 1.5,
+        ),
+      );
+    });
   }
 }

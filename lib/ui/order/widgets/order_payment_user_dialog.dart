@@ -2,19 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/int_extension.dart';
+import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
+import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
 import 'package:guanjia/widgets/app_image.dart';
-import 'package:guanjia/widgets/common_gradient_button.dart';
-import 'package:guanjia/widgets/payment_password_keyboard.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
-///客户缴纳保证金对话框
-class OrderSecurityDepositUserDialog extends StatelessWidget {
-  const OrderSecurityDepositUserDialog._({super.key});
+///客户缴纳保证金和服务费对话框
+class OrderPaymentUserDialog extends StatelessWidget {
+  final OrderItemModel order;
 
-  static void show() {
-    Get.dialog(
-      const OrderSecurityDepositUserDialog._(),
+  const OrderPaymentUserDialog._({super.key, required this.order});
+
+  ///- return true 跳转缴纳
+  static Future<bool?> show({required OrderItemModel order}) {
+    return Get.dialog<bool>(
+      OrderPaymentUserDialog._(order: order),
     );
   }
 
@@ -43,21 +49,14 @@ class OrderSecurityDepositUserDialog extends StatelessWidget {
             ),
             Wrap(
               spacing: -13.rpx,
-              children: List.generate(2, (index) {
-                return AppImage.asset(
-                  "assets/images/mine/head_photo.png",
-                  width: 60.rpx,
-                  height: 60.rpx,
-                );
-              }),
+              children: [
+                buildUserAvatar(),
+                buildSelfAvatar(),
+              ],
             ),
             Padding(
               padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
-              child: Text(
-                "Susie Jenkins已同意您的邀约，\n请支付保证金和服务费。",
-                textAlign: TextAlign.center,
-                style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
-              ),
+              child: buildDesc(),
             ),
             Container(
               decoration: BoxDecoration(
@@ -78,7 +77,7 @@ class OrderSecurityDepositUserDialog extends StatelessWidget {
                             AppTextStyle.fs14m.copyWith(color: AppColor.black6),
                       ),
                       Text(
-                        "\$650",
+                        "\$${order.serviceCharge.toStringAsTrimZero()}",
                         style:
                             AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
                       ),
@@ -95,7 +94,7 @@ class OrderSecurityDepositUserDialog extends StatelessWidget {
                               .copyWith(color: AppColor.black6),
                         ),
                         Text(
-                          "\$650",
+                          "\$${order.deposit.toStringAsTrimZero()}",
                           style: AppTextStyle.fs14b
                               .copyWith(color: AppColor.primary),
                         ),
@@ -114,7 +113,7 @@ class OrderSecurityDepositUserDialog extends StatelessWidget {
                               .copyWith(color: AppColor.black6),
                         ),
                         Text(
-                          "\$1300",
+                          "\$${(order.deposit + order.serviceCharge).toStringAsTrimZero()}",
                           style: AppTextStyle.fs14b
                               .copyWith(color: AppColor.gray5),
                         ),
@@ -129,9 +128,8 @@ class OrderSecurityDepositUserDialog extends StatelessWidget {
               child: CommonGradientButton(
                 height: 50.rpx,
                 text: "去支付",
-                onTap: (){
-                  Get.back();
-                  Loading.showToast('跳转订单支付');
+                onTap: () {
+                  Get.back(result: true);
                 },
               ),
             ),
@@ -141,4 +139,32 @@ class OrderSecurityDepositUserDialog extends StatelessWidget {
     );
   }
 
+  Widget buildSelfAvatar() {
+    return AppImage.network(
+      SS.login.info?.avatar ?? '',
+      width: 60.rpx,
+      height: 60.rpx,
+      shape: BoxShape.circle,
+    );
+  }
+
+  Widget buildUserAvatar() {
+    return ChatAvatar.circle(
+      userId: order.receiveId.toString(),
+      width: 60.rpx,
+      height: 60.rpx,
+    );
+  }
+
+  Widget buildDesc() {
+    return ChatUserBuilder(
+        userId: order.receiveId.toString(),
+        builder: (info) {
+          return Text(
+            '${info?.baseInfo.userName} 已同意您的邀约，\n请支付保证金和服务费。',
+            textAlign: TextAlign.center,
+            style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
+          );
+        });
+  }
 }

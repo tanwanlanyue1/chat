@@ -50,7 +50,7 @@ mixin OrderOperationMixin {
     return true;
   }
 
-  /// 支付订单
+  /// 佳丽接单
   /// isAccept: 是否接受
   /// orderId: 订单id
   Future<bool> onTapOrderAcceptOrReject(bool isAccept, int orderId) async {

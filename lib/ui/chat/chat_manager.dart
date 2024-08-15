@@ -8,6 +8,7 @@ import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_end_dialog.dart';
+import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
@@ -29,6 +30,7 @@ class ChatManager {
 
   ///当前音视频通话信息
   var _callInfo = ChatCallInfo();
+
   ///等待通话结束，显示对话框
   var _isWaitCallEndDialog = false;
 
@@ -211,16 +213,10 @@ class ChatManager {
       ZegoUIKitUser? user,
       Map extraInfo,
     ) {
-      return Container(
+      return ChatAvatar.circle(
+        userId: user?.id ?? '',
         width: size.width,
         height: size.height,
-        clipBehavior: Clip.antiAlias,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-        ),
-        child: user != null
-            ? ZIMKitAvatar(userID: user.id, name: user.name)
-            : null,
       );
     };
 
@@ -333,28 +329,24 @@ class ChatManager {
     );
     final isSelfInviter = SS.login.userId.toString() == info.inviter;
     await ZIMKit().sendCustomMessage(
-      isSelfInviter ? info.invitee : info.inviter,
-      ZIMConversationType.peer,
-      customType: CustomMessageType.callEnd.value,
-      customMessage: content.toJsonString(),
-      onMessageSent: (message){
-        _showCallEndDialog(message);
-      }
-    );
+        isSelfInviter ? info.invitee : info.inviter, ZIMConversationType.peer,
+        customType: CustomMessageType.callEnd.value,
+        customMessage: content.toJsonString(), onMessageSent: (message) {
+      _showCallEndDialog(message);
+    });
   }
 
   ///显示通话结束对话框
   void _showCallEndDialog(ZIMKitMessage message) {
     final callEndContent = message.callEndContent;
-    if(callEndContent == null || !_isWaitCallEndDialog){
+    if (callEndContent == null || !_isWaitCallEndDialog) {
       return;
     }
     _isWaitCallEndDialog = false;
-    Future.delayed(const Duration(milliseconds: 400), (){
+    Future.delayed(const Duration(milliseconds: 400), () {
       ChatCallEndDialog.show(message: message);
     });
   }
-
 }
 
 ///音视频通话状态信息

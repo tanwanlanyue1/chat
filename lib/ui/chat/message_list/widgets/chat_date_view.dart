@@ -14,6 +14,7 @@ import 'package:guanjia/widgets/widgets.dart';
 class ChatDateView extends StatefulWidget {
   final UserModel user;
   final OrderItemModel? order;
+  final void Function(OrderOperationType operation, OrderItemModel? order)? onTapAction;
 
   //是否来自征友页面
   final bool isFriendDate;
@@ -23,6 +24,7 @@ class ChatDateView extends StatefulWidget {
     required this.user,
     required this.isFriendDate,
     this.order,
+    this.onTapAction,
   });
 
   static double get height => 66.rpx;
@@ -152,6 +154,7 @@ class _ChatDateViewState extends State<ChatDateView> with OrderOperationMixin {
           Expanded(
             child: Text(
               uiState.desc,
+              textAlign: uiState.button != null ? TextAlign.left : TextAlign.center,
               style: AppTextStyle.fs14m.copyWith(
                 color: AppColor.gray5,
               ),
@@ -160,7 +163,7 @@ class _ChatDateViewState extends State<ChatDateView> with OrderOperationMixin {
           if(uiState.button != null) Padding(
             padding: FEdgeInsets(left: 16.rpx),
             child: CommonGradientButton(
-              onTap: () => onTap(uiState.operation),
+              onTap: () => widget.onTapAction?.call(uiState.operation, widget.order),
               height: 37.rpx,
               padding: FEdgeInsets(horizontal: 16.rpx),
               borderRadius: BorderRadius.zero,
@@ -171,33 +174,6 @@ class _ChatDateViewState extends State<ChatDateView> with OrderOperationMixin {
         ],
       ),
     );
-  }
-
-  void onTap(OrderOperationType operation){
-    switch(operation){
-      case OrderOperationType.none:
-        // TODO: Handle this case.
-      case OrderOperationType.create:
-        OrderCreateDialog.show(userId: widget.user.uid);
-      case OrderOperationType.accept:
-        // TODO: Handle this case.
-      case OrderOperationType.assign:
-        // TODO: Handle this case.
-      case OrderOperationType.payment:
-        // TODO: Handle this case.
-      case OrderOperationType.confirm:
-        // TODO: Handle this case.
-      case OrderOperationType.cancel:
-        // TODO: Handle this case.
-      case OrderOperationType.cancelAndFinish:
-        // TODO: Handle this case.
-      case OrderOperationType.finish:
-        // TODO: Handle this case.
-      case OrderOperationType.connect:
-        // TODO: Handle this case.
-      case OrderOperationType.evaluation:
-        // TODO: Handle this case.
-    }
   }
 }
 

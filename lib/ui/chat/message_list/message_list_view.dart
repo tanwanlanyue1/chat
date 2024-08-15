@@ -1,12 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:guanjia/common/utils/screen_adapt.dart';
-
-import 'package:intl/intl.dart';
 import 'package:zego_zim/zego_zim.dart';
-
-import 'package:zego_zimkit/src/components/components.dart';
 import 'package:zego_zimkit/src/services/services.dart';
 
 import 'widgets/chat_message_widget.dart';

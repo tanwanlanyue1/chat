@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/int_extension.dart';
+import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
-import 'package:guanjia/widgets/common_gradient_button.dart';
-import 'package:guanjia/widgets/payment_password_keyboard.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///佳丽缴纳保证金对话框
-class OrderSecurityDepositBeautyDialog extends StatelessWidget {
-  const OrderSecurityDepositBeautyDialog._({super.key});
+class OrderPaymentBeautyDialog extends StatelessWidget {
 
-  static void show(){
-    Get.dialog(
-      const OrderSecurityDepositBeautyDialog._(),
+  final OrderItemModel order;
+  const OrderPaymentBeautyDialog._({super.key, required this.order});
+
+  ///- return true 跳转缴纳
+  static Future<bool?> show({required OrderItemModel order}){
+    return Get.dialog<bool>(
+      OrderPaymentBeautyDialog._(order: order),
     );
   }
 
@@ -44,7 +47,7 @@ class OrderSecurityDepositBeautyDialog extends StatelessWidget {
             Padding(
               padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
               child: Text(
-                "请先缴纳保证金888元，点击下方按钮立即缴纳！",
+                "请先缴纳保证金${order.deposit.toStringAsTrimZero()}元，点击下方按钮立即缴纳！",
                 textAlign: TextAlign.center,
                 style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
               ),
@@ -65,8 +68,7 @@ class OrderSecurityDepositBeautyDialog extends StatelessWidget {
                 height: 50.rpx,
                 text: "去支付",
                 onTap: (){
-                  Get.back();
-                  Loading.showToast('跳转订单支付');
+                  Get.back(result: true);
                 },
               ),
             ),

@@ -8,7 +8,8 @@ import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_state.dart';
-import 'package:guanjia/ui/chat/message_list/message_sender_helper.dart';
+import 'package:guanjia/ui/chat/message_list/message_order_part.dart';
+import 'package:guanjia/ui/chat/message_list/message_sender_part.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_feature_panel.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -106,6 +107,7 @@ class MessageListPage extends GetView<MessageListController> {
                     user: user,
                     order: order.id != 0 ? order : null,
                     isFriendDate: false,
+                    onTapAction: controller.onTapOrderAction,
                   );
                 }),
               ),

@@ -6,6 +6,8 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/api/user_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/ui/chat/message_list/message_order_part.dart';
+import 'package:guanjia/ui/order/mixin/order_operation_mixin.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
@@ -16,7 +18,7 @@ import 'widgets/chat_feature_panel.dart';
 import 'widgets/chat_input_view.dart';
 
 class MessageListController extends GetxController
-    with UserAttentionMixin, GetAutoDisposeMixin {
+    with UserAttentionMixin, GetAutoDisposeMixin, OrderOperationMixin {
   final MessageListState state;
 
   final recordProcessor = ZIMKitRecordStatus();
@@ -57,26 +59,23 @@ class MessageListController extends GetxController
     _fetchData();
   }
 
+  ///聊天的用户ID
+  int get userId => int.parse(state.conversationId);
+
   void _fetchData() async {
-    final userId = int.parse(state.conversationId);
     final responses = await Future.wait([
       //获取用户关注状态
       getIsAttention(userId),
       //用户信息
       UserApi.info(uid: userId),
       //订单信息
-      OrderApi.getLastByUid(otherUid: userId),
+      fetchOrder(),
     ]);
 
     //用户信息
     final userResponse = responses[1] as ApiResponse<UserModel>;
     if (userResponse.isSuccess) {
       state.userInfoRx.value = userResponse.data;
-    }
-    //订单信息
-    final orderResponse = responses[2] as ApiResponse<OrderItemModel?>;
-    if (orderResponse.isSuccess) {
-      state.orderRx.value = orderResponse.data ?? OrderItemModel.fromJson({});
     }
   }
 
@@ -111,11 +110,11 @@ class MessageListController extends GetxController
           switch (index) {
             case 0:
               Get.toNamed(AppRoutes.userCenterPage, arguments: {
-                'userId': int.parse(state.conversationId),
+                'userId': userId,
               });
               break;
             case 1:
-              toggleAttention(int.parse(state.conversationId));
+              toggleAttention(userId);
               break;
           }
         },

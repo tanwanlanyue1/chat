@@ -10,6 +10,8 @@ import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/message_call_end_content.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
+import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
+import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -104,8 +106,8 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
             ),
           ),
           margin: FEdgeInsets(bottom: 12.rpx),
-          child: ZIMKitAvatar(
-            userID: message.info.conversationID,
+          child: ChatAvatar(
+            userId: message.info.conversationID,
             width: 80.rpx,
             height: 80.rpx,
           ),
@@ -116,19 +118,15 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
   }
 
   Widget buildNickName() {
-    return ListenableBuilder(
-      listenable: controller.conversationNotifier,
-      builder: (_, __) {
-        final name = controller.conversationNotifier.value.name;
-        return Text(
-          name,
-          style: AppTextStyle.fs14m.copyWith(
-            color: AppColor.gray5,
-            height: 1.00001,
-          ),
-        );
-      },
-    );
+    return ChatUserBuilder(userId: message.info.conversationID, builder: (info){
+      return Text(
+        info?.baseInfo.userName ?? '',
+        style: AppTextStyle.fs14m.copyWith(
+          color: AppColor.gray5,
+          height: 1.00001,
+        ),
+      );
+    });
   }
 
   ///关注
@@ -249,7 +247,6 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
 class ChatCallEndDialogController extends GetxController
     with UserAttentionMixin, GetAutoDisposeMixin {
   final ZIMKitMessage message;
-  late ValueNotifier<ZIMKitConversation> conversationNotifier;
 
   ChatCallEndDialogController(this.message);
 
@@ -257,9 +254,5 @@ class ChatCallEndDialogController extends GetxController
   void onInit() {
     super.onInit();
     getIsAttention(int.parse(message.info.conversationID));
-    conversationNotifier = ZIMKit().getConversation(
-      message.info.conversationID,
-      message.info.conversationType,
-    );
   }
 }

@@ -52,43 +52,42 @@ class DiscoverApi {
     int page = 1,
     int size = 10,
   }) {
-    return HttpClient.get(
-      '/api/Appointment/list',
-      params: {
-        "type": type,
-        "coordinate": coordinate,
-        "subType": subType,
-        "page": page,
-        "size": size,
-      },
-      dataConverter: (data) {
-        if (data is List) {
-          return data.map((e) => AppointmentModel.fromJson(e)).toList();
-        }
-        return [];
+    return HttpClient.get('/api/Appointment/list', params: {
+      "type": type,
+      "coordinate": coordinate,
+      "subType": subType,
+      "page": page,
+      "size": size,
+    }, dataConverter: (data) {
+      if (data is List) {
+        return data.map((e) => AppointmentModel.fromJson(e)).toList();
       }
-    );
+      return [];
+    });
   }
 
   /// 获取自己的邀约
   static Future<ApiResponse<AppointmentModel>> getOneself() {
-    return HttpClient.get(
-        '/api/Appointment/getOneself',
-        dataConverter: (data) => AppointmentModel.fromJson(data)
-    );
+    return HttpClient.get('/api/Appointment/getOneself',
+        dataConverter: (data) => AppointmentModel.fromJson(data));
   }
 
   /// 删除邀约
   /// id 约会id
-  static Future<ApiResponse> delAppointment({
-    required int id
-}) {
+  static Future<ApiResponse> delAppointment({required int id}) {
     return HttpClient.post(
       '/api/Appointment/del',
-      data: {
-         "id":id
-      },
+      data: {"id": id},
       dataConverter: (data) => data,
+    );
+  }
+
+  /// 参与约会
+  /// id 约会id
+  static Future<ApiResponse> participate({required int id}) {
+    return HttpClient.post(
+      '/api/Appointment/participate',
+      data: {"id": id},
     );
   }
 }

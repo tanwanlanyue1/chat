@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/payment_password_keyboard.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
@@ -38,7 +38,7 @@ class SecurityDepositDialog extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      S.current.securityDepositHint('888元'),
+                      S.current.securityDepositHint('${SS.appConfig.configRx()?.deposit ?? 0}元'),
                       style: AppTextStyle.fs16m.copyWith(
                         color: AppColor.gray5,
                         height: 24 / 16,

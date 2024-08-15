@@ -4,6 +4,9 @@ class AppConfigModel {
     this.jumpLink,
     //	注销账号H5链接
     this.cancelAccountLink,
+    this.deposit,
+    this.goldPrice,
+    this.minPayGold,
     this.tab,
     this.home,
     this.resources,
@@ -15,6 +18,7 @@ class AppConfigModel {
     serverTime = json['serverTime'];
     jumpLink = json['jumpLink'];
     cancelAccountLink = json['cancelAccountLink'];
+    deposit = json['deposit'];
     goldPrice = json['goldPrice'];
     minPayGold = json['minPayGold'];
     payGoldRule = json['payGoldRule'];
@@ -54,6 +58,9 @@ class AppConfigModel {
   int? serverTime;
   String? jumpLink;
   String? cancelAccountLink;
+
+  ///	保证金
+  num? deposit;
 
   ///一个境修币兑换多少人民币（单价）
   num? goldPrice;

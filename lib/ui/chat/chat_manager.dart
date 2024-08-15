@@ -71,6 +71,15 @@ class ChatManager {
       }
     });
 
+    ChatEventNotifier().onReceiveCommandMessage.listen((event) {
+      for(var message in event.messageList){
+        if(message is ZIMCommandMessage){
+          final msg = utf8.decode(message.message);
+          print('onReceiveCommandMessage====${msg}');
+        }
+      }
+    });
+
   }
 
   ///连接到IM服务

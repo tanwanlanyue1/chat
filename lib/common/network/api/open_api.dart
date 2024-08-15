@@ -197,4 +197,10 @@ class OpenApi {
       return [];
     });
   }
+
+
+  static Future<ApiResponse> sendSignallingMsg() {
+    return HttpClient.get('/api/im/sendSignallingMsg');
+  }
+
 }

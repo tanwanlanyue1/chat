@@ -113,6 +113,8 @@ class OrderListItem {
               : OrderItemState.waitingConfirmForReceive;
 
         case OrderState.cancel:
+          // 如果存在超时时间则为超时状态
+          if (model.timeout.isNotEmpty) return OrderItemState.timeOut;
           // 优先显示请求方取消状态
           return requestState.isCancel
               ? OrderItemState.cancelForRequest

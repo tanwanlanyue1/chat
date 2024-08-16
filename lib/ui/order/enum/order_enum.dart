@@ -87,7 +87,10 @@ enum OrderDetailDisplayType {
   requestServiceFee, // 用户缴纳服务费
   platformFeeProportion, // 平台收取比例
   platformFee, // 平台费
+  receiveFeeProportion, // 接收方收取比例
   agentFeeProportion, // 经纪人收取比例
   agentFee, // 经纪人介绍费
-  amount, // 实收金额
+  requestAmount, // 请求方金额
+  receiveAmount, // 接受方金额 或 接受方服务费
+  agentAmount, // 经纪人金额
 }

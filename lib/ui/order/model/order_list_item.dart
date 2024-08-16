@@ -382,7 +382,8 @@ class OrderListItem {
       OrderItemState.timeOut: {
         UserType.user: OrderListItemWrapper(
           avatar: model.receiveAvatar,
-          nick: "接约人：${model.receiveName}",
+          nick:
+              "接约人：${model.receiveId == 0 ? model.introducerName : model.receiveName}",
           stateText: "等待超时",
           stateTextColor: AppColor.black9,
         ),
@@ -395,7 +396,8 @@ class OrderListItem {
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
           nick: "下单用户：${model.requestName}",
-          nickWithAgent: "接约人：${model.receiveName}",
+          nickWithAgent:
+              model.receiveId == 0 ? null : "接约人：${model.receiveName}",
           stateText: "等待超时",
           stateTextColor: AppColor.black9,
           operation: OrderOperationType.connect,

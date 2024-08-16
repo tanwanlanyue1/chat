@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
-import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 class NoItemsFoundIndicator extends StatelessWidget {
@@ -31,8 +30,8 @@ class NoItemsFoundIndicator extends StatelessWidget {
           children: [
             AppImage.asset(
               'assets/images/common/default_empty.png',
-              width: 100.rpx,
-              height: 100.rpx,
+              width: 176.rpx,
+              height: 140.rpx,
             ),
             Padding(
               padding: EdgeInsets.only(top: 20.rpx),

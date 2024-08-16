@@ -3,25 +3,25 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/network/api/model/user/contract_model.dart';
-import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///合约解除对话框
 class ContractTerminateDialog extends StatelessWidget {
   final ContractModel contract;
+  final bool isAgent;
 
   const ContractTerminateDialog._({
     super.key,
     required this.contract,
+    required this.isAgent,
   });
 
-  static Future<bool?> show(ContractModel contract) {
+  static Future<bool?> show({required ContractModel contract, required bool isAgent}) {
     return Get.dialog<bool>(
-      ContractTerminateDialog._(contract: contract),
+      ContractTerminateDialog._(contract: contract, isAgent: isAgent),
     );
   }
 
@@ -43,7 +43,8 @@ class ContractTerminateDialog extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      S.current.contractTerminateHint,
+                      isAgent ? '与佳丽 ${contract.partyBName} 确定解除契约吗？' : S.current.contractTerminateHint,
+                      textAlign: TextAlign.center,
                       style: AppTextStyle.fs16m.copyWith(
                         color: AppColor.gray5,
                         height: 24 / 16,
@@ -98,7 +99,7 @@ class ContractTerminateDialog extends StatelessWidget {
 
   Widget buildSelfAvatar() {
     return AppImage.network(
-      SS.login.info?.avatar ?? '',
+      isAgent ? contract.partyAHead : contract.partyBHead,
       width: 60.rpx,
       height: 60.rpx,
       shape: BoxShape.circle,
@@ -106,10 +107,11 @@ class ContractTerminateDialog extends StatelessWidget {
   }
 
   Widget buildUserAvatar() {
-    return ChatAvatar.circle(
-      userId: contract.partyA.toString(),
+    return AppImage.network(
+      isAgent ? contract.partyBHead : contract.partyAHead,
       width: 60.rpx,
       height: 60.rpx,
+      shape: BoxShape.circle,
     );
   }
 }

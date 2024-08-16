@@ -45,7 +45,7 @@ class _MinePageState extends State<MinePage>
               controller: controller.refreshController,
               onRefresh: controller.onRefresh,
               child: ListView(
-                padding: FEdgeInsets(horizontal: 16.rpx, bottom: 24.rpx),
+                padding: FEdgeInsets(horizontal: 16.rpx, bottom: 24.rpx, top: 16.rpx),
                 children: [
                   buildBanner(),
                   buildSectionOne(),

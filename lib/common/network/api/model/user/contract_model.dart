@@ -5,8 +5,10 @@ class ContractModel {
     required this.id,
     required this.partyA,
     required this.partyAName,
+    required this.partyAHead,
     required this.partyB,
     required this.partyBName,
+    required this.partyBHead,
     required this.content,
     required this.brokerageService,
     required this.brokerageChatting,
@@ -23,10 +25,14 @@ class ContractModel {
   final int partyA;
   ///	甲方姓名
   final String partyAName;
+  ///	甲方头像
+  final String partyAHead;
   ///	乙方id
   final int partyB;
   ///		乙方姓名
   final String partyBName;
+  ///	乙方头像
+  final String partyBHead;
   ///	契约单内容
   final String content;
   ///服务费甲方分成比例%
@@ -55,8 +61,10 @@ class ContractModel {
       id: json["id"] ?? 0,
       partyA: json["partyA"] ?? 0,
       partyAName: json["partyAName"] ?? "",
+      partyAHead: json["partyAHead"] ?? "",
       partyB: json["partyB"] ?? 0,
       partyBName: json["partyBName"] ?? "",
+      partyBHead: json["partyBHead"] ?? "",
       content: json["content"] ?? "",
       brokerageService: json["brokerageService"] ?? 0,
       brokerageChatting: json["brokerageChatting"] ?? 0,
@@ -72,8 +80,10 @@ class ContractModel {
     int? id,
     int? partyA,
     String? partyAName,
+    String? partyAHead,
     int? partyB,
     String? partyBName,
+    String? partyBHead,
     String? content,
     int? brokerageService,
     int? brokerageChatting,
@@ -87,8 +97,10 @@ class ContractModel {
       id: id ?? this.id,
       partyA: partyA ?? this.partyA,
       partyAName: partyAName ?? this.partyAName,
+      partyAHead: partyAHead ?? this.partyAHead,
       partyB: partyB ?? this.partyB,
       partyBName: partyBName ?? this.partyBName,
+      partyBHead: partyBHead ?? this.partyBHead,
       content: content ?? this.content,
       brokerageService: brokerageService ?? this.brokerageService,
       brokerageChatting: brokerageChatting ?? this.brokerageChatting,

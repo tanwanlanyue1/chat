@@ -53,6 +53,8 @@ class AppConfigModel {
       });
     }
     desc = json['desc'];
+    brokerageServiceTemplate = json['brokerageServiceTemplate'];
+    brokerageChattingTemplate = json['brokerageChattingTemplate'];
   }
 
   int? serverTime;
@@ -82,11 +84,18 @@ class AppConfigModel {
   /// 拼接 标签
   List<LabelModel>? labels;
 
+  ///约会服务费收益比例模板 {brokerageService} TODO 预留字段，服务端还没有
+  String? brokerageServiceTemplate;
+
+  ///音视频陪聊收益比例模板 {brokerageChatting} TODO 预留字段，服务端还没有
+  String? brokerageChattingTemplate;
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['serverTime'] = serverTime;
     map['jumpLink'] = jumpLink;
     map['cancelAccountLink'] = cancelAccountLink;
+    map['deposit'] = deposit;
     map['goldPrice'] = goldPrice;
     map['minPayGold'] = minPayGold;
     map['payGoldRule'] = payGoldRule;
@@ -103,6 +112,8 @@ class AppConfigModel {
       map['scriptures'] = scriptures;
     }
     map['desc'] = desc;
+    map['brokerageServiceTemplate'] = brokerageServiceTemplate;
+    map['brokerageChattingTemplate'] = brokerageChattingTemplate;
     return map;
   }
 }

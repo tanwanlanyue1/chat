@@ -5,8 +5,8 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/network/api/model/user/contract_model.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/mine/contract_detail/contract_detail_state.dart';
 import 'package:guanjia/widgets/widgets.dart';
-import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 ///修改契约单模板对话框
 class ContractEditDialog extends StatelessWidget {

@@ -113,7 +113,7 @@ class ChatCallButton extends StatelessWidget {
     }
 
     //发起聊天
-    final result = await ChatCallDialog.show(isVideoCall: isVideoCall);
+    final result = await ChatCallDialog.show(isVideoCall: isVideoCall, userId: userId);
 
     return result == true;
   }

@@ -71,12 +71,20 @@ class ChatManager {
       }
     });
 
+    //监听信令消息
     ChatEventNotifier().onReceiveCommandMessage.listen((event) {
       for(var message in event.messageList){
         if(message is ZIMCommandMessage){
           final msg = utf8.decode(message.message);
           print('onReceiveCommandMessage====${msg}');
         }
+      }
+    });
+
+    //监听连接状态更新用户信息
+    ZIMKitCore.instance.getConnectionStateChangedEventStream().listen((event) {
+      if (ZIMKitCore.instance.connectionState == ZIMConnectionState.connected) {
+        syncUserInfo();
       }
     });
 
@@ -339,6 +347,20 @@ class ChatManager {
     Future.delayed(const Duration(milliseconds: 400), () {
       ChatCallEndDialog.show(message: message);
     });
+  }
+
+  ///同步用户信息到IM服务
+  Future<void> syncUserInfo() async {
+    AppLogger.d('同步用户信息到IM服务syncUserInfo');
+    final userInfo = SS.login.info;
+    if (userInfo != null) {
+      await ZIMKit().updateUserInfo(
+        name: userInfo.nickname,
+        avatarUrl: userInfo.avatar ?? '',
+      );
+    }else{
+      AppLogger.w('syncUserInfo: 用户信息为空');
+    }
   }
 }
 

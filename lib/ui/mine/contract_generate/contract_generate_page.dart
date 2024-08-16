@@ -1,4 +1,3 @@
-import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -7,11 +6,11 @@ import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/mine/contract_detail/contract_detail_state.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 import 'contract_generate_controller.dart';
 import 'contract_generate_state.dart';
-import 'widget/contract_edit_dialog.dart';
 import 'widget/contract_view.dart';
 
 ///生成契约单

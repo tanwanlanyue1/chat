@@ -305,6 +305,8 @@ class LoginService extends GetxService {
         success: (user) async {
           // 保存当前用户信息
           await _setupUserData(userModel: user);
+          // 同步用户信息到IM服务
+          ChatManager().syncUserInfo();
         },
         failure: (_) async {});
     return res;

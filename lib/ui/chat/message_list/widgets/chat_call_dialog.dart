@@ -3,19 +3,23 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
+import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///音视频通话发起确认对话框
 class ChatCallDialog extends StatelessWidget {
   final bool isVideoCall;
+  final int userId;
 
-  const ChatCallDialog._({super.key, required this.isVideoCall});
+  const ChatCallDialog._({super.key, required this.isVideoCall, required this.userId});
 
-  static Future<bool?> show({required bool isVideoCall}) {
+  static Future<bool?> show({required bool isVideoCall, required int userId}) {
     return Get.dialog<bool>(
-      ChatCallDialog._(isVideoCall: isVideoCall),
+      ChatCallDialog._(isVideoCall: isVideoCall, userId: userId),
     );
   }
 
@@ -44,23 +48,14 @@ class ChatCallDialog extends StatelessWidget {
             ),
             Wrap(
               spacing: -13.rpx,
-              children: List.generate(2, (index) {
-                return AppImage.asset(
-                  "assets/images/mine/head_photo.png",
-                  width: 60.rpx,
-                  height: 60.rpx,
-                );
-              }),
+              children: [
+                buildUserAvatar(),
+                buildSelfAvatar(),
+              ],
             ),
             Padding(
               padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
-              child: Text(
-                isVideoCall
-                    ? "和Susie Jenkins发起视频聊天？"
-                    : "和Susie Jenkins发起实时语音聊天？",
-                textAlign: TextAlign.center,
-                style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
-              ),
+              child: buildDesc(),
             ),
             Container(
               decoration: BoxDecoration(
@@ -123,5 +118,38 @@ class ChatCallDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+
+  Widget buildUserAvatar() {
+    return ChatAvatar.circle(
+      userId: userId.toString(),
+      width: 60.rpx,
+      height: 60.rpx,
+    );
+  }
+
+  Widget buildSelfAvatar() {
+    return AppImage.network(
+      SS.login.info?.avatar ?? '',
+      width: 60.rpx,
+      height: 60.rpx,
+      shape: BoxShape.circle,
+    );
+  }
+
+
+  Widget buildDesc() {
+    return ChatUserBuilder(userId: userId.toString(), builder: (info){
+      return Text(
+        isVideoCall
+            ? "和${info?.baseInfo.userName}发起视频聊天？"
+            : "和${info?.baseInfo.userName}发起实时语音聊天？",
+        style: AppTextStyle.fs14m.copyWith(
+          color: AppColor.gray5,
+          height: 1.5,
+        ),
+      );
+    });
   }
 }

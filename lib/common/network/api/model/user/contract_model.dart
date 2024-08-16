@@ -50,12 +50,6 @@ class ContractModel {
   ///	创建时间
   final String createTime;
 
-  ///完整合约内容(包含分成比例)
-  String get fullContent{
-    return content.replaceFirst('{brokerageService}', '$brokerageService%')
-    .replaceFirst('{brokerageChatting}', '$brokerageChatting%');
-  }
-
   factory ContractModel.fromJson(Map<String, dynamic> json){
     return ContractModel(
       id: json["id"] ?? 0,

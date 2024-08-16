@@ -26,7 +26,7 @@ class ChatService extends GetxService {
   Future<void> updateUserInfo() async {
     final userInfo = SS.login.info;
     if (userInfo != null) {
-      await ZIMKitCore.instance.updateUserInfo(
+      await ZIMKit().updateUserInfo(
         name: userInfo.nickname,
         avatarUrl: userInfo.avatar ?? '',
       );

@@ -130,7 +130,7 @@ class DatingHallView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text(item.nickname ?? '',style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
+                Text(item.nickname ?? '',style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),maxLines: 1,overflow: TextOverflow.ellipsis,),
                 Row(
                   children: [
                     Text("${item.age ?? ''}岁 ",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),

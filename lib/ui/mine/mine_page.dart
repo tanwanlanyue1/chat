@@ -279,12 +279,6 @@ class _MinePageState extends State<MinePage>
               icon: "assets/images/mine/evaluate.png",
               pagePath: AppRoutes.mineEvaluatePage,
             ),
-          //意见反馈
-          MineListTile(
-            title: S.current.feedback,
-            icon: "assets/images/mine/feedback.png",
-            pagePath: AppRoutes.mineFeedbackPage,
-          ),
           //我的设置
           MineListTile(
             title: S.current.mySettings,
@@ -341,8 +335,6 @@ class _MinePageState extends State<MinePage>
       return buildSection(
         margin: FEdgeInsets(top: 16.rpx),
         children: [
-          //谁看过我
-          if (userType.isBeauty)
             MineListTile(
               title: S.current.whoSeenMe,
               icon: "assets/images/mine/examine.png",
@@ -369,8 +361,12 @@ class _MinePageState extends State<MinePage>
               icon: "assets/images/mine/look_contract.png",
               pagePath: AppRoutes.contractGeneratePage,
             ),
-          //我的消息
-          if (userType.isUser)
+            //意见反馈
+            MineListTile(
+              title: S.current.feedback,
+              icon: "assets/images/mine/feedback.png",
+              pagePath: AppRoutes.mineFeedbackPage,
+            ),
             MineListTile(
               title: S.current.myMessage,
               icon: "assets/images/mine/message.png",

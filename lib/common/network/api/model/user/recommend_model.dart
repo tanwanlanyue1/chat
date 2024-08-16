@@ -2,15 +2,26 @@
 
 class RecommendModel {
   RecommendModel({
-      this.uid, 
-      this.type, 
-      this.avatar, 
-      this.nickname, 
-      this.images, 
-      this.gender, 
-      this.age, 
-      this.style, 
-      this.distance,});
+    this.uid,
+    //用户类型 0普通用户 1佳丽 2经纪人
+    this.type,
+    //头像
+    this.avatar,
+    //	昵称
+    this.nickname,
+    //	个人图片
+    this.images,
+    //	用户性别 0：保密 1：男 2：女
+    this.gender,
+    //	年龄
+    this.age,
+    //风格
+    this.style,
+    //	距离 km
+    this.distance,
+    //	坐标 经纬度用英文逗号隔开
+    this.location,
+  });
 
   RecommendModel.fromJson(dynamic json) {
     uid = json['uid'];
@@ -22,6 +33,7 @@ class RecommendModel {
     age = json['age'];
     style = json['style'];
     distance = json['distance'];
+    location = json['location'];
   }
   int? uid;
   int? type;
@@ -32,6 +44,7 @@ class RecommendModel {
   int? age;
   String? style;
   String? distance;
+  String? location;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -44,6 +57,7 @@ class RecommendModel {
     map['age'] = age;
     map['style'] = style;
     map['distance'] = distance;
+    map['location'] = location;
     return map;
   }
 

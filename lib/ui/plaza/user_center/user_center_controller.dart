@@ -7,6 +7,7 @@ import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -72,7 +73,36 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
     if (response.isSuccess) {
       state.authorInfo = response.data ?? UserModel.fromJson({});
       state.imgList = response.data?.images != null ? List<String>.from(jsonDecode(response.data?.images ?? '')) : [];
+      state.userBasics = response.data?.type.index == 0 ? [
+        {
+          "name": S.current.userAge,
+          "data":"age",
+        },
+        {
+          "name": S.current.userGender,
+          "data":"gender",
+        },
+        {
+          "name": "身份",
+          "data":"用户",
+        },
+        {
+          "name": "地址",
+          "data":"position",
+        },
+      ] : state.userBasics;
       update(['userInfo']);
+    }
+  }
+
+  String label(){
+    switch(state.authorInfo.type){
+      case UserType.user:
+        return '个人';
+      case UserType.beauty:
+        return '佳丽';
+      case UserType.agent:
+        return '经纪人';
     }
   }
 
@@ -83,6 +113,9 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
       info = (info == 1) ? "男":"女";
     }else if(info == '0.00'){
       info = '-';
+    }
+    if(state.authorInfo.type.isUser && index == 2){
+      info = "用户";
     }
     return info.toString();
   }

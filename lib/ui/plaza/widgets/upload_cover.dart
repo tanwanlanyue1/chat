@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -60,6 +61,9 @@ class UploadCoverDialog extends StatelessWidget {
                         imgList: controller.state.imgList,
                         callback: (val) {
                           controller.state.imgList = val;
+                          controller.state.authorInfo.copyWith(
+                            images: jsonEncode(val)
+                          );
                           controller.update(['upload']);
                         },
                       ),

@@ -3,12 +3,15 @@ import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/ui/plaza/widgets/filtrate_bottom_sheet.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../common/network/api/api.dart';
+import '../dating_hall/dating_hall_controller.dart';
 import 'nearby_hall_state.dart';
 
 class NearbyHallController extends GetxController {
   final NearbyHallState state = NearbyHallState();
+  final controller = Get.find<RectifyTheWorkplaceController>();
 
-  final pagingController = DefaultPagingController<int>(
+  final pagingController = DefaultPagingController<RecommendModel>(
     firstPage: 1,
     pageSize: 10,
     refreshController: RefreshController(),
@@ -16,14 +19,33 @@ class NearbyHallController extends GetxController {
 
   @override
   void onInit() {
-    pagingController.addPageRequestListener(fetchPage);
+    pagingController.addPageRequestListener(_fetchPage);
     super.onInit();
   }
 
-  void fetchPage(int page) async {
-    await Future.delayed(500.milliseconds);
-    pagingController.appendPageData(
-        List.generate(10, (index) => index + pagingController.length));
+  /// 获取列表数据
+  /// page: 第几页
+  void _fetchPage(int page) async {
+    if(page == 1){
+      pagingController.itemList?.clear();
+    }
+    String tag = "";
+    for(var i = 0; i < controller.state.labelList.length; i++){
+      tag += "${controller.state.styleList[controller.state.labelList[i]].id},";
+    }
+    final response = await UserApi.nearbyUserList(
+      gender: controller.state.filtrateIndex,
+      minAge: controller.state.ageMin,
+      maxAge: controller.state.ageMax,
+      style: tag,
+      page: page,
+    );
+    if (response.isSuccess) {
+      final items = response.data ?? [];
+      pagingController.appendPageData(items);
+    } else {
+      pagingController.error = response.errorMessage;
+    }
   }
 
   //筛选

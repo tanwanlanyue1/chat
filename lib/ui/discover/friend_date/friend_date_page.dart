@@ -163,7 +163,7 @@ class FriendDatePage extends StatelessWidget {
                 },
                 child: Container(
                   margin: EdgeInsets.only(right: 8.rpx),
-                  child: AppImage.network(item.userInfo?.avatar ?? '',width: 40.rpx,height: 40.rpx,),
+                  child: AppImage.network(item.userInfo?.avatar ?? '',width: 40.rpx,height: 40.rpx,shape: BoxShape.circle,),
                 ),
               ),
               SizedBox(

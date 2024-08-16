@@ -245,7 +245,7 @@ class UserCenterPage extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.only(right: 14.rpx),
-              child: Text("${S.current.goodGirl} ${state.authorInfo.position ?? ''}",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+              child: Text("${controller.label()} ${state.authorInfo.position ?? ''}",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

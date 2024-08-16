@@ -126,7 +126,7 @@ class DraftDialog extends StatelessWidget {
                                 .copyWith(color: AppColor.black6),
                           ),
                           Text(
-                            "\$${SS.appConfig.configRx()?.deposit}",
+                            "\$${SS.appConfig.configRx()?.deposit ?? 0}",
                             style: AppTextStyle.fs14b
                                 .copyWith(color: AppColor.primary),
                           ),
@@ -152,7 +152,7 @@ class DraftDialog extends StatelessWidget {
                                 .copyWith(color: AppColor.black6),
                           ),
                           Text(
-                            "\$${SS.appConfig.configRx()?.deposit}",
+                            "\$${SS.appConfig.configRx()?.deposit ?? 0}",
                             style: AppTextStyle.fs14b
                                 .copyWith(color: AppColor.primary),
                           ),

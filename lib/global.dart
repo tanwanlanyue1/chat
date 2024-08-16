@@ -14,6 +14,7 @@ import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 import 'common/app_localization.dart';
+import 'common/app_position.dart';
 import 'common/service/service.dart';
 import 'common/utils/file_logger.dart';
 import 'ui/chat/chat_manager.dart';
@@ -85,6 +86,8 @@ class Global {
 
     //初始化服务
     await SS.initServices();
+
+    await AppPosition.updatePosition();
 
     //广告
     await ADManager.instance.initialize();

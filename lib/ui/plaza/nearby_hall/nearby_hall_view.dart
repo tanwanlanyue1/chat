@@ -19,30 +19,30 @@ class NearbyHallView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
-      controller: controller.pagingController.refreshController,
-      onRefresh: controller.pagingController.onRefresh,
-      child: Stack(
-        children: [
-          PagedGridView(
-            pagingController: controller.pagingController,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8.rpx,
-                mainAxisSpacing: 8.rpx,
-                mainAxisExtent: 220.rpx
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 16.rpx,vertical: 8.rpx),
-            builderDelegate: DefaultPagedChildBuilderDelegate(
-              pagingController: controller.pagingController,
-              itemBuilder: (_, item, index) {
-                return nearbyItem();
-              },
-            ),
+    return Scaffold(
+      body: SmartRefresher(
+        controller: controller.pagingController.refreshController,
+        onRefresh: controller.pagingController.onRefresh,
+        child: PagedGridView(
+          pagingController: controller.pagingController,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 8.rpx,
+              mainAxisSpacing: 8.rpx,
+              mainAxisExtent: 220.rpx
           ),
-          filtrateMap(),
-        ],
+          padding: EdgeInsets.symmetric(horizontal: 16.rpx,vertical: 8.rpx),
+          builderDelegate: DefaultPagedChildBuilderDelegate(
+            pagingController: controller.pagingController,
+            itemBuilder: (_, item, index) {
+              return nearbyItem();
+            },
+          ),
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: filtrateMap(),
+      // bottomNavigationBar: filtrateMap(),
     );
   }
 
@@ -120,79 +120,73 @@ class NearbyHallView extends StatelessWidget {
 
   //筛选
   Widget filtrateMap(){
-    return Positioned(
-      left: 0,
-      right: 0,
-      bottom: 24.rpx,
-      child: Center(
-        child: Container(
-          height: 46.rpx,
-          width: 180.rpx,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(24.rpx)
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 20.rpx),
-          child: Row(
-            children: [
-             Expanded(
-               child: GestureDetector(
-                 child: Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                   children: [
-                     ShaderMask(
-                         shaderCallback: (Rect bounds) {
-                           return const LinearGradient(
-                             begin: Alignment.centerLeft,
-                             end: Alignment.centerRight,
-                             colors: [AppColor.gradientBegin, AppColor.gradientEnd],
-                           ).createShader(Offset.zero & bounds.size);
-                         },
-                         blendMode: BlendMode.srcATop,
-                         child: Container(
-                           margin: EdgeInsets.only(right: 8.rpx),
-                           child: Text(
-                             "地图",
-                             style:AppTextStyle.fs12m,
-                           ),
-                         )
-                     ),
-                     AppImage.asset("assets/images/plaza/map.png",width: 24.rpx,height: 24.rpx,)
-                   ],
-                 ),
-               ),
-             ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: controller.onTapFiltrate,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ShaderMask(
-                          shaderCallback: (Rect bounds) {
-                            return const LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [AppColor.gradientBegin, AppColor.gradientEnd],
-                            ).createShader(Offset.zero & bounds.size);
-                          },
-                          blendMode: BlendMode.srcATop,
-                          child: Container(
-                            margin: EdgeInsets.only(right: 8.rpx),
-                            child: Text(
-                              "筛选",
-                              style:AppTextStyle.fs12m,
-                            ),
-                          )
-                      ),
-                      AppImage.asset("assets/images/plaza/filtrate.png",width: 24.rpx,height: 24.rpx,),
-                    ],
+    return Container(
+      height: 46.rpx,
+      width: 180.rpx,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24.rpx)
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 20.rpx),
+      margin: EdgeInsets.only(bottom: 24.rpx),
+      child: Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ShaderMask(
+                      shaderCallback: (Rect bounds) {
+                        return const LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [AppColor.gradientBegin, AppColor.gradientEnd],
+                        ).createShader(Offset.zero & bounds.size);
+                      },
+                      blendMode: BlendMode.srcATop,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 8.rpx),
+                        child: Text(
+                          "地图",
+                          style:AppTextStyle.fs12m,
+                        ),
+                      )
                   ),
-                ),
-              )
-            ],
+                  AppImage.asset("assets/images/plaza/map.png",width: 24.rpx,height: 24.rpx,)
+                ],
+              ),
+            ),
           ),
-        ),
+          Expanded(
+            child: GestureDetector(
+              onTap: controller.onTapFiltrate,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ShaderMask(
+                      shaderCallback: (Rect bounds) {
+                        return const LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [AppColor.gradientBegin, AppColor.gradientEnd],
+                        ).createShader(Offset.zero & bounds.size);
+                      },
+                      blendMode: BlendMode.srcATop,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 8.rpx),
+                        child: Text(
+                          "筛选",
+                          style:AppTextStyle.fs12m,
+                        ),
+                      )
+                  ),
+                  AppImage.asset("assets/images/plaza/filtrate.png",width: 24.rpx,height: 24.rpx,),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

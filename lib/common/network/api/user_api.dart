@@ -569,4 +569,60 @@ class UserApi {
       },
     );
   }
+
+  /// 交友大厅-附近用户列表
+  /// 	location: 坐标 经纬度用英文逗号隔开
+  /// 	distance:距离 单位km
+  /// 	gender: 性别 1：男 2：女
+  /// 	minAge: 最小年龄
+  /// 	maxAge: 最大年龄
+  /// 	style: 风格
+  static Future<ApiResponse<List<RecommendModel>>> nearbyUserList({
+    String? location,
+    int? distance,
+    int? gender,
+    int? minAge,
+    int? maxAge,
+    String? style,
+    int page = 1,
+    int size = 10,
+  }) {
+    return HttpClient.get(
+      '/api/user/nearbyUserList',
+      params: {
+        "location": location,
+        "distance": distance,
+        "gender": gender,
+        "minAge": minAge,
+        "maxAge": maxAge,
+        "style": style,
+        "page": page,
+        "size": size,
+      },
+      dataConverter: (json) {
+        if (json is List) {
+          return json.map((e) => RecommendModel.fromJson(e)).toList();
+        }
+        return [];
+      },
+    );
+  }
+
+  /// 用户位置更新
+  /// longitude:经度
+  /// latitude:	纬度
+  static Future<ApiResponse> updateAccountPosition({
+    String? longitude,
+    String? latitude,
+  }) {
+    return HttpClient.post(
+      '/api/user/updateAccountPosition',
+      data: {
+        "longitude": longitude,
+        "latitude": latitude,
+      },
+      dataConverter: (json) => json,
+    );
+  }
+
 }

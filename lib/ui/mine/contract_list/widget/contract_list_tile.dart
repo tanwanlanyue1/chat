@@ -15,6 +15,7 @@ class ContractListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dateTime = buildDateTime();
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -26,13 +27,8 @@ class ContractListTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  buildRichText(S.current.broker, model.broker),
-                  buildRichText(
-                    status == ContractStatus.terminated
-                        ? S.current.startStopTime
-                        : S.current.effectiveTime,
-                    model.date.isNotEmpty ? model.date : S.current.none,
-                  ),
+                  buildRichText(S.current.broker, model.partyAName),
+                  if(dateTime != null) dateTime,
                 ],
               ),
             ),
@@ -40,6 +36,30 @@ class ContractListTile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget? buildDateTime() {
+    var label = '';
+    var text = '';
+    switch (status) {
+      case null:
+      case ContractStatus.signing:
+      label = '创建时间：';
+      text = model.createTime;
+      case ContractStatus.signed:
+        label = S.current.effectiveTime;
+        text = model.signingTime;
+        break;
+      case ContractStatus.terminated:
+        label = S.current.startStopTime;
+        text = '${model.signingTime} - ${model.rescissionTime}';
+        break;
+    }
+
+    return buildRichText(
+      label,
+      text,
     );
   }
 
@@ -60,7 +80,7 @@ class ContractListTile extends StatelessWidget {
     ));
   }
 
-  ContractStatus? get status => ContractStatusX.valueOf(model.status);
+  ContractStatus? get status => ContractStatusX.valueOf(model.state);
 
   Widget buildStatus() {
     if (status == null) {
@@ -68,7 +88,6 @@ class ContractListTile extends StatelessWidget {
     }
     Color? color;
     switch (status) {
-      case ContractStatus.unsigned:
       case ContractStatus.signing:
         color = AppColor.primary;
         break;

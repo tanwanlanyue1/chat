@@ -11,3 +11,6 @@ const kEventInvitationSuccess = 'kEventInvitationSuccess';
 
 //监听关注操作
 const kEventIsAttention = 'kEventIsAttention';
+
+//契约单更新
+const kEventContractUpdate = 'kEventContractUpdate';

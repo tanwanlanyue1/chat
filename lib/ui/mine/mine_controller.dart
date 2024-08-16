@@ -55,7 +55,7 @@ class MineController extends GetxController {
   }
 
   ///切换佳丽状态
-  void onTapBeautifulStatus(UserStatus status) async{
+  Future<bool> onTapBeautifulStatus(UserStatus status) async{
     Loading.show();
     final response = await UserApi.updateState(status.value);
     Loading.dismiss();
@@ -63,8 +63,10 @@ class MineController extends GetxController {
       SS.login.setInfo((val) {
         val?.state = status;
       });
+      return true;
     }else{
       response.showErrorMessage();
+      return false;
     }
   }
 

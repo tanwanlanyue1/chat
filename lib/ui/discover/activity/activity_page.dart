@@ -30,10 +30,13 @@ class ActivityPage extends StatelessWidget {
           itemBuilder: (_, item, index) {
             return GestureDetector(
               onTap: ()=> controller.onTapAdvertising(item),
-              child: AppImage.network(
-                item.image ?? "",
-                height: 170.rpx,
-                borderRadius: BorderRadius.circular(8.rpx),
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 16.rpx),
+                child: AppImage.network(
+                  item.image ?? "",
+                  height: 170.rpx,
+                  borderRadius: BorderRadius.circular(8.rpx),
+                ),
               ),
             );
           },

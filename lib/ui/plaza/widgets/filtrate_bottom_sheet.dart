@@ -11,7 +11,8 @@ import '../dating_hall/dating_hall_controller.dart';
 
 //筛选弹窗
 class FiltrateBottomSheet extends StatelessWidget {
-  const FiltrateBottomSheet({super.key});
+  Function? callBack;
+  FiltrateBottomSheet({super.key,this.callBack});
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +127,7 @@ class FiltrateBottomSheet extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(8.rpx))
                       ),
                       alignment: Alignment.center,
-                      child: Text(item.tag,style: AppTextStyle.fs14b.copyWith(color: state.labelList.contains(index) ? Colors.white : AppColor.primary),),
+                      child: Text(item.tag,style: AppTextStyle.fs14m.copyWith(color: state.labelList.contains(index) ? Colors.white : AppColor.primary),),
                     ),
                   );
                 },
@@ -136,8 +137,7 @@ class FiltrateBottomSheet extends StatelessWidget {
                 height: 50.rpx,
                 text: S.current.confirm,
                 onTap: (){
-                  Get.back();
-                  controller.pagingController.onRefresh();
+                  callBack?.call();
                 },
               )
             ],

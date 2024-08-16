@@ -113,6 +113,8 @@ class OrderListItem {
               : OrderItemState.waitingConfirmForReceive;
 
         case OrderState.cancel:
+          // 如果存在超时时间则为超时状态
+          if (model.timeout.isNotEmpty) return OrderItemState.timeOut;
           // 优先显示请求方取消状态
           return requestState.isCancel
               ? OrderItemState.cancelForRequest
@@ -380,7 +382,8 @@ class OrderListItem {
       OrderItemState.timeOut: {
         UserType.user: OrderListItemWrapper(
           avatar: model.receiveAvatar,
-          nick: "接约人：${model.receiveName}",
+          nick:
+              "接约人：${model.receiveId == 0 ? model.introducerName : model.receiveName}",
           stateText: "等待超时",
           stateTextColor: AppColor.black9,
         ),
@@ -393,7 +396,8 @@ class OrderListItem {
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
           nick: "下单用户：${model.requestName}",
-          nickWithAgent: "接约人：${model.receiveName}",
+          nickWithAgent:
+              model.receiveId == 0 ? null : "接约人：${model.receiveName}",
           stateText: "等待超时",
           stateTextColor: AppColor.black9,
           operation: OrderOperationType.connect,

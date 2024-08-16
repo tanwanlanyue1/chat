@@ -103,62 +103,66 @@ class ReleaseInvitationPage extends StatelessWidget {
 
   //约会表单
   Widget dateFrom(){
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.centerLeft,
-          margin: EdgeInsets.only(bottom: 8.rpx),
-          child: Text("等待其他用户/佳丽参与一起约会吧",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
-        ),
-        Container(
-          padding: EdgeInsets.only(bottom: 16.rpx),
-          margin: EdgeInsets.only(bottom: 8.rpx),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8.rpx),
+    return GetBuilder<ReleaseInvitationController>(
+      id: 'dateFrom',
+      builder: (_) {
+      return Column(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(bottom: 8.rpx),
+            child: Text("等待其他用户/佳丽参与一起约会吧",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
           ),
-          child: InputWidget(
-            hintText: '添加邀约行程的简单介绍',
-            maxLength: 30,
-            lines: 3,
-            fillColor: Colors.white,
-            inputController: controller.contentController,
-            border: OutlineInputBorder(
-              borderSide: BorderSide(width: 1.rpx, color: Colors.white),
+          Container(
+            padding: EdgeInsets.only(bottom: 16.rpx),
+            margin: EdgeInsets.only(bottom: 8.rpx),
+            decoration: BoxDecoration(
+              color: Colors.white,
               borderRadius: BorderRadius.circular(8.rpx),
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 12.rpx,vertical: 16.rpx),
+            child: InputWidget(
+              hintText: '添加邀约行程的简单介绍',
+              maxLength: 30,
+              lines: 3,
+              fillColor: Colors.white,
+              inputController: controller.contentController,
+              border: OutlineInputBorder(
+                borderSide: BorderSide(width: 1.rpx, color: Colors.white),
+                borderRadius: BorderRadius.circular(8.rpx),
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12.rpx,vertical: 16.rpx),
+            ),
           ),
-        ),
-        DiscoverItem(
-          title: "约会地点",
-          trailing: Text(
-            "(必选)",
-            style: TextStyle(fontSize: 14.rpx, color: AppColor.gray9,fontWeight: FontWeight.bold),
+          DiscoverItem(
+            title: "约会地点",
+            trailing: Text(
+              "(必选)",
+              style: TextStyle(fontSize: 14.rpx, color: AppColor.gray9,fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        DiscoverItem(
-          title: "开始时间",
-          callBack: (){
-            TimeDialog.show();
-          },
-          trailing: Text(
-            DateUtil.formatDateStr('${controller.timeDate(time: state.startTime,hour: state.startHour)}', format: 'yyyy MM/dd HH:00'),
-            style: TextStyle(fontSize: 14.rpx, color: AppColor.gray5,fontWeight: FontWeight.bold),
+          DiscoverItem(
+            title: "开始时间",
+            callBack: (){
+              TimeDialog.show();
+            },
+            trailing: Text(
+              DateUtil.formatDateStr('${controller.timeDate(time: state.startTime,hour: state.startHour)}', format: 'yyyy MM/dd HH:00'),
+              style: TextStyle(fontSize: 14.rpx, color: AppColor.gray5,fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        DiscoverItem(
-          title: "结束时间",
-          trailing: Text(
-            DateUtil.formatDateStr('${controller.timeDate(time: state.endTime,hour: state.endHour)}', format: 'yyyy MM/dd HH:00'),
-            style: TextStyle(fontSize: 14.rpx, color: AppColor.gray5,fontWeight: FontWeight.bold),
+          DiscoverItem(
+            title: "结束时间",
+            trailing: Text(
+              DateUtil.formatDateStr('${controller.timeDate(time: state.endTime,hour: state.endHour)}', format: 'yyyy MM/dd HH:00'),
+              style: TextStyle(fontSize: 14.rpx, color: AppColor.gray5,fontWeight: FontWeight.bold),
+            ),
+            callBack: (){
+              TimeDialog.show(star: false);
+            },
           ),
-          callBack: (){
-            TimeDialog.show(star: false);
-          },
-        ),
-      ],
-    );
+        ],
+      );
+    },);
   }
 
   //附加标签

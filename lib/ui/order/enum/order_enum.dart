@@ -82,15 +82,16 @@ enum OrderDetailDisplayType {
   requestTime, // 下单时间
   receiveTime, // 接单时间
   finishTime, // 结束时间
+  cancelTime, // 结束时间
   reason, // 原因
   margin, // 保证金
   requestServiceFee, // 用户缴纳服务费
+  breachFeeProportion, // 违约金比例
+  breachFee, // 违约金
   platformFeeProportion, // 平台收取比例
   platformFee, // 平台费
   receiveFeeProportion, // 接收方收取比例
   agentFeeProportion, // 经纪人收取比例
   agentFee, // 经纪人介绍费
-  requestAmount, // 请求方金额
-  receiveAmount, // 接受方金额 或 接受方服务费
-  agentAmount, // 经纪人金额
+  amount, // 金额 不同身份状态显示不同
 }

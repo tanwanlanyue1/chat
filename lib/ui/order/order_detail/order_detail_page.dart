@@ -6,6 +6,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/model/order_detail.dart';
 import 'package:guanjia/ui/order/order_detail/widget/order_detail_operation_buttons.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
@@ -147,10 +148,17 @@ class OrderDetailPage extends StatelessWidget {
   TitleSpaceBetweenWidget _buildUpTitleSpaceBetweenWidget(
       {required OrderDetailItem item}) {
     final avatar = item.avatar;
+
+    Color? detailColor;
+    if (item.displayType == OrderDetailDisplayType.reason) {
+      detailColor = AppColor.textRed;
+    }
+
     return TitleSpaceBetweenWidget(
       height: 30.rpx,
       title: item.title,
       detail: item.detail,
+      detailColor: detailColor,
       detailLeading: avatar != null
           ? Padding(
               padding: EdgeInsets.only(right: 8.rpx),
@@ -169,6 +177,11 @@ class OrderDetailPage extends StatelessWidget {
     Color? detailColor,
     double? detailSize,
   }) {
+    if (item.displayType == OrderDetailDisplayType.amount) {
+      detailColor = AppColor.textYellow;
+      detailSize = 16.rpx;
+    }
+
     return TitleSpaceBetweenWidget(
       height: 30.rpx,
       title: item.title,

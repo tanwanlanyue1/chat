@@ -353,8 +353,11 @@ class OrderListItem {
       },
       OrderItemState.cancelForReceive: {
         UserType.user: OrderListItemWrapper(
-          avatar: model.receiveAvatar,
-          nick: "接约人：${model.receiveName}",
+          avatar: model.receiveId == 0
+              ? model.introducerAvatar
+              : model.receiveAvatar,
+          nick:
+              "接约人：${model.receiveId == 0 ? model.introducerName : model.receiveName}",
           stateText: "对方已取消订单",
           stateTextColor: AppColor.black9,
         ),
@@ -367,7 +370,8 @@ class OrderListItem {
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
           nick: "下单用户：${model.requestName}",
-          nickWithAgent: "接约人：${model.receiveName}",
+          nickWithAgent:
+              model.receiveId == 0 ? null : "接约人：${model.receiveName}",
           stateText: "佳丽已取消订单",
           stateTextColor: AppColor.black9,
           operation: OrderOperationType.connect,

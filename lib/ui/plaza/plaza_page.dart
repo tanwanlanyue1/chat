@@ -74,8 +74,7 @@ class _PlazaPageState extends State<PlazaPage> with AutomaticKeepAliveClientMixi
                     )
                 ),
               );
-            },
-            ));
+            },));
       },),
     );
   }

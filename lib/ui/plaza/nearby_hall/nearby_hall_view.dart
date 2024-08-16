@@ -3,11 +3,14 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../common/network/api/api.dart';
 import 'nearby_hall_controller.dart';
 
 //交友大厅-附近
@@ -32,10 +35,10 @@ class NearbyHallView extends StatelessWidget {
               mainAxisExtent: 220.rpx
           ),
           padding: EdgeInsets.symmetric(horizontal: 16.rpx,vertical: 8.rpx),
-          builderDelegate: DefaultPagedChildBuilderDelegate(
+          builderDelegate: DefaultPagedChildBuilderDelegate<RecommendModel>(
             pagingController: controller.pagingController,
             itemBuilder: (_, item, index) {
-              return nearbyItem();
+              return nearbyItem(item);
             },
           ),
         ),
@@ -47,13 +50,15 @@ class NearbyHallView extends StatelessWidget {
   }
 
   //附近列表
-  Widget nearbyItem(){
+  Widget nearbyItem(RecommendModel item){
     return GestureDetector(
       child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             image: DecorationImage(
-                image: AppAssetImage("assets/images/plaza/nearby.png")
-            )
+              image: NetworkImage(item.avatar ?? ''),
+              fit: BoxFit.fitHeight
+            ),
+            borderRadius: BorderRadius.circular(8.rpx),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -65,7 +70,9 @@ class NearbyHallView extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("August Castro",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+                  Expanded(
+                    child: Text(item.nickname ?? '',style: AppTextStyle.fs12m.copyWith(color: Colors.white),overflow: TextOverflow.ellipsis,),
+                  ),
                   Container(
                     decoration: BoxDecoration(
                         gradient: const LinearGradient(
@@ -83,8 +90,8 @@ class NearbyHallView extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        AppImage.asset("assets/images/plaza/boy.png",width: 12.rpx,height: 12.rpx,),
-                        Text("23",style: AppTextStyle.fs10m.copyWith(color: Colors.white),),
+                        AppImage.asset(item.gender == 1 ? "assets/images/plaza/boy.png" : "assets/images/plaza/girl.png",width: 12.rpx,height: 12.rpx,),
+                        Text("${item.age ?? ''}",style: AppTextStyle.fs10m.copyWith(color: Colors.white),),
                       ],
                     ),
                   ),
@@ -103,18 +110,36 @@ class NearbyHallView extends StatelessWidget {
               padding: EdgeInsets.only(left: 8.rpx,right: 4.rpx),
               child: Row(
                 children: [
-                  AppImage.asset("assets/images/plaza/location.png",width: 16.rpx,height: 16.rpx,),
-                  Text(" 1.1km",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
-                  const Spacer(),
-                  AppImage.asset("assets/images/plaza/relation.png",width: 14.rpx,height: 14.rpx,),
-                  Text("  联系Ta",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        AppImage.asset("assets/images/plaza/location.png",width: 16.rpx,height: 16.rpx,),
+                        Text(" ${item.distance ?? ''}km",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: (){
+                        MessageListPage.go(userId: item.uid!);
+                      },
+                      child: Row(
+                        children: [
+                          AppImage.asset("assets/images/plaza/relation.png",width: 14.rpx,height: 14.rpx,),
+                          Text("  联系Ta",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             )
           ],
         ),
       ),
-      onTap: (){},
+      onTap: (){
+        Get.toNamed(AppRoutes.userCenterPage, arguments: {'userId': item.uid,});
+      },
     );
   }
 

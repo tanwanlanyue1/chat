@@ -35,8 +35,8 @@ class NearbyHallController extends GetxController {
     }
     final response = await UserApi.nearbyUserList(
       gender: controller.state.filtrateIndex,
-      minAge: controller.state.ageMin,
-      maxAge: controller.state.ageMax,
+      minAge: controller.state.info?.value.likeAgeMin,
+      maxAge: controller.state.info?.value.likeAgeMax,
       style: tag,
       page: page,
     );
@@ -52,7 +52,12 @@ class NearbyHallController extends GetxController {
   void onTapFiltrate(){
     Get.bottomSheet(
         isScrollControlled: true,
-        FiltrateBottomSheet()
+        FiltrateBottomSheet(
+          callBack: (){
+            Get.back();
+            pagingController.onRefresh();
+          },
+        )
     );
   }
 }

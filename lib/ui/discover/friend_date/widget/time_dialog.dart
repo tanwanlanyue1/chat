@@ -121,6 +121,7 @@ class TimeDialog extends StatelessWidget {
                           controller.state.endTime = controller.state.time;
                           controller.state.endHour = controller.state.hour;
                         }
+                        controller.update(['dateFrom']);
                         Get.back();
                       },
                     )

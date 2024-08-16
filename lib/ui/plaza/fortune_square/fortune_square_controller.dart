@@ -11,6 +11,7 @@ import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
+import 'package:guanjia/ui/plaza/widgets/filtrate_bottom_sheet.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -34,7 +35,7 @@ class FortuneSquareController extends GetxController
     pagingController.addPageRequestListener(_fetchPage);
     autoDisposeWorker(
         EventBus().listen(kEventInvitationSuccess,(val){
-          pagingController.onRefresh();
+          pagingController.refresh();
         })
     );
     super.onInit();
@@ -89,7 +90,7 @@ class FortuneSquareController extends GetxController
     required int page,
   }) async {
     final response = await PlazaApi.getCommunityList(
-      type: state.communityType,
+      type: 0,
       currentPage: page,
       pageSize: pagingController.pageSize,
     );
@@ -173,5 +174,18 @@ class FortuneSquareController extends GetxController
     } else {
       pagingController.error = response.errorMessage;
     }
+  }
+
+  //筛选
+  void onTapFiltrate(){
+    Get.bottomSheet(
+        isScrollControlled: true,
+        FiltrateBottomSheet(
+          callBack: (){
+            Get.back();
+            pagingController.onRefresh();
+          },
+        )
+    );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -40,22 +42,40 @@ class DatingHallView extends StatelessWidget {
   ///速配
   Widget buildSpeedDating(){
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 1.rpx),
-      color: Colors.white,
+      padding: EdgeInsets.symmetric(vertical: 1.rpx).copyWith(left: 15.rpx),
       height: 92.rpx,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [//rgba(34, 110, 240, 0.3)
+            Color(0x4D226EF0),
+            Color(0x00BD3CFF),
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
       child: Row(
         children: List.generate(state.speedDating.length, (i) => Expanded(
           child: GestureDetector(
             child: Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AppAssetImage(state.speedDating[i]['image'])
+                      image: AppAssetImage(state.speedDating[i]['image']),
+                    fit: BoxFit.fitWidth
                   ),
                 borderRadius: BorderRadius.circular(8.rpx)
               ),
-              height: 60.rpx,
-              alignment: Alignment.center,
-              child: Text(state.speedDating[i]['name'],style: AppTextStyle.fs22b.copyWith(color: Colors.white),),
+              height: 70.rpx,
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.only(right: 15.rpx),
+              padding: EdgeInsets.only(left: 8.rpx),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(state.speedDating[i]['name'],style: AppTextStyle.fs22b.copyWith(color: Colors.white),),
+                  Text(state.speedDating[i]['subtitle'],style: AppTextStyle.fs10m.copyWith(color: Colors.white),),
+                ],
+              ),
             ),
             onTap: (){},
           ),
@@ -112,7 +132,7 @@ class DatingHallView extends StatelessWidget {
   Widget friendsItem(RecommendModel item){
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12.rpx,horizontal: 16.rpx),
-      color: AppColor.scaffoldBackground,
+      // color: AppColor.scaffoldBackground,
       margin: EdgeInsets.only(bottom: 8.rpx),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,12 +157,14 @@ class DatingHallView extends StatelessWidget {
                     Expanded(child: Text("| ${item.style ?? ''}",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),maxLines: 1,overflow: TextOverflow.ellipsis,)),
                   ],
                 ),
+                item.images != null ?
                 Row(
-                  children: List.generate(3, (index) => Container(
+                  children: List.generate(jsonDecode(item.images).length > 3 ? 3 : jsonDecode(item.images).length, (index) => Container(
                     margin: EdgeInsets.only(right: 6.rpx),
-                    child: AppImage.asset("assets/images/plaza/hall_head.png",width: 40.rpx,height: 40.rpx,),
+                    child: AppImage.network(jsonDecode(item.images)[index],width: 40.rpx,height: 40.rpx,borderRadius: BorderRadius.circular(4.rpx),),
                   )),
-                ),
+                ):
+                Container(),
               ],
             ),
           )),

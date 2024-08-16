@@ -374,6 +374,19 @@ class LoginService extends GetxService {
     return const ResultSuccess(null);
   }
 
+  /// 获取用户未读消息数量
+  Future<Result<void, String>> getMessagesCounts({
+    required String phone,
+    required int type,
+  }) async {
+    final res = await UserApi.getMessagesCounts();
+    if (!res.isSuccess) {
+      return ResultFailure(res.errorMessage ?? "data error");
+    }
+
+    return const ResultSuccess(null);
+  }
+
   Future<void> _setupLoginData({
     required LoginRes loginRes,
   }) async {

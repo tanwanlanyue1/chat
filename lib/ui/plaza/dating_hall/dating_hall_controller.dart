@@ -19,7 +19,12 @@ class RectifyTheWorkplaceController extends GetxController {
   void onTapFiltrate(){
     Get.bottomSheet(
       isScrollControlled: true,
-        const FiltrateBottomSheet()
+        FiltrateBottomSheet(
+          callBack: (){
+            Get.back();
+            pagingController.onRefresh();
+          },
+        )
     );
   }
 
@@ -60,8 +65,8 @@ class RectifyTheWorkplaceController extends GetxController {
     }
     final response = await UserApi.recommendList(
       gender: state.filtrateIndex,
-      minAge: state.ageMin,
-      maxAge: state.ageMax,
+      minAge: state.info?.value.likeAgeMin,
+      maxAge: state.info?.value.likeAgeMax,
       style: tag,
       page: page,
     );

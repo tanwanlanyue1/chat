@@ -169,7 +169,7 @@
   "fromUser": "来自用户",
   "teamList": "团队列表",
   "cancelContract": "解约",
-  "contactBeauty": "联系佳丽",
+  "contactBeauty": "联系Ta",
   "signOut": "退出登录",
   "normalUser": "普通用户",
   "beautifulUser": "佳丽",
@@ -249,5 +249,6 @@
   "reportComplaint": "举报/投诉",
   "enterPaymentPassword": "请输入支付密码",
   "favorableRate": "好评率",
-  "numberTransactions": "成交单数"
+  "numberTransactions": "成交单数",
+  "contract": "契约单"
 }

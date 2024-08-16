@@ -105,29 +105,110 @@ class FortuneSquareView extends StatelessWidget {
       id: 'floating',
       builder: (_) {
       return Visibility(
-        visible: controller.tabController.index == 2,
-        replacement: Container(),
-        child: GestureDetector(
-          onTap: (){
-            Get.toNamed(AppRoutes.releaseDynamicPage);
-          },
-          child: Container(
-            width: 80.rpx,
-            height: 40.rpx,
-            decoration: BoxDecoration(
-              color: AppColor.purple6,
-              borderRadius: BorderRadius.circular(50.rpx),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AppImage.asset("assets/images/plaza/compile.png",width: 24.rpx,height: 24.rpx,),
-                Text("发帖",style: AppTextStyle.fs14m.copyWith(color: Colors.white),),
-              ],
+        visible: controller.tabController.index == 0,
+        replacement: Visibility(
+          visible: controller.tabController.index == 2,
+          child: GestureDetector(
+            onTap: (){
+              Get.toNamed(AppRoutes.releaseDynamicPage);
+            },
+            child: Container(
+              width: 80.rpx,
+              height: 40.rpx,
+              margin: EdgeInsets.only(bottom: 24.rpx),
+              decoration: BoxDecoration(
+                color: AppColor.purple6,
+                borderRadius: BorderRadius.circular(50.rpx),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AppImage.asset("assets/images/plaza/compile.png",width: 24.rpx,height: 24.rpx,),
+                  Text("发帖",style: AppTextStyle.fs14m.copyWith(color: Colors.white),),
+                ],
+              ),
             ),
           ),
         ),
+        child: filtrateMap(),
       );
     },);
   }
+
+  //筛选
+  Widget filtrateMap(){
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        height: 46.rpx,
+        width: 180.rpx,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24.rpx),
+          border: Border.all(color: Colors.grey.withOpacity(0.4), width: 1,),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 20.rpx),
+        child: Row(
+          children: [
+            Expanded(
+              child: InkWell(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ShaderMask(
+                        shaderCallback: (Rect bounds) {
+                          return const LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [AppColor.gradientBegin, AppColor.gradientEnd],
+                          ).createShader(Offset.zero & bounds.size);
+                        },
+                        blendMode: BlendMode.srcATop,
+                        child: Container(
+                          margin: EdgeInsets.only(right: 8.rpx),
+                          child: Text(
+                            "地图",
+                            style:AppTextStyle.fs12m,
+                          ),
+                        )
+                    ),
+                    AppImage.asset("assets/images/plaza/map.png",width: 24.rpx,height: 24.rpx,)
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: InkWell(
+                onTap: controller.onTapFiltrate,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ShaderMask(
+                        shaderCallback: (Rect bounds) {
+                          return const LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [AppColor.gradientBegin, AppColor.gradientEnd],
+                          ).createShader(Offset.zero & bounds.size);
+                        },
+                        blendMode: BlendMode.srcATop,
+                        child: Container(
+                          margin: EdgeInsets.only(right: 8.rpx),
+                          child: Text(
+                            "筛选",
+                            style:AppTextStyle.fs12m,
+                          ),
+                        )
+                    ),
+                    AppImage.asset("assets/images/plaza/filtrate.png",width: 24.rpx,height: 24.rpx,),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
 }

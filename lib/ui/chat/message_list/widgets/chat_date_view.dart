@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/mine/mine_controller.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///约会状态View（显示在消息列表顶部）
-///TODO 佳丽未开启接单时，提示开启接单
 class ChatDateView extends StatelessWidget {
   static double get height => 66.rpx;
 
@@ -25,12 +27,6 @@ class ChatDateView extends StatelessWidget {
 
   //是否来自征友页面
   final bool isFriendDate;
-
-  ///对方用户类型
-  UserType get targetType => user.type;
-
-  ///当前登录用户类型
-  UserType get selfType => SS.login.userType;
 
   const ChatDateView({
     super.key,
@@ -147,20 +143,42 @@ class ChatDateView extends StatelessWidget {
   }
 
   ///获取普通订单UI状态
-  _UIState? _getUIState(final OrderItemModel? order) {
+  _UIState? _getUIState(final OrderItemModel? order, UserModel? selfUser) {
+
+    //对方用户类型
+    final targetType = user.type;
+
+    //当前登录用户类型
+    final selfType = selfUser?.type ?? UserType.user;
+
     //双方都是佳丽或者经纪人,不显示
     if (!targetType.isUser && !selfType.isUser) {
       return null;
     }
 
-    //订单为空，或者订单已完结 佳丽和经纪人不显示
     if (order == null ||
         [OrderState.finish, OrderState.cancel].contains(order.state)) {
+      //订单为空，或者订单已完结 佳丽和经纪人不显示发起约会
       if (selfType.isUser && !targetType.isUser) {
         return _UIState(
           desc: '点击右侧按钮，发起约会吧！',
           button: '发起约会',
           operation: OrderOperationType.create,
+        );
+      }
+
+      //订单为空，或者订单已完结，佳丽尚未开启接单的情况下，显示接单提示
+      if (selfType.isBeauty &&
+          targetType.isUser &&
+          selfUser?.state == UserStatus.offline) {
+        return _UIState(
+          icon: 'assets/images/chat/ic_offline_tips.png',
+          desc: '您当前处于“不接约”状态，请注意及时调整。',
+          button: '上线接约',
+          onTap: () {
+            Get.tryFind<MineController>()
+                ?.onTapBeautifulStatus(UserStatus.online);
+          },
         );
       }
       return null;
@@ -185,54 +203,61 @@ class ChatDateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final uiState = _getUIState(order);
-    if (uiState == null) {
-      return Spacing.blank;
-    }
-    return GestureDetector(
-      onTap: () {
-        if (order != null &&
-            ![OrderState.cancel, OrderState.finish].contains(order?.state)) {
-          onTapOrder?.call(order!);
-        }
-      },
-      child: Container(
-        height: ChatDateView.height,
-        color: AppColor.grayF7,
-        padding: FEdgeInsets(horizontal: 16.rpx),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text(
-                uiState.desc,
-                textAlign:
-                    uiState.button != null ? TextAlign.left : TextAlign.center,
-                style: AppTextStyle.fs14m.copyWith(
-                  color: AppColor.gray5,
+    return Obx((){
+      final uiState = _getUIState(order, SS.login.info);
+      if (uiState == null) {
+        return Spacing.blank;
+      }
+      return GestureDetector(
+        onTap: () {
+          if (order != null &&
+              ![OrderState.cancel, OrderState.finish].contains(order?.state)) {
+            onTapOrder?.call(order!);
+          }
+        },
+        child: Container(
+          height: ChatDateView.height,
+          color: AppColor.grayF7,
+          padding: FEdgeInsets(horizontal: 16.rpx),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Text(
+                  uiState.desc,
+                  textAlign:
+                  uiState.button != null ? TextAlign.left : TextAlign.center,
+                  style: AppTextStyle.fs14m.copyWith(
+                    color: AppColor.gray5,
+                  ),
                 ),
               ),
-            ),
-            if (uiState.button != null)
-              Padding(
-                padding: FEdgeInsets(left: 16.rpx),
-                child: CommonGradientButton(
-                  onTap: () => onTapOrderAction?.call(uiState.operation, order),
-                  height: 37.rpx,
-                  padding: FEdgeInsets(horizontal: 16.rpx),
-                  borderRadius: BorderRadius.zero,
-                  text: uiState.button,
-                  textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
+              if (uiState.button != null)
+                Padding(
+                  padding: FEdgeInsets(left: 16.rpx),
+                  child: CommonGradientButton(
+                    onTap: (){
+                      onTapOrderAction?.call(uiState.operation, order);
+                      uiState.onTap?.call();
+                    },
+                    height: 37.rpx,
+                    padding: FEdgeInsets(horizontal: 16.rpx),
+                    borderRadius: BorderRadius.zero,
+                    text: uiState.button,
+                    textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
 class _UIState {
+  final String? icon;
+
   ///描述文本
   final String desc;
 
@@ -242,9 +267,14 @@ class _UIState {
   ///按钮操作
   final OrderOperationType operation;
 
+  ///按钮操作
+  final VoidCallback? onTap;
+
   _UIState({
+    this.icon,
     required this.desc,
     this.button,
     this.operation = OrderOperationType.none,
+    this.onTap,
   });
 }

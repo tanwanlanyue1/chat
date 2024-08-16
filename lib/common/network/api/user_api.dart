@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:guanjia/common/network/api/model/user/binding_info.dart';
+import 'package:guanjia/common/network/api/model/user/contract_model.dart';
 import 'package:guanjia/common/network/api/model/user/level_money_info.dart';
 import 'package:guanjia/common/network/httpclient/http_client.dart';
 import 'package:guanjia/common/network/api/api.dart';
@@ -569,6 +570,106 @@ class UserApi {
       },
     );
   }
+
+  /// 契约单-获取当前经纪人已关注未签约的佳丽列表
+  /// page: 页码（默认1）,示例值(1)
+  /// size: 每页数量（默认10）,示例值(10)
+  static Future<ApiResponse<List<UserModel>>> getUnsignedBeautyList({
+    required int page,
+    required int size,
+  }) {
+    return HttpClient.get(
+      '/api/user/listNoContractUser',
+      params: {
+        "page": page,
+        "size": size,
+      },
+      dataConverter: (json) {
+        if (json is List) {
+          return json.map((e) => UserModel.fromJson(e)).toList();
+        }
+        return [];
+      },
+    );
+  }
+
+  /// 契约单-获取契约单列表
+  /// page: 页码（默认1）,示例值(1)
+  /// size: 每页数量（默认10）,示例值(10)
+  static Future<ApiResponse<List<ContractModel>>> listContract({
+    required int page,
+    required int size,
+  }) {
+    return HttpClient.get(
+      '/api/user/listContract',
+      params: {
+        "page": page,
+        "size": size,
+      },
+      dataConverter: (json) {
+        if (json is List) {
+          return json.map((e) => ContractModel.fromJson(e)).toList();
+        }
+        return [];
+      },
+    );
+  }
+
+  /// 契约单-生成
+  /// - partyAId 	甲方id
+  /// - partyAName 	甲方名
+  /// - partyBId	乙方id
+  /// - partyBName 	乙方名
+  /// - content 契约单内容
+  /// - brokerageService 	服务费甲方分成比例%
+  /// - brokerageChatting 陪聊甲方分成比例%
+  static Future<ApiResponse<void>> addContract({
+    required int partyAId,
+    required String partyAName,
+    required int partyBId,
+    required String partyBName,
+    required String content,
+    required num brokerageService,
+    required num brokerageChatting,
+  }) {
+    return HttpClient.post(
+      '/api/user/addContract',
+      data: {
+        "partyAId": partyAId,
+        "partyAName": partyAName,
+        "partyBId": partyBId,
+        "partyBName": partyBName,
+        "content": content,
+        "brokerageService": brokerageService,
+        "brokerageChatting": brokerageChatting,
+      },
+    );
+  }
+
+  /// 契约单-佳丽接受或拒绝契约单、经纪人解约契约单
+  /// - type 	类型 1同意签约 2拒绝签约 3解除签约
+  /// - contractId 	契约单ID
+  static Future<ApiResponse<void>> updateContract({
+    required int type,
+    required int contractId,
+  }) {
+    return HttpClient.post(
+      '/api/user/updateContract',
+      data: {
+        "type": type,
+        "contractId": contractId,
+      },
+    );
+  }
+
+  /// 获取契约单模板
+  static Future<ApiResponse<ContractModel>> getContractTemplate() {
+    return HttpClient.get(
+      '/api/user/getContractTemplate',
+      dataConverter: (json) => ContractModel.fromJson(json),
+    );
+  }
+
 
   /// 交友大厅-附近用户列表
   /// 	location: 坐标 经纬度用英文逗号隔开

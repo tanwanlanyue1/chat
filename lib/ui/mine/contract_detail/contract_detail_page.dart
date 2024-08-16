@@ -1,4 +1,3 @@
-import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -20,7 +19,7 @@ class ContractDetailPage extends GetView<ContractDetailController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(state.title),
+        title: Obx(() => Text(state.titleRx)),
       ),
       body: SingleChildScrollView(
         padding: FEdgeInsets(horizontal: 16.rpx, vertical: 24.rpx),
@@ -31,46 +30,49 @@ class ContractDetailPage extends GetView<ContractDetailController> {
             color: Colors.white,
           ),
           padding: FEdgeInsets(horizontal: 12.rpx, vertical: 36.rpx),
-          child: Column(
-            children: [
-              ContractView(
-                partyA: '小强',
-                partyB: 'Hello1',
-                content:
-                    '  甲方/乙方双方于今日自愿结成经纪人与艺人系，关系存续期间，甲方负责乙方在管佳APP的约会接单事宜\n\n  乙方在管佳APP上获得的所有收入，将与甲方按照18%的比例分成。',
-                date: DateUtil.formatDate(DateTime.now(), format: 'yyyy-MM-dd'),
-              ),
-              buildButtons(),
-            ],
-          ),
+          child: Obx((){
+            final contract = state.contractRx();
+            final status = state.statusRx;
+            return Column(
+              children: [
+                ContractView(
+                  partyA: contract.partyAName,
+                  partyB: contract.partyBName,
+                  content: contract.fullContent,
+                  date: contract.createTime,
+                ),
+                buildButtons(status),
+              ],
+            );
+          }),
         ),
       ),
     );
   }
 
-  Widget buildButtons() {
+  Widget buildButtons(ContractStatus? status) {
     final children = <Widget>[];
-    switch (state.status) {
-      case ContractStatus.unsigned:
+    switch (status) {
+      case ContractStatus.signing:
         children.addAll([
           Button.stadium(
             width: 120.rpx,
             height: 36.rpx,
-            onPressed: () {},
+            onPressed: () => controller.submitUpdate(2),
             backgroundColor: AppColor.gray9,
             child: Text(S.current.contractReject),
           ),
           Button.stadium(
             width: 120.rpx,
             height: 36.rpx,
-            onPressed: () {},
+            onPressed: () => controller.submitUpdate(1),
             child: Text(S.current.contractSignNow),
           ),
         ]);
         break;
-      case ContractStatus.signing:
-        children.add(Text(S.current.contractSigning));
-        break;
+      // case ContractStatus.signing:
+      //   children.add(Text(S.current.contractSigning));
+      //   break;
       case ContractStatus.signed:
         children.add(
           Button.stadium(
@@ -84,6 +86,8 @@ class ContractDetailPage extends GetView<ContractDetailController> {
         break;
       case ContractStatus.terminated:
         children.add(Text(S.current.contractTerminated));
+        break;
+      default:
         break;
     }
 

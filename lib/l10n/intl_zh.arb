@@ -119,7 +119,7 @@
   "brokerP": "经纪人",
   "goodGirl": "佳丽",
   "startStopTime": "起止时间：",
-  "effectiveTime": "起止时间：",
+  "effectiveTime": "生效时间：",
   "none": "暂无",
   "contractTerminateHint": "和当前经纪人发起解约?发起后系统将自动向该经纪人发送解约申请。",
   "confirmTerminate": "确定解约",

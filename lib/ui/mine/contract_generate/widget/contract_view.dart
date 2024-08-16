@@ -17,6 +17,8 @@ class ContractView extends StatelessWidget {
   ///内容
   final String content;
 
+  final String? dateLabel;
+
   ///时间
   final String date;
 
@@ -25,6 +27,7 @@ class ContractView extends StatelessWidget {
     required this.partyA,
     required this.partyB,
     required this.content,
+    this.dateLabel,
     required this.date,
   });
 
@@ -52,7 +55,7 @@ class ContractView extends StatelessWidget {
             alignment: Alignment.centerRight,
             padding: FEdgeInsets(top: 80.rpx),
             child: buildRichText(
-              S.current.contractDate,
+              dateLabel ?? S.current.contractDate,
               date,
             ),
           ),

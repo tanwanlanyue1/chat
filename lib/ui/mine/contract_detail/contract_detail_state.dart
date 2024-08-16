@@ -1,30 +1,31 @@
+import 'package:get/get.dart';
+import 'package:guanjia/common/network/api/model/user/contract_model.dart';
 import 'package:guanjia/generated/l10n.dart';
 
 class ContractDetailState {
 
-  ///合约状态
-  ContractStatus status;
+  ///合约
+  final Rx<ContractModel> contractRx;
 
-  ContractDetailState(this.status) {
-    ///Initialize variables
-  }
+  ContractDetailState(ContractModel contract) : contractRx = contract.obs;
 
-  String get title{
-    if(status == ContractStatus.unsigned){
+  ContractStatus? get statusRx => ContractStatusX.valueOf(contractRx().state);
+
+  String get titleRx{
+    if(statusRx == ContractStatus.signing){
       return S.current.contractSign;
     }
     return S.current.contractDetail;
   }
 }
 
+///签约状态 0签约中 1生效中 2已结束
 enum ContractStatus{
-  ///未签约
-  unsigned,
-  ///签约中
+  ///签约中 0
   signing,
-  ///已签约
+  ///已签约 1
   signed,
-  ///已解除
+  ///已解除 2
   terminated,
 }
 
@@ -36,8 +37,8 @@ extension ContractStatusX on ContractStatus{
 
   String get label{
     switch(this){
-      case ContractStatus.unsigned:
-        return S.current.contractUnsigned;
+      // case ContractStatus.unsigned:
+      //   return S.current.contractUnsigned;
       case ContractStatus.signing:
         return S.current.contractSigning;
       case ContractStatus.signed:

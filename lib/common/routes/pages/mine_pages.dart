@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:guanjia/common/network/api/model/user/contract_model.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_controller.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/chat/red_packet/red_packet_controller.dart';
@@ -113,7 +114,7 @@ class MinePages {
       page: () => const ContractDetailPage(),
       binding: BindingsBuilder.put(() {
         return ContractDetailController(
-          status: Get.getArgs('status', ContractStatus.unsigned),
+          contract: Get.getArgs('contract', ContractModel.fromJson({})),
         );
       }),
     ),

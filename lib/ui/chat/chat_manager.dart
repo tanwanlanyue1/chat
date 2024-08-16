@@ -109,8 +109,7 @@ class ChatManager {
       innerText: ZegoCallInvitationInnerText(),
       requireConfig: _requireCallConfig,
       config: ZegoCallInvitationConfig(
-        //发起者离开，通话结束
-        endCallWhenInitiatorLeave: true,
+        endCallWhenInitiatorLeave: false,
         canInvitingInCalling: false,
         permissions: [],
       ),

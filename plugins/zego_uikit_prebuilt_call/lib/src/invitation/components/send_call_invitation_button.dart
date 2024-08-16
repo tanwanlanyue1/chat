@@ -56,7 +56,6 @@ class ZegoSendCallInvitationButton extends StatefulWidget {
     this.unclickableTextColor = Colors.black,
     this.clickableBackgroundColor = Colors.transparent,
     this.unclickableBackgroundColor = Colors.transparent,
-    this.onCallId,
   }) : super(key: key);
 
   /// The list of invitees to send the call invitation to.
@@ -135,9 +134,6 @@ class ZegoSendCallInvitationButton extends StatefulWidget {
   /// The background color when the button is unclickable.
   final Color? unclickableBackgroundColor;
 
-  /// CallID发生变化
-  final void Function(String callId)? onCallId;
-
   @override
   State<ZegoSendCallInvitationButton> createState() =>
       _ZegoSendCallInvitationButtonState();
@@ -183,7 +179,6 @@ class _ZegoSendCallInvitationButtonState
     return ValueListenableBuilder<String>(
       valueListenable: callIDNotifier,
       builder: (context, callID, _) {
-        widget.onCallId?.call(callID);
         return button();
       },
     );

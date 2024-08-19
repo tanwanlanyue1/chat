@@ -26,7 +26,7 @@ class OrderController extends GetxController
       final listType = OrderListType.valueForIndex(state.selectIndex.value);
       final isShowDay =
           (listType == OrderListType.cancel && !userType.isUser) ||
-              (listType == OrderListType.finish && userType.isBeauty);
+              (listType == OrderListType.finish && !userType.isUser);
       state.isShowDay.value = isShowDay;
     });
     super.onInit();

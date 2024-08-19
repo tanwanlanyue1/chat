@@ -50,8 +50,8 @@ enum OrderUserState {
   bool get isCancel => this == OrderUserState.cancel;
 }
 
-class OrderListModel {
-  OrderListModel({
+class OrderTeamModel {
+  OrderTeamModel({
     required this.list,
     required this.userInfo,
     required this.waitTimeCount,
@@ -71,8 +71,8 @@ class OrderListModel {
   final int completeCount; // 已完成已评价
   final int allCompleteCount; // 已完成
 
-  factory OrderListModel.fromJson(Map<String, dynamic> json) {
-    return OrderListModel(
+  factory OrderTeamModel.fromJson(Map<String, dynamic> json) {
+    return OrderTeamModel(
       list: json["list"] == null
           ? []
           : List<OrderItemModel>.from(

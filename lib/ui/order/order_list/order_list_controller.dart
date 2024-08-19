@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/mixin/order_operation_mixin.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
+import 'package:guanjia/ui/order/model/order_team_list_item.dart';
 import 'package:guanjia/ui/order/order_controller.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -18,17 +20,23 @@ class OrderListController extends GetxController with OrderOperationMixin {
 
   final OrderListState state = OrderListState();
 
-  //分页控制器
-  final pagingController = DefaultPagingController<OrderListItem>(
-    firstPage: 1,
-    pageSize: 10,
-    refreshController: RefreshController(),
-  );
+  bool get isTeamList =>
+      SS.login.userType.isAgent && type == OrderListType.finish;
+
+  // 分页控制器
+  late final DefaultPagingController pagingController;
 
   @override
   void onInit() {
     // onTapOrderAdd(30);
     orderState.selectDay.listen(_changeSelectDay);
+
+    pagingController = DefaultPagingController(
+      firstPage: 1,
+      pageSize: isTeamList ? 99999 : 10,
+      refreshController: RefreshController(),
+    );
+
     pagingController.addPageRequestListener(_fetchPage);
     super.onInit();
   }
@@ -84,6 +92,22 @@ class OrderListController extends GetxController with OrderOperationMixin {
   }
 
   void _fetchPage(int page) async {
+    if (isTeamList) {
+      final res = await OrderApi.getTeamList(
+        day: orderState.isShowDay.value ? orderState.selectDay.value : 0,
+      );
+
+      if (res.isSuccess) {
+        final listModel = res.data ?? [];
+        pagingController.appendPageData(
+            listModel.map((e) => OrderTeamListItem(itemModel: e)).toList());
+      } else {
+        pagingController.error = res.errorMessage;
+      }
+
+      return;
+    }
+
     final res = await OrderApi.getList(
       state: type.stateValue,
       day: orderState.isShowDay.value ? orderState.selectDay.value : null,

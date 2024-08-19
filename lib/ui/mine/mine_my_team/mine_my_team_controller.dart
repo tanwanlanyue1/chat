@@ -42,7 +42,7 @@ class MineMyTeamController extends GetxController {
   ///查询详情
   ///detail：查看详情
   void getContract(int id,{bool? detail}) async {
-    final response = await UserApi.getContract(contractId: id);
+    final response = await UserApi.getContract(id);
     if(response.isSuccess){
       if(detail ?? false){
         Get.toNamed(AppRoutes.contractDetailPage, arguments: {

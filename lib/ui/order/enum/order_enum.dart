@@ -29,13 +29,15 @@ enum OrderListType {
   bool get isFinish => this == OrderListType.finish;
 }
 
-/// 订单item用户类型
+/// 征友订单item用户类型
 enum OrderItemUserType {
   request, // 发送方
-  receive; // 接收方
+  receive, // 接收方
+  agent; // 征友中也存在佳丽接单的状态，经纪人也能查看到相应订单并显示
 
   bool get isRequest => this == OrderItemUserType.request;
   bool get isReceive => this == OrderItemUserType.receive;
+  bool get isAgent => this == OrderItemUserType.agent;
 }
 
 /// 订单item状态

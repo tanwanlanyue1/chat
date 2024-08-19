@@ -74,7 +74,7 @@ class OrderDetailItem {
         );
       case OrderDetailDisplayType.request:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '下单用户：',
+          title: changeTitle ?? (model.type.isNormal ? '下单用户：' : '征友约会：'),
           detail: changeDetail ?? model.requestName,
           avatar: changeAvatar ?? model.requestAvatar,
         );
@@ -237,23 +237,31 @@ class OrderDetail {
     OrderItemModel model,
     OrderItemState state,
   ) {
-    final OrderDetailWrapper? wrapper;
+    // TODO: 目前需求全部使用普通订单用户类型去封装，目前只有少数字段显示不同，后续有需要再细分
+    final userId = SS.login.userId;
+    final userType = userId == model.requestId
+        ? UserType.user
+        : userId == model.receiveId
+            ? UserType.beauty
+            : UserType.agent;
 
-    if (model.type.isNormal) {
-      final userId = SS.login.userId;
-      final userType = userId == model.requestId
-          ? UserType.user
-          : userId == model.receiveId
-              ? UserType.beauty
-              : UserType.agent;
-      wrapper = buildNormalWrapperMap(model)[state]?[userType];
-    } else {
-      final userType = model.requestId == SS.login.userId
-          ? OrderItemUserType.request
-          : OrderItemUserType.receive;
-      wrapper = buildFriendWrapperMap(model)[state]?[userType];
-    }
-    print("object---$state");
+    final OrderDetailWrapper? wrapper =
+        buildNormalWrapperMap(model)[state]?[userType];
+
+    // if (model.type.isNormal) {
+    //   final userId = SS.login.userId;
+    //   final userType = userId == model.requestId
+    //       ? UserType.user
+    //       : userId == model.receiveId
+    //           ? UserType.beauty
+    //           : UserType.agent;
+    //   wrapper = buildNormalWrapperMap(model)[state]?[userType];
+    // } else {
+    //   final userType = model.requestId == SS.login.userId
+    //       ? OrderItemUserType.request
+    //       : OrderItemUserType.receive;
+    //   wrapper = buildFriendWrapperMap(model)[state]?[userType];
+    // }
 
     return wrapper ??
         OrderDetailWrapper(
@@ -265,6 +273,7 @@ class OrderDetail {
 
   static Map<OrderItemState, Map<UserType, OrderDetailWrapper>>
       buildNormalWrapperMap(OrderItemModel model) {
+    final isNormal = model.type.isNormal;
     return {
       OrderItemState.waitingAcceptance: {
         UserType.user: OrderDetailWrapper(
@@ -352,7 +361,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: isNormal ? "接单佳丽：" : "参与约会：",
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -374,7 +383,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: isNormal ? "接单佳丽：" : "参与约会：",
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -393,7 +402,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: isNormal ? "接单佳丽：" : "参与约会：",
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -413,7 +422,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: isNormal ? "接单佳丽：" : "参与约会：",
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -434,7 +443,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "待接单佳丽：",
+              changeTitle: isNormal ? "接单佳丽：" : "参与约会：",
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -455,7 +464,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "待接单佳丽：",
+              changeTitle: isNormal ? "接单佳丽：" : "参与约会：",
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -474,7 +483,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: isNormal ? "接单佳丽：" : "参与约会：",
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -1473,105 +1482,105 @@ class OrderDetail {
     };
   }
 
-  static Map<OrderItemState, Map<OrderItemUserType, OrderDetailWrapper>>
-      buildFriendWrapperMap(OrderItemModel model) {
-    return {
-      OrderItemState.waitingPaymentForRequest: {
-        OrderItemUserType.request: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-        OrderItemUserType.receive: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-      },
-      OrderItemState.waitingPaymentForReceive: {
-        OrderItemUserType.request: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-        OrderItemUserType.receive: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-      },
-      OrderItemState.waitingConfirmForRequest: {
-        OrderItemUserType.request: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-        OrderItemUserType.receive: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-      },
-      OrderItemState.waitingConfirmForReceive: {
-        OrderItemUserType.request: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-        OrderItemUserType.receive: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-      },
-      OrderItemState.cancelForRequest: {
-        OrderItemUserType.request: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-        OrderItemUserType.receive: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-      },
-      OrderItemState.cancelForReceive: {
-        OrderItemUserType.request: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-        OrderItemUserType.receive: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-      },
-      OrderItemState.timeOut: {
-        OrderItemUserType.request: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-        OrderItemUserType.receive: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-      },
-      OrderItemState.finish: {
-        OrderItemUserType.request: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-        OrderItemUserType.receive: OrderDetailWrapper(
-          stateText: "",
-          stateDetailText: "",
-          upDisplayTypes: [],
-        ),
-      },
-    };
-  }
+  // static Map<OrderItemState, Map<OrderItemUserType, OrderDetailWrapper>>
+  //     buildFriendWrapperMap(OrderItemModel model) {
+  //   return {
+  //     OrderItemState.waitingPaymentForRequest: {
+  //       OrderItemUserType.request: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //       OrderItemUserType.receive: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //     },
+  //     OrderItemState.waitingPaymentForReceive: {
+  //       OrderItemUserType.request: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //       OrderItemUserType.receive: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //     },
+  //     OrderItemState.waitingConfirmForRequest: {
+  //       OrderItemUserType.request: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //       OrderItemUserType.receive: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //     },
+  //     OrderItemState.waitingConfirmForReceive: {
+  //       OrderItemUserType.request: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //       OrderItemUserType.receive: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //     },
+  //     OrderItemState.cancelForRequest: {
+  //       OrderItemUserType.request: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //       OrderItemUserType.receive: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //     },
+  //     OrderItemState.cancelForReceive: {
+  //       OrderItemUserType.request: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //       OrderItemUserType.receive: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //     },
+  //     OrderItemState.timeOut: {
+  //       OrderItemUserType.request: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //       OrderItemUserType.receive: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //     },
+  //     OrderItemState.finish: {
+  //       OrderItemUserType.request: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //       OrderItemUserType.receive: OrderDetailWrapper(
+  //         stateText: "",
+  //         stateDetailText: "",
+  //         upDisplayTypes: [],
+  //       ),
+  //     },
+  //   };
+  // }
 }

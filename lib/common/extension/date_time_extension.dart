@@ -20,6 +20,10 @@ extension DateTimeExtension on DateTime {
   ///日期格式化 yyyy-MM-dd HH:mm:ss
   String get format => DateUtil.formatDate(this, format: 'yyyy-MM-dd HH:mm:ss');
 
+  String toFormat(String format){
+    return DateUtil.formatDate(this, format: format);
+  }
+
   ///是否是今天
   bool get isToday => isSameDay(today);
 

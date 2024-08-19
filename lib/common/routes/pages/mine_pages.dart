@@ -4,6 +4,8 @@ import 'package:guanjia/ui/chat/message_list/message_list_controller.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/chat/red_packet/red_packet_controller.dart';
 import 'package:guanjia/ui/chat/red_packet/red_packet_page.dart';
+import 'package:guanjia/ui/chat/transfer_money/transfer_money_controller.dart';
+import 'package:guanjia/ui/chat/transfer_money/transfer_money_page.dart';
 import 'package:guanjia/ui/mine/avatar/avatar_page.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_controller.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_page.dart';
@@ -156,7 +158,8 @@ class MinePages {
       page: () => MessageListPage(
         conversationId: Get.getArgs('conversationId', ''),
         conversationType: Get.getArgs(
-          'conversationType', ZIMConversationType.peer,
+          'conversationType',
+          ZIMConversationType.peer,
         ),
         isFromFriend: Get.getArgs('isFromFriend', false),
       ),
@@ -171,6 +174,15 @@ class MinePages {
               'conversationType',
               ZIMConversationType.peer,
             )),
+      ),
+    ),
+    GetPage(
+      name: AppRoutes.transferMoneyPage,
+      page: () => const TransferMoneyPage(),
+      binding: BindingsBuilder.put(
+        () => TransferMoneyController(
+          userId: Get.getArgs('userId', 0),
+        ),
       ),
     ),
   ];

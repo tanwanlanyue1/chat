@@ -12,6 +12,9 @@ enum CustomMessageType{
   ///通话结束 2
   callEnd,
 
+  ///转账 3
+  transfer,
+
 }
 
 extension CustomMessageTypeX on CustomMessageType{

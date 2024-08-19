@@ -1,6 +1,15 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/date_time_extension.dart';
+import 'package:guanjia/common/extension/list_extension.dart';
+import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
+import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:zego_zim/zego_zim.dart';
 import 'package:zego_zimkit/src/services/services.dart';
 
@@ -186,10 +195,47 @@ class _MessageListViewState extends State<MessageListView> {
     );
   }
 
+
+  ///处理消息
+  List<ValueNotifier<ZIMKitMessage>> handleMessageList(List<ValueNotifier<ZIMKitMessage>> messageList){
+    final list = <ValueNotifier<ZIMKitMessage>>[];
+    final selfUserId = SS.login.userId.toString();
+
+    messageList.forEachIndexed((index, item){
+      //上一条消息
+      final prevItem = list.firstOrNull;
+      list.insert(0, item);
+
+      if(item.value.zim is ZIMCustomMessage){
+        final zim = item.value.zim as ZIMCustomMessage;
+        //插入红包消息
+        if(zim.subType == CustomMessageType.transfer.value){
+
+          if(zim.senderUserID == selfUserId){
+            //模拟一条接收方收款消息
+            final receiveMsg = zim.copyWith(
+              isServerMessage: false,
+              isUserInserted: true,
+              senderUserID: zim.conversationID,
+              conversationID: zim.senderUserID,
+              direction: ZIMMessageDirection.receive,
+            ).toKIT();
+            list.insert(0, ValueNotifier(receiveMsg));
+          }else{
+
+          }
+        }
+      }
+    });
+
+    return list;
+  }
+
+
   Widget listview(
     List<ValueNotifier<ZIMKitMessage>> messageList,
   ) {
-    messageList = messageList.reversed.toList();
+    messageList = handleMessageList(messageList);
     return LayoutBuilder(builder: (context, BoxConstraints constraints) {
       return Stack(
         children: [
@@ -208,7 +254,6 @@ class _MessageListViewState extends State<MessageListView> {
             padding: widget.listViewPadding,
             itemBuilder: (context, index) {
               final messageNotifier = messageList[index];
-
               return ValueListenableBuilder(
                 valueListenable: messageNotifier,
                 builder: (
@@ -216,11 +261,31 @@ class _MessageListViewState extends State<MessageListView> {
                   ZIMKitMessage message,
                   Widget? child,
                 ) {
-                  // defaultWidget
-                  return defaultMessageWidget(
-                    message: message,
-                    constraints: constraints,
-                  );
+                  //两条消息发送时间相隔5分钟，显示时间
+                  final prevMsgTimestamp = messageList
+                          .safeElementAt(index + 1)
+                          ?.value
+                          .info
+                          .timestamp ??
+                      0;
+                  if (message.info.timestamp - prevMsgTimestamp >
+                      5 * 60 * 1000) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        buildTime(message),
+                        defaultMessageWidget(
+                          message: message,
+                          constraints: constraints,
+                        )
+                      ],
+                    );
+                  } else {
+                    return defaultMessageWidget(
+                      message: message,
+                      constraints: constraints,
+                    );
+                  }
                 },
               );
             },
@@ -228,6 +293,34 @@ class _MessageListViewState extends State<MessageListView> {
         ],
       );
     });
+  }
+
+  Widget buildTime(ZIMKitMessage message) {
+    final dateTime =
+        DateTime.fromMillisecondsSinceEpoch(message.info.timestamp);
+    var dateTimeStr = '';
+    if (dateTime.isToday) {
+      dateTimeStr = dateTime.formatHHmm;
+    } else if (dateTime.year == DateTime.now().year) {
+      dateTimeStr = dateTime.toFormat('M月dd日 HH:mm');
+    } else {
+      dateTimeStr = dateTime.toFormat('yyyy年M月dd日 HH:mm');
+    }
+
+    return Container(
+      margin: EdgeInsets.only(bottom: 16.rpx),
+      padding: EdgeInsets.symmetric(vertical: 4.rpx, horizontal: 8.rpx),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4.rpx),
+        color: Colors.white.withOpacity(0.4),
+      ),
+      child: Text(
+        dateTimeStr,
+        style: AppTextStyle.fs14m.copyWith(
+          color: AppColor.gray5,
+        ),
+      ),
+    );
   }
 
   Widget defaultMessageWidget(

@@ -163,4 +163,7 @@ abstract class AppRoutes {
 
   ///发红包
   static const redPacketPage = '/RedPacketPage';
+
+  ///转账
+  static const transferMoneyPage = '/TransferMoneyPage';
 }

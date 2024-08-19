@@ -8,6 +8,7 @@ import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_end_message.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_red_packet_message.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
+import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:zego_zim/zego_zim.dart';
 import 'package:zego_zimkit/src/components/components.dart';
 import 'package:zego_zimkit/src/components/messages/file_message.dart';
@@ -15,6 +16,7 @@ import 'package:zego_zimkit/src/services/services.dart';
 
 import 'chat_image_message.dart';
 import 'chat_text_message.dart';
+import 'chat_transfer_message.dart';
 import 'chat_unknown_message.dart';
 import 'chat_video_message.dart';
 
@@ -75,6 +77,7 @@ class ChatMessageWidget extends StatelessWidget {
             onLongPress: onLongPress, onPressed: onPressed, message: message);
         break;
       case ZIMMessageType.revoke:
+        print('ZIMRevokeMessage: '+message.toString());
         defaultMessageContent = const Text('Recalled a message.');
         break;
       case ZIMMessageType.custom:
@@ -89,6 +92,13 @@ class ChatMessageWidget extends StatelessWidget {
             break;
           case CustomMessageType.callEnd:
             defaultMessageContent = ChatCallEndMessage(
+              onLongPress: onLongPress,
+              onPressed: onPressed,
+              message: message,
+            );
+            break;
+          case CustomMessageType.transfer:
+            defaultMessageContent = ChatTransferMessage(
               onLongPress: onLongPress,
               onPressed: onPressed,
               message: message,
@@ -156,7 +166,7 @@ class ChatMessageWidget extends StatelessWidget {
             buildMessageContent(context),
           ],
         ),
-        buildTime(horizontalPadding: 8.rpx)
+        // buildTime(horizontalPadding: 8.rpx)
       ],
     );
   }
@@ -188,7 +198,7 @@ class ChatMessageWidget extends StatelessWidget {
             ),
           ],
         ),
-        buildTime(horizontalPadding: 56.rpx),
+        // buildTime(horizontalPadding: 56.rpx),
       ],
     );
   }
@@ -242,9 +252,9 @@ class ChatMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
+      padding: FEdgeInsets(
         horizontal: 16.rpx,
-        vertical: 8.rpx,
+        bottom: 24.rpx,
       ),
       child: FractionallySizedBox(
         widthFactor: message.isMine ? 0.87 : 1.0,

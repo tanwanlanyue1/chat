@@ -232,6 +232,8 @@ extension on ZIMKitConversation {
         return message.customContent?.message ?? '';
       case CustomMessageType.redPacket:
         return '[红包]';
+      case CustomMessageType.transfer:
+        return '[转账]';
       case CustomMessageType.callEnd:
         return message.callEndContent?.isVideoCall == true
             ? '[视频聊天]'

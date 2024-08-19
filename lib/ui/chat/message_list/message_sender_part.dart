@@ -125,6 +125,16 @@ extension MessageSenderPart on MessageListController {
     );
   }
 
+  ///发转账消息
+  void sendTransferMoneyMessage() {
+    Get.toNamed(
+      AppRoutes.transferMoneyPage,
+      arguments: {
+        'userId': int.parse(state.conversationId),
+      },
+    );
+  }
+
   ///点击聊天功能面板
   void onTapFeatureAction(ChatFeatureAction action) {
     switch (action) {
@@ -146,16 +156,7 @@ extension MessageSenderPart on MessageListController {
         onTapOrderAction(OrderOperationType.create, null);
         break;
       case ChatFeatureAction.transfer:
-        OpenApi.sendSignallingMsg();
-        // Uint8List cmdMessage = utf8.encode('自定义指令');
-        // final message = ZIMCommandMessage(message: cmdMessage);
-        // ZIM.getInstance()?.sendMessage(
-        //       message,
-        //       state.conversationId,
-        //       state.conversationType,
-        //       ZIMMessageSendConfig(),
-        //     );
-
+        sendTransferMoneyMessage();
         break;
     }
   }

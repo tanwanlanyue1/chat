@@ -16,23 +16,61 @@ class OrderDetailController extends GetxController with OrderOperationMixin {
 
   @override
   void onInit() async {
+    _fetchData();
+    super.onInit();
+  }
+
+  Future<bool> _fetchData() async {
     Loading.show();
     final res = await OrderApi.get(
       orderId: orderId,
     );
     Loading.dismiss();
 
-    if (!res.isSuccess) res.showErrorMessage();
+    if (!res.isSuccess) {
+      res.showErrorMessage();
+      return false;
+    }
 
     final model = res.data;
     if (model != null) {
       state.detailModel.value = OrderDetail(itemModel: model);
     }
-
-    super.onInit();
+    return true;
   }
 
-  void onTapConfirm() {
-    Get.toNamed(AppRoutes.orderEvaluationPage);
+  @override
+  Future<bool> onTapOrderCancel(int orderId) async {
+    final res = await super.onTapOrderCancel(orderId);
+    if (res) return await _fetchData();
+    return res;
+  }
+
+  @override
+  Future<bool> onTapOrderPayment(int orderId) async {
+    final res = await super.onTapOrderPayment(orderId);
+    if (res) return await _fetchData();
+    return res;
+  }
+
+  @override
+  Future<bool> onTapOrderAcceptOrReject(bool isAccept, int orderId) async {
+    final res = await super.onTapOrderAcceptOrReject(isAccept, orderId);
+    if (res) return await _fetchData();
+    return res;
+  }
+
+  @override
+  Future<bool> onTapOrderAssign(int orderId) async {
+    final res = await super.onTapOrderAssign(orderId);
+    if (res) return await _fetchData();
+    return res;
+  }
+
+  @override
+  Future<bool> onTapOrderFinish(int orderId) async {
+    final res = await super.onTapOrderFinish(orderId);
+    if (res) return await _fetchData();
+    return res;
   }
 }

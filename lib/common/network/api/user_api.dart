@@ -494,7 +494,7 @@ class UserApi {
   }
 
   /// 契约单 - 获取经纪人团队列表
-  static Future<ApiResponse<List<UserModel>>> getTeamUserList({
+  static Future<ApiResponse<List<TeamUser>>> getTeamUserList({
     int page = 1,
     int size = 10,
   }) {
@@ -506,7 +506,7 @@ class UserApi {
       },
       dataConverter: (json) {
         if (json is List) {
-          return json.map((e) => UserModel.fromJson(e)).toList();
+          return json.map((e) => TeamUser.fromJson(e)).toList();
         }
         return [];
       },

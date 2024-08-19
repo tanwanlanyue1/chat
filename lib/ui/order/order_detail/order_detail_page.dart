@@ -23,21 +23,39 @@ class OrderDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: const Text(
-          '订单详情',
-          style: TextStyle(
-            color: Colors.white,
+    return Obx(() {
+      final model = state.detailModel.value;
+      return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          title: const Text(
+            '订单详情',
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
+          backgroundColor: Colors.transparent,
+          leading: AppBackButton.light(),
+          actions: [
+            if (model != null && model.hasCancel)
+              GestureDetector(
+                onTap: () {
+                  controller.onTapOrderCancel(model.id);
+                },
+                child: Container(
+                  padding: EdgeInsets.only(right: 16.rpx),
+                  alignment: Alignment.center,
+                  child: Text(
+                    '取消订单',
+                    style: AppTextStyle.st.medium
+                        .size(14.rpx)
+                        .textColor(Colors.white),
+                  ),
+                ),
+              ),
+          ],
         ),
-        backgroundColor: Colors.transparent,
-        leading: AppBackButton.light(),
-      ),
-      body: Obx(() {
-        final model = state.detailModel.value;
-        return Stack(
+        body: Stack(
           children: [
             Positioned(
               top: 0,
@@ -56,9 +74,9 @@ class OrderDetailPage extends StatelessWidget {
                 ),
               ),
           ],
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 
   Column _buildContent(OrderDetail model) {

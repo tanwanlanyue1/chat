@@ -47,50 +47,6 @@ class OrderListController extends GetxController with OrderOperationMixin {
     super.onClose();
   }
 
-  @override
-  Future<bool> onTapOrderCancel(int orderId) async {
-    final res = await super.onTapOrderCancel(orderId);
-    if (res) {
-      _refreshTypeList(OrderListType.going);
-      _refreshTypeList(OrderListType.cancel);
-    }
-    return res;
-  }
-
-  @override
-  Future<bool> onTapOrderPayment(int orderId) async {
-    final res = await super.onTapOrderPayment(orderId);
-    if (res) _refreshTypeList(OrderListType.going);
-    return res;
-  }
-
-  @override
-  Future<bool> onTapOrderAcceptOrReject(bool isAccept, int orderId) async {
-    final res = await super.onTapOrderAcceptOrReject(isAccept, orderId);
-    if (res) {
-      _refreshTypeList(OrderListType.going);
-      if (isAccept) _refreshTypeList(OrderListType.cancel);
-    }
-    return res;
-  }
-
-  @override
-  Future<bool> onTapOrderAssign(int orderId) async {
-    final res = await super.onTapOrderAssign(orderId);
-    if (res) _refreshTypeList(OrderListType.going);
-    return res;
-  }
-
-  @override
-  Future<bool> onTapOrderFinish(int orderId) async {
-    final res = await super.onTapOrderFinish(orderId);
-    if (res) {
-      _refreshTypeList(OrderListType.going);
-      _refreshTypeList(OrderListType.finish);
-    }
-    return res;
-  }
-
   void _fetchPage(int page) async {
     if (isTeamList) {
       final res = await OrderApi.getTeamList(
@@ -136,18 +92,10 @@ class OrderListController extends GetxController with OrderOperationMixin {
     }
   }
 
-  // 刷新不同类型的订单列表
-  void _refreshTypeList(OrderListType type) {
-    if (Get.isRegistered<OrderListController>(tag: type.name)) {
-      final c = Get.find<OrderListController>(tag: type.name);
-      c.pagingController.refresh();
-    }
-  }
-
   // 切换日期 刷新列表
   void _changeSelectDay(int page) {
     if (type.index == orderState.selectIndex.value) {
-      _refreshTypeList(type);
+      refreshTypeList(type);
     }
   }
 }

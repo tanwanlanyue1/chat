@@ -33,7 +33,7 @@ class MineMyTeamPage extends StatelessWidget {
         onRefresh: controller.pagingController.onRefresh,
           child: PagedListView(
             pagingController: controller.pagingController,
-            builderDelegate: DefaultPagedChildBuilderDelegate<UserModel>(
+            builderDelegate: DefaultPagedChildBuilderDelegate<TeamUser>(
               pagingController: controller.pagingController,
               itemBuilder: (_, item, index) {
                 return jiaItem(item);
@@ -45,7 +45,7 @@ class MineMyTeamPage extends StatelessWidget {
   }
 
   //佳丽列表
-  Widget jiaItem(UserModel item){
+  Widget jiaItem(TeamUser item){
     return Container(
       color: Colors.white,
       padding: EdgeInsets.only(left: 16.rpx,right: 14.rpx,top: 24.rpx),
@@ -76,7 +76,7 @@ class MineMyTeamPage extends StatelessWidget {
                             constraints: BoxConstraints(
                                 maxWidth: Get.width-240.rpx
                             ),
-                            child: Text(item.nickname,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),maxLines: 1,overflow: TextOverflow.ellipsis),
+                            child: Text(item.nickname ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),maxLines: 1,overflow: TextOverflow.ellipsis),
                           ),
                           AppImage.asset("assets/images/mine/safety.png",width: 16.rpx,height: 16.rpx,),
                         ],
@@ -84,12 +84,12 @@ class MineMyTeamPage extends StatelessWidget {
                       Row(
                         children: [
                           Visibility(
-                            visible: item.gender.isMale,
+                            visible: item.gender == 1,
                             replacement: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
                             child: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
                           ),
                           SizedBox(width: 8.rpx),
-                          Text('${item.age}',style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                          Text('${item.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
                           Container(
                             width: 4.rpx,
                             height: 4.rpx,
@@ -106,25 +106,24 @@ class MineMyTeamPage extends StatelessWidget {
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: (){
-                  Get.dialog(
-                    cancellingPop(),
-                  );
-                },
-                child: Container(
-                  height: 40.rpx,
-                  margin: EdgeInsets.only(right: 24.rpx),
-                  alignment: Alignment.topCenter,
-                  color: Colors.transparent,
-                  child: AppImage.asset("assets/images/mine/cancelAContract.png",width: 20.rpx,height: 20.rpx,),
+              Visibility(
+                visible: item.remark == 'apply',
+                child: GestureDetector(
+                  onTap: (){
+                    controller.getContract(item.contractId!);
+                  },
+                  child: Container(
+                    height: 40.rpx,
+                    margin: EdgeInsets.only(right: 24.rpx),
+                    alignment: Alignment.topCenter,
+                    color: Colors.transparent,
+                    child: AppImage.asset("assets/images/mine/cancelAContract.png",width: 20.rpx,height: 20.rpx,),
+                  ),
                 ),
               ),
               GestureDetector(
                 onTap: (){
-                  Get.dialog(
-                    cancellingPop(),
-                  );
+                  controller.getContract(item.contractId!,detail: true);
                 },
                 child: Container(
                   height: 40.rpx,
@@ -140,7 +139,7 @@ class MineMyTeamPage extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: (){
-                  MessageListPage.go(userId: item.uid);
+                  MessageListPage.go(userId: item.uid!);
                 },
                 child: Column(
                   children: [
@@ -163,64 +162,4 @@ class MineMyTeamPage extends StatelessWidget {
     );
   }
 
-  //解约弹窗
-  Widget cancellingPop(){
-    return Center(
-      child: Material(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.rpx),
-        child: Container(
-          width: 311.rpx,
-          height: 173.rpx,
-          padding: EdgeInsets.only(top: 16.rpx,bottom: 24.rpx),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: (){
-                  Get.back();
-                },
-                child: Container(
-                  margin: EdgeInsets.only(right: 16.rpx),
-                  alignment: Alignment.centerRight,
-                  child: AppImage.asset("assets/images/common/close.png",width: 24.rpx,height: 24.rpx,),
-                ),
-              ),
-              Text("确定和该位佳丽解约吗？",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: (){
-                      Get.back();
-                    },
-                    child: Container(
-                      width: 120.rpx,
-                      height: 50.rpx,
-                      decoration: BoxDecoration(
-                        color: AppColor.black9,
-                        borderRadius: BorderRadius.circular(8.rpx),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text("取消",style: AppTextStyle.fs16m.copyWith(color: Colors.white),),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 120.rpx,
-                    child: CommonGradientButton(
-                      height: 50.rpx,
-                      text: '立即解约',
-                      onTap: (){
-                        Get.back();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }

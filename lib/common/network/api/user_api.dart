@@ -494,7 +494,7 @@ class UserApi {
   }
 
   /// 契约单 - 获取经纪人团队列表
-  static Future<ApiResponse<List<UserModel>>> getTeamUserList({
+  static Future<ApiResponse<List<TeamUser>>> getTeamUserList({
     int page = 1,
     int size = 10,
   }) {
@@ -506,7 +506,7 @@ class UserApi {
       },
       dataConverter: (json) {
         if (json is List) {
-          return json.map((e) => UserModel.fromJson(e)).toList();
+          return json.map((e) => TeamUser.fromJson(e)).toList();
         }
         return [];
       },
@@ -670,6 +670,18 @@ class UserApi {
     );
   }
 
+  /// 契约单-根据ID查询契约单
+  static Future<ApiResponse<ContractModel>> getContract({
+    required int contractId,
+}) {
+    return HttpClient.get(
+      '/api/user/getContract',
+      params: {
+        "id": contractId
+      },
+      dataConverter: (json) => ContractModel.fromJson(json),
+    );
+  }
 
   /// 交友大厅-附近用户列表
   /// 	location: 坐标 经纬度用英文逗号隔开

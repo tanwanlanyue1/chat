@@ -12,7 +12,7 @@ class OrderAssignAgentController extends GetxController {
   final selectIndex = Rxn<int>();
 
   //分页控制器
-  final pagingController = DefaultPagingController<UserModel>(
+  final pagingController = DefaultPagingController<TeamUser>(
     firstPage: 1,
     pageSize: 10,
   );
@@ -47,7 +47,7 @@ class OrderAssignAgentController extends GetxController {
     }
 
     Loading.show();
-    final res = await OrderApi.assign(orderId: orderId, receiveId: item.uid);
+    final res = await OrderApi.assign(orderId: orderId, receiveId: item.uid!);
     Loading.dismiss();
     if (!res.isSuccess) {
       res.showErrorMessage();

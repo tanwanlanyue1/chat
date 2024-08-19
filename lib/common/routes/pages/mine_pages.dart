@@ -114,7 +114,7 @@ class MinePages {
       page: () => const ContractDetailPage(),
       binding: BindingsBuilder.put(() {
         return ContractDetailController(
-          contract: Get.getArgs('contract', ContractModel.fromJson({})),
+          contractId: Get.getArgs('contractId', 0),
         );
       }),
     ),

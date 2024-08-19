@@ -11,17 +11,42 @@ import 'widget/contract_terminate_dialog.dart';
 
 class ContractDetailController extends GetxController {
   final ContractDetailState state;
+  final int contractId;
 
-  ContractDetailController({required ContractModel contract})
-      : state = ContractDetailState(contract);
+  ContractDetailController({required this.contractId})
+      : state = ContractDetailState();
 
   ///当前用户是否是代理
-  bool get isSelfAgent => state.contractRx().partyA == SS.login.userId;
+  bool get isSelfAgent => state.contractRx()?.partyA == SS.login.userId;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchData();
+  }
+
+  Future<ContractModel?> fetchData() async{
+    Loading.show();
+    final response = await UserApi.getContract(contractId);
+    Loading.dismiss();
+    if(response.isSuccess){
+      state.contractRx.value = response.data;
+    }else{
+      response.showErrorMessage();
+    }
+    return response.data;
+  }
 
   ///解除合约
   void terminateContract() async {
+    var contract = state.contractRx() ?? await fetchData();
+    if(contract == null){
+      Loading.showToast('解除失败');
+      return;
+    }
+
     final result = await ContractTerminateDialog.show(
-      contract: state.contractRx(),
+      contract: contract,
       isAgent: isSelfAgent,
     );
     if(result == true){
@@ -32,7 +57,7 @@ class ContractDetailController extends GetxController {
   ///- type 	类型 1同意签约 2拒绝签约 3解除签约 4佳丽申请解约 5经纪人拒绝
   void submitUpdate(int type) async{
     Loading.show();
-    final response = await UserApi.updateContract(type: type, contractId: state.contractRx().id);
+    final response = await UserApi.updateContract(type: type, contractId: contractId);
     Loading.dismiss();
     if(response.isSuccess){
       switch(type){

@@ -6,11 +6,9 @@ import 'package:guanjia/generated/l10n.dart';
 
 class ContractDetailState {
   ///合约
-  final Rx<ContractModel> contractRx;
+  final contractRx = Rxn<ContractModel>();
 
-  ContractDetailState(ContractModel contract) : contractRx = contract.obs;
-
-  ContractStatus? get statusRx => ContractStatusX.valueOf(contractRx().state);
+  ContractStatus? get statusRx => ContractStatusX.valueOf(contractRx()?.state ?? 0);
 
   String get titleRx {
     if (statusRx == ContractStatus.signing) {
@@ -66,10 +64,14 @@ extension ContractModelX on ContractModel {
             _kBrokerageChatting, brokerageChatting.toPercent());
   }
 
+  String get brokerageServicePlaceholder => _kBrokerageService;
+
   String get brokerageServiceTemplate {
     return SS.appConfig.configRx()?.brokerageServiceTemplate ??
         '乙方在App上通过约会获得的服务费收益，甲方将获得$_kBrokerageService比例提成。';
   }
+
+  String get brokerageChattingPlaceholder => _kBrokerageChatting;
 
   String get brokerageChattingTemplate {
     return SS.appConfig.configRx()?.brokerageChattingTemplate ??

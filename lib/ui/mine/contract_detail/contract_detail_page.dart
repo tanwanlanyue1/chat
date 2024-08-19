@@ -33,6 +33,9 @@ class ContractDetailPage extends GetView<ContractDetailController> {
           child: Obx((){
             final contract = state.contractRx();
             final status = state.statusRx;
+            if(contract == null){
+              return Spacing.blank;
+            }
             return Column(
               children: [
                 ContractView(

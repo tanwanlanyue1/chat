@@ -670,6 +670,14 @@ class UserApi {
     );
   }
 
+  /// 获取契约单详情
+  static Future<ApiResponse<ContractModel>> getContract(int id) {
+    return HttpClient.get(
+      '/api/user/getContract',
+      params: {'id': id},
+      dataConverter: (json) => ContractModel.fromJson(json),
+    );
+  }
 
   /// 交友大厅-附近用户列表
   /// 	location: 坐标 经纬度用英文逗号隔开

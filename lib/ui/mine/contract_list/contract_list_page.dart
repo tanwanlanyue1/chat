@@ -34,7 +34,7 @@ class ContractListPage extends GetView<ContractListController> {
                   model: item,
                   onTap: () {
                     Get.toNamed(AppRoutes.contractDetailPage, arguments: {
-                      'contract': item,
+                      'contractId': item.id,
                     });
                   },
                 );

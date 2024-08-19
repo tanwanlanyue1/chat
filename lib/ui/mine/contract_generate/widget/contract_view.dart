@@ -19,7 +19,6 @@ class ContractView extends StatelessWidget {
 
   final String? dateLabel;
 
-  ///时间
   final String date;
 
   const ContractView({

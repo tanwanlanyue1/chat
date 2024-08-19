@@ -135,7 +135,7 @@ class FriendDatePage extends StatelessWidget {
                   height: 2.rpx,
                   margin: EdgeInsets.only(right: 16.rpx,top: 4.rpx,bottom: 8.rpx),
                   color: index == state.sortIndex.value ? AppColor.primary : Colors.transparent,
-                  child: Text("${state.sortList[index]['name']}",style: TextStyle(fontSize: 10.rpx),),
+                  child: Text("${state.sortList[index]['name']}",style: TextStyle(fontSize: 10.rpx, color: Colors.transparent), ),
                 )
               ],
             ),

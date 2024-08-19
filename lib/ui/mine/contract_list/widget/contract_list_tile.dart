@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/date_time_extension.dart';
+import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/network/api/model/user/contract_model.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
@@ -46,14 +48,14 @@ class ContractListTile extends StatelessWidget {
       case null:
       case ContractStatus.signing:
       label = '创建时间：';
-      text = model.createTime;
+      text = model.createTime.dateTime?.formatYMD2 ?? '';
       case ContractStatus.signed:
         label = S.current.effectiveTime;
-        text = model.signingTime;
+        text = model.signingTime.dateTime?.formatYMD2 ?? '';
         break;
       case ContractStatus.terminated:
         label = S.current.startStopTime;
-        text = '${model.signingTime} - ${model.rescissionTime}';
+        text = '${model.signingTime.dateTime?.formatYMD2} - ${model.rescissionTime.dateTime?.formatYMD2}';
         break;
     }
 

@@ -9,8 +9,8 @@ extension DoubleX on num{
   }
 
   ///百分比
-  String toPercent(){
-    return '${(this * 100).toStringAsTrimZero()}%';
+  String toPercent({double scale = 100}){
+    return '${(this * scale).toStringAsTrimZero()}%';
   }
   
 }

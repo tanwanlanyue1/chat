@@ -14,6 +14,9 @@ extension DateTimeExtension on DateTime {
   ///日期格式化 yyyy-MM-dd
   String get formatYMD => DateUtil.formatDate(this, format: 'yyyy-MM-dd');
 
+  ///日期格式化 yyyy/MM/dd
+  String get formatYMD2 => DateUtil.formatDate(this, format: 'yyyy/MM/dd');
+
   ///日期格式化 yyyy-MM-dd HH:mm:ss
   String get format => DateUtil.formatDate(this, format: 'yyyy-MM-dd HH:mm:ss');
 

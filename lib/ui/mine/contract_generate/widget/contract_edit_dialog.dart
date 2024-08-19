@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/network/api/model/user/contract_model.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -12,7 +13,7 @@ import 'package:guanjia/ui/mine/contract_detail/contract_detail_state.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///修改契约单模板对话框
-class ContractEditDialog extends StatelessWidget {
+class ContractEditDialog extends StatefulWidget {
   final ContractModel contract;
 
   const ContractEditDialog._({super.key, required this.contract});
@@ -22,9 +23,29 @@ class ContractEditDialog extends StatelessWidget {
     return Get.dialog<ContractModel>(
       ContractEditDialog._(contract: contract),
     );
-    // return showDialog<ContractModel>(context: Get.context!, builder: (_) {
-    //   return ContractEditDialog._(contract: contract);
-    // });
+  }
+
+  @override
+  State<ContractEditDialog> createState() => _ContractEditDialogState();
+}
+
+class _ContractEditDialogState extends State<ContractEditDialog> {
+  final brokerageServiceController = TextEditingController();
+  final brokerageChattingController = TextEditingController();
+  late ContractModel contract;
+  final brokerageServiceRx = ''.obs;
+  final brokerageChattingRx = ''.obs;
+
+  @override
+  void initState() {
+    super.initState();
+    contract = widget.contract;
+    brokerageServiceController.bindTextRx(brokerageServiceRx);
+    brokerageChattingController.bindTextRx(brokerageChattingRx);
+    brokerageServiceController.text =
+        contract.brokerageService.toStringAsTrimZero();
+    brokerageChattingController.text =
+        contract.brokerageChatting.toStringAsTrimZero();
   }
 
   @override
@@ -32,49 +53,59 @@ class ContractEditDialog extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Center(
-        child: Container(
-          width: 311.rpx,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8.rpx),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              buildTitleBar(),
-              Container(
-                padding: FEdgeInsets(horizontal: 16.rpx, vertical: 24.rpx),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.rpx),
-                  color: AppColor.grayF7,
+        child: SingleChildScrollView(
+          child: Container(
+            width: 311.rpx,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.rpx),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                buildTitleBar(),
+                Container(
+                  constraints: BoxConstraints(maxHeight: Get.height - 240.rpx),
+                  margin: FEdgeInsets(horizontal: 16.rpx),
+                  padding: FEdgeInsets(horizontal: 16.rpx, vertical: 24.rpx),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.rpx),
+                    color: AppColor.grayF7,
+                  ),
+                  child: Obx(() {
+                    final brokerageService = '${brokerageServiceRx()}%';
+                    final brokerageChatting = '${brokerageChattingRx()}%';
+                    return ListView(
+                      shrinkWrap: true,
+                      children: [
+                        Text(contract.content),
+                        buildScaleItem(
+                          textController: brokerageServiceController,
+                          template: contract.brokerageServiceTemplate,
+                          placeholder: contract.brokerageServicePlaceholder,
+                          value: brokerageService,
+                        ),
+                        buildScaleItem(
+                          textController: brokerageChattingController,
+                          template: contract.brokerageChattingTemplate,
+                          placeholder: contract.brokerageChattingPlaceholder,
+                          value: brokerageChatting,
+                        ),
+                      ],
+                    );
+                  }),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(contract.content),
-                    buildScaleItem(
-                      template: contract.brokerageServiceTemplate,
-                      placeholder: contract.brokerageServicePlaceholder,
-                      value: contract.brokerageService.toPercent(),
-                    ),
-                    buildScaleItem(
-                      template: contract.brokerageChattingTemplate,
-                      placeholder: contract.brokerageChattingPlaceholder,
-                      value: contract.brokerageChatting.toPercent(),
-                    ),
-                  ],
+                // buildInput(),
+                Padding(
+                  padding: FEdgeInsets(horizontal: 16.rpx, vertical: 24.rpx),
+                  child: CommonGradientButton(
+                    height: 50.rpx,
+                    text: S.current.updateNow,
+                    onTap: onConfirm,
+                  ),
                 ),
-              ),
-              // buildInput(),
-              Padding(
-                padding: FEdgeInsets(horizontal: 16.rpx, vertical: 24.rpx),
-                child: CommonGradientButton(
-                  height: 50.rpx,
-                  text: S.current.updateNow,
-                  onTap: () {},
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -139,6 +170,7 @@ class ContractEditDialog extends StatelessWidget {
     required String template,
     required String placeholder,
     required String value,
+    TextEditingController? textController,
   }) {
     return Padding(
       padding: FEdgeInsets(top: 24.rpx),
@@ -150,8 +182,8 @@ class ContractEditDialog extends StatelessWidget {
             placeholder: placeholder,
             value: value,
           ),
-          buildScaleInput(),
-          buildScaleButtons(),
+          buildScaleInput(textController: textController),
+          buildScaleButtons(textController: textController),
         ],
       ),
     );
@@ -192,11 +224,11 @@ class ContractEditDialog extends StatelessWidget {
     );
   }
 
-  Widget buildScaleInput({TextEditingController? controller}) {
+  Widget buildScaleInput({TextEditingController? textController}) {
     return Padding(
       padding: FEdgeInsets(top: 8.rpx),
       child: TextField(
-        controller: controller,
+        controller: textController,
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
         style: AppTextStyle.fs14m.copyWith(
@@ -213,7 +245,7 @@ class ContractEditDialog extends StatelessWidget {
           ),
           hintText: '输入数字0-100%',
           hintStyle: const TextStyle(color: AppColor.gray9),
-          prefixIcon: SizedBox(width: 0),
+          prefixIcon: const SizedBox(width: 0),
           prefixIconConstraints: BoxConstraints(minHeight: 40.rpx),
           constraints: const BoxConstraints(),
           contentPadding: FEdgeInsets(horizontal: 16.rpx),
@@ -223,27 +255,52 @@ class ContractEditDialog extends StatelessWidget {
     );
   }
 
-  Widget buildScaleButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [15, 25, 35, 45].map((item) {
-        return GestureDetector(
-          child: Container(
-            width: 50.rpx,
-            height: 24.rpx,
-            decoration: BoxDecoration(
-              color: AppColor.gray9.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(4.rpx),
-            ),
-            child: Text(
-              '$item%',
-              style: AppTextStyle.fs12m.copyWith(
-                color: AppColor.gray5,
+  Widget buildScaleButtons({TextEditingController? textController}) {
+    return Padding(
+      padding: FEdgeInsets(top: 12.rpx),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [15.0, 25.0, 35.0, 45.0].map((item) {
+          return GestureDetector(
+            onTap: () {
+              textController?.text = item.toStringAsTrimZero();
+            },
+            child: Container(
+              width: 50.rpx,
+              height: 24.rpx,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: AppColor.gray9.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(4.rpx),
+              ),
+              child: Text(
+                item.toPercent(scale: 1),
+                style: AppTextStyle.fs12m.copyWith(
+                  color: AppColor.gray5,
+                ),
               ),
             ),
-          ),
-        );
-      }).toList(growable: false),
+          );
+        }).toList(growable: false),
+      ),
+    );
+  }
+
+  void onConfirm(){
+    final brokerageService = double.tryParse(brokerageServiceRx()) ?? 0;
+    final brokerageChatting = double.tryParse(brokerageChattingRx()) ?? 0;
+    if (brokerageService < 0 ||
+        brokerageService > 100 ||
+        brokerageChatting < 0 ||
+        brokerageChatting > 100) {
+      Loading.showToast('比例不能是负值或大于100%');
+      return;
+    }
+    Get.back(
+      result: contract.copyWith(
+        brokerageService: brokerageService,
+        brokerageChatting: brokerageChatting,
+      ),
     );
   }
 }

@@ -9,7 +9,7 @@ class MessageCallEndContent {
   ///开始时间
   final DateTime beginTime;
 
-  ///通话时长
+  ///通话时长(s)
   final Duration duration;
 
   ///发起方

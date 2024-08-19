@@ -73,7 +73,9 @@ class ContractGeneratePage extends GetView<ContractGenerateController> {
           width: 343.rpx,
           // menuHeight: 40.rpx,
           initialSelection: selectedBeauty,
-          onSelected: state.selectedBeautyRx.call,
+          onSelected: (value){
+            state.selectedBeautyRx(value);
+          },
           hintText: S.current.selectFriendBinding,
           menuStyle: MenuStyle(
             alignment: const Alignment(-1.0, 1.4),

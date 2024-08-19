@@ -56,12 +56,12 @@ extension ContractModelX on ContractModel {
   ///完整合约内容(包含分成比例)
   String get fullContent {
     return content +
-        '\n' +
+        '\n\n' +
         brokerageServiceTemplate.replaceFirst(
-            _kBrokerageService, brokerageService.toPercent()) +
-        '\n' +
+            _kBrokerageService, brokerageService.toPercent(scale: 1)) +
+        '\n\n' +
         brokerageChattingTemplate.replaceFirst(
-            _kBrokerageChatting, brokerageChatting.toPercent());
+            _kBrokerageChatting, brokerageChatting.toPercent(scale: 1));
   }
 
   String get brokerageServicePlaceholder => _kBrokerageService;

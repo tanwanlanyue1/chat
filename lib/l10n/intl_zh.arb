@@ -216,6 +216,7 @@
   "userGroupStyle": "团队风格",
   "userSignature": "个人简介",
   "userSignatureHint": "在这里输入内容",
+  "toastNeedSamePassword": "两次输入的密码不一致",
   "employees": "在职人员",
   "student": "学生",
   "male": "男",

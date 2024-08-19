@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
+import 'package:guanjia/ui/order/enum/order_enum.dart';
+import 'package:guanjia/ui/order/order_list/order_list_controller.dart';
 import 'package:guanjia/ui/order/widgets/assign_agent_dialog/order_assign_agent_dialog.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/payment_password_keyboard.dart';
@@ -31,6 +33,9 @@ mixin OrderOperationMixin {
       res.showErrorMessage();
       return false;
     }
+
+    refreshTypeList(OrderListType.going);
+    refreshTypeList(OrderListType.cancel);
     return true;
   }
 
@@ -47,6 +52,8 @@ mixin OrderOperationMixin {
       res.showErrorMessage();
       return false;
     }
+
+    refreshTypeList(OrderListType.going);
     return true;
   }
 
@@ -62,6 +69,9 @@ mixin OrderOperationMixin {
       res.showErrorMessage();
       return false;
     }
+
+    refreshTypeList(OrderListType.going);
+    if (isAccept) refreshTypeList(OrderListType.cancel);
     return true;
   }
 
@@ -69,7 +79,10 @@ mixin OrderOperationMixin {
   /// orderId: 订单id
   Future<bool> onTapOrderAssign(int orderId) async {
     final res = await OrderAssignAgentDialog.show(orderId);
-    return res ?? false;
+    if (res == null) return false;
+
+    refreshTypeList(OrderListType.going);
+    return res;
   }
 
   /// 完成订单
@@ -82,6 +95,9 @@ mixin OrderOperationMixin {
       res.showErrorMessage();
       return false;
     }
+
+    refreshTypeList(OrderListType.going);
+    refreshTypeList(OrderListType.finish);
     return true;
   }
 
@@ -101,5 +117,14 @@ mixin OrderOperationMixin {
   /// orderId: 订单id
   void onTapToOrderEvaluation(int orderId) {
     Get.toNamed(AppRoutes.orderEvaluationPage, arguments: orderId);
+  }
+
+  /// 刷新不同类型的订单列表
+  /// type: 订单状态 going: 进行中; finish: 已完成; cancel: 已取消;
+  void refreshTypeList(OrderListType type) {
+    if (Get.isRegistered<OrderListController>(tag: type.name)) {
+      final c = Get.find<OrderListController>(tag: type.name);
+      c.pagingController.refresh();
+    }
   }
 }

@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
-import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/ui/order/mixin/order_operation_mixin.dart';
 import 'package:guanjia/ui/order/model/order_detail.dart';
 import 'package:guanjia/widgets/loading.dart';

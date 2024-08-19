@@ -92,7 +92,7 @@ class LoginPage extends StatelessWidget {
                       LoginTextField(
                         controller: controller.passwordController,
                         labelText: S.current.loginPassword,
-                        obscureText: true,
+                        showPasswordVisible: true,
                       ),
                       Container(
                         padding: EdgeInsets.only(top: 16.rpx, bottom: 30.rpx),

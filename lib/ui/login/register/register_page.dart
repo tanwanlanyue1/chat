@@ -55,7 +55,7 @@ class RegisterPage extends StatelessWidget {
                             .size(30.rpx)
                             .textColor(Colors.white),
                       ),
-                      SizedBox(height: textFieldPadding),
+                      SizedBox(height: 50.rpx),
                       LoginTextField(
                         controller: controller.userNameController,
                         hintText: S.current.registerAccountHint,
@@ -64,25 +64,13 @@ class RegisterPage extends StatelessWidget {
                       LoginTextField(
                         controller: controller.passwordController,
                         hintText: S.current.registerPasswordHint,
-                        obscureText: true,
+                        showPasswordVisible: true,
                       ),
                       SizedBox(height: textFieldPadding),
                       LoginTextField(
                         controller: controller.passwordAgainController,
                         hintText: S.current.registerPasswordAgainHint,
-                        obscureText: true,
-                      ),
-                      SizedBox(height: textFieldPadding),
-                      LoginTextField(
-                        controller: controller.phoneController,
-                        hintText: S.current.registerPhoneHint,
-                        keyboardType: TextInputType.number,
-                      ),
-                      SizedBox(height: textFieldPadding),
-                      LoginTextField(
-                        controller: controller.emailController,
-                        hintText: S.current.registerEmailHint,
-                        keyboardType: TextInputType.emailAddress,
+                        showPasswordVisible: true,
                       ),
                       Container(
                         padding: EdgeInsets.only(top: 16.rpx, bottom: 30.rpx),
@@ -90,12 +78,27 @@ class RegisterPage extends StatelessWidget {
                         child: GestureDetector(
                           onTap: null,
                           behavior: HitTestBehavior.opaque,
-                          child: Text(
-                            "${S.current.registerAgreement} ${S.current.webUser}",
-                            style: AppTextStyle.st.medium
+                          child: Builder(builder: (context) {
+                            final style = AppTextStyle.st.medium
                                 .size(14.rpx)
-                                .textColor(Colors.white.withOpacity(0.5)),
-                          ),
+                                .textColor(Colors.white.withOpacity(0.5));
+                            return Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: S.current.registerAgreement,
+                                  ),
+                                  TextSpan(
+                                    text: " ${S.current.webUser}",
+                                    style: style.copyWith(
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              style: style,
+                            );
+                          }),
                         ),
                       ),
                       CommonGradientButton(

@@ -104,13 +104,13 @@ class ForgotPage extends StatelessWidget {
       LoginTextField(
         controller: controller.passwordController,
         hintText: S.current.forgotPasswordHint,
-        obscureText: true,
+        showPasswordVisible: true,
       ),
       SizedBox(height: _textFieldPadding),
       LoginTextField(
         controller: controller.passwordAgainController,
         hintText: S.current.forgotPasswordAgainHint,
-        obscureText: true,
+        showPasswordVisible: true,
       ),
       SizedBox(height: 30.rpx),
       CommonGradientButton(

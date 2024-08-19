@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/mixin/order_operation_mixin.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
+import 'package:guanjia/ui/order/model/order_team_list_item.dart';
 import 'package:guanjia/ui/order/order_controller.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -18,17 +20,23 @@ class OrderListController extends GetxController with OrderOperationMixin {
 
   final OrderListState state = OrderListState();
 
-  //分页控制器
-  final pagingController = DefaultPagingController<OrderListItem>(
-    firstPage: 1,
-    pageSize: 10,
-    refreshController: RefreshController(),
-  );
+  bool get isTeamList =>
+      SS.login.userType.isAgent && type == OrderListType.finish;
+
+  // 分页控制器
+  late final DefaultPagingController pagingController;
 
   @override
   void onInit() {
     // onTapOrderAdd(30);
     orderState.selectDay.listen(_changeSelectDay);
+
+    pagingController = DefaultPagingController(
+      firstPage: 1,
+      pageSize: isTeamList ? 99999 : 10,
+      refreshController: RefreshController(),
+    );
+
     pagingController.addPageRequestListener(_fetchPage);
     super.onInit();
   }
@@ -39,51 +47,23 @@ class OrderListController extends GetxController with OrderOperationMixin {
     super.onClose();
   }
 
-  @override
-  Future<bool> onTapOrderCancel(int orderId) async {
-    final res = await super.onTapOrderCancel(orderId);
-    if (res) {
-      _refreshTypeList(OrderListType.going);
-      _refreshTypeList(OrderListType.cancel);
-    }
-    return res;
-  }
-
-  @override
-  Future<bool> onTapOrderPayment(int orderId) async {
-    final res = await super.onTapOrderPayment(orderId);
-    if (res) _refreshTypeList(OrderListType.going);
-    return res;
-  }
-
-  @override
-  Future<bool> onTapOrderAcceptOrReject(bool isAccept, int orderId) async {
-    final res = await super.onTapOrderAcceptOrReject(isAccept, orderId);
-    if (res) {
-      _refreshTypeList(OrderListType.going);
-      if (isAccept) _refreshTypeList(OrderListType.cancel);
-    }
-    return res;
-  }
-
-  @override
-  Future<bool> onTapOrderAssign(int orderId) async {
-    final res = await super.onTapOrderAssign(orderId);
-    if (res) _refreshTypeList(OrderListType.going);
-    return res;
-  }
-
-  @override
-  Future<bool> onTapOrderFinish(int orderId) async {
-    final res = await super.onTapOrderFinish(orderId);
-    if (res) {
-      _refreshTypeList(OrderListType.going);
-      _refreshTypeList(OrderListType.finish);
-    }
-    return res;
-  }
-
   void _fetchPage(int page) async {
+    if (isTeamList) {
+      final res = await OrderApi.getTeamList(
+        day: orderState.isShowDay.value ? orderState.selectDay.value : 0,
+      );
+
+      if (res.isSuccess) {
+        final listModel = res.data ?? [];
+        pagingController.appendPageData(
+            listModel.map((e) => OrderTeamListItem(itemModel: e)).toList());
+      } else {
+        pagingController.error = res.errorMessage;
+      }
+
+      return;
+    }
+
     final res = await OrderApi.getList(
       state: type.stateValue,
       day: orderState.isShowDay.value ? orderState.selectDay.value : null,
@@ -112,18 +92,10 @@ class OrderListController extends GetxController with OrderOperationMixin {
     }
   }
 
-  // 刷新不同类型的订单列表
-  void _refreshTypeList(OrderListType type) {
-    if (Get.isRegistered<OrderListController>(tag: type.name)) {
-      final c = Get.find<OrderListController>(tag: type.name);
-      c.pagingController.refresh();
-    }
-  }
-
   // 切换日期 刷新列表
   void _changeSelectDay(int page) {
     if (type.index == orderState.selectIndex.value) {
-      _refreshTypeList(type);
+      refreshTypeList(type);
     }
   }
 }

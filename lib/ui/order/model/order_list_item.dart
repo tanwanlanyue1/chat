@@ -171,20 +171,29 @@ class OrderListItem {
   ) {
     final OrderListItemWrapper? wrapper;
 
-    if (model.type.isNormal) {
-      final userId = SS.login.userId;
-      final userType = userId == model.requestId
-          ? UserType.user
-          : userId == model.receiveId
-              ? UserType.beauty
-              : UserType.agent;
-      wrapper = buildNormalWrapperMap(model)[state]?[userType];
-    } else {
-      final userType = model.requestId == SS.login.userId
-          ? OrderItemUserType.request
-          : OrderItemUserType.receive;
-      wrapper = buildFriendWrapperMap(model)[state]?[userType];
-    }
+    // TODO: 目前需求全部使用普通订单用户类型去封装，目前只有少数字段显示不同，后续有需要再细分
+    final userId = SS.login.userId;
+    final userType = userId == model.requestId
+        ? UserType.user
+        : userId == model.receiveId
+            ? UserType.beauty
+            : UserType.agent;
+    wrapper = buildNormalWrapperMap(model)[state]?[userType];
+
+    // if (model.type.isNormal) {
+    //   final userId = SS.login.userId;
+    //   final userType = userId == model.requestId
+    //       ? UserType.user
+    //       : userId == model.receiveId
+    //           ? UserType.beauty
+    //           : UserType.agent;
+    //   wrapper = buildNormalWrapperMap(model)[state]?[userType];
+    // } else {
+    //   final userType = model.requestId == SS.login.userId
+    //       ? OrderItemUserType.request
+    //       : OrderItemUserType.receive;
+    //   wrapper = buildFriendWrapperMap(model)[state]?[userType];
+    // }
 
     return wrapper ??
         OrderListItemWrapper(
@@ -197,6 +206,10 @@ class OrderListItem {
 
   static Map<OrderItemState, Map<UserType, OrderListItemWrapper>>
       buildNormalWrapperMap(OrderItemModel model) {
+    final isNormal = model.type.isNormal;
+
+    final requestNamePrefix = isNormal ? "下单用户：" : "征友约会：";
+    final receiveNamePrefix = isNormal ? "接约人：" : "参与约会：";
     return {
       OrderItemState.waitingAcceptance: {
         UserType.user: OrderListItemWrapper(
@@ -204,23 +217,23 @@ class OrderListItem {
               ? model.introducerAvatar
               : model.receiveAvatar,
           nick: model.receiveId == 0
-              ? "接约人：${model.introducerName}"
-              : "接约人：${model.receiveName}",
+              ? "$receiveNamePrefix${model.introducerName}"
+              : "$receiveNamePrefix${model.receiveName}",
           stateText: "等待对方接单",
           stateTextColor: AppColor.textYellow,
           operation: OrderOperationType.cancel,
         ),
         UserType.beauty: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
+          nick: "$requestNamePrefix${model.requestName}",
           stateText: "待您接单",
           stateTextColor: AppColor.textBlue,
           operation: OrderOperationType.accept,
         ),
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
-          nickWithAgent: "接约人：${model.receiveName}",
+          nick: "$requestNamePrefix${model.requestName}",
+          nickWithAgent: "$receiveNamePrefix${model.receiveName}",
           stateText: "等待佳丽接单",
           stateTextColor: AppColor.textRed,
           operation: OrderOperationType.connect,
@@ -229,7 +242,7 @@ class OrderListItem {
       OrderItemState.waitingAssign: {
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
+          nick: "$requestNamePrefix${model.requestName}",
           stateText: "待您指派接单",
           stateTextColor: AppColor.textBlue,
           operation: OrderOperationType.assign,
@@ -238,22 +251,22 @@ class OrderListItem {
       OrderItemState.waitingPaymentForRequest: {
         UserType.user: OrderListItemWrapper(
           avatar: model.receiveAvatar,
-          nick: "接约人：${model.receiveName}",
+          nick: "$receiveNamePrefix${model.receiveName}",
           stateText: "待您缴费",
           stateTextColor: AppColor.textBlue,
           operation: OrderOperationType.payment,
         ),
         UserType.beauty: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
+          nick: "$requestNamePrefix${model.requestName}",
           stateText: "等待用户缴费",
           stateTextColor: AppColor.textYellow,
           operation: OrderOperationType.cancel,
         ),
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
-          nickWithAgent: "接约人：${model.receiveName}",
+          nick: "$requestNamePrefix${model.requestName}",
+          nickWithAgent: "$receiveNamePrefix${model.receiveName}",
           stateText: "等待用户缴费",
           stateTextColor: AppColor.textYellow,
           operation: OrderOperationType.none,
@@ -262,22 +275,22 @@ class OrderListItem {
       OrderItemState.waitingPaymentForReceive: {
         UserType.user: OrderListItemWrapper(
           avatar: model.receiveAvatar,
-          nick: "接约人：${model.receiveName}",
-          stateText: "等待佳丽缴纳保证金",
+          nick: "$receiveNamePrefix${model.receiveName}",
+          stateText: isNormal ? "等待佳丽缴纳保证金" : "等待用户缴费",
           stateTextColor: AppColor.textYellow,
           operation: OrderOperationType.cancel,
         ),
         UserType.beauty: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
+          nick: "$requestNamePrefix${model.requestName}",
           stateText: "待您缴纳保证金",
           stateTextColor: AppColor.textBlue,
           operation: OrderOperationType.payment,
         ),
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
-          nickWithAgent: "接约人：${model.receiveName}",
+          nick: "$requestNamePrefix${model.requestName}",
+          nickWithAgent: "$receiveNamePrefix${model.receiveName}",
           stateText: "等待佳丽缴纳保证金",
           stateTextColor: AppColor.textRed,
           operation: OrderOperationType.connect,
@@ -286,22 +299,22 @@ class OrderListItem {
       OrderItemState.waitingConfirmForRequest: {
         UserType.user: OrderListItemWrapper(
           avatar: model.receiveAvatar,
-          nick: "接约人：${model.receiveName}",
+          nick: "$receiveNamePrefix${model.receiveName}",
           stateText: "约会进行中",
           stateTextColor: AppColor.textPurple,
           operation: OrderOperationType.finish,
         ),
         UserType.beauty: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
+          nick: "$requestNamePrefix${model.requestName}",
           stateText: "约会进行中",
           stateTextColor: AppColor.textPurple,
           operation: OrderOperationType.none,
         ),
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
-          nickWithAgent: "接约人：${model.receiveName}",
+          nick: "$requestNamePrefix${model.requestName}",
+          nickWithAgent: "$receiveNamePrefix${model.receiveName}",
           stateText: "约会进行中",
           stateTextColor: AppColor.textPurple,
           operation: OrderOperationType.connect,
@@ -310,22 +323,22 @@ class OrderListItem {
       OrderItemState.waitingConfirmForReceive: {
         UserType.user: OrderListItemWrapper(
           avatar: model.receiveAvatar,
-          nick: "接约人：${model.receiveName}",
+          nick: "$receiveNamePrefix${model.receiveName}",
           stateText: "约会进行中",
           stateTextColor: AppColor.textPurple,
           operation: OrderOperationType.cancel,
         ),
         UserType.beauty: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
+          nick: "$requestNamePrefix${model.requestName}",
           stateText: "约会进行中",
           stateTextColor: AppColor.textPurple,
           operation: OrderOperationType.cancelAndFinish,
         ),
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
-          nickWithAgent: "接约人：${model.receiveName}",
+          nick: "$requestNamePrefix${model.requestName}",
+          nickWithAgent: "$receiveNamePrefix${model.receiveName}",
           stateText: "约会进行中",
           stateTextColor: AppColor.textPurple,
           operation: OrderOperationType.connect,
@@ -334,20 +347,20 @@ class OrderListItem {
       OrderItemState.cancelForRequest: {
         UserType.user: OrderListItemWrapper(
           avatar: model.receiveAvatar,
-          nick: "接约人：${model.receiveName}",
+          nick: "$receiveNamePrefix${model.receiveName}",
           stateText: "您主动取消订单",
           stateTextColor: AppColor.black9,
         ),
         UserType.beauty: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
+          nick: "$requestNamePrefix${model.requestName}",
           stateText: "对方已取消订单",
           stateTextColor: AppColor.black9,
         ),
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
-          nickWithAgent: "接约人：${model.receiveName}",
+          nick: "$requestNamePrefix${model.requestName}",
+          nickWithAgent: "$receiveNamePrefix${model.receiveName}",
           stateText: "用户已取消订单",
           stateTextColor: AppColor.black9,
           operation: OrderOperationType.connect,
@@ -359,21 +372,22 @@ class OrderListItem {
               ? model.introducerAvatar
               : model.receiveAvatar,
           nick:
-              "接约人：${model.receiveId == 0 ? model.introducerName : model.receiveName}",
+              "$receiveNamePrefix${model.receiveId == 0 ? model.introducerName : model.receiveName}",
           stateText: "对方已取消订单",
           stateTextColor: AppColor.black9,
         ),
         UserType.beauty: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
+          nick: "$requestNamePrefix${model.requestName}",
           stateText: "您主动取消订单",
           stateTextColor: AppColor.black9,
         ),
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
-          nickWithAgent:
-              model.receiveId == 0 ? null : "接约人：${model.receiveName}",
+          nick: "$requestNamePrefix${model.requestName}",
+          nickWithAgent: model.receiveId == 0
+              ? null
+              : "$receiveNamePrefix${model.receiveName}",
           stateText: "佳丽已取消订单",
           stateTextColor: AppColor.black9,
           operation: OrderOperationType.connect,
@@ -383,21 +397,22 @@ class OrderListItem {
         UserType.user: OrderListItemWrapper(
           avatar: model.receiveAvatar,
           nick:
-              "接约人：${model.receiveId == 0 ? model.introducerName : model.receiveName}",
+              "$receiveNamePrefix${model.receiveId == 0 ? model.introducerName : model.receiveName}",
           stateText: "等待超时",
           stateTextColor: AppColor.black9,
         ),
         UserType.beauty: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
+          nick: "$requestNamePrefix${model.requestName}",
           stateText: "等待超时",
           stateTextColor: AppColor.black9,
         ),
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
-          nickWithAgent:
-              model.receiveId == 0 ? null : "接约人：${model.receiveName}",
+          nick: "$requestNamePrefix${model.requestName}",
+          nickWithAgent: model.receiveId == 0
+              ? null
+              : "$receiveNamePrefix${model.receiveName}",
           stateText: "等待超时",
           stateTextColor: AppColor.black9,
           operation: OrderOperationType.connect,
@@ -406,20 +421,20 @@ class OrderListItem {
       OrderItemState.finish: {
         UserType.user: OrderListItemWrapper(
           avatar: model.receiveAvatar,
-          nick: "接约人：${model.receiveName}",
+          nick: "$receiveNamePrefix${model.receiveName}",
           stateText: "订单已完成",
           stateTextColor: AppColor.textGreen,
         ),
         UserType.beauty: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
+          nick: "$requestNamePrefix${model.requestName}",
           stateText: "订单已完成",
           stateTextColor: AppColor.textGreen,
         ),
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
-          nickWithAgent: "接约人：${model.receiveName}",
+          nick: "$requestNamePrefix${model.requestName}",
+          nickWithAgent: "$receiveNamePrefix${model.receiveName}",
           stateText: "订单已完成",
           stateTextColor: AppColor.textGreen,
         ),
@@ -427,21 +442,21 @@ class OrderListItem {
       OrderItemState.waitingEvaluation: {
         UserType.user: OrderListItemWrapper(
           avatar: model.receiveAvatar,
-          nick: "接约人：${model.receiveName}",
+          nick: "$receiveNamePrefix${model.receiveName}",
           stateText: "已确认完成，待评价",
           stateTextColor: AppColor.textBlue,
           operation: OrderOperationType.evaluation,
         ),
         UserType.beauty: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
+          nick: "$requestNamePrefix${model.requestName}",
           stateText: "已确认完成，待用户评价",
           stateTextColor: AppColor.textGreen,
         ),
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
-          nick: "下单用户：${model.requestName}",
-          nickWithAgent: "接约人：${model.receiveName}",
+          nick: "$requestNamePrefix${model.requestName}",
+          nickWithAgent: "$receiveNamePrefix${model.receiveName}",
           stateText: "已确认完成，待用户评价",
           stateTextColor: AppColor.textGreen,
         ),
@@ -449,129 +464,129 @@ class OrderListItem {
     };
   }
 
-  static Map<OrderItemState, Map<OrderItemUserType, OrderListItemWrapper>>
-      buildFriendWrapperMap(OrderItemModel model) {
-    return {
-      OrderItemState.waitingPaymentForRequest: {
-        OrderItemUserType.request: OrderListItemWrapper(
-          avatar: model.receiveAvatar,
-          nick: "参与约会：${model.receiveName}",
-          stateText: "待您缴费",
-          stateTextColor: AppColor.textBlue,
-          operation: OrderOperationType.payment,
-        ),
-        OrderItemUserType.receive: OrderListItemWrapper(
-          avatar: model.requestAvatar,
-          nick: "征友约会：${model.requestName}",
-          stateText: "等待用户缴费",
-          stateTextColor: AppColor.textYellow,
-          operation: OrderOperationType.cancel,
-        ),
-      },
-      OrderItemState.waitingPaymentForReceive: {
-        OrderItemUserType.request: OrderListItemWrapper(
-          avatar: model.receiveAvatar,
-          nick: "参与约会：${model.receiveName}",
-          stateText: "等待用户缴费",
-          stateTextColor: AppColor.textYellow,
-          operation: OrderOperationType.cancel,
-        ),
-        OrderItemUserType.receive: OrderListItemWrapper(
-          avatar: model.requestAvatar,
-          nick: "征友约会：${model.requestName}",
-          stateText: "待您缴费",
-          stateTextColor: AppColor.textBlue,
-          operation: OrderOperationType.payment,
-        ),
-      },
-      OrderItemState.waitingConfirmForRequest: {
-        OrderItemUserType.request: OrderListItemWrapper(
-          avatar: model.receiveAvatar,
-          nick: "参与约会：${model.receiveName}",
-          stateText: "约会进行中",
-          stateTextColor: AppColor.textPurple,
-          operation: OrderOperationType.finish,
-        ),
-        OrderItemUserType.receive: OrderListItemWrapper(
-          avatar: model.requestAvatar,
-          nick: "征友约会：${model.requestName}",
-          stateText: "约会进行中",
-          stateTextColor: AppColor.textPurple,
-          operation: OrderOperationType.none,
-        ),
-      },
-      OrderItemState.waitingConfirmForReceive: {
-        OrderItemUserType.request: OrderListItemWrapper(
-          avatar: model.receiveAvatar,
-          nick: "参与约会：${model.receiveName}",
-          stateText: "约会进行中",
-          stateTextColor: AppColor.textPurple,
-          operation: OrderOperationType.cancel,
-        ),
-        OrderItemUserType.receive: OrderListItemWrapper(
-          avatar: model.requestAvatar,
-          nick: "征友约会：${model.requestName}",
-          stateText: "约会进行中",
-          stateTextColor: AppColor.textPurple,
-          operation: OrderOperationType.cancelAndFinish,
-        ),
-      },
-      OrderItemState.cancelForRequest: {
-        OrderItemUserType.request: OrderListItemWrapper(
-          avatar: model.receiveAvatar,
-          nick: "参与约会：${model.receiveName}",
-          stateText: "您主动取消订单",
-          stateTextColor: AppColor.black9,
-        ),
-        OrderItemUserType.receive: OrderListItemWrapper(
-          avatar: model.requestAvatar,
-          nick: "征友约会：${model.requestName}",
-          stateText: "对方已取消订单",
-          stateTextColor: AppColor.black9,
-        ),
-      },
-      OrderItemState.cancelForReceive: {
-        OrderItemUserType.request: OrderListItemWrapper(
-          avatar: model.receiveAvatar,
-          nick: "参与约会：${model.receiveName}",
-          stateText: "对方已取消订单",
-          stateTextColor: AppColor.black9,
-        ),
-        OrderItemUserType.receive: OrderListItemWrapper(
-          avatar: model.requestAvatar,
-          nick: "征友约会：${model.requestName}",
-          stateText: "您主动取消订单",
-          stateTextColor: AppColor.black9,
-        ),
-      },
-      OrderItemState.timeOut: {
-        OrderItemUserType.request: OrderListItemWrapper(
-          avatar: model.receiveAvatar,
-          nick: "参与约会：${model.receiveName}",
-          stateText: "等待超时",
-          stateTextColor: AppColor.black9,
-        ),
-        OrderItemUserType.receive: OrderListItemWrapper(
-          avatar: model.requestAvatar,
-          nick: "征友约会：${model.requestName}",
-          stateText: "等待超时",
-          stateTextColor: AppColor.black9,
-        ),
-      },
-      OrderItemState.finish: {
-        OrderItemUserType.request: OrderListItemWrapper(
-          avatar: model.receiveAvatar,
-          nick: "参与约会：${model.receiveName}",
-          stateText: "订单已完成",
-          stateTextColor: AppColor.textGreen,
-        ),
-        OrderItemUserType.receive: OrderListItemWrapper(
-          avatar: model.requestAvatar,
-          nick: "征友约会：${model.requestName}",
-          stateText: "订单已完成",
-          stateTextColor: AppColor.textGreen,
-        ),
-      },
-    };
-  }
+  // static Map<OrderItemState, Map<OrderItemUserType, OrderListItemWrapper>>
+  //     buildFriendWrapperMap(OrderItemModel model) {
+  //   return {
+  //     OrderItemState.waitingPaymentForRequest: {
+  //       OrderItemUserType.request: OrderListItemWrapper(
+  //         avatar: model.receiveAvatar,
+  //         nick: "参与约会：${model.receiveName}",
+  //         stateText: "待您缴费",
+  //         stateTextColor: AppColor.textBlue,
+  //         operation: OrderOperationType.payment,
+  //       ),
+  //       OrderItemUserType.receive: OrderListItemWrapper(
+  //         avatar: model.requestAvatar,
+  //         nick: "征友约会：${model.requestName}",
+  //         stateText: "等待用户缴费",
+  //         stateTextColor: AppColor.textYellow,
+  //         operation: OrderOperationType.cancel,
+  //       ),
+  //     },
+  //     OrderItemState.waitingPaymentForReceive: {
+  //       OrderItemUserType.request: OrderListItemWrapper(
+  //         avatar: model.receiveAvatar,
+  //         nick: "参与约会：${model.receiveName}",
+  //         stateText: "等待用户缴费",
+  //         stateTextColor: AppColor.textYellow,
+  //         operation: OrderOperationType.cancel,
+  //       ),
+  //       OrderItemUserType.receive: OrderListItemWrapper(
+  //         avatar: model.requestAvatar,
+  //         nick: "征友约会：${model.requestName}",
+  //         stateText: "待您缴费",
+  //         stateTextColor: AppColor.textBlue,
+  //         operation: OrderOperationType.payment,
+  //       ),
+  //     },
+  //     OrderItemState.waitingConfirmForRequest: {
+  //       OrderItemUserType.request: OrderListItemWrapper(
+  //         avatar: model.receiveAvatar,
+  //         nick: "参与约会：${model.receiveName}",
+  //         stateText: "约会进行中",
+  //         stateTextColor: AppColor.textPurple,
+  //         operation: OrderOperationType.finish,
+  //       ),
+  //       OrderItemUserType.receive: OrderListItemWrapper(
+  //         avatar: model.requestAvatar,
+  //         nick: "征友约会：${model.requestName}",
+  //         stateText: "约会进行中",
+  //         stateTextColor: AppColor.textPurple,
+  //         operation: OrderOperationType.none,
+  //       ),
+  //     },
+  //     OrderItemState.waitingConfirmForReceive: {
+  //       OrderItemUserType.request: OrderListItemWrapper(
+  //         avatar: model.receiveAvatar,
+  //         nick: "参与约会：${model.receiveName}",
+  //         stateText: "约会进行中",
+  //         stateTextColor: AppColor.textPurple,
+  //         operation: OrderOperationType.cancel,
+  //       ),
+  //       OrderItemUserType.receive: OrderListItemWrapper(
+  //         avatar: model.requestAvatar,
+  //         nick: "征友约会：${model.requestName}",
+  //         stateText: "约会进行中",
+  //         stateTextColor: AppColor.textPurple,
+  //         operation: OrderOperationType.cancelAndFinish,
+  //       ),
+  //     },
+  //     OrderItemState.cancelForRequest: {
+  //       OrderItemUserType.request: OrderListItemWrapper(
+  //         avatar: model.receiveAvatar,
+  //         nick: "参与约会：${model.receiveName}",
+  //         stateText: "您主动取消订单",
+  //         stateTextColor: AppColor.black9,
+  //       ),
+  //       OrderItemUserType.receive: OrderListItemWrapper(
+  //         avatar: model.requestAvatar,
+  //         nick: "征友约会：${model.requestName}",
+  //         stateText: "对方已取消订单",
+  //         stateTextColor: AppColor.black9,
+  //       ),
+  //     },
+  //     OrderItemState.cancelForReceive: {
+  //       OrderItemUserType.request: OrderListItemWrapper(
+  //         avatar: model.receiveAvatar,
+  //         nick: "参与约会：${model.receiveName}",
+  //         stateText: "对方已取消订单",
+  //         stateTextColor: AppColor.black9,
+  //       ),
+  //       OrderItemUserType.receive: OrderListItemWrapper(
+  //         avatar: model.requestAvatar,
+  //         nick: "征友约会：${model.requestName}",
+  //         stateText: "您主动取消订单",
+  //         stateTextColor: AppColor.black9,
+  //       ),
+  //     },
+  //     OrderItemState.timeOut: {
+  //       OrderItemUserType.request: OrderListItemWrapper(
+  //         avatar: model.receiveAvatar,
+  //         nick: "参与约会：${model.receiveName}",
+  //         stateText: "等待超时",
+  //         stateTextColor: AppColor.black9,
+  //       ),
+  //       OrderItemUserType.receive: OrderListItemWrapper(
+  //         avatar: model.requestAvatar,
+  //         nick: "征友约会：${model.requestName}",
+  //         stateText: "等待超时",
+  //         stateTextColor: AppColor.black9,
+  //       ),
+  //     },
+  //     OrderItemState.finish: {
+  //       OrderItemUserType.request: OrderListItemWrapper(
+  //         avatar: model.receiveAvatar,
+  //         nick: "参与约会：${model.receiveName}",
+  //         stateText: "订单已完成",
+  //         stateTextColor: AppColor.textGreen,
+  //       ),
+  //       OrderItemUserType.receive: OrderListItemWrapper(
+  //         avatar: model.requestAvatar,
+  //         nick: "征友约会：${model.requestName}",
+  //         stateText: "订单已完成",
+  //         stateTextColor: AppColor.textGreen,
+  //       ),
+  //     },
+  //   };
+  // }
 }

@@ -17,7 +17,7 @@ class ContractDetailController extends GetxController {
       : state = ContractDetailState();
 
   ///当前用户是否是代理
-  bool get isSelfAgent => state.contractRx()?.partyA == SS.login.userId;
+  bool get isSelfAgent => state.contractRx()?.partyAId == SS.login.userId;
 
   @override
   void onInit() {

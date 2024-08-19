@@ -3,10 +3,10 @@
 class ContractModel {
   ContractModel({
     required this.id,
-    required this.partyA,
+    required this.partyAId,
     required this.partyAName,
     required this.partyAHead,
-    required this.partyB,
+    required this.partyBId,
     required this.partyBName,
     required this.partyBHead,
     required this.content,
@@ -22,13 +22,13 @@ class ContractModel {
   ///	id
   final int id;
   ///	甲方id
-  final int partyA;
+  final int partyAId;
   ///	甲方姓名
   final String partyAName;
   ///	甲方头像
   final String partyAHead;
   ///	乙方id
-  final int partyB;
+  final int partyBId;
   ///		乙方姓名
   final String partyBName;
   ///	乙方头像
@@ -53,10 +53,10 @@ class ContractModel {
   factory ContractModel.fromJson(Map<String, dynamic> json){
     return ContractModel(
       id: json["id"] ?? 0,
-      partyA: json["partyA"] ?? 0,
+      partyAId: json["partyAId"] ?? 0,
       partyAName: json["partyAName"] ?? "",
       partyAHead: json["partyAHead"] ?? "",
-      partyB: json["partyB"] ?? 0,
+      partyBId: json["partyBId"] ?? 0,
       partyBName: json["partyBName"] ?? "",
       partyBHead: json["partyBHead"] ?? "",
       content: json["content"] ?? "",
@@ -72,10 +72,10 @@ class ContractModel {
 
   ContractModel copyWith({
     int? id,
-    int? partyA,
+    int? partyAId,
     String? partyAName,
     String? partyAHead,
-    int? partyB,
+    int? partyBId,
     String? partyBName,
     String? partyBHead,
     String? content,
@@ -89,10 +89,10 @@ class ContractModel {
   }) {
     return ContractModel(
       id: id ?? this.id,
-      partyA: partyA ?? this.partyA,
+      partyAId: partyAId ?? this.partyAId,
       partyAName: partyAName ?? this.partyAName,
       partyAHead: partyAHead ?? this.partyAHead,
-      partyB: partyB ?? this.partyB,
+      partyBId: partyBId ?? this.partyBId,
       partyBName: partyBName ?? this.partyBName,
       partyBHead: partyBHead ?? this.partyBHead,
       content: content ?? this.content,

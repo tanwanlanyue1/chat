@@ -40,15 +40,18 @@ class TeamContractTerminateDialog extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      '与佳丽 ${contract.partyBName} 确定解除契约吗？',
-                      textAlign: TextAlign.center,
-                      style: AppTextStyle.fs16m.copyWith(
-                        color: AppColor.gray5,
-                        height: 24 / 16,
+                    buildAvatar(),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 36.rpx),
+                      child: Text(
+                        '是否同意佳丽 ${contract.partyBName} 确定解除契约吗？',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyle.fs16m.copyWith(
+                          color: AppColor.gray5,
+                          height: 24 / 16,
+                        ),
                       ),
                     ),
-                    buildAvatar(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -99,7 +102,7 @@ class TeamContractTerminateDialog extends StatelessWidget {
 
   Widget buildAvatar() {
     return Padding(
-      padding: FEdgeInsets(top: 24.rpx, bottom: 36.rpx),
+      padding: FEdgeInsets(top: 8.rpx, bottom: 24.rpx),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

@@ -174,6 +174,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
   //截取手机号/邮箱
   String maskSubstring(String input) {
     if (input.length < 8) {
+      if (input.length < 4) return input;
       return '${input.substring(0, 4)}****';
     } else {
       String prefix = input.substring(0, 4);

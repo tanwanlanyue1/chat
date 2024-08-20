@@ -14,7 +14,7 @@ import 'package:guanjia/widgets/label_widget.dart';
 import 'order_evaluation_controller.dart';
 
 class OrderEvaluationPage extends StatelessWidget {
-  OrderEvaluationPage({Key? key}) : super(key: key);
+  OrderEvaluationPage({super.key});
 
   final controller = Get.put(OrderEvaluationController());
   final state = Get.find<OrderEvaluationController>().state;
@@ -48,14 +48,16 @@ class OrderEvaluationPage extends StatelessWidget {
                     "本次订单已完成",
                     style: AppTextStyle.st.medium
                         .size(20.rpx)
-                        .textColor(AppColor.black3),
+                        .textColor(AppColor.black3)
+                        .textHeight(1),
                   ),
                   SizedBox(height: 12.rpx),
                   Text(
                     "请对该位佳丽进行评价",
                     style: AppTextStyle.st.medium
                         .size(14.rpx)
-                        .textColor(AppColor.black6),
+                        .textColor(AppColor.black6)
+                        .textHeight(1),
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 24.rpx),
@@ -80,10 +82,37 @@ class OrderEvaluationPage extends StatelessWidget {
                       }),
                     ),
                   ),
+                  _buildSubTitle("服务态度"),
+                  Container(
+                    margin: EdgeInsets.only(top: 16.rpx),
+                    height: 50.rpx,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8.rpx),
+                    ),
+                    child: Wrap(
+                      spacing: 16.rpx,
+                      children: List.generate(5, (index) {
+                        final isSelected = index + 1 <= state.starIndex.value;
+
+                        return GestureDetector(
+                          onTap: () => controller.onTapStar(index + 1),
+                          child: AppImage.asset(
+                            isSelected
+                                ? "assets/images/order/star_select.png"
+                                : "assets/images/order/star_normal.png",
+                            length: 36.rpx,
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                  SizedBox(height: 24.rpx),
                   _buildSubTitle("其他建议"),
                   Container(
                     height: 150.rpx,
-                    margin: EdgeInsets.only(top: 16.rpx, bottom: 24.rpx),
+                    margin: EdgeInsets.only(top: 16.rpx),
                     padding: EdgeInsets.symmetric(
                         horizontal: 16.rpx, vertical: 12.rpx),
                     decoration: BoxDecoration(
@@ -98,32 +127,6 @@ class OrderEvaluationPage extends StatelessWidget {
                       fillColor: Colors.transparent,
                       inputController: controller.otherController,
                       contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                  _buildSubTitle("服务态度"),
-                  Container(
-                    margin: EdgeInsets.only(top: 16.rpx),
-                    height: 50.rpx,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.rpx),
-                    ),
-                    child: Wrap(
-                      spacing: 16.rpx,
-                      children: List.generate(5, (index) {
-                        final isSelected = index <= state.starIndex.value;
-
-                        return GestureDetector(
-                          onTap: () => controller.onTapStar(index),
-                          child: AppImage.asset(
-                            isSelected
-                                ? "assets/images/order/star_select.png"
-                                : "assets/images/order/star_normal.png",
-                            length: 24.rpx,
-                          ),
-                        );
-                      }),
                     ),
                   ),
                   Button(

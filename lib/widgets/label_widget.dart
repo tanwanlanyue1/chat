@@ -23,6 +23,8 @@ class LabelWidget extends StatelessWidget {
     super.key,
     required this.item,
     this.onTap,
+    this.height,
+    this.borderRadius,
     this.fontWeight,
     this.textColor,
     this.selectedTextColor,
@@ -33,6 +35,8 @@ class LabelWidget extends StatelessWidget {
 
   final LabelItem item;
   final Function? onTap;
+  final double? height;
+  final BorderRadiusGeometry? borderRadius;
   final FontWeight? fontWeight;
   final Color? textColor;
   final Color? selectedTextColor;
@@ -45,23 +49,35 @@ class LabelWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () => onTap?.call(),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24.rpx, vertical: 16.rpx),
+        height: height ?? 46.rpx,
+        padding: EdgeInsets.symmetric(
+          horizontal: 24.rpx,
+        ),
         decoration: BoxDecoration(
-          color: item.selected ? selectedBackgroundColor ?? Colors.white : backgroundColor,
+          color: item.selected
+              ? selectedBackgroundColor ?? Colors.white
+              : backgroundColor,
           border: Border.all(
             color: borderColor ?? Colors.white,
             width: 1.rpx,
           ),
-          borderRadius: BorderRadius.circular(8.rpx),
+          borderRadius: borderRadius ?? BorderRadius.circular(8.rpx),
         ),
-        child: Text(
-          item.title,
-          style: AppTextStyle.st
-              .size(14.rpx)
-              .textColor(item.selected
-                  ? selectedTextColor ?? AppColor.black3
-                  : textColor ?? Colors.white)
-              .copyWith(fontWeight: fontWeight),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              item.title,
+              style: AppTextStyle.st
+                  .size(14.rpx)
+                  .textColor(item.selected
+                      ? selectedTextColor ?? AppColor.black3
+                      : textColor ?? Colors.white)
+                  .copyWith(
+                    fontWeight: fontWeight,
+                  ),
+            ),
+          ],
         ),
       ),
     );

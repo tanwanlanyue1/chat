@@ -71,16 +71,6 @@ class ChatManager {
       }
     });
 
-    //监听信令消息
-    ChatEventNotifier().onReceiveCommandMessage.listen((event) {
-      for(var message in event.messageList){
-        if(message is ZIMCommandMessage){
-          final msg = utf8.decode(message.message);
-          print('onReceiveCommandMessage====${msg}');
-        }
-      }
-    });
-
     //监听连接状态更新用户信息
     ZIMKitCore.instance.getConnectionStateChangedEventStream().listen((event) {
       if (ZIMKitCore.instance.connectionState == ZIMConnectionState.connected) {
@@ -295,8 +285,8 @@ class ChatManager {
 
   ///断开连接
   Future<void> disconnect() async {
+    await ZegoUIKitPrebuiltCallInvitationService().uninit();
     ZIMKit().disconnectUser();
-    ZegoUIKitPrebuiltCallInvitationService().uninit();
     _isWaitCallEndDialog = false;
   }
 

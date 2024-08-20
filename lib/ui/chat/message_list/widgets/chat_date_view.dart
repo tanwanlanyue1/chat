@@ -142,7 +142,7 @@ class ChatDateView extends StatelessWidget {
     };
   }
 
-  ///获取普通订单UI状态
+  ///获取订单UI状态
   _UIState? _getUIState(final OrderItemModel? order, UserModel? selfUser) {
 
     //对方用户类型

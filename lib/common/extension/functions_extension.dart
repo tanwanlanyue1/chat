@@ -9,4 +9,12 @@ extension FunctionMethod<T> on T{
     return this;
   }
 
+  R? tryCast<R>(){
+    if(this is R){
+      return this as R;
+    }else{
+      return null;
+    }
+  }
+
 }

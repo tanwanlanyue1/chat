@@ -28,6 +28,9 @@ class ForgotController extends GetxController {
     // Get.toNamed(AppRoutes.loginForgotPage,
     //     arguments: {"isNext": true}, preventDuplicates: false);
 
+    if (state.isEmailValid.value && emailController.text.isEmpty) return;
+    if (!state.isEmailValid.value && phoneController.text.isEmpty) return;
+
     Get.toNamed(AppRoutes.updatePasswordPage, arguments: {
       "isLogin": true,
       "type": state.isEmailValid.value,

@@ -55,7 +55,7 @@ class OrderOperationButtons extends StatelessWidget {
           _buildLeft(),
           SizedBox(width: 24.rpx),
           _buildRight(
-            onTap: () => controller.onTapOrderPayment(item.id),
+            onTap: () => controller.toOrderPayment(item.id),
             text: "立即缴纳",
           ),
         ]);
@@ -84,7 +84,7 @@ class OrderOperationButtons extends StatelessWidget {
         break;
       case OrderOperationType.evaluation:
         children.add(_buildRight(
-          onTap: () => controller.onTapToOrderEvaluation(item.id),
+          onTap: () => controller.toOrderEvaluation(item.id),
           text: "立即评价",
         ));
         break;
@@ -140,7 +140,7 @@ class OrderOperationButtons extends StatelessWidget {
 
   Widget _buildConnect() {
     return GestureDetector(
-      onTap: () => controller.onTapToOrderConnect(item.itemModel.receiveId),
+      onTap: () => controller.toOrderConnect(item.itemModel.receiveId),
       behavior: HitTestBehavior.opaque,
       child: SizedBox(
         width: 48.rpx,

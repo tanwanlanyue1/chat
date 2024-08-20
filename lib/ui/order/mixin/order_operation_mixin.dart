@@ -103,20 +103,26 @@ mixin OrderOperationMixin {
 
   /// 联系佳丽
   /// uid: 用户id
-  void onTapToOrderConnect(int uid) {
+  void toOrderConnect(int uid) {
     MessageListPage.go(userId: uid);
   }
 
   /// 跳转订单详情
   /// orderId: 订单id
-  void onTapToOrderDetail(int orderId) {
+  void toOrderDetail(int orderId) {
     Get.toNamed(AppRoutes.orderDetailPage, arguments: {"orderId": orderId});
   }
 
   /// 跳转评价订单
   /// orderId: 订单id
-  void onTapToOrderEvaluation(int orderId) {
+  void toOrderEvaluation(int orderId) {
     Get.toNamed(AppRoutes.orderEvaluationPage, arguments: orderId);
+  }
+
+  /// 跳转支付界面
+  /// orderId: 订单id
+  void toOrderPayment(int orderId) {
+    Get.toNamed(AppRoutes.orderPaymentPage, arguments: {"orderId": orderId});
   }
 
   /// 刷新不同类型的订单列表

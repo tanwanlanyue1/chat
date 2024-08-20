@@ -312,7 +312,7 @@ class _OrderListPageState extends State<OrderListPage>
         OrderOperationButtons(type: widget.type, item: item);
 
     return GestureDetector(
-      onTap: () => controller.onTapToOrderDetail(item.id),
+      onTap: () => controller.toOrderDetail(item.id),
       child: Container(
         height: 186.rpx,
         padding: EdgeInsets.all(16.rpx).copyWith(bottom: 0),

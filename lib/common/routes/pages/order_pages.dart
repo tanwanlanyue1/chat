@@ -36,7 +36,9 @@ class OrderPages {
     GetPage(
       name: AppRoutes.orderPaymentPage,
       page: () {
-        return OrderPaymentPage();
+        var args = Get.tryGetArgs("orderId");
+        return OrderPaymentPage(
+            orderId: (args != null && args is int) ? args : 0);
       },
     ),
     GetPage(

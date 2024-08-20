@@ -77,7 +77,6 @@ class ChatMessageWidget extends StatelessWidget {
             onLongPress: onLongPress, onPressed: onPressed, message: message);
         break;
       case ZIMMessageType.revoke:
-        print('ZIMRevokeMessage: '+message.toString());
         defaultMessageContent = const Text('Recalled a message.');
         break;
       case ZIMMessageType.custom:
@@ -135,6 +134,13 @@ class ChatMessageWidget extends StatelessWidget {
   }
 
   Widget buildAvatar(BuildContext context) {
+    if(message.zim.isHideAvatar){
+      return SizedBox(
+        width: 40.rpx,
+        height: 40.rpx,
+      );
+    }
+
     final Widget defaultAvatarWidget = ClipOval(
       child: ChatAvatar(
         userId: message.info.senderUserID,

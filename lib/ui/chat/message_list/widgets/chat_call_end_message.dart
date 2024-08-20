@@ -139,7 +139,7 @@ class ChatCallEndMessage extends StatelessWidget {
     List<Widget> children = [
       buildItem(
         label: '通话结束时间',
-        value: content.beginTime.add(content.duration).format,
+        value: content.beginTime.add(content.duration).format2,
       ),
       buildItem(label: '本次通话时长', value: content.duration.formatHHmmss),
     ];

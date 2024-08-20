@@ -47,13 +47,13 @@ class RedPacketController extends GetxController {
       return;
     }
 
-    final content = MessageRedPacketContent(amount: amountText, desc: state.descRx(), status: 0);
-    await ZIMKit().sendCustomMessage(
-      conversationId,
-      conversationType,
-      customType: CustomMessageType.redPacket.value,
-      customMessage: content.toJsonString(),
-    );
+    // final content = MessageRedPacketContent(amount: amountText, desc: state.descRx(), status: 0);
+    // await ZIMKit().sendCustomMessage(
+    //   conversationId,
+    //   conversationType,
+    //   customType: CustomMessageType.redPacket.value,
+    //   customMessage: content.toJsonString(),
+    // );
 
     Loading.showToast('发送成功');
     Get.back();

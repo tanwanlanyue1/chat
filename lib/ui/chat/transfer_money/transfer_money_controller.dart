@@ -1,3 +1,4 @@
+import 'package:extended_text_field/extended_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
@@ -13,7 +14,8 @@ class TransferMoneyController extends GetxController {
 
   final int userId;
   final amountEditingController = TextEditingController();
-  final descEditingController = TextEditingController();
+  final focusNode = TextInputFocusNode()..ignoreSystemKeyboardShow = true;
+
 
   TransferMoneyController({required this.userId});
 
@@ -21,7 +23,7 @@ class TransferMoneyController extends GetxController {
   void onInit() {
     super.onInit();
     amountEditingController.bindTextRx(state.amountRx);
-    descEditingController.bindTextRx(state.descRx);
+    focusNode.requestFocus();
   }
 
   Future<void> submit() async {
@@ -31,9 +33,9 @@ class TransferMoneyController extends GetxController {
       return;
     }
 
-    CommonUtils.hideSoftKeyboard();
     final password = await PaymentPasswordKeyboard.show();
     if (password == null) {
+      focusNode.requestFocus();
       return;
     }
 

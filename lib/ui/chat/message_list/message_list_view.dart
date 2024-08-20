@@ -202,8 +202,6 @@ class _MessageListViewState extends State<MessageListView> {
     final selfUserId = SS.login.userId.toString();
 
     messageList.forEachIndexed((index, item){
-      //上一条消息
-      final prevItem = list.firstOrNull;
       list.insert(0, item);
 
       if(item.value.zim is ZIMCustomMessage){
@@ -213,16 +211,23 @@ class _MessageListViewState extends State<MessageListView> {
 
           if(zim.senderUserID == selfUserId){
             //模拟一条接收方收款消息
-            final receiveMsg = zim.copyWith(
+            final receiveMoneyMsg = zim.copyWith(
               isServerMessage: false,
               isUserInserted: true,
               senderUserID: zim.conversationID,
               conversationID: zim.senderUserID,
               direction: ZIMMessageDirection.receive,
-            ).toKIT();
-            list.insert(0, ValueNotifier(receiveMsg));
+              localExtendedData: ''
+            );
+            list.insert(0, ValueNotifier(receiveMoneyMsg.toKIT()));
           }else{
-
+            //模拟一条转账详情消息
+            final detailsMsg = zim.copyWith(
+                isServerMessage: false,
+                isUserInserted: true,
+            );
+            detailsMsg.isHideAvatar = true;
+            list.insert(0, ValueNotifier(detailsMsg.toKIT()));
           }
         }
       }

@@ -90,8 +90,20 @@ extension ZIMKitMessageExt on ZIMKitMessage {
   }
 }
 
-extension ZIMMessageExt on ZIMCustomMessage {
-  ZIMMessage copyWith({
+extension ZIMCustomMessageExt on ZIMCustomMessage {
+
+  ///隐藏头像
+  static const _hideAvatar = 'hideAvatar';
+
+  ///是否隐藏头像
+  set isHideAvatar(bool isHide){
+    localExtendedData = _hideAvatar;
+  }
+
+  ///是否隐藏头像
+  bool get isHideAvatar => localExtendedData == _hideAvatar;
+
+  ZIMCustomMessage copyWith({
     //ZIMMessage字段
     ZIMMessageType? type,
     int? messageID,
@@ -146,4 +158,19 @@ extension ZIMMessageExt on ZIMCustomMessage {
       ..cbInnerID = cbInnerID ?? this.cbInnerID
       ..searchedContent = searchedContent ?? this.searchedContent;
   }
+}
+
+
+extension ZIMMessageExt on ZIMMessage {
+
+  ///隐藏头像
+  static const _hideAvatar = 'hideAvatar';
+
+  ///是否隐藏头像
+  set isHideAvatar(bool isHide){
+    localExtendedData = _hideAvatar;
+  }
+
+  ///是否隐藏头像
+  bool get isHideAvatar => localExtendedData == _hideAvatar;
 }

@@ -1,5 +1,3 @@
 class MineMyTeamState {
-  MineMyTeamState() {
-    ///Initialize variables
-  }
+  int currentIndex = 0;
 }

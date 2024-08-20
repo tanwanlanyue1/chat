@@ -174,7 +174,7 @@ class DatingHallView extends StatelessWidget {
             },
             width: 82.rpx,
             height: 28.rpx,
-            backgroundColor: AppColor.purple6,
+            backgroundColor: item.gender == 2 ? AppColor.purple6 : AppColor.textBlue,
             child: Text(S.current.getTouchWith,style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
           )
         ],

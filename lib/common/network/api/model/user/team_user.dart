@@ -49,4 +49,18 @@ class TeamUser {
     return map;
   }
 
+  TeamUser copyWith({
+    String? remark,
+  }) {
+    return TeamUser(
+      uid: uid,
+      age: age,
+      contractId: contractId,
+      remark: remark ?? this.remark,
+      type: type,
+      avatar: avatar,
+      nickname: nickname,
+      gender: gender,
+    );
+  }
 }

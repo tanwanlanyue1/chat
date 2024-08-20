@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -58,7 +57,7 @@ class DiscoverPage extends StatelessWidget {
       child: TabBar(
         controller: controller.tabController,
         labelColor: AppColor.primary,
-        labelStyle: AppTextStyle.fs14b.copyWith(color: AppColor.primary),
+        labelStyle: AppTextStyle.fs14m.copyWith(color: AppColor.primary),
         unselectedLabelColor: AppColor.gray9,
         unselectedLabelStyle: AppTextStyle.fs14m.copyWith(color: AppColor.black92),
         indicatorColor: AppColor.primary,

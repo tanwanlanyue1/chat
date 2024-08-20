@@ -73,11 +73,11 @@ class ReleaseInvitationController extends GetxController {
 
   //发布
   void onTapRelease() async {
-    int comparison = timeDate(hour: state.endTime, time: state.endHour).compareTo( timeDate(hour: state.startTime, time: state.startHour));
+    int comparison = timeDate(time: state.endTime, hour: state.endHour).compareTo( timeDate(time: state.startTime, hour: state.startHour+1));
     if(contentController.text.isEmpty){
       Loading.showToast("约会内容不能为空");
     }else if(comparison < 0){
-      Loading.showToast("结束日期不能早于开始时间");
+      Loading.showToast("结束日期最少需要大于开始时间2小时");
     }else{
       Loading.show();
       String tag = "";

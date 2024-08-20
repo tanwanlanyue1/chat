@@ -8,6 +8,7 @@ class ForgotController extends GetxController {
   final ForgotState state = ForgotState();
 
   TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   TextEditingController codeController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordAgainController = TextEditingController();
@@ -15,6 +16,7 @@ class ForgotController extends GetxController {
   @override
   void onClose() {
     emailController.dispose();
+    phoneController.dispose();
     codeController.dispose();
     passwordController.dispose();
     passwordAgainController.dispose();
@@ -23,7 +25,18 @@ class ForgotController extends GetxController {
   }
 
   void onTapToNext() {
-    Get.toNamed(AppRoutes.loginForgotPage,
-        arguments: {"isNext": true}, preventDuplicates: false);
+    // Get.toNamed(AppRoutes.loginForgotPage,
+    //     arguments: {"isNext": true}, preventDuplicates: false);
+
+    if (state.isEmailValid.value && emailController.text.isEmpty) return;
+    if (!state.isEmailValid.value && phoneController.text.isEmpty) return;
+
+    Get.toNamed(AppRoutes.updatePasswordPage, arguments: {
+      "isLogin": true,
+      "type": state.isEmailValid.value,
+      "text": state.isEmailValid.value
+          ? emailController.text
+          : phoneController.text,
+    });
   }
 }

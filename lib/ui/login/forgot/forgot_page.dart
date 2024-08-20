@@ -10,6 +10,8 @@ import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'forgot_controller.dart';
 
 class ForgotPage extends StatelessWidget {
@@ -45,11 +47,11 @@ class ForgotPage extends StatelessWidget {
             bottom: Get.mediaQuery.padding.bottom,
             left: 0,
             right: 0,
-            child: ListView(
+            child: SingleChildScrollView(
               physics: const ClampingScrollPhysics(),
               padding: EdgeInsets.symmetric(horizontal: 24.rpx)
                   .copyWith(top: 28.rpx),
-              children: isNext ? _resetWidget() : _forgotWidget(),
+              child: isNext ? _resetWidget() : _forgotWidget(),
             ),
           ),
         ],
@@ -57,67 +59,204 @@ class ForgotPage extends StatelessWidget {
     );
   }
 
-  List<Widget> _forgotWidget() {
-    return [
-      Text(
-        S.current.forgotTitle,
-        style: AppTextStyle.st.medium.size(30.rpx).textColor(Colors.white),
-      ),
-      SizedBox(height: 20.rpx),
-      Text(
-        S.current.forgotTitleTip,
-        style: AppTextStyle.st.size(14.rpx).textColor(Colors.white),
-      ),
-      SizedBox(height: 50.rpx),
-      LoginTextField(
-        controller: controller.emailController,
-        labelText: S.current.forgotEmailHint,
-        keyboardType: TextInputType.emailAddress,
-      ),
-      SizedBox(height: 30.rpx),
-      CommonGradientButton(
-        onTap: controller.onTapToNext,
-        text: S.current.forgotSend,
-        height: 50.rpx,
-      ),
-    ];
+  Widget _forgotWidget() {
+    return Obx(() {
+      final isEmailValid = state.isEmailValid.value;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            S.current.forgotTitle,
+            style: AppTextStyle.st.medium.size(30.rpx).textColor(Colors.white),
+          ),
+          SizedBox(height: 20.rpx),
+          Text(
+            S.current.forgotTitleTip,
+            style: AppTextStyle.st.size(14.rpx).textColor(Colors.white),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 60.rpx, bottom: 12.rpx),
+            alignment: Alignment.centerRight,
+            child: GestureDetector(
+              onTap: state.isEmailValid.toggle,
+              behavior: HitTestBehavior.opaque,
+              child: Builder(
+                builder: (context) {
+                  final style =
+                      AppTextStyle.st.size(14.rpx).textColor(Colors.white);
+                  return Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: isEmailValid
+                              ? S.current.forgotNoEmail
+                              : S.current.forgotNoPhone,
+                        ),
+                        TextSpan(
+                          text: isEmailValid
+                              ? S.current.forgotChangeEmail
+                              : S.current.forgotChangePhone,
+                          style: style.copyWith(
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ],
+                    ),
+                    style: style,
+                  );
+                },
+              ),
+            ),
+          ),
+          Visibility(
+            visible: isEmailValid,
+            replacement: Container(
+              height: 54.rpx,
+              padding: EdgeInsets.symmetric(horizontal: 16.rpx),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.rpx),
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    S.current.phone,
+                    style: AppTextStyle.st.medium
+                        .size(12.rpx)
+                        .textColor(AppColor.black92),
+                  ),
+                  SizedBox(width: 16.rpx),
+                  Expanded(
+                    child: IntlPhoneField(
+                      controller: controller.phoneController,
+                      keyboardType: TextInputType.phone,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: S.current.pleaseEnterPhone,
+                        hintStyle:
+                            AppTextStyle.st.medium.textColor(AppColor.black92),
+                      ),
+                      style: AppTextStyle.st.medium
+                          .size(14.rpx)
+                          .textColor(AppColor.black3),
+                      dropdownTextStyle: AppTextStyle.st.medium
+                          .size(14.rpx)
+                          .textColor(AppColor.black92),
+                      initialCountryCode: 'CN',
+                      languageCode: "ZH",
+                      disableLengthCheck: true,
+                      dropdownIconPosition: IconPosition.trailing,
+                      dropdownIcon: const Icon(
+                        Icons.keyboard_arrow_down_sharp,
+                        color: AppColor.black92,
+                      ),
+                      pickerDialogStyle: PickerDialogStyle(
+                          backgroundColor: Colors.white,
+                          searchFieldInputDecoration:
+                              InputDecoration(labelText: S.current.search)),
+                      // onCountryChanged: (val) {
+                      //   print("val==$val");
+                      // },
+                      // onChanged: (phone) {
+                      //   print(phone);
+                      //   // controller.phoneNumberInputController.text = phone.number;
+                      //   // controller.phoneNumberInputController.text = phone.countryCode.substring(1)+phone.number;
+                      // },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            child: LoginTextField(
+              controller: controller.emailController,
+              labelText: S.current.forgotEmailHint,
+              keyboardType: TextInputType.emailAddress,
+              backgroundColor: Colors.white,
+            ),
+          ),
+          SizedBox(height: 30.rpx),
+          CommonGradientButton(
+            onTap: controller.onTapToNext,
+            text: S.current.forgotSend,
+            height: 50.rpx,
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 30.rpx),
+            alignment: Alignment.centerRight,
+            child: GestureDetector(
+              onTap: null,
+              behavior: HitTestBehavior.opaque,
+              child: Builder(
+                builder: (context) {
+                  final style =
+                      AppTextStyle.st.size(14.rpx).textColor(Colors.white);
+                  return Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: S.current.otherHelp,
+                        ),
+                        TextSpan(
+                          text: S.current.contactCustomerService,
+                          style: style.copyWith(
+                            decoration: TextDecoration.underline,
+                            color: AppColor.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    style: style,
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      );
+    });
   }
 
-  List<Widget> _resetWidget() {
-    return [
-      Text(
-        S.current.forgotNextTitle,
-        style: AppTextStyle.st.medium.size(30.rpx).textColor(Colors.white),
-      ),
-      SizedBox(height: 20.rpx),
-      Text(
-        S.current.forgotNextTitleTip,
-        style: AppTextStyle.st.size(14.rpx).textColor(Colors.white),
-      ),
-      SizedBox(height: 50.rpx),
-      LoginTextField(
-        controller: controller.emailController,
-        hintText: S.current.forgotCodeHint,
-        keyboardType: TextInputType.emailAddress,
-      ),
-      SizedBox(height: _textFieldPadding),
-      LoginTextField(
-        controller: controller.passwordController,
-        hintText: S.current.forgotPasswordHint,
-        showPasswordVisible: true,
-      ),
-      SizedBox(height: _textFieldPadding),
-      LoginTextField(
-        controller: controller.passwordAgainController,
-        hintText: S.current.forgotPasswordAgainHint,
-        showPasswordVisible: true,
-      ),
-      SizedBox(height: 30.rpx),
-      CommonGradientButton(
-        onTap: null,
-        text: S.current.forgotResetPassword,
-        height: 50.rpx,
-      ),
-    ];
+  Widget _resetWidget() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          S.current.forgotNextTitle,
+          style: AppTextStyle.st.medium.size(30.rpx).textColor(Colors.white),
+        ),
+        SizedBox(height: 20.rpx),
+        Text(
+          S.current.forgotNextTitleTip,
+          style: AppTextStyle.st.size(14.rpx).textColor(Colors.white),
+        ),
+        SizedBox(height: 50.rpx),
+        LoginTextField(
+          backgroundColor: Colors.white,
+          controller: controller.emailController,
+          hintText: S.current.forgotCodeHint,
+          keyboardType: TextInputType.emailAddress,
+        ),
+        SizedBox(height: _textFieldPadding),
+        LoginTextField(
+          backgroundColor: Colors.white,
+          controller: controller.passwordController,
+          hintText: S.current.forgotPasswordHint,
+          showPasswordVisible: true,
+        ),
+        SizedBox(height: _textFieldPadding),
+        LoginTextField(
+          backgroundColor: Colors.white,
+          controller: controller.passwordAgainController,
+          hintText: S.current.forgotPasswordAgainHint,
+          showPasswordVisible: true,
+        ),
+        SizedBox(height: 30.rpx),
+        CommonGradientButton(
+          onTap: null,
+          text: S.current.forgotResetPassword,
+          height: 50.rpx,
+        ),
+      ],
+    );
   }
 }

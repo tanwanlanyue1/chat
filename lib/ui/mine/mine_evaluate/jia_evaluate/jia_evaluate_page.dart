@@ -40,7 +40,7 @@ class JiaEvaluatePage extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: AppColor.grayF7,
+      backgroundColor: AppColor.white8,
       body: GetBuilder<JiaEvaluateController>(
         builder: (_) {
         return Column(
@@ -66,6 +66,7 @@ class JiaEvaluatePage extends StatelessWidget {
                             return EvaluateCard(
                               index: index,
                               item: item,
+                              goodGirl: true,
                               margin: EdgeInsets.only(bottom: 1.rpx),
                             );
                           },
@@ -124,17 +125,21 @@ class JiaEvaluatePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(state.loginService?.nickname ?? '',style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
-                      SizedBox(width: 4.rpx),
+                      Text("${state.loginService?.nickname}"*6 ?? '',style: AppTextStyle.fs18b.copyWith(color: AppColor.gray5),maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                       Row(
                         children: [
-                          Text(S.current.synthesize,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+                          Padding(
+                            padding: EdgeInsets.only(right: 4.rpx),
+                            child: Text(S.current.synthesize,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+                          ),
                           ...List.generate(5, (i) => AppImage.asset(
                             width: 16.rpx,
                             height: 16.rpx,
-                            i == (state.evaluation?.totalScore ?? 0) ?
-                            'assets/images/mine/star_none.png':
-                            'assets/images/mine/star.png',
+                            i < (state.evaluation?.totalScore ?? 0) ?
+                            'assets/images/mine/star.png':
+                            'assets/images/mine/star_none.png',
                           ))
                         ],
                       ),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/model/user/contract_model.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
@@ -41,7 +43,7 @@ class MineMyTeamController extends GetxController {
 
   ///查询详情
   ///detail：查看详情
-  void getContract(int id,{bool? detail}) async {
+  void getContract(int id,{bool? detail,int? index}) async {
     final response = await UserApi.getContract(id);
     if(response.isSuccess){
       if(detail ?? false){
@@ -49,6 +51,7 @@ class MineMyTeamController extends GetxController {
           'contractId': id,
         });
       }else{
+        state.currentIndex = index!;
         terminateContract(response.data!);
       }
     }
@@ -59,8 +62,9 @@ class MineMyTeamController extends GetxController {
     final result = await TeamContractTerminateDialog.show(
       contract: contract,
     );
-    if(result == true){
-      submitUpdate(3, contract.id);
+
+    if(result != null){
+      submitUpdate(result == 1 ? 3 : 5, contract.id);
     }
   }
 
@@ -83,7 +87,12 @@ class MineMyTeamController extends GetxController {
           Loading.showToast('申请解约成功');
           break;
       }
-      Future.delayed(100.milliseconds, () => Get.back(result: true));
+      final itemList = List.of(pagingController.itemList!);
+      itemList[state.currentIndex] = itemList[state.currentIndex].copyWith(
+          remark: "normal"
+      );
+      print("itemList===${jsonEncode(itemList)}");
+      pagingController.itemList = itemList;
     }else{
       response.showErrorMessage();
     }

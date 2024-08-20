@@ -137,7 +137,7 @@ class ReleaseInvitationPage extends StatelessWidget {
             title: "约会地点",
             trailing: Text(
               "(必选)",
-              style: TextStyle(fontSize: 14.rpx, color: AppColor.gray9,fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 14.rpx, color: AppColor.gray9),
             ),
           ),
           DiscoverItem(

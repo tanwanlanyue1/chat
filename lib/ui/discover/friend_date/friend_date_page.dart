@@ -264,20 +264,29 @@ class FriendDatePage extends StatelessWidget {
               ],
             ),
           ),//userInfo
-          Visibility(
-            visible: state.userInfo?.uid != item.userInfo?.uid,
-            child: Container(
-              width: 68.rpx,
-              height: 30.rpx,
-              margin: EdgeInsets.only(top: 8.rpx),
-              child: CommonGradientButton(
-                text: "参与",
-                borderRadius: BorderRadius.circular(32.rpx),
-                textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
-                onTap: ()=> controller.onTapParticipation(item),
+          Row(
+            children: [
+              Visibility(
+                visible: item.serviceCharge != null && item.serviceCharge! > 0,
+                child: Text("提供服务费",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
               ),
-            ),
-          )
+              const Spacer(),
+              Visibility(
+                visible: state.userInfo?.uid != item.userInfo?.uid,
+                child: Container(
+                  width: 68.rpx,
+                  height: 30.rpx,
+                  margin: EdgeInsets.only(top: 8.rpx),
+                  child: CommonGradientButton(
+                    text: "参与",
+                    borderRadius: BorderRadius.circular(32.rpx),
+                    textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
+                    onTap: ()=> controller.onTapParticipation(item),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

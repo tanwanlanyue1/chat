@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/widgets/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../common/network/api/api.dart';
@@ -24,19 +25,14 @@ class MineEvaluateController extends GetxController {
 
   ///获取评价列表
   void fetchPage(int page) async {
-    // Loading.show();
+    Loading.show();
     final response = await OrderApi.getEvaluateList(
         page: page,
         type: 1
     );
-    // Loading.dismiss();
+    Loading.dismiss();
     if (response.isSuccess) {
-      EvaluationListModel? items = response.data;
-      if(page == 1){
-        // state.evaluation = items;
-        // state.label.value = (state.evaluation?.myTag ?? '').split(',');
-      }
-      pagingController.appendPageData(items?.list ?? []);
+      pagingController.appendPageData(response.data?.list ?? []);
     } else {
       pagingController.error = response.errorMessage;
     }

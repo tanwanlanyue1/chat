@@ -12,6 +12,7 @@ class LoginTextField extends StatefulWidget {
     this.labelText,
     this.hintText,
     this.keyboardType,
+    this.backgroundColor,
     this.showPasswordVisible = false,
   }) : obscureText = showPasswordVisible;
 
@@ -22,6 +23,8 @@ class LoginTextField extends StatefulWidget {
   final String? hintText;
 
   final TextInputType? keyboardType;
+
+  final Color? backgroundColor;
 
   final bool showPasswordVisible;
 
@@ -48,7 +51,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
         height: 54.rpx,
         padding: EdgeInsets.symmetric(horizontal: 16.rpx),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.8),
+          color: widget.backgroundColor ?? Colors.white.withOpacity(0.8),
           borderRadius: BorderRadius.circular(8.rpx),
         ),
         alignment: Alignment.centerLeft,

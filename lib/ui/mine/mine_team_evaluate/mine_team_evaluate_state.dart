@@ -1,5 +1,6 @@
+import '../../../common/network/api/api.dart';
+
 class MineTeamEvaluateState {
-  MineTeamEvaluateState() {
-    ///Initialize variables
-  }
+  //评价
+  EvaluationListModel? evaluation;
 }

@@ -88,19 +88,22 @@ class ChatManager {
   }) async {
     //登录ZEGO即时通信服务
     final ret = await ZIMKit().connectUser(
-      id: userId.toString(),
+      id: userId,
       name: nickname,
       avatarUrl: avatar ?? '',
     );
     if (ret != 0) {
-      AppLogger.w('连接IM失败，code=$ret');
+      AppLogger.w('连接到IM服务失败，code=$ret');
       return;
     }
+
+    AppLogger.d('连接到IM服务成功,nickname=$nickname, userId=$userId');
+
     //初始化音视频通话服务
-    ZegoUIKitPrebuiltCallInvitationService().init(
+    await ZegoUIKitPrebuiltCallInvitationService().init(
       appID: AppConfig.zegoAppId,
       appSign: AppConfig.zegoAppSign,
-      userID: userId.toString(),
+      userID: userId,
       userName: nickname,
       plugins: [ZegoUIKitSignalingPlugin()],
       //自定义文本内容
@@ -285,8 +288,9 @@ class ChatManager {
 
   ///断开连接
   Future<void> disconnect() async {
+    AppLogger.d('断开IM连接');
+    await ZIMKit().disconnectUser();
     await ZegoUIKitPrebuiltCallInvitationService().uninit();
-    ZIMKit().disconnectUser();
     _isWaitCallEndDialog = false;
   }
 

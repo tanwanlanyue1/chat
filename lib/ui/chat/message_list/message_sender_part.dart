@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/common/network/api/im_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
@@ -22,14 +23,27 @@ import 'widgets/chat_feature_panel.dart';
 
 ///消息发送功能
 extension MessageSenderPart on MessageListController {
+  ///检查消息是否可发送
+  ///- type 消息类型 1文字 2图片 3视频 4定位
+  ///- msg 消息内容
+  Future<bool> _checkMessage({
+    required int type,
+    Map<String, dynamic> msg = const {},
+  }) async {
+    final response = await IMApi.sendMessage(type: type, msg: msg);
+    return response.isSuccess;
+  }
+
   ///发送文本消息
   Future<void> sendTextMessage(String text) async {
-    await ZIMKit().sendTextMessage(
-      state.conversationId,
-      state.conversationType,
-      text,
-    );
-    scrollController.jumpTo(0);
+    if (await _checkMessage(type: 1, msg: {'message': text})) {
+      await ZIMKit().sendTextMessage(
+        state.conversationId,
+        state.conversationType,
+        text,
+      );
+      scrollController.jumpTo(0);
+    }
   }
 
   ///发送图片消息
@@ -63,9 +77,15 @@ extension MessageSenderPart on MessageListController {
         AppLogger.w('获取图片尺寸信息失败，$ex');
       }
 
-      await ZIMKitCore.instance.sendMediaMessageExt(state.conversationId,
-          state.conversationType, file.path, ZIMMessageType.image,
-          localExtendedData: localExtendedData);
+      if(await _checkMessage(type: 2)){
+        await ZIMKitCore.instance.sendMediaMessageExt(
+          state.conversationId,
+          state.conversationType,
+          file.path,
+          ZIMMessageType.image,
+          localExtendedData: localExtendedData,
+        );
+      }
     }
     scrollController.jumpTo(0);
   }
@@ -104,14 +124,16 @@ extension MessageSenderPart on MessageListController {
       AppLogger.w('获取视频信息失败，$ex');
     }
 
-    await ZIMKitCore.instance.sendMediaMessageExt(
-      state.conversationId,
-      state.conversationType,
-      file.path,
-      ZIMMessageType.video,
-      extendedData: extendedData,
-    );
-    scrollController.jumpTo(0);
+    if(await _checkMessage(type: 3)){
+      await ZIMKitCore.instance.sendMediaMessageExt(
+        state.conversationId,
+        state.conversationType,
+        file.path,
+        ZIMMessageType.video,
+        extendedData: extendedData,
+      );
+      scrollController.jumpTo(0);
+    }
   }
 
   ///发红包消息

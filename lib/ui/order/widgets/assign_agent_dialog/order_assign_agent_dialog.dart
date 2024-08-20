@@ -68,7 +68,7 @@ class OrderAssignAgentDialog extends GetView<OrderAssignAgentController> {
               height: 288.rpx,
               child: PagedListView.separated(
                 pagingController: controller.pagingController,
-                builderDelegate: DefaultPagedChildBuilderDelegate<UserModel>(
+                builderDelegate: DefaultPagedChildBuilderDelegate<TeamUser>(
                   pagingController: controller.pagingController,
                   itemBuilder: (_, item, index) {
                     return _buildItem(item, index);
@@ -100,7 +100,7 @@ class OrderAssignAgentDialog extends GetView<OrderAssignAgentController> {
     );
   }
 
-  _buildItem(UserModel item, int index) {
+  Widget _buildItem(TeamUser item, int index) {
     return Container(
       padding: FEdgeInsets(all: 16.rpx, left: 10.rpx),
       child: Row(
@@ -117,7 +117,7 @@ class OrderAssignAgentDialog extends GetView<OrderAssignAgentController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  item.nickname,
+                  item.nickname ?? '',
                   style: AppTextStyle.st.semiBold
                       .size(14.rpx)
                       .textColor(AppColor.black3),
@@ -127,11 +127,11 @@ class OrderAssignAgentDialog extends GetView<OrderAssignAgentController> {
                 SizedBox(height: 4.rpx),
                 Row(
                   children: [
-                    if (item.gender != UserGender.unknown)
+                    if (item.gender != 0)
                       Padding(
                         padding: EdgeInsets.only(right: 8.rpx),
                         child: AppImage.asset(
-                          item.gender == UserGender.female
+                          item.gender == 2
                               ? "assets/images/common/female.png"
                               : "assets/images/common/male.png",
                           length: 16.rpx,
@@ -161,7 +161,7 @@ class OrderAssignAgentDialog extends GetView<OrderAssignAgentController> {
                 margin: EdgeInsets.only(left: 8.rpx),
                 decoration: BoxDecoration(
                   color: controller.selectIndex.value == index
-                      ? item.gender == UserGender.female
+                      ? item.gender == 2
                           ? AppColor.textPurple
                           : AppColor.textBlue
                       : Colors.transparent,

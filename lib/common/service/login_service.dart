@@ -301,7 +301,7 @@ class LoginService extends GetxService {
     bool autoSave = true,
   }) async {
     final res = await fetchInfo(userId: userId ?? 0);
-    res.whenAsync(
+    await res.whenAsync(
         success: (user) async {
           // 保存当前用户信息
           await _setupUserData(userModel: user);

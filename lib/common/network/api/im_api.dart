@@ -30,4 +30,20 @@ class IMApi {
     );
   }
 
+  /// 发送消息
+  ///- type 消息类型 1文字 2图片 3视频 4定位
+  ///- msg 消息内容
+  static Future<ApiResponse> sendMessage({
+    required int type,
+    required Map<String, dynamic> msg,
+  }) {
+    return HttpClient.post(
+      '/api/im/sendMessage',
+      data: {
+        "type": type,
+        "msg": msg,
+      },
+    );
+  }
+
 }

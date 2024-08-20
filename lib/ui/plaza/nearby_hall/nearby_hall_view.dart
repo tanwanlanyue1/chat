@@ -158,6 +158,7 @@ class NearbyHallView extends StatelessWidget {
         children: [
           Expanded(
             child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -185,6 +186,7 @@ class NearbyHallView extends StatelessWidget {
           ),
           Expanded(
             child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
               onTap: controller.onTapFiltrate,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -6,22 +6,27 @@ class PlazaApi{
   const PlazaApi._();
 
   /// 获取广场列表
-  /// type:推荐类型 0最新，1热门
-  /// zoneId：专区id
-  /// topicId：话题id
+  /// location：坐标 经纬度用英文逗号隔开（地图传递才有效）
+  /// distance 	距离 单位km gender 性别 1：男 2：女 minAge最小年龄 style 风格
   static Future<ApiResponse<List<PlazaListModel>>> getCommunityList({
-    int? type = 0,
-    int? zoneId,
-    int? topicId,
+    String? location,
+    int? distance,
+    int? gender,
+    int? minAge,
+    int? maxAge,
+    String? style,
     int currentPage = 1,
     int? pageSize = 10,
 }) {
     return HttpClient.get(
       '/api/community/list',
       params: {
-        "type": type,
-        "zoneId": zoneId,
-        "topicId": topicId,
+        "location": location,
+        "distance": distance,
+        "gender": gender,
+        "minAge": minAge,
+        "maxAge": maxAge,
+        "style": style,
         'page': currentPage,
         'size': pageSize,
       },

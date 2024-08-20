@@ -178,11 +178,12 @@ class CommonUtils {
   }
 
   ///时间戳
-  static String? timestamp(String time){
-    int timestampInMilliseconds = int.parse(time) * 1000;
+  static String timestamp(String time){
+    int timestampInMilliseconds = int.parse(time);
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestampInMilliseconds);
-    // DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
-    // String formattedDate = dateFormat.format(dateTime);
+    DateFormat dateFormat = DateFormat('MM-dd HH:00');
+    String formattedDate = dateFormat.format(dateTime);
+    return formattedDate;
   }
 
 

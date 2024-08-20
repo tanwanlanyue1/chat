@@ -18,7 +18,7 @@ import 'all_comments_controller.dart';
 class AllCommentsPage extends StatelessWidget {
   AllCommentsPage({Key? key}) : super(key: key);
 
-  final controller = Get.put(AllCommentsController());
+  final controller = Get.find<AllCommentsController>();
   final state = Get.find<AllCommentsController>().state;
 
   @override

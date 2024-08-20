@@ -22,7 +22,6 @@ class UploadCoverDialog extends StatelessWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<UserCenterController>(
@@ -34,47 +33,52 @@ class UploadCoverDialog extends StatelessWidget {
           },
           child: Scaffold(
             backgroundColor: Colors.transparent,
-            body: Center(
-              child: Container(
-                width: 331.rpx,
-                height: 400.rpx,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(8.rpx)),
-                ),
-                padding: EdgeInsets.all(16.rpx),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text("上传封面图",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
-                        Text("（最多6张）",style: AppTextStyle.fs12m.copyWith(color: AppColor.red53),),
-                        const Spacer(),
-                        AppImage.asset('assets/images/common/close.png',width: 24.rpx,height: 24.rpx,),
-                      ],
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 12.rpx),
-                      child: UploadImage(
-                        limit: 6,
-                        imgList: controller.state.imgList,
-                        callback: (val) {
-                          controller.state.imgList = val;
-                          controller.state.authorInfo.copyWith(
-                            images: jsonEncode(val)
-                          );
-                          controller.update(['upload']);
-                        },
+            body: GestureDetector(
+              onTap: (){},
+              child: Center(
+                child: Container(
+                  width: 331.rpx,
+                  height: 400.rpx,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(8.rpx)),
+                  ),
+                  padding: EdgeInsets.all(16.rpx),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text("上传封面图",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
+                          Text("（最多6张）",style: AppTextStyle.fs12m.copyWith(color: AppColor.red53),),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: (){
+                              Get.back();
+                            },
+                            child: AppImage.asset('assets/images/common/close.png',width: 24.rpx,height: 24.rpx,),
+                          ),
+                        ],
                       ),
-                    ),
-                    const Spacer(),
-                    CommonGradientButton(
-                      height: 50.rpx,
-                      text: "确定上传",
-                      onTap: controller.updateInfoImage,
-                    )
-                  ],
+                      Container(
+                        margin: EdgeInsets.only(left: 12.rpx),
+                        child: UploadImage(
+                          limit: 6,
+                          imgList: controller.state.imgList,
+                          callback: (val) {
+                            controller.state.imgList = val;
+                            controller.update(['upload']);
+                          },
+                        ),
+                      ),
+                      const Spacer(),
+                      CommonGradientButton(
+                        height: 50.rpx,
+                        text: "确定上传",
+                        onTap: controller.updateInfoImage,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

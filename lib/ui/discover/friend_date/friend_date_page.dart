@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -256,7 +257,7 @@ class FriendDatePage extends StatelessWidget {
                         child: Text("${item.location} ${item.distance ?? 0}km",style: AppTextStyle.fs10m.copyWith(color: AppColor.gray5),),
                       ),
                       const Spacer(),
-                      Text('${DateUtil.formatDateStr(item.startTime ?? '', format: 'MM/dd HH:00')}-${DateUtil.formatDateStr(item.endTime ?? '', format: 'MM/dd HH:00')}',
+                      Text("${CommonUtils.timestamp(item.startTime ?? '')}-${CommonUtils.timestamp(item.endTime ?? '')}",
                           style: AppTextStyle.fs10m.copyWith(color: AppColor.gray9)),
                     ],
                   ),

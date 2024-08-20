@@ -32,7 +32,6 @@ class ForgotController extends GetxController {
     if (!state.isEmailValid.value && phoneController.text.isEmpty) return;
 
     Get.toNamed(AppRoutes.updatePasswordPage, arguments: {
-      "isLogin": true,
       "type": state.isEmailValid.value,
       "text": state.isEmailValid.value
           ? emailController.text

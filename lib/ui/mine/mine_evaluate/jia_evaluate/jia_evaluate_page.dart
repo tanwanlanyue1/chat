@@ -125,7 +125,7 @@ class JiaEvaluatePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("${state.loginService?.nickname}"*6 ?? '',style: AppTextStyle.fs18b.copyWith(color: AppColor.gray5),maxLines: 1,
+                      Text(state.loginService?.nickname ?? '',style: AppTextStyle.fs18b.copyWith(color: AppColor.gray5),maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Row(

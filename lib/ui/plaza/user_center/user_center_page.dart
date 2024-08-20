@@ -26,7 +26,7 @@ import 'user_center_controller.dart';
 class UserCenterPage extends StatelessWidget {
   UserCenterPage({Key? key}) : super(key: key);
 
-  final controller = Get.put(UserCenterController());
+  final controller = Get.find<UserCenterController>();
   final state = Get.find<UserCenterController>().state;
 
   @override
@@ -136,7 +136,6 @@ class UserCenterPage extends StatelessWidget {
           child: state.authorInfo.images != null ?
           Swiper(
             autoplay: true,
-            loop: false,
             itemBuilder: (BuildContext context, int index) {
               return AppImage.network(
                 jsonDecode(state.authorInfo.images!)[index],
@@ -193,12 +192,12 @@ class UserCenterPage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: 16.rpx),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
                     child: Container(
                       alignment: Alignment.center,
-                      margin: EdgeInsets.only(top: 8.rpx,left: SS.login.userId != state.authorId ? (36.rpx) : 0),
+                      margin: EdgeInsets.only(top: 8.rpx,left: SS.login.userId != state.authorId ? (80.rpx) : 0),
                       child: AppImage.network(
                         state.authorInfo.avatar ?? '',
                         width: 80.rpx,
@@ -210,38 +209,37 @@ class UserCenterPage extends StatelessWidget {
                   ),
                   Visibility(
                     visible: SS.login.userId != state.authorId,
-                    child: GestureDetector(
-                      onTap: (){
-                        controller.toggleAttention(state.authorId);
-                      },
-                      child: ObxValue((isAttentionRx){
-                        return Row(
-                          children: [
-                            Visibility(
-                              visible: isAttentionRx(),
-                              replacement: AppImage.asset("assets/images/plaza/attention_no.png",width: 24.rpx,height: 24.rpx,),
-                              child: AppImage.asset("assets/images/plaza/attention.png",width: 24.rpx,height: 24.rpx,),
-                            ),
-                            Container(
-                              width: 50.rpx,
-                              alignment: Alignment.center,
-                              child: Text(isAttentionRx() ? "已关注" : '关注',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),
-                            )
-                          ],
-                        );
-                      },controller.isAttentionRx),
+                    child: SizedBox(
+                      width: 74.rpx,
+                      child: GestureDetector(
+                        onTap: (){
+                          controller.toggleAttention(state.authorId);
+                        },
+                        child: ObxValue((isAttentionRx){
+                          return Row(
+                            children: [
+                              Visibility(
+                                visible: isAttentionRx(),
+                                replacement: AppImage.asset("assets/images/plaza/attention_no.png",width: 24.rpx,height: 24.rpx,),
+                                child: AppImage.asset("assets/images/plaza/attention.png",width: 24.rpx,height: 24.rpx,),
+                              ),
+                              Container(
+                                width: 50.rpx,
+                                alignment: Alignment.center,
+                                child: Text(isAttentionRx() ? "已关注" : '关注',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),
+                              )
+                            ],
+                          );
+                        },controller.isAttentionRx),
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(state.authorInfo.nickname,style: AppTextStyle.fs20b.copyWith(color: AppColor.gray5),),
-                SizedBox(width: 8.rpx),
-                AppImage.asset("assets/images/mine/safety.png",width: 16.rpx,height: 16.rpx,),
-              ],
+            Container(
+              alignment: Alignment.center,
+              child: Text(state.authorInfo.nickname,style: AppTextStyle.fs20b.copyWith(color: AppColor.gray5),textAlign: TextAlign.center,),
             ),
             Container(
               margin: EdgeInsets.only(right: 14.rpx),

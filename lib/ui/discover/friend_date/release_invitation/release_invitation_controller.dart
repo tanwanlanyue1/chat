@@ -89,8 +89,8 @@ class ReleaseInvitationController extends GetxController {
           content: contentController.text,
           coordinate: '113.17,23.8',
           location: '广州',
-          startTime: '${DateTime.now().add(Duration(days: state.startTime)).copyWith(hour: state.startHour)}',
-          endTime: '${DateTime.now().add(Duration(days: state.endTime)).copyWith(hour: state.endTime)}',
+          startTimeStamp: (DateTime.now().add(Duration(days: state.startTime)).copyWith(hour: state.startHour)).millisecondsSinceEpoch,
+          endTimeStamp: (DateTime.now().add(Duration(days: state.endTime)).copyWith(hour: state.endHour)).millisecondsSinceEpoch,
           tag: tag,
           serviceCharge: serviceController.text.isNotEmpty ? double.parse(serviceController.text):0
       );

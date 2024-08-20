@@ -1,5 +1,5 @@
+import 'package:get/get.dart';
+
 class ForgotState {
-  ForgotState() {
-    ///Initialize variables
-  }
+  final isEmailValid = true.obs;
 }

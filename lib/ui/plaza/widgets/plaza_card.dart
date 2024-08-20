@@ -167,7 +167,7 @@ class PlazaCard extends StatelessWidget {
 
   ///关注轮播图
   Widget _backImage(){
-    return item.images != null ?
+    return item.images != null && jsonDecode(item.images).isNotEmpty?
     Container(
       height: 250.rpx,
       margin: EdgeInsets.only(top: 12.rpx),
@@ -339,12 +339,20 @@ class PlazaCard extends StatelessWidget {
             CommentListModel commentList = item.commentList![index];
             return Column(
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("${commentList.nickname}：",style: AppTextStyle.fs12b.copyWith(color: AppColor.gray5),),
-                    Expanded(child: Text("${commentList.content}",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),)),
-                  ],
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: RichText(
+                    text: TextSpan(
+                      text: "${commentList.nickname}：",
+                      style: AppTextStyle.fs12b.copyWith(color: AppColor.gray5),
+                      children: [
+                        TextSpan(
+                            text: '${commentList.content}',
+                            style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30)
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 Visibility(
                   visible: index == 0 && (item.commentList?.length ?? 0) > 1,

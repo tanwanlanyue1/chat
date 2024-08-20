@@ -162,6 +162,10 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
         },
       );
       if(res.isSuccess){
+        state.authorInfo = state.authorInfo.copyWith(
+            images: jsonEncode(state.imgList)
+        );
+        update(['userInfo']);
         Get.back();
       }else{
         res.showErrorMessage();

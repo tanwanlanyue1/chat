@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:image_picker/image_picker.dart';
@@ -36,6 +38,7 @@ class UploadImage extends StatefulWidget {
 class _UploadImageState extends State<UploadImage> {
   List<String> _imagesList = []; // 图片数组
   final ImagePicker picker = ImagePicker();
+  final directory = Directory.systemTemp;
 
   @override
   void initState() {
@@ -43,9 +46,24 @@ class _UploadImageState extends State<UploadImage> {
     super.initState();
   }
 
+  //压缩图片
+  void compressAndGetFile(List<File> file) async {
+    List<File> compressedList = [];
+    for(var i = 0; i < file.length; i++){
+      var result = await FlutterImageCompress.compressAndGetFile(
+        file[i].absolute.path, '${directory.path}/$i.jpg',
+        quality: 88,
+      );
+      if(result != null){
+        compressedList.add(File(result.path));
+      }
+    }
+    uploadImage(compressedList);
+  }
+
+
   //上传文件
   Future<void> uploadImage(List<File> images) async {
-
     for (var element in images) {
       final res = await UserApi.upload(filePath: element.path);
 
@@ -82,7 +100,8 @@ class _UploadImageState extends State<UploadImage> {
               for (var item in image.take(limit-_imagesList.length)) {
                 res.add(File(item.path));
               }
-              uploadImage(res);
+              compressAndGetFile(res);
+              // uploadImage(res);
             }
             break;
           case 1:

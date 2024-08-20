@@ -16,7 +16,7 @@ import 'binding_controller.dart';
 class BindingPage extends StatelessWidget {
   BindingPage({Key? key}) : super(key: key);
 
-  final controller = Get.put(BindingController());
+  final controller = Get.find<BindingController>();
   final state = Get.find<BindingController>().state;
 
   @override

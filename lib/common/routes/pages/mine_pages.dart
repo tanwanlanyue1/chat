@@ -73,6 +73,8 @@ class MinePages {
       page: () => UpdatePasswordPage(),
       binding: BindingsBuilder.put(() => UpdatePasswordController(
             login: Get.tryGetArgs('login'),
+            type: Get.tryGetArgs('type'),
+            text: Get.tryGetArgs('text'),
           )),
     ),
     GetPage(

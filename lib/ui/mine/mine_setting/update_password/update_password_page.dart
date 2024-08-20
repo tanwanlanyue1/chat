@@ -13,7 +13,7 @@ import 'update_password_controller.dart';
 
 ///修改登录密码/修改支付密码
 class UpdatePasswordPage extends StatelessWidget {
-  final controller = Get.put(UpdatePasswordController());
+  final controller = Get.find<UpdatePasswordController>();
   final state = Get.find<UpdatePasswordController>().state;
 
   @override

@@ -14,8 +14,14 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
   final state = UpdatePasswordState();
   UpdatePasswordController({
     bool? login,
+    bool? type,
+    String? text,
   }){// true：修改登录密码，false：修改支付密码，
     state.isLogin.value = login ?? true;
+    if(type != null){
+      state.isPhone.value = !type;
+      state.phone = text!;
+    }
   }
 
   final phoneNumberInputController = TextEditingController();
@@ -86,21 +92,24 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
     SS.login.fetchMyInfo();
   }
 
+  void setLoginService(){
+    if(state.loginService.info != null){
+      if(state.loginService.info?.phone?.isNotEmpty ?? false){
+        state.isPhone.value = true;
+        state.phone = state.loginService.info?.phone ?? '';
+      }else{
+        state.isPhone.value = false;
+        state.phone = state.loginService.info?.email ?? '';
+      }
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
-
-    if(state.loginService.info?.phone?.isNotEmpty ?? false){
-      state.isPhone.value = true;
-      state.phone = state.loginService.info?.phone ?? '';
-    }else{
-      state.isPhone.value = false;
-      state.phone = state.loginService.info?.email ?? '';
-    }
+    setLoginService();
     // 已登录需要显示带星号的电话号码 phone
-    final phoneString = state.loginService.isLogin
-        ? maskSubstring(state.phone)
-        : "";
+    final phoneString = maskSubstring(state.phone);
     phoneNumberInputController.text = phoneString;
 
     phoneNumberInputController.addListener(_checkFields);
@@ -165,6 +174,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
   //截取手机号/邮箱
   String maskSubstring(String input) {
     if (input.length < 8) {
+      if (input.length < 4) return input;
       return '${input.substring(0, 4)}****';
     } else {
       String prefix = input.substring(0, 4);

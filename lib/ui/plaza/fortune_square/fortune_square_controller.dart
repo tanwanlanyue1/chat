@@ -15,12 +15,14 @@ import 'package:guanjia/ui/plaza/widgets/filtrate_bottom_sheet.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../dating_hall/dating_hall_controller.dart';
 import 'fortune_square_state.dart';
 
 class FortuneSquareController extends GetxController
     with GetSingleTickerProviderStateMixin,GetAutoDisposeMixin, UserAttentionMixin{
   final FortuneSquareState state = FortuneSquareState();
   late TabController tabController;
+  final controller = Get.find<RectifyTheWorkplaceController>();
 
   final pagingController = DefaultPagingController<PlazaListModel>(
     firstPage: 1,
@@ -90,7 +92,9 @@ class FortuneSquareController extends GetxController
     required int page,
   }) async {
     final response = await PlazaApi.getCommunityList(
-      type: 0,
+      gender: controller.state.filtrateIndex,
+      minAge: controller.state.info?.value.likeAgeMin,
+      maxAge: controller.state.info?.value.likeAgeMax,
       currentPage: page,
       pageSize: pagingController.pageSize,
     );

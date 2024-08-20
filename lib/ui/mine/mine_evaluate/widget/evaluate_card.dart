@@ -9,13 +9,15 @@ import 'package:guanjia/widgets/app_image.dart';
 import '../../../../common/network/api/api.dart';
 
 //评价项
+//team:团队评价
+//goodGirl: 佳丽
 class EvaluateCard extends StatelessWidget {
   int index;
   bool team;
-  bool client;
+  bool goodGirl;
   EvaluationItemModel item;
   EdgeInsetsGeometry? margin;
-  EvaluateCard({super.key,required this.index,required this.item,this.margin,this.client = false,this.team = false});
+  EvaluateCard({super.key,required this.index,required this.item,this.margin,this.team = false,this.goodGirl = false});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,8 @@ class EvaluateCard extends StatelessWidget {
               AppImage.network(
                 width: 50.rpx,
                 height: 50.rpx,
-                client ? item.toImg : item.fromImg,
+                team ? item.toImg : item.fromImg,
+                shape: BoxShape.circle,
               ),
               SizedBox(width: 8.rpx,),
               Expanded(
@@ -43,19 +46,28 @@ class EvaluateCard extends StatelessWidget {
                       Row(
                         children: [
                           Expanded(
-                            child: Text(client ? item.toName : item.fromName,style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w500),),
+                            child: Text(team ? item.toName : item.fromName,style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w500),),
                           ),
                           Text(CommonUtils.getPostTime(time: item.createTime,),style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
                         ],
                       ),
                       Row(
-                        children: List.generate(5, (i) => AppImage.asset(
-                          width: 16.rpx,
-                          height: 16.rpx,
-                          i == item.star ?
-                          'assets/images/mine/star_none.png':
-                          'assets/images/mine/star.png',
-                        )),
+                        children: [
+                          Visibility(
+                            visible: goodGirl,
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 4.rpx),
+                              child: Text(S.current.synthesize,style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
+                            ),
+                          ),
+                          ...List.generate(5, (i) => AppImage.asset(
+                            width: 16.rpx,
+                            height: 16.rpx,
+                            i < item.star ?
+                            'assets/images/mine/star.png':
+                            'assets/images/mine/star_none.png',
+                          ))
+                        ],
                       ),
                     ],
                   ),
@@ -75,14 +87,14 @@ class EvaluateCard extends StatelessWidget {
                 text: TextSpan(
                   text: "——${S.current.fromUser}",
                   style: TextStyle(
-                    fontSize: 12.rpx,
-                    color: AppColor.gray30,
+                    fontSize: 14.rpx,
+                    color: AppColor.gray9,
                   ),
-                  children: const [
+                  children: [
                     TextSpan(
-                      text: "【放羊的星星】",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold
+                      text: "【${item.fromName}】",
+                      style: const TextStyle(
+                        color: AppColor.gray30,
                       ),
                     ),
                   ],

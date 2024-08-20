@@ -36,7 +36,7 @@ class MineMyTeamPage extends StatelessWidget {
             builderDelegate: DefaultPagedChildBuilderDelegate<TeamUser>(
               pagingController: controller.pagingController,
               itemBuilder: (_, item, index) {
-                return jiaItem(item);
+                return jiaItem(item,index);
               },
             ),
           )
@@ -45,7 +45,7 @@ class MineMyTeamPage extends StatelessWidget {
   }
 
   //佳丽列表
-  Widget jiaItem(TeamUser item){
+  Widget jiaItem(TeamUser item,int index){
     return Container(
       color: Colors.white,
       padding: EdgeInsets.only(left: 16.rpx,right: 14.rpx,top: 24.rpx),
@@ -110,7 +110,7 @@ class MineMyTeamPage extends StatelessWidget {
                 visible: item.remark == 'apply',
                 child: GestureDetector(
                   onTap: (){
-                    controller.getContract(item.contractId!);
+                    controller.getContract(item.contractId!,index: index);
                   },
                   child: Container(
                     height: 40.rpx,

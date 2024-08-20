@@ -46,8 +46,7 @@ class BindingPage extends StatelessWidget {
             child: _buildVerificationMode(),
           ),
           _buildSubmitButton(),
-        ]
-            .separated(
+        ].separated(
           SizedBox(
             height: 12.rpx,
           ),

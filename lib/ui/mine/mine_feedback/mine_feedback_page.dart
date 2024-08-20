@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/input_widget.dart';
 import 'package:guanjia/widgets/upload_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -23,6 +21,7 @@ class MineFeedbackPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(S.current.feedback),
       ),
+      backgroundColor: AppColor.white8,
       body: GetBuilder<MineFeedbackController>(
         builder: (controller) {
           return Column(
@@ -110,7 +109,7 @@ class MineFeedbackPage extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: state.typeIndex == index ? AppColor.primary : AppColor.grayF7,
+                      color: state.typeIndex == index ? AppColor.primary : AppColor.white8,
                       borderRadius: BorderRadius.circular(8.rpx),
                     ),
                     child: Text(
@@ -152,12 +151,12 @@ class MineFeedbackPage extends StatelessWidget {
             children: [
               Container(
                 padding: EdgeInsets.only(bottom: 16.rpx),
-                color: AppColor.grayF7,
+                color: AppColor.white8,
                 child: InputWidget(
                     hintText: S.current.pleaseEnterASuggestion,
                     maxLength: 200,
                     lines: 4,
-                    fillColor: AppColor.grayF7,
+                    fillColor: AppColor.white8,
                     counterText: '',
                     inputController: controller.contentController,
                     contentPadding: EdgeInsets.symmetric(horizontal: 12.rpx,vertical: 16.rpx),

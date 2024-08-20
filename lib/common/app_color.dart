@@ -11,7 +11,7 @@ class AppColor {
   static const primary = Color(0xFF3699FF);
 
   /// 界面背景色
-  static const scaffoldBackground = Color(0xFFF7F7F7);
+  static const scaffoldBackground = Color(0xFFF8F9FE);
 
   /// 黑灰色
   static const black3 = Color(0xFF333333);
@@ -58,6 +58,8 @@ class AppColor {
   static const gray30 = Color(0xff666666);
   static const gray39 = Color(0x33999999);
   static const grayF7 = Color(0xFFF7F7F7);
+
+  static const white8 = Color(0xFFF8F9FE);
 
   static const blue3 = Color(0xFF4754B3);
   static const blue6 = Color(0xFF4166F2);

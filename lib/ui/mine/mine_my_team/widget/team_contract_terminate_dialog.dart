@@ -17,8 +17,8 @@ class TeamContractTerminateDialog extends StatelessWidget {
     required this.contract,
   });
 
-  static Future<bool?> show({required ContractModel contract,}) {
-    return Get.dialog<bool>(
+  static Future<int?> show({required ContractModel contract,}) {
+    return Get.dialog<int>(
       TeamContractTerminateDialog._(contract: contract,),
     );
   }
@@ -56,9 +56,7 @@ class TeamContractTerminateDialog extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         GestureDetector(
-                          onTap: (){
-                            Get.back();
-                          },
+                          onTap: () => Get.back(result: 0),
                           child: Container(
                             width: 120.rpx,
                             height: 50.rpx,
@@ -67,7 +65,7 @@ class TeamContractTerminateDialog extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8.rpx),
                             ),
                             alignment: Alignment.center,
-                            child: Text("取消",style: AppTextStyle.fs16m.copyWith(color: Colors.white),),
+                            child: Text("拒绝",style: AppTextStyle.fs16m.copyWith(color: Colors.white),),
                           ),
                         ),
                         SizedBox(
@@ -75,7 +73,7 @@ class TeamContractTerminateDialog extends StatelessWidget {
                           child: CommonGradientButton(
                             height: 50.rpx,
                             text: '立即解约',
-                            onTap: () => Get.back(result: true),
+                            onTap: () => Get.back(result: 1),
                           ),
                         ),
                       ],

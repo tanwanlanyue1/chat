@@ -59,6 +59,7 @@ class MessageListController extends GetxController
       if(content == null){
         return;
       }
+      //只关注与当前会话相关的订单
       final ids = [content.requestId, content.receiveId, content.introducerId];
       if(ids.contains(SS.login.userId) && ids.contains(userId)){
         fetchOrder();

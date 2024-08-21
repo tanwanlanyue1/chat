@@ -49,7 +49,6 @@ class AppTextStyle {
   ///11号字体，字重bold
   static final fs11b = pingFangBold.copyWith(
     fontSize: 11.rpx,
-    fontWeight: FontWeight.bold,
   );
 
   ///12号字体
@@ -66,7 +65,6 @@ class AppTextStyle {
   ///12号字体，字重bold
   static final fs12b = pingFangBold.copyWith(
     fontSize: 12.rpx,
-    fontWeight: FontWeight.bold,
   );
 
   ///13号字体
@@ -83,7 +81,6 @@ class AppTextStyle {
   ///13号字体，字重bold
   static final fs13b = pingFangBold.copyWith(
     fontSize: 13.rpx,
-    fontWeight: FontWeight.bold,
   );
 
   ///14号字体
@@ -100,7 +97,6 @@ class AppTextStyle {
   ///14号字体，字重bold
   static final fs14b = pingFangBold.copyWith(
     fontSize: 14.rpx,
-    fontWeight: FontWeight.bold,
   );
 
   ///15号字体
@@ -117,7 +113,6 @@ class AppTextStyle {
   ///15号字体，字重bold
   static final fs15b = pingFangBold.copyWith(
     fontSize: 15.rpx,
-    fontWeight: FontWeight.bold,
   );
 
   ///16号字体
@@ -134,7 +129,6 @@ class AppTextStyle {
   ///16号字体，字重bold
   static final fs16b = pingFangBold.copyWith(
     fontSize: 16.rpx,
-    fontWeight: FontWeight.bold,
   );
 
   ///18号字体
@@ -151,7 +145,6 @@ class AppTextStyle {
   ///18号字体，字重bold
   static final fs18b = pingFangBold.copyWith(
     fontSize: 18.rpx,
-    fontWeight: FontWeight.bold,
   );
 
   ///19号字体
@@ -168,7 +161,6 @@ class AppTextStyle {
   ///19号字体，字重bold
   static final fs19b = pingFangBold.copyWith(
     fontSize: 19.rpx,
-    fontWeight: FontWeight.bold,
   );
 
   ///20号字体
@@ -185,7 +177,6 @@ class AppTextStyle {
   ///20号字体，字重bold
   static final fs20b = pingFangBold.copyWith(
     fontSize: 20.rpx,
-    fontWeight: FontWeight.bold,
   );
 
   ///22号字体
@@ -196,7 +187,6 @@ class AppTextStyle {
   ///22号字体，字重bold
   static final fs22b = pingFangBold.copyWith(
     fontSize: 22.rpx,
-    fontWeight: FontWeight.bold,
   );
 
   ///24号字体
@@ -218,14 +208,12 @@ class AppTextStyle {
   ///26号字体，字重bold
   static final fs26b = pingFangBold.copyWith(
     fontSize: 26.rpx,
-    fontWeight: FontWeight.bold,
   );
 
 
   ///30号字体，字重bold
   static final fs30b = pingFangBold.copyWith(
     fontSize: 30.rpx,
-    fontWeight: FontWeight.bold,
   );
 
   ///32号字体，字重500

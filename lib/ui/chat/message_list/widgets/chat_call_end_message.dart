@@ -75,7 +75,7 @@ class ChatCallEndMessage extends StatelessWidget {
 
   ///是否是通话发起方
   bool get isSelfInviter =>
-      message.callEndContent?.inviter == SS.login.userId.toString();
+      message.callEndContent?.inviter == SS.login.userId;
 
   Widget buildTitle(MessageCallEndContent content) {
     String icon;
@@ -139,9 +139,9 @@ class ChatCallEndMessage extends StatelessWidget {
     List<Widget> children = [
       buildItem(
         label: '通话结束时间',
-        value: content.beginTime.add(content.duration).format2,
+        value: DateTime.fromMillisecondsSinceEpoch(content.endTime).format2,
       ),
-      buildItem(label: '本次通话时长', value: content.duration.formatHHmmss),
+      buildItem(label: '本次通话时长', value: Duration(seconds: content.duration).formatHHmmss),
     ];
 
     if (isSelfInviter) {
@@ -160,15 +160,15 @@ class ChatCallEndMessage extends StatelessWidget {
         ),
         buildItem(
           label: '平台收取比例',
-          value: content.feeRate.toPercent(),
+          value: content.platformRate.toPercent(scale: 1),
         ),
         buildItem(
           label: '平台费',
-          value: content.fee.toPercent(),
+          value: content.platformFee.toStringAsTrimZero(),
         ),
         buildItem(
           label: '陪聊实收金额',
-          value: content.income.toStringAsTrimZero(),
+          value: content.beautyFee.toStringAsTrimZero(),
           isHighlight: true,
         ),
       ];

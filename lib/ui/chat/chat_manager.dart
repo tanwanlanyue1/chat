@@ -5,7 +5,9 @@ import 'dart:async';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:guanjia/common/network/api/im_api.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 // Package imports:
@@ -54,9 +56,6 @@ class ChatManager with ChatCallMixin{
   static final instance = ChatManager._();
 
   var _isInit = false;
-
-  ///等待通话结束，显示对话框
-  var _isWaitCallEndDialog = false;
 
   ///初始化
   Future<void> init() async {
@@ -122,222 +121,14 @@ class ChatManager with ChatCallMixin{
     AppLogger.d('连接到IM服务成功,nickname=$nickname, userId=$userId');
 
     //初始化音视频通话服务
-    await ZegoUIKitPrebuiltCallInvitationService().init(
-      appID: AppConfig.zegoAppId,
-      appSign: AppConfig.zegoAppSign,
-      userID: userId,
-      userName: nickname,
-      plugins: [ZegoUIKitSignalingPlugin()],
-      //自定义文本内容
-      innerText: ZegoCallInvitationInnerText(),
-      requireConfig: _requireCallConfig,
-      config: ZegoCallInvitationConfig(
-        endCallWhenInitiatorLeave: false,
-        canInvitingInCalling: false,
-        permissions: [],
-      ),
-      uiConfig: _callInvitationUIConfig(),
-      events: ZegoUIKitPrebuiltCallEvents(
-        onCallEnd: (ZegoCallEndEvent event, VoidCallback defaultAction) {
-          defaultAction.call();
-          AppLogger.d(
-              'ZegoUIKitPrebuiltCallEvents>onCallEnd reason=, ${event.reason}');
-          switch (event.reason) {
-            case ZegoCallEndReason.localHangUp:
-            case ZegoCallEndReason.abandoned:
-              //本地挂断
-              break;
-            default:
-              break;
-          }
-        },
-      ),
-      //事件说明 https://www.zegocloud.com/docs/uikit/zh/callkit-android/api-reference/event#invitationevents
-      invitationEvents: ZegoUIKitPrebuiltCallInvitationEvents(
-        onOutgoingCallAccepted: (
-          String callID,
-          ZegoCallUser callee,
-        ) {
-          AppLogger.d(
-              'ZegoUIKitPrebuiltCallInvitationEvents>onOutgoingCallAccepted: callID=${callID}');
-          _isWaitCallEndDialog = true;
-        },
-        onIncomingCallReceived: (
-          String callID,
-          ZegoCallUser caller,
-          ZegoCallInvitationType callType,
-          List<ZegoCallUser> callees,
-          String customData,
-        ) {
-          _isWaitCallEndDialog = true;
-        },
-        onOutgoingCallRejectedCauseBusy: (
-          String callID,
-          ZegoCallUser callee,
-          String customData,
-        ) {
-          Loading.showToast('对方正在通话中');
-        },
-      ),
-    );
-  }
-
-  ///音视频通话呼叫过程中的UI配置
-  ZegoCallInvitationUIConfig _callInvitationUIConfig() {
-    //背景
-    Widget? backgroundBuilder(
-      BuildContext context,
-      Size size,
-      ZegoCallingBuilderInfo info,
-    ) {
-      return AppImage.asset(
-        width: size.width,
-        height: size.height,
-        'assets/images/chat/call_background.png',
-        fit: BoxFit.cover,
-      );
-    }
-
-    return ZegoCallInvitationUIConfig(
-      prebuiltWithSafeArea: false,
-      invitationWithSafeArea: false,
-      systemUiOverlayStyle: SystemUiOverlayStyle.light,
-      //邀请人
-      inviter: ZegoCallInvitationInviterUIConfig(
-        backgroundBuilder: backgroundBuilder,
-      ),
-      //被邀请人
-      invitee: ZegoCallInvitationInviteeUIConfig(
-        backgroundBuilder: backgroundBuilder,
-      ),
-    );
-  }
-
-  ///音视频通话配置
-  ZegoUIKitPrebuiltCallConfig _requireCallConfig(ZegoCallInvitationData data) {
-    final isVideoCall = ZegoCallInvitationType.videoCall == data.type;
-    final config = (data.invitees.length > 1)
-        ? isVideoCall
-            ? ZegoUIKitPrebuiltCallConfig.groupVideoCall()
-            : ZegoUIKitPrebuiltCallConfig.groupVoiceCall()
-        : isVideoCall
-            ? ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
-            : ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall();
-
-    //用户头像配置
-    config.avatarBuilder = (
-      BuildContext context,
-      Size size,
-      ZegoUIKitUser? user,
-      Map extraInfo,
-    ) {
-      return ChatAvatar.circle(
-        userId: user?.id ?? '',
-        width: size.width,
-        height: size.height,
-      );
-    };
-
-    //底部菜单栏配置
-    config.bottomMenuBar = ZegoCallBottomMenuBarConfig(
-      hideAutomatically: false,
-      margin: const EdgeInsets.only(bottom: 48),
-      buttons: [
-        if (isVideoCall) ZegoCallMenuBarButtonName.toggleCameraButton,
-        ZegoCallMenuBarButtonName.toggleMicrophoneButton,
-        ZegoCallMenuBarButtonName.hangUpButton,
-        ZegoCallMenuBarButtonName.switchAudioOutputButton,
-        if (isVideoCall) ZegoCallMenuBarButtonName.switchCameraButton,
-      ],
-    );
-
-    //布局配置
-    config.audioVideoView = ZegoCallAudioVideoViewConfig(
-        //是否在视图上显示麦克风状态。默认显示
-        showMicrophoneStateOnView: false,
-        //是否在视图上显示摄像头状态。默认显示
-        showCameraStateOnView: false,
-        //是否在视图上显示用户名。默认显示。
-        showUserNameOnView: false,
-        //是否裁剪视频，填充整个屏幕
-        useVideoViewAspectFill: true,
-        //通话界面背景
-        backgroundBuilder: (
-          BuildContext context,
-          Size size,
-          ZegoUIKitUser? user,
-          Map<String, dynamic> extraInfo,
-        ) {
-          return AppImage.asset(
-            width: size.width,
-            height: size.height,
-            'assets/images/chat/call_background.png',
-            fit: BoxFit.cover,
-          );
-        });
-
-    //画中画布局
-    config.layout = ZegoLayoutPictureInPictureConfig(
-      isSmallViewShowOnlyVideo: true,
-      margin: EdgeInsets.only(
-        top: Get.mediaQuery.padding.top + 44.rpx,
-        right: 16.rpx,
-      ),
-    );
-
-    //通话时长回调
-    config.duration = ZegoCallDurationConfig(onDurationUpdate: (duration) {
-    });
-
-    return config;
+    await _initChatCall(userId: userId, nickname: nickname);
   }
 
   ///断开连接
   Future<void> disconnect() async {
     AppLogger.d('断开IM连接');
     await ZIMKit().disconnectUser();
-    await ZegoUIKitPrebuiltCallInvitationService().uninit();
-    _isWaitCallEndDialog = false;
-  }
-
-  ///发送一条通话记录消息
-  void _sendCallEndMessage(ChatCallInfo info) async {
-    AppLogger.d('_sendCallEndMessage: info = $info');
-
-    //TODO 应该是服务端发送，目前先客户端测试发送
-    //单价每分钟6美金
-    const price = 6.0;
-    //平台抽成12%
-    const feeRate = 0.12;
-    final content = MessageCallEndContent(
-      isVideoCall: info.isVideoCall,
-      inviter: info.inviter,
-      invitee: info.invitee,
-      beginTime: info.beginTime,
-      duration: info.duration,
-      amount: price * (info.duration.inSeconds / 60 - 1).ceil(),
-      //前1分钟免费，不够1分钟按一分钟计费
-      feeRate: feeRate,
-    );
-    final isSelfInviter = SS.login.userId.toString() == info.inviter;
-    await ZIMKit().sendCustomMessage(
-        isSelfInviter ? info.invitee : info.inviter, ZIMConversationType.peer,
-        customType: CustomMessageType.callEnd.value,
-        customMessage: content.toJsonString(), onMessageSent: (message) {
-      _showCallEndDialog(message);
-    });
-  }
-
-  ///显示通话结束对话框
-  void _showCallEndDialog(ZIMKitMessage message) {
-    final callEndContent = message.callEndContent;
-    if (callEndContent == null || !_isWaitCallEndDialog) {
-      return;
-    }
-    _isWaitCallEndDialog = false;
-    Future.delayed(const Duration(milliseconds: 400), () {
-      ChatCallEndDialog.show(message: message);
-    });
+    await _uninitChatCall();
   }
 
   ///同步用户信息到IM服务
@@ -374,50 +165,3 @@ class ChatManager with ChatCallMixin{
 
 }
 
-///音视频通话状态信息
-class ChatCallInfo {
-  ///是否是视频通话
-  bool isVideoCall;
-
-  ///开始时间
-  DateTime beginTime;
-
-  ///通话时长
-  Duration duration;
-
-  ///邀请人(通话发起人)
-  String inviter;
-
-  ///被邀请人
-  String invitee;
-
-  ChatCallInfo({
-    DateTime? beginTime,
-    this.isVideoCall = false,
-    this.duration = Duration.zero,
-    this.inviter = '',
-    this.invitee = '',
-  }) : beginTime = beginTime ?? DateTime.now();
-
-  ChatCallInfo copyWith({
-    DateTime? beginTime,
-    bool? isVideoCall,
-    String? callId,
-    Duration? duration,
-    String? inviter,
-    String? invitee,
-  }) {
-    return ChatCallInfo(
-      beginTime: beginTime ?? this.beginTime,
-      isVideoCall: isVideoCall ?? this.isVideoCall,
-      duration: duration ?? this.duration,
-      inviter: inviter ?? this.inviter,
-      invitee: invitee ?? this.invitee,
-    );
-  }
-
-  @override
-  String toString() {
-    return 'ChatCallInfo{isVideoCall: $isVideoCall, beginTime: $beginTime, duration: $duration, inviter: $inviter, invitee: $invitee}';
-  }
-}

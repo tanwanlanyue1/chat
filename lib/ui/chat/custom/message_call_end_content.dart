@@ -1,73 +1,75 @@
-import 'dart:convert';
-
 ///通话结束消息内容
 class MessageCallEndContent {
-
   ///是否是视频通话
   final bool isVideoCall;
 
   ///开始时间
-  final DateTime beginTime;
+  final int beginTime;
+
+  ///结束时间
+  final int endTime;
 
   ///通话时长(s)
-  final Duration duration;
+  final int duration;
 
   ///发起方
-  final String inviter;
+  final int inviter;
 
   ///接收方
-  final String invitee;
+  final int invitee;
 
   ///用户付费金额
-  final double amount;
+  final num amount;
 
-  ///平台收取比例
-  final double feeRate;
+  ///平台分成百分百0-100
+  final num platformRate;
 
-  ///平台费
-  double get fee{
-    return amount * feeRate;
-  }
+  ///平台费用
+  final num platformFee;
 
-  ///陪聊收入(用户付费-平台抽成)
-  double get income{
-    return amount - fee;
-  }
+  ///佳丽分成百分百0-100
+  final num beautyRate;
+
+  ///佳丽收益
+  final num beautyFee;
+
+  ///经纪人分成百分百0-100
+  final num agentRate;
+
+  ///经纪人收益
+  final num agentFee;
 
   MessageCallEndContent({
     required this.isVideoCall,
     required this.beginTime,
+    required this.endTime,
     required this.duration,
     required this.inviter,
     required this.invitee,
     required this.amount,
-    required this.feeRate,
+    required this.platformRate,
+    required this.platformFee,
+    required this.beautyRate,
+    required this.beautyFee,
+    required this.agentRate,
+    required this.agentFee,
   });
 
-  factory MessageCallEndContent.fromJson(Map<String, dynamic> json){
+  factory MessageCallEndContent.fromJson(Map<String, dynamic> json) {
     return MessageCallEndContent(
-      isVideoCall: json['isVideoCall'],
-      beginTime: DateTime.fromMillisecondsSinceEpoch(json['beginTime']),
-      duration: Duration(seconds: json['duration']),
-      inviter: json['inviter'],
-      invitee: json['invitee'],
-      amount: json['amount'],
-      feeRate: json['feeRate'],
+      isVideoCall: json['isVideoCall'] ?? false,
+      beginTime: json['beginTime'] ?? 0,
+      endTime: json['endTime'] ?? 0,
+      duration: json['duration'] ?? 0,
+      inviter: json['inviter'] ?? 0,
+      invitee: json['invitee'] ?? 0,
+      amount: json['amount'] ?? 0,
+      platformFee: json['platformFee'] ?? 0,
+      platformRate: json['platformRate'] ?? 0,
+      beautyFee: json['beautyFee'] ?? 0,
+      beautyRate: json['beautyRate'] ?? 0,
+      agentFee: json['agentFee'] ?? 0,
+      agentRate: json['agentRate'] ?? 0,
     );
   }
-
-  Map<String, dynamic> toJson(){
-    return {
-      'isVideoCall': isVideoCall,
-      'beginTime': beginTime.millisecondsSinceEpoch,
-      'duration': duration.inSeconds,
-      'inviter': inviter,
-      'invitee': invitee,
-      'amount': amount,
-      'feeRate': feeRate,
-    };
-  }
-
-  String toJsonString() => jsonEncode(toJson());
-
 }

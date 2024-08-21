@@ -59,7 +59,7 @@ class ChatCallButton extends StatelessWidget {
     }
 
     Loading.show();
-    final response = await IMApi.createCallOrder(isVideoCall ? 1 : 2);
+    final response = await IMApi.createCallOrder(type: isVideoCall ? 1 : 2, toUid: userId);
     Loading.dismiss();
     int? orderId;
     if (response.isSuccess) {

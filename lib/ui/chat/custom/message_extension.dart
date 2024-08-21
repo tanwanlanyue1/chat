@@ -20,8 +20,19 @@ extension ZIMKitMessageExt on ZIMKitMessage {
     return null;
   }
 
-  ///红包消息内容
-  MessageRedPacketContent? get redPacketContent {
+  T? _getOrParse<T>({
+    required CustomMessageType type,
+    required T? Function(Map<String, dynamic> json) parse,
+  }) {
+    if (type != customType) {
+      return null;
+    }
+
+    final key = '${type.name}_msg_content';
+    final data = zimkitExtraInfo[key];
+    if (data is T) {
+      return data;
+    }
     try {
       final msg = customContent?.message ?? '';
       if (msg.isEmpty) {
@@ -31,47 +42,39 @@ extension ZIMKitMessageExt on ZIMKitMessage {
       if (json == null) {
         return null;
       }
-      return MessageRedPacketContent.fromJson(json);
+      final model = parse(json);
+      if (model != null) {
+        zimkitExtraInfo[key] = model;
+      }
+      return model;
     } catch (ex) {
-      AppLogger.w('解析红包消息内容发生错误，$ex');
+      AppLogger.w('解析${type.name}消息内容发生错误，$ex');
+      return null;
     }
-    return null;
+  }
+
+  ///红包消息内容
+  MessageRedPacketContent? get redPacketContent {
+    return _getOrParse(
+      type: CustomMessageType.redPacket,
+      parse: MessageRedPacketContent.fromJson,
+    );
   }
 
   ///转账消息内容
   MessageTransferContent? get transferContent {
-    try {
-      final msg = customContent?.message ?? '';
-      if (msg.isEmpty) {
-        return null;
-      }
-      final json = jsonDecode(msg);
-      if (json == null) {
-        return null;
-      }
-      return MessageTransferContent.fromJson(json);
-    } catch (ex) {
-      AppLogger.w('解析转账消息内容发生错误，$ex');
-    }
-    return null;
+    return _getOrParse(
+      type: CustomMessageType.transfer,
+      parse: MessageTransferContent.fromJson,
+    );
   }
 
   ///通话结束消息内容
   MessageCallEndContent? get callEndContent {
-    try {
-      final msg = customContent?.message ?? '';
-      if (msg.isEmpty) {
-        return null;
-      }
-      final json = jsonDecode(msg);
-      if (json == null) {
-        return null;
-      }
-      return MessageCallEndContent.fromJson(json);
-    } catch (ex) {
-      AppLogger.w('解析通话结束消息内容发生错误，$ex');
-    }
-    return null;
+    return _getOrParse(
+      type: CustomMessageType.callEnd,
+      parse: MessageCallEndContent.fromJson,
+    );
   }
 
   ZIMKitMessage copy() {
@@ -91,12 +94,11 @@ extension ZIMKitMessageExt on ZIMKitMessage {
 }
 
 extension ZIMCustomMessageExt on ZIMCustomMessage {
-
   ///隐藏头像
   static const _hideAvatar = 'hideAvatar';
 
   ///是否隐藏头像
-  set isHideAvatar(bool isHide){
+  set isHideAvatar(bool isHide) {
     localExtendedData = _hideAvatar;
   }
 
@@ -160,14 +162,12 @@ extension ZIMCustomMessageExt on ZIMCustomMessage {
   }
 }
 
-
 extension ZIMMessageExt on ZIMMessage {
-
   ///隐藏头像
   static const _hideAvatar = 'hideAvatar';
 
   ///是否隐藏头像
-  set isHideAvatar(bool isHide){
+  set isHideAvatar(bool isHide) {
     localExtendedData = _hideAvatar;
   }
 

@@ -48,12 +48,25 @@ class IMApi {
 
   /// 创建音视频通话订单
   ///- type ：1视频 2语音
+  ///- toUid 接收方用户ID
   ///- return 订单ID
-  static Future<ApiResponse<int>> createCallOrder(int type) {
+  static Future<ApiResponse<int>> createCallOrder({required int type, required int toUid}) {
     return HttpClient.post(
       '/api/im/createOrder',
       data: {
         "code": type,
+        "toUid": toUid,
+      },
+    );
+  }
+
+  /// 通话-实时扣费接口
+  ///- orderId 订单ID
+  static Future<ApiResponse<void>> chatOrderPay(int orderId) {
+    return HttpClient.post(
+      '/api/im/chatOrderPay',
+      data: {
+        "id": orderId,
       },
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
@@ -80,6 +81,7 @@ class ChatMessageWidget extends StatelessWidget {
         defaultMessageContent = const Text('Recalled a message.');
         break;
       case ZIMMessageType.custom:
+        AppLogger.d('自定义消息：${message.customContent}, ');
         final customType = message.customType;
         switch (customType) {
           case CustomMessageType.redPacket:

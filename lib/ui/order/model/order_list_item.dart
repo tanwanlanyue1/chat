@@ -113,12 +113,12 @@ class OrderListItem {
               : OrderItemState.waitingConfirmForReceive;
 
         case OrderState.cancel:
-          // 如果存在超时时间则为超时状态
-          if (model.timeout.isNotEmpty) return OrderItemState.timeOut;
           // 优先显示请求方取消状态
           return requestState.isCancel
               ? OrderItemState.cancelForRequest
-              : OrderItemState.cancelForReceive;
+              : receiveState.isCancel
+                  ? OrderItemState.cancelForReceive
+                  : OrderItemState.timeOut;
 
         case OrderState.finish:
           // 评价星值为0时，改为等待评价状态
@@ -210,15 +210,15 @@ class OrderListItem {
 
     final requestNamePrefix = isNormal ? "下单用户：" : "征友约会：";
     final receiveNamePrefix = isNormal ? "接约人：" : "参与约会：";
+    final receiveName =
+        model.receiveId == 0 ? model.introducerName : model.receiveName;
+    final receiveAvatar =
+        model.receiveId == 0 ? model.introducerAvatar : model.receiveAvatar;
     return {
       OrderItemState.waitingAcceptance: {
         UserType.user: OrderListItemWrapper(
-          avatar: model.receiveId == 0
-              ? model.introducerAvatar
-              : model.receiveAvatar,
-          nick: model.receiveId == 0
-              ? "$receiveNamePrefix${model.introducerName}"
-              : "$receiveNamePrefix${model.receiveName}",
+          avatar: receiveAvatar,
+          nick: "$receiveNamePrefix$receiveName",
           stateText: "等待对方接单",
           stateTextColor: AppColor.textYellow,
           operation: OrderOperationType.cancel,
@@ -346,8 +346,8 @@ class OrderListItem {
       },
       OrderItemState.cancelForRequest: {
         UserType.user: OrderListItemWrapper(
-          avatar: model.receiveAvatar,
-          nick: "$receiveNamePrefix${model.receiveName}",
+          avatar: receiveAvatar,
+          nick: "$receiveNamePrefix$receiveName",
           stateText: "您主动取消订单",
           stateTextColor: AppColor.black9,
         ),
@@ -360,7 +360,7 @@ class OrderListItem {
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
           nick: "$requestNamePrefix${model.requestName}",
-          nickWithAgent: "$receiveNamePrefix${model.receiveName}",
+          nickWithAgent: "$receiveNamePrefix$receiveName",
           stateText: "用户已取消订单",
           stateTextColor: AppColor.black9,
           operation: OrderOperationType.connect,
@@ -368,11 +368,8 @@ class OrderListItem {
       },
       OrderItemState.cancelForReceive: {
         UserType.user: OrderListItemWrapper(
-          avatar: model.receiveId == 0
-              ? model.introducerAvatar
-              : model.receiveAvatar,
-          nick:
-              "$receiveNamePrefix${model.receiveId == 0 ? model.introducerName : model.receiveName}",
+          avatar: receiveAvatar,
+          nick: "$receiveNamePrefix$receiveName",
           stateText: "对方已取消订单",
           stateTextColor: AppColor.black9,
         ),
@@ -385,9 +382,8 @@ class OrderListItem {
         UserType.agent: OrderListItemWrapper(
           avatar: model.requestAvatar,
           nick: "$requestNamePrefix${model.requestName}",
-          nickWithAgent: model.receiveId == 0
-              ? null
-              : "$receiveNamePrefix${model.receiveName}",
+          nickWithAgent:
+              model.receiveId == 0 ? null : "$receiveNamePrefix$receiveName",
           stateText: "佳丽已取消订单",
           stateTextColor: AppColor.black9,
           operation: OrderOperationType.connect,
@@ -397,7 +393,7 @@ class OrderListItem {
         UserType.user: OrderListItemWrapper(
           avatar: model.receiveAvatar,
           nick:
-              "$receiveNamePrefix${model.receiveId == 0 ? model.introducerName : model.receiveName}",
+              "$receiveNamePrefix$receiveName",
           stateText: "等待超时",
           stateTextColor: AppColor.black9,
         ),

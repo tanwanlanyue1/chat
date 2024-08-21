@@ -20,8 +20,13 @@ extension NumberX on num{
 
   ///转换为货币显示
   ///- unit 货币单位
-  String toCurrencyString({String unit = '\$'}){
-    return toStringAsTrimZero()+unit;
+  ///- beforeUnit 货币单位前置
+  String toCurrencyString({String unit = '\$', bool beforeUnit = false}){
+    if(beforeUnit){
+      return unit + toStringAsTrimZero();
+    }else{
+      return toStringAsTrimZero()+unit;
+    }
   }
   
 }

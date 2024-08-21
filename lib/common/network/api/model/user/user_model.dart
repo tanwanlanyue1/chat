@@ -79,6 +79,7 @@ class UserModel {
     this.praiseRate,
     this.dealNum,
     this.payPwd,
+    required this.balance,
   });
 
   final int uid; // 用户id
@@ -108,6 +109,7 @@ class UserModel {
   String? praiseRate; // 	好评率
   int? dealNum; // 成交单数 30天内的
   bool? payPwd; // 是否设置支付密码 true已设置 false未设置
+  num balance = 0; //余额
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -138,6 +140,7 @@ class UserModel {
       praiseRate: json["praiseRate"],
       dealNum: json["dealNum"],
       payPwd: json["payPwd"] ?? false,
+      balance: json["balance"] ?? 0,
     );
   }
 
@@ -199,6 +202,7 @@ class UserModel {
     String? praiseRate,
     int? dealNum,
     bool? payPwd,
+    num? balance,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -228,6 +232,7 @@ class UserModel {
       praiseRate: praiseRate ?? this.praiseRate,
       dealNum: dealNum ?? this.dealNum,
       payPwd: payPwd ?? this.payPwd,
+      balance: balance ?? this.balance,
     );
   }
 }

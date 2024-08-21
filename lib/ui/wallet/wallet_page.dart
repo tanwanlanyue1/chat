@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/wallet/enum/wallet_enum.dart';
@@ -102,13 +104,15 @@ class WalletPage extends StatelessWidget {
                           .textColor(AppColor.black9)
                           .copyWith(height: 1),
                     ),
-                    Text(
-                      "￥954.32",
-                      style: AppTextStyle.st.medium
-                          .size(20.rpx)
-                          .textColor(AppColor.black3)
-                          .copyWith(height: 1),
-                    ),
+                    Obx((){
+                      return Text(
+                        SS.login.info?.balance.toCurrencyString(beforeUnit: true) ?? '',
+                        style: AppTextStyle.st.medium
+                            .size(20.rpx)
+                            .textColor(AppColor.black3)
+                            .copyWith(height: 1),
+                      );
+                    }),
                   ],
                 ),
                 Text(
@@ -303,7 +307,7 @@ class WalletPage extends StatelessWidget {
 
     switch (state.typeIndex.value) {
       case WalletOperationType.normal:
-        widget = Container(color: Colors.red);
+        widget = Container();
         break;
       case WalletOperationType.topUp:
         widget = WalletTopUpWidget();

@@ -2,6 +2,7 @@ import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/widgets/order_accept_dialog.dart';
 import 'package:guanjia/ui/order/widgets/order_create_dialog.dart';
+import 'package:guanjia/ui/order/widgets/order_payment_dialog.dart';
 
 import '../../../common/network/api/api.dart';
 import 'message_list_controller.dart';
@@ -70,7 +71,10 @@ extension MessageOrderPart on MessageListController {
 
   ///缴纳保证金
   void _paymentOrder(OrderItemModel order) async {
-    toOrderPayment(order.id);
+    final ret = await OrderPaymentDialog.show(order: order);
+    if (ret == true) {
+      toOrderPayment(order.id);
+    }
   }
 
   ///佳丽确认已到位

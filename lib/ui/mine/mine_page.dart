@@ -28,10 +28,33 @@ class MinePage extends StatefulWidget {
   State<MinePage> createState() => _MinePageState();
 }
 
+class MyCliper extends CustomClipper<RRect>{
+  @override
+  RRect getClip(Size size) {
+    return RRect.fromLTRBR(0, size.height/2, size.width, size.height, Radius.circular(8.rpx));
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<RRect> oldClipper) {
+    return true;
+  }
+
+}
+
 class _MinePageState extends State<MinePage>
     with AutomaticKeepAliveClientMixin {
   final controller = Get.put(MineController());
   final state = Get.find<MineController>().state;
+
+  Widget buildMask(){
+    return ClipRRect(
+      clipper: MyCliper(),
+      child: Container(
+        height: 16.rpx,
+        color: Colors.red,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,18 +64,27 @@ class _MinePageState extends State<MinePage>
         children: [
           buildHeader(),
           Expanded(
-            child: SmartRefresher(
-              controller: controller.refreshController,
-              onRefresh: controller.onRefresh,
-              child: ListView(
-                padding: FEdgeInsets(horizontal: 16.rpx, bottom: 24.rpx),
-                children: [
-                  buildBanner(),
-                  buildSectionOne(),
-                  buildSectionTwo(),
-                  buildSignOutButton(),
-                ],
-              ),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: FEdgeInsets(top: 8.rpx),
+                  child: SmartRefresher(
+                    controller: controller.refreshController,
+                    onRefresh: controller.onRefresh,
+                    child: ListView(
+                      physics: const BouncingScrollPhysics(),
+                      padding: FEdgeInsets(bottom: 24.rpx, horizontal: 16.rpx),
+                      children: [
+                        buildBanner(),
+                        buildSectionOne(),
+                        buildSectionTwo(),
+                        buildSignOutButton(),
+                      ],
+                    ),
+                  ),
+                ),
+                // buildMask(),
+              ],
             ),
           ),
         ],
@@ -188,7 +220,7 @@ class _MinePageState extends State<MinePage>
   ///广告
   Widget buildBanner() {
     return Padding(
-      padding: FEdgeInsets(vertical: 16.rpx),
+      padding: FEdgeInsets(bottom: 16.rpx, top: 8.rpx),
       child: AppImage.asset(
         width: double.infinity,
         fit: BoxFit.fitWidth,

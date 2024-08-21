@@ -12,11 +12,13 @@ class RectifyTheWorkplaceState {
       "name":S.current.videoDating,
       "subtitle":"面对面交流情感",
       "image":"assets/images/plaza/video_back.png",
+      "isVideo": true,
     },
     {
       "name":S.current.voiceDating,
       "subtitle":"用声音探索灵魂",
       "image":"assets/images/plaza/voice_back.png",
+      "isVideo": false,
     },
   ];
 

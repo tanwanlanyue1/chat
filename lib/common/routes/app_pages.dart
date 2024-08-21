@@ -13,6 +13,7 @@ import 'package:guanjia/ui/home/home_page.dart';
 import 'package:guanjia/ui/plaza/all_comments/all_comments_controller.dart';
 import 'package:guanjia/ui/plaza/all_comments/all_comments_page.dart';
 import 'package:guanjia/ui/plaza/release_dynamic/release_dynamic_page.dart';
+import 'package:guanjia/ui/plaza/speed_dating/speed_dating_page.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_page.dart';
 import 'package:guanjia/ui/welcome/welcome_page.dart';
@@ -42,16 +43,16 @@ class AppPages {
       name: AppRoutes.userCenterPage,
       page: () => UserCenterPage(),
       binding: BindingsBuilder.put(() => UserCenterController(
-        userId: Get.tryGetArgs('userId'),
-      )),
+            userId: Get.tryGetArgs('userId'),
+          )),
     ),
     GetPage(
       name: AppRoutes.allCommentsPage,
       page: () => AllCommentsPage(),
       binding: BindingsBuilder.put(() => AllCommentsController(
-        postId: Get.tryGetArgs('postId'),
-        userId: Get.tryGetArgs('userId'),
-      )),
+            postId: Get.tryGetArgs('postId'),
+            userId: Get.tryGetArgs('userId'),
+          )),
     ),
     GetPage(
       name: AppRoutes.webPage,
@@ -74,6 +75,15 @@ class AppPages {
     GetPage(
       name: AppRoutes.releaseInvitation,
       page: () => ReleaseInvitationPage(),
+    ),
+    GetPage(
+      name: AppRoutes.speedDatingPage,
+      page: () {
+        final isVideo = Get.tryGetArgs('isVideo');
+        return SpeedDatingPage(
+          isVideo: (isVideo != null && isVideo is bool) ? isVideo : false,
+        );
+      },
     ),
   ].addMiddleware(AuthMiddleware());
 }

@@ -22,6 +22,9 @@ abstract class AppRoutes {
   ///广场-用户中心
   static const userCenterPage = '$auth/userCenterPage';
 
+  ///广场-速配
+  static const speedDatingPage = '$auth/speedDatingPage';
+
   ///全部评论
   static const allCommentsPage = '/allCommentsPage';
 

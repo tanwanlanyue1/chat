@@ -42,13 +42,14 @@ class DatingHallView extends StatelessWidget {
   }
 
   ///速配
-  Widget buildSpeedDating(){
+  Widget buildSpeedDating() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 1.rpx).copyWith(left: 15.rpx),
       height: 92.rpx,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [//rgba(34, 110, 240, 0.3)
+          colors: [
+            //rgba(34, 110, 240, 0.3)
             Color(0x4D226EF0),
             Color(0x00BD3CFF),
           ],
@@ -57,37 +58,51 @@ class DatingHallView extends StatelessWidget {
         ),
       ),
       child: Row(
-        children: List.generate(state.speedDating.length, (i) => Expanded(
-          child: GestureDetector(
-            child: Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AppAssetImage(state.speedDating[i]['image']),
-                    fit: BoxFit.fitWidth
+        children: List.generate(
+            state.speedDating.length,
+            (i) => Expanded(
+                  child: GestureDetector(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image:
+                                  AppAssetImage(state.speedDating[i]['image']),
+                              fit: BoxFit.fitWidth),
+                          borderRadius: BorderRadius.circular(8.rpx)),
+                      height: 70.rpx,
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(right: 15.rpx),
+                      padding: EdgeInsets.only(left: 8.rpx),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            state.speedDating[i]['name'],
+                            style: AppTextStyle.fs22b
+                                .copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            state.speedDating[i]['subtitle'],
+                            style: AppTextStyle.fs10m
+                                .copyWith(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      Get.toNamed(
+                        AppRoutes.speedDatingPage,
+                        arguments: {"isVideo": state.speedDating[i]['isVideo']},
+                      );
+                    },
                   ),
-                borderRadius: BorderRadius.circular(8.rpx)
-              ),
-              height: 70.rpx,
-              alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(right: 15.rpx),
-              padding: EdgeInsets.only(left: 8.rpx),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(state.speedDating[i]['name'],style: AppTextStyle.fs22b.copyWith(color: Colors.white),),
-                  Text(state.speedDating[i]['subtitle'],style: AppTextStyle.fs10m.copyWith(color: Colors.white),),
-                ],
-              ),
-            ),
-            onTap: (){},
-          ),
-        )),
+                )),
       ),
     );
   }
 
   ///交友大厅列表
-  Widget hallItem(){
+  Widget hallItem() {
     return Container(
       color: Colors.white,
       child: Column(
@@ -97,15 +112,25 @@ class DatingHallView extends StatelessWidget {
             height: 45.rpx,
             child: Row(
               children: [
-                Text("交友大厅",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
+                Text(
+                  "交友大厅",
+                  style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),
+                ),
                 const Spacer(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: controller.onTapFiltrate,
                   child: Row(
                     children: [
-                      Text("筛选",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray5),),
-                      const Icon(Icons.arrow_drop_down_sharp,color: Colors.grey,),
+                      Text(
+                        "筛选",
+                        style:
+                            AppTextStyle.fs12m.copyWith(color: AppColor.gray5),
+                      ),
+                      const Icon(
+                        Icons.arrow_drop_down_sharp,
+                        color: Colors.grey,
+                      ),
                     ],
                   ),
                 ),
@@ -113,32 +138,32 @@ class DatingHallView extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: SmartRefresher(
-              controller: controller.pagingController.refreshController,
-              onRefresh: controller.pagingController.onRefresh,
-              child: PagedListView(
+              child: SmartRefresher(
+            controller: controller.pagingController.refreshController,
+            onRefresh: controller.pagingController.onRefresh,
+            child: PagedListView(
+              pagingController: controller.pagingController,
+              builderDelegate: DefaultPagedChildBuilderDelegate<RecommendModel>(
                 pagingController: controller.pagingController,
-                builderDelegate: DefaultPagedChildBuilderDelegate<RecommendModel>(
-                  pagingController: controller.pagingController,
-                  itemBuilder: (_, item, index) {
-                    return friendsItem(item);
-                  },
-                ),
+                itemBuilder: (_, item, index) {
+                  return friendsItem(item);
+                },
               ),
-            )
-          ),
+            ),
+          )),
         ],
       ),
     );
   }
 
   //交友项
-  Widget friendsItem(RecommendModel item){
+  Widget friendsItem(RecommendModel item) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () => Get.toNamed(AppRoutes.userCenterPage,arguments: {'userId': item.uid}),
+      onTap: () => Get.toNamed(AppRoutes.userCenterPage,
+          arguments: {'userId': item.uid}),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 12.rpx,horizontal: 16.rpx),
+        padding: EdgeInsets.symmetric(vertical: 12.rpx, horizontal: 16.rpx),
         // color: AppColor.scaffoldBackground,
         margin: EdgeInsets.only(bottom: 8.rpx),
         child: Row(
@@ -146,40 +171,76 @@ class DatingHallView extends StatelessWidget {
           children: [
             Container(
               margin: EdgeInsets.only(right: 8.rpx),
-              child: AppImage.network(item.avatar ?? '',width: 100.rpx,height: 100.rpx,borderRadius: BorderRadius.circular(8.rpx),),
+              child: AppImage.network(
+                item.avatar ?? '',
+                width: 100.rpx,
+                height: 100.rpx,
+                borderRadius: BorderRadius.circular(8.rpx),
+              ),
             ),
-            Expanded(child: SizedBox(
+            Expanded(
+                child: SizedBox(
               height: 100.rpx,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(item.nickname ?? '',style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                  Text(
+                    item.nickname ?? '',
+                    style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   Row(
                     children: [
-                      Text("${item.age ?? ''}岁 ",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
-                      Expanded(child: Text("| ${item.style ?? ''}",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                      Text(
+                        "${item.age ?? ''}岁 ",
+                        style:
+                            AppTextStyle.fs12m.copyWith(color: AppColor.gray30),
+                      ),
+                      Expanded(
+                          child: Text(
+                        "| ${item.style ?? ''}",
+                        style:
+                            AppTextStyle.fs12m.copyWith(color: AppColor.gray30),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      )),
                     ],
                   ),
-                  item.images != null ?
-                  Row(
-                    children: List.generate(jsonDecode(item.images).length > 3 ? 3 : jsonDecode(item.images).length, (index) => Container(
-                      margin: EdgeInsets.only(right: 6.rpx),
-                      child: AppImage.network(jsonDecode(item.images)[index],width: 40.rpx,height: 40.rpx,borderRadius: BorderRadius.circular(4.rpx),),
-                    )),
-                  ):
-                  Container(),
+                  item.images != null
+                      ? Row(
+                          children: List.generate(
+                              jsonDecode(item.images).length > 3
+                                  ? 3
+                                  : jsonDecode(item.images).length,
+                              (index) => Container(
+                                    margin: EdgeInsets.only(right: 6.rpx),
+                                    child: AppImage.network(
+                                      jsonDecode(item.images)[index],
+                                      width: 40.rpx,
+                                      height: 40.rpx,
+                                      borderRadius:
+                                          BorderRadius.circular(4.rpx),
+                                    ),
+                                  )),
+                        )
+                      : Container(),
                 ],
               ),
             )),
             Button.stadium(
-              onPressed: (){
+              onPressed: () {
                 MessageListPage.go(userId: item.uid!);
               },
               width: 82.rpx,
               height: 28.rpx,
-              backgroundColor: item.gender == 1 ? AppColor.textBlue : AppColor.purple6,
-              child: Text(S.current.getTouchWith,style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+              backgroundColor:
+                  item.gender == 1 ? AppColor.textBlue : AppColor.purple6,
+              child: Text(
+                S.current.getTouchWith,
+                style: AppTextStyle.fs12m.copyWith(color: Colors.white),
+              ),
             )
           ],
         ),

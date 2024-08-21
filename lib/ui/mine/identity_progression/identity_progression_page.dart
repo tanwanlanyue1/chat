@@ -149,19 +149,22 @@ class IdentityProgressionPage extends StatelessWidget {
             );
           }),
           const Spacer(),
-          Button(
-            height: 50.rpx,
-            onPressed: (){
-              controller.updateAudit();
-            },
-            margin: EdgeInsets.symmetric(horizontal: 38.rpx),
-            child: Text(
-              state.current == 0 ?
-              S.current.generalBroker:
-              state.current == 1 ?
-              S.current.generalUser:
-              S.current.generalGood,
-              style: TextStyle(color: Colors.white, fontSize: 16.rpx),
+          Visibility(
+            visible: state.current != 2,
+            child: Button(
+              height: 50.rpx,
+              onPressed: (){
+                controller.updateAudit();
+              },
+              margin: EdgeInsets.symmetric(horizontal: 38.rpx),
+              child: Text(
+                state.current == 0 ?
+                S.current.generalBroker:
+                state.current == 1 ?
+                S.current.generalUser:
+                S.current.generalGood,
+                style: TextStyle(color: Colors.white, fontSize: 16.rpx),
+              ),
             ),
           )
         ],

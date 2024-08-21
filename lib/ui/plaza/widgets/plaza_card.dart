@@ -111,6 +111,8 @@ class PlazaCard extends StatelessWidget {
                     child: Text(
                       "${item.nickname}",
                       style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Row(
@@ -160,7 +162,7 @@ class PlazaCard extends StatelessWidget {
         margin: EdgeInsets.only(top: user ? 0 : 10.rpx,bottom: 4.rpx),
         alignment: Alignment.centerLeft,
         child: Text(
-          item.content ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray8),maxLines: 4,overflow: TextOverflow.ellipsis,
+          item.content ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray8),maxLines: 6,overflow: TextOverflow.ellipsis,
         )
     );
   }

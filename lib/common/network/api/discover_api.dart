@@ -47,15 +47,13 @@ class DiscoverApi {
   /// coordinate: 经纬度
   static Future<ApiResponse<List<AppointmentModel>>> appointmentList({
     int? type,
-    required int subType,
-    required String coordinate,
+    List? subTypes,
     int page = 1,
     int size = 10,
   }) {
     return HttpClient.get('/api/Appointment/list', params: {
       "type": type,
-      "coordinate": coordinate,
-      "subType": subType,
+      "subTypes": subTypes,
       "page": page,
       "size": size,
     }, dataConverter: (data) {

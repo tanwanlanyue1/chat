@@ -226,19 +226,22 @@ class ReleaseInvitationPage extends StatelessWidget {
                     children: [
                       Text("\$",style: AppTextStyle.fs16b.copyWith(color: !state.serve.value ? AppColor.primary : AppColor.gray9),),
                       Expanded(
-                        child: InputWidget(
-                          hintText: '',
-                          lines: 1,
-                          disabled: !state.serve.value,
-                          fillColor: Colors.white,
-                          textAlign: TextAlign.center,
-                          keyboardType: const TextInputType.numberWithOptions(decimal: false),
-                          contentPadding: EdgeInsets.symmetric(vertical: -24.rpx,),
-                          textStyle: AppTextStyle.fs16b.copyWith(color: AppColor.primary),
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                          ],
-                          inputController: controller.serviceController,
+                        child: Container(
+                          padding: EdgeInsets.only(top: 3.rpx),
+                          child: InputWidget(
+                            hintText: '',
+                            lines: 1,
+                            disabled: !state.serve.value,
+                            fillColor: Colors.white,
+                            textAlign: TextAlign.center,
+                            keyboardType: const TextInputType.numberWithOptions(decimal: false),
+                            contentPadding: EdgeInsets.symmetric(vertical: -24.rpx,),
+                            textStyle: AppTextStyle.fs16b.copyWith(color: AppColor.primary,height: 1.0001),
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                            ],
+                            inputController: controller.serviceController,
+                          ),
                         ),
                       ),
                     ],

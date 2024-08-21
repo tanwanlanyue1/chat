@@ -247,8 +247,8 @@ class MineFeedbackPage extends StatelessWidget {
                 ),
                 Expanded(
                   child: InputWidget(
-                      hintText: '',
-                      fillColor: Colors.white,
+                      hintText: '请先输入手机/邮箱',
+                      fillColor: AppColor.white8,
                       inputController: controller.contactController,
                       textStyle: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
                       border: OutlineInputBorder(

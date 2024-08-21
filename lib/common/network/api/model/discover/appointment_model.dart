@@ -49,7 +49,7 @@ class AppointmentModel {
   //经纬度
   String? coordinate;
   //距离
-  String? distance;
+  double? distance;
   //服务费
   double? serviceCharge;
   //	创建时间

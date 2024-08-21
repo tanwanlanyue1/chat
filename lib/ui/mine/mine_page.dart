@@ -286,11 +286,11 @@ class _MinePageState extends State<MinePage>
             pagePath: AppRoutes.mineSettingPage,
           ),
           //激活/进阶
-          if (userType.isUser)
+          if (userType.isUser || userType.isAgent)
             MineListTile(
               title: S.current.activationProgression,
               icon: "assets/images/mine/activate.png",
-              trailing: S.current.normalUser,
+              trailing: userType.isUser ? S.current.normalUser : S.current.brokerUser,
               onTap: controller.onTapUserAdvanced,
             ),
           //解约/进阶为经纪人

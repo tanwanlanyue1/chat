@@ -62,6 +62,16 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin{
     super.onInit();
   }
 
+  //设置排序
+  void setSort(int i){
+    if(state.sortIndex.contains(state.sortList[i]['type'])){
+      state.sortIndex.remove(state.sortList[i]['type']);
+    }else{
+      state.sortIndex.add(state.sortList[i]['type']);
+    }
+    fetchPage(1);
+  }
+
   ///获取约会列表
   void fetchPage(int page) async {
     Loading.show();
@@ -70,10 +80,10 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin{
       pagingController.itemList?.clear();
       res = await getOneself();
     }
+    print("state.sortIndex===${state.sortIndex}");
     final response = await DiscoverApi.appointmentList(
-      type: state.typeList[state.typeIndex.value]['type'],
-      subType: state.typeList[state.sortIndex.value]['type'],
-      coordinate: '10',
+      type: state.typeIndex.value > -1 ? state.typeList[state.typeIndex.value]['type'] : null,
+      subTypes: state.sortIndex,
       page: page
     );
     Loading.dismiss();

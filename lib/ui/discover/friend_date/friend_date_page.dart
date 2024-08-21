@@ -113,32 +113,28 @@ class FriendDatePage extends StatelessWidget {
   Widget classifyTab() {
     return Obx(() =>
         Row(
-      children: List.generate(state.sortList.length, (index) =>
+      children: List.generate(state.sortList.length, (i) =>
           GestureDetector(
-            onTap: (){
-              state.sortIndex.value = index;
-              controller.fetchPage(1);
-            },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.only(right: 16.rpx),
-                  child: Text("${state.sortList[index]['name']}",
-                    style: TextStyle(color: index == state.sortIndex.value
-                        ? AppColor.primary
-                        : AppColor.gray30, fontSize: 14.rpx,
-                        fontWeight: index == state.sortIndex.value ? FontWeight.bold : FontWeight.normal
-                    ),),
+            onTap: ()=> controller.setSort(i),
+            child: Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(right: 16.rpx,bottom: 12.rpx),
+              height: 28.rpx,
+              padding: EdgeInsets.symmetric(horizontal: 10.rpx),
+              decoration: BoxDecoration(
+                color: state.sortIndex.contains(state.sortList[i]['type']) ? AppColor.gradientBegin : Colors.transparent,
+                borderRadius: BorderRadius.circular(20.rpx),
+                border: Border.all(
+                  color: AppColor.gradientBegin.withOpacity(0.8),
+                  width: 1.rpx,
                 ),
-                Container(
-                  height: 2.rpx,
-                  margin: EdgeInsets.only(right: 16.rpx,top: 4.rpx,bottom: 8.rpx),
-                  color: index == state.sortIndex.value ? AppColor.primary : Colors.transparent,
-                  child: Text("${state.sortList[index]['name']}",style: TextStyle(fontSize: 10.rpx, color: Colors.transparent), ),
-                )
-              ],
+              ),
+              child: Text("${state.sortList[i]['name']}",
+                style: TextStyle(color: state.sortIndex.contains(state.sortList[i]['type'])
+                    ? Colors.white
+                    : AppColor.gradientBegin, fontSize: 14.rpx,
+                  height: 1
+                ),),
             ),
           ),),
     ));

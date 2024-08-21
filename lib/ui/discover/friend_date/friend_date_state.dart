@@ -5,9 +5,9 @@ import 'package:guanjia/generated/l10n.dart';
 class FriendDateState {
   final userInfo = SS.login.info;
   //约会类型
-  final typeIndex = 0.obs;
+  final typeIndex = Rx(-1);
   //排序类型
-  final sortIndex = 0.obs;
+  final sortIndex = [].obs;
 
   //约会类型
   List<Map<String, dynamic>> typeList = [

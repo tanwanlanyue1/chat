@@ -47,7 +47,10 @@ class HomePage extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         onTap: controller.setCurrentPage,
         currentIndex: currentPage,
-        selectedItemColor: AppColor.blue6,
+        selectedItemColor: AppColor.gradientBegin,
+        unselectedItemColor: AppColor.blue56,
+        unselectedFontSize: 12.rpx,
+        selectedFontSize: 12.rpx,
         items: state.allBottomNavItems.mapIndexed((index, item) {
           return BottomNavigationBarItem(
             icon: Badge(
@@ -58,7 +61,7 @@ class HomePage extends StatelessWidget {
                 item.icon,
                 width: 28,
                 height: 28,
-                color: currentPage == index ? AppColor.blue6 : null,
+                color: currentPage == index ? AppColor.gradientBegin : AppColor.blue56,
               ),
             ),
             label: item.title,

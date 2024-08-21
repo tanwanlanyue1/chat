@@ -45,9 +45,20 @@ class _MinePageState extends State<MinePage>
               controller: controller.refreshController,
               onRefresh: controller.onRefresh,
               child: ListView(
-                padding: FEdgeInsets(horizontal: 16.rpx, bottom: 24.rpx, top: 16.rpx),
+                padding: FEdgeInsets(horizontal: 16.rpx, bottom: 24.rpx),
                 children: [
                   buildBanner(),
+                  Text("个人信息",style: TextStyle(
+                      fontFamily: "PingFangSC"
+                  ),),
+                  Text("个人信息",style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                    fontFamily: "PingFangSC"
+                  ),),
+                  Text("个人信息",style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "PingFangSC"
+                  ),),
                   buildSectionOne(),
                   buildSectionTwo(),
                   buildSignOutButton(),
@@ -188,7 +199,7 @@ class _MinePageState extends State<MinePage>
   ///广告
   Widget buildBanner() {
     return Padding(
-      padding: FEdgeInsets(vertical: 24.rpx),
+      padding: FEdgeInsets(vertical: 16.rpx),
       child: AppImage.asset(
         width: double.infinity,
         fit: BoxFit.fitWidth,

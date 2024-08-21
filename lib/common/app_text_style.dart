@@ -6,7 +6,7 @@ class AppTextStyle {
   AppTextStyle._();
 
   static const notoSerifSC = TextStyle(
-    // fontFamily: 'NotoSerifSC',
+    fontFamily: 'PingFangSC',
   );
 
   /// 默认实现 可以配合 TextStyleExtension 拓展 链式调用

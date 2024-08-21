@@ -1,6 +1,6 @@
 import 'package:guanjia/common/network/api/api.dart';
 
-///音视频速配消息内容
+///音视频速配 应用内消息内容
 class CallMatchContent {
 
   ///1视频速配, 2语音速配

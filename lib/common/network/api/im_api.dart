@@ -1,11 +1,4 @@
-import 'dart:typed_data';
-
-import 'package:dio/dio.dart';
-import 'package:guanjia/common/network/api/model/user/binding_info.dart';
-import 'package:guanjia/common/network/api/model/user/contract_model.dart';
-import 'package:guanjia/common/network/api/model/user/level_money_info.dart';
 import 'package:guanjia/common/network/httpclient/http_client.dart';
-import 'package:guanjia/common/network/api/api.dart';
 
 /// IM API
 class IMApi {

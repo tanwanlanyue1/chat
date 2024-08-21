@@ -391,7 +391,7 @@ class OrderListItem {
       },
       OrderItemState.timeOut: {
         UserType.user: OrderListItemWrapper(
-          avatar: model.receiveAvatar,
+          avatar: receiveAvatar,
           nick:
               "$receiveNamePrefix$receiveName",
           stateText: "等待超时",

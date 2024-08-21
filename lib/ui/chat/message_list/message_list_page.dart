@@ -26,22 +26,17 @@ class MessageListPage extends GetView<MessageListController> {
   final String conversationId;
   final ZIMConversationType conversationType;
 
-  ///来自征友约会
-  final bool isFromFriend;
-
   const MessageListPage({
     super.key,
     required this.conversationId,
     required this.conversationType,
-    this.isFromFriend = false,
   });
 
   ///跳转聊天
   ///- userId 用户ID
   ///- isFromFriend 来自征友约会
   static void go({
-    required int userId,
-    bool isFromFriend = false,
+    required int userId
   }) {
     if (userId == SS.login.userId) {
       AppLogger.w('不可和自己聊天');
@@ -53,7 +48,6 @@ class MessageListPage extends GetView<MessageListController> {
       arguments: {
         'conversationId': userId.toString(),
         'conversationType': ZIMConversationType.peer,
-        'isFromFriend': isFromFriend,
       },
     );
   }
@@ -69,7 +63,6 @@ class MessageListPage extends GetView<MessageListController> {
       init: MessageListController(
         conversationId: conversationId,
         conversationType: conversationType,
-        isFromFriend: isFromFriend,
       ),
       tag: tag,
       builder: (controller) {
@@ -114,7 +107,6 @@ class MessageListPage extends GetView<MessageListController> {
                   return ChatDateView(
                     user: user,
                     order: order.id != 0 ? order : null,
-                    isFriendDate: state.isFromFriend,
                     onTapOrderAction: controller.onTapOrderAction,
                     onTapOrder: (order) => controller.onTapToOrderDetail(order.id),
                   );

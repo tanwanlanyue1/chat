@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/network/api/discover_api.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/chat/chat_manager.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
@@ -184,9 +185,8 @@ class DraftDialog extends StatelessWidget {
     final response = await DiscoverApi.participate(id: item.id ?? 0);
     Loading.dismiss();
     if(response.isSuccess){
-      MessageListPage.go(
+      ChatManager().startChat(
         userId: item.userInfo?.uid ?? 0,
-        isFromFriend: true,
       );
     }else{
       response.showErrorMessage();

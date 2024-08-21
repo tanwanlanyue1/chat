@@ -91,11 +91,9 @@ class MessageListController extends GetxController
   MessageListController({
     required String conversationId,
     required ZIMConversationType conversationType,
-    required bool isFromFriend,
   }) : state = MessageListState(
           conversationId: conversationId,
           conversationType: conversationType,
-          isFromFriend: isFromFriend
         );
 
   void showMoreBottomSheet() {

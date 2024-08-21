@@ -46,4 +46,16 @@ class IMApi {
     );
   }
 
+  /// 创建音视频通话订单
+  ///- type ：1视频 2语音
+  ///- return 订单ID
+  static Future<ApiResponse<int>> createCallOrder(int type) {
+    return HttpClient.post(
+      '/api/im/createOrder',
+      data: {
+        "code": type,
+      },
+    );
+  }
+
 }

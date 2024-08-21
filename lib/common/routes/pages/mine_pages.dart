@@ -163,7 +163,6 @@ class MinePages {
           'conversationType',
           ZIMConversationType.peer,
         ),
-        isFromFriend: Get.getArgs('isFromFriend', false),
       ),
     ),
     GetPage(

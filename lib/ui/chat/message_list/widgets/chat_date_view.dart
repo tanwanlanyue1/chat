@@ -25,13 +25,9 @@ class ChatDateView extends StatelessWidget {
   ///点击订单详情
   final void Function(OrderItemModel order)? onTapOrder;
 
-  //是否来自征友页面
-  final bool isFriendDate;
-
   const ChatDateView({
     super.key,
     required this.user,
-    required this.isFriendDate,
     this.order,
     this.onTapOrderAction,
     this.onTapOrder,

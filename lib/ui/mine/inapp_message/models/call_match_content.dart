@@ -2,8 +2,9 @@ import 'package:guanjia/common/network/api/api.dart';
 
 ///音视频速配消息内容
 class CallMatchContent {
-  ///是否是视频速配
-  final bool isVideoMatch;
+
+  ///1视频速配, 2语音速配
+  final int type;
 
   ///发起人ID
   final int uid;
@@ -24,7 +25,7 @@ class CallMatchContent {
   final int expiredTime;
 
   CallMatchContent({
-    required this.isVideoMatch,
+    required this.type,
     required this.uid,
     required this.nickname,
     required this.avatar,
@@ -37,7 +38,7 @@ class CallMatchContent {
     final genderVal = json['gender'] ?? 0;
 
     return CallMatchContent(
-      isVideoMatch: json['isVideoMatch'] ?? false,
+      type: json['type'] ?? 0,
       uid: json['uid'] ?? 0,
       nickname: json['nickname'] ?? '',
       avatar: json['avatar'] ?? '',

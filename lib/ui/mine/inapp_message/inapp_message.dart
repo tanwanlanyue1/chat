@@ -35,9 +35,8 @@ class InAppMessage {
   static dynamic _parseContent(InAppMessageType type, dynamic data){
     try{
       switch (type) {
-        case InAppMessageType.videoMatch:
-        case InAppMessageType.voiceMatch:
-          data['isVideoMatch'] = type == InAppMessageType.videoMatch;
+        case InAppMessageType.callMatch:
+        case InAppMessageType.callMatchSuccess:
           return CallMatchContent.fromJson(data);
       }
     }catch(ex){

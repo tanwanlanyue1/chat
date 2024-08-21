@@ -1,9 +1,33 @@
 import 'dart:convert';
+// Dart imports:
+import 'dart:async';
+// import 'dart:ffi';
 
+// Flutter imports:
+import 'package:flutter/material.dart';
+import 'package:guanjia/common/utils/permissions_utils.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+// Package imports:
+import 'package:zego_uikit/zego_uikit.dart';
+
+// Project imports:
+import 'package:zego_uikit_prebuilt_call/src/invitation/defines.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/inner_text.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/internal/assets.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/internal/defines.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/internal/internal_instance.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/internal/notification.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/internal/protocols.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/pages/calling/machine.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/pages/page_manager.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/service.dart';
+import 'package:zego_uikit_prebuilt_call/src/minimizing/overlay_machine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -19,9 +43,10 @@ import 'package:zego_zimkit/zego_zimkit.dart';
 import 'chat_event_notifier.dart';
 import 'custom/custom_message_type.dart';
 import 'custom/message_call_end_content.dart';
+part 'chat_call_mixin.dart';
 
 ///IM聊天，音视频通话 服务管理
-class ChatManager {
+class ChatManager with ChatCallMixin{
   ChatManager._();
 
   factory ChatManager() => instance;
@@ -29,9 +54,6 @@ class ChatManager {
   static final instance = ChatManager._();
 
   var _isInit = false;
-
-  ///当前音视频通话信息
-  var _callInfo = ChatCallInfo();
 
   ///等待通话结束，显示对话框
   var _isWaitCallEndDialog = false;
@@ -123,8 +145,7 @@ class ChatManager {
           switch (event.reason) {
             case ZegoCallEndReason.localHangUp:
             case ZegoCallEndReason.abandoned:
-              //本地挂断，发送一条通话时长消息
-              _sendCallEndMessage(_callInfo);
+              //本地挂断
               break;
             default:
               break;
@@ -138,16 +159,8 @@ class ChatManager {
           ZegoCallUser callee,
         ) {
           AppLogger.d(
-              'ZegoUIKitPrebuiltCallInvitationEvents>onOutgoingCallAccepted: callID=${callID}, info=$_callInfo');
-          if (_callInfo.invitee == callee.id) {
-            _isWaitCallEndDialog = true;
-            _callInfo = _callInfo.copyWith(
-              beginTime: DateTime.now(),
-              inviter: SS.login.userId.toString(),
-              invitee: callee.id,
-              duration: Duration.zero,
-            );
-          }
+              'ZegoUIKitPrebuiltCallInvitationEvents>onOutgoingCallAccepted: callID=${callID}');
+          _isWaitCallEndDialog = true;
         },
         onIncomingCallReceived: (
           String callID,
@@ -157,12 +170,6 @@ class ChatManager {
           String customData,
         ) {
           _isWaitCallEndDialog = true;
-          _callInfo = ChatCallInfo(
-            beginTime: DateTime.now(),
-            isVideoCall: callType == ZegoCallInvitationType.videoCall,
-            inviter: caller.id,
-            invitee: callees.first.id,
-          );
         },
         onOutgoingCallRejectedCauseBusy: (
           String callID,
@@ -280,7 +287,6 @@ class ChatManager {
 
     //通话时长回调
     config.duration = ZegoCallDurationConfig(onDurationUpdate: (duration) {
-      _callInfo.duration = duration;
     });
 
     return config;
@@ -292,15 +298,6 @@ class ChatManager {
     await ZIMKit().disconnectUser();
     await ZegoUIKitPrebuiltCallInvitationService().uninit();
     _isWaitCallEndDialog = false;
-  }
-
-  ///设置通话ID
-  ///- invitee 被邀请人id
-  ///- isVideoCall
-  void setChatCallInfo({required String invitee, required bool isVideoCall}) {
-    _callInfo
-      ..isVideoCall = isVideoCall
-      ..invitee = invitee;
   }
 
   ///发送一条通话记录消息
@@ -356,6 +353,25 @@ class ChatManager {
       AppLogger.w('syncUserInfo: 用户信息为空');
     }
   }
+
+
+  ///开始聊天(跳转聊天页面)
+  bool startChat({required int userId}){
+    if (userId == SS.login.userId) {
+      AppLogger.w('不可和自己聊天');
+      return false;
+    }
+    Get.toNamed(
+      AppRoutes.messageListPage,
+      arguments: {
+        'conversationId': userId.toString(),
+        'conversationType': ZIMConversationType.peer,
+      },
+    );
+    return true;
+  }
+
+
 }
 
 ///音视频通话状态信息

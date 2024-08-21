@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 // Project imports:
@@ -35,7 +37,7 @@ class ZegoStartInvitationButton extends StatefulWidget {
 
   final int invitationType;
   final List<String> invitees;
-  final String data;
+  final FutureOr<String?> data;
   final int timeoutSeconds;
   final ZegoNotificationConfig? notificationConfig;
 
@@ -108,6 +110,16 @@ class _ZegoStartInvitationButtonState extends State<ZegoStartInvitationButton> {
       return;
     }
 
+    final data = await widget.data;
+    if(data == null){
+      ZegoLoggerService.logInfo(
+        'onPressed click process, data == null',
+        tag: 'uikit-plugin-signaling',
+        subTag: 'start invitation button',
+      );
+      return;
+    }
+
     final sendResult = widget.isAdvancedMode
         ? ZegoUIKit().getSignalingPlugin().sendAdvanceInvitation(
               inviterID: ZegoUIKit().getLocalUser().id,
@@ -115,7 +127,7 @@ class _ZegoStartInvitationButtonState extends State<ZegoStartInvitationButton> {
               invitees: widget.invitees,
               timeout: widget.timeoutSeconds,
               type: widget.invitationType,
-              data: widget.data,
+              data: data,
               zegoNotificationConfig: widget.notificationConfig,
             )
         : ZegoUIKit().getSignalingPlugin().sendInvitation(
@@ -124,7 +136,7 @@ class _ZegoStartInvitationButtonState extends State<ZegoStartInvitationButton> {
               invitees: widget.invitees,
               timeout: widget.timeoutSeconds,
               type: widget.invitationType,
-              data: widget.data,
+              data: data,
               isAdvancedMode: widget.isAdvancedMode,
               zegoNotificationConfig: widget.notificationConfig,
             );

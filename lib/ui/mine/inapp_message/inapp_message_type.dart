@@ -3,11 +3,11 @@ import 'package:guanjia/common/extension/list_extension.dart';
 ///应用内消息类型
 enum InAppMessageType{
 
-  ///视频速配 1
-  videoMatch,
+  ///语音视频速配 1
+  callMatch,
 
-  ///语音速配 2
-  voiceMatch,
+  ///速配成功 2
+  callMatchSuccess,
 
 }
 

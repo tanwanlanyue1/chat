@@ -32,6 +32,8 @@ class DatingHallView extends StatelessWidget {
     return Column(
       children: [
         buildSpeedDating(),
+        buildSpeedDating(),
+        buildSpeedDating(),
         Expanded(
           child: hallItem(),
         ),
@@ -94,16 +96,18 @@ class DatingHallView extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.rpx),
             height: 45.rpx,
             child: Row(
-              children: [//onTapFiltrate
+              children: [
                 Text("交友大厅",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
                 const Spacer(),
                 GestureDetector(
+                  behavior: HitTestBehavior.translucent,
                   onTap: controller.onTapFiltrate,
-                  child: Text("筛选",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray5),),
-                ),
-                GestureDetector(
-                  onTap: controller.onTapFiltrate,
-                  child: const Icon(Icons.arrow_drop_down_sharp,color: Colors.grey,),
+                  child: Row(
+                    children: [
+                      Text("筛选",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray5),),
+                      const Icon(Icons.arrow_drop_down_sharp,color: Colors.grey,),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -130,54 +134,55 @@ class DatingHallView extends StatelessWidget {
 
   //交友项
   Widget friendsItem(RecommendModel item){
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 12.rpx,horizontal: 16.rpx),
-      // color: AppColor.scaffoldBackground,
-      margin: EdgeInsets.only(bottom: 8.rpx),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: () => Get.toNamed(AppRoutes.userCenterPage,arguments: {'userId': item.uid}),
-            child: Container(
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => Get.toNamed(AppRoutes.userCenterPage,arguments: {'userId': item.uid}),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 12.rpx,horizontal: 16.rpx),
+        // color: AppColor.scaffoldBackground,
+        margin: EdgeInsets.only(bottom: 8.rpx),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
               margin: EdgeInsets.only(right: 8.rpx),
               child: AppImage.network(item.avatar ?? '',width: 100.rpx,height: 100.rpx,borderRadius: BorderRadius.circular(8.rpx),),
             ),
-          ),
-          Expanded(child: SizedBox(
-            height: 100.rpx,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(item.nickname ?? '',style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),maxLines: 1,overflow: TextOverflow.ellipsis,),
-                Row(
-                  children: [
-                    Text("${item.age ?? ''}岁 ",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
-                    Expanded(child: Text("| ${item.style ?? ''}",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),maxLines: 1,overflow: TextOverflow.ellipsis,)),
-                  ],
-                ),
-                item.images != null ?
-                Row(
-                  children: List.generate(jsonDecode(item.images).length > 3 ? 3 : jsonDecode(item.images).length, (index) => Container(
-                    margin: EdgeInsets.only(right: 6.rpx),
-                    child: AppImage.network(jsonDecode(item.images)[index],width: 40.rpx,height: 40.rpx,borderRadius: BorderRadius.circular(4.rpx),),
-                  )),
-                ):
-                Container(),
-              ],
-            ),
-          )),
-          Button.stadium(
-            onPressed: (){
-              MessageListPage.go(userId: item.uid!);
-            },
-            width: 82.rpx,
-            height: 28.rpx,
-            backgroundColor: item.gender == 2 ? AppColor.purple6 : AppColor.textBlue,
-            child: Text(S.current.getTouchWith,style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
-          )
-        ],
+            Expanded(child: SizedBox(
+              height: 100.rpx,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(item.nickname ?? '',style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                  Row(
+                    children: [
+                      Text("${item.age ?? ''}岁 ",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                      Expanded(child: Text("| ${item.style ?? ''}",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                    ],
+                  ),
+                  item.images != null ?
+                  Row(
+                    children: List.generate(jsonDecode(item.images).length > 3 ? 3 : jsonDecode(item.images).length, (index) => Container(
+                      margin: EdgeInsets.only(right: 6.rpx),
+                      child: AppImage.network(jsonDecode(item.images)[index],width: 40.rpx,height: 40.rpx,borderRadius: BorderRadius.circular(4.rpx),),
+                    )),
+                  ):
+                  Container(),
+                ],
+              ),
+            )),
+            Button.stadium(
+              onPressed: (){
+                MessageListPage.go(userId: item.uid!);
+              },
+              width: 82.rpx,
+              height: 28.rpx,
+              backgroundColor: item.gender == 1 ? AppColor.textBlue : AppColor.purple6,
+              child: Text(S.current.getTouchWith,style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -40,6 +40,15 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin{
       return title;
     }
   }
+  //标签分割
+  String labelSplit(String text) {
+    if(text.isEmpty){
+      return '';
+    }
+    List<String> parts = text.split(',');
+    List<String> hashtagParts = parts.map((part) => '#${part.trim()}').toList();
+    return hashtagParts.join(' ');
+  }
 
   @override
   void onInit() {
@@ -101,7 +110,6 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin{
             MessageListPage.go(userId: uid!);
           }else{
             Get.toNamed(AppRoutes.mineFeedbackPage);
-            // AppRoutes.mineFeedbackPage
           }
         },
       ),
@@ -113,7 +121,7 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin{
     if(state.userInfo?.type.index != 2){
       DraftDialog.show(item: item);
     }else{
-      Loading.showToast("经纪人不可以参与!");
+      Loading.showToast("该约会邀约仅对普通用户和佳丽生效");
     }
   }
 

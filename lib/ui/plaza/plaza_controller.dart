@@ -9,7 +9,7 @@ class PlazaController extends GetxController with GetSingleTickerProviderStateMi
 
   @override
   void onInit() {
-    tabController = TabController(length: state.tabBarList.length, vsync: this, );
+    tabController = TabController(length: state.tabBarList.length, vsync: this,initialIndex: 2);
     super.onInit();
   }
 

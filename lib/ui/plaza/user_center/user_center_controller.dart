@@ -8,6 +8,7 @@ import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -111,11 +112,16 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
     var info = jsonDecode(jsonEncode(state.authorInfo))[state.userBasics[index]['data']] ?? '-';
     if(index == 1){
       info = (info == 1) ? "男":"女";
-    }else if(info == '0.00'){
+    }else if(info == '0.00' || info == '0'|| info == 0){
       info = '-';
     }
     if(state.authorInfo.type.isUser && index == 2){
       info = "用户";
+    }
+    if(!state.authorInfo.type.isUser && index == 2 && info != '-'){
+      NumberFormat format = NumberFormat('0.#####');
+      String formattedValue = format.format(double.parse(info));
+      return '$formattedValue%';
     }
     return info.toString();
   }

@@ -15,7 +15,7 @@ class CommonUtils {
   ///[yearsFlag] 是否要年份
   static getPostTime({String? time, bool yearsFlag = false}) {
     if (time != null) {
-      DateTime? recordTime = DateUtil.getDateTime(time, isUtc: false);
+      DateTime? recordTime = DateUtil.getDateTimeByMs(int.parse(time), isUtc: false);
       if (recordTime == null) {
         return '';
       }
@@ -178,10 +178,10 @@ class CommonUtils {
   }
 
   ///时间戳
-  static String timestamp(String time){
+  static String timestamp(String time,{String? unit}){
     int timestampInMilliseconds = int.parse(time);
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestampInMilliseconds);
-    DateFormat dateFormat = DateFormat('MM-dd HH:00');
+    DateFormat dateFormat = DateFormat(unit ?? 'MM-dd HH:00');
     String formattedDate = dateFormat.format(dateTime);
     return formattedDate;
   }

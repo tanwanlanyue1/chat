@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/input_widget.dart';
 import 'package:guanjia/widgets/upload_image.dart';
@@ -21,7 +22,6 @@ class MineFeedbackPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(S.current.feedback),
       ),
-      backgroundColor: AppColor.white8,
       body: GetBuilder<MineFeedbackController>(
         builder: (controller) {
           return Column(
@@ -47,7 +47,7 @@ class MineFeedbackPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "确定",
+                        "提交",
                         style: TextStyle(color: Colors.white, fontSize: 16.rpx),
                       )
                     ],
@@ -85,7 +85,7 @@ class MineFeedbackPage extends StatelessWidget {
                 ),
                 Text(
                   S.current.pleaseSelectATag,
-                  style: TextStyle(color: AppColor.gray5, fontSize: 16.rpx),
+                  style: TextStyle(color: AppColor.gray30, fontSize: 16.rpx),
                 ),
               ],
             ),
@@ -142,7 +142,7 @@ class MineFeedbackPage extends StatelessWidget {
                 ),
                 Text(
                   S.current.specificProposalContent,
-                  style: TextStyle(color: AppColor.gray5, fontSize: 16.rpx),
+                  style: TextStyle(color: AppColor.gray30, fontSize: 16.rpx),
                 ),
               ],
             ),
@@ -159,6 +159,9 @@ class MineFeedbackPage extends StatelessWidget {
                     fillColor: AppColor.white8,
                     counterText: '',
                     inputController: controller.contentController,
+                    onChanged: (val){
+                      controller.update();
+                    },
                     contentPadding: EdgeInsets.symmetric(horizontal: 12.rpx,vertical: 16.rpx),
                 ),
               ),
@@ -187,7 +190,7 @@ class MineFeedbackPage extends StatelessWidget {
                 ),
                 Text(
                   S.current.uploadPictures,
-                  style: TextStyle(color: AppColor.gray5, fontSize: 16.rpx),
+                  style: TextStyle(color: AppColor.gray30, fontSize: 16.rpx),
                 ),
               ],
             ),
@@ -236,22 +239,22 @@ class MineFeedbackPage extends StatelessWidget {
                 Container(
                   height: 50.rpx,
                   alignment: Alignment.center,
+                  margin: EdgeInsets.only(right: 12.rpx),
                   child: Text(
                     S.current.contactNumber,
-                    style: TextStyle(color: AppColor.gray9, fontSize: 14.rpx),
+                    style: TextStyle(color: AppColor.gray30, fontSize: 16.rpx),
                   ),
                 ),
                 Expanded(
                   child: InputWidget(
-                      hintText: S.current.pleaseFillInYourMobilePhoneNumber,
+                      hintText: '',
                       fillColor: Colors.white,
                       inputController: controller.contactController,
+                      textStyle: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
                       border: OutlineInputBorder(
                           borderSide: BorderSide.none,
                           borderRadius: BorderRadius.all(Radius.circular(8.rpx))),
-                      onChanged: (val) {
-                        // controller.setController = val;
-                      }),
+                  ),
                 ),
               ],
             ),

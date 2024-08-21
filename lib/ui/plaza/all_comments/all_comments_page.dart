@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -172,7 +173,8 @@ class AllCommentsPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Text('${item.createTime?.substring(5,16)}',style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+              Text(CommonUtils.getPostTime(time: item.createTime ?? ''),style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30))
+              // Text(CommonUtils.timestamp(item.createTime ?? '',unit: "MM-dd HH:ss"),style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30))
             ],
           ),
           SizedBox(height: 12.rpx,),

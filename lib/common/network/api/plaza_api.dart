@@ -69,10 +69,10 @@ class PlazaApi{
 
   /// 获取广场评论列表
   /// id:广场id
-  /// id:类型（默认0热门，1最新，2最早）
+  /// id:类型（默认0最新，1最早）
   static Future<ApiResponse<List<CommentListModel>>> getCommentList({
     required int id,
-    int type = 1,
+    int type = 0,
   }) {
     return HttpClient.get(
       '/api/community/commentList',

@@ -32,17 +32,23 @@ class MineServiceChargePage extends StatelessWidget {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 24.rpx),
             color: Colors.white,
-            child: InputWidget(
-              hintText: '${SS.login.info?.serviceCharge ?? S.current.pleaseEnterService}',
-              // hintText: S.current.pleaseEnterService,
-              lines: 1,
-              fillColor: Colors.white,
-              textAlign: TextAlign.center,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                InputWidget(
+                  hintText: '${SS.login.info?.serviceCharge ?? S.current.pleaseEnterService}',
+                  lines: 1,
+                  fillColor: Colors.white,
+                  textAlign: TextAlign.center,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                  ],
+                  inputController: controller.contentController,
+                ),
+                Text("数字1-999999",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
+                SizedBox(height: 8.rpx,)
               ],
-              inputController: controller.contentController,
             ),
           ),
           Button(

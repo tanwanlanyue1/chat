@@ -14,7 +14,7 @@ class AppTheme {
   static final light = ThemeData(
     brightness: Brightness.light,
     useMaterial3: false,
-    fontFamily: AppTextStyle.notoSerifSC.fontFamily,
+    fontFamily: AppTextStyle.pingFangMedium.fontFamily,
     fontFamilyFallback: const ['Roboto'],
     actionIconTheme: ActionIconThemeData(
       backButtonIconBuilder: (BuildContext context) {
@@ -29,7 +29,7 @@ class AppTheme {
       scrolledUnderElevation: 0,
       backgroundColor: Colors.white,
       foregroundColor: const Color(0xff333333),
-      titleTextStyle: AppTextStyle.notoSerifSC.copyWith(
+      titleTextStyle: AppTextStyle.pingFangMedium.copyWith(
         color: const Color(0xff333333),
         fontSize: 18.rpx,
         fontWeight: FontWeight.w500,

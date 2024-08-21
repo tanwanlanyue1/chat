@@ -98,13 +98,16 @@ flutter:
     - assets/js/
     #   - images/a_dot_ham.jpeg
   fonts:
-    - family: PingFangSC
+    - family: PingFang-Regular
       fonts:
         - asset: assets/fonts/PingFang-Regular.ttf
-        - asset: assets/fonts/PingFang-Medium.ttf
-          weight: 600
+    - family: PingFang-Bold
+      fonts:
         - asset: assets/fonts/PingFang-Bold.ttf
-          weight: 700
+    - family: PingFang-Medium
+      fonts:
+        - asset: assets/fonts/PingFang-Medium.ttf
+
 flutter_intl:
   enabled: true
   main_locale: zh

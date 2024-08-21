@@ -273,7 +273,7 @@ class PlazaCard extends StatelessWidget {
               children: [
                 AppImage.asset((item.isLike ?? false) ? "assets/images/plaza/attention.png":"assets/images/plaza/attention_no.png",width: 16.rpx,height: 16.rpx,),
                 SizedBox(width: 6.rpx,),
-                Text(' ${item.likeNum ?? 0}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
+                Text(' ${item.likeNum ?? '赞'}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
               ],
             ),
           ),
@@ -294,7 +294,7 @@ class PlazaCard extends StatelessWidget {
               children: [
                 AppImage.asset("assets/images/plaza/comment.png",width: 16.rpx,height: 16.rpx,),
                 SizedBox(width: 6.rpx,),
-                Text('评论',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
+                Text('${item.commentNum ?? '评论'}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
               ],
             ),
           ),

@@ -1,8 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
@@ -82,6 +84,9 @@ class IdentityProgressionPage extends StatelessWidget {
                 TextSpan(
                   text: S.current.customerService,
                   style: AppTextStyle.fs14m.copyWith(color: AppColor.primary),
+                  recognizer: TapGestureRecognizer()..onTap=(){
+                    Get.toNamed(AppRoutes.mineFeedbackPage);
+                  }
                 ),
                 TextSpan(
                   text: S.current.monitorProgress,
@@ -119,7 +124,7 @@ class IdentityProgressionPage extends StatelessWidget {
       padding: EdgeInsets.only(top: 36.rpx,bottom: 100.rpx),
       child: Column(
         children: [
-          AppImage.asset('assets/images/mine/wait.png',width: 70.rpx,height: 70.rpx,),
+          AppImage.asset('assets/images/mine/succeed.png',width: 70.rpx,height: 70.rpx,),
           Container(
             margin: EdgeInsets.only(top: 24.rpx,bottom: 74.rpx),
             child: Text("${S.current.congratulations}${state.current == 0 ? S.current.customer : state.current == 1 ? S.current.goodGirl:S.current.brokerP}",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),

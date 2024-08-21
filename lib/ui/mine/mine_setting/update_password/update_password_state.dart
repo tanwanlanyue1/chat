@@ -12,6 +12,8 @@ class UpdatePasswordState {
   //修改登录/修改支付
   final isLogin = true.obs;
 
+  final obscure = true.obs;
+
   //
   String phone = "";
 }

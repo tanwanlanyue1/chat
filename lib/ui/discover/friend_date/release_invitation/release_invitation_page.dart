@@ -232,11 +232,11 @@ class ReleaseInvitationPage extends StatelessWidget {
                           disabled: !state.serve.value,
                           fillColor: Colors.white,
                           textAlign: TextAlign.center,
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          keyboardType: const TextInputType.numberWithOptions(decimal: false),
                           contentPadding: EdgeInsets.symmetric(vertical: -24.rpx,),
                           textStyle: AppTextStyle.fs16b.copyWith(color: AppColor.primary),
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+                            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
                           ],
                           inputController: controller.serviceController,
                         ),

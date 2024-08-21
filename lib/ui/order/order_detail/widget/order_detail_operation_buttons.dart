@@ -32,7 +32,7 @@ class OrderDetailOperationButtons extends StatelessWidget {
         break;
       case OrderOperationType.payment:
         title = "立即缴纳";
-        onTap = () => controller.onTapOrderPayment(model.id);
+        onTap = () => controller.toOrderPayment(model.id);
         break;
       case OrderOperationType.cancelAndFinish:
         title = "我已到位";
@@ -44,7 +44,7 @@ class OrderDetailOperationButtons extends StatelessWidget {
         break;
       case OrderOperationType.evaluation:
         title = "立即评价";
-        onTap = () => controller.onTapToOrderEvaluation(model.id);
+        onTap = () => controller.toOrderEvaluation(model.id);
         break;
       default:
         title = "";

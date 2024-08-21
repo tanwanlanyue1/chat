@@ -241,9 +241,9 @@ class UserCenterPage extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(state.authorInfo.nickname,style: AppTextStyle.fs20b.copyWith(color: AppColor.gray5),textAlign: TextAlign.center,),
             ),
-            Container(
-              margin: EdgeInsets.only(right: 14.rpx),
-              child: Text("${controller.label()} ${state.authorInfo.position ?? ''}",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+            Visibility(
+              visible: state.authorInfo.type.index != 0,
+              child: Text("${controller.label()}   ${state.authorInfo.position ?? ''}",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

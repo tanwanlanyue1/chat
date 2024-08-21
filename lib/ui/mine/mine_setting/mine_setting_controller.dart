@@ -81,6 +81,10 @@ class MineSettingController extends GetxController {
 
   //设置支付密码-未绑定手机号/邮箱需要先绑定 payPwd
   void paymentPasswordPage(){
+    if(! (SS.login.info?.payPwd ?? false)){
+      Get.toNamed(AppRoutes.paymentPasswordPage);
+      return;
+    }
     if(SS.login.userBind){
       if(SS.login.info?.payPwd ?? false){
         Get.toNamed(AppRoutes.updatePasswordPage,arguments: {"login":false});

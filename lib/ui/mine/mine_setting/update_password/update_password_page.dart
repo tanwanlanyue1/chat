@@ -113,7 +113,7 @@ class UpdatePasswordPage extends StatelessWidget {
 
   //新密码输入框
   Widget _buildNewPasswordField() {
-    return SettingTextField(
+    return Obx(() => SettingTextField(
       labelText: S.current.enterYourPIN,
       inputController: controller.newPasswordInputController,
       hintText: S.current.pleaseEnter620Characters,
@@ -121,8 +121,12 @@ class UpdatePasswordPage extends StatelessWidget {
         FilteringTextInputFormatter.deny(RegExp(r'\s')),
         LengthLimitingTextInputFormatter(16),
       ],
-      obscureText: true,
-    );
+      obscureText: state.obscure.value,
+      showPasswordVisible: true,
+      callBack: (){
+        state.obscure.value = !state.obscure.value;
+      },
+    ));
   }
 
   //支付输入密码
@@ -142,7 +146,7 @@ class UpdatePasswordPage extends StatelessWidget {
 
   //确认密码输入框
   Widget _buildConfirmPasswordField() {
-    return SettingTextField(
+    return Obx(() => SettingTextField(
       labelText: S.current.pleaseConfirmThePassword,
       inputController: controller.confirmPasswordInputController,
       hintText: S.current.pleaseEnterYourConfirmationPassword,
@@ -150,10 +154,14 @@ class UpdatePasswordPage extends StatelessWidget {
         FilteringTextInputFormatter.deny(RegExp(r'\s')),
         LengthLimitingTextInputFormatter(16),
       ],
-      obscureText: true,
+      obscureText: state.obscure.value,
+      showPasswordVisible: state.isLogin.value,
+      callBack: (){
+        state.obscure.value = !state.obscure.value;
+      },
       readOnly: !state.isLogin.value,
       onTapCall: ()=> !state.isLogin.value ? controller.setPayPassword(affirm: true) : null,
-    );
+    ));
   }
 
   Widget _buildSubmitButton() {

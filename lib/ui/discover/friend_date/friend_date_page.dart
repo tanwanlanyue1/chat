@@ -176,6 +176,7 @@ class FriendDatePage extends StatelessWidget {
                     Text(item.userInfo?.nickname ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
                     Row(
                       children: [
+                        if(item.userInfo?.gender.index != 0)
                         Visibility(
                           visible: item.userInfo?.gender.index == 2,
                           replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
@@ -240,7 +241,7 @@ class FriendDatePage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(item.content ?? '',style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),),
-                            Text("#${item.tag}",style: AppTextStyle.fs12m.copyWith(color: AppColor.primary),),
+                            Text(controller.labelSplit(item.tag ?? ''),style: AppTextStyle.fs12m.copyWith(color: AppColor.primary),),
                           ],
                         ),
                       ),

@@ -72,10 +72,12 @@ class ReviewDialog extends StatelessWidget {
                   child: TextField(
                     controller: textController,
                     focusNode: chatFocusNode,
+                    maxLength: 100,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: const Color(0xffF6F6F6),
                       hintText: "写下你的评论",
+                      counterText: '',
                       hintStyle: TextStyle(
                         fontSize: 12.rpx,
                       ),

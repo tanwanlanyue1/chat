@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
@@ -69,6 +71,7 @@ class RectifyTheWorkplaceController extends GetxController {
       maxAge: state.info?.value.likeAgeMax,
       style: tag,
       page: page,
+      size: pagingController.pageSize
     );
     if (response.isSuccess) {
       final items = response.data ?? [];
@@ -81,7 +84,7 @@ class RectifyTheWorkplaceController extends GetxController {
   //附加标签
   void additionLabel() async {
     final response = await OpenApi.getStyleList(
-      type: state.filtrateIndex,
+      type: state.filtrateIndex == -1 ? 0 : (state.filtrateIndex+1),
     );
     if (response.isSuccess) {
       state.styleList = response.data ?? [];

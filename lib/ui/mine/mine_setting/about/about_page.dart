@@ -60,10 +60,6 @@ class AboutPage extends StatelessWidget {
                                   )
                                 : BorderRadius.zero,
                         callBack: () {
-                          if(state.agreementList[i]['title'] == '检测新版本'){
-                            AppUpdateManager.instance.checkAppUpdate(userAction: true);
-                            return;
-                          }
                           WebPage.go(url: state.agreementList[i]['url'], title: state.agreementList[i]['title']);
                         },
                       )),

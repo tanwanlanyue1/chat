@@ -48,12 +48,16 @@ class FiltrateBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(state.filtrateType.length, (index) => GestureDetector(
                   onTap: (){
-                    state.filtrateIndex = index+1;
+                    if(state.filtrateIndex == index){
+                      state.filtrateIndex = -1;
+                    }else{
+                      state.filtrateIndex = index;
+                    }
                     controller.additionLabel();
                   },
                   child: Column(
                     children: [
-                      AppImage.asset(state.filtrateIndex == index+1 ? state.filtrateType[index]['activeImage']:state.filtrateType[index]['image'],width: 60.rpx,height: 60.rpx,),
+                      AppImage.asset(state.filtrateIndex == index ? state.filtrateType[index]['activeImage']:state.filtrateType[index]['image'],width: 60.rpx,height: 60.rpx,),
                       Text(state.filtrateType[index]['name'],style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
                     ],
                   ),

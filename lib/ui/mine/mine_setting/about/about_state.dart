@@ -22,9 +22,5 @@ class AboutState {
       "title":S.current.rechargeService,
       "url": AppConfig.urlRechargeService,
     },
-    {
-      "title": S.current.detectNewVersions,
-      "url": '',
-    },
   ];
 }

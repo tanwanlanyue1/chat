@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';
@@ -21,6 +22,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
       builder: (controller) {
         final state = Get.find<OrderPaymentController>().state;
 
+        final isRequest = state.detailModel.value?.requestId == SS.login.userId;
         return Scaffold(
           appBar: AppBar(
             title: const Text("支付订单"),
@@ -36,7 +38,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                   children: [
                     SizedBox(height: 24.rpx),
                     Text(
-                      "服务费及保证金",
+                      isRequest ? "缴纳服务费及保证金" : "缴纳服务费",
                       style: AppTextStyle.st
                           .size(16.rpx)
                           .textColor(Colors.black)

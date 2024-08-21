@@ -37,7 +37,7 @@ class OrderPaymentController extends GetxController with OrderOperationMixin {
 
     final model = res.data;
     if (model != null) {
-      state.detailModel.value = OrderDetail(itemModel: model);
+      state.detailModel.value = model;
     }
     return true;
   }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/int_extension.dart';
+import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -100,7 +101,7 @@ class OrderPaymentDialog extends StatelessWidget {
                     AppTextStyle.fs14m.copyWith(color: AppColor.black6),
                   ),
                   Text(
-                    "\$${order.serviceCharge.toStringAsTrimZero()}",
+                    order.serviceCharge.toCurrencyString(),
                     style:
                     AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
                   ),
@@ -117,7 +118,7 @@ class OrderPaymentDialog extends StatelessWidget {
                           .copyWith(color: AppColor.black6),
                     ),
                     Text(
-                      "\$${order.deposit.toStringAsTrimZero()}",
+                      order.deposit.toCurrencyString(),
                       style: AppTextStyle.fs14b
                           .copyWith(color: AppColor.primary),
                     ),
@@ -136,7 +137,7 @@ class OrderPaymentDialog extends StatelessWidget {
                           .copyWith(color: AppColor.black6),
                     ),
                     Text(
-                      "\$${(order.deposit + order.serviceCharge).toStringAsTrimZero()}",
+                      (order.deposit + order.serviceCharge).toCurrencyString(),
                       style: AppTextStyle.fs14b
                           .copyWith(color: AppColor.gray5),
                     ),
@@ -158,7 +159,7 @@ class OrderPaymentDialog extends StatelessWidget {
         Padding(
           padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
           child: Text(
-            "请先缴纳保证金${order.deposit.toStringAsTrimZero()}元，点击下方按钮立即缴纳！",
+            "请先缴纳保证金${order.deposit.toCurrencyString()}，点击下方按钮立即缴纳！",
             textAlign: TextAlign.center,
             style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
           ),

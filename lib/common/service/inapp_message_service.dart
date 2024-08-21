@@ -47,7 +47,7 @@ class InAppMessageService extends GetxService {
   }
 
   ///监听应用内消息
-  StreamSubscription<InAppMessage> listen(void Function(InAppMessage)? onData){
+  StreamSubscription<InAppMessage> listen(void Function(InAppMessage message)? onData){
     return _streamController.stream.listen(onData);
   }
 

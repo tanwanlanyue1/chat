@@ -53,6 +53,18 @@ class MessageListController extends GetxController
       }
     }));
 
+    ///监听订单变更，刷新订单
+    autoCancel(SS.inAppMessage.listen((message) {
+      final content = message.orderUpdateContent;
+      if(content == null){
+        return;
+      }
+      final ids = [content.requestId, content.receiveId, content.introducerId];
+      if(ids.contains(SS.login.userId) && ids.contains(userId)){
+        fetchOrder();
+      }
+    }));
+
     _fetchData();
   }
 

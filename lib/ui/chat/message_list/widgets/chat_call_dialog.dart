@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
@@ -67,26 +68,26 @@ class ChatCallDialog extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '前1分钟免费聊天！',
+                  if(freeChatHintText.isNotEmpty) Text(
+                    freeChatHintText,
                     style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
                   ),
-                  Row(
+                  if(priceHintText.isNotEmpty)Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "实时语音",
+                        isVideoCall ? "实时视频" : "实时语音",
                         style:
                             AppTextStyle.fs14m.copyWith(color: AppColor.black6),
                       ),
                       Text(
-                        "60\$/10min",
+                        priceHintText,
                         style:
                             AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
                       ),
                     ],
                   ),
-                  Row(
+                  if(balanceHintText.isNotEmpty) Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
@@ -95,7 +96,7 @@ class ChatCallDialog extends StatelessWidget {
                             .copyWith(color: AppColor.black6),
                       ),
                       Text(
-                        "60\$",
+                        balanceHintText,
                         style: AppTextStyle.fs14b
                             .copyWith(color: AppColor.primary),
                       ),
@@ -118,6 +119,37 @@ class ChatCallDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  ///免费聊天提示文本
+  String get freeChatHintText{
+    final freeSecond = SS.appConfig.configRx()?.chatFreeSecond ?? 0;
+    if(freeSecond <=0 ){
+      return '';
+    }
+    if(freeSecond % 60 == 0){
+      return '前${freeSecond~/60}分钟免费聊天！';
+    }
+    return '前$freeSecond秒钟免费聊天！';
+  }
+
+  ///价格提示文本
+  String get priceHintText{
+    final config = SS.appConfig.configRx();
+    final price = isVideoCall ? config?.videoChatPrice : config?.voiceChatPrice;
+    if(price == null || price <= 0){
+      return '';
+    }
+    return '${price.toCurrencyString()}/分钟';
+  }
+
+  ///余额要求
+  String get balanceHintText{
+    final minBalance = SS.appConfig.configRx()?.chatMinBalance ?? 0;
+    if(minBalance <= 0){
+      return '';
+    }
+    return '>${minBalance.toCurrencyString()}';
   }
 
 

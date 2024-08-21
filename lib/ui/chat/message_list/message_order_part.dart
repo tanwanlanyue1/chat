@@ -2,13 +2,13 @@ import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/widgets/order_accept_dialog.dart';
 import 'package:guanjia/ui/order/widgets/order_create_dialog.dart';
-import 'package:guanjia/ui/order/widgets/order_payment_dialog.dart';
 
 import '../../../common/network/api/api.dart';
 import 'message_list_controller.dart';
 
 ///消息列表-顶部订单功能
 extension MessageOrderPart on MessageListController {
+
   ///获取订单信息
   Future<OrderItemModel?> fetchOrder() async {
     final response = await OrderApi.getLastByUid(otherUid: userId);
@@ -51,11 +51,7 @@ extension MessageOrderPart on MessageListController {
     if (!isOk) {
       return;
     }
-    final result = await onTapOrderAdd(userId);
-    if (result) {
-      //成功，刷新订单状态
-      fetchOrder();
-    }
+    await onTapOrderAdd(userId);
   }
 
   ///佳丽接单
@@ -64,44 +60,22 @@ extension MessageOrderPart on MessageListController {
     if (isAccept == null) {
       return;
     }
-    final result = await onTapOrderAcceptOrReject(isAccept, order.id);
-    if (result) {
-      //成功，刷新订单状态
-      fetchOrder();
-    }
+    await onTapOrderAcceptOrReject(isAccept, order.id);
   }
 
   ///经纪人指派订单给佳丽
   void _assignOrder(OrderItemModel order) async{
-    final ret = await onTapOrderAssign(order.id);
-    if(ret){
-      //成功，刷新订单状态
-      fetchOrder();
-    }
+    await onTapOrderAssign(order.id);
   }
 
   ///缴纳保证金
   void _paymentOrder(OrderItemModel order) async {
-    final ret = await OrderPaymentDialog.show(order: order);
-    if (ret != true) {
-      //关闭对话框
-      return;
-    }
-
-    final result = await onTapOrderPayment(order.id);
-    if (result) {
-      //成功，刷新订单状态
-      fetchOrder();
-    }
+    toOrderPayment(order.id);
   }
 
   ///佳丽确认已到位
   void _confirmOrder(OrderItemModel order) async {
-    final result = await onTapOrderFinish(order.id);
-    if (result) {
-      //成功，刷新订单状态
-      fetchOrder();
-    }
+    await onTapOrderFinish(order.id);
   }
 
   ///用户完成订单

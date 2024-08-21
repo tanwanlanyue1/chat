@@ -55,6 +55,10 @@ class AppConfigModel {
     desc = json['desc'];
     brokerageServiceTemplate = json['brokerageServiceTemplate'];
     brokerageChattingTemplate = json['brokerageChattingTemplate'];
+    chatFreeSecond = json['chatFreeSecond'];
+    videoChatPrice = json['videoChatPrice'];
+    voiceChatPrice = json['voiceChatPrice'];
+    chatMinBalance = json['chatMinBalance'];
   }
 
   int? serverTime;
@@ -90,6 +94,18 @@ class AppConfigModel {
   ///音视频陪聊收益比例模板 {brokerageChatting} TODO 预留字段，服务端还没有
   String? brokerageChattingTemplate;
 
+  ///免费通话时间 秒
+  num? chatFreeSecond;
+
+  ///视频通话单价(每分钟)
+  num? videoChatPrice;
+
+  ///语音通话单价(每分钟)
+  num? voiceChatPrice;
+
+  ///通话最低余额
+  num? chatMinBalance;
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['serverTime'] = serverTime;
@@ -114,6 +130,10 @@ class AppConfigModel {
     map['desc'] = desc;
     map['brokerageServiceTemplate'] = brokerageServiceTemplate;
     map['brokerageChattingTemplate'] = brokerageChattingTemplate;
+    map['chatFreeSecond'] = chatFreeSecond;
+    map['videoChatPrice'] = videoChatPrice;
+    map['voiceChatPrice'] = voiceChatPrice;
+    map['chatMinBalance'] = chatMinBalance;
     return map;
   }
 }

@@ -1,5 +1,7 @@
-import 'package:guanjia/common/utils/app_logger.dart';
+import 'dart:convert';
 
+import 'package:guanjia/common/extension/functions_extension.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 import 'inapp_message_type.dart';
 import 'models/call_match_content.dart';
 import 'models/order_update_content.dart';
@@ -7,7 +9,7 @@ import 'models/order_update_content.dart';
 ///应用内消息
 class InAppMessage {
   final InAppMessageType type;
-  final dynamic data;
+  final Object? data;
 
   InAppMessage({
     required this.type,
@@ -38,9 +40,9 @@ class InAppMessage {
       switch (type) {
         case InAppMessageType.callMatch:
         case InAppMessageType.callMatchSuccess:
-          return CallMatchContent.fromJson(data);
+          return CallMatchContent.fromJson(jsonDecode(data));
         case InAppMessageType.orderUpdate:
-          return OrderUpdateContent.fromJson(data);
+          return OrderUpdateContent.fromJson(jsonDecode(data));
       }
     }catch(ex){
       AppLogger.w('InAppMessage>_parseContent: $ex');
@@ -48,9 +50,9 @@ class InAppMessage {
   }
 
   ///音视频速配内容
-  CallMatchContent? get callMatchContent => data.tryCast<CallMatchContent>();
+  CallMatchContent? get callMatchContent => data?.tryCast<CallMatchContent>();
 
   ///订单变更内容
-  OrderUpdateContent? get orderUpdateContent => data.tryCast<OrderUpdateContent>();
+  OrderUpdateContent? get orderUpdateContent => data?.tryCast<OrderUpdateContent>();
 
 }

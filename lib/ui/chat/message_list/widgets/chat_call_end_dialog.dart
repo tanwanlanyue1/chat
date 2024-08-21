@@ -202,7 +202,7 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
       children.addAll([
         buildItem(
           label: '本次实付金额',
-          value: content.amount.toStringAsTrimZero(),
+          value: content.amount.toCurrencyString(),
           isHighlight: true,
         ),
       ]);
@@ -210,7 +210,7 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
       children = [
         buildItem(
           label: '用户缴纳费用',
-          value: content.amount.toStringAsTrimZero(),
+          value: content.amount.toCurrencyString(),
         ),
         buildItem(
           label: '平台收取比例',
@@ -218,11 +218,11 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
         ),
         buildItem(
           label: '平台费',
-          value: content.platformFee.toStringAsTrimZero(),
+          value: content.platformFee.toCurrencyString(),
         ),
         buildItem(
           label: '陪聊实收金额',
-          value: content.beautyFee.toStringAsTrimZero(),
+          value: content.beautyFee.toCurrencyString(),
           isHighlight: true,
         ),
       ];

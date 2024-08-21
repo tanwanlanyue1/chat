@@ -9,6 +9,9 @@ extension FunctionMethod<T> on T{
     return this;
   }
 
+}
+
+extension ObjectX on Object{
   R? tryCast<R>(){
     if(this is R){
       return this as R;
@@ -16,5 +19,5 @@ extension FunctionMethod<T> on T{
       return null;
     }
   }
-
 }
+

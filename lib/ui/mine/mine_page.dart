@@ -48,17 +48,6 @@ class _MinePageState extends State<MinePage>
                 padding: FEdgeInsets(horizontal: 16.rpx, bottom: 24.rpx),
                 children: [
                   buildBanner(),
-                  Text("个人信息",style: TextStyle(
-                      fontFamily: "PingFangSC"
-                  ),),
-                  Text("个人信息",style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    fontFamily: "PingFangSC"
-                  ),),
-                  Text("个人信息",style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "PingFangSC"
-                  ),),
                   buildSectionOne(),
                   buildSectionTwo(),
                   buildSignOutButton(),

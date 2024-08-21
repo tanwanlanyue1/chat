@@ -45,7 +45,7 @@ class MineListTile extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: AppTextStyle.fs14m.copyWith(
+              style: AppTextStyle.fs14b.copyWith(
                 color: AppColor.black4E,
               ),
             ),

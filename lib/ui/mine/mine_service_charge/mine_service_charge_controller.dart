@@ -14,17 +14,19 @@ class MineServiceChargeController extends GetxController {
 
   ///修改服务费
   Future<void> getCommunityDetail() async {
-    Loading.show();
-    final response = await UserApi.updateUserCharge(
+    if((0 < double.parse(contentController.text)) && double.parse(contentController.text)< 999999){
+      Loading.show();
+      final response = await UserApi.updateUserCharge(
         serviceCharge: double.parse(contentController.text),
-    );
-    if(response.isSuccess){
-      Loading.showToast(S.current.modifySuccessfully);
-      Loading.dismiss();
-      Get.back();
-    }else{
-      Loading.dismiss();
-      response.showErrorMessage();
+      );
+      if(response.isSuccess){
+        Loading.showToast(S.current.modifySuccessfully);
+        Loading.dismiss();
+        Get.back();
+      }else{
+        Loading.dismiss();
+        response.showErrorMessage();
+      }
     }
   }
 

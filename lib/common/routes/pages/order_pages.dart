@@ -44,7 +44,19 @@ class OrderPages {
     GetPage(
       name: AppRoutes.orderPaymentResultPage,
       page: () {
-        return OrderPaymentResultPage();
+        var orderId = Get.tryGetArgs("orderId");
+        var isSuccess = Get.tryGetArgs("isSuccess");
+
+        if (orderId == null || orderId is! int) {
+          orderId = 0;
+        }
+        if (isSuccess == null || isSuccess is! bool) {
+          isSuccess = false;
+        }
+        return OrderPaymentResultPage(
+          orderId: orderId,
+          isSuccess: isSuccess,
+        );
       },
     ),
   ];

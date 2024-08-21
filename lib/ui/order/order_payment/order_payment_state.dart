@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
+import 'package:guanjia/ui/order/model/order_detail.dart';
 
 class OrderPaymentState {
+
+  final detailModel = Rxn<OrderDetail>();
 
   final selectIndex = Rxn<int>();
 

@@ -50,10 +50,20 @@ mixin OrderOperationMixin {
     Loading.dismiss();
     if (!res.isSuccess) {
       res.showErrorMessage();
+      Get.offNamed(
+        AppRoutes.orderPaymentResultPage,
+        arguments: {"orderId": orderId, "isSuccess": false},
+      );
       return false;
     }
 
     refreshTypeList(OrderListType.going);
+
+    Get.offNamed(
+      AppRoutes.orderPaymentResultPage,
+      arguments: {"orderId": orderId, "isSuccess": true},
+    );
+
     return true;
   }
 

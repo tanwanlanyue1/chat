@@ -2,6 +2,9 @@ part of 'chat_manager.dart';
 
 mixin ChatCallMixin {
 
+  ///自动接听
+  static const _kAutoAcceptCall = 'AutoAcceptCall';
+
   ///当前通话ID（对应业务服务端订单id）
   var _callId = '';
 
@@ -15,11 +18,17 @@ mixin ChatCallMixin {
   var _callPayInMinutes = -1;
 
   ///开始音视频通话
+  ///- userId 接收方用户ID
+  ///- nickname 接收方昵称
+  ///- callId 通话ID（对应业务订单ID）
+  ///- isVideoCall 是否是视频通话
+  ///- autoAccept 接收方是否自动接听
   Future<void> startCall({
     required int userId,
     required String nickname,
     required String callId,
     required bool isVideoCall,
+    bool autoAccept = false,
   }) async {
     if (!await checkPermission(isVideoCall)) {
       return;
@@ -36,8 +45,6 @@ mixin ChatCallMixin {
             ?.canInvitingInCalling ??
         true;
 
-    print('canInvitingInCalling: $canInvitingInCalling');
-
     final timeoutSeconds = 60;
     final type = ZegoCallTypeExtension(
       isVideoCall
@@ -50,7 +57,7 @@ mixin ChatCallMixin {
       name: nickname,
     );
 
-    final customData = '';
+    final customData = autoAccept ? _kAutoAcceptCall : '';
     final resourceID = '';
     String? notificationTitle;
     String? notificationMessage;
@@ -143,8 +150,13 @@ mixin ChatCallMixin {
   }
 
   ///挂断通话
-  Future<bool> hangUp(){
+  Future<bool> hangUpCall(){
     return ZegoUIKitPrebuiltCallInvitationService().controller.hangUp(Get.context!);
+  }
+
+  ///接听通话
+  Future<bool> acceptCall({String? customData}){
+    return ZegoUIKitPrebuiltCallInvitationService().accept(customData: customData ?? '');
   }
 
   ZegoCallInvitationPageManager? get _pageManager =>
@@ -276,6 +288,12 @@ mixin ChatCallMixin {
           String customData,
         ) {
           _isWaitCallEndDialog = true;
+          print('onIncomingCallReceived');
+
+          //自动接听
+          if(customData == _kAutoAcceptCall){
+            acceptCall(customData: customData);
+          }
         },
         onOutgoingCallRejectedCauseBusy: (
           String callID,
@@ -428,7 +446,7 @@ mixin ChatCallMixin {
     }
     final orderId = int.tryParse(_callId);
     if(orderId == null){
-      hangUp();
+      hangUpCall();
       AppLogger.w('订单ID解析失败，无法扣费');
       return;
     }
@@ -438,7 +456,7 @@ mixin ChatCallMixin {
     if(response.isSuccess){
       AppLogger.d('扣费成功');
     }else{
-      hangUp();
+      hangUpCall();
       AppLogger.w('扣费失败，挂断通话');
     }
   }

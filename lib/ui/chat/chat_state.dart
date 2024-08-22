@@ -1,5 +1,6 @@
+import 'package:get/get.dart';
+import 'package:guanjia/ui/mine/inapp_message/models/call_match_content.dart';
+
 class ChatState {
-  ChatState() {
-    ///Initialize variables
-  }
+  final callContent = Rxn<CallMatchContent>();
 }

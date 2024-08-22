@@ -179,6 +179,7 @@ class CommonUtils {
 
   ///时间戳
   static String timestamp(String time,{String? unit}){
+    if (time.isEmpty) return "";
     int timestampInMilliseconds = int.parse(time);
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestampInMilliseconds);
     DateFormat dateFormat = DateFormat(unit ?? 'MM-dd HH:00');
@@ -186,6 +187,13 @@ class CommonUtils {
     return formattedDate;
   }
 
+  /// 时间戳转字符串
+  static String convertTimestampToString(int timestamp, {String? newPattern}) {
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    DateFormat dateFormat = DateFormat(newPattern ?? DateFormats.full);
+    String formattedDate = dateFormat.format(dateTime);
+    return formattedDate;
+  }
 
   ///隐藏软键盘
   static hideSoftKeyboard() {

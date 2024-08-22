@@ -12,6 +12,7 @@ class AppConfigModel {
     this.resources,
     this.scriptures,
     this.desc,
+    this.matchingCountDown,
   });
 
   int? serverTime;
@@ -110,9 +111,58 @@ class AppConfigModel {
     videoChatPrice = json['videoChatPrice'];
     voiceChatPrice = json['voiceChatPrice'];
     chatMinBalance = json['chatMinBalance'];
+    matchingCountDown = json['matchingCountDown'];
     redPacketMaxAmount = json['redPacketMaxAmount'];
     transferMaxAmount = json['transferMaxAmount'];
   }
+
+  int? serverTime;
+  String? jumpLink;
+  String? cancelAccountLink;
+
+  ///	保证金
+  num? deposit;
+
+  ///一个境修币兑换多少人民币（单价）
+  num? goldPrice;
+
+  ///最低充值境修币数量
+  int? minPayGold;
+
+  ///充值提示语
+  String? payGoldRule;
+  List<LogTypeIcon>? logTypeIcon;
+  List<Tab>? tab;
+  List<Home>? home;
+  List<dynamic>? resources;
+  String? desc;
+
+  ///佛经大全的头部文本
+  List<String>? scriptures;
+
+  /// 拼接 标签
+  List<LabelModel>? labels;
+
+  ///约会服务费收益比例模板 {brokerageService} TODO 预留字段，服务端还没有
+  String? brokerageServiceTemplate;
+
+  ///音视频陪聊收益比例模板 {brokerageChatting} TODO 预留字段，服务端还没有
+  String? brokerageChattingTemplate;
+
+  ///免费通话时间 秒
+  num? chatFreeSecond;
+
+  ///视频通话单价(每分钟)
+  num? videoChatPrice;
+
+  ///语音通话单价(每分钟)
+  num? voiceChatPrice;
+
+  ///通话最低余额
+  num? chatMinBalance;
+
+  ///速配倒计时
+  int? matchingCountDown;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

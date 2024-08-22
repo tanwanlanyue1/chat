@@ -160,4 +160,25 @@ class IMApi {
   }
 
 
+  /// 通话-速配接口
+  ///- type ：1视频 2语音
+  static Future<ApiResponse> startSpeedDating({required int type}) {
+    return HttpClient.post(
+      '/api/im/sendMatchingMsg',
+      data: {
+        "code": type,
+      },
+    );
+  }
+
+  /// 通话-抢单接口
+  ///- orderId 速配订单id
+  static Future<ApiResponse> grabSpeedDating({required int orderId}) {
+    return HttpClient.post(
+      '/api/im/grabOrder',
+      data: {
+        "id": orderId,
+      },
+    );
+  }
 }

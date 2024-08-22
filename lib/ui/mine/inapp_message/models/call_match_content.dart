@@ -24,6 +24,12 @@ class CallMatchContent {
   ///过期时间
   final int expiredTime;
 
+  ///年龄
+  final int? age;
+
+  ///是否是视频
+  bool get isVideo => type == 1;
+
   CallMatchContent({
     required this.type,
     required this.uid,
@@ -32,6 +38,7 @@ class CallMatchContent {
     required this.gender,
     required this.orderId,
     required this.expiredTime,
+    required this.age,
   });
 
   factory CallMatchContent.fromJson(Map<String, dynamic> json) {
@@ -45,6 +52,7 @@ class CallMatchContent {
       gender: UserGender.valueForIndex(genderVal),
       orderId: json['orderId'] ?? 0,
       expiredTime: json['expiredTime'] ?? 0,
+      age: json['age'],
     );
   }
 }

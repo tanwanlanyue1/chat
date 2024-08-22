@@ -187,6 +187,13 @@ class CommonUtils {
     return formattedDate;
   }
 
+  /// 时间戳转字符串
+  static String convertTimestampToString(int timestamp, {String? newPattern}) {
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    DateFormat dateFormat = DateFormat(newPattern ?? DateFormats.full);
+    String formattedDate = dateFormat.format(dateTime);
+    return formattedDate;
+  }
 
   ///隐藏软键盘
   static hideSoftKeyboard() {

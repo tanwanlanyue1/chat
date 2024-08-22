@@ -170,18 +170,18 @@ class OrderItemModel {
   final num proportionBeauty; // 佳丽收取比例%
   final num beautyAmount; // 佳丽实收金额
   final String remark; // 备注
-  final String createTime; // 创建时间
-  final String receiveTime; // 佳丽接单时间
-  final String requestPayTime; // 下单用户支付时间
-  final String receivePayTime; // 接单人支付时间
-  final String switchTime; // 经纪人转派给佳丽时间
-  final String cancelTime; // 取消时间
-  final String completeTime; // 订单完成时间
+  final int createTime; // 创建时间
+  final int receiveTime; // 佳丽接单时间
+  final int requestPayTime; // 下单用户支付时间
+  final int receivePayTime; // 接单人支付时间
+  final int switchTime; // 经纪人转派给佳丽时间
+  final int cancelTime; // 取消时间
+  final int completeTime; // 订单完成时间
   final String evaluateTag; // 评价标签
   final String evaluateContent; // 评价内容
   final int evaluateScore; // 评级星级
   final int countDown; // 倒计时
-  final String timeout; // 超时时间
+  final int timeout; // 超时时间
 
   factory OrderItemModel.fromJson(Map<String, dynamic> json) {
     return OrderItemModel(
@@ -211,18 +211,18 @@ class OrderItemModel {
       proportionBeauty: json["proportionBeauty"] ?? 0,
       beautyAmount: json["beautyAmount"] ?? 0,
       remark: json["remark"] ?? "",
-      createTime: json["createTime"] ?? "",
-      receiveTime: json["receiveTime"] ?? "",
-      requestPayTime: json["requestPayTime"] ?? "",
-      receivePayTime: json["receivePayTime"] ?? "",
-      switchTime: json["switchTime"] ?? "",
-      cancelTime: json["cancelTime"] ?? "",
-      completeTime: json["completeTime"] ?? "",
+      createTime: json["createTime"] ?? 0,
+      receiveTime: json["receiveTime"] ?? 0,
+      requestPayTime: json["requestPayTime"] ?? 0,
+      receivePayTime: json["receivePayTime"] ?? 0,
+      switchTime: json["switchTime"] ?? 0,
+      cancelTime: json["cancelTime"] ?? 0,
+      completeTime: json["completeTime"] ?? 0,
       evaluateTag: json["evaluateTag"] ?? "",
       evaluateContent: json["evaluateContent"] ?? "",
       evaluateScore: json["evaluateScore"] ?? 0,
       countDown: json["countDown"] ?? 0,
-      timeout: json["timeout"] ?? "",
+      timeout: json["timeout"] ?? 0,
     );
   }
 

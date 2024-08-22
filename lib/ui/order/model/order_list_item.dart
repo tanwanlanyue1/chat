@@ -52,8 +52,8 @@ class OrderListItem {
   late final OrderListItemWrapper _wrapper;
 
   // 订单创建时间
-  String get time =>
-      CommonUtils.timestamp(itemModel.createTime, unit: DateFormats.y_mo_d_h_m);
+  String get time => CommonUtils.convertTimestampToString(itemModel.createTime,
+      newPattern: DateFormats.y_mo_d_h_m);
 
   // 订单编号
   String get number => "订单编号：${itemModel.number}";

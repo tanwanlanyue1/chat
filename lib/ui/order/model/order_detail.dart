@@ -60,8 +60,9 @@ class OrderDetailItem {
 
   String? get avatar => _wrapper.avatar;
 
-  static String _getTime(String time) {
-    return CommonUtils.timestamp(time, unit: 'yyyy/MM/dd HH:mm');
+  static String _getTime(int time) {
+    return CommonUtils.convertTimestampToString(time,
+        newPattern: 'yyyy/MM/dd HH:mm');
   }
 
   static OrderDetailItemWrapper _getWrapper({
@@ -734,7 +735,7 @@ class OrderDetail {
       OrderItemState.cancelForRequest: () {
         // 目前通过双方是否存在支付时间来判断取消是在哪个阶段取消的
         final isCancelGoingAfter =
-            model.requestPayTime.isNotEmpty && model.requestPayTime.isNotEmpty;
+            model.requestPayTime != 0 && model.requestPayTime != 0;
         if (isCancelGoingAfter) {
           return {
             UserType.user: OrderDetailWrapper(
@@ -920,7 +921,7 @@ class OrderDetail {
       OrderItemState.cancelForReceive: () {
         // 目前通过双方是否存在支付时间来判断取消是在哪个阶段取消的
         final isCancelGoingAfter =
-            model.requestPayTime.isNotEmpty && model.requestPayTime.isNotEmpty;
+            model.requestPayTime != 0 && model.requestPayTime != 0;
         if (isCancelGoingAfter) {
           return {
             UserType.user: OrderDetailWrapper(

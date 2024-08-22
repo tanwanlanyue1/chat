@@ -179,6 +179,7 @@ class CommonUtils {
 
   ///时间戳
   static String timestamp(String time,{String? unit}){
+    if (time.isEmpty) return "";
     int timestampInMilliseconds = int.parse(time);
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestampInMilliseconds);
     DateFormat dateFormat = DateFormat(unit ?? 'MM-dd HH:00');

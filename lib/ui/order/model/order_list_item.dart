@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -118,9 +120,10 @@ class OrderListItem {
           // 优先显示请求方取消状态
           return requestState.isCancel
               ? OrderItemState.cancelForRequest
-              : receiveState.isCancel
-                  ? OrderItemState.cancelForReceive
-                  : OrderItemState.timeOut;
+              : OrderItemState.cancelForReceive;
+
+        case OrderState.timeOut:
+          return OrderItemState.timeOut;
 
         case OrderState.finish:
           // 评价星值为0时，改为等待评价状态
@@ -159,6 +162,9 @@ class OrderListItem {
           return requestState.isCancel
               ? OrderItemState.cancelForRequest
               : OrderItemState.cancelForReceive;
+
+        case OrderState.timeOut:
+          return OrderItemState.timeOut;
 
         case OrderState.finish:
           return OrderItemState.finish;

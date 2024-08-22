@@ -1,6 +1,7 @@
 import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
 import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
 
@@ -59,6 +60,10 @@ class OrderDetailItem {
 
   String? get avatar => _wrapper.avatar;
 
+  static String _getTime(String time) {
+    return CommonUtils.timestamp(time, unit: 'yyyy/MM/dd HH:mm');
+  }
+
   static OrderDetailItemWrapper _getWrapper({
     required OrderItemModel model,
     required OrderDetailDisplayType displayType,
@@ -79,30 +84,35 @@ class OrderDetailItem {
           avatar: changeAvatar ?? model.requestAvatar,
         );
       case OrderDetailDisplayType.receive:
+        final receiveName =
+            model.receiveId == 0 ? model.introducerName : model.receiveName;
+        final receiveAvatar =
+            model.receiveId == 0 ? model.introducerAvatar : model.receiveAvatar;
+
         return OrderDetailItemWrapper(
           title: changeTitle ?? '接单用户：',
-          detail: changeDetail ?? model.receiveName,
-          avatar: changeAvatar ?? model.receiveAvatar,
+          detail: changeDetail ?? receiveName,
+          avatar: changeAvatar ?? receiveAvatar,
         );
       case OrderDetailDisplayType.requestTime:
         return OrderDetailItemWrapper(
           title: changeTitle ?? '下单时间：',
-          detail: changeDetail ?? model.createTime,
+          detail: changeDetail ?? _getTime(model.createTime),
         );
       case OrderDetailDisplayType.receiveTime:
         return OrderDetailItemWrapper(
           title: changeTitle ?? '接单时间：',
-          detail: changeDetail ?? model.receiveTime,
+          detail: changeDetail ?? _getTime(model.receiveTime),
         );
       case OrderDetailDisplayType.finishTime:
         return OrderDetailItemWrapper(
           title: changeTitle ?? '结束时间：',
-          detail: changeDetail ?? model.completeTime,
+          detail: changeDetail ?? _getTime(model.completeTime),
         );
       case OrderDetailDisplayType.cancelTime:
         return OrderDetailItemWrapper(
           title: changeTitle ?? '取消时间：',
-          detail: changeDetail ?? model.cancelTime,
+          detail: changeDetail ?? _getTime(model.cancelTime),
         );
       case OrderDetailDisplayType.reason:
         return OrderDetailItemWrapper(
@@ -289,12 +299,6 @@ class OrderDetail {
               model: model,
               displayType: OrderDetailDisplayType.receive,
               changeTitle: "待接单佳丽：",
-              changeDetail: model.receiveId == 0
-                  ? model.introducerName
-                  : model.receiveName,
-              changeAvatar: model.receiveId == 0
-                  ? model.introducerAvatar
-                  : model.receiveAvatar,
             ),
             OrderDetailItem(
               model: model,

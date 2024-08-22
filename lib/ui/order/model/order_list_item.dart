@@ -1,3 +1,4 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/network/api/api.dart';
@@ -49,7 +50,8 @@ class OrderListItem {
   late final OrderListItemWrapper _wrapper;
 
   // 订单创建时间
-  String get time => itemModel.createTime;
+  String get time =>
+      CommonUtils.timestamp(itemModel.createTime, unit: DateFormats.y_mo_d_h_m);
 
   // 订单编号
   String get number => "订单编号：${itemModel.number}";
@@ -392,8 +394,7 @@ class OrderListItem {
       OrderItemState.timeOut: {
         UserType.user: OrderListItemWrapper(
           avatar: receiveAvatar,
-          nick:
-              "$receiveNamePrefix$receiveName",
+          nick: "$receiveNamePrefix$receiveName",
           stateText: "等待超时",
           stateTextColor: AppColor.black9,
         ),

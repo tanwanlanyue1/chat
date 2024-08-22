@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -65,6 +66,7 @@ class RedPacketPage extends GetView<RedPacketController> {
         signed: false,
         decimal: true,
       ),
+      inputFormatters: [LengthLimitingTextInputFormatter(8)],
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
@@ -88,7 +90,7 @@ class RedPacketPage extends GetView<RedPacketController> {
           children: [
             Padding(
               padding: FEdgeInsets(horizontal: 16.rpx),
-              child: Text('元'),
+              child: Text(SS.appConfig.currencyUnit),
             ),
           ],
         ),
@@ -115,7 +117,7 @@ class RedPacketPage extends GetView<RedPacketController> {
             borderRadius: BorderRadius.circular(8.rpx),
           ),
           hintStyle: const TextStyle(color: AppColor.gray9),
-          hintText: '最懂你的管佳（红包文字可输入）',
+          hintText: '${controller.defaultDesc}（红包文字可输入）',
           prefixIcon: SizedBox(width: 16.rpx),
           prefixIconConstraints: BoxConstraints(minHeight: 54.rpx),
           constraints: BoxConstraints(minHeight: 54.rpx),
@@ -130,16 +132,19 @@ class RedPacketPage extends GetView<RedPacketController> {
       padding: FEdgeInsets(top: 36.rpx, bottom: 100.rpx),
       child: Obx(() {
         var amount = controller.state.amountRx();
-        if(amount.isEmpty){
+        if (amount.isEmpty) {
           amount = '0.00';
         }
         return Text.rich(
           textAlign: TextAlign.center,
           TextSpan(
-              text: '¥',
+              text: SS.appConfig.currencyUnit,
               style: AppTextStyle.fs20b.copyWith(color: AppColor.gray5),
               children: [
-                TextSpan(text: amount, style: TextStyle(fontSize: 40.rpx)),
+                TextSpan(
+                  text: amount,
+                  style: TextStyle(fontSize: 40.rpx),
+                ),
               ]),
         );
       }),

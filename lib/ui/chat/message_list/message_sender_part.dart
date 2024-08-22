@@ -141,8 +141,7 @@ extension MessageSenderPart on MessageListController {
     Get.toNamed(
       AppRoutes.redPacketPage,
       arguments: {
-        'conversationId': state.conversationId,
-        'conversationType': state.conversationType,
+        'userId': int.parse(state.conversationId),
       },
     );
   }

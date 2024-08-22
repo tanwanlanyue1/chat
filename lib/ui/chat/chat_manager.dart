@@ -1,50 +1,39 @@
-import 'dart:convert';
 // Dart imports:
 import 'dart:async';
+
 // import 'dart:ffi';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:guanjia/common/network/api/im_api.dart';
-import 'package:guanjia/common/utils/permissions_utils.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-// Package imports:
-import 'package:zego_uikit/zego_uikit.dart';
-
-// Project imports:
-import 'package:zego_uikit_prebuilt_call/src/invitation/defines.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/inner_text.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/internal/assets.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/internal/defines.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/internal/internal_instance.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/internal/notification.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/internal/protocols.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/pages/calling/machine.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/pages/page_manager.dart';
-import 'package:zego_uikit_prebuilt_call/src/invitation/service.dart';
-import 'package:zego_uikit_prebuilt_call/src/minimizing/overlay_machine.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/common/network/api/im_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/common/utils/permissions_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_end_dialog.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/loading.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/internal/defines.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/internal/internal_instance.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/internal/notification.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/internal/protocols.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/pages/calling/machine.dart';
+import 'package:zego_uikit_prebuilt_call/src/invitation/pages/page_manager.dart';
+import 'package:zego_uikit_prebuilt_call/src/minimizing/overlay_machine.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'chat_event_notifier.dart';
 import 'custom/custom_message_type.dart';
-import 'custom/message_call_end_content.dart';
+
 part 'chat_call_mixin.dart';
 
 ///IM聊天，音视频通话 服务管理

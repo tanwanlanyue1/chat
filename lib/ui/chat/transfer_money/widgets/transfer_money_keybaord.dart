@@ -4,6 +4,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:guanjia/widgets/loading.dart';
@@ -12,7 +13,7 @@ import 'package:guanjia/widgets/loading.dart';
 class TransferMoneyKeyboard extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final ValueChanged<double>? onConfirm;
-  final double maxValue;
+  final num maxValue;
 
   const TransferMoneyKeyboard({
     super.key,
@@ -162,7 +163,7 @@ class _TransferMoneyKeyboardState extends State<TransferMoneyKeyboard> {
     }
     var val = double.tryParse(newValue) ?? 0;
     if(val > widget.maxValue){
-      Loading.showToast('转账金额不能大于${widget.maxValue}');
+      Loading.showToast('转账金额不能大于${widget.maxValue.toCurrencyString()}');
     }else{
       value = value + item;
       widget.onChanged?.call(value);

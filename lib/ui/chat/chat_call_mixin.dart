@@ -14,8 +14,11 @@ mixin ChatCallMixin {
   ///当前通话接收方用户ID
   var _callInvitee = '';
 
-  ///最后一次通话扣费的分钟数
-  var _callPayInMinutes = -1;
+  ///最后一次通话扣费时间
+  DateTime? _callPayTime;
+
+  ///扣费UUID
+  String? _callPayUuid;
 
   ///开始音视频通话
   ///- userId 接收方用户ID
@@ -433,17 +436,19 @@ mixin ChatCallMixin {
 
   ///通话计费
   Future<void> _callingPay(Duration duration) async{
-    AppLogger.d('_callingPay: _callId=$_callId, _callInviter=$_callInviter, _callPayInMinutes=$_callPayInMinutes, duration=$duration');
+    AppLogger.d('_callingPay: _callId=$_callId, _callInviter=$_callInviter, _callPayTime=$_callPayTime, duration=$duration');
 
     //发起方扣费
     if(_callId.isEmpty || _callInviter != SS.login.userId.toString()){
       return;
     }
     //每分钟调一次接口进行扣费
-    final inMinutes = duration.inMinutes;
-    if(inMinutes <= _callPayInMinutes){
+    final now = DateTime.now();
+    if(_callPayTime != null && now.difference(_callPayTime ?? now).inMinutes <= 0){
       return;
     }
+    _callPayTime = now;
+
     final orderId = int.tryParse(_callId);
     if(orderId == null){
       hangUpCall();
@@ -451,10 +456,11 @@ mixin ChatCallMixin {
       return;
     }
 
-    _callPayInMinutes = inMinutes;
-    final response = await IMApi.chatOrderPay(orderId);
+    final response = await IMApi.chatOrderPay(orderId: orderId, uuid: _callPayUuid);
     if(response.isSuccess){
       AppLogger.d('扣费成功');
+      _callPayUuid  = response.data;
+      _callPayTime = DateTime.now();
     }else{
       hangUpCall();
       AppLogger.w('扣费失败，挂断通话');
@@ -465,7 +471,8 @@ mixin ChatCallMixin {
     _callId = '';
     _callInviter = '';
     _callInvitee = '';
-    _callPayInMinutes = -1;
+    _callPayTime = null;
+    _callPayUuid = null;
   }
 
   Future<void> _uninitChatCall() async{

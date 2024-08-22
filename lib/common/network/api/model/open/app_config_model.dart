@@ -14,53 +14,6 @@ class AppConfigModel {
     this.desc,
   });
 
-  AppConfigModel.fromJson(dynamic json) {
-    serverTime = json['serverTime'];
-    jumpLink = json['jumpLink'];
-    cancelAccountLink = json['cancelAccountLink'];
-    deposit = json['deposit'];
-    goldPrice = json['goldPrice'];
-    minPayGold = json['minPayGold'];
-    payGoldRule = json['payGoldRule'];
-    if (json['tab'] != null) {
-      tab = [];
-      json['tab'].forEach((v) {
-        tab?.add(Tab.fromJson(v));
-      });
-    }
-    if (json['logTypeIcon'] is List) {
-      logTypeIcon = [];
-      json['logTypeIcon'].forEach((v) {
-        logTypeIcon?.add(LogTypeIcon.fromJson(v));
-      });
-    }
-    if (json['home'] != null) {
-      home = [];
-      json['home'].forEach((v) {
-        home?.add(Home.fromJson(v));
-      });
-    }
-    if (json['resources'] != null) {
-      resources = [];
-      json['resources'].forEach((v) {
-        resources?.add(v);
-      });
-    }
-    if (json['scriptures'] is List) {
-      scriptures = [];
-      json['scriptures'].forEach((v) {
-        scriptures?.add(v.toString());
-      });
-    }
-    desc = json['desc'];
-    brokerageServiceTemplate = json['brokerageServiceTemplate'];
-    brokerageChattingTemplate = json['brokerageChattingTemplate'];
-    chatFreeSecond = json['chatFreeSecond'];
-    videoChatPrice = json['videoChatPrice'];
-    voiceChatPrice = json['voiceChatPrice'];
-    chatMinBalance = json['chatMinBalance'];
-  }
-
   int? serverTime;
   String? jumpLink;
   String? cancelAccountLink;
@@ -106,6 +59,61 @@ class AppConfigModel {
   ///通话最低余额
   num? chatMinBalance;
 
+  ///红包最大金额 TODO 预留字段，服务端还没有
+  num? redPacketMaxAmount;
+
+  ///最大转账金额 TODO 预留字段，服务端还没有
+  num? transferMaxAmount;
+
+  AppConfigModel.fromJson(dynamic json) {
+    serverTime = json['serverTime'];
+    jumpLink = json['jumpLink'];
+    cancelAccountLink = json['cancelAccountLink'];
+    deposit = json['deposit'];
+    goldPrice = json['goldPrice'];
+    minPayGold = json['minPayGold'];
+    payGoldRule = json['payGoldRule'];
+    if (json['tab'] != null) {
+      tab = [];
+      json['tab'].forEach((v) {
+        tab?.add(Tab.fromJson(v));
+      });
+    }
+    if (json['logTypeIcon'] is List) {
+      logTypeIcon = [];
+      json['logTypeIcon'].forEach((v) {
+        logTypeIcon?.add(LogTypeIcon.fromJson(v));
+      });
+    }
+    if (json['home'] != null) {
+      home = [];
+      json['home'].forEach((v) {
+        home?.add(Home.fromJson(v));
+      });
+    }
+    if (json['resources'] != null) {
+      resources = [];
+      json['resources'].forEach((v) {
+        resources?.add(v);
+      });
+    }
+    if (json['scriptures'] is List) {
+      scriptures = [];
+      json['scriptures'].forEach((v) {
+        scriptures?.add(v.toString());
+      });
+    }
+    desc = json['desc'];
+    brokerageServiceTemplate = json['brokerageServiceTemplate'];
+    brokerageChattingTemplate = json['brokerageChattingTemplate'];
+    chatFreeSecond = json['chatFreeSecond'];
+    videoChatPrice = json['videoChatPrice'];
+    voiceChatPrice = json['voiceChatPrice'];
+    chatMinBalance = json['chatMinBalance'];
+    redPacketMaxAmount = json['redPacketMaxAmount'];
+    transferMaxAmount = json['transferMaxAmount'];
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['serverTime'] = serverTime;
@@ -134,6 +142,8 @@ class AppConfigModel {
     map['videoChatPrice'] = videoChatPrice;
     map['voiceChatPrice'] = voiceChatPrice;
     map['chatMinBalance'] = chatMinBalance;
+    map['redPacketMaxAmount'] = redPacketMaxAmount;
+    map['transferMaxAmount'] = transferMaxAmount;
     return map;
   }
 }

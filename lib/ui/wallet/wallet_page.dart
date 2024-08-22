@@ -106,7 +106,7 @@ class WalletPage extends StatelessWidget {
                     ),
                     Obx((){
                       return Text(
-                        SS.login.info?.balance.toCurrencyString(beforeUnit: true) ?? '',
+                        SS.login.info?.balance.toCurrencyString() ?? '',
                         style: AppTextStyle.st.medium
                             .size(20.rpx)
                             .textColor(AppColor.black3)

@@ -41,8 +41,9 @@ class ChatCallEndMessage extends StatelessWidget {
     return Flexible(
       child: GestureDetector(
         onTap: (){
-          onPressed?.call(context, message, () {});
-          ChatCallEndDialog.show(message: message);
+          onPressed?.call(context, message, () {
+            ChatCallEndDialog.show(message: message);
+          });
         },
         onLongPressStart: (details) => onLongPress?.call(
           context,

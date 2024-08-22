@@ -12,6 +12,9 @@ enum InAppMessageType{
   ///订单状态变更 3，用户，佳丽，经纪人都收到
   orderUpdate,
 
+  ///红包状态变更 4 发起方和接收方都收到
+  redPacketUpdate,
+
 }
 
 extension InAppMessageTypeX on InAppMessageType{

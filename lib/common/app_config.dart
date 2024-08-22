@@ -45,4 +45,10 @@ class AppConfig{
   static String icp = S.current.guangdongICP;
   static const urlIcp = 'https://beian.miit.gov.cn';
 
+  ///红包最大金额
+  static const redPacketMaxAmount = 200.0;
+
+  ///转账最大金额
+  static const transferMaxAmount = 99999999.0;
+
 }

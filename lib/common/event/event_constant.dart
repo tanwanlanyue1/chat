@@ -3,14 +3,17 @@
 
 const kEventLogin = 'kEventLogin';
 
-//监听约会发布成功
+///监听约会发布成功
 const kEventReleaseSuccess = 'kEventReleaseSuccess';
 
-//监听帖子发布成功
+///监听帖子发布成功
 const kEventInvitationSuccess = 'kEventInvitationSuccess';
 
-//监听关注操作
+///监听关注操作
 const kEventIsAttention = 'kEventIsAttention';
 
-//契约单更新
+///契约单更新
 const kEventContractUpdate = 'kEventContractUpdate';
+
+///红包状态变更
+const kEventRedPacketUpdate = 'kEventRedPacketUpdate';

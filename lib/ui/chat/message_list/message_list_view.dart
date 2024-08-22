@@ -206,7 +206,7 @@ class _MessageListViewState extends State<MessageListView> {
 
       if(item.value.zim is ZIMCustomMessage){
         final zim = item.value.zim as ZIMCustomMessage;
-        //插入红包消息
+        //插入转账消息
         if(zim.subType == CustomMessageType.transfer.value){
 
           if(zim.senderUserID == selfUserId){

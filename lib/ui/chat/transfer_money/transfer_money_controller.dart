@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/im_api.dart';
-import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/payment_password_keyboard.dart';
 

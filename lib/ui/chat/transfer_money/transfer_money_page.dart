@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
@@ -72,6 +73,7 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
               ),
             ),
             TransferMoneyKeyboard(
+              maxValue: SS.appConfig.transferMaxAmount,
               onChanged: (value){
                 controller.amountEditingController.text = value;
               },
@@ -99,10 +101,6 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
         controller: controller.amountEditingController,
         maxLines: 1,
         style: style,
-        keyboardType: const TextInputType.numberWithOptions(
-          signed: false,
-          decimal: true,
-        ),
         cursorColor: AppColor.gradientBegin,
         decoration: InputDecoration(
           border: border,
@@ -115,7 +113,7 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
               Padding(
                 padding: FEdgeInsets(right: 16.rpx),
                 child: Text(
-                  '¥',
+                  SS.appConfig.currencyUnit,
                   style: style,
                 ),
               ),

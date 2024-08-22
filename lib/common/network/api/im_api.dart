@@ -1,5 +1,7 @@
 import 'package:guanjia/common/network/httpclient/http_client.dart';
 
+import 'model/im/red_packet_model.dart';
+
 /// IM API
 class IMApi {
   const IMApi._();
@@ -43,7 +45,8 @@ class IMApi {
   ///- type ：1视频 2语音
   ///- toUid 接收方用户ID
   ///- return 订单ID
-  static Future<ApiResponse<int>> createCallOrder({required int type, required int toUid}) {
+  static Future<ApiResponse<int>> createCallOrder(
+      {required int type, required int toUid}) {
     return HttpClient.post(
       '/api/im/createOrder',
       data: {
@@ -55,13 +58,106 @@ class IMApi {
 
   /// 通话-实时扣费接口
   ///- orderId 订单ID
-  static Future<ApiResponse<void>> chatOrderPay(int orderId) {
+  ///- uuid 扣费uuid 只能用一次
+  ///- return uuid
+  static Future<ApiResponse<String>> chatOrderPay({required int orderId, String? uuid}) {
     return HttpClient.post(
       '/api/im/chatOrderPay',
       data: {
         "id": orderId,
+        if(uuid != null) "uuid": uuid,
       },
     );
   }
+
+  /// 发送红包
+  ///- toUid 接收方用户ID
+  ///- amount 红包金额
+  ///- message 红包描述
+  ///- background 红包背景
+  ///- payPassword 支付密码
+  static Future<ApiResponse<void>> sendRedEnvelopes({
+    required int toUid,
+    required num amount,
+    required String message,
+    String? background,
+    required String payPassword,
+  }) {
+    return HttpClient.post(
+      '/api/im/sendRedEnvelopes',
+      data: {
+        "toUid": toUid,
+        "amount": amount,
+        "message": message,
+        if (background != null) "background": background,
+        "payPassword": payPassword,
+      },
+    );
+  }
+
+  /// 领取红包
+  ///- msgId 消息 ID。全局唯一
+  ///- number 红包流水号
+  static Future<ApiResponse<void>> receiveRedEnvelopes({
+    required String msgId,
+    required int number,
+  }) {
+    /* 错误码
+    (3100, "红包不存在"),
+    (3101, "红包已领取"),
+    (3102, "红包已过期"),
+    (3103, "红包已撤回"),
+     */
+
+    return HttpClient.post(
+      '/api/im/receiveRedEnvelopes',
+      data: {
+        "msgId": msgId,
+        "number": number,
+      },
+    );
+  }
+
+  /// 撤回红包
+  ///- msgId 消息 ID。全局唯一
+  ///- number 红包流水号
+  static Future<ApiResponse<void>> withdrawRedEnvelopes({
+    required String msgId,
+    required int number,
+  }) {
+
+    /* 错误码
+    (3100, "红包不存在"),
+    (3101, "红包已领取"),
+    (3102, "红包已过期"),
+    (3103, "红包已撤回"),
+     */
+
+    return HttpClient.post(
+      '/api/im/withdrawRedEnvelopes',
+      data: {
+        "msgId": msgId,
+        "number": number,
+      },
+    );
+  }
+
+  /// 查询红包
+  ///- msgId 消息 ID。全局唯一
+  ///- number 红包流水号
+  static Future<ApiResponse<RedPacketModel>> getRedEnvelope({
+    required String msgId,
+    required int number,
+  }) {
+    return HttpClient.post(
+      '/api/im/getRedEnvelope',
+      data: {
+        "msgId": msgId,
+        "number": number,
+      },
+      dataConverter: (json) => RedPacketModel.fromJson(json),
+    );
+  }
+
 
 }

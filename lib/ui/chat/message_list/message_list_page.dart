@@ -7,6 +7,8 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
+import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_state.dart';
 import 'package:guanjia/ui/chat/message_list/message_order_part.dart';
 import 'package:guanjia/ui/chat/message_list/message_sender_part.dart';
@@ -149,6 +151,13 @@ class MessageListPage extends GetView<MessageListController> {
       avatarBuilder: buildAvatar,
       backgroundBuilder: buildBackground,
       listViewPadding: FEdgeInsets(top: ChatDateView.height),
+      onPressed: (_, message, defaultAction){
+        if(message.customType == CustomMessageType.redPacket){
+          controller.receiveRedPacket(message);
+        }else{
+          defaultAction.call();
+        }
+      },
     );
   }
 

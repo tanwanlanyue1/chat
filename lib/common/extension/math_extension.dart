@@ -1,4 +1,5 @@
 
+import 'package:guanjia/common/service/service.dart';
 import 'package:intl/intl.dart';
 
 extension NumberX on num{
@@ -21,11 +22,12 @@ extension NumberX on num{
   ///转换为货币显示
   ///- unit 货币单位
   ///- beforeUnit 货币单位前置
-  String toCurrencyString({String unit = '\$', bool beforeUnit = false}){
-    if(beforeUnit){
-      return unit + toStringAsTrimZero();
+  String toCurrencyString({String? unit, bool afterUnit = false}){
+    final currencyUnit = unit ?? SS.appConfig.currencyUnit;
+    if(afterUnit){
+      return toStringAsTrimZero()+currencyUnit;
     }else{
-      return toStringAsTrimZero()+unit;
+      return currencyUnit + toStringAsTrimZero();
     }
   }
   

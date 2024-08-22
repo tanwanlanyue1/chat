@@ -170,11 +170,8 @@ class MinePages {
       page: () => const RedPacketPage(),
       binding: BindingsBuilder.put(
         () => RedPacketController(
-            conversationId: Get.getArgs('conversationId', ''),
-            conversationType: Get.getArgs(
-              'conversationType',
-              ZIMConversationType.peer,
-            )),
+          userId: Get.getArgs('userId', 0),
+        ),
       ),
     ),
     GetPage(

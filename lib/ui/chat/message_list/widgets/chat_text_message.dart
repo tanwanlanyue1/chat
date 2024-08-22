@@ -33,8 +33,7 @@ class ChatTextMessage extends StatelessWidget {
           details,
           message,
           () {
-            // Clipboard.setData(ClipboardData(text: message.textContent!.text));
-            ZIMKit().recallMessage(message);
+            Clipboard.setData(ClipboardData(text: message.textContent!.text));
           },
         ),
         child: Bubble(

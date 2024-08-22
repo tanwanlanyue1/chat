@@ -197,7 +197,7 @@ class ChatTransferMessage extends StatelessWidget {
         label: '到账时间',
         value: DateTime.fromMillisecondsSinceEpoch(content.time).format2,
       ),
-      buildItem(label: message.isMine ? '转账实付金额' :  '实收金额', value: content.amount.toStringAsTrimZero(), isHighlight: true),
+      buildItem(label: message.isMine ? '转账实付金额' :  '实收金额', value: content.amount.toCurrencyString(), isHighlight: true),
     ];
 
     return Padding(

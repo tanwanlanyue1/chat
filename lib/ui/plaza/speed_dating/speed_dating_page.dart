@@ -97,7 +97,7 @@ class SpeedDatingPage extends StatelessWidget {
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: GestureDetector(
-                            onTap: controller.onTapStart,
+                            onTap: () => controller.onTapStart(isVideo),
                             child: Container(
                               height: 50.rpx,
                               margin: EdgeInsets.symmetric(horizontal: 24.rpx)

@@ -12,6 +12,7 @@ class AppConfigModel {
     this.resources,
     this.scriptures,
     this.desc,
+    this.matchingCountDown,
   });
 
   AppConfigModel.fromJson(dynamic json) {
@@ -59,6 +60,7 @@ class AppConfigModel {
     videoChatPrice = json['videoChatPrice'];
     voiceChatPrice = json['voiceChatPrice'];
     chatMinBalance = json['chatMinBalance'];
+    matchingCountDown = json['matchingCountDown'];
   }
 
   int? serverTime;
@@ -105,6 +107,9 @@ class AppConfigModel {
 
   ///通话最低余额
   num? chatMinBalance;
+
+  ///速配倒计时
+  int? matchingCountDown;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

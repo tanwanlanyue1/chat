@@ -80,7 +80,9 @@ class OrderOperationButtons extends StatelessWidget {
         children.add(_buildLeft());
         break;
       case OrderOperationType.connect:
-        children.add(_buildConnect());
+        if (item.itemModel.receiveId != 0) {
+          children.add(_buildConnect());
+        }
         break;
       case OrderOperationType.evaluation:
         children.add(_buildRight(

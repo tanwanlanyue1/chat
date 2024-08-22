@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';

@@ -66,6 +66,9 @@ class AppConfigModel {
   ///最大转账金额 TODO 预留字段，服务端还没有
   num? transferMaxAmount;
 
+  ///速配倒计时
+  int? matchingCountDown;
+
   AppConfigModel.fromJson(dynamic json) {
     serverTime = json['serverTime'];
     jumpLink = json['jumpLink'];
@@ -116,86 +119,6 @@ class AppConfigModel {
     transferMaxAmount = json['transferMaxAmount'];
   }
 
-  int? serverTime;
-  String? jumpLink;
-  String? cancelAccountLink;
-
-  ///	保证金
-  num? deposit;
-
-  ///一个境修币兑换多少人民币（单价）
-  num? goldPrice;
-
-  ///最低充值境修币数量
-  int? minPayGold;
-
-  ///充值提示语
-  String? payGoldRule;
-  List<LogTypeIcon>? logTypeIcon;
-  List<Tab>? tab;
-  List<Home>? home;
-  List<dynamic>? resources;
-  String? desc;
-
-  ///佛经大全的头部文本
-  List<String>? scriptures;
-
-  /// 拼接 标签
-  List<LabelModel>? labels;
-
-  ///约会服务费收益比例模板 {brokerageService} TODO 预留字段，服务端还没有
-  String? brokerageServiceTemplate;
-
-  ///音视频陪聊收益比例模板 {brokerageChatting} TODO 预留字段，服务端还没有
-  String? brokerageChattingTemplate;
-
-  ///免费通话时间 秒
-  num? chatFreeSecond;
-
-  ///视频通话单价(每分钟)
-  num? videoChatPrice;
-
-  ///语音通话单价(每分钟)
-  num? voiceChatPrice;
-
-  ///通话最低余额
-  num? chatMinBalance;
-
-  ///速配倒计时
-  int? matchingCountDown;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['serverTime'] = serverTime;
-    map['jumpLink'] = jumpLink;
-    map['cancelAccountLink'] = cancelAccountLink;
-    map['deposit'] = deposit;
-    map['goldPrice'] = goldPrice;
-    map['minPayGold'] = minPayGold;
-    map['payGoldRule'] = payGoldRule;
-    if (tab != null) {
-      map['tab'] = tab?.map((v) => v.toJson()).toList();
-    }
-    if (home != null) {
-      map['home'] = home?.map((v) => v.toJson()).toList();
-    }
-    if (resources != null) {
-      map['resources'] = resources?.map((v) => v.toJson()).toList();
-    }
-    if (scriptures != null) {
-      map['scriptures'] = scriptures;
-    }
-    map['desc'] = desc;
-    map['brokerageServiceTemplate'] = brokerageServiceTemplate;
-    map['brokerageChattingTemplate'] = brokerageChattingTemplate;
-    map['chatFreeSecond'] = chatFreeSecond;
-    map['videoChatPrice'] = videoChatPrice;
-    map['voiceChatPrice'] = voiceChatPrice;
-    map['chatMinBalance'] = chatMinBalance;
-    map['redPacketMaxAmount'] = redPacketMaxAmount;
-    map['transferMaxAmount'] = transferMaxAmount;
-    return map;
-  }
 }
 
 class Home {

@@ -1,5 +1,5 @@
-
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -19,6 +19,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../common/network/api/model/user/talk_user.dart';
 import 'mine_controller.dart';
 import 'widgets/beautiful_status_switch.dart';
+import 'widgets/hole_painter.dart';
 
 ///我的
 class MinePage extends StatefulWidget {
@@ -28,66 +29,60 @@ class MinePage extends StatefulWidget {
   State<MinePage> createState() => _MinePageState();
 }
 
-class MyCliper extends CustomClipper<RRect>{
-  @override
-  RRect getClip(Size size) {
-    return RRect.fromLTRBR(0, size.height/2, size.width, size.height, Radius.circular(8.rpx));
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<RRect> oldClipper) {
-    return true;
-  }
-
-}
-
 class _MinePageState extends State<MinePage>
     with AutomaticKeepAliveClientMixin {
   final controller = Get.put(MineController());
   final state = Get.find<MineController>().state;
 
-  Widget buildMask(){
-    return ClipRRect(
-      clipper: MyCliper(),
-      child: Container(
-        height: 16.rpx,
-        color: Colors.red,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final padding = FEdgeInsets(top: 178.rpx + Get.mediaQuery.padding.top);
     return SystemUI.light(
       child: Column(
         children: [
-          buildHeader(),
+          // buildHeader(),
           Expanded(
             child: Stack(
+              alignment: Alignment.topCenter,
               children: [
                 Padding(
-                  padding: FEdgeInsets(top: 8.rpx),
+                  padding: padding,
                   child: SmartRefresher(
                     controller: controller.refreshController,
                     onRefresh: controller.onRefresh,
-                    child: ListView(
-                      physics: const BouncingScrollPhysics(),
-                      padding: FEdgeInsets(bottom: 24.rpx, horizontal: 16.rpx),
-                      children: [
-                        buildBanner(),
-                        buildSectionOne(),
-                        buildSectionTwo(),
-                        buildSignOutButton(),
-                      ],
-                    ),
+                  child: ListView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: FEdgeInsets(bottom: 24.rpx, horizontal: 16.rpx),
+                    children: [
+                      buildBanner(),
+                      buildSectionOne(),
+                      buildSectionTwo(),
+                      buildSignOutButton(),
+                    ],
                   ),
                 ),
-                // buildMask(),
+                ),
+                Padding(
+                  padding: padding,
+                  child: buildMask(),
+                ),
+                buildHeader(),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildMask() {
+    return CustomPaint(
+      size: Size(Get.width, 16.rpx),
+      painter: HolePainter(
+        color: AppColor.scaffoldBackground,
+        padding: FEdgeInsets(horizontal: 16.rpx, top: 8.rpx),
+        radius: 8.rpx,
       ),
     );
   }
@@ -141,7 +136,8 @@ class _MinePageState extends State<MinePage>
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () => Get.toNamed(AppRoutes.userCenterPage,arguments: {'userId': userInfo!.uid}),
+                    onTap: () => Get.toNamed(AppRoutes.userCenterPage,
+                        arguments: {'userId': userInfo!.uid}),
                     child: Stack(
                       alignment: Alignment.bottomRight,
                       children: [
@@ -220,7 +216,7 @@ class _MinePageState extends State<MinePage>
   ///广告
   Widget buildBanner() {
     return Padding(
-      padding: FEdgeInsets(bottom: 16.rpx, top: 8.rpx),
+      padding: FEdgeInsets(top: 8.rpx, bottom: 8.rpx),
       child: AppImage.asset(
         width: double.infinity,
         fit: BoxFit.fitWidth,
@@ -276,9 +272,10 @@ class _MinePageState extends State<MinePage>
 
   ///第1部分
   Widget buildSectionOne() {
-    return Obx((){
+    return Obx(() {
       final userType = userTypeRx;
       return buildSection(
+        margin: FEdgeInsets(top: 8.rpx),
         children: [
           //个人信息
           MineListTile(
@@ -322,7 +319,8 @@ class _MinePageState extends State<MinePage>
             MineListTile(
               title: S.current.activationProgression,
               icon: "assets/images/mine/activate.png",
-              trailing: userType.isUser ? S.current.normalUser : S.current.brokerUser,
+              trailing:
+                  userType.isUser ? S.current.normalUser : S.current.brokerUser,
               onTap: controller.onTapUserAdvanced,
             ),
           //解约/进阶为经纪人
@@ -362,16 +360,16 @@ class _MinePageState extends State<MinePage>
 
   ///第2部分
   Widget buildSectionTwo() {
-    return Obx((){
+    return Obx(() {
       final userType = userTypeRx;
       return buildSection(
         margin: FEdgeInsets(top: 16.rpx),
         children: [
-            MineListTile(
-              title: S.current.whoSeenMe,
-              icon: "assets/images/mine/examine.png",
-              pagePath: AppRoutes.haveSeenPage,
-            ),
+          MineListTile(
+            title: S.current.whoSeenMe,
+            icon: "assets/images/mine/examine.png",
+            pagePath: AppRoutes.haveSeenPage,
+          ),
           //修改服务费
           if (userType.isBeauty)
             MineListTile(
@@ -393,17 +391,17 @@ class _MinePageState extends State<MinePage>
               icon: "assets/images/mine/look_contract.png",
               pagePath: AppRoutes.contractGeneratePage,
             ),
-            //意见反馈
-            MineListTile(
-              title: S.current.feedback,
-              icon: "assets/images/mine/feedback.png",
-              pagePath: AppRoutes.mineFeedbackPage,
-            ),
-            MineListTile(
-              title: S.current.myMessage,
-              icon: "assets/images/mine/message.png",
-              pagePath: AppRoutes.mineMessage,
-            ),
+          //意见反馈
+          MineListTile(
+            title: S.current.feedback,
+            icon: "assets/images/mine/feedback.png",
+            pagePath: AppRoutes.mineFeedbackPage,
+          ),
+          MineListTile(
+            title: S.current.myMessage,
+            icon: "assets/images/mine/message.png",
+            pagePath: AppRoutes.mineMessage,
+          ),
         ],
       );
     });

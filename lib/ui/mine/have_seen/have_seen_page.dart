@@ -28,7 +28,20 @@ class HaveSeenPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(S.current.whoSeenMe),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                offset: const Offset(0, 4),
+                blurRadius: 8,
+              ),
+            ],
+          ),
+        ),
       ),
+      backgroundColor: Colors.white,
       body: Obx(() => Visibility(
         visible: !state.vip.value,
         replacement: buildClient(),
@@ -46,7 +59,7 @@ class HaveSeenPage extends StatelessWidget {
           margin: EdgeInsets.symmetric(vertical: 36.rpx),
           child: AppImage.asset("assets/images/mine/warning.png",width: 120.rpx,height: 120.rpx,),
         ),
-        Text(S.current.seenVip,style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,height: 1.4),textAlign: TextAlign.center,),
+        Text(S.current.seenVip,style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5,height: 1.4),textAlign: TextAlign.center,),
         Button(
           onPressed: (){
             state.vip.value = true;

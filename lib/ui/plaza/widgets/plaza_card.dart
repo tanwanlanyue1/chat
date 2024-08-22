@@ -49,6 +49,17 @@ class PlazaCard extends StatelessWidget {
     }
   }
 
+  String? labelString(){
+    switch(item.type){
+      case 0:
+        return '个人';
+      case 1:
+        return '佳丽';
+      case 2:
+        return '经纪人';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Container(
@@ -110,7 +121,7 @@ class PlazaCard extends StatelessWidget {
                     },
                     child: Text(
                       "${item.nickname}",
-                      style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
+                      style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -118,22 +129,25 @@ class PlazaCard extends StatelessWidget {
                   Row(
                     children: [
                       Visibility(
-                        visible: item.gender == 2,
-                        replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
-                        child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
+                        visible: item.gender != 0,
+                        child: Visibility(
+                          visible: item.gender == 2,
+                          replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
+                          child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
+                        ),
                       ),
                       SizedBox(width: 8.rpx),
-                      Text('${item.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                      Text('${item.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.black22),),
                       Container(
                         width: 4.rpx,
                         height: 4.rpx,
                         margin: EdgeInsets.symmetric(horizontal: 8.rpx),
-                        decoration: const BoxDecoration(
-                          color: AppColor.black6,
+                        decoration:  BoxDecoration(
+                          color: AppColor.black92,
                           shape: BoxShape.circle,
                         ),
                       ),
-                      Text("个人",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                      Text("${labelString()}",style: AppTextStyle.fs12m.copyWith(color: AppColor.black22),),
                     ],
                   ),
                 ],
@@ -162,7 +176,7 @@ class PlazaCard extends StatelessWidget {
         margin: EdgeInsets.only(top: user ? 0 : 10.rpx,bottom: 4.rpx),
         alignment: Alignment.centerLeft,
         child: Text(
-          item.content ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray8),maxLines: 6,overflow: TextOverflow.ellipsis,
+          item.content ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),maxLines: 6,overflow: TextOverflow.ellipsis,
         )
     );
   }
@@ -335,7 +349,7 @@ class PlazaCard extends StatelessWidget {
       padding: EdgeInsets.all(16.rpx),
       margin: EdgeInsets.only(top: 16.rpx),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ...List.generate(item.commentList!.length > 2 ? 2 : item.commentList!.length, (index) {
             CommentListModel commentList = item.commentList![index];
@@ -346,7 +360,7 @@ class PlazaCard extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                       text: "${commentList.nickname}：",
-                      style: AppTextStyle.fs12b.copyWith(color: AppColor.gray5),
+                      style: AppTextStyle.fs12b.copyWith(color: AppColor.black20),
                       children: [
                         TextSpan(
                             text: '${commentList.content}',
@@ -375,7 +389,7 @@ class PlazaCard extends StatelessWidget {
               },
               child: Container(
                 margin: EdgeInsets.only(top: 12.rpx),
-                child: Text("查看全部>",style: AppTextStyle.fs12m.copyWith(color: AppColor.primary),),
+                child: Text("查看全部评论>",style: AppTextStyle.fs12m.copyWith(color: AppColor.gradientBegin),),
               ),
             ),
           ),

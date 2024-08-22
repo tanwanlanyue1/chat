@@ -148,6 +148,7 @@ class FortuneSquareView extends StatelessWidget {
           border: Border.all(color: Colors.grey.withOpacity(0.4), width: 1,),
         ),
         padding: EdgeInsets.symmetric(horizontal: 20.rpx),
+        margin: EdgeInsets.only(left: 36.rpx),
         child: Row(
           children: [
             Expanded(
@@ -176,6 +177,11 @@ class FortuneSquareView extends StatelessWidget {
                   ],
                 ),
               ),
+            ),
+            Container(
+              width: 1.rpx,
+              height: 30.rpx,
+              color: AppColor.white8,
             ),
             Expanded(
               child: InkWell(

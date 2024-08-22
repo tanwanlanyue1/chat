@@ -57,7 +57,7 @@ class DiscoverPage extends StatelessWidget {
       child: TabBar(
         controller: controller.tabController,
         labelColor: AppColor.primary,
-        labelStyle: AppTextStyle.fs14b.copyWith(color: AppColor.primary),
+        labelStyle: AppTextStyle.fs14b.copyWith(color: AppColor.gradientBegin),
         unselectedLabelColor: AppColor.gray9,
         unselectedLabelStyle: AppTextStyle.fs14b.copyWith(color: AppColor.black92),
         indicatorColor: AppColor.primary,
@@ -65,7 +65,7 @@ class DiscoverPage extends StatelessWidget {
         labelPadding: EdgeInsets.only(bottom: 10.rpx),
         onTap: (val){},
         tabs: [
-          Text(S.current.hotActivity),
+          Text(S.current.hotActivity,),
           Text(S.current.dating),
         ],
       ),

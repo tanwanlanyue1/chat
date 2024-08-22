@@ -1,3 +1,4 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:intl/intl.dart';
 
 extension IntExtension on int {
@@ -9,5 +10,9 @@ extension IntExtension on int {
     } else {
       return "${this / 1000000.0}M";
     }
+  }
+
+  DateTime get dateTime {
+    return DateTime.fromMicrosecondsSinceEpoch(this);
   }
 }

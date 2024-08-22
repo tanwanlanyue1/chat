@@ -31,24 +31,24 @@ class EvaluateCard extends StatelessWidget {
           Row(
             children: [
               AppImage.network(
-                width: 50.rpx,
-                height: 50.rpx,
+                width: 40.rpx,
+                height: 40.rpx,
                 team ? item.toImg : item.fromImg,
                 shape: BoxShape.circle,
               ),
               SizedBox(width: 8.rpx,),
               Expanded(
                 child: SizedBox(
-                  height: 50.rpx,
+                  height: 46.rpx,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           Expanded(
-                            child: Text(team ? item.toName : item.fromName,style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w500),),
+                            child: Text(team ? item.toName : item.fromName,style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),),
                           ),
-                          Text(CommonUtils.getPostTime(time: item.createTime,),style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+                          Text(CommonUtils.timestamp(item.createTime,unit: 'yyyy年MM月dd日'),style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
                         ],
                       ),
                       Row(
@@ -64,8 +64,8 @@ class EvaluateCard extends StatelessWidget {
                             width: 16.rpx,
                             height: 16.rpx,
                             i < item.star ?
-                            'assets/images/mine/star.png':
-                            'assets/images/mine/star_none.png',
+                            'assets/images/mine/small_star.png':
+                            'assets/images/mine/small_star_none.png',
                           ))
                         ],
                       ),
@@ -75,9 +75,12 @@ class EvaluateCard extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-              margin: EdgeInsets.only(top: 16.rpx),
-              child: Text(item.content,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),)
+          Visibility(
+            visible: item.content.isNotEmpty,
+            child: Container(
+                margin: EdgeInsets.only(top: 8.rpx,left: 48.rpx),
+                child: Text(item.content,style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),)
+            ),
           ),
           team ?
           Container(
@@ -93,9 +96,7 @@ class EvaluateCard extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: "【${item.fromName}】",
-                      style: const TextStyle(
-                        color: AppColor.gray30,
-                      ),
+                      style: AppTextStyle.fs14b.copyWith(color: AppColor.gray30),
                     ),
                   ],
                 ),

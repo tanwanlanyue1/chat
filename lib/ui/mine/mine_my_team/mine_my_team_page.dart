@@ -8,7 +8,6 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
-import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -27,7 +26,20 @@ class MineMyTeamPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(S.current.teamList),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                offset: const Offset(0, 4),
+                blurRadius: 8,
+              ),
+            ],
+          ),
+        ),
       ),
+      backgroundColor: AppColor.grayF7,
       body: SmartRefresher(
         controller: controller.pagingController.refreshController,
         onRefresh: controller.pagingController.onRefresh,
@@ -76,7 +88,7 @@ class MineMyTeamPage extends StatelessWidget {
                             constraints: BoxConstraints(
                                 maxWidth: Get.width-240.rpx
                             ),
-                            child: Text(item.nickname ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),maxLines: 1,overflow: TextOverflow.ellipsis),
+                            child: Text(item.nickname ?? '',style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),maxLines: 1,overflow: TextOverflow.ellipsis),
                           ),
                           AppImage.asset("assets/images/mine/safety.png",width: 16.rpx,height: 16.rpx,),
                         ],
@@ -84,12 +96,15 @@ class MineMyTeamPage extends StatelessWidget {
                       Row(
                         children: [
                           Visibility(
-                            visible: item.gender == 1,
-                            replacement: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
-                            child: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
+                            visible: item.gender != 0,
+                            child: Visibility(
+                              visible: item.gender == 1,
+                              replacement: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
+                              child: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
+                            ),
                           ),
                           SizedBox(width: 8.rpx),
-                          Text('${item.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                          Text('${item.age ?? ''}',style: AppTextStyle.fs12b.copyWith(color: AppColor.blue56),),
                           Container(
                             width: 4.rpx,
                             height: 4.rpx,
@@ -99,7 +114,7 @@ class MineMyTeamPage extends StatelessWidget {
                               shape: BoxShape.circle,
                             ),
                           ),
-                          Text(S.current.goodGirl,style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                          Text(S.current.goodGirl,style: AppTextStyle.fs12b.copyWith(color: AppColor.blue56),),
                         ],
                       ),
                     ],

@@ -94,7 +94,7 @@ class UserModel {
   UserGender gender; // 用户性别 1：男 2：女
   String? zodiac; // 生肖
   String? star; // 星座
-  String? birth; // 生日yyyy-MM-dd
+  int? birth; // 生日yyyy-MM-dd
   int? age; // 年龄
   String? position; // 位置
   String? email; // 邮箱
@@ -187,7 +187,7 @@ class UserModel {
     UserGender? gender,
     String? zodiac,
     String? star,
-    String? birth,
+    int? birth,
     int? age,
     String? position,
     String? email,

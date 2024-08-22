@@ -10,7 +10,7 @@ class VisitList {
     visitTime = json['visitTime'];
     userInfo = json['userInfo'] != null ? UserModel.fromJson(json['userInfo']) : null;
   }
-  String? visitTime;
+  int? visitTime;
   UserModel? userInfo;
 
   Map<String, dynamic> toJson() {

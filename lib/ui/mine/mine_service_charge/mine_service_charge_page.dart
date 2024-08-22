@@ -28,7 +28,7 @@ class MineServiceChargePage extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(height: 36.rpx),
-          Text(S.current.chargeService,style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
+          Text(S.current.chargeService,style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 24.rpx),
             color: Colors.white,
@@ -43,7 +43,6 @@ class MineServiceChargePage extends StatelessWidget {
                     lines: 1,
                     fillColor: Colors.white,
                     textAlign: TextAlign.center,
-                    // counterText: "数字1-999999",
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(RegExp('[0-9]')),

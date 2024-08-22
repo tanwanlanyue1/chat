@@ -17,6 +17,7 @@ class InputWidget extends StatelessWidget {
   final String hintText;
   final TextStyle? textStyle;
   final TextStyle? hintStyle;
+  final TextStyle? counterStyle;
   final TextAlign? textAlign;
   final String hintVal;
   final int lines;
@@ -49,6 +50,7 @@ class InputWidget extends StatelessWidget {
     this.inputController,
     this.contentPadding,
     this.inputFormatters,
+    this.counterStyle,
   });
 
   TextEditingController controller = TextEditingController();
@@ -75,6 +77,7 @@ class InputWidget extends StatelessWidget {
               focusedBorder: border ?? InputBorder.none,
               enabledBorder: border ?? InputBorder.none,
               border: border ?? InputBorder.none,
+              counterStyle: counterStyle
             ),
             textAlign: textAlign ?? TextAlign.left,
             maxLines: lines,

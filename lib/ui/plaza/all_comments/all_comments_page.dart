@@ -83,7 +83,7 @@ class AllCommentsPage extends StatelessWidget {
                 },
                 child: Container(
                   margin: EdgeInsets.only(right: 8.rpx),
-                  child: AppImage.network(state.authorInfo.avatar ?? '',width: 36.rpx,height: 36.rpx,),
+                  child: AppImage.network(state.authorInfo.avatar ?? '',width: 36.rpx,height: 36.rpx,shape: BoxShape.circle,),
                 ),
               ),
               Expanded(
@@ -91,13 +91,16 @@ class AllCommentsPage extends StatelessWidget {
                   children: [
                     ConstrainedBox(
                       constraints: BoxConstraints(maxWidth: 140.rpx),
-                      child: Text(state.authorInfo.nickname,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+                      child: Text(state.authorInfo.nickname,style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),),
                     ),
                     SizedBox(width: 4.rpx),
                     Visibility(
-                      visible: state.authorInfo.gender.isFemale,
-                      replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
-                      child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
+                      visible: state.authorInfo.gender.index != 0,
+                      child: Visibility(
+                        visible: state.authorInfo.gender.isFemale,
+                        replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
+                        child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
+                      ),
                     ),
                     SizedBox(width: 2.rpx),
                     Text("${state.authorInfo.age ?? ''}",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
@@ -157,7 +160,7 @@ class AllCommentsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('${item.nickname}',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                      Text('${item.nickname}',style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),maxLines: 1,overflow: TextOverflow.ellipsis,),
                       Row(
                         children: [
                           Visibility(
@@ -166,19 +169,18 @@ class AllCommentsPage extends StatelessWidget {
                             child: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
                           ),
                           SizedBox(width: 8.rpx),
-                          Text("${item.age ?? ''}",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                          Text("${item.age ?? ''}",style: AppTextStyle.fs12m.copyWith(color: AppColor.black92),),
                         ],
                       ),
                     ],
                   ),
                 ),
               ),
-              Text(CommonUtils.getPostTime(time: item.createTime ?? ''),style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30))
-              // Text(CommonUtils.timestamp(item.createTime ?? '',unit: "MM-dd HH:ss"),style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30))
+              Text(CommonUtils.getPostTime(time: item.createTime),style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30))
             ],
           ),
           SizedBox(height: 12.rpx,),
-          Text(item.content ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+          Text(item.content ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),),
         ],
       ),
     );
@@ -203,12 +205,20 @@ class AllCommentsPage extends StatelessWidget {
           child: Container(
             height: 36.rpx,
             decoration: BoxDecoration(
-              color: AppColor.gray14,
+              color: AppColor.white8,
               borderRadius: BorderRadius.circular(8.rpx),
             ),
             padding: EdgeInsets.only(left: 16.rpx),
             alignment: Alignment.centerLeft,
-            child: Text("写下你的评论",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray10),),
+            child: Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: 3.rpx),
+                  child: AppImage.asset("assets/images/plaza/write.png",width: 20.rpx,height: 20.rpx,),
+                ),
+                Text("写下你的评论",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+              ],
+            ),
           ),
         ),
       ),

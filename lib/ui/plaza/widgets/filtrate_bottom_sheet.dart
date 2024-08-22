@@ -15,6 +15,22 @@ class FiltrateBottomSheet extends StatelessWidget {
   FiltrateBottomSheet({super.key,this.callBack});
 
   @override
+  void paint(PaintingContext context, Offset offset,
+      ImageConfiguration configuration, SliderTrackShape trackShape) {
+    final canvas = context.canvas;
+    final Rect trackRect = offset & configuration.size!;
+
+    final Paint paint = Paint()
+      ..shader = LinearGradient(
+        colors: [Colors.red, Colors.blue],
+        begin: Alignment.centerLeft,
+        end: Alignment.centerRight,
+      ).createShader(trackRect);
+
+    canvas.drawRect(trackRect, paint);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GetBuilder<RectifyTheWorkplaceController>(
       id: 'bottomSheet',
@@ -48,16 +64,16 @@ class FiltrateBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(state.filtrateType.length, (index) => GestureDetector(
                   onTap: (){
-                    if(state.filtrateIndex == index){
+                    if(state.filtrateIndex == index+1){
                       state.filtrateIndex = -1;
                     }else{
-                      state.filtrateIndex = index;
+                      state.filtrateIndex = index+1;
                     }
                     controller.additionLabel();
                   },
                   child: Column(
                     children: [
-                      AppImage.asset(state.filtrateIndex == index ? state.filtrateType[index]['activeImage']:state.filtrateType[index]['image'],width: 60.rpx,height: 60.rpx,),
+                      AppImage.asset(state.filtrateIndex == index+1 ? state.filtrateType[index]['activeImage']:state.filtrateType[index]['image'],width: 60.rpx,height: 60.rpx,),
                       Text(state.filtrateType[index]['name'],style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
                     ],
                   ),
@@ -117,7 +133,7 @@ class FiltrateBottomSheet extends StatelessWidget {
                     crossAxisCount: 3,
                     crossAxisSpacing: 8.rpx,
                     mainAxisSpacing: 12.rpx,
-                    mainAxisExtent: 46.rpx
+                    mainAxisExtent: 42.rpx
                 ),
                 itemCount: state.styleList.length,
                 itemBuilder: (_, index) {
@@ -126,12 +142,12 @@ class FiltrateBottomSheet extends StatelessWidget {
                     onTap: () => controller.setLabel(index),
                     child: Container(
                       decoration: BoxDecoration(
-                          color: state.labelList.contains(index) ? AppColor.primary : Colors.white,
-                          border: Border.all(color: AppColor.primary),
+                          color: state.labelList.contains(index) ? AppColor.gradientBegin : Colors.white,
+                          border: Border.all(color: AppColor.gradientBegin),
                           borderRadius: BorderRadius.all(Radius.circular(8.rpx))
                       ),
                       alignment: Alignment.center,
-                      child: Text(item.tag,style: AppTextStyle.fs14m.copyWith(color: state.labelList.contains(index) ? Colors.white : AppColor.primary),),
+                      child: Text(item.tag,style: AppTextStyle.fs14m.copyWith(color: state.labelList.contains(index) ? Colors.white : AppColor.gradientBegin),),
                     ),
                   );
                 },

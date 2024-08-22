@@ -25,8 +25,20 @@ class MineTeamEvaluatePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(S.current.teamEvaluation),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                offset: const Offset(0, 4),
+                blurRadius: 8,
+              ),
+            ],
+          ),
+        ),
       ),
-      backgroundColor: AppColor.white8,
+      backgroundColor: AppColor.grayF7,
       body: SmartRefresher(
           controller: controller.pagingController.refreshController,
           onRefresh: controller.pagingController.onRefresh,
@@ -81,7 +93,10 @@ class MineTeamEvaluatePage extends StatelessWidget {
                 ),
               )),
             ),
-            Text("${state.evaluation?.totalScore ?? 0}.0${S.current.minute}",style: AppTextStyle.fs14m.copyWith(color: AppColor.primary),),
+            Visibility(
+              visible: (state.evaluation?.totalScore ?? 0) > 0,
+              child: Text("${state.evaluation?.totalScore ?? 0}.0${S.current.minute}",style: AppTextStyle.fs14b.copyWith(color: AppColor.gradientBegin),),
+            ),
           ],
         ),
       );

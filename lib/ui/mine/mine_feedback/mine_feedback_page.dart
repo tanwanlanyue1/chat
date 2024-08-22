@@ -21,7 +21,20 @@ class MineFeedbackPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(S.current.feedback),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                offset: const Offset(0, 4),
+                blurRadius: 8,
+              ),
+            ],
+          ),
+        ),
       ),
+      backgroundColor: AppColor.grayF7,
       body: GetBuilder<MineFeedbackController>(
         builder: (controller) {
           return Column(
@@ -40,7 +53,7 @@ class MineFeedbackPage extends StatelessWidget {
                 child: Container(
                   height: 50.rpx,
                   decoration: BoxDecoration(
-                      color: AppColor.primary,
+                      color: AppColor.gradientBegin,
                       borderRadius: BorderRadius.circular(8.rpx)),
                   margin: EdgeInsets.symmetric(horizontal: 37.rpx,vertical: 8.rpx),
                   child: Row(

@@ -33,8 +33,8 @@ class UserAdvanced {
   String? content;
   int? status;
   String? remark;
-  String? createTime;
-  String? updateTime;
+  int? createTime;
+  int? updateTime;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

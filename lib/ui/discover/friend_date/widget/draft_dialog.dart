@@ -77,13 +77,13 @@ class DraftDialog extends StatelessWidget {
                 SizedBox(height: 12.rpx),
                 Text(
                   "同意和${item.userInfo?.nickname ?? ''}约会？",
-                  style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
+                  style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 12.rpx),
                   child: Text(
                     "注：为保障权益，约会双方均需缴纳保证金，保证金在订单结束后将会原路退回。",
-                    style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),
+                    style: AppTextStyle.fs12m.copyWith(color: AppColor.black92),
                   ),
                 ),
                 Container(
@@ -98,7 +98,7 @@ class DraftDialog extends StatelessWidget {
                       Text(
                         "Ta愿支付",
                         style:
-                            AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
+                            AppTextStyle.fs14b.copyWith(color: AppColor.black20),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 16.rpx),
@@ -113,7 +113,7 @@ class DraftDialog extends StatelessWidget {
                             Text(
                               (item.serviceCharge != null && item.serviceCharge! > 0) ? "\$${item.serviceCharge}":"免费",
                               style: AppTextStyle.fs14b
-                                  .copyWith(color: AppColor.gray5),
+                                  .copyWith(color: AppColor.black20),
                             ),
                           ],
                         ),
@@ -129,7 +129,7 @@ class DraftDialog extends StatelessWidget {
                           Text(
                             "\$${SS.appConfig.configRx()?.deposit ?? 0}",
                             style: AppTextStyle.fs14b
-                                .copyWith(color: AppColor.primary),
+                                .copyWith(color: AppColor.gradientBegin),
                           ),
                         ],
                       ),
@@ -141,7 +141,7 @@ class DraftDialog extends StatelessWidget {
                       Text(
                         "你需支付",
                         style:
-                            AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
+                            AppTextStyle.fs14b.copyWith(color: AppColor.black20),
                       ),
                       SizedBox(height: 16.rpx),
                       Row(
@@ -155,7 +155,7 @@ class DraftDialog extends StatelessWidget {
                           Text(
                             "\$${SS.appConfig.configRx()?.deposit ?? 0}",
                             style: AppTextStyle.fs14b
-                                .copyWith(color: AppColor.primary),
+                                .copyWith(color: AppColor.gradientBegin),
                           ),
                         ],
                       ),

@@ -33,7 +33,7 @@ class CommentListModel {
     //是否点赞 true：已点赞 false：未点赞
     bool? isLike,
     //	创建时间
-    String? createTime,
+    int? createTime,
     //	广场-子评论
     List<CommentListModel>? subComment,}){
     _id = id;
@@ -94,7 +94,7 @@ class CommentListModel {
   int? _likeNum;
   int? _commentNum;
   bool? _isLike;
-  String? _createTime;
+  int? _createTime;
   List<CommentListModel>? _subComment;
 CommentListModel copyWith({  int? id,
   int? pid,
@@ -111,7 +111,7 @@ CommentListModel copyWith({  int? id,
   int? likeNum,
   int? commentNum,
   bool? isLike,
-  String? createTime,
+  int? createTime,
   List<CommentListModel>? subComment,
 }) => CommentListModel(  id: id ?? _id,
   pid: pid ?? _pid,
@@ -146,7 +146,7 @@ CommentListModel copyWith({  int? id,
   int? get likeNum => _likeNum;
   int? get commentNum => _commentNum;
   bool? get isLike => _isLike;
-  String? get createTime => _createTime;
+  int? get createTime => _createTime;
   List<CommentListModel>? get subComment => _subComment;
 
   Map<String, dynamic> toJson() {

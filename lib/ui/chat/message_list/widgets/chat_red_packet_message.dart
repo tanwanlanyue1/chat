@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
@@ -197,7 +198,20 @@ class RedPacketBubbleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final content = message.redPacketContent;
+    //红包状态： 0待领取 1已领取 2已撤回 3已过期
     final status = message.redPacketLocal.status;
+    var statusText = '';
+    switch(status){
+      case 1:
+        statusText = content?.fromUid == SS.login.userId ? '已被领取' : '已领取';
+        break;
+      case 2:
+        statusText = '已撤回';
+        break;
+      case 3:
+        statusText = '已过期';
+        break;
+    }
 
     return Bubble(
       elevation: 0,
@@ -238,10 +252,11 @@ class RedPacketBubbleView extends StatelessWidget {
                 ),
               ],
             ),
-            if(status == 1) Padding(
+            // 0待领取 1已领取 2已撤回 3已过期
+            if(statusText.isNotEmpty) Padding(
               padding: FEdgeInsets(top: 8.rpx),
               child: Text(
-                '红包金额：${content?.amount.toCurrencyString()}  已被领取',
+                '红包金额：${content?.amount.toCurrencyString()}  $statusText',
                 style: AppTextStyle.fs12m.copyWith(color: Colors.white),
               ),
             )

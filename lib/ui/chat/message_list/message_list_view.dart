@@ -206,29 +206,10 @@ class _MessageListViewState extends State<MessageListView> {
 
       if(item.value.zim is ZIMCustomMessage){
         final zim = item.value.zim as ZIMCustomMessage;
-        //插入转账消息
         if(zim.subType == CustomMessageType.transfer.value){
-
-          if(zim.senderUserID == selfUserId){
-            //模拟一条接收方收款消息
-            final receiveMoneyMsg = zim.copyWith(
-              isServerMessage: false,
-              isUserInserted: true,
-              senderUserID: zim.conversationID,
-              conversationID: zim.senderUserID,
-              direction: ZIMMessageDirection.receive,
-              localExtendedData: ''
-            );
-            list.insert(0, ValueNotifier(receiveMoneyMsg.toKIT()));
-          }else{
-            //模拟一条转账详情消息
-            final detailsMsg = zim.copyWith(
-                isServerMessage: false,
-                isUserInserted: true,
-            );
-            detailsMsg.isHideAvatar = true;
-            list.insert(0, ValueNotifier(detailsMsg.toKIT()));
-          }
+          _handleTransferMessage(list, zim, selfUserId);
+        }else if(zim.subType == CustomMessageType.redPacket.value){
+          _handleRedPacketMessage(list, zim, selfUserId);
         }
       }
     });
@@ -236,8 +217,39 @@ class _MessageListViewState extends State<MessageListView> {
     return list;
   }
 
+  ///处理转账消息
+  void _handleTransferMessage(List<ValueNotifier<ZIMKitMessage>> list, ZIMCustomMessage zim, String selfUserId){
+    if(zim.senderUserID == selfUserId){
+      //模拟一条接收方收款消息
+      final receiveMoneyMsg = zim.copyWith(
+          isServerMessage: false,
+          isUserInserted: true,
+          senderUserID: zim.conversationID,
+          conversationID: zim.senderUserID,
+          direction: ZIMMessageDirection.receive,
+          localExtendedData: ''
+      );
+      list.insert(0, ValueNotifier(receiveMoneyMsg.toKIT()));
+    }else{
+      //模拟一条转账详情消息
+      final detailsMsg = zim.copyWith(
+        isServerMessage: false,
+        isUserInserted: true,
+      );
+      detailsMsg.isHideAvatar = true;
+      list.insert(0, ValueNotifier(detailsMsg.toKIT()));
+    }
+  }
 
-  Widget listview(
+  ///处理红包消息
+  void _handleRedPacketMessage(List<ValueNotifier<ZIMKitMessage>> list, ZIMCustomMessage zim, String selfUserId){
+    if(zim.senderUserID == selfUserId){
+    }else{
+    }
+  }
+
+
+Widget listview(
     List<ValueNotifier<ZIMKitMessage>> messageList,
   ) {
     messageList = handleMessageList(messageList);

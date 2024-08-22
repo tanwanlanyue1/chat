@@ -42,7 +42,7 @@ class DiscoverItem extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 14.rpx,color: AppColor.gray9),
+              style: TextStyle(fontSize: 14.rpx,color: AppColor.black92),
             ),
             SizedBox(width: 1.rpx),
             Expanded(

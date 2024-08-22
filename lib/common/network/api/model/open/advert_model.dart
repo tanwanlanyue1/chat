@@ -24,7 +24,10 @@ class AdvertisingStartupModel {
     //生效时间
     this.startTime,
     //失效时间
-    this.endTime,});
+    this.endTime,
+    //创建时间
+    this.createTime,
+  });
 
   AdvertisingStartupModel.fromJson(dynamic json) {
     id = json['id'];
@@ -50,8 +53,9 @@ class AdvertisingStartupModel {
   int? gotoType;
   String? gotoUrl;
   String? gotoParam;
-  String? startTime;
-  String? endTime;
+  int? startTime;
+  int? endTime;
+  int? createTime;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -67,6 +71,7 @@ class AdvertisingStartupModel {
     map['gotoParam'] = gotoParam;
     map['startTime'] = startTime;
     map['endTime'] = endTime;
+    map['createTime'] = createTime;
     return map;
   }
 
@@ -77,8 +82,9 @@ class TBAdvertisingListModel {
   int advertType = 0; // 比赛列表广告位置0不区分 1关注 2全部 3进行中 4赛程 5赛果
   String advertId = ""; // 广告id
   String advertTitle = ""; // 广告标题或者描述
-  String startTime = ""; // 生效时间
-  String endTime = ""; // 失效时间
+  int? startTime; // 生效时间
+  int? endTime; // 失效时间
+  int? createTime; // 创建时间
   int jumpType = 0; // 跳转类型0:站内跳转，1:站外跳转
   int sort = 0; // 排序（按大到小排序）
   int state = 0; //是否启用（0:启用，1关闭）
@@ -102,6 +108,7 @@ class TBAdvertisingListModel {
     required this.hitsNumber,
     required this.startTime,
     required this.endTime,
+    required this.createTime,
     required this.jumpType,
     required this.sort,
     required this.state,
@@ -122,8 +129,9 @@ class TBAdvertisingListModel {
       : advertType = json["advertType"] ?? 0,
         advertId = '${json["id"] ?? json["advertId"] ?? ""}',
         advertTitle = json["advertTitle"] ?? "",
-        startTime = json["startTime"] ?? "",
-        endTime = json["endTime"] ?? "",
+        startTime = json["startTime"],
+        endTime = json["endTime"],
+        createTime = json["createTime"],
         jumpType = json["jumpType"] ?? 0,
         sort = json["sort"] ?? 0,
         state = json["state"] ?? 0,
@@ -146,8 +154,9 @@ class TBAdvertisingInnerModel {
   int advertType = 0; // 广告类型（0:图片，1:视频）
   String advertId = ""; // 广告id
   String advertTitle = ""; // 广告标题或者描述
-  String startTime = ""; // 生效时间
-  String endTime = ""; // 失效时间
+  int? startTime; // 生效时间
+  int? endTime; // 失效时间
+  int? createTime; // 创建时间
   int jumpType = 0; // 跳转类型0:站内跳转，1:站外跳转
   int sort = 0; // 排序（按大到小排序）
   int state = 0; //是否启用（0:启用，1关闭）
@@ -169,6 +178,7 @@ class TBAdvertisingInnerModel {
     required this.hitsNumber,
     required this.startTime,
     required this.endTime,
+    required this.createTime,
     required this.jumpType,
     required this.sort,
     required this.state,

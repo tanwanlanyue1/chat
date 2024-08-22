@@ -44,11 +44,11 @@ class ContractModel {
   ///	备注
   final String remark;
   ///	签约时间
-  final String signingTime;
+  final int signingTime;
   ///	解除时间
-  final String rescissionTime;
+  final int rescissionTime;
   ///	创建时间
-  final String createTime;
+  final int createTime;
 
   factory ContractModel.fromJson(Map<String, dynamic> json){
     return ContractModel(
@@ -64,9 +64,9 @@ class ContractModel {
       brokerageChatting: json["brokerageChatting"] ?? 0,
       state: json["state"] ?? 0,
       remark: json["remark"] ?? "",
-      signingTime: json["signingTime"] ?? "",
-      rescissionTime: json["rescissionTime"] ?? "",
-      createTime: json["createTime"] ?? "",
+      signingTime: json["signingTime"] ?? 0,
+      rescissionTime: json["rescissionTime"] ?? 0,
+      createTime: json["createTime"] ?? 0,
     );
   }
 
@@ -83,9 +83,9 @@ class ContractModel {
     num? brokerageChatting,
     int? state,
     String? remark,
-    String? signingTime,
-    String? rescissionTime,
-    String? createTime,
+    int? signingTime,
+    int? rescissionTime,
+    int? createTime,
   }) {
     return ContractModel(
       id: id ?? this.id,

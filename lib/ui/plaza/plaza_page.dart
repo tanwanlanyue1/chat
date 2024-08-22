@@ -27,15 +27,21 @@ class _PlazaPageState extends State<PlazaPage> with AutomaticKeepAliveClientMixi
     super.build(context);
     return Scaffold(
       backgroundColor: AppColor.scaffoldBackground,
-      appBar: appBar(),
-      body: TabBarView(
-          controller: controller.tabController,
-          physics: const NeverScrollableScrollPhysics(),
-          children: <Widget>[
-            DatingHallView(),
-            NearbyHallView(),
-            FortuneSquareView(),
-          ]
+      body: Column(
+        children: [
+          appBar(),
+          Expanded(
+            child: TabBarView(
+                controller: controller.tabController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: <Widget>[
+                  DatingHallView(),
+                  NearbyHallView(),
+                  FortuneSquareView(),
+                ]
+            ),
+          )
+        ],
       ),
     );
   }
@@ -43,38 +49,58 @@ class _PlazaPageState extends State<PlazaPage> with AutomaticKeepAliveClientMixi
   @override
   bool get wantKeepAlive => true;
 
-  PreferredSizeWidget appBar(){
-    return AppBar(
-      title: GetBuilder<PlazaController>(
-        id: "appBar",
-        builder: (_) {
-        return Row(
-            children: List.generate(state.tabBarList.length, (index) {
-              return GestureDetector(
-                onTap: (){
-                  controller.tabController.index = index;
-                  controller.update(['appBar']);
-                },
-                child: ShaderMask(
-                    shaderCallback: (Rect bounds) {
-                      return LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [controller.tabController.index == index ? AppColor.gradientBegin: AppColor.gray30,controller.tabController.index == index ? AppColor.gradientEnd : AppColor.gray30],
-                      ).createShader(Offset.zero & bounds.size);
-                    },
-                    blendMode: BlendMode.srcATop,
-                    child: Container(
-                      margin: EdgeInsets.only(right: 36.rpx),
-                      child: Text(
-                        state.tabBarList[index]['name'],
-                        style:controller.tabController.index == index ? AppTextStyle.fs18b:AppTextStyle.fs16m,
+  Widget appBar(){
+    return GetBuilder<PlazaController>(
+      id: "appBar",
+      builder: (_) {
+        return Container(
+          height: Get.mediaQuery.padding.top+44.rpx,
+          color: Colors.white,
+          padding: EdgeInsets.only(top: Get.mediaQuery.padding.top+12.rpx,left: 16.rpx),
+          child: Row(
+              children: List.generate(state.tabBarList.length, (index) {
+                return GestureDetector(
+                  onTap: (){
+                    controller.tabController.index = index;
+                    controller.update(['appBar']);
+                  },
+                  child: Column(
+                    children: [
+                      ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            return LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [controller.tabController.index == index ? AppColor.gradientBegin: AppColor.gray30,controller.tabController.index == index ? AppColor.gradientEnd : AppColor.gray30],
+                            ).createShader(Offset.zero & bounds.size);
+                          },
+                          blendMode: BlendMode.srcATop,
+                          child: Container(
+                            margin: EdgeInsets.only(right: 36.rpx),
+                            child: Text(
+                              state.tabBarList[index]['name'],
+                              style:controller.tabController.index == index ? AppTextStyle.fs18b:AppTextStyle.fs16m,
+                            ),
+                          )
                       ),
-                    )
-                ),
-              );
-            },));
-      },),
-    );
+                      Container(
+                        width: 24.rpx,
+                        height: 3.rpx,
+                        margin: EdgeInsets.only(right: 36.rpx),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.rpx),
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [controller.tabController.index == index ? AppColor.gradientBegin: Colors.transparent,controller.tabController.index == index ? AppColor.gradientEnd : Colors.transparent],
+                          )
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },)),
+        );
+      },);
   }
 }

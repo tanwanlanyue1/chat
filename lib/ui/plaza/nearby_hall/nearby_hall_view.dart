@@ -23,6 +23,7 @@ class NearbyHallView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.white8,
       body: SmartRefresher(
         controller: controller.pagingController.refreshController,
         onRefresh: controller.pagingController.onRefresh,
@@ -73,6 +74,7 @@ class NearbyHallView extends StatelessWidget {
                   Expanded(
                     child: Text(item.nickname ?? '',style: AppTextStyle.fs12m.copyWith(color: Colors.white),overflow: TextOverflow.ellipsis,),
                   ),
+                  if(item.gender != 0 && item.age != null)
                   Container(
                     decoration: BoxDecoration(
                         gradient: const LinearGradient(
@@ -90,7 +92,10 @@ class NearbyHallView extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        AppImage.asset(item.gender == 1 ? "assets/images/plaza/boy.png" : "assets/images/plaza/girl.png",width: 12.rpx,height: 12.rpx,),
+                        Visibility(
+                          visible: item.gender != 0,
+                          child: AppImage.asset(item.gender == 1 ? "assets/images/plaza/boy.png" : "assets/images/plaza/girl.png",width: 12.rpx,height: 12.rpx,),
+                        ),
                         Text("${item.age ?? ''}",style: AppTextStyle.fs10m.copyWith(color: Colors.white),),
                       ],
                     ),
@@ -101,7 +106,7 @@ class NearbyHallView extends StatelessWidget {
             Container(
               height: 30.rpx,
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: AppColor.gradientBegin,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(8.rpx),
                   bottomRight: Radius.circular(8.rpx),
@@ -183,6 +188,11 @@ class NearbyHallView extends StatelessWidget {
                 ],
               ),
             ),
+          ),
+          Container(
+            width: 1.rpx,
+            height: 30.rpx,
+            color: AppColor.white8,
           ),
           Expanded(
             child: GestureDetector(

@@ -29,11 +29,7 @@ class AppTheme {
       scrolledUnderElevation: 0,
       backgroundColor: Colors.white,
       foregroundColor: const Color(0xff333333),
-      titleTextStyle: AppTextStyle.pingFangMedium.copyWith(
-        color: const Color(0xff333333),
-        fontSize: 18.rpx,
-        fontWeight: FontWeight.w500,
-      ),
+      titleTextStyle: AppTextStyle.fs18b.copyWith(color: AppColor.black20),
       centerTitle: true,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       toolbarHeight: kNavigationBarHeight,

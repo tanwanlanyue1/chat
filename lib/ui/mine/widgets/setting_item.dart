@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 
@@ -30,9 +31,9 @@ class SettingItem extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: borderRadius ?? BorderRadius.circular(8.rpx)),
-      height: autoHeight ? null : 45.rpx,
+      height: autoHeight ? null : 56.rpx,
       padding: EdgeInsets.all(12.rpx),
-      margin: EdgeInsets.only(bottom: bottom ?? 10.rpx),
+      margin: EdgeInsets.only(bottom: bottom ?? 12.rpx),
       child: InkWell(
         onTap: () {
           callBack?.call();
@@ -41,7 +42,7 @@ class SettingItem extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 15.rpx),
+              style: TextStyle(fontSize: 16.rpx,color: AppColor.gray5),
             ),
             SizedBox(width: 8.rpx),
             Expanded(

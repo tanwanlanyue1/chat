@@ -22,14 +22,11 @@ class UpdatePasswordPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           state.isLogin.value ? S.current.changingPassword : S.current.changingPaymentPassword,
-          style: TextStyle(
-            color: const Color(0xff333333),
-            fontSize: 18.rpx,
-          ),
         ),
       ),
+      backgroundColor: AppColor.grayF7,
       body: ListView(
-        padding: EdgeInsets.only(left: 12.rpx, right: 12.rpx, top: 24.rpx),
+        padding: EdgeInsets.only(top: 24.rpx),
         children: [
           _buildPhoneNumberTips(),
           _buildVerificationCodeField(),
@@ -52,14 +49,14 @@ class UpdatePasswordPage extends StatelessWidget {
   Widget _buildPhoneNumberTips() {
     return Obx(() => Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.only(bottom: 15.rpx),
+      margin: EdgeInsets.only(bottom: 16.rpx,left: 6.rpx,right: 6.rpx),
       child: Text(
         state.isPhone.value ?
         '${S.current.phoneVerificationCode}${controller.phoneNumberInputController.text}${S.current.cellPhone}':
         S.current.emailVerificationCode+controller.phoneNumberInputController.text+S.current.cellEmail,
         style: TextStyle(
           fontSize: 12.rpx,
-          color: AppColor.gray30,
+          color: AppColor.gray80,
         ),
       ),
     ));
@@ -71,12 +68,12 @@ class UpdatePasswordPage extends StatelessWidget {
       onTap: controller.verificationMode,
       child: Container(
         alignment: Alignment.centerRight,
-        margin: EdgeInsets.only(bottom: 24.rpx,top: 11.rpx),
+        margin: EdgeInsets.only(bottom: 24.rpx,top: 11.rpx,right: 16.rpx),
         child: RichText(
           text: TextSpan(
             text: "${S.current.notReceiveTheVerification}? ",
             style: TextStyle(
-              fontSize: 12.rpx,
+              fontSize: 10.rpx,
               color: AppColor.gray30,
             ),
             children: [
@@ -171,7 +168,7 @@ class UpdatePasswordPage extends StatelessWidget {
         child: Container(
           height: 42.rpx,
           decoration: BoxDecoration(
-              color: AppColor.primary
+              color: AppColor.gradientBegin
                   .withOpacity(state.isVisible.value ? 1 : 0.15),
               borderRadius: BorderRadius.circular(8.rpx)),
           margin: EdgeInsets.symmetric(horizontal: 38.rpx, vertical: 40.rpx),

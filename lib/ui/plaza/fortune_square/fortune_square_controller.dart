@@ -114,8 +114,10 @@ class FortuneSquareController extends GetxController
       CommonBottomSheet(
         titles: more,
         onTap: (index) async {
+          print("index===$index");
           if(uid == state.userInfo?.uid && index == 0){
             deleteCommunity(id);
+            return;
           }
           if(index == 0) {
             toggleAttention(uid!).then((value) => {
@@ -155,7 +157,8 @@ class FortuneSquareController extends GetxController
           "nickname":SS.login.info?.nickname,
     }));
     itemList[index] = itemList[index].copyWith(
-        commentList: comment
+        commentList: comment,
+        commentNum: (itemList[index].commentNum ?? 0) + 1
     );
     pagingController.itemList = itemList;
   }

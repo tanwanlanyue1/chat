@@ -100,12 +100,11 @@ class _UploadImageState extends State<UploadImage> {
                 res.add(File(item.path));
               }
               compressAndGetFile(res);
-              // uploadImage(res);
             }
             break;
           case 1:
             if(_imagesList.length == limit){
-              Loading.showToast("最多选择${widget.limit}张图片");
+              Loading.showToast("最多选择$limit张图片");
               return;
             }
             final XFile? photo =

@@ -76,7 +76,7 @@ class TimeDialog extends StatelessWidget {
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: controller.state.time == index ? AppColor.primary : AppColor.scaffoldBackground,
+                              color: controller.state.time == index ? AppColor.gradientBegin : AppColor.scaffoldBackground,
                               borderRadius: BorderRadius.circular(8.rpx),
                             ),
                             child: Text(
@@ -97,8 +97,8 @@ class TimeDialog extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("时间选择",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
-                          Text("${controller.state.hour}:00",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
+                          Text("时间选择",style: AppTextStyle.fs14b.copyWith(color: AppColor.black92),),
+                          Text("${controller.state.hour}:00",style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),),
                         ],
                       ),
                     ),
@@ -113,6 +113,7 @@ class TimeDialog extends StatelessWidget {
                     CommonGradientButton(
                       height: 50.rpx,
                       text: S.current.confirm,
+                      textStyle: AppTextStyle.fs16b.copyWith(color: Colors.white),
                       onTap: (){
                         if(star){
                           controller.state.startTime = controller.state.time;

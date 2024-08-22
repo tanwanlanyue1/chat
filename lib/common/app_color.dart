@@ -20,6 +20,8 @@ class AppColor {
   static const black92 = Color(0xFF929DB2);
   static const black1A = Color(0x1A929DB2);
   static const black4E = Color(0xFF4E4E4E);
+  static const black20 = Color(0xFF020635);
+  static const black22 = Color(0xB2020635);
 
   /// 按钮渐变色
   static const gradientBegin = Color(0xff0F73ED);
@@ -58,6 +60,7 @@ class AppColor {
   static const gray20 = Color(0xffE8E7E9);
   static const gray30 = Color(0xff666666);
   static const gray39 = Color(0x33999999);
+  static const gray80 = Color(0x80999999);
   static const grayF7 = Color(0xFFF7F7F7);
 
   static const white8 = Color(0xFFF8F9FE);

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -111,7 +109,7 @@ class ReleaseInvitationPage extends StatelessWidget {
           Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(bottom: 8.rpx),
-            child: Text("等待其他用户/佳丽参与一起约会吧",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
+            child: Text("等待其他用户/佳丽参与一起约会吧",style: AppTextStyle.fs12r.copyWith(color: AppColor.black92),),
           ),
           Container(
             padding: EdgeInsets.only(bottom: 16.rpx),
@@ -126,6 +124,8 @@ class ReleaseInvitationPage extends StatelessWidget {
               lines: 3,
               fillColor: Colors.white,
               inputController: controller.contentController,
+              hintStyle: AppTextStyle.fs14m.copyWith(color: AppColor.black92),
+              counterStyle: AppTextStyle.fs14m.copyWith(color: AppColor.black92),
               border: OutlineInputBorder(
                 borderSide: BorderSide(width: 1.rpx, color: Colors.white),
                 borderRadius: BorderRadius.circular(8.rpx),
@@ -137,7 +137,7 @@ class ReleaseInvitationPage extends StatelessWidget {
             title: "约会地点",
             trailing: Text(
               "(必选)",
-              style: TextStyle(fontSize: 14.rpx, color: AppColor.gray9),
+              style: AppTextStyle.fs14b.copyWith(color: AppColor.black92),
             ),
           ),
           DiscoverItem(
@@ -147,14 +147,14 @@ class ReleaseInvitationPage extends StatelessWidget {
             },
             trailing: Text(
               DateUtil.formatDateStr('${controller.timeDate(time: state.startTime,hour: state.startHour)}', format: 'yyyy MM/dd HH:00'),
-              style: TextStyle(fontSize: 14.rpx, color: AppColor.gray5,fontWeight: FontWeight.bold),
+              style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),
             ),
           ),
           DiscoverItem(
             title: "结束时间",
             trailing: Text(
               DateUtil.formatDateStr('${controller.timeDate(time: state.endTime,hour: state.endHour)}', format: 'yyyy MM/dd HH:00'),
-              style: TextStyle(fontSize: 14.rpx, color: AppColor.gray5,fontWeight: FontWeight.bold),
+              style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),
             ),
             callBack: (){
               TimeDialog.show(star: false);
@@ -177,24 +177,27 @@ class ReleaseInvitationPage extends StatelessWidget {
         children: [
           Text("附加标签 (${state.labelList.length}/3)",style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),),
           SizedBox(height: 16.rpx,),
-          Wrap(
-            spacing: 12.rpx,
-            runSpacing: 12.rpx,
-            children: List.generate(state.label.length, (i) {
-              var item = state.label[i];
-              return GestureDetector(
-                onTap: () => controller.setLabel(i),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: state.labelList.contains(i) ? AppColor.primary : Colors.white,
-                      border: Border.all(color: AppColor.primary),
-                      borderRadius: BorderRadius.all(Radius.circular(8.rpx))
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Wrap(
+              spacing: 12.rpx,
+              runSpacing: 12.rpx,
+              children: List.generate(state.label.length, (i) {
+                var item = state.label[i];
+                return GestureDetector(
+                  onTap: () => controller.setLabel(i),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: state.labelList.contains(i) ? AppColor.gradientBegin : Colors.white,
+                        border: Border.all(color: AppColor.gradientBegin),
+                        borderRadius: BorderRadius.all(Radius.circular(8.rpx))
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 12.rpx,vertical: 6.rpx),
+                    child: Text(item.tag,style: AppTextStyle.fs14b.copyWith(color: state.labelList.contains(i) ? Colors.white : AppColor.gradientBegin),),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 12.rpx,vertical: 6.rpx),
-                  child: Text(item.tag,style: AppTextStyle.fs14b.copyWith(color: state.labelList.contains(i) ? Colors.white : AppColor.primary),),
-                ),
-              );
-            }),
+                );
+              }),
+            ),
           ),
           SizedBox(height: 32.rpx,),
           Row(
@@ -203,7 +206,7 @@ class ReleaseInvitationPage extends StatelessWidget {
                   isSelect: state.serve.value,
                   title: "无服务费",
                   titleFalse: "有服务费",
-                  selectColor: AppColor.primary,
+                  selectColor: AppColor.gradientBegin,
                   unselectColor: AppColor.gray9,
                   titleCall: (bool? val) {
                     state.serve.value = val ?? false;
@@ -218,16 +221,16 @@ class ReleaseInvitationPage extends StatelessWidget {
                   height: 34.rpx,
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: !state.serve.value ? AppColor.primary : AppColor.gray9,width: 2.rpx),
+                      border: Border.all(color: !state.serve.value ? AppColor.gradientBegin : AppColor.gray9,width: 2.rpx),
                       borderRadius: BorderRadius.all(Radius.circular(4.rpx))
                   ),
                   padding: EdgeInsets.all(6.rpx),
                   child: Row(
                     children: [
-                      Text("\$",style: AppTextStyle.fs16b.copyWith(color: !state.serve.value ? AppColor.primary : AppColor.gray9),),
+                      Text("\$",style: AppTextStyle.fs16b.copyWith(color: !state.serve.value ? AppColor.gradientBegin : AppColor.gray9),),
                       Expanded(
                         child: Container(
-                          padding: EdgeInsets.only(top: 3.rpx),
+                          padding: EdgeInsets.only(top: 4.rpx),
                           child: InputWidget(
                             hintText: '',
                             lines: 1,
@@ -236,7 +239,7 @@ class ReleaseInvitationPage extends StatelessWidget {
                             textAlign: TextAlign.center,
                             keyboardType: const TextInputType.numberWithOptions(decimal: false),
                             contentPadding: EdgeInsets.symmetric(vertical: -24.rpx,),
-                            textStyle: AppTextStyle.fs16b.copyWith(color: AppColor.primary,height: 1.0001),
+                            textStyle: AppTextStyle.fs16b.copyWith(color: AppColor.gradientBegin,height: 1.00001),
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.allow(RegExp('[0-9]')),
                             ],

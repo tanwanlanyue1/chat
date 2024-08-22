@@ -31,6 +31,7 @@ class BindingPage extends StatelessWidget {
           ),
         )),
       ),
+      backgroundColor: AppColor.grayF7,
       body: Obx(() => ListView(
         padding: EdgeInsets.only(top: 24.rpx),
         children: [
@@ -56,8 +57,8 @@ class BindingPage extends StatelessWidget {
   }
 
   Widget _buildPhoneNumberTips() {
-    return Padding(
-      padding: EdgeInsets.only(left: 12.rpx),
+    return Container(
+      alignment: Alignment.center,
       child: Text(
         S.current.userMethods,
         style: TextStyle(
@@ -77,7 +78,7 @@ class BindingPage extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(S.current.phone,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+          Text(S.current.phone,style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),),
           Expanded(
             child: IntlPhoneField(
               decoration: InputDecoration(

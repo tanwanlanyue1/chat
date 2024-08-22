@@ -44,7 +44,7 @@ class _ScrollIndexPageState extends State<ScrollIndexPage> {
       double offset = _scrollController.offset;
       double scrollIndex = offset / _itemWidth;
       if ((scrollIndex.round() + 3) == index) {
-        textColor = AppColor.gray5;
+        textColor = AppColor.black20;
         fontSize = 18;
       }else{
         textColor = AppColor.gray9;

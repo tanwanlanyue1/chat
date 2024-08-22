@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/network/network.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -26,8 +27,9 @@ class MineSettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.current.setting),
+        title: Text(S.current.setting,style: AppTextStyle.fs18b.copyWith(color: AppColor.black20),),
       ),
+      backgroundColor: AppColor.grayF7,
       body: Obx(() {
         return Column(
           children: [
@@ -80,8 +82,7 @@ class MineSettingPage extends StatelessWidget {
                       visible: !SS.login.userBind,
                       child: Text(
                         "请先绑定手机/邮箱",
-                        style: TextStyle(
-                            fontSize: 14.rpx, color: const Color(0xff999999)),
+                        style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
                       ),
                     ),
                   ),
@@ -94,8 +95,7 @@ class MineSettingPage extends StatelessWidget {
                         visible: !SS.login.userBind,
                         child: Text(
                           "请先绑定手机/邮箱",
-                          style: TextStyle(
-                              fontSize: 14.rpx, color: const Color(0xff999999)),
+                          style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
                         ),
                       ),
                     ),
@@ -116,8 +116,7 @@ class MineSettingPage extends StatelessWidget {
                     bottom: 1.rpx,
                     trailing: Text(
                       controller.cacheSize.value,
-                      style: TextStyle(
-                          fontSize: 14.rpx, color: const Color(0xff999999)),
+                      style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
                     ),
                     borderRadius: BorderRadius.zero,
                     callBack: () => controller.onTapClearCache(),
@@ -126,8 +125,7 @@ class MineSettingPage extends StatelessWidget {
                     title: S.current.detectNewVersions,
                     trailing: Text(
                       '1.0.1',
-                      style: TextStyle(
-                          fontSize: 14.rpx, color: const Color(0xff999999)),
+                      style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
                     ),
                     callBack: (){
                       AppUpdateManager.instance.checkAppUpdate(userAction: true);

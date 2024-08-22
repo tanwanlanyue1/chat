@@ -25,7 +25,7 @@ class EvaluationListModel {
   }
 
   Map<String, dynamic> toJson() => {
-        "list": list.map((x) => x?.toJson()).toList(),
+        "list": list.map((x) => x.toJson()).toList(),
         "totalAppointment": totalAppointment,
         "totalScore": totalScore,
         "myTag": myTag,
@@ -45,7 +45,7 @@ class EvaluationItemModel {
   });
 
   final String content; // 评价内容
-  final String createTime; // 评价时间
+  final int createTime; // 评价时间
   final int star; // 评价星级
   final String tag; // 评价标签
   final String fromImg; // 评价人头像

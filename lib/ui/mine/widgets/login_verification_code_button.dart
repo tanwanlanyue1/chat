@@ -70,7 +70,8 @@ class _LoginVerificationCodeButtonState extends State<LoginVerificationCodeButto
                 text,
                 style: TextStyle(
                   fontSize: 14.rpx,
-                  color: enabled ? AppColor.primary : Color(0xff999999),
+                  color: enabled ? AppColor.gradientBegin : Color(0xff999999),
+                  fontFamily: 'PingFang-Bold',
                   height: 1.3,
                 ),
               )

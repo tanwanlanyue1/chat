@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
@@ -109,7 +110,7 @@ class IdentityProgressionPage extends StatelessWidget {
                 SizedBox(width: 8.rpx),
                 Text(S.current.submitted,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30)),
                 const Spacer(),
-                Text(state.advanced.createTime ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+                Text(CommonUtils.timestamp(state.advanced.createTime,unit: "yyyy.MM.dd hh:mm"),style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
               ],
             ),
           )
@@ -193,7 +194,7 @@ class IdentityProgressionPage extends StatelessWidget {
               style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30,height: 1.4),
               children: <TextSpan>[
                 TextSpan(
-                  text: state.advanced.createTime ?? '',
+                  text: CommonUtils.timestamp(state.advanced.createTime,unit: "yyyy年MM月dd日 hh:mm"),
                   style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9,height: 1.4),
                 ),
               ],

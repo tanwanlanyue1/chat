@@ -14,7 +14,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../common/network/api/api.dart';
 import 'friend_date_controller.dart';
-import 'widget/draft_dialog.dart';
 
 ///发现-征友约会
 class FriendDatePage extends StatelessWidget {
@@ -84,7 +83,11 @@ class FriendDatePage extends StatelessWidget {
               ),
               child: GestureDetector(
                 onTap: (){
-                  state.typeIndex.value = index;
+                  if(state.typeIndex.value == index){
+                    state.typeIndex.value = -1;
+                  }else{
+                    state.typeIndex.value = index;
+                  }
                   controller.pagingController.onRefresh();
                 },
                 child: Container(
@@ -119,8 +122,7 @@ class FriendDatePage extends StatelessWidget {
             child: Container(
               alignment: Alignment.center,
               margin: EdgeInsets.only(right: 16.rpx,bottom: 12.rpx),
-              height: 28.rpx,
-              padding: EdgeInsets.symmetric(horizontal: 10.rpx),
+              padding: EdgeInsets.symmetric(horizontal: 10.rpx,vertical: 2.rpx),
               decoration: BoxDecoration(
                 color: state.sortIndex.contains(state.sortList[i]['type']) ? AppColor.gradientBegin : Colors.transparent,
                 borderRadius: BorderRadius.circular(20.rpx),
@@ -133,7 +135,6 @@ class FriendDatePage extends StatelessWidget {
                 style: TextStyle(color: state.sortIndex.contains(state.sortList[i]['type'])
                     ? Colors.white
                     : AppColor.gradientBegin, fontSize: 14.rpx,
-                  height: 1
                 ),),
             ),
           ),),
@@ -169,7 +170,7 @@ class FriendDatePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(item.userInfo?.nickname ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+                    Text(item.userInfo?.nickname ?? '',style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),),
                     Row(
                       children: [
                         if(item.userInfo?.gender.index != 0)
@@ -179,7 +180,7 @@ class FriendDatePage extends StatelessWidget {
                           child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
                         ),
                         SizedBox(width: 8.rpx),
-                        Text('${item.userInfo?.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                        Text('${item.userInfo?.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.black22),),
                         Container(
                           width: 4.rpx,
                           height: 4.rpx,
@@ -189,7 +190,7 @@ class FriendDatePage extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                         ),
-                        Text("个人",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                        Text("个人",style: AppTextStyle.fs12m.copyWith(color: AppColor.black22),),
                       ],
                     ),
                   ],
@@ -223,7 +224,7 @@ class FriendDatePage extends StatelessWidget {
                       height: 40.rpx,
                       margin: EdgeInsets.only(right: 12.rpx),
                       decoration: BoxDecoration(
-                        color: AppColor.primary,
+                        color: AppColor.gradientBegin,
                         borderRadius: BorderRadius.circular(8.rpx),
                       ),
                       alignment: Alignment.center,
@@ -236,8 +237,8 @@ class FriendDatePage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(item.content ?? '',style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),),
-                            Text(controller.labelSplit(item.tag ?? ''),style: AppTextStyle.fs12m.copyWith(color: AppColor.primary),),
+                            Text(item.content ?? '',style:AppTextStyle.fs14b.copyWith(color: AppColor.black20),),
+                            Text(controller.labelSplit(item.tag ?? ''),style: AppTextStyle.fs12b.copyWith(color: AppColor.gradientBegin),),
                           ],
                         ),
                       ),
@@ -251,11 +252,11 @@ class FriendDatePage extends StatelessWidget {
                       AppImage.asset("assets/images/discover/location.png",width: 16.rpx,height: 16.rpx,),
                       Container(
                         margin: EdgeInsets.only(left: 2.rpx),
-                        child: Text("${item.location} ${item.distance ?? 0}km",style: AppTextStyle.fs10m.copyWith(color: AppColor.gray5),),
+                        child: Text("${item.location} ${item.distance ?? 0}km",style: AppTextStyle.fs10m.copyWith(color: AppColor.black20),),
                       ),
                       const Spacer(),
-                      Text("${CommonUtils.timestamp(item.startTime ?? '')}-${CommonUtils.timestamp(item.endTime ?? '')}",
-                          style: AppTextStyle.fs10m.copyWith(color: AppColor.gray9)),
+                      Text("${CommonUtils.timestamp(item.startTime)}-${CommonUtils.timestamp(item.endTime )}",
+                          style: AppTextStyle.fs10b.copyWith(color: AppColor.black92)),
                     ],
                   ),
                 ),

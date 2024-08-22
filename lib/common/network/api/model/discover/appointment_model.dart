@@ -41,9 +41,9 @@ class AppointmentModel {
   //	约会地点
   String? location;
   //	约会开始时间
-  String? startTime;
+  int? startTime;
   //约会结束时间
-  String? endTime;
+  int? endTime;
   //	附加标签
   String? tag;
   //经纬度
@@ -53,7 +53,7 @@ class AppointmentModel {
   //服务费
   double? serviceCharge;
   //	创建时间
-  String? createTime;
+  int? createTime;
   UserModel? userInfo;
 
   Map<String, dynamic> toJson() {

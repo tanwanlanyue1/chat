@@ -26,7 +26,7 @@ class JiaEvaluatePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: AppBackButton.light(),
-        title: Text(S.current.appraiseMe,style: AppTextStyle.fs18m.copyWith(color: Colors.white),),
+        title: Text(S.current.appraiseMe,style: AppTextStyle.fs18b.copyWith(color: Colors.white),),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -40,7 +40,7 @@ class JiaEvaluatePage extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: AppColor.white8,
+      backgroundColor: AppColor.grayF7,
       body: GetBuilder<JiaEvaluateController>(
         builder: (_) {
         return Column(
@@ -63,11 +63,14 @@ class JiaEvaluatePage extends StatelessWidget {
                         builderDelegate: DefaultPagedChildBuilderDelegate<EvaluationItemModel>(
                           pagingController: controller.pagingController,
                           itemBuilder: (_, item, index) {
-                            return EvaluateCard(
-                              index: index,
-                              item: item,
-                              goodGirl: true,
-                              margin: EdgeInsets.only(bottom: 1.rpx),
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.rpx),
+                              child: EvaluateCard(
+                                index: index,
+                                item: item,
+                                goodGirl: true,
+                                margin: EdgeInsets.only(bottom: 1.rpx),
+                              ),
                             );
                           },
                         ),
@@ -86,7 +89,7 @@ class JiaEvaluatePage extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: 30.rpx,
+          height: 70.rpx,
           decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.centerLeft,
@@ -102,12 +105,10 @@ class JiaEvaluatePage extends StatelessWidget {
           height: 96.rpx,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(8.rpx),
-              topRight: Radius.circular(8.rpx),
-            ),
+            borderRadius: BorderRadius.circular(8.rpx),
           ),
           padding: EdgeInsets.all(16.rpx),
+          margin: EdgeInsets.symmetric(horizontal: 16.rpx,vertical: 12.rpx),
           child: Row(
             children: [
               AppImage.network(
@@ -125,21 +126,21 @@ class JiaEvaluatePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(state.loginService?.nickname ?? '',style: AppTextStyle.fs18b.copyWith(color: AppColor.gray5),maxLines: 1,
+                      Text(state.loginService?.nickname ?? '',style: AppTextStyle.fs18b.copyWith(color: AppColor.black20),maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Row(
                         children: [
                           Padding(
                             padding: EdgeInsets.only(right: 4.rpx),
-                            child: Text(S.current.synthesize,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+                            child: Text(S.current.synthesize,style: AppTextStyle.fs12b.copyWith(color: AppColor.black4E),),
                           ),
                           ...List.generate(5, (i) => AppImage.asset(
                             width: 16.rpx,
                             height: 16.rpx,
                             i < (state.evaluation?.totalScore ?? 0) ?
-                            'assets/images/mine/star.png':
-                            'assets/images/mine/star_none.png',
+                            'assets/images/mine/small_star.png':
+                            'assets/images/mine/small_star_none.png',
                           ))
                         ],
                       ),
@@ -153,8 +154,11 @@ class JiaEvaluatePage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text("${state.evaluation?.totalAppointment ?? 0}",style: AppTextStyle.fs18m.copyWith(color: AppColor.primary,fontWeight: FontWeight.w500),),
-                      Text(S.current.cumulativeNumber,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w500),),
+                      FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text("${state.evaluation?.totalAppointment ?? 0}",style: AppTextStyle.fs18b.copyWith(color: AppColor.gradientBegin,fontWeight: FontWeight.w500),),
+                      ),
+                      Text(S.current.cumulativeNumber,style: AppTextStyle.fs12b.copyWith(color: AppColor.black20,fontWeight: FontWeight.w500),),
                     ],
                   ),
                 ),
@@ -169,34 +173,39 @@ class JiaEvaluatePage extends StatelessWidget {
   //我的标签
   Widget mineLabel(){
     return Obx(() => Container(
-      color: Colors.white,
       padding: EdgeInsets.all(16.rpx),
-      margin: EdgeInsets.symmetric(vertical: 8.rpx),
+      margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(bottom: 12.rpx),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.rpx),
+      ),
       child: Column(
         children: [
           Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(bottom: 16.rpx),
-            child: Text(S.current.myTag,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+            child: Text(S.current.myTag,style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),),
           ),
-          Wrap(
-            spacing: 12.rpx,
-            runSpacing: 12.rpx,
-            alignment: WrapAlignment.start,
-            children: List.generate(state.label.length, (i) {
-              var item = state.label[i];
-              return Visibility(
-                visible: item.isNotEmpty,
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: AppColor.blue36,
-                      borderRadius: BorderRadius.all(Radius.circular(8.rpx))
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Wrap(
+              spacing: 10.rpx,
+              runSpacing: 12.rpx,
+              children: List.generate(state.label.length, (i) {
+                var item = state.label[i];
+                return Visibility(
+                  visible: item.isNotEmpty,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: AppColor.blue36,
+                        borderRadius: BorderRadius.all(Radius.circular(2.rpx))
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 10.rpx,vertical: 2.rpx),
+                    child: Text("$item",style: AppTextStyle.fs12b.copyWith(color: AppColor.black4E,)),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 24.rpx,vertical: 12.rpx),
-                  child: Text("$item",style: AppTextStyle.fs14m.copyWith(color: AppColor.primary)),
-                ),
-              );
-            }),
+                );
+              }),
+            ),
           )
         ],
       ),
@@ -206,12 +215,18 @@ class JiaEvaluatePage extends StatelessWidget {
   //客户评价
   Widget customerEvaluation(){
     return Container(
-      height: 46.rpx,
-      color: Colors.white,
+      height: 34.rpx,
       alignment: Alignment.centerLeft,
-      margin: EdgeInsets.only(bottom: 1.rpx),
+      margin: EdgeInsets.symmetric(horizontal: 16.rpx),
       padding: EdgeInsets.only(left: 16.rpx),
-      child: Text(S.current.clientEvaluation,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8.rpx),
+          topRight: Radius.circular(8.rpx),
+        )
+      ),
+      child: Text(S.current.clientEvaluation,style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),),
     );
   }
 }

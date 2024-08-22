@@ -13,9 +13,9 @@ import 'package:intl/intl.dart';
 class CommonUtils {
   ///[time] 时间
   ///[yearsFlag] 是否要年份
-  static getPostTime({String? time, bool yearsFlag = false}) {
+  static getPostTime({int? time, bool yearsFlag = false}) {
     if (time != null) {
-      DateTime? recordTime = DateUtil.getDateTimeByMs(int.parse(time), isUtc: false);
+      DateTime? recordTime = DateUtil.getDateTimeByMs(time, isUtc: false);
       if (recordTime == null) {
         return '';
       }
@@ -97,9 +97,9 @@ class CommonUtils {
   }
 
   ///[time] 时间  hideYears 是否隐藏年
-  static getCommonTime({String? time, bool hideYears = false}) {
+  static getCommonTime({int? time, bool hideYears = false}) {
     if (time != null) {
-      DateTime? recordTime = DateUtil.getDateTime(time, isUtc: false);
+      DateTime? recordTime = DateUtil.getDateTimeByMs(time, isUtc: false);
       if (recordTime == null) {
         return '';
       }
@@ -178,9 +178,9 @@ class CommonUtils {
   }
 
   ///时间戳
-  static String timestamp(String time,{String? unit}){
-    if (time.isEmpty) return "";
-    int timestampInMilliseconds = int.parse(time);
+  static String timestamp(int? time,{String? unit}){
+    if (time == null) return "";
+    int timestampInMilliseconds = time;
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestampInMilliseconds);
     DateFormat dateFormat = DateFormat(unit ?? 'MM-dd HH:00');
     String formattedDate = dateFormat.format(dateTime);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
-import 'package:guanjia/common/extension/string_extension.dart';
+import 'package:guanjia/common/extension/int_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/contract_generate/widget/contract_view.dart';
@@ -41,11 +41,11 @@ class ContractDetailPage extends GetView<ContractDetailController> {
               date = DateTime.now().formatYMD2;
             case ContractStatus.signed:
               dateLabel = S.current.effectiveTime;
-              date = contract.signingTime.dateTime?.formatYMD2 ?? '';
+              date = contract.signingTime.dateTime.formatYMD2 ?? '';
               break;
             case ContractStatus.terminated:
               dateLabel = S.current.startStopTime;
-              date = '${contract.signingTime.dateTime?.formatYMD2} - ${contract.rescissionTime.dateTime?.formatYMD2}';
+              date = '${contract.signingTime.dateTime.formatYMD2} - ${contract.rescissionTime.dateTime.formatYMD2}';
               break;
           }
 

@@ -16,7 +16,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../common/network/api/api.dart';
 import 'dating_hall_controller.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 /// 推荐
 class DatingHallView extends StatelessWidget {
@@ -24,15 +23,11 @@ class DatingHallView extends StatelessWidget {
 
   final controller = Get.put(RectifyTheWorkplaceController());
   final state = Get.find<RectifyTheWorkplaceController>().state;
-  late double screenWidth;
 
   @override
   Widget build(BuildContext context) {
-    screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
-        buildSpeedDating(),
-        buildSpeedDating(),
         buildSpeedDating(),
         Expanded(
           child: hallItem(),
@@ -45,18 +40,7 @@ class DatingHallView extends StatelessWidget {
   Widget buildSpeedDating() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 1.rpx).copyWith(left: 15.rpx),
-      height: 92.rpx,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            //rgba(34, 110, 240, 0.3)
-            Color(0x4D226EF0),
-            Color(0x00BD3CFF),
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
+      margin: EdgeInsets.symmetric(vertical: 12.rpx),
       child: Row(
         children: List.generate(
             state.speedDating.length,
@@ -104,7 +88,13 @@ class DatingHallView extends StatelessWidget {
   ///交友大厅列表
   Widget hallItem() {
     return Container(
-      color: Colors.white,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.rpx),
+          topRight: Radius.circular(20.rpx),
+        ),
+      ),
       child: Column(
         children: [
           Container(
@@ -114,7 +104,7 @@ class DatingHallView extends StatelessWidget {
               children: [
                 Text(
                   "交友大厅",
-                  style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),
+                  style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -139,17 +129,17 @@ class DatingHallView extends StatelessWidget {
           ),
           Expanded(
               child: SmartRefresher(
-            controller: controller.pagingController.refreshController,
-            onRefresh: controller.pagingController.onRefresh,
-            child: PagedListView(
-              pagingController: controller.pagingController,
-              builderDelegate: DefaultPagedChildBuilderDelegate<RecommendModel>(
+              controller: controller.pagingController.refreshController,
+              onRefresh: controller.pagingController.onRefresh,
+              child: PagedListView(
                 pagingController: controller.pagingController,
-                itemBuilder: (_, item, index) {
-                  return friendsItem(item);
-                },
+                builderDelegate: DefaultPagedChildBuilderDelegate<RecommendModel>(
+                  pagingController: controller.pagingController,
+                  itemBuilder: (_, item, index) {
+                    return friendsItem(item);
+                  },
+                ),
               ),
-            ),
           )),
         ],
       ),
@@ -160,87 +150,95 @@ class DatingHallView extends StatelessWidget {
   Widget friendsItem(RecommendModel item) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () => Get.toNamed(AppRoutes.userCenterPage,
-          arguments: {'userId': item.uid}),
+      onTap: () => Get.toNamed(AppRoutes.userCenterPage, arguments: {'userId': item.uid}),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 12.rpx, horizontal: 16.rpx),
-        // color: AppColor.scaffoldBackground,
         margin: EdgeInsets.only(bottom: 8.rpx),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.only(right: 8.rpx),
-              child: AppImage.network(
-                item.avatar ?? '',
-                width: 100.rpx,
-                height: 100.rpx,
-                borderRadius: BorderRadius.circular(8.rpx),
-              ),
-            ),
-            Expanded(
-                child: SizedBox(
-              height: 100.rpx,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    item.nickname ?? '',
-                    style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: 8.rpx),
+                  child: AppImage.network(
+                    item.avatar ?? '',
+                    width: 50.rpx,
+                    height: 50.rpx,
+                    shape: BoxShape.circle,
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        "${item.age ?? ''}岁 ",
-                        style:
-                            AppTextStyle.fs12m.copyWith(color: AppColor.gray30),
-                      ),
-                      Expanded(
-                          child: Text(
-                        "| ${item.style ?? ''}",
-                        style:
-                            AppTextStyle.fs12m.copyWith(color: AppColor.gray30),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      )),
-                    ],
-                  ),
-                  item.images != null
-                      ? Row(
-                          children: List.generate(
-                              jsonDecode(item.images).length > 3
-                                  ? 3
-                                  : jsonDecode(item.images).length,
-                              (index) => Container(
-                                    margin: EdgeInsets.only(right: 6.rpx),
-                                    child: AppImage.network(
-                                      jsonDecode(item.images)[index],
-                                      width: 40.rpx,
-                                      height: 40.rpx,
-                                      borderRadius:
-                                          BorderRadius.circular(4.rpx),
-                                    ),
+                ),
+                Expanded(
+                    child: SizedBox(
+                      height: 50.rpx,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            item.nickname ?? '',
+                            style: AppTextStyle.fs16m.copyWith(color: AppColor.black20),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                item.age != null ? "${item.age}岁 ":"",
+                                style:
+                                AppTextStyle.fs12m.copyWith(color: AppColor.black92),
+                              ),
+                              Expanded(
+                                  child: Text(
+                                    "| ${item.style ?? ''}",
+                                    style:
+                                    AppTextStyle.fs12m.copyWith(color: AppColor.black92),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   )),
-                        )
-                      : Container(),
-                ],
-              ),
-            )),
-            Button.stadium(
-              onPressed: () {
-                MessageListPage.go(userId: item.uid!);
-              },
-              width: 82.rpx,
-              height: 28.rpx,
-              backgroundColor:
+                            ],
+                          ),
+                        ],
+                      ),
+                    )),
+                Button.stadium(
+                  onPressed: () {
+                    MessageListPage.go(userId: item.uid!);
+                  },
+                  width: 82.rpx,
+                  height: 28.rpx,
+                  backgroundColor:
                   item.gender == 1 ? AppColor.textBlue : AppColor.purple6,
-              child: Text(
-                S.current.getTouchWith,
-                style: AppTextStyle.fs12m.copyWith(color: Colors.white),
-              ),
+                  child: Text(
+                    S.current.getTouchWith,
+                    style: AppTextStyle.fs12m.copyWith(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+            item.images != null
+                ? Container(
+                  margin: EdgeInsets.only(left: 54.rpx),
+                  child: Row(
+                      children: List.generate(
+                          jsonDecode(item.images).length > 3
+                              ? 3
+                              : jsonDecode(item.images).length, (index) => Container(
+                                margin: EdgeInsets.only(right: 3.rpx),
+                                child: AppImage.network(
+                                  jsonDecode(item.images)[index],
+                                  width: 93.rpx,
+                                  height: 93.rpx,
+                                  borderRadius: BorderRadius.circular(8.rpx),
+                                ),
+                          )),
+                    ),
+                  )
+                : Container(),
+            Container(
+              height: 1.rpx,
+              margin: EdgeInsets.only(top: 24.rpx,left: 54.rpx),
+              color: AppColor.white8,
             )
           ],
         ),

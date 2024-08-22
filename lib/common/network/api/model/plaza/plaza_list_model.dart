@@ -82,7 +82,7 @@ class PlazaListModel {
   int? good;
   bool? isLike;
   bool? isCollect;
-  String? createTime;
+  int? createTime;
   int? uid;
   String? avatar;
   String? nickname;
@@ -103,7 +103,7 @@ class PlazaListModel {
     int? good,
     bool? isLike,
     bool? isCollect,
-    String? createTime,
+    int? createTime,
     int? uid,
     String? avatar,
     String? nickname,

@@ -590,9 +590,8 @@ class OrderDetail {
             ),
             OrderDetailItem(
               model: model,
-              displayType: OrderDetailDisplayType.amount,
+              displayType: OrderDetailDisplayType.agentFee,
               changeTitle: "佳丽服务费：",
-              changeDetail: model.beautyAmount.toString(),
             ),
             OrderDetailItem(
               model: model,
@@ -718,9 +717,8 @@ class OrderDetail {
             ),
             OrderDetailItem(
               model: model,
-              displayType: OrderDetailDisplayType.amount,
+              displayType: OrderDetailDisplayType.agentFee,
               changeTitle: "佳丽服务费：",
-              changeDetail: model.beautyAmount.toString(),
             ),
             OrderDetailItem(
               model: model,
@@ -1333,9 +1331,8 @@ class OrderDetail {
             ),
             OrderDetailItem(
               model: model,
-              displayType: OrderDetailDisplayType.amount,
+              displayType: OrderDetailDisplayType.agentFee,
               changeTitle: "佳丽服务费：",
-              changeDetail: model.beautyAmount.toString(),
             ),
             OrderDetailItem(
               model: model,
@@ -1471,9 +1468,8 @@ class OrderDetail {
             ),
             OrderDetailItem(
               model: model,
-              displayType: OrderDetailDisplayType.amount,
+              displayType: OrderDetailDisplayType.agentFee,
               changeTitle: "佳丽服务费：",
-              changeDetail: model.beautyAmount.toString(),
             ),
             OrderDetailItem(
               model: model,

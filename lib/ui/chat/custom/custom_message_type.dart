@@ -15,6 +15,9 @@ enum CustomMessageType{
   ///转账 3
   transfer,
 
+  ///订单消息（创建，状态变更） 4
+  order,
+
 }
 
 extension CustomMessageTypeX on CustomMessageType{

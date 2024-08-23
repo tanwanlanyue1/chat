@@ -238,6 +238,8 @@ extension on ZIMKitConversation {
         return message.callEndContent?.isVideoCall == true
             ? '[视频聊天]'
             : '[语音聊天]';
+      case CustomMessageType.order:
+        return '[订单]';
       default:
         return '[未知类型]';
     }

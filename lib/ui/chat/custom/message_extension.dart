@@ -6,6 +6,7 @@ import 'package:guanjia/ui/chat/custom/message_transfer_content.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'message_call_end_content.dart';
+import 'message_order_content.dart';
 import 'message_red_packet_content.dart';
 
 extension ZIMKitMessageExt on ZIMKitMessage {
@@ -110,6 +111,16 @@ extension ZIMKitMessageExt on ZIMKitMessage {
 
   ///是否是业务撤回消息
   bool get isRevokeMessage => zimkitExtraInfo[_kRevokeMessage] == true;
+
+
+  ///订单消息内容
+  MessageOrderContent? get orderContent {
+    return _getOrParse(
+      type: CustomMessageType.order,
+      parse: MessageOrderContent.fromJson,
+    );
+  }
+
 
   ZIMKitMessage copy() {
     return zim.toKIT()

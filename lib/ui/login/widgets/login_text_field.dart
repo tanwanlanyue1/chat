@@ -89,7 +89,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
                   setState(() {});
                 },
                 child: AppImage.asset(
-                  widget.obscureText
+                  !widget.obscureText
                       ? "assets/images/common/password_visible.png"
                       : "assets/images/common/password_invisible.png",
                   length: 24.rpx,

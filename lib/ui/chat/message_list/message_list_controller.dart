@@ -51,7 +51,7 @@ class MessageListController extends GetxController
 
       //有进行中的订单，不能发起约会
       if (order != null &&
-          ![OrderState.cancel, OrderState.finish].contains(order.state)) {
+          ![OrderStatus.cancel, OrderStatus.finish].contains(order.state)) {
         actions.remove(ChatFeatureAction.date);
       }
 

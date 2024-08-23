@@ -153,7 +153,7 @@ class ChatDateView extends StatelessWidget {
     }
 
     if (order == null ||
-        [OrderState.finish, OrderState.cancel].contains(order.state)) {
+        [OrderStatus.finish, OrderStatus.cancel].contains(order.state)) {
       //订单为空，或者订单已完结 佳丽和经纪人不显示发起约会
       if (selfType.isUser && !targetType.isUser) {
         return _UIState(
@@ -207,7 +207,7 @@ class ChatDateView extends StatelessWidget {
       return GestureDetector(
         onTap: () {
           if (order != null &&
-              ![OrderState.cancel, OrderState.finish].contains(order?.state)) {
+              ![OrderStatus.cancel, OrderStatus.finish].contains(order?.state)) {
             onTapOrder?.call(order!);
           }
         },

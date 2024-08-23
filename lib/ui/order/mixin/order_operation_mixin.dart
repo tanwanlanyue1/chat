@@ -33,9 +33,6 @@ mixin OrderOperationMixin {
       res.showErrorMessage();
       return false;
     }
-
-    refreshTypeList(OrderListType.going);
-    refreshTypeList(OrderListType.cancel);
     return true;
   }
 
@@ -57,8 +54,6 @@ mixin OrderOperationMixin {
       return false;
     }
 
-    refreshTypeList(OrderListType.going);
-
     Get.offNamed(
       AppRoutes.orderPaymentResultPage,
       arguments: {"orderId": orderId, "isSuccess": true},
@@ -79,9 +74,6 @@ mixin OrderOperationMixin {
       res.showErrorMessage();
       return false;
     }
-
-    refreshTypeList(OrderListType.going);
-    if (isAccept) refreshTypeList(OrderListType.cancel);
     return true;
   }
 
@@ -90,8 +82,6 @@ mixin OrderOperationMixin {
   Future<bool> onTapOrderAssign(int orderId) async {
     final res = await OrderAssignAgentDialog.show(orderId);
     if (res == null) return false;
-
-    refreshTypeList(OrderListType.going);
     return res;
   }
 
@@ -105,9 +95,6 @@ mixin OrderOperationMixin {
       res.showErrorMessage();
       return false;
     }
-
-    refreshTypeList(OrderListType.going);
-    refreshTypeList(OrderListType.finish);
     return true;
   }
 

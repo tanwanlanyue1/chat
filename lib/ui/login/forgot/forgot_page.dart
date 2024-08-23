@@ -94,8 +94,8 @@ class ForgotPage extends StatelessWidget {
                         ),
                         TextSpan(
                           text: isEmailValid
-                              ? S.current.forgotChangeEmail
-                              : S.current.forgotChangePhone,
+                              ? S.current.forgotChangePhone
+                              : S.current.forgotChangeEmail,
                           style: style.copyWith(
                             decoration: TextDecoration.underline,
                           ),

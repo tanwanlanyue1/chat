@@ -79,6 +79,7 @@ class AccountDataPage extends StatelessWidget {
                     onTap: () {
                       Pickers.showSinglePicker(
                         context,
+                        selectData: info.age ?? 24,
                         onConfirm: (value, __) {
                           controller.onConfirmAge(value);
                         },

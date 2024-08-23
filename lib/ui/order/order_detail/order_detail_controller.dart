@@ -1,12 +1,16 @@
 import 'package:get/get.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/ui/mine/inapp_message/inapp_message_type.dart';
 import 'package:guanjia/ui/order/mixin/order_operation_mixin.dart';
 import 'package:guanjia/ui/order/model/order_detail.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 import 'order_detail_state.dart';
 
-class OrderDetailController extends GetxController with OrderOperationMixin {
+class OrderDetailController extends GetxController
+    with OrderOperationMixin, GetAutoDisposeMixin {
   OrderDetailController(this.orderId);
 
   final int orderId;
@@ -16,6 +20,16 @@ class OrderDetailController extends GetxController with OrderOperationMixin {
   @override
   void onInit() async {
     _fetchData();
+
+    autoCancel(SS.inAppMessage.listen((p0) {
+      if (p0.type != InAppMessageType.orderUpdate) return;
+      final content = p0.orderUpdateContent;
+      if (content == null) return;
+      if (orderId != content.orderId) return;
+
+      _fetchData();
+    }));
+
     super.onInit();
   }
 

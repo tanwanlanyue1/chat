@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -315,20 +314,11 @@ class _MinePageState extends State<MinePage>
             pagePath: AppRoutes.mineSettingPage,
           ),
           //激活/进阶
-          if (userType.isUser || userType.isAgent)
             MineListTile(
               title: S.current.activationProgression,
               icon: "assets/images/mine/activate.png",
               trailing:
                   userType.isUser ? S.current.normalUser : S.current.brokerUser,
-              onTap: controller.onTapUserAdvanced,
-            ),
-          //解约/进阶为经纪人
-          if (userType.isBeauty)
-            MineListTile(
-              title: S.current.cancelAdvanceToBroker,
-              icon: "assets/images/mine/cancel_a_contract.png",
-              trailing: S.current.beautifulUser,
               onTap: controller.onTapUserAdvanced,
             ),
           //评价我的
@@ -365,10 +355,12 @@ class _MinePageState extends State<MinePage>
       return buildSection(
         margin: FEdgeInsets(top: 16.rpx),
         children: [
+          //谁看过我
           MineListTile(
             title: S.current.whoSeenMe,
             icon: "assets/images/mine/examine.png",
             pagePath: AppRoutes.haveSeenPage,
+            badge: SS.appConfig.configRx.value?.lookMessage,
           ),
           //修改服务费
           if (userType.isBeauty)
@@ -401,6 +393,7 @@ class _MinePageState extends State<MinePage>
             title: S.current.myMessage,
             icon: "assets/images/mine/message.png",
             pagePath: AppRoutes.mineMessage,
+            badge: SS.appConfig.configRx.value?.systemMessage,
           ),
         ],
       );

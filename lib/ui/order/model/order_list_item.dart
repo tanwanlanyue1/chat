@@ -90,7 +90,7 @@ class OrderListItem {
               : UserType.agent;
 
       switch (orderState) {
-        case OrderState.waitingAcceptance:
+        case OrderStatus.waitingAcceptance:
           if (userType.isAgent) {
             // 当前用户是经纪人，接收方为空时，改为指派状态
             return model.receiveId == 0
@@ -99,7 +99,7 @@ class OrderListItem {
           }
           return OrderItemState.waitingAcceptance;
 
-        case OrderState.waitingPayment:
+        case OrderStatus.waitingPayment:
           // 根据用户类型和订单状态确定订单项类型
           return userType.isBeauty
               ? (receiveState.isWaitingPayment
@@ -109,21 +109,21 @@ class OrderListItem {
                   ? OrderItemState.waitingPaymentForRequest
                   : OrderItemState.waitingPaymentForReceive);
 
-        case OrderState.going:
+        case OrderStatus.going:
           return receiveState.isConfirm
               ? OrderItemState.waitingConfirmForRequest
               : OrderItemState.waitingConfirmForReceive;
 
-        case OrderState.cancel:
+        case OrderStatus.cancel:
           // 优先显示请求方取消状态
           return requestState.isCancel
               ? OrderItemState.cancelForRequest
               : OrderItemState.cancelForReceive;
 
-        case OrderState.timeOut:
+        case OrderStatus.timeOut:
           return OrderItemState.timeOut;
 
-        case OrderState.finish:
+        case OrderStatus.finish:
           // 评价星值为0时，改为等待评价状态
           return model.evaluateScore == 0
               ? OrderItemState.waitingEvaluation
@@ -135,11 +135,11 @@ class OrderListItem {
           : OrderItemUserType.receive;
 
       switch (orderState) {
-        case OrderState.waitingAcceptance:
+        case OrderStatus.waitingAcceptance:
           // 征友订单不存在等待接受的状态
           return OrderItemState.unknown;
 
-        case OrderState.waitingPayment:
+        case OrderStatus.waitingPayment:
           // 根据用户类型和订单状态确定订单项类型
           return itemUserType.isReceive
               ? (receiveState.isWaitingPayment
@@ -149,22 +149,22 @@ class OrderListItem {
                   ? OrderItemState.waitingPaymentForRequest
                   : OrderItemState.waitingPaymentForReceive);
 
-        case OrderState.going:
+        case OrderStatus.going:
           // 接受方需要先确认订单后再进行请求方确认
           return receiveState.isConfirm
               ? OrderItemState.waitingConfirmForRequest
               : OrderItemState.waitingConfirmForReceive;
 
-        case OrderState.cancel:
+        case OrderStatus.cancel:
           // 优先显示请求方取消状态
           return requestState.isCancel
               ? OrderItemState.cancelForRequest
               : OrderItemState.cancelForReceive;
 
-        case OrderState.timeOut:
+        case OrderStatus.timeOut:
           return OrderItemState.timeOut;
 
-        case OrderState.finish:
+        case OrderStatus.finish:
           return OrderItemState.finish;
       }
     }

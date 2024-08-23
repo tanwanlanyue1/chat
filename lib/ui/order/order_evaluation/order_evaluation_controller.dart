@@ -65,6 +65,5 @@ class OrderEvaluationController extends GetxController
     }
 
     Get.back();
-    refreshTypeList(OrderListType.finish);
   }
 }

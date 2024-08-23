@@ -18,6 +18,8 @@ class MineListTile extends StatelessWidget {
 
   ///跳转页面
   final String? pagePath;
+
+  final bool? badge;
   final VoidCallback? onTap;
 
   const MineListTile({
@@ -26,6 +28,7 @@ class MineListTile extends StatelessWidget {
     required this.title,
     this.trailing,
     this.pagePath,
+    this.badge,
     this.onTap,
   });
 
@@ -36,10 +39,14 @@ class MineListTile extends StatelessWidget {
       padding: FEdgeInsets(left: 16.rpx, right: 12.rpx),
       child: Row(
         children: [
-          AppImage.asset(
-            icon,
-            width: 24.rpx,
-            height: 24.rpx,
+          Badge(
+            backgroundColor: AppColor.red6,
+            isLabelVisible: (badge ?? false),
+            child: AppImage.asset(
+              icon,
+              width: 24.rpx,
+              height: 24.rpx,
+            ),
           ),
           Spacing.w8,
           Expanded(

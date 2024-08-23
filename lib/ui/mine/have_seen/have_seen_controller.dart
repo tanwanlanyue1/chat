@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -33,6 +34,9 @@ class HaveSeenController extends GetxController {
     if (response.isSuccess) {
       final items = response.data ?? [];
       pagingController.appendPageData(items);
+      SS.appConfig.configRx.update((val) {
+        val?.lookMessage = false;
+      });
     } else {
       pagingController.error = response.errorMessage;
     }

@@ -40,21 +40,18 @@ class FortuneSquareView extends StatelessWidget {
                     builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
                         pagingController: controller.pagingController,
                         itemBuilder: (_,item,index){
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12.rpx),
-                            child: PlazaCard(
-                              item: item,
-                              plazaIndex: controller.tabController.index,
-                              more: () {
-                                controller.selectMore(item.uid,item.postId!);
-                              },
-                              isLike: (like){
-                                controller.getCommentLike(like, index);
-                              },
-                              callBack: (val){
-                                controller.setComment(val ?? '',index);
-                              },
-                            ),
+                          return PlazaCard(
+                            item: item,
+                            plazaIndex: controller.tabController.index,
+                            more: () {
+                              controller.selectMore(item);
+                            },
+                            isLike: (like){
+                              controller.getCommentLike(like, index);
+                            },
+                            callBack: (val){
+                              controller.setComment(val ?? '',index);
+                            },
                           );
                         }
                     ),
@@ -72,21 +69,27 @@ class FortuneSquareView extends StatelessWidget {
   ///发现
   Widget discoverClassify(){
     return Container(
-      padding: EdgeInsets.only(top: 8.rpx),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8.rpx),
+          topRight: Radius.circular(8.rpx),
+        ),
       ),
       alignment: Alignment.centerLeft,
-      height: 40.rpx,
+      height: 44.rpx,
+      margin: EdgeInsets.only(bottom: 8.rpx),
       child: TabBar(
         controller: controller.tabController,
-        labelColor: AppColor.primary,
-        labelStyle: AppTextStyle.fs14b.copyWith(color: AppColor.primary),
+        labelColor: AppColor.gradientBegin,
+        labelStyle: AppTextStyle.fs14b.copyWith(color: AppColor.gradientBegin),
         unselectedLabelColor: AppColor.gray9,
         unselectedLabelStyle: AppTextStyle.fs14m.copyWith(color: AppColor.black92),
-        indicatorColor: AppColor.primary,
+        indicatorColor: AppColor.gradientBegin,
+        indicatorPadding: EdgeInsets.only(right: 16.rpx,left: 4.rpx),
         indicatorWeight: 2.rpx,
-        labelPadding: EdgeInsets.only(bottom: 12.rpx),
+        labelPadding: EdgeInsets.only(bottom: 12.rpx,right: 12.rpx),
+        padding: EdgeInsets.only(top: 6.rpx),
         onTap: (val){
           controller.pagingController.onRefresh();
           controller.update(['floating']);

@@ -21,7 +21,7 @@ enum OrderType {
   bool get isFriend => this == OrderType.friend;
 }
 
-enum OrderState {
+enum OrderStatus {
   waitingAcceptance, // 待接受
   waitingPayment, // 已接受(待双方缴费)
   going, // 进行中
@@ -29,8 +29,8 @@ enum OrderState {
   cancel, // 取消
   timeOut; // 超时
 
-  static OrderState valueForIndex(int index) {
-    return OrderState.values.elementAtOrNull(index) ?? OrderState.finish;
+  static OrderStatus valueForIndex(int index) {
+    return OrderStatus.values.elementAtOrNull(index) ?? OrderStatus.finish;
   }
 }
 
@@ -147,7 +147,7 @@ class OrderItemModel {
   final int id; // 订单id
   final String number; // 订单编号
   final OrderType type; // 订单类型 1普通订单 2征友约会
-  final OrderState state; // 订单状态 0待接约 1已接约(待双方缴费) 2进行中 3已完成 4已取消 5超时
+  final OrderStatus state; // 订单状态 0待接约 1已接约(待双方缴费) 2进行中 3已完成 4已取消 5超时
   final OrderUserState requestState; // 下单用户状态 0待支付 1已支付 2已确认 3已取消
   final int requestId; // 下单用户id
   final String requestName; // 下单用户姓名
@@ -188,7 +188,7 @@ class OrderItemModel {
       id: json["id"] ?? 0,
       number: json["number"] ?? "",
       type: OrderType.valueForType(json["type"] ?? 1),
-      state: OrderState.valueForIndex(json["state"] ?? 0),
+      state: OrderStatus.valueForIndex(json["state"] ?? 0),
       requestState: OrderUserState.valueForIndex(json["requestState"] ?? 0),
       requestId: json["requestId"] ?? 0,
       requestName: json["requestName"] ?? "",

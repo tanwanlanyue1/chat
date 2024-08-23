@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -5,6 +7,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
@@ -57,7 +60,11 @@ class _OrderListPageState extends State<OrderListPage>
                 pagingController: controller.pagingController,
                 itemBuilder: (_, item, index) {
                   if (item is OrderListItem) {
-                    return _buildItem(item, index);
+                    return OrderListItemWidget(
+                        onTap: () => controller.toOrderDetail(item.id),
+                        widget: widget,
+                        item: item,
+                        index: index);
                   } else if (item is OrderTeamListItem) {
                     return _buildTeamItem(item, index);
                   }
@@ -295,7 +302,11 @@ class _OrderListPageState extends State<OrderListPage>
               padding: EdgeInsets.symmetric(vertical: 8.rpx),
               itemBuilder: (_, index) {
                 final subItem = item.list[index];
-                return _buildItem(subItem, index);
+                return OrderListItemWidget(
+                    onTap: () => controller.toOrderDetail(subItem.id),
+                    widget: widget,
+                    item: subItem,
+                    index: index);
               },
               separatorBuilder: (_, __) {
                 return const SizedBox(
@@ -307,12 +318,54 @@ class _OrderListPageState extends State<OrderListPage>
     );
   }
 
-  Widget _buildItem(OrderListItem item, int index) {
+  @override
+  bool get wantKeepAlive => true;
+}
+
+class OrderListItemWidget extends StatefulWidget {
+  OrderListItemWidget({
+    super.key,
+    required this.onTap,
+    required this.widget,
+    required this.item,
+    required this.index,
+  });
+
+  final VoidCallback? onTap;
+  final OrderListPage widget;
+  final OrderListItem item;
+  final int index;
+
+  Timer? timer;
+
+  @override
+  State<OrderListItemWidget> createState() => _OrderListItemWidgetState();
+}
+
+class _OrderListItemWidgetState extends State<OrderListItemWidget> {
+  @override
+  void initState() {
+    if (widget.item.countDown > 0) {
+      widget.timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        widget.item.countDown = widget.item.countDown - 1;
+        setState(() {});
+      });
+    } else {
+      widget.timer?.cancel();
+    }
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final item = widget.item;
+
     Widget operationWidget =
-        OrderOperationButtons(type: widget.type, item: item);
+        OrderOperationButtons(type: widget.widget.type, item: widget.item);
 
     return GestureDetector(
-      onTap: () => controller.toOrderDetail(item.id),
+      onTap: widget.onTap,
       child: Container(
         height: 186.rpx,
         padding: EdgeInsets.all(16.rpx).copyWith(bottom: 0),
@@ -338,10 +391,10 @@ class _OrderListPageState extends State<OrderListPage>
                     SizedBox(width: 8.rpx),
                   ],
                 ),
-                if (item.countDown != null)
+                if (item.countDown > 0)
                   Flexible(
                     child: Text(
-                      item.countDown!,
+                      "剩余等待 ${CommonUtils.convertCountdownToHMS(item.countDown, hasHours: false)}",
                       style: AppTextStyle.st
                           .size(12.rpx)
                           .textColor(AppColor.primary),
@@ -426,7 +479,4 @@ class _OrderListPageState extends State<OrderListPage>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

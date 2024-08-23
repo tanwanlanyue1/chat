@@ -40,7 +40,7 @@ class RegisterController extends GetxController {
     Loading.dismiss();
 
     result.when(success: (_) {
-      Get.toNamed(AppRoutes.loginQuestionPage);
+      Get.offAllNamed(AppRoutes.loginQuestionPage);
     }, failure: (errorMessage) {
       Loading.showToast(errorMessage);
     });

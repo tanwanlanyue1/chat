@@ -8,7 +8,6 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/result.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/ui/login/widgets/privacy_policy_dialog.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/web/web_page.dart';
 import 'login_state.dart';

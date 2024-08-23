@@ -82,7 +82,7 @@
   "webUser": "用户协议",
   "forgotTitle": "忘记密码？",
   "forgotNextTitle": "重置密码",
-  "forgotTitleTip": "请在下面输入您的电子邮件已接收密码重置邮件",
+  "forgotTitleTip": "请在下面输入您的电子邮件以接收密码重置邮件",
   "forgotNextTitleTip": "重置代码发送到您的电子邮件。请输入代码并创建新密码",
   "forgotNoEmail": "没绑定邮箱？",
   "forgotNoPhone": "没绑定手机？",

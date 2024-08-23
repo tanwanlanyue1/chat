@@ -12,6 +12,7 @@ import 'package:guanjia/ui/discover/friend_date/release_invitation/release_invit
 import 'package:guanjia/ui/home/home_page.dart';
 import 'package:guanjia/ui/plaza/all_comments/all_comments_controller.dart';
 import 'package:guanjia/ui/plaza/all_comments/all_comments_page.dart';
+import 'package:guanjia/ui/plaza/release_dynamic/release_dynamic_controller.dart';
 import 'package:guanjia/ui/plaza/release_dynamic/release_dynamic_page.dart';
 import 'package:guanjia/ui/plaza/speed_dating/speed_dating_page.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
@@ -38,6 +39,9 @@ class AppPages {
     GetPage(
       name: AppRoutes.releaseDynamicPage,
       page: () => ReleaseDynamicPage(),
+      binding: BindingsBuilder.put(() => ReleaseDynamicController(
+        item: Get.tryGetArgs('item'),
+      )),
     ),
     GetPage(
       name: AppRoutes.userCenterPage,

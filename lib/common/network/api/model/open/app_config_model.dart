@@ -69,6 +69,12 @@ class AppConfigModel {
   ///速配倒计时
   int? matchingCountDown;
 
+  ///系统消息
+  bool? systemMessage;
+
+  ///谁看过我
+  bool? lookMessage;
+
   AppConfigModel.fromJson(dynamic json) {
     serverTime = json['serverTime'];
     jumpLink = json['jumpLink'];
@@ -117,6 +123,8 @@ class AppConfigModel {
     matchingCountDown = json['matchingCountDown'];
     redPacketMaxAmount = json['redPacketMaxAmount'];
     transferMaxAmount = json['transferMaxAmount'];
+    systemMessage = json['systemMessage'];
+    lookMessage = json['lookMessage'];
   }
 
 }

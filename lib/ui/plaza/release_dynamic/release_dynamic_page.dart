@@ -3,19 +3,17 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/widgets/widgets.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:guanjia/widgets/input_widget.dart';
 import 'package:guanjia/widgets/upload_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 
-import '../widgets/publish_success.dart';
 import 'release_dynamic_controller.dart';
 
 ///发布动态
 class ReleaseDynamicPage extends StatelessWidget {
   ReleaseDynamicPage({Key? key}) : super(key: key);
 
-  final controller = Get.put(ReleaseDynamicController());
+  final controller = Get.find<ReleaseDynamicController>();
   final state = Get.find<ReleaseDynamicController>().state;
 
   @override

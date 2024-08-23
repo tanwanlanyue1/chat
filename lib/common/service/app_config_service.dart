@@ -39,5 +39,17 @@ class AppConfigService extends GetxService {
         val?.labels = labelRes.data;
       });
     }
+
+    final messageRes = await UserApi.getMessagesCounts();
+    if (messageRes.isSuccess) {
+      for(var i = 0; i < messageRes.data.length; i++){
+        if(messageRes.data[i]['type'] == 0){
+          configRx()?.systemMessage = true;
+        }
+        if(messageRes.data[i]['type'] == 6){
+          configRx()?.lookMessage = true;
+        }
+      }
+    }
   }
 }

@@ -8,6 +8,7 @@ import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
@@ -108,23 +109,26 @@ class FortuneSquareController extends GetxController
   }
 
   //选择更多
-  Future<void> selectMore(int? uid,int id) async {
-    var more = (uid == state.userInfo?.uid) ? [S.current.deletePublisher] : ['取消关注','发起聊天'];
+  Future<void> selectMore(PlazaListModel item) async {
+    var more = (item.uid == state.userInfo?.uid) ? [S.current.deletePublisher,"重复发布"] : ['取消关注','发起聊天'];
     Get.bottomSheet(
       CommonBottomSheet(
         titles: more,
         onTap: (index) async {
-          print("index===$index");
-          if(uid == state.userInfo?.uid && index == 0){
-            deleteCommunity(id);
-            return;
-          }
-          if(index == 0) {
-            toggleAttention(uid!).then((value) => {
-              pagingController.onRefresh()
-            });
-          }else if(index == 1){
-            MessageListPage.go(userId: uid!);
+          if(tabController.index == 1){
+            if(index == 0) {
+              toggleAttention(item.uid!).then((value) => {
+                pagingController.onRefresh()
+              });
+            }else if(index == 1){
+              MessageListPage.go(userId: item.uid!);
+            }
+          }else{
+            if(index == 0){
+              deleteCommunity(item.postId!);
+            }else{
+              Get.toNamed(AppRoutes.releaseDynamicPage,arguments: {"item":item});
+            }
           }
         },
       ),

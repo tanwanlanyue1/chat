@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
@@ -14,6 +15,7 @@ class LoginTextField extends StatefulWidget {
     this.keyboardType,
     this.backgroundColor,
     this.showPasswordVisible = false,
+    this.inputFormatters,
   }) : obscureText = showPasswordVisible;
 
   final TextEditingController? controller;
@@ -27,6 +29,8 @@ class LoginTextField extends StatefulWidget {
   final Color? backgroundColor;
 
   final bool showPasswordVisible;
+
+  final List<TextInputFormatter>? inputFormatters;
 
   bool obscureText;
 
@@ -75,6 +79,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
                   border: InputBorder.none,
                   isDense: true,
                 ),
+                inputFormatters: widget.inputFormatters,
               ),
             ),
             if (widget.showPasswordVisible)

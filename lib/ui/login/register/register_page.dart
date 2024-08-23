@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_constant.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -13,7 +14,7 @@ import 'package:guanjia/generated/l10n.dart';
 import 'register_controller.dart';
 
 class RegisterPage extends StatelessWidget {
-  RegisterPage({Key? key}) : super(key: key);
+  RegisterPage({super.key});
 
   final controller = Get.put(RegisterController());
   final state = Get.find<RegisterController>().state;
@@ -59,18 +60,27 @@ class RegisterPage extends StatelessWidget {
                       LoginTextField(
                         controller: controller.userNameController,
                         hintText: S.current.registerAccountHint,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(20),
+                        ],
                       ),
                       SizedBox(height: textFieldPadding),
                       LoginTextField(
                         controller: controller.passwordController,
                         hintText: S.current.registerPasswordHint,
                         showPasswordVisible: true,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(20),
+                        ],
                       ),
                       SizedBox(height: textFieldPadding),
                       LoginTextField(
                         controller: controller.passwordAgainController,
                         hintText: S.current.registerPasswordAgainHint,
                         showPasswordVisible: true,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(20),
+                        ],
                       ),
                       Container(
                         padding: EdgeInsets.only(top: 16.rpx, bottom: 30.rpx),

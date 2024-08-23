@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
@@ -28,7 +30,6 @@ class OrderListController extends GetxController with OrderOperationMixin {
 
   @override
   void onInit() {
-    // onTapOrderAdd(30);
     orderState.selectDay.listen(_changeSelectDay);
 
     pagingController = DefaultPagingController(

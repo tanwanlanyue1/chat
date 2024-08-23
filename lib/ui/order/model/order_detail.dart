@@ -735,7 +735,7 @@ class OrderDetail {
       OrderItemState.cancelForRequest: () {
         // 目前通过双方是否存在支付时间来判断取消是在哪个阶段取消的
         final isCancelGoingAfter =
-            model.requestPayTime != 0 && model.requestPayTime != 0;
+            model.requestPayTime != 0 && model.receivePayTime != 0;
         if (isCancelGoingAfter) {
           return {
             UserType.user: OrderDetailWrapper(
@@ -921,7 +921,7 @@ class OrderDetail {
       OrderItemState.cancelForReceive: () {
         // 目前通过双方是否存在支付时间来判断取消是在哪个阶段取消的
         final isCancelGoingAfter =
-            model.requestPayTime != 0 && model.requestPayTime != 0;
+            model.requestPayTime != 0 && model.receivePayTime != 0;
         if (isCancelGoingAfter) {
           return {
             UserType.user: OrderDetailWrapper(

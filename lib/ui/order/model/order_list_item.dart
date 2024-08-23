@@ -30,6 +30,7 @@ class OrderListItem {
   }) {
     itemType = getType(itemModel);
     _wrapper = _getWrapper(itemModel, itemType);
+    countDown = itemModel.countDown;
   }
 
   // 原始数据
@@ -41,10 +42,8 @@ class OrderListItem {
   // 订单id
   int get id => itemModel.id;
 
-  // 订单倒计时 不为空就显示
-  String? get countDown => itemModel.countDown > 0
-      ? "剩余等待 ${CommonUtils.convertCountdownToHMS(itemModel.countDown, hasHours: false)}"
-      : null;
+  // 订单倒计时 大于0就显示
+  late int countDown;
 
   // 订单界面包装器
   late final OrderListItemWrapper _wrapper;

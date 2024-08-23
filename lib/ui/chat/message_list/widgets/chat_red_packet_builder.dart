@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
@@ -5,6 +7,7 @@ import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/auto_dispose_mixin.dart';
 import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
+import 'package:guanjia/ui/mine/inapp_message/models/red_packet_update_content.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 ///红包状态变更
@@ -24,22 +27,25 @@ class ChatRedPacketBuilder extends StatefulWidget {
 
 class _ChatRedPacketBuilderState extends State<ChatRedPacketBuilder>
     with AutoDisposeMixin {
-
   ZIMKitMessage get message => widget.message;
 
   @override
   void initState() {
     super.initState();
     autoDisposeWorker(EventBus().listen(kEventRedPacketUpdate, (data) {
-      refresh();
+      refresh(data);
     }));
-    refresh();
+    final content =
+        SS.inAppMessage.removeRedPacketUpdateContent(message.zim.messageID);
+    if (content != null) {
+      refresh(content);
+    }
   }
 
-  void refresh(){
-    final content = SS.inAppMessage.removeRedPacketUpdateContent(message.zim.messageID);
-    if(content != null){
-      final receiveTime = content.receiveTime?.let(DateTime.fromMillisecondsSinceEpoch);
+  void refresh(RedPacketUpdateContent content) {
+    if(content.msgId == message.zim.messageID){
+      final receiveTime =
+      content.receiveTime?.let(DateTime.fromMillisecondsSinceEpoch);
       message.setRedPacketLocal(
         MessageRedPacketLocal(
           status: content.status,
@@ -47,6 +53,7 @@ class _ChatRedPacketBuilderState extends State<ChatRedPacketBuilder>
         ),
       );
     }
+
   }
 
   @override

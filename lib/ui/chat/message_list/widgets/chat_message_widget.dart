@@ -136,13 +136,6 @@ class ChatMessageWidget extends StatelessWidget {
   }
 
   Widget buildAvatar(BuildContext context) {
-    if(message.zim.isHideAvatar){
-      return SizedBox(
-        width: 40.rpx,
-        height: 40.rpx,
-      );
-    }
-
     final Widget defaultAvatarWidget = ClipOval(
       child: ChatAvatar(
         userId: message.info.senderUserID,

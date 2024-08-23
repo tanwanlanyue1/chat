@@ -9,11 +9,13 @@ import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
+import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_state.dart';
 import 'package:guanjia/ui/chat/message_list/message_order_part.dart';
 import 'package:guanjia/ui/chat/message_list/message_sender_part.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_feature_panel.dart';
+import 'package:guanjia/ui/chat/message_list/widgets/chat_red_packet_builder.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
@@ -37,9 +39,7 @@ class MessageListPage extends GetView<MessageListController> {
   ///跳转聊天
   ///- userId 用户ID
   ///- isFromFriend 来自征友约会
-  static void go({
-    required int userId
-  }) {
+  static void go({required int userId}) {
     if (userId == SS.login.userId) {
       AppLogger.w('不可和自己聊天');
       return;
@@ -151,10 +151,10 @@ class MessageListPage extends GetView<MessageListController> {
       avatarBuilder: buildAvatar,
       backgroundBuilder: buildBackground,
       listViewPadding: FEdgeInsets(top: ChatDateView.height),
-      onPressed: (_, message, defaultAction){
-        if(message.customType == CustomMessageType.redPacket){
-          controller.receiveRedPacket(message);
-        }else{
+      onPressed: (_, message, defaultAction) {
+        if (message.customType == CustomMessageType.redPacket) {
+          controller.onTapRedPacket(message);
+        } else {
           defaultAction.call();
         }
       },
@@ -227,11 +227,39 @@ class MessageListPage extends GetView<MessageListController> {
   }
 
   Widget buildAvatar(_, ZIMKitMessage message, Widget defaultChild) {
-    return GestureDetector(
-      onTap: () => Get.toNamed(AppRoutes.userCenterPage, arguments: {
-        'userId': int.tryParse(message.info.senderUserID),
-      }),
-      child: defaultChild,
+    if (message.customType == CustomMessageType.redPacket) {
+      return ChatRedPacketBuilder(
+          message: message,
+          builder: (_) {
+            return Visibility(
+              visible:
+                  !message.isHideAvatar && [0,1].contains(message.redPacketLocal.status),
+              replacement: SizedBox(
+                width: 40.rpx,
+                height: 40.rpx,
+              ),
+              child: GestureDetector(
+                onTap: () => Get.toNamed(AppRoutes.userCenterPage, arguments: {
+                  'userId': int.tryParse(message.info.senderUserID),
+                }),
+                child: defaultChild,
+              ),
+            );
+          });
+    }
+
+    return Visibility(
+      visible: !message.isHideAvatar,
+      replacement: SizedBox(
+        width: 40.rpx,
+        height: 40.rpx,
+      ),
+      child: GestureDetector(
+        onTap: () => Get.toNamed(AppRoutes.userCenterPage, arguments: {
+          'userId': int.tryParse(message.info.senderUserID),
+        }),
+        child: defaultChild,
+      ),
     );
   }
 }

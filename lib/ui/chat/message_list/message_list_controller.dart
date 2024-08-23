@@ -6,7 +6,6 @@ import 'package:guanjia/common/network/api/im_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
-import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
 import 'package:guanjia/ui/chat/message_list/message_order_part.dart';
@@ -100,15 +99,22 @@ class MessageListController extends GetxController
     state.conversationRx.value = _conversationNotifier?.value;
   }
 
-
-  ///领取红包
-  void receiveRedPacket(ZIMKitMessage message){
-    return _actionRedPacket(message, false);
-  }
-
-  ///撤回红包
-  void revokeRedPacket(ZIMKitMessage message){
-    return _actionRedPacket(message, true);
+  ///点击红包
+  void onTapRedPacket(ZIMKitMessage message){
+    final content = message.redPacketContent;
+    if(content == null){
+      return;
+    }
+    if(message.isRevokeMessage){
+      message.isRevokeMessage = false;
+      ///撤回红包
+      _actionRedPacket(message, true);
+      return;
+    }
+    if(!message.isInsertMessage){
+      ///领取红包
+      _actionRedPacket(message, false);
+    }
   }
 
   ///红包操作

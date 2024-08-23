@@ -46,7 +46,6 @@ class TransferMoneyController extends GetxController {
     );
     Loading.dismiss();
     if (response.isSuccess) {
-      Loading.showToast('转账成功');
       Get.back();
     } else {
       response.showErrorMessage();

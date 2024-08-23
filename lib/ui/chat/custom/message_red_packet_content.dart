@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:guanjia/common/extension/functions_extension.dart';
-import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 ///红包消息内容
@@ -75,6 +75,11 @@ class MessageRedPacketLocal{
       'receiveTime': receiveTime?.millisecondsSinceEpoch,
     };
   }
+
+  @override
+  String toString() {
+    return 'MessageRedPacketLocal{status: $status, receiveTime: $receiveTime}';
+  }
 }
 
 extension ZIMKitMessageExtRedPacket on ZIMKitMessage {
@@ -82,7 +87,7 @@ extension ZIMKitMessageExtRedPacket on ZIMKitMessage {
   ///红包本地数据
   MessageRedPacketLocal get redPacketLocal {
     try{
-      var jsonStr = localExtendedData.value;
+      var jsonStr = localExtendedData.value.trim();
       if(jsonStr.isEmpty && zim.localExtendedData.isNotEmpty){
         jsonStr = zim.localExtendedData;
       }
@@ -94,25 +99,12 @@ extension ZIMKitMessageExtRedPacket on ZIMKitMessage {
 
   ///设置红包本地数据
   Future<void> setRedPacketLocal(MessageRedPacketLocal content) {
-    return ZIMKit().updateLocalExtendedData(this, jsonEncode(content.toJson()));
+    final jsonStr = jsonEncode(content.toJson());
+    AppLogger.d('setRedPacketLocal: $jsonStr');
+    return ZIMKit().updateLocalExtendedData(this, jsonStr);
   }
 
   ///是否是待领取红包
   bool get isRedPacketReceivable => redPacketLocal.status == 0;
 
-  set redPacketViewType(RedPacketViewType type){
-    zimkitExtraInfo['viewType'] = type;
-  }
-
-  RedPacketViewType get redPacketViewType => zimkitExtraInfo['viewType'] ?? RedPacketViewType.bubble;
-}
-
-///红包界面类型
-enum RedPacketViewType{
-  ///气泡
-  bubble,
-  ///详情
-  details,
-  ///提示文本
-  tips,
 }

@@ -17,6 +17,7 @@ import 'chat_red_packet_builder.dart';
 
 ///红包消息
 class ChatRedPacketMessage extends StatelessWidget {
+
   const ChatRedPacketMessage({
     super.key,
     required this.message,
@@ -33,10 +34,12 @@ class ChatRedPacketMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Flexible(
       child: GestureDetector(
-        onTap: () => onPressed?.call(context, message, () {}),
+        onTap: (){
+          message.isRevokeMessage = false;
+          onPressed?.call(context, message, () {});
+        },
         onLongPressStart: (details) => onLongPress?.call(
           context,
           details,
@@ -45,14 +48,33 @@ class ChatRedPacketMessage extends StatelessWidget {
         ),
         child: ChatRedPacketBuilder(
           message: message,
-          builder: (_){
-            switch (message.redPacketViewType) {
-              case RedPacketViewType.bubble:
-                return RedPacketBubbleView(message: message);
-              case RedPacketViewType.details:
+          builder: (_) {
+            //红包状态： 0待领取 1已领取 2已撤回 3已过期
+            final status = message.redPacketLocal.status;
+            if (message.isMine) {
+              if(message.isInsertMessage){
+                print('====>>>${message.localExtendedData.value}  |  ${message.zim.localExtendedData}  | status=$status');
+                if (status == 1) {
+                  return RedPacketDetailsView(message: message);
+                } else {
+                  return RedPacketTipsView(
+                    message: message,
+                    onPressedRevoke: (){
+                      message.isRevokeMessage = true;
+                      onPressed?.call(context, message, () {});
+                    },
+                  );
+                }
+              }
+              return RedPacketBubbleView(message: message);
+            } else {
+              if (message.isInsertMessage) {
                 return RedPacketDetailsView(message: message);
-              case RedPacketViewType.tips:
+              }
+              if ([2, 3].contains(status)) {
                 return RedPacketTipsView(message: message);
+              }
+              return RedPacketBubbleView(message: message);
             }
           },
         ),
@@ -64,11 +86,126 @@ class ChatRedPacketMessage extends StatelessWidget {
 class RedPacketTipsView extends StatelessWidget {
   final ZIMKitMessage message;
 
-  const RedPacketTipsView({super.key, required this.message});
+  // 撤回
+  final VoidCallback? onPressedRevoke;
+
+  const RedPacketTipsView(
+      {super.key, required this.message, this.onPressedRevoke});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final status = message.redPacketLocal.status;
+    if (message.isMine && status == 0) {
+      return buildRevoke();
+    }
+    return buildTips(status);
+  }
+
+  Widget buildTips(int status) {
+    var text = '';
+    switch(status){
+      case 2:
+        text = message.isMine ? '您已主动撤回红包' : 'Ta已撤回红包';
+        break;
+      case 3:
+        text = '红包已过期';
+        break;
+    }
+    if(text.isEmpty){
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      alignment: Alignment.center,
+      padding: FEdgeInsets(right: 48.rpx),
+      child: Container(
+        padding: FEdgeInsets(horizontal: 8.rpx, vertical: 4.rpx),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.4),
+          borderRadius: BorderRadius.circular(4.rpx),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppImage.asset(
+              'assets/images/chat/ic_red_packet_msg.png',
+              width: 16.rpx,
+              height: 16.rpx,
+            ),
+            Padding(
+              padding: FEdgeInsets(left: 4.rpx),
+              child: Text(
+                text,
+                textAlign: TextAlign.center,
+                style: AppTextStyle.pingFangRegular.copyWith(
+                  fontSize: 14.rpx,
+                  color: AppColor.gray5,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildRevoke() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: FEdgeInsets(horizontal: 8.rpx, vertical: 4.rpx),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.4),
+            borderRadius: BorderRadius.circular(4.rpx),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AppImage.asset(
+                'assets/images/chat/ic_red_packet_msg.png',
+                width: 16.rpx,
+                height: 16.rpx,
+              ),
+              Padding(
+                padding: FEdgeInsets(left: 4.rpx),
+                child: Text.rich(
+                  TextSpan(
+                    style: AppTextStyle.pingFangRegular.copyWith(
+                      fontSize: 14.rpx,
+                      color: AppColor.gray5,
+                    ),
+                    text: '您向Ta发了个红包，金额 ',
+                    children: [
+                      TextSpan(
+                        text:
+                            message.redPacketContent?.amount.toCurrencyString(),
+                        style: const TextStyle(color: AppColor.red53),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        GestureDetector(
+          onTap: () => onPressedRevoke?.call(),
+          behavior: HitTestBehavior.translucent,
+          child: Padding(
+            padding: FEdgeInsets(horizontal: 12.rpx, vertical: 4.rpx),
+            child: Text(
+              '撤回',
+              style: AppTextStyle.pingFangRegular.copyWith(
+                fontSize: 14.rpx,
+                color: AppColor.gradientBegin,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+        )
+      ],
+    );
   }
 }
 
@@ -98,15 +235,16 @@ class RedPacketDetailsView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          buildTitle(),
+          buildTitle(content),
           buildContent(content),
         ],
       ),
     );
   }
 
-  Widget buildTitle() {
-    String title = (message.isMine ? '您领取了Ta的红包' : '您向Ta发了红包');
+  Widget buildTitle(MessageRedPacketContent content) {
+    String title =
+        (SS.login.userId == content.fromUid ? '您向Ta发了红包' : '您领取了Ta的红包');
     return Padding(
       padding: FEdgeInsets(top: 6.rpx),
       child: Row(
@@ -201,7 +339,7 @@ class RedPacketBubbleView extends StatelessWidget {
     //红包状态： 0待领取 1已领取 2已撤回 3已过期
     final status = message.redPacketLocal.status;
     var statusText = '';
-    switch(status){
+    switch (status) {
       case 1:
         statusText = content?.fromUid == SS.login.userId ? '已被领取' : '已领取';
         break;
@@ -215,9 +353,7 @@ class RedPacketBubbleView extends StatelessWidget {
 
     return Bubble(
       elevation: 0,
-      color: status == 0
-          ? AppColor.orange6
-          : const Color(0xFFFAD6AF),
+      color: status == 0 ? AppColor.orange6 : const Color(0xFFFAD6AF),
       nip: message.isMine ? BubbleNip.rightBottom : BubbleNip.leftBottom,
       radius: Radius.circular(8.rpx),
       padding: BubbleEdges.symmetric(
@@ -253,13 +389,14 @@ class RedPacketBubbleView extends StatelessWidget {
               ],
             ),
             // 0待领取 1已领取 2已撤回 3已过期
-            if(statusText.isNotEmpty) Padding(
-              padding: FEdgeInsets(top: 8.rpx),
-              child: Text(
-                '红包金额：${content?.amount.toCurrencyString()}  $statusText',
-                style: AppTextStyle.fs12m.copyWith(color: Colors.white),
-              ),
-            )
+            if (statusText.isNotEmpty)
+              Padding(
+                padding: FEdgeInsets(top: 8.rpx),
+                child: Text(
+                  '红包金额：${content?.amount.toCurrencyString()}  $statusText',
+                  style: AppTextStyle.fs12m.copyWith(color: Colors.white),
+                ),
+              )
           ],
         ),
       ),

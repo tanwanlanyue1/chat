@@ -4,12 +4,18 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/event/event_bus.dart';
+import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/extension/list_extension.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/common/utils/auto_dispose_mixin.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
+import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
+import 'package:guanjia/ui/mine/inapp_message/models/red_packet_update_content.dart';
 import 'package:zego_zim/zego_zim.dart';
 import 'package:zego_zimkit/src/services/services.dart';
 
@@ -94,18 +100,29 @@ class MessageListView extends StatefulWidget {
   State<MessageListView> createState() => _MessageListViewState();
 }
 
-class _MessageListViewState extends State<MessageListView> {
+class _MessageListViewState extends State<MessageListView> with AutoDisposeMixin {
   final ScrollController _defaultScrollController = ScrollController();
 
   ScrollController get _scrollController =>
       widget.scrollController ?? _defaultScrollController;
 
   Completer? _loadMoreCompleter;
+  ListNotifier<ValueNotifier<ZIMKitMessage>>? _listNotifier;
 
   @override
   void initState() {
     ZIMKit().clearUnreadCount(widget.conversationID, widget.conversationType);
     _scrollController.addListener(scrollControllerListener);
+    final selfUserId = SS.login.userId;
+
+    ///订单领取时，刷新列表
+    autoDisposeWorker(EventBus().listen(kEventRedPacketUpdate, (data) {
+      final content = data as RedPacketUpdateContent;
+      final isReceiver = selfUserId == content.toUid;
+      if(isReceiver && content.fromUid.toString() == widget.conversationID){
+        _listNotifier?.notifyListeners();
+      }
+    }));
 
     super.initState();
   }
@@ -144,6 +161,7 @@ class _MessageListViewState extends State<MessageListView> {
         ),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            _listNotifier = snapshot.data;
             return ValueListenableBuilder(
               valueListenable: snapshot.data!,
               builder: (
@@ -195,21 +213,20 @@ class _MessageListViewState extends State<MessageListView> {
     );
   }
 
-
   ///处理消息
-  List<ValueNotifier<ZIMKitMessage>> handleMessageList(List<ValueNotifier<ZIMKitMessage>> messageList){
+  List<ValueNotifier<ZIMKitMessage>> handleMessageList(
+      List<ValueNotifier<ZIMKitMessage>> messageList) {
     final list = <ValueNotifier<ZIMKitMessage>>[];
     final selfUserId = SS.login.userId.toString();
 
-    messageList.forEachIndexed((index, item){
+    messageList.forEachIndexed((index, item) {
       list.insert(0, item);
 
-      if(item.value.zim is ZIMCustomMessage){
-        final zim = item.value.zim as ZIMCustomMessage;
-        if(zim.subType == CustomMessageType.transfer.value){
-          _handleTransferMessage(list, zim, selfUserId);
-        }else if(zim.subType == CustomMessageType.redPacket.value){
-          _handleRedPacketMessage(list, zim, selfUserId);
+      if (item.value.zim is ZIMCustomMessage) {
+        if (item.value.customType == CustomMessageType.transfer) {
+          _handleTransferMessage(list, item.value, selfUserId);
+        } else if (item.value.customType == CustomMessageType.redPacket) {
+          _handleRedPacketMessage(list, item.value, selfUserId);
         }
       }
     });
@@ -218,38 +235,50 @@ class _MessageListViewState extends State<MessageListView> {
   }
 
   ///处理转账消息
-  void _handleTransferMessage(List<ValueNotifier<ZIMKitMessage>> list, ZIMCustomMessage zim, String selfUserId){
-    if(zim.senderUserID == selfUserId){
+  void _handleTransferMessage(List<ValueNotifier<ZIMKitMessage>> list,
+      ZIMKitMessage kitMessage, String selfUserId) {
+    final zim = kitMessage.zim as ZIMCustomMessage;
+    if (zim.senderUserID == selfUserId) {
       //模拟一条接收方收款消息
       final receiveMoneyMsg = zim.copyWith(
-          isServerMessage: false,
-          isUserInserted: true,
-          senderUserID: zim.conversationID,
-          conversationID: zim.senderUserID,
-          direction: ZIMMessageDirection.receive,
-          localExtendedData: ''
+        senderUserID: zim.conversationID,
+        conversationID: zim.senderUserID,
+        direction: ZIMMessageDirection.receive,
       );
-      list.insert(0, ValueNotifier(receiveMoneyMsg.toKIT()));
-    }else{
+      list.insert(
+        0,
+        ValueNotifier(receiveMoneyMsg.toKIT()..isInsertMessage = true),
+      );
+    } else {
       //模拟一条转账详情消息
-      final detailsMsg = zim.copyWith(
-        isServerMessage: false,
-        isUserInserted: true,
-      );
-      detailsMsg.isHideAvatar = true;
-      list.insert(0, ValueNotifier(detailsMsg.toKIT()));
+      final msg = kitMessage.copy()
+        ..isInsertMessage = true
+        ..isHideAvatar = true;
+      list.insert(0, ValueNotifier(msg));
     }
   }
 
   ///处理红包消息
-  void _handleRedPacketMessage(List<ValueNotifier<ZIMKitMessage>> list, ZIMCustomMessage zim, String selfUserId){
-    if(zim.senderUserID == selfUserId){
-    }else{
+  void _handleRedPacketMessage(List<ValueNotifier<ZIMKitMessage>> list,
+      ZIMKitMessage kitMessage, String selfUserId) {
+    final zim = kitMessage.zim as ZIMCustomMessage;
+    if (zim.senderUserID == selfUserId) {
+      //模拟一条消息(撤回，详情)
+      final msg = kitMessage.copy()
+        ..isInsertMessage = true
+        ..isHideAvatar = true;
+      list.insert(0, ValueNotifier(msg));
+      AppLogger.d('_handleRedPacketMessage: ${kitMessage.redPacketLocal} copy: ${kitMessage.redPacketLocal} clone:${kitMessage.clone().redPacketLocal}');
+    } else if (kitMessage.redPacketLocal.status == 1) {
+      //模拟一条已领取消息
+      final msg = kitMessage.copy()
+        ..isInsertMessage = true
+        ..isHideAvatar = true;
+      list.insert(0, ValueNotifier(msg));
     }
   }
 
-
-Widget listview(
+  Widget listview(
     List<ValueNotifier<ZIMKitMessage>> messageList,
   ) {
     messageList = handleMessageList(messageList);
@@ -333,7 +362,8 @@ Widget listview(
       ),
       child: Text(
         dateTimeStr,
-        style: AppTextStyle.fs14m.copyWith(
+        style: AppTextStyle.pingFangRegular.copyWith(
+          fontSize: 14.rpx,
           color: AppColor.gray5,
         ),
       ),

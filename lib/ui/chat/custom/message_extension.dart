@@ -9,6 +9,15 @@ import 'message_call_end_content.dart';
 import 'message_red_packet_content.dart';
 
 extension ZIMKitMessageExt on ZIMKitMessage {
+  ///隐藏头像
+  static const _kHideAvatar = 'hideAvatar';
+
+  ///消息列表中，业务需要插入的消息
+  static const _kInsertMessage = '_kInsertMessage';
+
+  ///是否是业务撤回消息
+  static const _kRevokeMessage = '_kRevokeMessage';
+
   ///自定义消息类型
   CustomMessageType? get customType {
     if (type == ZIMMessageType.custom) {
@@ -77,33 +86,38 @@ extension ZIMKitMessageExt on ZIMKitMessage {
     );
   }
 
-  ZIMKitMessage copy() {
-    final message = ZIMMessage()
-      ..type = type
-      ..messageID = zim.messageID
-      ..localMessageID = zim.localMessageID
-      ..senderUserID = zim.senderUserID
-      ..conversationID = zim.conversationID
-      ..direction = zim.direction
-      ..sentStatus = zim.sentStatus
-      ..sentStatus = zim.sentStatus
-      ..cbInnerID = zim.cbInnerID;
 
-    return message.toKIT();
+  ///是否隐藏头像
+  set isHideAvatar(bool isHide) {
+    zimkitExtraInfo[_kHideAvatar] = isHide;
+  }
+
+  ///是否隐藏头像
+  bool get isHideAvatar => zimkitExtraInfo[_kHideAvatar] == true;
+
+  ///是否业务需要插入的消息
+  set isInsertMessage(bool value) {
+    zimkitExtraInfo[_kInsertMessage] = value;
+  }
+
+  ///是否业务需要插入的消息
+  bool get isInsertMessage => zimkitExtraInfo[_kInsertMessage] == true;
+
+  ///是否是业务撤回消息
+  set isRevokeMessage(bool value) {
+    zimkitExtraInfo[_kRevokeMessage] = value;
+  }
+
+  ///是否是业务撤回消息
+  bool get isRevokeMessage => zimkitExtraInfo[_kRevokeMessage] == true;
+
+  ZIMKitMessage copy() {
+    return zim.toKIT()
+      ..localExtendedData = localExtendedData;
   }
 }
 
 extension ZIMCustomMessageExt on ZIMCustomMessage {
-  ///隐藏头像
-  static const _hideAvatar = 'hideAvatar';
-
-  ///是否隐藏头像
-  set isHideAvatar(bool isHide) {
-    localExtendedData = _hideAvatar;
-  }
-
-  ///是否隐藏头像
-  bool get isHideAvatar => localExtendedData == _hideAvatar;
 
   ZIMCustomMessage copyWith({
     //ZIMMessage字段
@@ -160,17 +174,4 @@ extension ZIMCustomMessageExt on ZIMCustomMessage {
       ..cbInnerID = cbInnerID ?? this.cbInnerID
       ..searchedContent = searchedContent ?? this.searchedContent;
   }
-}
-
-extension ZIMMessageExt on ZIMMessage {
-  ///隐藏头像
-  static const _hideAvatar = 'hideAvatar';
-
-  ///是否隐藏头像
-  set isHideAvatar(bool isHide) {
-    localExtendedData = _hideAvatar;
-  }
-
-  ///是否隐藏头像
-  bool get isHideAvatar => localExtendedData == _hideAvatar;
 }

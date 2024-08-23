@@ -47,4 +47,8 @@ class RedPacketUpdateContent {
     );
   }
 
+  @override
+  String toString() {
+    return 'RedPacketUpdateContent{msgId: $msgId, status: $status, fromUid: $fromUid, toUid: $toUid, createTime: $createTime, receiveTime: $receiveTime, expireTime: $expireTime}';
+  }
 }

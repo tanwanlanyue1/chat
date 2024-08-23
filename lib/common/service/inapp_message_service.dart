@@ -66,6 +66,8 @@ class InAppMessageService extends GetxService {
   ///更新红包消息状态
   void _updateRedPacketMessageStatus(RedPacketUpdateContent content) async {
 
+    AppLogger.d('_updateRedPacketMessageStatus: $content');
+
     final conversationId =
     SS.login.userId == content.fromUid ? content.toUid : content.fromUid;
 

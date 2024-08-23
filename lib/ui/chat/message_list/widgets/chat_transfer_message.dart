@@ -46,7 +46,7 @@ class ChatTransferMessage extends StatelessWidget {
     if(isSender){
       child = message.isMine ? buildDetailsView(content) : buildBubbleView(content);
     }else{
-      child = message.zim.isUserInserted ? buildDetailsView(content) : buildBubbleView(content);
+      child = message.isInsertMessage ? buildDetailsView(content) : buildBubbleView(content);
     }
 
     return Flexible(

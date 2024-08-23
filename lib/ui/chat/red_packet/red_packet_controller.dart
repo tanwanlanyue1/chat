@@ -37,7 +37,7 @@ class RedPacketController extends GetxController {
       return;
     }
 
-    final maxAmount = SS.appConfig.transferMaxAmount;
+    final maxAmount = SS.appConfig.redPacketMaxAmount;
     if (amount > maxAmount) {
       Loading.showToast('红包金额不能大于${maxAmount.toCurrencyString()}');
       return;
@@ -62,7 +62,6 @@ class RedPacketController extends GetxController {
     );
     Loading.dismiss();
     if(response.isSuccess){
-      Loading.showToast('发送成功');
       Get.back();
     }else{
       response.showErrorMessage();

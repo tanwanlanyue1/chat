@@ -72,6 +72,7 @@ class AccountDataPage extends StatelessWidget {
                     onTap: controller.onTapGender,
                     title: S.current.userGender,
                     detail: state.getGenderString(info.gender),
+                    detailHintText: "点击输入",
                   ),
                   _padding(),
                   // age
@@ -88,6 +89,7 @@ class AccountDataPage extends StatelessWidget {
                     },
                     title: S.current.userAge,
                     detail: "${info.age ?? ""}",
+                    detailHintText: "点击输入",
                   ),
                   _padding(),
                   // position
@@ -95,6 +97,7 @@ class AccountDataPage extends StatelessWidget {
                     onTap: controller.onTapPosition,
                     title: S.current.userPosition,
                     detail: info.position,
+                    detailHintText: "点击输入",
                   ),
                   _padding(),
                   // phone
@@ -102,6 +105,7 @@ class AccountDataPage extends StatelessWidget {
                     onTap: controller.onTapPhone,
                     title: S.current.userPhone,
                     detail: info.phone ?? controller.loginService.info?.phone,
+                    detailHintText: "点击绑定手机电话",
                   ),
                   _padding(),
                   // email
@@ -109,6 +113,7 @@ class AccountDataPage extends StatelessWidget {
                     onTap: controller.onTapEmail,
                     title: S.current.userEmail,
                     detail: info.email ?? controller.loginService.info?.email,
+                    detailHintText: "点击绑定邮箱",
                   ),
                   // likeSex
                   if (info.type.isUser)

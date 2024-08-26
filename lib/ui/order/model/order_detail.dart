@@ -153,7 +153,7 @@ class OrderDetailItem {
       case OrderDetailDisplayType.receiveFeeProportion:
         return OrderDetailItemWrapper(
           title: changeTitle ?? '佳丽收取比例：',
-          detail: "${changeDetail ?? model.proportionBroker.toString()}%",
+          detail: "${changeDetail ?? model.proportionBeauty.toString()}%",
         );
       case OrderDetailDisplayType.agentFeeProportion:
         return OrderDetailItemWrapper(

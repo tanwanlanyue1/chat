@@ -71,10 +71,7 @@ extension MessageOrderPart on MessageListController {
 
   ///缴纳保证金
   void _paymentOrder(OrderItemModel order) async {
-    final ret = await OrderPaymentDialog.show(order: order);
-    if (ret == true) {
-      toOrderPayment(order.id);
-    }
+    toOrderPayment(order);
   }
 
   ///佳丽确认已到位

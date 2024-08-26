@@ -8,6 +8,8 @@ class OrderPaymentState {
 
   final selectIndex = Rxn<int>();
 
+  final countDown = 0.obs;
+
   final list = [
     OrderPaymentListItem(
       icon: "icon",

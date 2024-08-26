@@ -153,7 +153,7 @@ class OrderDetailItem {
       case OrderDetailDisplayType.receiveFeeProportion:
         return OrderDetailItemWrapper(
           title: changeTitle ?? '佳丽收取比例：',
-          detail: "${changeDetail ?? model.proportionBroker.toString()}%",
+          detail: "${changeDetail ?? model.proportionBeauty.toString()}%",
         );
       case OrderDetailDisplayType.agentFeeProportion:
         return OrderDetailItemWrapper(
@@ -795,13 +795,11 @@ class OrderDetail {
                 OrderDetailItem(
                     model: model, displayType: OrderDetailDisplayType.request),
                 OrderDetailItem(
-                  model: model,
-                  displayType: OrderDetailDisplayType.receive,
-                  changeTitle: "接单佳丽：",
-                ),
-                OrderDetailItem(
                     model: model,
                     displayType: OrderDetailDisplayType.requestTime),
+                OrderDetailItem(
+                    model: model,
+                    displayType: OrderDetailDisplayType.receiveTime),
                 OrderDetailItem(
                     model: model,
                     displayType: OrderDetailDisplayType.cancelTime),
@@ -1254,11 +1252,6 @@ class OrderDetail {
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.request),
             OrderDetailItem(
-              model: model,
-              displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
-            ),
-            OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.receiveTime),
@@ -1270,10 +1263,9 @@ class OrderDetail {
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.margin),
             OrderDetailItem(
-              model: model,
-              displayType: OrderDetailDisplayType.requestServiceFee,
-              changeTitle: "用户缴纳服务费：",
-            ),
+                model: model,
+                displayType: OrderDetailDisplayType.requestServiceFee,
+                changeTitle: "用户缴纳服务费："),
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.platformFeeProportion),
@@ -1319,7 +1311,8 @@ class OrderDetail {
                 model: model, displayType: OrderDetailDisplayType.margin),
             OrderDetailItem(
                 model: model,
-                displayType: OrderDetailDisplayType.requestServiceFee),
+                displayType: OrderDetailDisplayType.requestServiceFee,
+                changeTitle: "用户缴纳服务费："),
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.platformFeeProportion),
@@ -1382,6 +1375,7 @@ class OrderDetail {
             ),
           ],
           bottomTipText: "保证金将在订单完成后原账户退回",
+          operation: OrderOperationType.evaluation,
         ),
         UserType.beauty: OrderDetailWrapper(
           stateText: "订单已完成，待用户评价",
@@ -1391,11 +1385,6 @@ class OrderDetail {
                 model: model, displayType: OrderDetailDisplayType.number),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.request),
-            OrderDetailItem(
-              model: model,
-              displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
-            ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
             OrderDetailItem(
@@ -1408,10 +1397,9 @@ class OrderDetail {
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.margin),
             OrderDetailItem(
-              model: model,
-              displayType: OrderDetailDisplayType.requestServiceFee,
-              changeTitle: "用户缴纳服务费：",
-            ),
+                model: model,
+                displayType: OrderDetailDisplayType.requestServiceFee,
+                changeTitle: "用户缴纳服务费："),
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.platformFeeProportion),
@@ -1456,7 +1444,8 @@ class OrderDetail {
                 model: model, displayType: OrderDetailDisplayType.margin),
             OrderDetailItem(
                 model: model,
-                displayType: OrderDetailDisplayType.requestServiceFee),
+                displayType: OrderDetailDisplayType.requestServiceFee,
+                changeTitle: "用户缴纳服务费："),
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.platformFeeProportion),

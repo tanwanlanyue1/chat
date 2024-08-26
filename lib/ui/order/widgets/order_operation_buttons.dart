@@ -55,7 +55,7 @@ class OrderOperationButtons extends StatelessWidget {
           _buildLeft(),
           SizedBox(width: 24.rpx),
           _buildRight(
-            onTap: () => controller.toOrderPayment(item.id),
+            onTap: () => controller.toOrderPayment(item.itemModel),
             text: "立即缴纳",
           ),
         ]);

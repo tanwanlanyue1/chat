@@ -3,14 +3,15 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';
 
 import 'order_payment_result_controller.dart';
 
-class OrderPaymentResultPage extends StatelessWidget {
-  OrderPaymentResultPage({
+class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
+  const OrderPaymentResultPage({
     super.key,
     required this.orderId,
     required this.isSuccess,
@@ -19,24 +20,33 @@ class OrderPaymentResultPage extends StatelessWidget {
   final int orderId;
   final bool isSuccess;
 
-  final controller = Get.put(OrderPaymentResultController());
-  final state = Get.find<OrderPaymentResultController>().state;
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          // isSuccess ? S.current.payment_success : S.current.payment_fail,
-          isSuccess ? "支付成功" : "支付失败",
-        ),
-      ),
-      body: isSuccess ? _buildSuccess() : _buildFail(),
+    return GetBuilder<OrderPaymentResultController>(
+      init: OrderPaymentResultController(orderId),
+      builder: (controller) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            title: Text(
+              // isSuccess ? S.current.payment_success : S.current.payment_fail,
+              isSuccess ? "支付成功" : "支付失败",
+            ),
+          ),
+          body: isSuccess ? _buildSuccess() : _buildFail(),
+        );
+      },
     );
   }
 
   ListView _buildSuccess() {
+    final state = controller.state;
+    final isRequest = state.detailModel.value?.requestId == SS.login.userId;
+
+    final deposit = state.detailModel.value?.deposit ?? 0;
+    final serviceCharge = state.detailModel.value?.serviceCharge ?? 0;
+    final result = isRequest ? deposit + serviceCharge : serviceCharge;
+
     return ListView(
       children: [
         SizedBox(height: 36.rpx),
@@ -46,7 +56,7 @@ class OrderPaymentResultPage extends StatelessWidget {
         ),
         SizedBox(height: 24.rpx),
         Text(
-          "保证金服务费支付成功！",
+          isRequest ? "保证金服务费支付成功！" : "保证金支付成功！",
           textAlign: TextAlign.center,
           style: AppTextStyle.st
               .size(16.rpx)
@@ -60,15 +70,24 @@ class OrderPaymentResultPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "订单编号：12345654874414468252",
+                "订单编号：$orderId",
                 style: AppTextStyle.st
                     .size(14.rpx)
                     .textColor(AppColor.black6)
                     .textHeight(1),
               ),
               SizedBox(height: 14.rpx),
-              Text(
-                "订单金额：458元",
+              Text.rich(
+                TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: "订单金额：",
+                    ),
+                    TextSpan(
+                        text: "$result元",
+                        style: AppTextStyle.st.textColor(AppColor.textRed)),
+                  ],
+                ),
                 style: AppTextStyle.st
                     .size(14.rpx)
                     .textColor(AppColor.black6)

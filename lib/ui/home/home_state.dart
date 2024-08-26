@@ -30,7 +30,7 @@ class HomeState {
   ];
 
   ///默认下标
-  final currentPageRx = 0.obs;
+  final currentPageRx = 2.obs;
 
   ///聊天消息未读数
   final messageUnreadRx = 0.obs;

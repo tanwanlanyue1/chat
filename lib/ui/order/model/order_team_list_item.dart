@@ -13,7 +13,7 @@ class OrderTeamListItem {
   bool isSelect = false;
 
   // 原始数据
-  final OrderTeamModel itemModel;
+  final OrderTeamSubModel itemModel;
 
   // 详细订单列表
   late final List<OrderListItem> list;

@@ -54,6 +54,31 @@ enum OrderUserState {
 class OrderTeamModel {
   OrderTeamModel({
     required this.list,
+    required this.total,
+  });
+
+  final List<OrderTeamSubModel> list; // 订单列表
+  final int total; // 总条数
+
+  factory OrderTeamModel.fromJson(Map<String, dynamic> json) {
+    return OrderTeamModel(
+      list: json["list"] == null
+          ? []
+          : List<OrderTeamSubModel>.from(
+              json["list"]!.map((x) => OrderTeamSubModel.fromJson(x))),
+      total: json["total"] ?? 0,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        "list": list.map((x) => x?.toJson()).toList(),
+        "total": total,
+      };
+}
+
+class OrderTeamSubModel {
+  OrderTeamSubModel({
+    required this.list,
     required this.userInfo,
     required this.waitTimeCount,
     required this.otherCancelCount,
@@ -72,8 +97,8 @@ class OrderTeamModel {
   final int completeCount; // 已完成已评价
   final int allCompleteCount; // 已完成
 
-  factory OrderTeamModel.fromJson(Map<String, dynamic> json) {
-    return OrderTeamModel(
+  factory OrderTeamSubModel.fromJson(Map<String, dynamic> json) {
+    return OrderTeamSubModel(
       list: json["list"] == null
           ? []
           : List<OrderItemModel>.from(

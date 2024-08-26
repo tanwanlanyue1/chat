@@ -5,6 +5,7 @@ import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/order_list/order_list_controller.dart';
 import 'package:guanjia/ui/order/widgets/assign_agent_dialog/order_assign_agent_dialog.dart';
+import 'package:guanjia/ui/order/widgets/order_payment_dialog.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/payment_password_keyboard.dart';
 
@@ -118,8 +119,11 @@ mixin OrderOperationMixin {
 
   /// 跳转支付界面
   /// orderId: 订单id
-  void toOrderPayment(int orderId) {
-    Get.toNamed(AppRoutes.orderPaymentPage, arguments: {"orderId": orderId});
+  void toOrderPayment(OrderItemModel order) async {
+    final ret = await OrderPaymentDialog.show(order: order);
+    if (ret == true) {
+      Get.toNamed(AppRoutes.orderPaymentPage, arguments: {"orderId": order.id});
+    }
   }
 
   /// 刷新不同类型的订单列表

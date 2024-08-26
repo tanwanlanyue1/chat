@@ -18,12 +18,6 @@ import 'mine_setting_state.dart';
 
 class MineSettingController extends GetxController {
   final MineSettingState state = MineSettingState();
-  final _preferences = LocalStorage('MineSetting');
-
-  //震动
-  static const keyVibration = 'vibrationReminder';
-  //铃声
-  static const keyBell = 'bellReminder';
 
   final version = "".obs;
 
@@ -32,22 +26,6 @@ class MineSettingController extends GetxController {
   void onTapClearCache() {
     ImageCacheUtils.clearAllCacheImage();
     cacheSize.value = ImageCacheUtils.getAllSizeOfCacheImages();
-  }
-
-  @override
-  Future<bool> setEnabled() async{
-    return _preferences.setBool(keyVibration, state.shake.value);
-  }
-
-  @override
-  Future<bool> setBell() async{
-    return _preferences.setBool(keyBell, state.bell.value);
-  }
-
-  ///是否启用
-  void getEnabled() async{
-    state.shake.value = (await _preferences.getBool(keyVibration)) ?? false;
-    state.bell.value = (await _preferences.getBool(keyBell)) ?? false;
   }
 
   //选择语言
@@ -66,7 +44,6 @@ class MineSettingController extends GetxController {
   void onInit() async {
     version.value = await AppInfo.getVersion();
     cacheSize.value = ImageCacheUtils.getAllSizeOfCacheImages();
-    getEnabled();
     super.onInit();
   }
 

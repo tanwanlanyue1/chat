@@ -70,6 +70,8 @@ dependencies:
     path: plugins/zego_uikit_prebuilt_call
   zego_uikit_signaling_plugin: 2.8.2
   flutter_image_compress: ^2.3.0
+  flutter_ringtone_player: ^4.0.0+3 #播放设备默认铃声
+  vibration: ^1.9.0 #振动
 
 dependency_overrides:
   http: ^1.2.1 # svgaplayer_flutter 和 flutter_cache_manager会冲突，强制使用flutter_cache_manager依赖版本

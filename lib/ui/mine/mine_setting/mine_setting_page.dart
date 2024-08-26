@@ -44,15 +44,14 @@ class MineSettingPage extends StatelessWidget {
                       width: 46.rpx,
                       child: Transform.scale(
                         scale: 0.8,
-                        child: CupertinoSwitch(
-                          value: state.shake.value,
-                          activeColor: AppColor.primary,
-                          trackColor: AppColor.gray9,
-                          onChanged: (value){
-                            state.shake.value = value;
-                            controller.setEnabled();
-                          },
-                        ),
+                        child: ObxValue((dataRx){
+                          return CupertinoSwitch(
+                            value: dataRx(),
+                            activeColor: AppColor.primary,
+                            trackColor: AppColor.gray9,
+                            onChanged: dataRx.call,
+                          );
+                        }, SS.inAppMessage.vibrationReminderRx),
                       ),
                     ),
                   ),
@@ -62,15 +61,14 @@ class MineSettingPage extends StatelessWidget {
                       width: 46.rpx,
                       child: Transform.scale(
                         scale: 0.8,
-                        child: CupertinoSwitch(
-                          value: state.bell.value,
-                          activeColor: AppColor.primary,
-                          trackColor: AppColor.gray9,
-                          onChanged: (value){
-                            state.bell.value = value;
-                            controller.setBell();
-                          },
-                        ),
+                        child: ObxValue((dataRx){
+                          return CupertinoSwitch(
+                            value: dataRx(),
+                            activeColor: AppColor.primary,
+                            trackColor: AppColor.gray9,
+                            onChanged: dataRx.call,
+                          );
+                        }, SS.inAppMessage.bellReminderRx),
                       ),
                     ),
                   ),

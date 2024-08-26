@@ -147,7 +147,7 @@ class OrderItemModel {
   final int id; // 订单id
   final String number; // 订单编号
   final OrderType type; // 订单类型 1普通订单 2征友约会
-  final OrderStatus state; // 订单状态 0待接约 1已接约(待双方缴费) 2进行中 3已完成 4已取消 5超时
+  OrderStatus state; // 订单状态 0待接约 1已接约(待双方缴费) 2进行中 3已完成 4已取消 5超时
   final OrderUserState requestState; // 下单用户状态 0待支付 1已支付 2已确认 3已取消
   final int requestId; // 下单用户id
   final String requestName; // 下单用户姓名

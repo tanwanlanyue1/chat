@@ -1,24 +1,37 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/ui/chat/chat_event_notifier.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
 import 'package:guanjia/ui/mine/inapp_message/inapp_message.dart';
 import 'package:guanjia/ui/mine/inapp_message/inapp_message_type.dart';
 import 'package:guanjia/ui/mine/inapp_message/models/red_packet_update_content.dart';
+import 'package:vibration/vibration.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 ///应用消息服务
 class InAppMessageService extends GetxService {
   final _streamController = StreamController<InAppMessage>.broadcast();
   final _redPacketMessageContentCache = <int, RedPacketUpdateContent>{};
+
+  final _appSettingPrefs = LocalStorage('AppSetting');
+  static const _kVibrationReminder = 'vibrationReminder';
+  static const _kBellReminder = 'bellReminder';
+
+  ///振动提醒
+  final vibrationReminderRx = false.obs;
+
+  ///铃声提醒
+  final bellReminderRx = false.obs;
 
   @override
   void onInit() {
@@ -32,8 +45,41 @@ class InAppMessageService extends GetxService {
         }
       }
     });
+
+    //监听新消息，振动和铃声提醒
+    ChatEventNotifier()
+        .onReceivePeerMessage
+        .listen((event) => _onReceiveChatMessage(event.messageList));
+
+    _init();
   }
 
+  void _init() async {
+    vibrationReminderRx.value =
+        await _appSettingPrefs.getBool(_kVibrationReminder) ?? true;
+    bellReminderRx.value =
+        await _appSettingPrefs.getBool(_kBellReminder) ?? true;
+    everAll([vibrationReminderRx, bellReminderRx], (_) {
+      _appSettingPrefs.setBool(_kVibrationReminder, vibrationReminderRx.value);
+      _appSettingPrefs.setBool(_kBellReminder, bellReminderRx.value);
+    });
+  }
+
+  ///接收到聊天消息
+  void _onReceiveChatMessage(List<ZIMMessage> messages) {
+    final index = messages.indexWhere((element) => element.direction == ZIMMessageDirection.receive);
+    if(index == -1){
+      return;
+    }
+    if(SS.inAppMessage.bellReminderRx()){
+      FlutterRingtonePlayer().playNotification();
+    }
+    if(SS.inAppMessage.vibrationReminderRx()){
+      Vibration.vibrate();
+    }
+  }
+
+  ///接收到自定义信令
   void _onReceiveCommandMessage(ZIMCommandMessage message) {
     final content = utf8.decode(message.message);
     print('onReceiveCommandMessage====${content}');
@@ -65,11 +111,10 @@ class InAppMessageService extends GetxService {
 
   ///更新红包消息状态
   void _updateRedPacketMessageStatus(RedPacketUpdateContent content) async {
-
     AppLogger.d('_updateRedPacketMessageStatus: $content');
 
     final conversationId =
-    SS.login.userId == content.fromUid ? content.toUid : content.fromUid;
+        SS.login.userId == content.fromUid ? content.toUid : content.fromUid;
 
     //查询红包消息
     final config = ZIMMessageSearchConfig();
@@ -105,10 +150,9 @@ class InAppMessageService extends GetxService {
     EventBus().emit(kEventRedPacketUpdate, content);
   }
 
-  RedPacketUpdateContent? removeRedPacketUpdateContent(int messageId){
+  RedPacketUpdateContent? removeRedPacketUpdateContent(int messageId) {
     return _redPacketMessageContentCache.remove(messageId);
   }
-
 
   ///监听应用内消息
   StreamSubscription<InAppMessage> listen(

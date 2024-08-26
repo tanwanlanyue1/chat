@@ -5,17 +5,26 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
+import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
+import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
+import 'package:guanjia/ui/order/enum/order_enum.dart';
+import 'package:guanjia/ui/order/model/order_list_item.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
+import '../../../../common/network/api/model/talk_model.dart';
+
 ///聊天会话列表项
-class ConversationListTile extends StatelessWidget {
+class ConversationListTile extends StatefulWidget {
   static double? _messageContentMaxWidth;
 
   final ZIMKitConversation conversation;
@@ -24,6 +33,14 @@ class ConversationListTile extends StatelessWidget {
     super.key,
     required this.conversation,
   });
+
+  @override
+  State<ConversationListTile> createState() => _ConversationListTileState();
+}
+
+class _ConversationListTileState extends State<ConversationListTile>
+    with UIOrderStateMixin {
+  ZIMKitConversation get conversation => widget.conversation;
 
   void onDelete(BuildContext context) async {
     final result = await ConfirmDialog.show(
@@ -50,6 +67,11 @@ class ConversationListTile extends StatelessWidget {
     return conversation.lastMessage?.customType == CustomMessageType.sysNotice;
   }
 
+  ///是否是订单信息
+  bool get isOrderMsg {
+    return conversation.lastMessage?.customType == CustomMessageType.order;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -73,6 +95,7 @@ class ConversationListTile extends StatelessWidget {
           padding: FEdgeInsets(all: 16.rpx),
           alignment: Alignment.centerLeft,
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildAvatar(),
               Expanded(
@@ -82,7 +105,8 @@ class ConversationListTile extends StatelessWidget {
                   children: [
                     _buildNameAndTime(),
                     _buildMessageContent(),
-                  ],
+                    if (isOrderMsg) _buildOrderInfo(),
+                  ].separated(Spacing.h4).toList(growable: false),
                 ),
               )
             ],
@@ -152,8 +176,8 @@ class ConversationListTile extends StatelessWidget {
       return Spacing.blank;
     }
 
-    final maxWidth =
-        _messageContentMaxWidth ??= Get.width - (40 + 32 + 32 + 12).rpx;
+    final maxWidth = ConversationListTile._messageContentMaxWidth ??=
+        Get.width - (40 + 32 + 32 + 12).rpx;
     Widget child = ConstrainedBox(
       constraints: BoxConstraints(maxWidth: maxWidth),
       child: Text(
@@ -161,7 +185,7 @@ class ConversationListTile extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          fontSize: 12.rpx,
+          fontSize: 14.rpx,
           color: AppColor.gray9,
         ),
       ),
@@ -201,9 +225,70 @@ class ConversationListTile extends StatelessWidget {
         ],
       );
     }
-    return Padding(
-      padding: FEdgeInsets(top: 4.rpx),
-      child: child,
+    return child;
+  }
+
+  ///订单信息
+  Widget _buildOrderInfo() {
+    final message = conversation.lastMessage;
+    final order = message?.orderContent?.order;
+    if (message == null || order == null) {
+      return Spacing.blank;
+    }
+    if ([OrderStatus.waitingAcceptance, OrderStatus.waitingPayment]
+            .contains(order.state) &&
+        order.timeout <= DateTime.now().millisecondsSinceEpoch) {
+      order.state = OrderStatus.timeOut;
+    }
+
+    final uiState = getUIOrderState(order);
+    if (uiState == null) {
+      return Spacing.blank;
+    }
+
+    final children = <Widget>[];
+    if (uiState.isCountdown) {
+      children.add(Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            '[${uiState.button}]',
+            style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),
+          ),
+          Padding(
+            padding: FEdgeInsets(left: 8.rpx),
+            child: CountdownBuilder(
+              endTime: DateTime.fromMillisecondsSinceEpoch(order.timeout),
+              builder: (dur, text) {
+                return Text(
+                  text,
+                  style: AppTextStyle.fs14m.copyWith(color: AppColor.red53),
+                );
+              },
+              onFinish: () {
+                setState(() {
+                  order.state = OrderStatus.timeOut;
+                });
+              },
+            ),
+          ),
+        ],
+      ));
+    }
+
+    children.add(Text(
+      uiState.desc,
+      style: AppTextStyle.fs14m.copyWith(
+        color: AppColor.black20,
+      ),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    ));
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: children.separated(Spacing.h4).toList(growable: false),
     );
   }
 }
@@ -239,7 +324,7 @@ extension on ZIMKitConversation {
             ? '[视频聊天]'
             : '[语音聊天]';
       case CustomMessageType.order:
-        return '[订单]';
+        return message.orderContent?.message ?? '[订单]';
       default:
         return '[未知类型]';
     }

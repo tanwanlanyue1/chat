@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/common/utils/local_storage.dart';
 
 ///App全局配置服务
 class AppConfigService extends GetxService {

@@ -55,9 +55,9 @@ class OrderListController extends GetxController with OrderOperationMixin {
       );
 
       if (res.isSuccess) {
-        final listModel = res.data ?? [];
+        final listSubModel = res.data?.list ?? [];
         pagingController.appendPageData(
-            listModel.map((e) => OrderTeamListItem(itemModel: e)).toList());
+            listSubModel.map((e) => OrderTeamListItem(itemModel: e)).toList());
       } else {
         pagingController.error = res.errorMessage;
       }

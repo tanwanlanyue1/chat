@@ -116,7 +116,7 @@ class OrderApi {
 
   /// 获取团队已完成订单列表
   /// - day	统计天数
-  static Future<ApiResponse<List<OrderTeamModel>>> getTeamList({
+  static Future<ApiResponse<OrderTeamModel>> getTeamList({
     int day = 0,
   }) {
     return HttpClient.get(
@@ -125,10 +125,7 @@ class OrderApi {
         'day': day,
       },
       dataConverter: (data) {
-        if (data is List) {
-          return data.map((e) => OrderTeamModel.fromJson(e)).toList();
-        }
-        return [];
+        return OrderTeamModel.fromJson(data);
       },
     );
   }
@@ -138,7 +135,7 @@ class OrderApi {
   /// - day	统计天数
   /// - page 页码 默认1,示例值(1)
   /// - size 每页数量（默认10）,示例值(999)
-  static Future<ApiResponse<OrderTeamModel>> getList({
+  static Future<ApiResponse<OrderTeamSubModel>> getList({
     required int state,
     int? day,
     int page = 1,
@@ -153,7 +150,7 @@ class OrderApi {
         'size': size,
       },
       dataConverter: (data) {
-        return OrderTeamModel.fromJson(data);
+        return OrderTeamSubModel.fromJson(data);
       },
     );
   }

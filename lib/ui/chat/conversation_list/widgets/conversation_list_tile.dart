@@ -11,6 +11,7 @@ import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/chat/chat_manager.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
@@ -57,7 +58,7 @@ class _ConversationListTileState extends State<ConversationListTile>
       Get.toNamed(AppRoutes.mineMessage);
       return;
     }
-    MessageListPage.go(
+    ChatManager().startChat(
       userId: int.parse(conversation.id),
     );
   }
@@ -181,7 +182,7 @@ class _ConversationListTileState extends State<ConversationListTile>
     Widget child = ConstrainedBox(
       constraints: BoxConstraints(maxWidth: maxWidth),
       child: Text(
-        conversation.toStringValue() ?? '',
+        conversation.lastMessage?.toPlainText() ?? '',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
@@ -290,43 +291,5 @@ class _ConversationListTileState extends State<ConversationListTile>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children.separated(Spacing.h4).toList(growable: false),
     );
-  }
-}
-
-extension on ZIMKitConversation {
-  String? toStringValue() {
-    final message = lastMessage;
-    if (message == null) {
-      return null;
-    }
-    switch (message.type) {
-      case ZIMMessageType.image:
-        return '[图片]';
-      case ZIMMessageType.video:
-        return '[视频]';
-      case ZIMMessageType.custom:
-        return _customMsgStringValue(message);
-      default:
-        return lastMessage?.toStringValue();
-    }
-  }
-
-  String? _customMsgStringValue(ZIMKitMessage message) {
-    switch (message.customType) {
-      case CustomMessageType.sysNotice:
-        return message.customContent?.message ?? '';
-      case CustomMessageType.redPacket:
-        return '[红包]';
-      case CustomMessageType.transfer:
-        return '[转账]';
-      case CustomMessageType.callEnd:
-        return message.callEndContent?.isVideoCall == true
-            ? '[视频聊天]'
-            : '[语音聊天]';
-      case CustomMessageType.order:
-        return message.orderContent?.message ?? '[订单]';
-      default:
-        return '[未知类型]';
-    }
   }
 }

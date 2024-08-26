@@ -4,6 +4,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/chat/chat_manager.dart';
 import 'package:guanjia/ui/chat/contact/widgets/contact_list_tile.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/mine/widgets/client_card.dart';
@@ -50,7 +51,7 @@ class MineClientPage extends StatelessWidget {
               return ClientCard(
                   item: item,
                   onTap: (){
-                    MessageListPage.go(userId: item.uid);
+                    ChatManager().startChat(userId: item.uid);
                   },
               );
             },

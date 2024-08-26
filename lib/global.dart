@@ -1,29 +1,32 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:guanjia/common/app_config.dart';
-import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/network/httpclient/http_client.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/ui/ad/ad_manager.dart';
 import 'package:guanjia/ui/welcome/welcome_storage.dart';
-import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
-import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
+
 import 'common/app_localization.dart';
 import 'common/app_position.dart';
 import 'common/service/service.dart';
-import 'common/utils/file_logger.dart';
 import 'ui/chat/chat_manager.dart';
 
 /// 全局静态数据
-class Global {
-  Global._();
+class Global with WidgetsBindingObserver{
+  Global._(){
+    WidgetsBinding.instance.addObserver(this);
+  }
+  static final _instance = Global._();
+  factory Global() => _instance;
 
   static Completer<bool>? _completer;
+
+  ///应用声明周期状态
+  final appStateRx = AppLifecycleState.resumed.obs;
 
   /// 初始化
   static Future<bool> initialize() async {
@@ -37,6 +40,7 @@ class Global {
         return completer.future;
       }
       _completer = Completer<bool>();
+
 
       //android状态栏透明
       if (Platform.isAndroid) {
@@ -116,5 +120,11 @@ class Global {
     };
 
     return headers;
+  }
+
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    appStateRx.value = state;
   }
 }

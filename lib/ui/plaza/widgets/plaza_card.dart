@@ -9,6 +9,7 @@ import 'package:guanjia/common/network/api/plaza_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
+import 'package:guanjia/ui/chat/chat_manager.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
@@ -355,7 +356,7 @@ class PlazaCard extends StatelessWidget {
               height: 30.rpx,
               text: "发起聊天",
               onTap: (){
-                MessageListPage.go(userId: item.uid!);
+                ChatManager().startChat(userId: item.uid!);
               },
               textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
             ),

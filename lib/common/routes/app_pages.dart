@@ -19,13 +19,15 @@ import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_page.dart';
 import 'package:guanjia/ui/welcome/welcome_page.dart';
 import 'package:guanjia/widgets/web/web_page.dart';
+
+import 'app_route_observer.dart';
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
-  static final routeObserver = RouteObserver<ModalRoute<void>>();
+  ///路由监听
+  static final routeObserver = AppRouteObserver();
   static const initial = AppRoutes.welcome;
-  // static const initial = AppRoutes.home;
 
   static final routes = [
     ...LoginPages.routes,

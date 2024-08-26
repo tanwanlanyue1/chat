@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/ui/chat/chat_manager.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/order_list/order_list_controller.dart';
@@ -102,7 +103,7 @@ mixin OrderOperationMixin {
   /// 联系佳丽
   /// uid: 用户id
   void toOrderConnect(int uid) {
-    MessageListPage.go(userId: uid);
+    ChatManager().startChat(userId: uid);
   }
 
   /// 跳转订单详情

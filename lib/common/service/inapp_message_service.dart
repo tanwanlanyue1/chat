@@ -46,11 +46,6 @@ class InAppMessageService extends GetxService {
       }
     });
 
-    //监听新消息，振动和铃声提醒
-    ChatEventNotifier()
-        .onReceivePeerMessage
-        .listen((event) => _onReceiveChatMessage(event.messageList));
-
     _init();
   }
 
@@ -63,20 +58,6 @@ class InAppMessageService extends GetxService {
       _appSettingPrefs.setBool(_kVibrationReminder, vibrationReminderRx.value);
       _appSettingPrefs.setBool(_kBellReminder, bellReminderRx.value);
     });
-  }
-
-  ///接收到聊天消息
-  void _onReceiveChatMessage(List<ZIMMessage> messages) {
-    final index = messages.indexWhere((element) => element.direction == ZIMMessageDirection.receive);
-    if(index == -1){
-      return;
-    }
-    if(SS.inAppMessage.bellReminderRx()){
-      FlutterRingtonePlayer().playNotification();
-    }
-    if(SS.inAppMessage.vibrationReminderRx()){
-      Vibration.vibrate();
-    }
   }
 
   ///接收到自定义信令

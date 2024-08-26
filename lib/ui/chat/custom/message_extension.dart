@@ -121,6 +121,39 @@ extension ZIMKitMessageExt on ZIMKitMessage {
     );
   }
 
+  ///将消息转为纯文本
+  String? toPlainText() {
+    switch (type) {
+      case ZIMMessageType.image:
+        return '[图片]';
+      case ZIMMessageType.video:
+        return '[视频]';
+      case ZIMMessageType.custom:
+        return _customMsgPlainText(this);
+      default:
+        return toStringValue();
+    }
+  }
+
+  String? _customMsgPlainText(ZIMKitMessage message) {
+    switch (message.customType) {
+      case CustomMessageType.sysNotice:
+        return message.customContent?.message ?? '';
+      case CustomMessageType.redPacket:
+        return '[红包]';
+      case CustomMessageType.transfer:
+        return '[转账]';
+      case CustomMessageType.callEnd:
+        return message.callEndContent?.isVideoCall == true
+            ? '[视频聊天]'
+            : '[语音聊天]';
+      case CustomMessageType.order:
+        return message.orderContent?.message ?? '[订单]';
+      default:
+        return '[未知类型]';
+    }
+  }
+
 
   ZIMKitMessage copy() {
     return zim.toKIT()

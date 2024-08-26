@@ -27,7 +27,10 @@ class MineSettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.current.setting,style: AppTextStyle.fs18b.copyWith(color: AppColor.black20),),
+        title: Text(
+          S.current.setting,
+          style: AppTextStyle.fs18b.copyWith(color: AppColor.black20),
+        ),
       ),
       backgroundColor: AppColor.grayF7,
       body: Obx(() {
@@ -44,7 +47,7 @@ class MineSettingPage extends StatelessWidget {
                       width: 46.rpx,
                       child: Transform.scale(
                         scale: 0.8,
-                        child: ObxValue((dataRx){
+                        child: ObxValue((dataRx) {
                           return CupertinoSwitch(
                             value: dataRx(),
                             activeColor: AppColor.primary,
@@ -61,7 +64,7 @@ class MineSettingPage extends StatelessWidget {
                       width: 46.rpx,
                       child: Transform.scale(
                         scale: 0.8,
-                        child: ObxValue((dataRx){
+                        child: ObxValue((dataRx) {
                           return CupertinoSwitch(
                             value: dataRx(),
                             activeColor: AppColor.primary,
@@ -80,28 +83,30 @@ class MineSettingPage extends StatelessWidget {
                       visible: !SS.login.userBind,
                       child: Text(
                         "请先绑定手机/邮箱",
-                        style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
+                        style:
+                            AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
                       ),
                     ),
                   ),
                   Obx(() => Visibility(
-                    visible: !(SS.login.info?.payPwd ?? false),
-                    replacement: SettingItem(
-                      title: S.current.changingPaymentPassword,
-                      callBack: controller.paymentPasswordPage,
-                      trailing: Visibility(
-                        visible: !SS.login.userBind,
-                        child: Text(
-                          "请先绑定手机/邮箱",
-                          style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
+                        visible: !(SS.login.info?.payPwd ?? false),
+                        replacement: SettingItem(
+                          title: S.current.changingPaymentPassword,
+                          callBack: controller.paymentPasswordPage,
+                          trailing: Visibility(
+                            visible: !SS.login.userBind,
+                            child: Text(
+                              "请先绑定手机/邮箱",
+                              style: AppTextStyle.fs14b
+                                  .copyWith(color: AppColor.gray5),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    child: SettingItem(
-                      title: S.current.setPaymentPassword,
-                      callBack: controller.paymentPasswordPage,
-                    ),
-                  )),
+                        child: SettingItem(
+                          title: S.current.setPaymentPassword,
+                          callBack: controller.paymentPasswordPage,
+                        ),
+                      )),
                   SettingItem(
                     title: S.current.languageSwitch,
                     bottom: 1.rpx,
@@ -125,11 +130,11 @@ class MineSettingPage extends StatelessWidget {
                       '1.0.1',
                       style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
                     ),
-                    callBack: (){
-                      AppUpdateManager.instance.checkAppUpdate(userAction: true);
+                    callBack: () {
+                      AppUpdateManager.instance
+                          .checkAppUpdate(userAction: true);
                     },
                   ),
-
                   SettingItem(
                     title: S.current.aboutUs,
                     bottom: 1.rpx,

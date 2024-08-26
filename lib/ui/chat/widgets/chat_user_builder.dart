@@ -15,7 +15,7 @@ class ChatUserBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  FutureBuilder(
-      future: ZIMKit().queryUser(userId),
+      future: ZIMKit().queryUser(userId), //TODO 可以做一下内存缓存
       builder: (context, snapshot) {
         return builder.call(snapshot.data);
       },

@@ -8,6 +8,7 @@ import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
+import 'package:guanjia/ui/chat/chat_manager.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -78,7 +79,7 @@ class ContactController extends GetxController with GetAutoDisposeMixin {
     final users = [19, 20, 21];
     final id = users.elementAtOrNull(index);
     if (id != null && id != SS.login.userId) {
-      MessageListPage.go(userId: id);
+      ChatManager().startChat(userId: id);
     }
   }
 }

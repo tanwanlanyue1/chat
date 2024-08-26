@@ -7,6 +7,7 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/chat/chat_manager.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/discover/friend_date/widget/draft_dialog.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
@@ -117,7 +118,7 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin{
             delAppointment(id);
           }
           if(index == 0){
-            MessageListPage.go(userId: uid!);
+            ChatManager().startChat(userId: uid!);
           }else{
             Get.toNamed(AppRoutes.mineFeedbackPage);
           }

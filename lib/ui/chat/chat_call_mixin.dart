@@ -1,6 +1,6 @@
 part of 'chat_manager.dart';
 
-mixin ChatCallMixin {
+mixin ChatCallMixin{
 
   ///自动接听
   static const _kAutoAcceptCall = 'AutoAcceptCall';
@@ -456,11 +456,11 @@ mixin ChatCallMixin {
       return;
     }
 
+    AppLogger.d('扣费前时间： ${DateTime.now()}');
     final response = await IMApi.chatOrderPay(orderId: orderId, uuid: _callPayUuid);
     if(response.isSuccess){
-      AppLogger.d('扣费成功');
+      AppLogger.d('扣费成功: ${DateTime.now()}');
       _callPayUuid  = response.data;
-      _callPayTime = DateTime.now();
     }else{
       hangUpCall();
       AppLogger.w('扣费失败，挂断通话');

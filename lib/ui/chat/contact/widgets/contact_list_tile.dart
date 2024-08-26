@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/chat/chat_manager.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';
@@ -125,7 +126,7 @@ class ContactListTile extends StatelessWidget {
   }
 
   void toChatPage(){
-    MessageListPage.go(userId: userModel.uid);
+    ChatManager().startChat(userId: userModel.uid);
   }
 
   void toUserPage(){

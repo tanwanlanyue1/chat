@@ -11,6 +11,7 @@ import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/chat/chat_manager.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:guanjia/ui/plaza/widgets/filtrate_bottom_sheet.dart';
@@ -121,7 +122,7 @@ class FortuneSquareController extends GetxController
                 pagingController.onRefresh()
               });
             }else if(index == 1){
-              MessageListPage.go(userId: item.uid!);
+              ChatManager().startChat(userId: item.uid!);
             }
           }else{
             if(index == 0){

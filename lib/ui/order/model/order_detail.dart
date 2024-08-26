@@ -1375,6 +1375,7 @@ class OrderDetail {
             ),
           ],
           bottomTipText: "保证金将在订单完成后原账户退回",
+          operation: OrderOperationType.evaluation,
         ),
         UserType.beauty: OrderDetailWrapper(
           stateText: "订单已完成，待用户评价",

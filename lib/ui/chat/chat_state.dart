@@ -26,7 +26,6 @@ class SpeedDatingMessage {
     this.onFinish,
   }) {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      print("-----countDown: $countDown, id: ${identityHashCode(this)}");
       countDown = countDown - 1;
       if (countDown <= 0) {
         timer.cancel();

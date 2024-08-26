@@ -1263,10 +1263,9 @@ class OrderDetail {
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.margin),
             OrderDetailItem(
-              model: model,
-              displayType: OrderDetailDisplayType.requestServiceFee,
-              changeTitle: "用户缴纳服务费：",
-            ),
+                model: model,
+                displayType: OrderDetailDisplayType.requestServiceFee,
+                changeTitle: "用户缴纳服务费："),
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.platformFeeProportion),
@@ -1312,7 +1311,8 @@ class OrderDetail {
                 model: model, displayType: OrderDetailDisplayType.margin),
             OrderDetailItem(
                 model: model,
-                displayType: OrderDetailDisplayType.requestServiceFee),
+                displayType: OrderDetailDisplayType.requestServiceFee,
+                changeTitle: "用户缴纳服务费："),
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.platformFeeProportion),
@@ -1396,10 +1396,9 @@ class OrderDetail {
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.margin),
             OrderDetailItem(
-              model: model,
-              displayType: OrderDetailDisplayType.requestServiceFee,
-              changeTitle: "用户缴纳服务费：",
-            ),
+                model: model,
+                displayType: OrderDetailDisplayType.requestServiceFee,
+                changeTitle: "用户缴纳服务费："),
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.platformFeeProportion),
@@ -1444,7 +1443,8 @@ class OrderDetail {
                 model: model, displayType: OrderDetailDisplayType.margin),
             OrderDetailItem(
                 model: model,
-                displayType: OrderDetailDisplayType.requestServiceFee),
+                displayType: OrderDetailDisplayType.requestServiceFee,
+                changeTitle: "用户缴纳服务费："),
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.platformFeeProportion),

@@ -4,6 +4,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';
@@ -38,7 +39,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                   children: [
                     SizedBox(height: 24.rpx),
                     Text(
-                      isRequest ? "缴纳服务费及保证金" : "缴纳服务费",
+                      isRequest ? "缴纳服务费及保证金" : "缴纳保证金",
                       style: AppTextStyle.st
                           .size(16.rpx)
                           .textColor(Colors.black)
@@ -121,15 +122,23 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                   );
                 }),
               ),
-              Button(
-                onPressed: () => controller.onTapOrderPayment(orderId),
-                margin: EdgeInsets.symmetric(horizontal: 22.rpx)
-                    .copyWith(top: 60.rpx),
-                child: Text(
-                  "确定支付 ¥999",
-                  style: TextStyle(color: Colors.white, fontSize: 16.rpx),
-                ),
-              ),
+              Builder(builder: (context) {
+                final deposit = state.detailModel.value?.deposit ?? 0;
+                final serviceCharge =
+                    state.detailModel.value?.serviceCharge ?? 0;
+                final result =
+                    isRequest ? deposit + serviceCharge : serviceCharge;
+
+                return Button(
+                  onPressed: () => controller.onTapOrderPayment(orderId),
+                  margin: EdgeInsets.symmetric(horizontal: 22.rpx)
+                      .copyWith(top: 60.rpx),
+                  child: Text(
+                    "确定支付 ¥$result",
+                    style: TextStyle(color: Colors.white, fontSize: 16.rpx),
+                  ),
+                );
+              }),
             ],
           ),
         );
@@ -152,40 +161,49 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
       );
     }
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        itemWidget("9"),
-        SizedBox(width: 8.rpx),
-        itemWidget("9"),
-        SizedBox(
-          width: 18.rpx,
-          child: Column(
-            children: [
-              Container(
-                width: 2.rpx,
-                height: 2.rpx,
-                decoration: BoxDecoration(
-                  color: AppColor.black6,
-                  borderRadius: BorderRadius.circular(1.rpx),
+    return Obx(() {
+      final timeStr = CommonUtils.convertCountdownToHMS(
+          controller.state.countDown.value,
+          hasHours: false);
+
+      if (timeStr.length < 5) {
+        return const SizedBox();
+      }
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          itemWidget(timeStr[0]),
+          SizedBox(width: 8.rpx),
+          itemWidget(timeStr[1]),
+          SizedBox(
+            width: 18.rpx,
+            child: Column(
+              children: [
+                Container(
+                  width: 2.rpx,
+                  height: 2.rpx,
+                  decoration: BoxDecoration(
+                    color: AppColor.black6,
+                    borderRadius: BorderRadius.circular(1.rpx),
+                  ),
                 ),
-              ),
-              SizedBox(height: 6.rpx),
-              Container(
-                width: 2.rpx,
-                height: 2.rpx,
-                decoration: BoxDecoration(
-                  color: AppColor.black6,
-                  borderRadius: BorderRadius.circular(1.rpx),
+                SizedBox(height: 6.rpx),
+                Container(
+                  width: 2.rpx,
+                  height: 2.rpx,
+                  decoration: BoxDecoration(
+                    color: AppColor.black6,
+                    borderRadius: BorderRadius.circular(1.rpx),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        itemWidget("9"),
-        SizedBox(width: 8.rpx),
-        itemWidget("9"),
-      ],
-    );
+          itemWidget(timeStr[3]),
+          SizedBox(width: 8.rpx),
+          itemWidget(timeStr[4]),
+        ],
+      );
+    });
   }
 }

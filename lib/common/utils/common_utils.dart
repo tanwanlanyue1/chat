@@ -132,7 +132,7 @@ class CommonUtils {
         : "$today${DateUtil.formatDate(date, format: 'yyyy' + "-" + 'MM' + "-" + 'dd')} ${weekday.toUpperCase()}";
   }
 
-  // 倒计时转换为时分秒
+  // 倒计时转换为时分秒 格式为 23:23:23
   static String convertCountdownToHMS(
     int seconds, {
     bool hasHours = true,

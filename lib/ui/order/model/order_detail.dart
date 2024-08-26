@@ -795,13 +795,11 @@ class OrderDetail {
                 OrderDetailItem(
                     model: model, displayType: OrderDetailDisplayType.request),
                 OrderDetailItem(
-                  model: model,
-                  displayType: OrderDetailDisplayType.receive,
-                  changeTitle: "接单佳丽：",
-                ),
-                OrderDetailItem(
                     model: model,
                     displayType: OrderDetailDisplayType.requestTime),
+                OrderDetailItem(
+                    model: model,
+                    displayType: OrderDetailDisplayType.receiveTime),
                 OrderDetailItem(
                     model: model,
                     displayType: OrderDetailDisplayType.cancelTime),

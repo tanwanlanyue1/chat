@@ -71,7 +71,9 @@ class ForgotPage extends StatelessWidget {
           ),
           SizedBox(height: 20.rpx),
           Text(
-            S.current.forgotTitleTip,
+            isEmailValid
+                ? S.current.forgotTitleEmailTip
+                : S.current.forgotTitlePhoneTip,
             style: AppTextStyle.st.size(14.rpx).textColor(Colors.white),
           ),
           Container(

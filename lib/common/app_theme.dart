@@ -14,8 +14,7 @@ class AppTheme {
   static final light = ThemeData(
     brightness: Brightness.light,
     useMaterial3: false,
-    fontFamily: AppTextStyle.pingFangMedium.fontFamily,
-    fontFamilyFallback: const ['Roboto'],
+    fontFamily: PFTextStyle.medium().fontFamily,
     actionIconTheme: ActionIconThemeData(
       backButtonIconBuilder: (BuildContext context) {
         final brightness = AppBarTheme.of(context).systemOverlayStyle?.statusBarIconBrightness;

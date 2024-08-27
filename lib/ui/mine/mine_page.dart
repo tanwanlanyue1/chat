@@ -40,7 +40,6 @@ class _MinePageState extends State<MinePage>
     return SystemUI.light(
       child: Column(
         children: [
-          // buildHeader(),
           Expanded(
             child: Stack(
               alignment: Alignment.topCenter,

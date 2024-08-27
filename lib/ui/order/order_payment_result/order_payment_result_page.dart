@@ -47,6 +47,8 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
     final serviceCharge = state.detailModel.value?.serviceCharge ?? 0;
     final result = isRequest ? deposit + serviceCharge : deposit;
 
+    final orderNumber = state.detailModel.value?.number ?? "";
+
     return ListView(
       children: [
         SizedBox(height: 36.rpx),
@@ -70,7 +72,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "订单编号：$orderId",
+                "订单编号：$orderNumber",
                 style: AppTextStyle.st
                     .size(14.rpx)
                     .textColor(AppColor.black6)

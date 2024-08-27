@@ -15,6 +15,8 @@ import 'package:zego_zimkit/src/components/components.dart';
 import 'package:zego_zimkit/src/components/messages/file_message.dart';
 import 'package:zego_zimkit/src/services/services.dart';
 
+import 'chat_call_invite_message.dart';
+import 'chat_call_match_message.dart';
 import 'chat_image_message.dart';
 import 'chat_order_message.dart';
 import 'chat_text_message.dart';
@@ -108,6 +110,20 @@ class ChatMessageWidget extends StatelessWidget {
             break;
           case CustomMessageType.order:
             defaultMessageContent = ChatOrderMessage(
+              onLongPress: onLongPress,
+              onPressed: onPressed,
+              message: message,
+            );
+            break;
+          case CustomMessageType.callMatch:
+            defaultMessageContent = ChatCallMatchMessage(
+              onLongPress: onLongPress,
+              onPressed: onPressed,
+              message: message,
+            );
+            break;
+          case CustomMessageType.callInvite:
+            defaultMessageContent = ChatCallInviteMessage(
               onLongPress: onLongPress,
               onPressed: onPressed,
               message: message,

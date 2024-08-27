@@ -9,7 +9,7 @@ import 'package:guanjia/widgets/loading.dart';
 import 'speed_dating_state.dart';
 
 class SpeedDatingController extends GetxController
-    with GetAutoDisposeMixin, ChatCallMixin {
+    with GetAutoDisposeMixin {
   final SpeedDatingState state = SpeedDatingState();
 
   @override
@@ -19,11 +19,12 @@ class SpeedDatingController extends GetxController
       final content = p0.callMatchContent;
       if (content == null) return;
 
-      startCall(
+      ChatManager().startCall(
         userId: content.uid,
         nickname: content.nickname,
         callId: content.orderId.toString(),
         isVideoCall: content.isVideo,
+        autoAccept: true,
       );
     }));
 

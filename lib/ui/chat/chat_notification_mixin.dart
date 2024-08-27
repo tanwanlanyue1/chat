@@ -73,7 +73,7 @@ mixin ChatNotification {
       final kitMessage = message.toKIT();
 
       //音视频通话不弹通知
-      if (kitMessage.customType != CustomMessageType.callEnd) {
+      if (![CustomMessageType.callInvite, CustomMessageType.callEnd].contains(kitMessage.customType)) {
         reminder = true;
         _showNotification(kitMessage);
       }

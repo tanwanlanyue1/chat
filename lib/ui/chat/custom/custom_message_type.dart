@@ -9,7 +9,7 @@ enum CustomMessageType{
   ///红包 1
   redPacket,
 
-  ///通话结束 2
+  ///音视频通话结束 2
   callEnd,
 
   ///转账 3
@@ -17,6 +17,12 @@ enum CustomMessageType{
 
   ///订单消息（创建，状态变更） 4
   order,
+
+  ///速配 5
+  callMatch,
+
+  ///音视频通话发起 6
+  callInvite,
 
 }
 

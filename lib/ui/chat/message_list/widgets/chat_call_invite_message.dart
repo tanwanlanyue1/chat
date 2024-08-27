@@ -7,10 +7,9 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
-
-///订单消息
-class ChatOrderMessage extends StatelessWidget {
-  const ChatOrderMessage({
+///音视频通话发起消息
+class ChatCallInviteMessage extends StatelessWidget {
+  const ChatCallInviteMessage({
     super.key,
     required this.message,
     this.onPressed,
@@ -46,7 +45,7 @@ class ChatOrderMessage extends StatelessWidget {
             vertical: 8.rpx,
           ),
           child: Text(
-            message.orderContent?.message ?? '',
+            message.callInviteContent?.message ?? '',
             textAlign: TextAlign.left,
             style: AppTextStyle.fs14m.copyWith(
               color: message.isMine

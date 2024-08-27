@@ -6,6 +6,8 @@ import 'package:guanjia/ui/chat/custom/message_transfer_content.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'message_call_end_content.dart';
+import 'message_call_invite_content.dart';
+import 'message_call_match_content.dart';
 import 'message_order_content.dart';
 import 'message_red_packet_content.dart';
 
@@ -79,11 +81,27 @@ extension ZIMKitMessageExt on ZIMKitMessage {
     );
   }
 
-  ///通话结束消息内容
+  ///音视频通话结束消息内容
   MessageCallEndContent? get callEndContent {
     return _getOrParse(
       type: CustomMessageType.callEnd,
       parse: MessageCallEndContent.fromJson,
+    );
+  }
+
+  ///音视频速配消息内容
+  MessageCallMatchContent? get callMatchContent {
+    return _getOrParse(
+      type: CustomMessageType.callMatch,
+      parse: MessageCallMatchContent.fromJson,
+    );
+  }
+
+  ///音视频通话邀请消息内容
+  MessageCallInviteContent? get callInviteContent {
+    return _getOrParse(
+      type: CustomMessageType.callInvite,
+      parse: MessageCallInviteContent.fromJson,
     );
   }
 
@@ -143,10 +161,20 @@ extension ZIMKitMessageExt on ZIMKitMessage {
         return '[红包]';
       case CustomMessageType.transfer:
         return '[转账]';
+      case CustomMessageType.callInvite:
+        final text = message.callInviteContent?.message ?? '';
+        if(text.isNotEmpty){
+          return text;
+        }
+        return message.callInviteContent?.isVideoCall == true
+            ? '[视频聊天]'
+            : '[语音聊天]';
       case CustomMessageType.callEnd:
         return message.callEndContent?.isVideoCall == true
             ? '[视频聊天]'
             : '[语音聊天]';
+      case CustomMessageType.callMatch:
+        return message.callMatchContent?.message ?? '[速配]';
       case CustomMessageType.order:
         return message.orderContent?.message ?? '[订单]';
       default:

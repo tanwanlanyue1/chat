@@ -13,6 +13,7 @@ class AppConfigModel {
     this.scriptures,
     this.desc,
     this.matchingCountDown,
+    this.styleList,
   });
 
   int? serverTime;
@@ -38,9 +39,6 @@ class AppConfigModel {
 
   ///佛经大全的头部文本
   List<String>? scriptures;
-
-  /// 拼接 标签
-  List<LabelModel>? labels;
 
   ///约会服务费收益比例模板 {brokerageService} TODO 预留字段，服务端还没有
   String? brokerageServiceTemplate;
@@ -74,6 +72,31 @@ class AppConfigModel {
 
   ///谁看过我
   bool? lookMessage;
+
+  /// 拼接 标签
+  List<LabelModel>? labels;
+
+  List<LabelModel>? styleList;
+
+  List<LabelModel> get commonStyleList {
+    if (styleList == null) return [];
+    return styleList!.where((element) => element.type == 0).toList();
+  }
+
+  List<LabelModel> get maleStyleList {
+    if (styleList == null) return [];
+    return styleList!.where((element) => element.type == 1).toList();
+  }
+
+  List<LabelModel> get femaleStyleList {
+    if (styleList == null) return [];
+    return styleList!.where((element) => element.type == 2).toList();
+  }
+
+  List<LabelModel> get friendStyleList {
+    if (styleList == null) return [];
+    return styleList!.where((element) => element.type == 3).toList();
+  }
 
   AppConfigModel.fromJson(dynamic json) {
     serverTime = json['serverTime'];
@@ -113,6 +136,14 @@ class AppConfigModel {
         scriptures?.add(v.toString());
       });
     }
+    if (json['styleList'] is List) {
+      styleList = [];
+      json['styleList'].forEach((v) {
+        if (v is Map<String, dynamic>) {
+          styleList?.add(LabelModel.fromJson(v));
+        }
+      });
+    }
     desc = json['desc'];
     brokerageServiceTemplate = json['brokerageServiceTemplate'];
     brokerageChattingTemplate = json['brokerageChattingTemplate'];
@@ -126,7 +157,6 @@ class AppConfigModel {
     systemMessage = json['systemMessage'];
     lookMessage = json['lookMessage'];
   }
-
 }
 
 class Home {

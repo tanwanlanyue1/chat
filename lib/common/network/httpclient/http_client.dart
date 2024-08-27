@@ -50,7 +50,7 @@ class HttpClient {
     }
 
     //统一请求头拦截器
-    dio.interceptors.add(HeaderInterceptor(locale));
+    dio.interceptors.add(const HeaderInterceptor());
     dio.interceptors.add(AuthenticationInterceptor(
       authenticationHeaderProvider: authenticationHeaderProvider,
       onUnauthorized: onUnauthorized,

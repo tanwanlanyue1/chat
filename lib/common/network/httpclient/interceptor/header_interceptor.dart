@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:guanjia/common/app_localization.dart';
 import 'package:guanjia/common/utils/plugin_util.dart';
 import 'package:guanjia/common/utils/system_platform.dart';
 import 'package:guanjia/common/utils/app_info.dart';
 
 ///http请求头拦截器
 class HeaderInterceptor extends Interceptor {
-  final Locale? locale;
-  const HeaderInterceptor(this.locale);
+  const HeaderInterceptor();
 
   static String? _deviceId;
   static String? _osName;
@@ -27,7 +27,12 @@ class HeaderInterceptor extends Interceptor {
 
   ///android和iOS的请求头
   Future<Map<String, dynamic>> getAppHeaders() async {
-    final lang = locale?.languageCode == 'en' ? 'en' : 'cn';
+    final locale = AppLocalization.instance.locale ?? const Locale.fromSubtags(languageCode: 'en');
+    var lang = 'en';
+    final languageCode = locale.languageCode;
+    if(languageCode == 'zh' || languageCode.startsWith('zh-')){
+      lang = 'cn';
+    }
     _deviceId ??= await PluginUtil.getDeviceId();
     _osName ??= SystemPlatform.operatingSystem;
     _osVersion ??= await AppInfo.getOSVersion();

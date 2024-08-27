@@ -92,7 +92,7 @@ class JsInjector{
   ///android和iOS的请求头
   void _getRequestHeaders(String method, int uuid) async{
     final headers = {
-      ...(await const HeaderInterceptor(null).getAppHeaders()),
+      ...(await const HeaderInterceptor().getAppHeaders()),
       ...(await Global.getAuthorizedHeaders()),
       'baseUrl': (await ServerConfig.instance.getServer()).api.toString(),
     };

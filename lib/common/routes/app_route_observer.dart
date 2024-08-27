@@ -13,7 +13,7 @@ class AppRouteObserver extends RouteObserver<ModalRoute<void>> {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
-    _stack.add(route);
+    _stack.insert(0, route);
     AppLogger.d('RouteObserver > didPush > ${_stack}');
   }
 
@@ -35,7 +35,7 @@ class AppRouteObserver extends RouteObserver<ModalRoute<void>> {
       if (index >= 0) {
         _stack[index] = newRoute;
       } else {
-        _stack.add(newRoute);
+        _stack.insert(0, newRoute);
       }
     }
     AppLogger.d('RouteObserver > didReplace > ${_stack}');

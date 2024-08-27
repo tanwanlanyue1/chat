@@ -8,9 +8,11 @@ import 'dart:io';
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/im_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -19,6 +21,7 @@ import 'package:guanjia/common/utils/permissions_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/global.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
+import 'package:guanjia/ui/chat/message_list/message_list_controller.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_end_dialog.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -155,7 +158,7 @@ class ChatManager with WidgetsBindingObserver, ChatCallMixin, ChatNotification {
     final index = AppPages.routeObserver.stack.indexWhere(
         (element) => element.settings.name == AppRoutes.messageListPage);
     if (index > 0) {
-      final item = AppPages.routeObserver.stack.elementAtOrNull(index - 1);
+      final item = AppPages.routeObserver.stack.elementAtOrNull(index + 1);
       Get.offNamedUntil(
         AppRoutes.messageListPage,
         (route) => route == item,

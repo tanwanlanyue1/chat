@@ -13,23 +13,18 @@ mixin ChatNotification {
   ///初始化通知
   Future<void> _initNotification() async {
     if (Platform.isAndroid) {
-      await FlutterLocalNotificationsPlugin()
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.requestNotificationsPermission();
+      final androidPlugin = FlutterLocalNotificationsPlugin().resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+      await androidPlugin?.requestNotificationsPermission();
       const channel = AndroidNotificationChannel(
         _channelId,
         _channelName,
         description: _channelDesc,
-        importance: Importance.high,
-        enableVibration: true,
+        importance: Importance.max,
+        enableVibration: false,
         showBadge: false,
-        playSound: true,
+        playSound: false,
       );
-      await FlutterLocalNotificationsPlugin()
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(channel);
+      await androidPlugin?.createNotificationChannel(channel);
     }
 
     await FlutterLocalNotificationsPlugin().initialize(
@@ -67,6 +62,7 @@ mixin ChatNotification {
 
   ///新消息提醒通知
   void _onMessageArrivedNotification(List<ZIMMessage> messageList) {
+
     //是否需要提醒
     var reminder = false;
     for (var message in messageList) {
@@ -95,15 +91,17 @@ mixin ChatNotification {
 
   ///显示通知
   void _showNotification(ZIMKitMessage message) async {
-    // if(Global().appStateRx() == AppLifecycleState.resumed){
-    //   AppLogger.d('应用后台，');
-    //   return;
-    // }
 
     //在聊天页不显示通知
+    final route = AppPages.routeObserver.stack.firstOrNull;
+    if(route?.settings.name == AppRoutes.messageListPage){
+      final registered = Get.isRegistered<MessageListController>(tag: message.info.conversationID);
+      if(registered){
+        return;
+      }
+    }
+
     final notificationId = message.info.messageID.hashCode;
-    AppLogger.d('_showNotification: ${message.toPlainText()}');
-    final conversationID = message.info.conversationID;
     //TODO 可以做一下内存缓存
     final user = await ZIMKit().queryUser(message.zim.senderUserID);
     var nickname = user.baseInfo.userName;
@@ -111,19 +109,34 @@ mixin ChatNotification {
       nickname = user.baseInfo.userID;
     }
     final content = message.toPlainText();
+    AndroidBitmap<Object>? largeIcon;
+    try{
+      final fileResp = DefaultCacheManager().getImageFile(user.userAvatarUrl);
+      final resp = await fileResp.first.timeout(2.seconds);
+      if(resp is FileInfo){
+        largeIcon = FilePathAndroidBitmap(resp.file.path);
+      }
+    }catch(ex){
+      AppLogger.w('发通知时，获取用户头像失败, $ex');
+    }
 
+    final conversationID = message.info.conversationID;
     await FlutterLocalNotificationsPlugin().show(
       notificationId,
       nickname,
       content,
-      const NotificationDetails(
+      NotificationDetails(
         android: AndroidNotificationDetails(
           _channelId,
           _channelName,
           channelDescription: _channelDesc,
-          priority: Priority.high,
-          importance: Importance.high,
+          priority: Priority.max,
+          importance: Importance.max,
           visibility: NotificationVisibility.public,
+          icon: 'logo',
+          largeIcon: largeIcon,
+          enableVibration: false,
+          playSound: false,
         ),
         iOS: DarwinNotificationDetails(),
       ),

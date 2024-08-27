@@ -25,6 +25,7 @@ class WebPage extends StatelessWidget {
     return GetBuilder<WebController>(
       init: WebController(url),
       builder: (controller){
+        final webViewController = controller.webViewController;
         return Scaffold(
           appBar: AppBar(title: Text(title), bottom: PreferredSize(
             preferredSize: Size(Get.width, 4),
@@ -40,7 +41,7 @@ class WebPage extends StatelessWidget {
               );
             }),
           )),
-          body: WebViewWidget(controller: controller.webViewController),
+          body: webViewController != null ? WebViewWidget(controller: webViewController) : null,
         );
       },
     );

@@ -1372,7 +1372,9 @@ class ZegoCallInvitationPageManager {
   }
 
   void showInvitationTopSheet() {
-    if (!callInvitationData.uiConfig.invitee.popUp.visible) {
+    final popUp = callInvitationData.uiConfig.invitee.getPopUp(_invitationData);
+
+    if (!popUp.visible) {
       ZegoLoggerService.logInfo(
         'config is not display popup',
         tag: 'call-invitation',
@@ -1402,7 +1404,7 @@ class ZegoCallInvitationPageManager {
           pageManager: this,
           callInvitationConfig: callInvitationData,
           invitationData: _invitationData,
-          config: callInvitationData.uiConfig.invitee.popUp,
+          config: callInvitationData.uiConfig.invitee.getPopUp(invitationData),
           avatarBuilder:
               callInvitationData.requireConfig(_invitationData).avatarBuilder,
           declineButtonConfig:

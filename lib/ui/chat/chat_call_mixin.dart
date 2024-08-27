@@ -253,7 +253,16 @@ mixin ChatCallMixin{
       userName: nickname,
       plugins: [ZegoUIKitSignalingPlugin()],
       //自定义文本内容
-      innerText: ZegoCallInvitationInnerText(),
+      innerText: ZegoCallInvitationInnerText(
+          incomingVideoCallDialogMessage: '视频聊天呼入...',
+          incomingVoiceCallDialogMessage: '语音聊天呼入...',
+          incomingVideoCallPageMessage: '视频聊天呼入...',
+          incomingVoiceCallPageMessage: '语音聊天呼入...',
+          incomingCallPageDeclineButton: '',
+          incomingCallPageAcceptButton: '',
+          outgoingVideoCallPageMessage: '呼叫中...',
+          outgoingVoiceCallPageMessage: '呼叫中...',
+      ),
       requireConfig: _requireCallConfig,
       config: ZegoCallInvitationConfig(
         endCallWhenInitiatorLeave: false,
@@ -289,9 +298,12 @@ mixin ChatCallMixin{
           ZegoCallInvitationType callType,
           List<ZegoCallUser> callees,
           String customData,
-        ) {
+        ) async{
           _isWaitCallEndDialog = true;
           print('onIncomingCallReceived');
+
+          //申请权限
+          await checkPermission(callType == ZegoCallInvitationType.videoCall);
 
           //自动接听
           if(customData == _kAutoAcceptCall){
@@ -336,6 +348,12 @@ mixin ChatCallMixin{
       //被邀请人
       invitee: ZegoCallInvitationInviteeUIConfig(
         backgroundBuilder: backgroundBuilder,
+        requirePopUp: (data){
+          return ZegoCallInvitationNotifyPopUpUIConfig(
+            //自动接听时，不显示顶部的呼入对话框
+            visible: data.customData != _kAutoAcceptCall,
+          );
+        },
       ),
     );
   }

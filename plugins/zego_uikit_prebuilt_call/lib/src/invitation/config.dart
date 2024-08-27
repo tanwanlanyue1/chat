@@ -5,6 +5,8 @@ import 'package:zego_uikit/zego_uikit.dart';
 // Project imports:
 import 'package:zego_uikit_prebuilt_call/src/invitation/config.defines.dart';
 
+import 'defines.dart';
+
 class ZegoCallInvitationConfig {
   ZegoCallInvitationConfig({
     this.canInvitingInCalling = false,
@@ -161,12 +163,18 @@ class ZegoCallInvitationInviteeUIConfig {
     ZegoCallButtonUIConfig? declineButton,
     ZegoCallButtonUIConfig? acceptButton,
     ZegoCallInvitationNotifyPopUpUIConfig? popUp,
+    this.requirePopUp, //TODO 修改，优先级高于popUp
   })  : declineButton = declineButton ?? ZegoCallButtonUIConfig(),
         acceptButton = acceptButton ?? ZegoCallButtonUIConfig(),
         popUp = popUp ?? ZegoCallInvitationNotifyPopUpUIConfig();
 
   /// config of call invitation pop-up dialog
   ZegoCallInvitationNotifyPopUpUIConfig popUp;
+  ZegoCallInvitationNotifyPopUpUIConfig Function(ZegoCallInvitationData invitationData)? requirePopUp;
+
+  ZegoCallInvitationNotifyPopUpUIConfig getPopUp(ZegoCallInvitationData invitationData){
+    return requirePopUp?.call(invitationData) ?? popUp;
+  }
 
   /// The foreground of the calling.
   ZegoCallingForegroundBuilder? foregroundBuilder;

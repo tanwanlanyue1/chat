@@ -127,7 +127,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                 final serviceCharge =
                     state.detailModel.value?.serviceCharge ?? 0;
                 final result =
-                    isRequest ? deposit + serviceCharge : serviceCharge;
+                    isRequest ? deposit + serviceCharge : deposit;
 
                 return Button(
                   onPressed: () => controller.onTapOrderPayment(orderId),

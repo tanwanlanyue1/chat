@@ -45,7 +45,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
 
     final deposit = state.detailModel.value?.deposit ?? 0;
     final serviceCharge = state.detailModel.value?.serviceCharge ?? 0;
-    final result = isRequest ? deposit + serviceCharge : serviceCharge;
+    final result = isRequest ? deposit + serviceCharge : deposit;
 
     return ListView(
       children: [

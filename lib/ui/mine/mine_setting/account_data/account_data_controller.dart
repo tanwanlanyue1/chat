@@ -17,6 +17,8 @@ class AccountDataController extends GetxController {
 
   final loginService = SS.login;
 
+  final userType = SS.login.info?.type ?? UserType.user;
+
   final avatarController = Get.put(AvatarController());
 
   late final TextEditingController nicknameController;
@@ -24,24 +26,11 @@ class AccountDataController extends GetxController {
 
   @override
   void onInit() {
-    final userInfo = loginService.info?.copyWith();
-
-    final List<String>? idsList = userInfo != null
-        ? userInfo.type.isUser
-            ? userInfo.likeStyle?.split(',')
-            : userInfo.style?.split(',')
-        : null;
-
-    SS.appConfig.configRx.value?.labels?.forEach((element) {
-      state.labelItems.add(LabelItem(
-        id: element.id,
-        title: element.tag,
-        selected: idsList?.contains(element.id.toString()) ?? false,
-      ));
-    });
-
+    final userInfo = loginService.info;
     nicknameController = TextEditingController(text: userInfo?.nickname);
     signatureController = TextEditingController(text: userInfo?.signature);
+
+    _getLabelList();
 
     super.onInit();
   }
@@ -72,11 +61,11 @@ class AccountDataController extends GetxController {
 
     switch (info.type) {
       case UserType.user:
-        if (selectedIdString.isNotEmpty) info.likeStyle = selectedIdString;
+        info.likeStyle = selectedIdString;
         break;
       case UserType.beauty:
       case UserType.agent:
-        if (selectedIdString.isNotEmpty) info.style = selectedIdString;
+        info.style = selectedIdString;
         break;
     }
 
@@ -121,6 +110,7 @@ class AccountDataController extends GetxController {
   void onTapLikeGender(UserGender gender) {
     state.info?.update((val) {
       val?.likeSex = gender;
+      _getLabelList();
     });
   }
 
@@ -167,6 +157,7 @@ class AccountDataController extends GetxController {
 
           state.info?.update((val) {
             val?.gender = gender;
+            if (userType.isBeauty) _getLabelList();
           });
         },
       ),
@@ -181,5 +172,54 @@ class AccountDataController extends GetxController {
 
   void onTapAvatar() {
     Get.toNamed(AppRoutes.avatarPage);
+  }
+
+  void _getLabelList() {
+    final userInfo = loginService.info;
+    if (userInfo == null) return;
+
+    final UserGender gender;
+
+    switch (userType) {
+      case UserType.user:
+        gender = state.info?.value.likeSex ?? UserGender.unknown;
+        break;
+      case UserType.beauty:
+        gender = state.info?.value.gender ?? UserGender.unknown;
+      case UserType.agent:
+        gender = UserGender.unknown;
+    }
+
+    state.labelItems.clear();
+
+    final config = SS.appConfig.configRx.value;
+    if (config != null) {
+      final List<String>? idsList = userType == UserType.user
+          ? userInfo.likeStyle?.split(',')
+          : userInfo.style?.split(',');
+
+      final List<LabelModel> list;
+
+      switch (gender) {
+        case UserGender.male:
+          list = config.maleStyleList;
+          break;
+        case UserGender.female:
+          list = config.femaleStyleList;
+          break;
+        case UserGender.unknown:
+          list = config.commonStyleList;
+          break;
+      }
+      for (var element in list) {
+        state.labelItems.add(LabelItem(
+          id: element.id,
+          title: element.tag,
+          selected: idsList?.contains(element.id.toString()) ?? false,
+        ));
+      }
+    }
+
+    update();
   }
 }

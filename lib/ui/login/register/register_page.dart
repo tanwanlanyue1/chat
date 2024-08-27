@@ -39,7 +39,7 @@ class RegisterPage extends StatelessWidget {
           ),
           Positioned(
             top: kNavigationBarHeight + Get.mediaQuery.padding.top,
-            bottom: Get.mediaQuery.padding.bottom,
+            bottom: Get.mediaQuery.padding.bottom + 20.rpx,
             left: 0,
             right: 0,
             child: Column(

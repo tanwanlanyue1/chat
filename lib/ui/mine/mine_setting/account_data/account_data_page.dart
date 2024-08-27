@@ -88,7 +88,7 @@ class AccountDataPage extends StatelessWidget {
                       );
                     },
                     title: S.current.userAge,
-                    detail: "${info.age ?? ""}",
+                    detail: info.age?.toString(),
                     detailHintText: "点击输入",
                   ),
                   _padding(),

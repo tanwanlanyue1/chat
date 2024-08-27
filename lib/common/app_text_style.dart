@@ -230,7 +230,7 @@ class PFTextStyle extends TextStyle {
     super.color,
     super.backgroundColor,
     super.fontSize,
-    FontWeight? fontWeight,
+    super.fontWeight,
     super.fontStyle,
     super.letterSpacing,
     super.wordSpacing,
@@ -250,7 +250,7 @@ class PFTextStyle extends TextStyle {
     super.debugLabel,
     super.package,
     super.overflow,
-  }): super(fontWeight: null, fontFamily: _getFontFamily(fontWeight));
+  }): super(fontFamily: _getFontFamily(fontWeight));
 
   factory PFTextStyle.regular() {
     return PFTextStyle(
@@ -304,7 +304,7 @@ class PFTextStyle extends TextStyle {
       color: color,
       backgroundColor: backgroundColor,
       fontSize: fontSize,
-      fontWeight: null,
+      fontWeight: fontWeight,
       fontStyle: fontStyle,
       letterSpacing: letterSpacing,
       wordSpacing: wordSpacing,

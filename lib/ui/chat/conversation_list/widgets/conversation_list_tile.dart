@@ -156,7 +156,7 @@ class _ConversationListTileState extends State<ConversationListTile>
             padding: FEdgeInsets(left: 8.rpx),
             child: Text(
               time.friendlyTime,
-              style: TextStyle(
+              style: PFTextStyle.medium().copyWith(
                 fontSize: 12.rpx,
                 color: const Color(0xFFCCCCCC),
               ),

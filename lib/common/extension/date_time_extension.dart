@@ -52,9 +52,9 @@ extension DateTimeExtension on DateTime {
     if (duration.inMinutes < 1) {
       timeStr = '刚刚';
     } else if (duration.inHours < 1) {
-      timeStr = '${duration.inMinutes} 分钟前';
+      timeStr = '${duration.inMinutes}分钟前';
     } else if (duration.inDays < 1) {
-      timeStr = '${duration.inHours} 小时前';
+      timeStr = '${duration.inHours}小时前';
     } else if (now.year == year) {
       timeStr = '$month月$day日 ${fmtNumber(hour)}:${fmtNumber(minute)}';
     } else {

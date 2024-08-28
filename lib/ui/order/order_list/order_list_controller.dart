@@ -54,8 +54,8 @@ class OrderListController extends GetxController with OrderOperationMixin {
     final isBeautyShowDay = SS.login.userType.isBeauty &&
         (type == OrderListType.cancel || type == OrderListType.finish);
 
-    final isAgentShowDay =
-        SS.login.userType.isAgent && type == OrderListType.cancel;
+    final isAgentShowDay = SS.login.userType.isAgent &&
+        (type == OrderListType.cancel || type == OrderListType.finish);
 
     if (isBeautyShowDay || isAgentShowDay) {
       selectDay = orderState.selectDay.value;

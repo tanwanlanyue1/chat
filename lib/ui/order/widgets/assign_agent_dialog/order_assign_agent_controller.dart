@@ -57,7 +57,7 @@ class OrderAssignAgentController extends GetxController {
   }
 
   void _fetchPage(int page) async {
-    final res = await UserApi.getTeamUserList(
+    final res = await UserApi.getOnlineTeamUserList(
       page: page,
       size: pagingController.pageSize,
     );

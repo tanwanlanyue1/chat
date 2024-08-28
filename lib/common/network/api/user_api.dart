@@ -493,6 +493,26 @@ class UserApi {
     );
   }
 
+  /// 获取团队接约中成员列表
+  static Future<ApiResponse<List<TeamUser>>> getOnlineTeamUserList({
+    int page = 1,
+    int size = 10,
+  }) {
+    return HttpClient.get(
+      '/api/user/listOnlineMember',
+      params: {
+        "page": page,
+        "size": size,
+      },
+      dataConverter: (json) {
+        if (json is List) {
+          return json.map((e) => TeamUser.fromJson(e)).toList();
+        }
+        return [];
+      },
+    );
+  }
+
   /// 契约单 - 获取经纪人团队列表
   static Future<ApiResponse<List<TeamUser>>> getTeamUserList({
     int page = 1,
@@ -733,5 +753,4 @@ class UserApi {
       dataConverter: (json) => json,
     );
   }
-
 }

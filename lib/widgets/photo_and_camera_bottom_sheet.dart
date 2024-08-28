@@ -20,7 +20,9 @@ class PhotoAndCameraBottomSheet extends StatelessWidget {
     this.onTapIndex,
     this.autoUpload = true,
     this.isCrop = false,
+    this.hasSave = false,
     this.onUploadUrls,
+    this.onTapSave,
   });
 
   static void show({
@@ -29,7 +31,9 @@ class PhotoAndCameraBottomSheet extends StatelessWidget {
     Function(int)? onTapIndex,
     bool autoUpload = true,
     bool isCrop = false,
+    bool hasSave = false,
     Function(List<String>)? onUploadUrls,
+    Function()? onTapSave,
   }) {
     Get.bottomSheet(
       PhotoAndCameraBottomSheet(
@@ -38,7 +42,9 @@ class PhotoAndCameraBottomSheet extends StatelessWidget {
         onTapIndex: onTapIndex,
         autoUpload: autoUpload,
         isCrop: isCrop,
+        hasSave: hasSave,
         onUploadUrls: onUploadUrls,
+        onTapSave: onTapSave,
       ),
     );
   }
@@ -59,18 +65,35 @@ class PhotoAndCameraBottomSheet extends StatelessWidget {
   // 是否开启自动上传到服务器功能
   final bool autoUpload;
 
-  /// 是否需要裁剪
+  // 是否需要裁剪
   final bool isCrop;
+
+  // 是否需要保存图片按钮
+  final bool hasSave;
 
   // 当开启自动上传后获取上传成功的url回调
   final Function(List<String>)? onUploadUrls;
 
+  // 当显示保存图片时点击返回的事件
+  final Function()? onTapSave;
+
   @override
   Widget build(BuildContext context) {
+    List<String> titles = ["拍照", "从手机相册选择"];
+    if (hasSave) {
+      titles.add("保存图片");
+    }
+
     return CommonBottomSheet(
-      titles: const ["相册", "拍摄"],
+      titles: titles,
+      hasCancel: false,
       onTap: (index) async {
-        final isPhoto = index == 0;
+        if (index == 2) {
+          onTapSave?.call();
+          return;
+        }
+
+        final isPhoto = index == 1;
 
         // iOS端需要判断权限
         if (GetPlatform.isIOS) {
@@ -110,16 +133,19 @@ class PhotoAndCameraBottomSheet extends StatelessWidget {
         }
 
         //裁剪图片(单张)
-        if(files.length == 1 && isCrop){
-          final bytes = await ImageCropPage.go(imageAsset: files.first, cropAspectRatio: 1.0, maxResolution: 1024*1024);
-          if(bytes == null){
+        if (files.length == 1 && isCrop) {
+          final bytes = await ImageCropPage.go(
+              imageAsset: files.first,
+              cropAspectRatio: 1.0,
+              maxResolution: 1024 * 1024);
+          if (bytes == null) {
             //取消
             return;
           }
           Loading.show();
           final url = await _uploadImageBytes(bytes, files.first.name);
           Loading.dismiss();
-          if(url == null){
+          if (url == null) {
             Loading.showToast("图片上传失败，请重新尝试");
             return;
           }
@@ -171,7 +197,7 @@ class PhotoAndCameraBottomSheet extends StatelessWidget {
     final data = res.data;
     if (res.isSuccess && data != null) {
       return data;
-    }else{
+    } else {
       return null;
     }
   }

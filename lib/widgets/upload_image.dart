@@ -89,7 +89,7 @@ class _UploadImageState extends State<UploadImage> {
       autoUpload: false,
       onTapIndex: (index) async {
         switch (index) {
-          case 0:
+          case 1:
             final List<XFile> image = await picker.pickMultiImage(
               imageQuality: 100,
               limit: widget.limit,
@@ -102,7 +102,7 @@ class _UploadImageState extends State<UploadImage> {
               compressAndGetFile(res);
             }
             break;
-          case 1:
+          case 0:
             if(_imagesList.length == limit){
               Loading.showToast("最多选择$limit张图片");
               return;

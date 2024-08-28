@@ -119,4 +119,65 @@ class AppColor {
 
   static const purple6 = Color(0xffC644FC);
   static const orange6 = Color(0xFFFA9D3B);
+
+  ///主色渐变色(水平渐变)
+  static const horizontalGradient = LinearGradient(
+    colors: [Color(0xFF0F73ED), Color(0xFFC538FF)],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+  );
+
+  ///背景渐变色(垂直渐变)
+  static const verticalGradient = LinearGradient(
+    colors: [Color(0xFF226EF0), Color(0xFFBD3CFF)],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
+
+
+  ///主色蓝色(社区蓝色)
+  static const primaryBlue = Color(0xFF0F73ED);
+
+  ///浅蓝色按钮
+  static const babyBlueButton = Color(0xFF3699FF);
+
+  ///约会按钮
+  static const dateButton = Color(0xFFC644FC);
+
+  ///灰色字体
+  static const grayText = Color(0xFF929DB2);
+
+  ///红色
+  static const red = Color(0xFFE5393C);
+
+  ///黄色
+  static const yellow = Color(0xFFF7BF4B);
+
+  ///绿色
+  static const green = Color(0xFF3CB236);
+
+  ///转账红包
+  static const redPacket = Color(0xFFFA9D3B);
+
+  ///黑色字体带点蓝
+  static const blackBlue = Color(0xFF020635);
+
+  ///tab色
+  static const tab = Color(0xFF4B5672);
+
+  ///背景色
+  static const background = Color(0xFFF8F9FE);
+
+  ///背景色-灰
+  static const grayBackground = Color(0xFFF7F7F7);
+
+  ///黑色字体
+  static const backText = Color(0xFF4E4E4E);
+
+  ///999
+  static const black999 = Color(0xFF999999);
+
+  ///666
+  static const black666 = Color(0xFF666666);
+
 }

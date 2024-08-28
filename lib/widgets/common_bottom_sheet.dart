@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/list_extension.dart';
+import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 
@@ -26,12 +29,12 @@ class CommonBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-          left: 12.rpx, right: 12.rpx, bottom: Get.mediaQuery.padding.bottom),
+          left: 32.rpx, right: 32.rpx, bottom: Get.mediaQuery.padding.bottom),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(14.rpx),
-          topRight: Radius.circular(14.rpx),
+          topLeft: Radius.circular(8.rpx),
+          topRight: Radius.circular(8.rpx),
         ),
       ),
       child: Column(
@@ -41,16 +44,20 @@ class CommonBottomSheet extends StatelessWidget {
             return InkWell(
               child: Container(
                 alignment: Alignment.center,
-                height: 50.rpx,
+                height: 54.rpx,
                 decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(
-                          width: 1.rpx, color: const Color(0XffF6F7F9))),
+                  border: !hasCancel && index == titles.length - 1
+                      ? null
+                      : Border(
+                          bottom: BorderSide(
+                          width: 1.rpx,
+                          color: AppColor.scaffoldBackground,
+                        )),
                 ),
                 child: Text(
                   titles.safeElementAt(index) ?? "",
-                  style: TextStyle(
-                      fontSize: 14.rpx, color: const Color(0xff323233)),
+                  style:
+                      AppTextStyle.st.size(14.rpx).textColor(AppColor.black3),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -66,15 +73,10 @@ class CommonBottomSheet extends StatelessWidget {
               child: Container(
                 height: 50.rpx,
                 alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(
-                          width: 1.rpx, color: const Color(0XffF6F7F9))),
-                ),
                 child: Text(
                   S.current.cancel,
-                  style: TextStyle(
-                      fontSize: 14.rpx, color: const Color(0xff999999)),
+                  style:
+                      AppTextStyle.st.size(14.rpx).textColor(AppColor.black9),
                   textAlign: TextAlign.center,
                 ),
               ),

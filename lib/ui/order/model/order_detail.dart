@@ -150,6 +150,11 @@ class OrderDetailItem {
           title: changeTitle ?? '平台费：',
           detail: changeDetail ?? model.platformAmount.toString(),
         );
+      case OrderDetailDisplayType.receiveFee:
+        return OrderDetailItemWrapper(
+          title: changeTitle ?? '佳丽服务费：',
+          detail: changeDetail ?? model.beautyAmount.toString(),
+        );
       case OrderDetailDisplayType.receiveFeeProportion:
         return OrderDetailItemWrapper(
           title: changeTitle ?? '佳丽收取比例：',
@@ -590,8 +595,7 @@ class OrderDetail {
             ),
             OrderDetailItem(
               model: model,
-              displayType: OrderDetailDisplayType.agentFee,
-              changeTitle: "佳丽服务费：",
+              displayType: OrderDetailDisplayType.receiveFee,
             ),
             OrderDetailItem(
               model: model,
@@ -717,8 +721,7 @@ class OrderDetail {
             ),
             OrderDetailItem(
               model: model,
-              displayType: OrderDetailDisplayType.agentFee,
-              changeTitle: "佳丽服务费：",
+              displayType: OrderDetailDisplayType.receiveFee,
             ),
             OrderDetailItem(
               model: model,
@@ -1324,8 +1327,7 @@ class OrderDetail {
             ),
             OrderDetailItem(
               model: model,
-              displayType: OrderDetailDisplayType.agentFee,
-              changeTitle: "佳丽服务费：",
+              displayType: OrderDetailDisplayType.receiveFee,
             ),
             OrderDetailItem(
               model: model,
@@ -1457,8 +1459,7 @@ class OrderDetail {
             ),
             OrderDetailItem(
               model: model,
-              displayType: OrderDetailDisplayType.agentFee,
-              changeTitle: "佳丽服务费：",
+              displayType: OrderDetailDisplayType.receiveFee,
             ),
             OrderDetailItem(
               model: model,

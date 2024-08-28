@@ -102,7 +102,7 @@ class _ConversationListTileState extends State<ConversationListTile>
                     _buildNameAndTime(),
                     _buildMessageContent(),
                     if (isOrderMsg) _buildOrderInfo(),
-                  ].separated(Spacing.h4).toList(growable: false),
+                  ].separated(Spacing.h12).toList(growable: false),
                 ),
               )
             ],
@@ -125,11 +125,10 @@ class _ConversationListTileState extends State<ConversationListTile>
     return Padding(
       padding: FEdgeInsets(right: 16.rpx),
       child: Badge(
-        offset: Offset(4.rpx, -4.rpx),
-        backgroundColor: AppColor.red6,
-        textStyle: AppTextStyle.fs10m,
-        label: Text(text),
+        backgroundColor: AppColor.primaryBlue,
+        smallSize: 8.rpx,
         isLabelVisible: conversation.unreadMessageCount > 0,
+        alignment: const Alignment(-1.1, -1.1),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8.rpx),
           child: SizedBox(width: 40.rpx, height: 40.rpx, child: icon),
@@ -142,13 +141,16 @@ class _ConversationListTileState extends State<ConversationListTile>
     final time = conversation.lastMessage?.info.timestamp
         .let(DateTime.fromMillisecondsSinceEpoch);
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: Text(
             conversation.name.isNotEmpty ? conversation.name : conversation.id,
             maxLines: 1,
-            style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
+            style: AppTextStyle.fs14b.copyWith(
+              color: AppColor.blackBlue,
+              height: 1.0,
+            ),
           ),
         ),
         if (time != null)
@@ -156,9 +158,9 @@ class _ConversationListTileState extends State<ConversationListTile>
             padding: FEdgeInsets(left: 8.rpx),
             child: Text(
               time.friendlyTime,
-              style: PFTextStyle.medium().copyWith(
-                fontSize: 12.rpx,
-                color: const Color(0xFFCCCCCC),
+              style: AppTextStyle.fs14m.copyWith(
+                color: AppColor.grayText,
+                height: 1.0,
               ),
             ),
           ),
@@ -171,18 +173,24 @@ class _ConversationListTileState extends State<ConversationListTile>
     if (message == null) {
       return Spacing.blank;
     }
+    var text = conversation.lastMessage?.toPlainText() ?? '';
+    if (conversation.lastMessage?.isMine == false) {
+      text = '— $text';
+    }
 
     final maxWidth = ConversationListTile._messageContentMaxWidth ??=
         Get.width - (40 + 32 + 32 + 12).rpx;
     Widget child = ConstrainedBox(
       constraints: BoxConstraints(maxWidth: maxWidth),
       child: Text(
-        conversation.lastMessage?.toPlainText() ?? '',
+        text,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          fontSize: 14.rpx,
-          color: AppColor.gray9,
+        style: AppTextStyle.fs14b.copyWith(
+          color: conversation.unreadMessageCount > 0
+              ? AppColor.primaryBlue
+              : AppColor.grayText,
+          height: 1.0,
         ),
       ),
     );
@@ -249,7 +257,10 @@ class _ConversationListTileState extends State<ConversationListTile>
         children: [
           Text(
             '[${uiState.button}]',
-            style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),
+            style: AppTextStyle.fs14b.copyWith(
+              color: AppColor.blackBlue,
+              height: 1.0,
+            ),
           ),
           Padding(
             padding: FEdgeInsets(left: 8.rpx),
@@ -257,8 +268,11 @@ class _ConversationListTileState extends State<ConversationListTile>
               endTime: DateTime.fromMillisecondsSinceEpoch(order.timeout),
               builder: (dur, text) {
                 return Text(
-                  text,
-                  style: AppTextStyle.fs14m.copyWith(color: AppColor.red53),
+                  '剩余$text',
+                  style: AppTextStyle.fs14m.copyWith(
+                    color: AppColor.red,
+                    height: 1.0,
+                  ),
                 );
               },
               onFinish: () {
@@ -274,8 +288,9 @@ class _ConversationListTileState extends State<ConversationListTile>
 
     children.add(Text(
       uiState.desc,
-      style: AppTextStyle.fs14m.copyWith(
-        color: AppColor.black20,
+      style: AppTextStyle.fs14b.copyWith(
+        color: AppColor.blackBlue,
+        height: 1.0,
       ),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
@@ -284,7 +299,7 @@ class _ConversationListTileState extends State<ConversationListTile>
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: children.separated(Spacing.h4).toList(growable: false),
+      children: children.separated(Spacing.h12).toList(growable: false),
     );
   }
 }

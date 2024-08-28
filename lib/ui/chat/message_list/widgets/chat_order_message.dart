@@ -1,12 +1,12 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
-
 
 ///订单消息
 class ChatOrderMessage extends StatelessWidget {
@@ -28,13 +28,17 @@ class ChatOrderMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
       child: GestureDetector(
-        onTap: () => onPressed?.call(context, message, () {}),
+        onTap: () => onPressed?.call(context, message, () {
+          final orderId = message.orderContent?.order.id;
+          Get.toNamed(AppRoutes.orderDetailPage, arguments: {
+            "orderId": orderId,
+          });
+        }),
         onLongPressStart: (details) => onLongPress?.call(
           context,
           details,
           message,
-          () {
-          },
+          () {},
         ),
         child: Bubble(
           elevation: 0,
@@ -49,10 +53,8 @@ class ChatOrderMessage extends StatelessWidget {
             message.orderContent?.message ?? '',
             textAlign: TextAlign.left,
             style: AppTextStyle.fs14m.copyWith(
-              color: message.isMine
-                  ? Colors.white
-                  : AppColor.gray5,
-              height: 21/14,
+              color: message.isMine ? Colors.white : AppColor.gray5,
+              height: 21 / 14,
             ),
           ),
         ),

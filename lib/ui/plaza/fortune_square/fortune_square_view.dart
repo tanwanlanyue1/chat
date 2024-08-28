@@ -68,35 +68,22 @@ class FortuneSquareView extends StatelessWidget {
 
   ///发现
   Widget discoverClassify(){
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(8.rpx),
-          topRight: Radius.circular(8.rpx),
-        ),
-      ),
-      alignment: Alignment.centerLeft,
-      height: 44.rpx,
-      margin: EdgeInsets.only(bottom: 8.rpx),
+    return Material(
+      color: Colors.white,
       child: TabBar(
         controller: controller.tabController,
-        labelColor: AppColor.gradientBegin,
-        labelStyle: AppTextStyle.fs14b.copyWith(color: AppColor.gradientBegin),
-        unselectedLabelColor: AppColor.gray9,
-        unselectedLabelStyle: AppTextStyle.fs14m.copyWith(color: AppColor.black92),
-        indicatorColor: AppColor.gradientBegin,
-        indicatorPadding: EdgeInsets.only(right: 16.rpx,left: 4.rpx),
+        labelStyle: AppTextStyle.fs14b,
+        labelColor: AppColor.primaryBlue,
+        unselectedLabelColor: AppColor.grayText,
+        indicatorColor: AppColor.primaryBlue,
         indicatorWeight: 2.rpx,
-        labelPadding: EdgeInsets.only(bottom: 12.rpx,right: 12.rpx),
-        padding: EdgeInsets.only(top: 6.rpx),
         onTap: (val){
           controller.pagingController.onRefresh();
           controller.update(['floating']);
         },
         tabs: List.generate(
           state.communityTitle.length,
-              (index) => Text(state.communityTitle[index]),
+              (index) => Tab(text: state.communityTitle[index], height: 40.rpx),
         ),
       ),
     );

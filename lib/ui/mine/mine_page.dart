@@ -96,14 +96,7 @@ class _MinePageState extends State<MinePage>
           height: 150.rpx + Get.mediaQuery.padding.top,
           margin: FEdgeInsets(bottom: 28.rpx),
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                AppColor.gradientBackgroundBegin,
-                AppColor.gradientBackgroundEnd,
-              ],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
+            gradient: AppColor.horizontalGradient,
           ),
         ),
         //用户信息
@@ -163,8 +156,8 @@ class _MinePageState extends State<MinePage>
                           minFontSize: 10,
                           maxLines: 2,
                           userInfo?.nickname ?? '',
-                          style: AppTextStyle.fs18m.copyWith(
-                            color: AppColor.gray5,
+                          style: AppTextStyle.fs18b.copyWith(
+                            color: AppColor.blackBlue,
                           ),
                         ),
                         if (userInfo?.position?.isNotEmpty == true)
@@ -172,8 +165,8 @@ class _MinePageState extends State<MinePage>
                             padding: FEdgeInsets(top: 4.rpx),
                             child: Text(
                               userInfo?.position ?? '',
-                              style: AppTextStyle.fs16m.copyWith(
-                                color: AppColor.gray9,
+                              style: AppTextStyle.fs16b.copyWith(
+                                color: AppColor.black999,
                               ),
                             ),
                           ),
@@ -186,7 +179,7 @@ class _MinePageState extends State<MinePage>
                               child: Text(
                                 'ID:${userInfo?.chatNo}',
                                 style: AppTextStyle.fs12m.copyWith(
-                                  color: AppColor.gray9,
+                                  color: AppColor.black999,
                                 ),
                               ),
                             ),

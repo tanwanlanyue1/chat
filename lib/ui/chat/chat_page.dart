@@ -8,6 +8,7 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/contact/contact_view.dart';
 import 'package:guanjia/ui/chat/conversation_list/conversation_list_view.dart';
+import 'package:guanjia/ui/home/home_controller.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
@@ -38,12 +39,20 @@ class _ChatPageState extends State<ChatPage>
         shadowColor: Colors.black.withOpacity(0.2),
         bottom: TabBar(
           controller: controller.tabController,
-          labelStyle: AppTextStyle.fs14m,
-          labelColor: AppColor.primary,
-          unselectedLabelColor: AppColor.black92,
+          labelStyle: AppTextStyle.fs14b,
+          labelColor: AppColor.primaryBlue,
+          unselectedLabelColor: AppColor.grayText,
+          indicatorColor: AppColor.primaryBlue,
+          indicatorWeight: 2.rpx,
           tabs: [
-            Tab(text: S.current.message),
-            Tab(text: S.current.contact),
+            ObxValue((dataRx){
+              var text = S.current.message;
+              if(dataRx() > 0){
+                text += '（${dataRx()}）';
+              }
+              return Tab(text: text, height: 40.rpx);
+            }, Get.find<HomeController>().state.messageUnreadRx),
+            Tab(text: S.current.contact, height: 40.rpx),
           ],
         ),
       ),

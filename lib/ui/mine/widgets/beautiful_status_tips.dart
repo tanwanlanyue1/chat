@@ -7,8 +7,6 @@ import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
-import 'beautiful_status_switch.dart';
-
 ///佳丽状态提示文本
 class BeautifulStatusTips extends StatelessWidget {
   final UserStatus status;
@@ -25,13 +23,13 @@ class BeautifulStatusTips extends StatelessWidget {
     }
 
     return Container(
-      height: 26.rpx,
+      height: 28.rpx,
       decoration: const ShapeDecoration(
         color: Colors.white,
         shape: StadiumBorder(),
       ),
-      padding: FEdgeInsets(horizontal: 16.rpx),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
             padding: FEdgeInsets(right: 8.rpx),
@@ -41,11 +39,9 @@ class BeautifulStatusTips extends StatelessWidget {
               height: 16.rpx,
             ),
           ),
-          Expanded(
-            child: Text(
-              status.text,
-              style: AppTextStyle.fs12m.copyWith(color: AppColor.gray5),
-            ),
+          Text(
+            status.text,
+            style: AppTextStyle.fs12m.copyWith(color: AppColor.blackText),
           ),
         ],
       ),

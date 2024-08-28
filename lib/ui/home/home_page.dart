@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/ui/discover/discover_page.dart';
 import 'package:guanjia/ui/chat/chat_page.dart';
 import 'package:guanjia/ui/mine/mine_page.dart';
@@ -24,11 +25,11 @@ class HomePage extends StatelessWidget {
           controller: controller.pageController,
           physics: const NeverScrollableScrollPhysics(),
           children: [
-            ChatPage(),
+            const ChatPage(),
             OrderPage(),
             PlazaPage(),
             DiscoverPage(),
-            MinePage(),
+            const MinePage(),
           ],
         ),
         bottomNavigationBar: buildBottomNavigationBar(),
@@ -47,10 +48,10 @@ class HomePage extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         onTap: controller.setCurrentPage,
         currentIndex: currentPage,
-        selectedItemColor: AppColor.gradientBegin,
-        unselectedItemColor: AppColor.blue56,
-        unselectedFontSize: 12.rpx,
-        selectedFontSize: 12.rpx,
+        selectedItemColor: AppColor.primaryBlue,
+        unselectedItemColor: AppColor.tab,
+        unselectedLabelStyle: AppTextStyle.fs12m,
+        selectedLabelStyle: AppTextStyle.fs12m,
         items: state.allBottomNavItems.mapIndexed((index, item) {
           return BottomNavigationBarItem(
             icon: Badge(
@@ -59,9 +60,9 @@ class HomePage extends StatelessWidget {
               isLabelVisible: index == 0 && chatUnread > 0,
               child: AppImage.asset(
                 item.icon,
-                width: 28,
-                height: 28,
-                color: currentPage == index ? AppColor.gradientBegin : AppColor.blue56,
+                width: 28.rpx,
+                height: 28.rpx,
+                color: currentPage == index ? AppColor.primaryBlue : AppColor.tab,
               ),
             ),
             label: item.title,

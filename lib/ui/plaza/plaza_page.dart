@@ -9,6 +9,7 @@ import 'package:guanjia/widgets/app_image.dart';
 import 'dating_hall/dating_hall_view.dart';
 import 'nearby_hall/nearby_hall_view.dart';
 import 'plaza_controller.dart';
+
 ///广场
 class PlazaPage extends StatefulWidget {
   const PlazaPage({super.key});
@@ -17,8 +18,8 @@ class PlazaPage extends StatefulWidget {
   State<PlazaPage> createState() => _PlazaPageState();
 }
 
-class _PlazaPageState extends State<PlazaPage> with AutomaticKeepAliveClientMixin {
-
+class _PlazaPageState extends State<PlazaPage>
+    with AutomaticKeepAliveClientMixin {
   final controller = Get.put(PlazaController());
   final state = Get.find<PlazaController>().state;
 
@@ -38,8 +39,7 @@ class _PlazaPageState extends State<PlazaPage> with AutomaticKeepAliveClientMixi
                   DatingHallView(),
                   NearbyHallView(),
                   FortuneSquareView(),
-                ]
-            ),
+                ]),
           )
         ],
       ),
@@ -49,7 +49,7 @@ class _PlazaPageState extends State<PlazaPage> with AutomaticKeepAliveClientMixi
   @override
   bool get wantKeepAlive => true;
 
-  Widget appBar(){
+  Widget appBar() {
     return GetBuilder<PlazaController>(
       id: "appBar",
       builder: (_) {
@@ -79,7 +79,7 @@ class _PlazaPageState extends State<PlazaPage> with AutomaticKeepAliveClientMixi
                             margin: EdgeInsets.only(right: 36.rpx),
                             child: Text(
                               state.tabBarList[index]['name'],
-                              style:controller.tabController.index == index ? AppTextStyle.fs18b:AppTextStyle.fs16m,
+                              style:controller.tabController.index == index ? AppTextStyle.fs18b:AppTextStyle.fs16b,
                             ),
                           )
                       ),

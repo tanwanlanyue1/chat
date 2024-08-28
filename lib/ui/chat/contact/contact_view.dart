@@ -10,8 +10,6 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
-import 'package:guanjia/ui/mine/widgets/client_card.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -51,12 +49,15 @@ class _ContactViewState extends State<ContactView>
             toolbarHeight: 80.rpx,
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.pin,
-              stretchModes: [StretchMode.blurBackground],
+              stretchModes: const [StretchMode.blurBackground],
               expandedTitleScale: 1.0,
               background: buildUserInfo(),
               title: buildSearch(),
               titlePadding: EdgeInsets.zero,
             ),
+          ),
+          SliverToBoxAdapter(
+            child: Divider(height: 1, endIndent: 16.rpx, indent: 16.rpx),
           ),
           PagedSliverList(
             pagingController: controller.pagingController,
@@ -114,18 +115,19 @@ class _ContactViewState extends State<ContactView>
                   child: Text(
                     maxLines: 2,
                     userInfo?.nickname ?? '',
-                    style: AppTextStyle.fs16m.copyWith(
-                      color: AppColor.gray5,
+                    style: AppTextStyle.fs16b.copyWith(
+                      color: AppColor.blackBlue,
+                      height: 1.0,
                     ),
                   ),
                 ),
                 if (userInfo?.position?.isNotEmpty == true)
                   Padding(
-                    padding: FEdgeInsets(top: 4.rpx),
+                    padding: FEdgeInsets(top: 8.rpx),
                     child: Text(
                       userInfo?.position ?? '',
                       style: AppTextStyle.fs12m.copyWith(
-                        color: AppColor.gray9,
+                        color: AppColor.grayText,
                       ),
                     ),
                   ),
@@ -134,14 +136,15 @@ class _ContactViewState extends State<ContactView>
                     onTap: () => '${userInfo?.chatNo}'.copy(),
                     behavior: HitTestBehavior.translucent,
                     child: Padding(
-                      padding: FEdgeInsets(top: 8.rpx),
+                      padding: FEdgeInsets(top: 10.rpx),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
                             'ID:${userInfo?.chatNo}',
                             style: AppTextStyle.fs12m.copyWith(
-                              color: AppColor.gray9,
+                              color: AppColor.grayText,
+                              height: 1.0,
                             ),
                           ),
                           Padding(
@@ -170,11 +173,6 @@ class _ContactViewState extends State<ContactView>
       width: double.infinity,
       height: 80.rpx,
       padding: FEdgeInsets(left: 16.rpx, right: 8.rpx),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: AppColor.scaffoldBackground),
-        ),
-      ),
       child: Row(
         children: [
           Expanded(
@@ -189,16 +187,19 @@ class _ContactViewState extends State<ContactView>
                   FilteringTextInputFormatter.allow(RegExp('[0-9]')),
                   LengthLimitingTextInputFormatter(16),
                 ],
+                style: AppTextStyle.fs14b.copyWith(
+                  color: AppColor.blackBlue,
+                ),
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: AppColor.grayF7,
+                  fillColor: AppColor.background,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(20.rpx),
                     gapPadding: 0,
                   ),
-                  hintStyle: AppTextStyle.fs14m.copyWith(
-                    color: AppColor.gray9,
+                  hintStyle: AppTextStyle.fs14b.copyWith(
+                    color: AppColor.grayText,
                   ),
                   hintText: S.current.contactSearchHint,
                   contentPadding: FEdgeInsets(horizontal: 16.rpx),

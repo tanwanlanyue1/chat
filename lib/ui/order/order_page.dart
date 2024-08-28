@@ -26,11 +26,13 @@ class OrderPage extends StatelessWidget {
         shadowColor: Colors.black.withOpacity(0.2),
         bottom: TabBar(
           controller: controller.tabController,
-          labelStyle: AppTextStyle.st.size(14.rpx),
-          labelColor: AppColor.primary,
-          unselectedLabelColor: AppColor.black92,
+          labelStyle: AppTextStyle.fs14b,
+          labelColor: AppColor.primaryBlue,
+          unselectedLabelColor: AppColor.grayText,
+          indicatorColor: AppColor.primaryBlue,
+          indicatorWeight: 2.rpx,
           tabs: List.generate(state.titleList.length,
-              (index) => Tab(text: state.titleList[index])),
+              (index) => Tab(text: state.titleList[index], height: 40.rpx)),
         ),
         actions: [
           Obx(() {

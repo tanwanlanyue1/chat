@@ -4,8 +4,6 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/common/service/service.dart';
-import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
@@ -134,10 +132,13 @@ class MessageListPage extends GetView<MessageListController> {
       backgroundBuilder: buildBackground,
       listViewPadding: FEdgeInsets(top: ChatDateView.height),
       onPressed: (_, message, defaultAction) {
-        if (message.customType == CustomMessageType.redPacket) {
-          controller.onTapRedPacket(message);
-        } else {
-          defaultAction.call();
+        switch(message.customType){
+          case CustomMessageType.redPacket:
+            controller.onTapRedPacket(message);
+            break;
+          default:
+            defaultAction.call();
+            break;
         }
       },
     );
@@ -152,7 +153,10 @@ class MessageListPage extends GetView<MessageListController> {
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(conversation?.name ?? ''),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: Get.width - 150.rpx),
+              child: Text(conversation?.name ?? '', maxLines: 1),
+            ),
             Padding(
               padding: FEdgeInsets(left: 4.rpx),
               child: AppImage.asset(
@@ -214,8 +218,8 @@ class MessageListPage extends GetView<MessageListController> {
           message: message,
           builder: (_) {
             return Visibility(
-              visible:
-                  !message.isHideAvatar && [0,1].contains(message.redPacketLocal.status),
+              visible: !message.isHideAvatar &&
+                  [0, 1].contains(message.redPacketLocal.status),
               replacement: SizedBox(
                 width: 40.rpx,
                 height: 40.rpx,

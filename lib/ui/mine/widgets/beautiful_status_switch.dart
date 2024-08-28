@@ -18,11 +18,11 @@ class BeautifulStatusSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget text = Text(status.label);
+    Widget text = Text(status.label, style: AppTextStyle.fs12b);
     if (status == UserStatus.offline) {
       text = Text.rich(
         TextSpan(
-          style: AppTextStyle.fs12m,
+          style: AppTextStyle.fs12b,
           children: [
             TextSpan(text: status.label),
             TextSpan(
@@ -69,11 +69,11 @@ extension UserStatusX on UserStatus {
   Color get backgroundColor {
     switch (this) {
       case UserStatus.offline:
-        return AppColor.gray9;
+        return AppColor.babyBlueButton;
       case UserStatus.online:
-        return AppColor.purple6;
+        return AppColor.dateButton;
       case UserStatus.inProgress:
-        return const Color(0xFF4166F2);
+        return AppColor.grayText;
     }
   }
 

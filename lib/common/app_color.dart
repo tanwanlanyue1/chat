@@ -123,15 +123,15 @@ class AppColor {
   ///主色渐变色(水平渐变)
   static const horizontalGradient = LinearGradient(
     colors: [Color(0xFF0F73ED), Color(0xFFC538FF)],
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
   );
 
   ///背景渐变色(垂直渐变)
   static const verticalGradient = LinearGradient(
     colors: [Color(0xFF226EF0), Color(0xFFBD3CFF)],
-    begin: Alignment.centerLeft,
-    end: Alignment.centerRight,
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
   );
 
 
@@ -172,7 +172,7 @@ class AppColor {
   static const grayBackground = Color(0xFFF7F7F7);
 
   ///黑色字体
-  static const backText = Color(0xFF4E4E4E);
+  static const blackText = Color(0xFF4E4E4E);
 
   ///999
   static const black999 = Color(0xFF999999);

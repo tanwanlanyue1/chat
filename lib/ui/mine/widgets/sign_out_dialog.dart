@@ -39,8 +39,8 @@ class SignOutDialog extends StatelessWidget {
                     buildAvatar(),
                     Text(
                       '确定要退出登录吗？',
-                      style: AppTextStyle.fs16m.copyWith(
-                        color: AppColor.gray5,
+                      style: AppTextStyle.fs18b.copyWith(
+                        color: AppColor.blackBlue,
                       ),
                     ),
                     Padding(
@@ -48,7 +48,8 @@ class SignOutDialog extends StatelessWidget {
                       child: Text(
                         '退出登录后，我们任会继续保留您的账户数据，以便您再次登录查看。',
                         style: AppTextStyle.fs12m.copyWith(
-                          color: AppColor.gray30,
+                          color: AppColor.blackText,
+                          height: 1.5,
                         ),
                       ),
                     ),
@@ -60,6 +61,7 @@ class SignOutDialog extends StatelessWidget {
                           width: 120.rpx,
                           text: '取消',
                           onTap: Get.back,
+                          textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
                         ),
                         Button(
                           onPressed: () => Get.back(result: true),
@@ -68,9 +70,7 @@ class SignOutDialog extends StatelessWidget {
                           backgroundColor: AppColor.gray9,
                           child: Text(
                             '确定退出',
-                            style: AppTextStyle.st.medium
-                                .size(16.rpx)
-                                .textColor(Colors.white),
+                            style: AppTextStyle.fs16m
                           ),
                         ),
                       ],
@@ -88,6 +88,7 @@ class SignOutDialog extends StatelessWidget {
   Widget buildTitleBar() {
     return Container(
       alignment: Alignment.topRight,
+      padding: FEdgeInsets(top: 4.rpx, right: 4.rpx),
       child: IconButton(
         icon: const Icon(Icons.close, color: AppColor.gray5),
         onPressed: Get.back,

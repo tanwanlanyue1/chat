@@ -32,7 +32,7 @@ class AppConfigModel {
   ///充值提示语
   String? payGoldRule;
   List<LogTypeIcon>? logTypeIcon;
-  List<Tab>? tab;
+  List<TabItem>? tab;
   List<Home>? home;
   List<dynamic>? resources;
   String? desc;
@@ -109,7 +109,7 @@ class AppConfigModel {
     if (json['tab'] != null) {
       tab = [];
       json['tab'].forEach((v) {
-        tab?.add(Tab.fromJson(v));
+        tab?.add(TabItem.fromJson(v));
       });
     }
     if (json['logTypeIcon'] is List) {
@@ -202,14 +202,14 @@ class Home {
   }
 }
 
-class Tab {
-  Tab({
+class TabItem {
+  TabItem({
     this.icon,
     this.selectIcon,
     this.text,
   });
 
-  Tab.fromJson(dynamic json) {
+  TabItem.fromJson(dynamic json) {
     icon = json['icon'];
     selectIcon = json['selectIcon'];
     text = json['text'];

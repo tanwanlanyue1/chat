@@ -53,7 +53,7 @@ class MineListTile extends StatelessWidget {
             child: Text(
               title,
               style: AppTextStyle.fs14b.copyWith(
-                color: AppColor.black4E,
+                color: AppColor.blackText,
               ),
             ),
           ),
@@ -61,14 +61,14 @@ class MineListTile extends StatelessWidget {
             Text(
               trailing!,
               style: AppTextStyle.fs12b.copyWith(
-                color: AppColor.gray9,
+                color: AppColor.black999,
               ),
             ),
           // if (onTap != null)
           Icon(
             Icons.keyboard_arrow_right,
             size: 24.rpx,
-            color: AppColor.gray9,
+            color: const Color(0xFFC5C6CB),
           )
         ],
       ),

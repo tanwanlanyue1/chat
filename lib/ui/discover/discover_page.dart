@@ -21,54 +21,37 @@ class DiscoverPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.current.discover,style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
+        title: Text(S.current.discover),
+        elevation: 4,
+        shadowColor: Colors.black.withOpacity(0.2),
+        bottom: TabBar(
+          controller: controller.tabController,
+          labelStyle: AppTextStyle.fs14b,
+          labelColor: AppColor.primaryBlue,
+          unselectedLabelColor: AppColor.grayText,
+          indicatorColor: AppColor.primaryBlue,
+          indicatorWeight: 2.rpx,
+          onTap: (val) {},
+          tabs: [
+            Tab(text: S.current.hotActivity, height: 40.rpx),
+            Tab(text: S.current.dating, height: 40.rpx),
+          ],
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
-          image: AppDecorations.backgroundImage("assets/images/discover/activity_back.png"),
+          image: AppDecorations.backgroundImage(
+              "assets/images/discover/activity_back.png"),
         ),
-        child: Column(
+        child: TabBarView(
+          controller: controller.tabController,
           children: [
-            discoverClassify(),
-            Expanded(
-              child: TabBarView(
-                controller: controller.tabController,
-                children: [
-                  ActivityPage(),
-                  FriendDatePage(),
-                ],
-              ),
-            )
+            ActivityPage(),
+            FriendDatePage(),
           ],
         ),
       ),
     );
   }
 
-  ///发现分类
-  Widget discoverClassify(){
-    return Container(
-      padding: EdgeInsets.only(top: 8.rpx),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-      ),
-      alignment: Alignment.centerLeft,
-      height: 40.rpx,
-      child: TabBar(
-        controller: controller.tabController,
-        labelColor: AppColor.primary,
-        labelStyle: AppTextStyle.fs14b.copyWith(color: AppColor.gradientBegin),
-        unselectedLabelColor: AppColor.gray9,
-        unselectedLabelStyle: AppTextStyle.fs14b.copyWith(color: AppColor.black92),
-        indicatorColor: AppColor.primary,
-        indicatorWeight: 2.rpx,
-        labelPadding: EdgeInsets.only(bottom: 10.rpx),
-        onTap: (val){},
-        tabs: [
-          Text(S.current.hotActivity,),
-          Text(S.current.dating),
-        ],
-      ),
-    );
-  }
 }

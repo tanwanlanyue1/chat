@@ -28,7 +28,7 @@ class AppTheme {
       scrolledUnderElevation: 0,
       backgroundColor: Colors.white,
       foregroundColor: const Color(0xff333333),
-      titleTextStyle: AppTextStyle.fs18b.copyWith(color: AppColor.black20),
+      titleTextStyle: AppTextStyle.fs18b.copyWith(color: AppColor.blackBlue),
       centerTitle: true,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       toolbarHeight: kNavigationBarHeight,

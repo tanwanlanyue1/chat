@@ -111,7 +111,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
   String basicsInfo({required int index}){
     var info = jsonDecode(jsonEncode(state.authorInfo))[state.userBasics[index]['data']] ?? '-';
     if(index == 1){
-      info = (info == 1) ? "男":"女";
+      info = (info == 0) ? "-" : ((info == 1) ? "男":"女");
     }else if(info == '0.00' || info == '0'|| info == 0){
       info = '-';
     }
@@ -152,7 +152,8 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
       "nickname":SS.login.info?.nickname,
     }));
     itemList[index] = itemList[index].copyWith(
-        commentList: comment
+        commentList: comment,
+        commentNum: (itemList[index].commentNum ?? 0) + 1
     );
     pagingController.itemList = itemList;
   }

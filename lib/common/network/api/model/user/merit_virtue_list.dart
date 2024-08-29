@@ -66,7 +66,7 @@ class MeritVirtueLog {
       image: json["image"] ?? "",
       giftNum: json["giftNum"] ?? 0,
       extraName: json["extraName"] ?? "",
-      createTime: json["createTime"] ?? "",
+      createTime: json["createTime"] ?? 0,
     );
   }
 

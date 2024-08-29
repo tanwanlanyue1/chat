@@ -164,43 +164,44 @@ class FriendDatePage extends StatelessWidget {
                   child: AppImage.network(item.userInfo?.avatar ?? '',width: 40.rpx,height: 40.rpx,shape: BoxShape.circle,),
                 ),
               ),
-              SizedBox(
-                height: 40.rpx,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(item.userInfo?.nickname ?? '',style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),),
-                    Row(
-                      children: [
-                        if(item.userInfo?.gender.index != 0)
-                        Visibility(
-                          visible: item.userInfo?.gender.index == 2,
-                          replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
-                          child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
-                        ),
-                        SizedBox(width: 8.rpx),
-                        Text('${item.userInfo?.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.black22),),
-                        Container(
-                          width: 4.rpx,
-                          height: 4.rpx,
-                          margin: EdgeInsets.symmetric(horizontal: 8.rpx),
-                          decoration: const BoxDecoration(
-                            color: AppColor.black6,
-                            shape: BoxShape.circle,
+              Expanded(
+                child: SizedBox(
+                  height: 40.rpx,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(item.userInfo?.nickname ?? '',style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                      Row(
+                        children: [
+                          if(item.userInfo?.gender.index != 0)
+                            Visibility(
+                              visible: item.userInfo?.gender.index == 2,
+                              replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
+                              child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
+                            ),
+                          SizedBox(width: 8.rpx),
+                          Text('${item.userInfo?.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.black22),),
+                          Container(
+                            width: 4.rpx,
+                            height: 4.rpx,
+                            margin: EdgeInsets.symmetric(horizontal: 8.rpx),
+                            decoration: const BoxDecoration(
+                              color: AppColor.black6,
+                              shape: BoxShape.circle,
+                            ),
                           ),
-                        ),
-                        Text("个人",style: AppTextStyle.fs12m.copyWith(color: AppColor.black22),),
-                      ],
-                    ),
-                  ],
+                          Text("个人",style: AppTextStyle.fs12m.copyWith(color: AppColor.black22),),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const Spacer(),
               GestureDetector(
                 onTap: ()=> controller.selectMore(item.uid,item.id!),
                 child: Container(
-                  padding: EdgeInsets.only(bottom: 16.rpx),
+                  padding: EdgeInsets.only(bottom: 16.rpx,left: 4.rpx),
                   child: AppImage.asset("assets/images/discover/more.png",width: 24.rpx,height: 24.rpx,),
                 ),
               ),

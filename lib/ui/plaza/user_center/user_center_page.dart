@@ -77,15 +77,28 @@ class UserCenterPage extends StatelessWidget {
                   builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
                     pagingController: controller.pagingController,
                     itemBuilder: (_, item, index) {
-                      return PlazaCard(
-                        user: true,
-                        item: item,
-                        isLike: (like){
-                          controller.getCommentLike(like, index);
-                        },
-                        callBack: (val){
-                          controller.setComment(val ?? '',index);
-                        },
+                      return Container(
+                        color: Colors.white,
+                        child: Column(
+                          children: [
+                            PlazaCard(
+                              user: true,
+                              item: item,
+                              margin: EdgeInsets.zero,
+                              isLike: (like){
+                                controller.getCommentLike(like, index);
+                              },
+                              callBack: (val){
+                                controller.setComment(val ?? '',index);
+                              },
+                            ),
+                            Container(
+                              height: 2.rpx,
+                              margin: EdgeInsets.only(left: 24.rpx,right: 16.rpx),
+                              color: AppColor.scaffoldBackground,
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),

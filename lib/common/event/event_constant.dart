@@ -17,3 +17,6 @@ const kEventContractUpdate = 'kEventContractUpdate';
 
 ///红包状态变更
 const kEventRedPacketUpdate = 'kEventRedPacketUpdate';
+
+///监听我的信息
+const kEventUserInfo = 'kEventUserInfo';

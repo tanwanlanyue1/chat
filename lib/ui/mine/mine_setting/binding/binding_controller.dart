@@ -23,19 +23,22 @@ class BindingController extends GetxController {
   /// 获取短信验证码
   Future<bool> fetchSms() async {
     final phone = phoneNumberInputController.text;
-
-    Loading.show();
-    final res = await loginService.fetchSms(
-        type: state.isPhone.value ? 1 : 2,
-        phone: phone);
-    Loading.dismiss();
-
-    return res.when(success: (_) {
-      return true;
-    }, failure: (errorMessage) {
-      Loading.showToast(errorMessage);
+    if(!state.isPhone.value && !GetUtils.isEmail(phone)){
+      Loading.showToast('邮箱格式错误');
       return false;
-    });
+    }else{
+      Loading.show();
+      final res = await loginService.fetchSms(
+          type: state.isPhone.value ? 1 : 2,
+          phone: phone);
+      Loading.dismiss();
+      return res.when(success: (_) {
+        return true;
+      }, failure: (errorMessage) {
+        Loading.showToast(errorMessage);
+        return false;
+      });
+    }
   }
 
   ///  绑定手机号/邮箱

@@ -3,6 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/event/event_bus.dart';
+import 'package:guanjia/common/event/event_constant.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_state.dart';
 import 'package:guanjia/ui/mine/widgets/beautiful_status_switch.dart';
@@ -20,7 +23,7 @@ import 'widgets/activation_progression.dart';
 import 'widgets/security_deposit_dialog.dart';
 import 'widgets/sign_out_dialog.dart';
 
-class MineController extends GetxController {
+class MineController extends GetxController with GetAutoDisposeMixin{
   final MineState state = MineState();
 
   final refreshController = RefreshController();
@@ -29,6 +32,11 @@ class MineController extends GetxController {
 
   @override
   void onInit() {
+    autoDisposeWorker(
+        EventBus().listen(kEventUserInfo,(val){
+          onRefresh();
+        })
+    );
     super.onInit();
   }
 

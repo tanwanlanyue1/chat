@@ -185,13 +185,13 @@ class DatingHallView extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                item.age != null ? "${item.age}岁 ":"",
+                                item.age != null ? "${item.age}岁 ｜":"",
                                 style:
                                 AppTextStyle.fs12m.copyWith(color: AppColor.black92),
                               ),
                               Expanded(
                                   child: Text(
-                                    "| ${item.style ?? ''}",
+                                    item.style?.replaceAll(',', '｜') ?? '',
                                     style:
                                     AppTextStyle.fs12m.copyWith(color: AppColor.black92),
                                     maxLines: 1,

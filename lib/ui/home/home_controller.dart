@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/event/event_bus.dart';
+import 'package:guanjia/common/event/event_constant.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -50,6 +52,9 @@ class HomeController extends GetxController {
   }
 
   void setCurrentPage(int index) {
+    if(index == 4){
+      EventBus().emit(kEventUserInfo);
+    }
     state.currentPageRx.value = index;
     pageController.jumpToPage(index);
   }

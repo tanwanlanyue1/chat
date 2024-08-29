@@ -310,7 +310,7 @@ class _MinePageState extends State<MinePage>
               title: S.current.activationProgression,
               icon: "assets/images/mine/activate.png",
               trailing:
-                  userType.isUser ? S.current.normalUser : S.current.brokerUser,
+                  userType.isUser ? S.current.normalUser : ( userType.isBeauty ? S.current.beautifulUser : S.current.brokerUser),
               onTap: controller.onTapUserAdvanced,
             ),
           //评价我的

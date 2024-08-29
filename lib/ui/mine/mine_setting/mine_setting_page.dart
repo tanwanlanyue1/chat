@@ -127,7 +127,7 @@ class MineSettingPage extends StatelessWidget {
                   SettingItem(
                     title: S.current.detectNewVersions,
                     trailing: Text(
-                      '1.0.1',
+                        controller.version.value,
                       style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
                     ),
                     callBack: () {

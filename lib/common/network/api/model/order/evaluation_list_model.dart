@@ -56,7 +56,7 @@ class EvaluationItemModel {
   factory EvaluationItemModel.fromJson(Map<String, dynamic> json) {
     return EvaluationItemModel(
       content: json["content"] ?? "",
-      createTime: json["createTime"] ?? "",
+      createTime: json["createTime"] ?? 0,
       star: json["star"] ?? 0,
       tag: json["tag"] ?? "",
       fromImg: json["fromImg"] ?? "",

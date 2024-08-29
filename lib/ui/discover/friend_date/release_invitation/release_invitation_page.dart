@@ -143,6 +143,8 @@ class ReleaseInvitationPage extends StatelessWidget {
           DiscoverItem(
             title: "开始时间",
             callBack: (){
+              state.time = state.startTime;
+              state.hour = state.startHour;
               TimeDialog.show();
             },
             trailing: Text(
@@ -157,6 +159,8 @@ class ReleaseInvitationPage extends StatelessWidget {
               style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),
             ),
             callBack: (){
+              state.time = state.endTime;
+              state.hour = state.endHour;
               TimeDialog.show(star: false);
             },
           ),
@@ -218,36 +222,47 @@ class ReleaseInvitationPage extends StatelessWidget {
               Expanded(
                 child: Container(
                   margin: EdgeInsets.only(left: 32.rpx),
-                  height: 34.rpx,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: !state.serve.value ? AppColor.gradientBegin : AppColor.gray9,width: 2.rpx),
                       borderRadius: BorderRadius.all(Radius.circular(4.rpx))
                   ),
-                  padding: EdgeInsets.all(6.rpx),
-                  child: Row(
-                    children: [
-                      Text("\$",style: AppTextStyle.fs16b.copyWith(color: !state.serve.value ? AppColor.gradientBegin : AppColor.gray9),),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(top: 4.rpx),
-                          child: InputWidget(
-                            hintText: '',
-                            lines: 1,
-                            disabled: !state.serve.value,
-                            fillColor: Colors.white,
-                            textAlign: TextAlign.center,
-                            keyboardType: const TextInputType.numberWithOptions(decimal: false),
-                            contentPadding: EdgeInsets.symmetric(vertical: -24.rpx,),
-                            textStyle: AppTextStyle.fs16b.copyWith(color: AppColor.gradientBegin,height: 1.00001),
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                            ],
-                            inputController: controller.serviceController,
-                          ),
-                        ),
-                      ),
+                  child: TextField(
+                    controller: controller.serviceController,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    enabled: !state.serve.value,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      signed: false,
+                      decimal: true,
+                    ),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp('[0-9]')),
                     ],
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      isDense: true,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(8.rpx),
+                      ),
+                      hintText: '',
+                      prefixIcon: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 16.rpx,bottom: 1.rpx),
+                            child: Text('\$',style: AppTextStyle.fs16b.copyWith(color: !state.serve.value ? AppColor.gradientBegin : AppColor.gray9),),
+                          ),
+                        ],
+                      ),
+                      // prefixText: "\$",
+                      prefixIconConstraints: BoxConstraints(minHeight: 34.rpx),
+                      constraints: BoxConstraints(minHeight: 34.rpx),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                    style: AppTextStyle.fs16b.copyWith(color: AppColor.gradientBegin),
                   ),
                 ),
               ),

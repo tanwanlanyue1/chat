@@ -50,7 +50,7 @@ class ReleaseInvitationController extends GetxController {
     DateTime today = DateTime.now();
     state.hour = today.hour;
     state.startHour = today.hour;
-    state.endHour = today.hour+1;
+    state.endHour = today.hour+2;
     for (int i = 0; i < 7; i++) {
       DateTime nextDay = today.add(Duration(days: i));
       list.add(CommonUtils.dateString('$nextDay',lineFeed: true));

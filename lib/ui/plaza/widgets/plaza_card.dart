@@ -27,11 +27,12 @@ import 'review_dialog.dart';
 class PlazaCard extends StatelessWidget {
   final bool user;
   final int? plazaIndex;
+  final EdgeInsets? margin;
   PlazaListModel item;
   final Function(bool like)? isLike;//点击点赞
   final Function(String? str)? callBack;//评论回复
   final Function()? more;//更多
-  PlazaCard({super.key,this.user = false,this.plazaIndex = 0,required this.item,this.isLike,this.callBack,this.more});
+  PlazaCard({super.key,this.user = false,this.plazaIndex = 0,required this.item,this.isLike,this.callBack,this.more,this.margin});
 
   ///点赞或者取消点赞
   /// type:点赞类型（1动态2评论）
@@ -63,10 +64,10 @@ class PlazaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       padding: EdgeInsets.all(12.rpx),
       color: Colors.white,
-      margin: EdgeInsets.only(bottom: 4.rpx),
+      margin: margin ?? EdgeInsets.only(bottom: 4.rpx),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -75,11 +76,11 @@ class PlazaCard extends StatelessWidget {
             _backImage(),
             _buildBody(),
           ],
-          if(user)...[
-            _imageViews(),
-            _buildBody(),
-          ],
-          if(!(plazaIndex == 1) && !user)...[
+          // if(user)...[
+          //   _imageViews(),
+          //   _buildBody(),
+          // ],
+          if(!(plazaIndex == 1))...[
             _buildBody(),
             _imageViews(),
           ],
@@ -317,7 +318,7 @@ class PlazaCard extends StatelessWidget {
               children: [
                 AppImage.asset((item.isLike ?? false) ? "assets/images/plaza/attention.png":"assets/images/plaza/attention_no.png",width: 16.rpx,height: 16.rpx,),
                 SizedBox(width: 6.rpx,),
-                Text(' ${item.likeNum ?? '赞'}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
+                Text(' ${(item.likeNum != null && item.likeNum != 0) ? item.likeNum : '赞'}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
               ],
             ),
           ),
@@ -338,7 +339,7 @@ class PlazaCard extends StatelessWidget {
               children: [
                 AppImage.asset("assets/images/plaza/comment.png",width: 16.rpx,height: 16.rpx,),
                 SizedBox(width: 6.rpx,),
-                Text('${item.commentNum ?? '评论'}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
+                Text('${(item.commentNum != null && item.commentNum != 0) ? item.commentNum : '评论'}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
               ],
             ),
           ),
@@ -348,7 +349,7 @@ class PlazaCard extends StatelessWidget {
           child: const Spacer(),
         ),
         Visibility(
-          visible: SS.login.userId != item.uid!,
+          visible: SS.login.userId != item.uid! && !user,
           child: Padding(
             padding: EdgeInsets.only(left: 6.rpx),
             child: CommonGradientButton(

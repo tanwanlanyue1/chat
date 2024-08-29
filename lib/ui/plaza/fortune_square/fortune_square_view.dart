@@ -9,7 +9,6 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/ui/plaza/widgets/plaza_card.dart';
-import 'package:guanjia/widgets/advertising_swiper.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 

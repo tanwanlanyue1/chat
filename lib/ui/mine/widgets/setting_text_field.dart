@@ -100,8 +100,8 @@ class SettingTextField extends StatelessWidget {
                 margin: EdgeInsets.only(right: 4.rpx),
                 child: AppImage.asset(
                   obscureText
-                      ? "assets/images/common/password_visible.png"
-                      : "assets/images/common/password_invisible.png",
+                      ? "assets/images/common/password_invisible.png"
+                      : "assets/images/common/password_visible.png",
                   length: 24.rpx,
                 ),
               ),

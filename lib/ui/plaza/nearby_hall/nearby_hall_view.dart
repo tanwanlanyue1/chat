@@ -75,7 +75,7 @@ class NearbyHallView extends StatelessWidget {
                   Expanded(
                     child: Text(item.nickname ?? '',style: AppTextStyle.fs12m.copyWith(color: Colors.white),overflow: TextOverflow.ellipsis,),
                   ),
-                  if(item.gender != 0 && item.age != null)
+                  if(item.gender != 0 || item.age != null)
                   Container(
                     decoration: BoxDecoration(
                         gradient: const LinearGradient(

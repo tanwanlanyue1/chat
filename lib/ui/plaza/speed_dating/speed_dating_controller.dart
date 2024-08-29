@@ -52,7 +52,6 @@ class SpeedDatingController extends GetxController
 
     autoCancel(state.isAnimation.listen((p0) {
       if (p0) {
-
         animationController.repeat();
         _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
           final index = state.avatarIndex.value;
@@ -65,7 +64,7 @@ class SpeedDatingController extends GetxController
         });
 
         final countDown = SS.appConfig.configRx.value?.matchingCountDown ?? 90;
-        _endTimer = Timer(Duration(seconds: 10), () {
+        _endTimer = Timer(Duration(seconds: countDown), () {
           state.isAnimation.value = false;
         });
       } else {

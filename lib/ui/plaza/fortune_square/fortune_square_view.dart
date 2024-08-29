@@ -28,6 +28,7 @@ class FortuneSquareView extends StatelessWidget {
       body: Column(
         children: [
           discoverClassify(),
+          SizedBox(height: 8.rpx,),
           Expanded(
             child: SmartRefresher(
               controller: controller.pagingController.refreshController,

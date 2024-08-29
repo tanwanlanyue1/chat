@@ -33,7 +33,6 @@ class UserCenterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
       body: SmartRefresher(
         controller: controller.pagingController.refreshController,
         onRefresh: controller.pagingController.onRefresh,
@@ -46,22 +45,34 @@ class UserCenterPage extends StatelessWidget {
                   pinned: true,
                   leadingWidth: 0,
                   leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
-                  expandedHeight: 258.rpx,
-                  flexibleSpace: FlexibleSpaceBar(
-                    titlePadding: EdgeInsets.zero,
-                    expandedTitleScale: 1.0,
-                    title: Container(
-                      height: 16.rpx,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(24.rpx),
-                          topRight: Radius.circular(24.rpx),
-                        ),
+                  expandedHeight: 220.rpx,
+                  flexibleSpace: Stack(
+                    children: [
+                      FlexibleSpaceBar(
+                        titlePadding: EdgeInsets.zero,
+                        expandedTitleScale: 1.0,
+                        collapseMode: CollapseMode.parallax,
+                        background: backImage(),
                       ),
-                    ),
-                    collapseMode: CollapseMode.parallax,
-                    background: backImage(),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Transform.translate(
+                          offset: const Offset(0,1),
+                          child: Container(
+                            height: 16.rpx,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(24.rpx),
+                                topRight: Radius.circular(24.rpx),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 )),
                 SliverToBoxAdapter(
@@ -145,7 +156,7 @@ class UserCenterPage extends StatelessWidget {
       id: 'userInfo',
       builder: (_){
         return SizedBox(
-          height: 300.rpx,
+          height: 220.rpx,
           child: state.authorInfo.images != null ?
           Swiper(
             autoplay: true,
@@ -153,7 +164,7 @@ class UserCenterPage extends StatelessWidget {
               return AppImage.network(
                 jsonDecode(state.authorInfo.images!)[index],
                 width: Get.width,
-                height: 300.rpx,
+                height: 220.rpx,
                 fit: BoxFit.fitWidth,
               );
             },
@@ -182,7 +193,7 @@ class UserCenterPage extends StatelessWidget {
           GestureDetector(
             onTap: controller.upload,
             child: Container(
-              height: 300.rpx,
+              height: 220.rpx,
               color: AppColor.black6,
               alignment: Alignment.center,
               child: Text(SS.login.userId == state.authorId ? "轻触上传主题背景" : '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
@@ -200,6 +211,7 @@ class UserCenterPage extends StatelessWidget {
       builder: (_) {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 16.rpx),
+        color: Colors.white,
         child: Column(
           children: [
             Padding(
@@ -239,7 +251,7 @@ class UserCenterPage extends StatelessWidget {
                               Container(
                                 width: 50.rpx,
                                 alignment: Alignment.center,
-                                child: Text(isAttentionRx() ? "已关注" : '关注',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),
+                                child: Text(isAttentionRx() ? "已关注" : '关注',style: AppTextStyle.fs14b.copyWith(color: AppColor.gray30),),
                               )
                             ],
                           );
@@ -252,11 +264,11 @@ class UserCenterPage extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.center,
-              child: Text(state.authorInfo.nickname,style: AppTextStyle.fs20b.copyWith(color: AppColor.gray5),textAlign: TextAlign.center,),
+              child: Text(state.authorInfo.nickname,style: AppTextStyle.fs20b.copyWith(color: AppColor.blackBlue),textAlign: TextAlign.center,),
             ),
             Visibility(
               visible: state.authorInfo.type.index != 0,
-              child: Text("${controller.label()}   ${state.authorInfo.position ?? ''}",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+              child: Text("${controller.label()}   ${state.authorInfo.position ?? ''}",style: AppTextStyle.fs16r.copyWith(color: AppColor.black92),),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -266,25 +278,25 @@ class UserCenterPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text("${state.userBasics[i]['name']}",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray9),),
-                      Text(controller.basicsInfo(index: i),style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
+                      Text("${state.userBasics[i]['name']}",style: AppTextStyle.fs16r.copyWith(color: AppColor.black92),),
+                      Text(controller.basicsInfo(index: i),style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),),
                     ],
                   ),
                 );
               }),
             ),
             Container(
-              height: 2.rpx,
+              height: 1.rpx,
               color: AppColor.scaffoldBackground,
             ),
             Container(
               alignment: Alignment.centerLeft,
               margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-              child: Text("个人简介",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
+              child: Text("个人简介",style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),),
             ),
-            Text(state.authorInfo.signature ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+            Text(state.authorInfo.signature ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue),),
             Container(
-              height: 2.rpx,
+              height: 1.rpx,
               margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
               color: AppColor.scaffoldBackground,
             ),
@@ -302,7 +314,7 @@ class UserCenterPage extends StatelessWidget {
         color: Colors.white,
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.only(left: 16.rpx),
-        child: Text("个人帖子",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
+        child: Text("个人帖子",style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),),
       ),
     );
   }
@@ -314,14 +326,14 @@ class UserCenterPage extends StatelessWidget {
       child: Container(
         height: 112.rpx,
         padding: EdgeInsets.symmetric(horizontal: 16.rpx,vertical: 12.rpx),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-                color: Colors.grey,
-                offset: Offset(0.0, 12.0),
-                blurRadius: 15.0,
-                spreadRadius: 4.0
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 0,
+              blurRadius: 2,
+              offset: const Offset(0, -8),
             ),
           ],
         ),
@@ -346,6 +358,7 @@ class UserCenterPage extends StatelessWidget {
                       child: CommonGradientButton(
                         height: 50.rpx,
                         text: "实时\n语音",
+                        textStyle: AppTextStyle.fs16b.copyWith(color: Colors.white,height: 1.18,),
                       ),
                     ),
                   ),
@@ -359,6 +372,7 @@ class UserCenterPage extends StatelessWidget {
                       child: CommonGradientButton(
                         height: 50.rpx,
                         text: "视频1V1聊天",
+                        textStyle: AppTextStyle.fs16b.copyWith(color: Colors.white,),
                       ),
                     ),
                   )

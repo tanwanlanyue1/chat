@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
@@ -10,6 +12,8 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/common/utils/show_dialog.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/chat_manager.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
@@ -126,7 +130,16 @@ class FortuneSquareController extends GetxController
             }
           }else{
             if(index == 0){
-              deleteCommunity(item.postId!);
+              ShowDialog.show(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 38.rpx).copyWith(bottom: 24.rpx),
+                  child: Text("确认是否删除该帖子及相关内容数据？",style: AppTextStyle.fs18m.copyWith(color: AppColor.black20),textAlign: TextAlign.center,),
+                ),
+                callBack: (){
+                  Get.back();
+                  deleteCommunity(item.postId!);
+                }
+              );
             }else{
               Get.toNamed(AppRoutes.releaseDynamicPage,arguments: {"item":item});
             }

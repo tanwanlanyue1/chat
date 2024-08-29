@@ -19,6 +19,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
   }){// true：修改登录密码，false：修改支付密码，
     state.isLogin.value = login ?? true;
     if(type != null){
+      state.type = true;
       state.isPhone.value = !type;
       state.phone = text!;
     }

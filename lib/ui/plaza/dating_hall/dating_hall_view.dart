@@ -178,7 +178,7 @@ class DatingHallView extends StatelessWidget {
                         children: [
                           Text(
                             item.nickname ?? '',
-                            style: AppTextStyle.fs16m.copyWith(color: AppColor.black20),
+                            style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),

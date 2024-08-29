@@ -15,22 +15,6 @@ class FiltrateBottomSheet extends StatelessWidget {
   FiltrateBottomSheet({super.key,this.callBack});
 
   @override
-  void paint(PaintingContext context, Offset offset,
-      ImageConfiguration configuration, SliderTrackShape trackShape) {
-    final canvas = context.canvas;
-    final Rect trackRect = offset & configuration.size!;
-
-    final Paint paint = Paint()
-      ..shader = LinearGradient(
-        colors: [Colors.red, Colors.blue],
-        begin: Alignment.centerLeft,
-        end: Alignment.centerRight,
-      ).createShader(trackRect);
-
-    canvas.drawRect(trackRect, paint);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GetBuilder<RectifyTheWorkplaceController>(
       id: 'bottomSheet',
@@ -58,7 +42,7 @@ class FiltrateBottomSheet extends StatelessWidget {
                   child: AppImage.asset('assets/images/common/close.png',width: 24.rpx,height: 24.rpx,),
                 ),
               ),
-              Text("想看",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w700),),
+              Text("想看",style: AppTextStyle.fs18m.copyWith(color: AppColor.blackBlue,fontWeight: FontWeight.w700),),
               SizedBox(height: 16.rpx),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -84,7 +68,7 @@ class FiltrateBottomSheet extends StatelessWidget {
                 children: [
                   Container(
                     margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-                    child: Text("年龄",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w700),),
+                    child: Text("年龄",style: AppTextStyle.fs18m.copyWith(color: AppColor.blackBlue,fontWeight: FontWeight.w700),),
                   ),
                   Obx(() => Container(
                     margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
@@ -124,7 +108,7 @@ class FiltrateBottomSheet extends StatelessWidget {
               ),
               Container(
                 margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-                child: Text("偏爱的风格",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w700),),
+                child: Text("偏爱的风格",style: AppTextStyle.fs18m.copyWith(color: AppColor.blackBlue,fontWeight: FontWeight.w700),),
               ),
               GridView.builder(
                 shrinkWrap: true,
@@ -147,7 +131,7 @@ class FiltrateBottomSheet extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(8.rpx))
                       ),
                       alignment: Alignment.center,
-                      child: Text(item.tag,style: AppTextStyle.fs14m.copyWith(color: state.labelList.contains(index) ? Colors.white : AppColor.gradientBegin),),
+                      child: Text(item.tag,style: AppTextStyle.fs14b.copyWith(color: state.labelList.contains(index) ? Colors.white : AppColor.gradientBegin),),
                     ),
                   );
                 },

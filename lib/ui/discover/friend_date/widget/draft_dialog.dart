@@ -36,7 +36,7 @@ class DraftDialog extends StatelessWidget {
         body: Center(
           child: Container(
             width: 331.rpx,
-            height: 510.rpx,
+            height: 520.rpx,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(8.rpx)),

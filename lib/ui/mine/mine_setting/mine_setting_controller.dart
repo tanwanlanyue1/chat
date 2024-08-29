@@ -1,18 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:guanjia/common/app_localization.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/common/service/login_service.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_info.dart';
 import 'package:guanjia/common/utils/image_cache_utils.dart';
-import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
-import 'package:guanjia/widgets/loading.dart';
 
 import 'mine_setting_state.dart';
 

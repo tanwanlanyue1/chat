@@ -76,10 +76,6 @@ class PlazaCard extends StatelessWidget {
             _backImage(),
             _buildBody(),
           ],
-          // if(user)...[
-          //   _imageViews(),
-          //   _buildBody(),
-          // ],
           if(!(plazaIndex == 1))...[
             _buildBody(),
             _imageViews(),

@@ -69,21 +69,24 @@ class UpdatePasswordPage extends StatelessWidget {
       child: Container(
         alignment: Alignment.centerRight,
         margin: EdgeInsets.only(bottom: 24.rpx,top: 11.rpx,right: 16.rpx),
-        child: RichText(
-          text: TextSpan(
-            text: "${S.current.notReceiveTheVerification}? ",
-            style: TextStyle(
-              fontSize: 10.rpx,
-              color: AppColor.gray30,
-            ),
-            children: [
-              TextSpan(
-                text: S.current.changeVerificationMethod,
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                ),
+        child: Visibility(
+          visible: !state.type,
+          child: RichText(
+            text: TextSpan(
+              text: "${S.current.notReceiveTheVerification}? ",
+              style: TextStyle(
+                fontSize: 10.rpx,
+                color: AppColor.gray30,
               ),
-            ],
+              children: [
+                TextSpan(
+                  text: S.current.changeVerificationMethod,
+                  style: const TextStyle(
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

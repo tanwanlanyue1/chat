@@ -14,6 +14,9 @@ class UpdatePasswordState {
 
   final obscure = true.obs;
 
+  //登陆忘记密码进入
+  bool type = false;
+
   //
   String phone = "";
 }

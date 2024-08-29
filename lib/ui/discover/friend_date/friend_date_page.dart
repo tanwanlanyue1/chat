@@ -230,7 +230,7 @@ class FriendDatePage extends StatelessWidget {
                       ),
                       alignment: Alignment.center,
                       child: Text(
-                      controller.typeTitle(item.type ?? 1),style: AppTextStyle.fs12b.copyWith(color: Colors.white),),
+                      controller.typeTitle(item.type ?? 1),style: AppTextStyle.fs12b.copyWith(color: Colors.white,height: 1.16),),
                     ),
                     Expanded(
                       child: SizedBox(

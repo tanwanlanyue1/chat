@@ -38,15 +38,17 @@ class EvaluateCard extends StatelessWidget {
               ),
               SizedBox(width: 8.rpx,),
               Expanded(
-                child: SizedBox(
-                  height: 46.rpx,
+                child: Container(
+                  constraints: BoxConstraints(
+                    minHeight: 46.rpx
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           Expanded(
-                            child: Text(team ? item.toName : item.fromName,style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),),
+                            child: Text(team ? item.toName : item.fromName,style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),maxLines: 2,overflow: TextOverflow.ellipsis,),
                           ),
                           Text(CommonUtils.timestamp(item.createTime,unit: 'yyyy年MM月dd日'),style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
                         ],

@@ -92,6 +92,7 @@ enum OrderDetailDisplayType {
   breachFee, // 违约金
   platformFeeProportion, // 平台收取比例
   platformFee, // 平台费
+  receiveFee, // 接收方收取金额
   receiveFeeProportion, // 接收方收取比例
   agentFeeProportion, // 经纪人收取比例
   agentFee, // 经纪人介绍费

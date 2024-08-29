@@ -49,9 +49,21 @@ class OrderListController extends GetxController with OrderOperationMixin {
   }
 
   void _fetchPage(int page) async {
+    int? selectDay;
+
+    final isBeautyShowDay = SS.login.userType.isBeauty &&
+        (type == OrderListType.cancel || type == OrderListType.finish);
+
+    final isAgentShowDay = SS.login.userType.isAgent &&
+        (type == OrderListType.cancel || type == OrderListType.finish);
+
+    if (isBeautyShowDay || isAgentShowDay) {
+      selectDay = orderState.selectDay.value;
+    }
+
     if (isTeamList) {
       final res = await OrderApi.getTeamList(
-        day: orderState.isShowDay.value ? orderState.selectDay.value : 0,
+        day: selectDay ?? 0,
       );
 
       if (res.isSuccess) {
@@ -67,7 +79,7 @@ class OrderListController extends GetxController with OrderOperationMixin {
 
     final res = await OrderApi.getList(
       state: type.stateValue,
-      day: orderState.isShowDay.value ? orderState.selectDay.value : null,
+      day: selectDay,
       page: page,
       size: pagingController.pageSize,
     );

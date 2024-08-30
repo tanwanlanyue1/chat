@@ -284,6 +284,7 @@ class _MinePageState extends State<MinePage>
           MineListTile(
             title: S.current.myVIP,
             icon: "assets/images/mine/VIP.png",
+            pagePath: AppRoutes.myVipPage,
           ),
           //我的客户
           if (userType.isBeauty)

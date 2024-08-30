@@ -48,6 +48,9 @@ class LoginService extends GetxService {
   // 用户头像
   String get avatar => info?.avatar ?? "";
 
+  // 用户昵称
+  String get nickname => info?.nickname ?? "";
+
   // 用户类型 默认用户
   UserType get userType => _info.value?.type ?? UserType.user;
 

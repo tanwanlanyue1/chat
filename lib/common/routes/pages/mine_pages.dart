@@ -26,6 +26,7 @@ import 'package:guanjia/ui/mine/mine_setting/binding/binding_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/payment_password/payment_password_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/update_password/update_password_controller.dart';
 import 'package:guanjia/ui/mine/mine_team_evaluate/mine_team_evaluate_page.dart';
+import 'package:guanjia/ui/mine/my_vip/my_vip_page.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 import '../app_pages.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
@@ -182,6 +183,10 @@ class MinePages {
           userId: Get.getArgs('userId', 0),
         ),
       ),
+    ),
+    GetPage(
+      name: AppRoutes.myVipPage,
+      page: () => MyVipPage(),
     ),
   ];
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -218,7 +217,7 @@ class SpeedDatingPage extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.white.withOpacity(0.3),
+                        color: Colors.white,
                         blurRadius: 4.rpx,
                       ),
                     ],
@@ -253,14 +252,27 @@ class SpeedDatingPage extends StatelessWidget {
             width: 300.rpx,
             height: 300.rpx,
           ),
+        Container(
+          width: 80.rpx,
+          height: 80.rpx,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withOpacity(0.5),
+                blurRadius: 8.rpx,
+              ),
+            ],
+          ),
+          child: AppImage.network(
+            SS.login.avatar,
+            length: 80.rpx,
+            shape: BoxShape.circle,
+          ),
+        ),
         AppImage.asset(
           "assets/images/plaza/speed_head_default.png",
           length: 80.rpx,
-        ),
-        AppImage.network(
-          SS.login.avatar,
-          length: 68.rpx,
-          shape: BoxShape.circle,
         ),
         if (state.isAnimation.value) ...avatarList(),
       ],
@@ -269,92 +281,74 @@ class SpeedDatingPage extends StatelessWidget {
 
   Widget _voiceSpecialEffects() {
     Widget avatarWidget({String? avatar}) {
-      return Stack(
-        alignment: Alignment.center,
-        children: [
-          AppImage.asset(
-            "assets/images/plaza/speed_head_default.png",
-            length: 80.rpx,
-          ),
-          if (avatar != null)
-            AppImage.network(
-              avatar,
-              length: 68.rpx,
-              shape: BoxShape.circle,
+      return SizedBox(
+        width: 115.rpx,
+        height: 115.rpx,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              width: 100.rpx,
+              height: 100.rpx,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.white.withOpacity(0.5),
+                    blurRadius: 8.rpx,
+                  ),
+                ],
+              ),
+              child: AppImage.network(
+                avatar ?? "",
+                length: 100.rpx,
+                shape: BoxShape.circle,
+                placeholder: AppImage.asset(
+                  "assets/images/plaza/speed_head_bg.png",
+                  length: 100.rpx,
+                ),
+              ),
             ),
-        ],
+            AppImage.asset(
+              "assets/images/plaza/speed_head_default.png",
+              length: 100.rpx,
+            ),
+          ],
+        ),
       );
     }
 
     return Stack(
       alignment: Alignment.center,
       children: [
-        if (state.isAnimation.value)
-          AppImage.svga(
-            "assets/images/plaza/electrocardiogram.svga",
-            width: 170.rpx,
-            height: 82.rpx,
-          ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             avatarWidget(avatar: SS.login.avatar),
-            SizedBox(width: 165.rpx),
+            SizedBox(width: 5.rpx),
             Stack(
+              alignment: Alignment.center,
               children: [
-                if (state.isAnimation.value)
-                  AnimatedBuilder(
-                    animation: controller.animation,
-                    builder: (context, child) {
-                      return CustomPaint(
-                        painter:
-                            CircleRipplePainter(controller.animation.value),
-                        size: Size(80.rpx, 80.rpx),
-                      );
-                    },
-                  ),
                 avatarWidget(
                     avatar: state.isAnimation.value
                         ? state.avatars[state.avatarIndex.value]
                         : null),
-                // avatarWidget(
-                //     avatar: null),
+                AppImage.svga(
+                  "assets/images/plaza/speed_head_circle_ripple.svga",
+                  width: 115.rpx,
+                  height: 115.rpx,
+                ),
               ],
             ),
           ],
         ),
+        if (state.isAnimation.value)
+          AppImage.svga(
+            "assets/images/plaza/electrocardiogram.svga",
+            width: 50.rpx,
+            height: 50.rpx,
+          ),
       ],
     );
-  }
-}
-
-class CircleRipplePainter extends CustomPainter {
-  final double value;
-
-  CircleRipplePainter(this.value);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final center = Offset(size.width / 2, size.height / 2);
-    final radius = value * size.width / 2;
-
-    final paint = Paint()
-      ..color = Colors.white.withOpacity(0.3)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-
-    canvas.drawCircle(center, radius + 2, paint);
-
-    final outerPaint = Paint()
-      ..color = Colors.white.withOpacity(0.3)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-
-    canvas.drawCircle(center, radius + 8, outerPaint);
-  }
-
-  @override
-  bool shouldRepaint(CircleRipplePainter oldDelegate) {
-    return oldDelegate.value != value;
   }
 }

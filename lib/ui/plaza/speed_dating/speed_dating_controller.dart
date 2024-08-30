@@ -64,7 +64,7 @@ class SpeedDatingController extends GetxController
         });
 
         final countDown = SS.appConfig.configRx.value?.matchingCountDown ?? 90;
-        _endTimer = Timer(Duration(seconds: countDown), () {
+        _endTimer = Timer(Duration(seconds: 10), () {
           state.isAnimation.value = false;
         });
       } else {
@@ -115,14 +115,14 @@ class SpeedDatingController extends GetxController
     state.roundCount = isVideo ? 5 : 1;
     if (state.isAnimation.value) return;
 
-    Loading.show();
-    final res = await IMApi.startSpeedDating(type: isVideo ? 1 : 2);
-    Loading.dismiss();
-
-    if (!res.isSuccess) {
-      res.showErrorMessage();
-      return;
-    }
+    // Loading.show();
+    // final res = await IMApi.startSpeedDating(type: isVideo ? 1 : 2);
+    // Loading.dismiss();
+    //
+    // if (!res.isSuccess) {
+    //   res.showErrorMessage();
+    //   return;
+    // }
 
     state.isAnimation.value = true;
   }

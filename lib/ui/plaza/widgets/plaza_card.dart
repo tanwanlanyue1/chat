@@ -186,55 +186,46 @@ class PlazaCard extends StatelessWidget {
       height: 250.rpx,
       margin: EdgeInsets.only(top: 12.rpx),
       child: Swiper(
-        autoplay: true,
+        autoplay: jsonDecode(item.images).length > 1 ? true :false,
         loop: true,
         index: 2,
         itemBuilder: (BuildContext context, int index) {
-          return Stack(
-            children: [
-              AppImage.network(
-                jsonDecode(item.images)?[index],
-                width: Get.width,
-                height: 300.rpx,
-                fit: BoxFit.fitWidth,
-                borderRadius: BorderRadius.circular(8.rpx),
+          return Container(
+            foregroundDecoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0x00000000),
+                  Color(0x4D000000),
+                ],
+                begin: Alignment(0.0, 0.6),
+                end: Alignment.bottomCenter,
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: 32.rpx,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [
-                        Color(0x00000000),
-                        Color(0x4D000000),
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(8.rpx),
-                      bottomRight: Radius.circular(8.rpx),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(jsonDecode(item.images).length, (j) => Container(
-                      width: 8.rpx,
-                      height: 8.rpx,
-                      margin: EdgeInsets.only(right: 8.rpx),
-                      decoration: BoxDecoration(
-                        color: index == j ? Colors.white : const Color(0x80ffffff),
-                        shape: BoxShape.circle,
-                      ),
-                    )),
-                  ),
-                ),
-              )
-            ],
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(8.rpx),
+                bottomRight: Radius.circular(8.rpx),
+              ),
+            ),
+            child: AppImage.network(
+              jsonDecode(item.images)?[index],
+              width: Get.width,
+              height: 300.rpx,
+              fit: BoxFit.fitWidth,
+              borderRadius: BorderRadius.circular(8.rpx),
+            ),
           );
         },
         itemCount: jsonDecode(item.images).length,
+        pagination: jsonDecode(item.images).length > 1 ?
+        SwiperPagination(
+            alignment:  Alignment.bottomCenter,
+            builder: DotSwiperPaginationBuilder(
+              color: const Color(0x80FFFFFF),
+              size: 8.rpx,
+              activeSize:8.rpx,
+              space: 8.rpx,
+              activeColor: Colors.white,
+            )
+        ):null,
       ),
     ) :
     Container();
@@ -272,6 +263,8 @@ class PlazaCard extends StatelessWidget {
                       ));
                 },
                 child: AppImage.network("${jsonDecode(item.images ?? '')?[index]}",
+                  memCacheHeight: Get.width/3,
+                  memCacheWidth: Get.width/3,
                   fit: BoxFit.cover,
                   borderRadius: BorderRadius.circular(8.rpx),
                   placeholder:  AppImage.asset("assets/images/plaza/back_image.png",

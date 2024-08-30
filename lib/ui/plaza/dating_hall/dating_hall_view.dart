@@ -174,7 +174,7 @@ class DatingHallView extends StatelessWidget {
                       height: 50.rpx,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: (item.age != null || item.style != null) ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,
                         children: [
                           Text(
                             item.nickname ?? '',
@@ -182,22 +182,30 @@ class DatingHallView extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                item.age != null ? "${item.age}岁 ｜":"",
-                                style:
-                                AppTextStyle.fs12m.copyWith(color: AppColor.black92),
-                              ),
-                              Expanded(
-                                  child: Text(
-                                    item.style?.replaceAll(',', '｜') ?? '',
-                                    style:
-                                    AppTextStyle.fs12m.copyWith(color: AppColor.black92),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )),
-                            ],
+                          Visibility(
+                            visible: item.age != null || item.style != null,
+                            child: Row(
+                              children: [
+                                Text(
+                                  item.age != null ? "${item.age}岁":"",
+                                  style:
+                                  AppTextStyle.fs12m.copyWith(color: AppColor.black92),
+                                ),
+                                Text(
+                                  (item.age != null && item.style != null) ? "|":"",
+                                  style:
+                                  AppTextStyle.fs12m.copyWith(color: AppColor.black92),
+                                ),
+                                Expanded(
+                                    child: Text(
+                                      item.style?.replaceAll(',', '｜') ?? '',
+                                      style:
+                                      AppTextStyle.fs12m.copyWith(color: AppColor.black92),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    )),
+                              ],
+                            ),
                           ),
                         ],
                       ),

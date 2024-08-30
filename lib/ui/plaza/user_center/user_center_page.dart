@@ -159,17 +159,18 @@ class UserCenterPage extends StatelessWidget {
           height: 220.rpx,
           child: state.authorInfo.images != null ?
           Swiper(
-            autoplay: true,
+            autoplay: jsonDecode(state.authorInfo.images!).length > 1 ? true : false,
             itemBuilder: (BuildContext context, int index) {
               return AppImage.network(
                 jsonDecode(state.authorInfo.images!)[index],
                 width: Get.width,
                 height: 220.rpx,
-                fit: BoxFit.fitWidth,
+                fit: BoxFit.cover,
               );
             },
             itemCount: jsonDecode(state.authorInfo.images!).length,
-            pagination: SwiperPagination(
+            pagination: jsonDecode(state.authorInfo.images!).length > 1 ?
+            SwiperPagination(
                 alignment:  Alignment.bottomRight,
                 margin: EdgeInsets.only(bottom: 30.rpx,right: 16.rpx),
                 builder: DotSwiperPaginationBuilder(
@@ -179,7 +180,7 @@ class UserCenterPage extends StatelessWidget {
                   space: 8.rpx,
                   activeColor: AppColor.primary,
                 )
-            ),
+            ):null,
             onTap: (i){
               PhotoViewGalleryPage.show(
                   Get.context!,

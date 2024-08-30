@@ -69,95 +69,138 @@ class SpeedDatingPage extends StatelessWidget {
                             .textColor(Colors.white),
                       ),
                     ),
-                    SizedBox(height: 51.rpx),
+                    SizedBox(height: isVideo ? 51.rpx : 72.5.rpx),
                     isVideo ? _videoSpecialEffects() : _voiceSpecialEffects(),
                     const Spacer(),
+                    if (state.isAnimation.value)
+                      Text(
+                        '正在速配有缘人，请稍等···',
+                        style: AppTextStyle.st.medium
+                            .size(16.rpx)
+                            .textColor(Colors.white),
+                      ),
                     SizedBox(
                       width: double.infinity,
-                      height: 80.rpx,
+                      height: 70.rpx,
                       child: Stack(
                         children: [
-                          Positioned(
-                            top: 0,
-                            right: 24.rpx,
-                            child: Container(
-                              height: 30.rpx,
-                              width: 40.rpx,
-                              padding: EdgeInsets.only(top: 4.rpx),
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(12.rpx)),
-                              ),
-                              child: Text(
-                                "免费",
-                                textAlign: TextAlign.center,
-                                style: AppTextStyle.st
-                                    .size(12.rpx)
-                                    .textColor(Colors.white)
-                                    .textHeight(1),
+                          if (!state.isAnimation.value)
+                            Positioned(
+                              top: 0,
+                              right: 24.rpx,
+                              child: Container(
+                                height: 30.rpx,
+                                width: 40.rpx,
+                                padding: EdgeInsets.only(top: 4.rpx),
+                                decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(12.rpx)),
+                                ),
+                                child: Text(
+                                  "免费",
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyle.st
+                                      .size(12.rpx)
+                                      .textColor(Colors.white)
+                                      .textHeight(1),
+                                ),
                               ),
                             ),
-                          ),
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: GestureDetector(
                               onTap: () => controller.onTapStart(isVideo),
                               child: Container(
                                 height: 50.rpx,
-                                margin: EdgeInsets.symmetric(horizontal: 24.rpx)
-                                    .copyWith(bottom: 12.rpx),
+                                margin:
+                                    EdgeInsets.symmetric(horizontal: 24.rpx),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: state.isAnimation.value
+                                      ? Colors.white.withOpacity(0.3)
+                                      : Colors.white,
                                   borderRadius: BorderRadius.circular(8.rpx),
                                 ),
                                 alignment: Alignment.center,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    AppImage.asset(
-                                      isVideo
-                                          ? "assets/images/plaza/video.png"
-                                          : "assets/images/plaza/voice.png",
-                                      length: 24.rpx,
-                                    ),
-                                    SizedBox(width: 16.rpx),
-                                    Text(
-                                      isVideo ? '视频速配' : '语音速配',
-                                      style: AppTextStyle.st
-                                          .size(16.rpx)
-                                          .textColor(AppColor.black3),
-                                    ),
-                                  ],
-                                ),
+                                child: state.isAnimation.value
+                                    ? Text(
+                                        '取消匹配',
+                                        style: AppTextStyle.st
+                                            .size(16.rpx)
+                                            .textColor(AppColor.blackText),
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          AppImage.asset(
+                                            isVideo
+                                                ? "assets/images/plaza/video.png"
+                                                : "assets/images/plaza/voice.png",
+                                            length: 24.rpx,
+                                          ),
+                                          SizedBox(width: 16.rpx),
+                                          Text(
+                                            isVideo ? '视频速配' : '语音速配',
+                                            style: AppTextStyle.st
+                                                .size(16.rpx)
+                                                .textColor(AppColor.black3),
+                                          ),
+                                        ],
+                                      ),
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          const TextSpan(
-                            text: '前1分钟免费聊天！',
-                          ),
-                          TextSpan(
-                            text: '${isVideo ? '视频聊天' : '语音聊天'}120钻/15min',
-                            style: AppTextStyle.st
-                                .size(12.rpx)
-                                .textColor(Colors.white),
-                          ),
-                        ],
-                      ),
-                      style: AppTextStyle.st.bold
-                          .size(14.rpx)
-                          .textColor(Colors.white),
+                    Container(
+                      width: double.infinity,
+                      height: 38.rpx,
+                      alignment: Alignment.center,
+                      child: !state.isAnimation.value
+                          ? Builder(builder: (context) {
+                              final config = SS.appConfig.configRx.value;
+                              final freeTime =
+                                  ((config?.chatFreeSecond ?? 60) / 60)
+                                      .floor()
+                                      .toString();
+
+                              final price = isVideo
+                                  ? config?.videoChatPrice ?? 0
+                                  : config?.voiceChatPrice ?? 0;
+
+                              final priceAmount = (price * 15).toString();
+
+                              return Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "前$freeTime分钟免费聊天！",
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '${isVideo ? '视频聊天' : '语音聊天'}$priceAmount钻/15min',
+                                      style: AppTextStyle.st
+                                          .size(12.rpx)
+                                          .textColor(Colors.white),
+                                    ),
+                                  ],
+                                ),
+                                style: AppTextStyle.st.bold
+                                    .size(14.rpx)
+                                    .textColor(Colors.white),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              );
+                            })
+                          : null,
                     ),
-                    SizedBox(height: 54.rpx),
+                    SizedBox(height: 42.rpx),
                   ],
                 ),
               ),
+              if (isVideo && state.isAnimation.value) _camera(),
             ],
           ),
         );
@@ -172,6 +215,45 @@ class SpeedDatingPage extends StatelessWidget {
             )
           : content();
     });
+  }
+
+  Widget _camera() {
+    return Positioned(
+      bottom: 210.rpx + Get.mediaQuery.padding.bottom,
+      right: 16.rpx,
+      child: GestureDetector(
+        onTap: state.isCameraOpen.toggle,
+        child: Container(
+          width: 56.rpx,
+          height: 56.rpx,
+          decoration: BoxDecoration(
+            color: AppColor.primaryBlue.withOpacity(0.3),
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: AppColor.primaryBlue.withOpacity(0.2),
+                blurRadius: 4.rpx,
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AppImage.asset(
+                state.isCameraOpen.value
+                    ? "assets/images/plaza/camera_open.png"
+                    : "assets/images/plaza/camera_close.png",
+                length: 24.rpx,
+              ),
+              Text(
+                state.isCameraOpen.value ? '开启' : '关闭',
+                style: AppTextStyle.st.size(12.rpx).textColor(Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _videoSpecialEffects() {

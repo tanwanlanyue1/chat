@@ -80,6 +80,7 @@ class UserModel {
     this.dealNum,
     this.payPwd,
     required this.balance,
+    required this.vip,
   });
 
   final int uid; // 用户id
@@ -110,6 +111,7 @@ class UserModel {
   int? dealNum; // 成交单数 30天内的
   bool? payPwd; // 是否设置支付密码 true已设置 false未设置
   num balance = 0; //余额
+  bool vip;
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -141,6 +143,7 @@ class UserModel {
       dealNum: json["dealNum"],
       payPwd: json["payPwd"] ?? false,
       balance: json["balance"] ?? 0,
+      vip: json["vip"] ?? false,
     );
   }
 
@@ -172,6 +175,7 @@ class UserModel {
         "praiseRate": praiseRate,
         "dealNum": dealNum,
         "payPwd": payPwd,
+        "vip": vip
       };
 
   UserModel copyWith({
@@ -203,6 +207,7 @@ class UserModel {
     int? dealNum,
     bool? payPwd,
     num? balance,
+    bool? vip,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -233,6 +238,7 @@ class UserModel {
       dealNum: dealNum ?? this.dealNum,
       payPwd: payPwd ?? this.payPwd,
       balance: balance ?? this.balance,
+      vip: vip ?? this.vip,
     );
   }
 }

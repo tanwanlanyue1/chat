@@ -51,11 +51,15 @@ class LoginService extends GetxService {
   // 用户昵称
   String get nickname => info?.nickname ?? "";
 
+  // 用户是否为VIP
+  bool get isVip => info?.vip ?? false;
+
   // 用户类型 默认用户
   UserType get userType => _info.value?.type ?? UserType.user;
 
   // 用户绑定信息
-  bool get userBind => ((info?.phone?.isNotEmpty ?? false) || (info?.email?.isNotEmpty ?? false));
+  bool get userBind => ((info?.phone?.isNotEmpty ?? false) ||
+      (info?.email?.isNotEmpty ?? false));
 
   /// Private 防止外部修改
 
@@ -73,7 +77,7 @@ class LoginService extends GetxService {
   final _localStorage = LocalStorage('LoginService');
 
   LoginService() {
-    ever(_isLogin, (isLogin) async{
+    ever(_isLogin, (isLogin) async {
       if (isLogin) {
         //连接到IM服务
         ChatManager().connect(

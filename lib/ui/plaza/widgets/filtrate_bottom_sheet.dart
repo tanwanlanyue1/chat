@@ -58,7 +58,10 @@ class FiltrateBottomSheet extends StatelessWidget {
                   child: Column(
                     children: [
                       AppImage.asset(state.filtrateIndex == index+1 ? state.filtrateType[index]['activeImage']:state.filtrateType[index]['image'],width: 60.rpx,height: 60.rpx,),
-                      Text(state.filtrateType[index]['name'],style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+                      Padding(
+                        padding: EdgeInsets.only(top: 8.rpx),
+                        child: Text(state.filtrateType[index]['name'],style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+                      ),
                     ],
                   ),
                 )),

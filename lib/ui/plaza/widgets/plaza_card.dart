@@ -185,6 +185,10 @@ class PlazaCard extends StatelessWidget {
     Container(
       height: 250.rpx,
       margin: EdgeInsets.only(top: 12.rpx),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.rpx),
+      ),
+      clipBehavior: Clip.antiAlias,
       child: Swiper(
         autoplay: jsonDecode(item.images).length > 1 ? true :false,
         loop: true,
@@ -209,8 +213,7 @@ class PlazaCard extends StatelessWidget {
               jsonDecode(item.images)?[index],
               width: Get.width,
               height: 300.rpx,
-              fit: BoxFit.fitWidth,
-              borderRadius: BorderRadius.circular(8.rpx),
+              fit: BoxFit.cover,
             ),
           );
         },
@@ -226,6 +229,15 @@ class PlazaCard extends StatelessWidget {
               activeColor: Colors.white,
             )
         ):null,
+        onTap: (index) {
+          PhotoViewGalleryPage.show(
+              Get.context!,
+              PhotoViewGalleryPage(
+                images: jsonDecode(item.images ?? ''),
+                index: index,
+                heroTag: '',
+              ));
+        },
       ),
     ) :
     Container();

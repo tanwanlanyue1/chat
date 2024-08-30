@@ -47,6 +47,7 @@ class SpeedDatingController extends GetxController
         callId: content.orderId.toString(),
         isVideoCall: content.isVideo,
         autoAccept: true,
+        enableCamera: state.isCameraOpen.value,
       );
     }));
 
@@ -64,7 +65,7 @@ class SpeedDatingController extends GetxController
         });
 
         final countDown = SS.appConfig.configRx.value?.matchingCountDown ?? 90;
-        _endTimer = Timer(Duration(seconds: 10), () {
+        _endTimer = Timer(Duration(seconds: countDown), () {
           state.isAnimation.value = false;
         });
       } else {
@@ -113,17 +114,32 @@ class SpeedDatingController extends GetxController
   // 点击开启速配
   void onTapStart(bool isVideo) async {
     state.roundCount = isVideo ? 5 : 1;
-    if (state.isAnimation.value) return;
 
-    // Loading.show();
-    // final res = await IMApi.startSpeedDating(type: isVideo ? 1 : 2);
-    // Loading.dismiss();
-    //
-    // if (!res.isSuccess) {
-    //   res.showErrorMessage();
-    //   return;
-    // }
+    // 在动画中证明要进行取消操作
+    if (state.isAnimation.value) {
+      Loading.show();
+      final res = await IMApi.cancelSpeedDating(orderId: state.orderId);
+      Loading.dismiss();
 
-    state.isAnimation.value = true;
+      if (!res.isSuccess) {
+        res.showErrorMessage();
+        return;
+      }
+
+      state.isAnimation.value = false;
+    } else {
+      Loading.show();
+      final res = await IMApi.startSpeedDating(type: isVideo ? 1 : 2);
+      Loading.dismiss();
+
+      if (!res.isSuccess) {
+        res.showErrorMessage();
+        return;
+      }
+
+      state.orderId = res.data ?? 0;
+
+      state.isAnimation.value = true;
+    }
   }
 }

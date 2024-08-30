@@ -9,5 +9,7 @@ class SpeedDatingState {
 
   final avatarIndex = 0.obs;
 
-  // final
+  final isCameraOpen = true.obs;
+
+  int orderId = 0;
 }

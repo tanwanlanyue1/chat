@@ -50,8 +50,8 @@ class HomePage extends StatelessWidget {
         currentIndex: currentPage,
         selectedItemColor: AppColor.primaryBlue,
         unselectedItemColor: AppColor.tab,
-        unselectedLabelStyle: AppTextStyle.fs12m,
-        selectedLabelStyle: AppTextStyle.fs12m,
+        unselectedLabelStyle: AppTextStyle.fs12m.copyWith(fontSize: 12),
+        selectedLabelStyle: AppTextStyle.fs12m.copyWith(fontSize: 12),
         items: state.allBottomNavItems.mapIndexed((index, item) {
           return BottomNavigationBarItem(
             icon: Badge(
@@ -60,8 +60,8 @@ class HomePage extends StatelessWidget {
               isLabelVisible: index == 0 && chatUnread > 0,
               child: AppImage.asset(
                 item.icon,
-                width: 28.rpx,
-                height: 28.rpx,
+                width: 28,
+                height: 28,
                 color: currentPage == index ? AppColor.primaryBlue : AppColor.tab,
               ),
             ),

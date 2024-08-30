@@ -2,9 +2,6 @@ part of 'chat_manager.dart';
 
 mixin ChatCallMixin{
 
-  ///自动接听
-  static const _kAutoAcceptCall = 'AutoAcceptCall';
-
   ///当前通话ID（对应业务服务端订单id）
   var _callId = '';
 
@@ -25,12 +22,14 @@ mixin ChatCallMixin{
   ///- nickname 接收方昵称
   ///- callId 通话ID（对应业务订单ID）
   ///- isVideoCall 是否是视频通话
+  ///- enableCamera 是否默认启用摄像头(仅视频通话有效)
   ///- autoAccept 接收方是否自动接听
   Future<void> startCall({
     required int userId,
     required String nickname,
     required String callId,
     required bool isVideoCall,
+    bool enableCamera = true,
     bool autoAccept = false,
   }) async {
     if (!await checkPermission(isVideoCall)) {
@@ -60,7 +59,7 @@ mixin ChatCallMixin{
       name: nickname,
     );
 
-    final customData = autoAccept ? _kAutoAcceptCall : '';
+    final customData = CallCustomData(autoAccept, enableCamera).toJsonString();
     final resourceID = '';
     String? notificationTitle;
     String? notificationMessage;
@@ -306,7 +305,7 @@ mixin ChatCallMixin{
           await checkPermission(callType == ZegoCallInvitationType.videoCall);
 
           //自动接听
-          if(customData == _kAutoAcceptCall){
+          if(CallCustomData.fromJsonString(customData)?.autoAccept == true){
             acceptCall(customData: customData);
           }
         },
@@ -349,9 +348,10 @@ mixin ChatCallMixin{
       invitee: ZegoCallInvitationInviteeUIConfig(
         backgroundBuilder: backgroundBuilder,
         requirePopUp: (data){
+          final customData = CallCustomData.fromJsonString(data.customData);
           return ZegoCallInvitationNotifyPopUpUIConfig(
             //自动接听时，不显示顶部的呼入对话框
-            visible: data.customData != _kAutoAcceptCall,
+            visible: customData?.autoAccept != true,
           );
         },
       ),
@@ -435,6 +435,12 @@ mixin ChatCallMixin{
       _callingPay(duration);
     });
 
+    //发起方默认是否开启摄像头
+    final customData = CallCustomData.fromJsonString(data.customData);
+    if(customData?.enableCamera == false && data.inviter?.id == SS.login.userId.toString()){
+      config.turnOnCameraWhenJoining = false;
+    }
+
     return config;
   }
 
@@ -499,4 +505,37 @@ mixin ChatCallMixin{
     _isWaitCallEndDialog = false;
   }
 
+}
+
+
+///音视频通话自定义数据
+class CallCustomData{
+
+  ///是否自动接听
+  final bool autoAccept;
+
+  ///接听时是否启用摄像头
+  final bool enableCamera;
+
+  CallCustomData(this.autoAccept, this.enableCamera);
+  static CallCustomData? fromJsonString(String jsonStr){
+    try{
+      if(jsonStr.isNotEmpty){
+        final json = jsonDecode(jsonStr);
+        return CallCustomData(
+          json['autoAccept'],
+          json['enableCamera'],
+        );
+      }
+    }catch(ex){
+      AppLogger.w(ex);
+    }
+    return null;
+  }
+  String toJsonString(){
+    return jsonEncode({
+      'autoAccept': autoAccept,
+      'enableCamera': enableCamera,
+    });
+  }
 }

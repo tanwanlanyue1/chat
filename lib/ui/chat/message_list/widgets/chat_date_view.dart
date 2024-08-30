@@ -211,15 +211,15 @@ mixin UIOrderStateMixin{
         UserType.beauty: UIOrderState(desc: '约会订单已超时'),
         UserType.agent: UIOrderState(desc: '约会订单已超时'),
       },
-      OrderItemState.finish: {
-        UserType.user: UIOrderState(desc: '约会订单已完成'),
-        UserType.beauty: UIOrderState(desc: '约会订单已完成'),
-        UserType.agent: UIOrderState(desc: '约会订单已完成'),
-      },
       OrderItemState.waitingEvaluation: {
-        UserType.user: UIOrderState(desc: '约会订单已完成'),
-        UserType.beauty: UIOrderState(desc: '约会订单已完成'),
-        UserType.agent: UIOrderState(desc: '约会订单已完成'),
+        UserType.user: UIOrderState(desc: '约会订单已完成，待您评价'),
+        UserType.beauty: UIOrderState(desc: '约会订单已完成，待用户评价'),
+        UserType.agent: UIOrderState(desc: '约会订单已完成，待用户评价'),
+      },
+      OrderItemState.finish: {
+        UserType.user: UIOrderState(desc: '您已评价'),
+        UserType.beauty: UIOrderState(desc: '用户已评价'),
+        UserType.agent: UIOrderState(desc: '用户已评价'),
       },
     };
   }

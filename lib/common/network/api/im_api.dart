@@ -60,12 +60,13 @@ class IMApi {
   ///- orderId 订单ID
   ///- uuid 扣费uuid 只能用一次
   ///- return uuid
-  static Future<ApiResponse<String>> chatOrderPay({required int orderId, String? uuid}) {
+  static Future<ApiResponse<String>> chatOrderPay(
+      {required int orderId, String? uuid}) {
     return HttpClient.post(
       '/api/im/chatOrderPay',
       data: {
         "id": orderId,
-        if(uuid != null) "uuid": uuid,
+        if (uuid != null) "uuid": uuid,
       },
     );
   }
@@ -125,7 +126,6 @@ class IMApi {
     required String msgId,
     required int number,
   }) {
-
     /* 错误码
     (3100, "红包不存在"),
     (3101, "红包已领取"),
@@ -159,14 +159,25 @@ class IMApi {
     );
   }
 
-
   /// 通话-速配接口
   ///- type ：1视频 2语音
-  static Future<ApiResponse> startSpeedDating({required int type}) {
+  ///- return orderId
+  static Future<ApiResponse<int>> startSpeedDating({required int type}) {
     return HttpClient.post(
       '/api/im/sendMatchingMsg',
       data: {
         "code": type,
+      },
+    );
+  }
+
+  /// 通话-取消速配接口
+  ///- type ：1视频 2语音
+  static Future<ApiResponse> cancelSpeedDating({required int orderId}) {
+    return HttpClient.post(
+      '/api/im/cancelMatching',
+      data: {
+        "id": orderId,
       },
     );
   }

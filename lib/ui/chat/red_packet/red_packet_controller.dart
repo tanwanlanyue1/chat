@@ -25,6 +25,7 @@ class RedPacketController extends GetxController {
     super.onInit();
     amountEditingController.bindTextRx(state.amountRx);
     descEditingController.bindTextRx(state.descRx);
+    SS.appConfig.fetchData();
   }
 
   String get defaultDesc => '最懂你的管佳';

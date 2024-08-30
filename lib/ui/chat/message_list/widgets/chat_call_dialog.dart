@@ -19,6 +19,7 @@ class ChatCallDialog extends StatelessWidget {
   const ChatCallDialog._({super.key, required this.isVideoCall, required this.userId});
 
   static Future<bool?> show({required bool isVideoCall, required int userId}) {
+    SS.appConfig.fetchData();
     return Get.dialog<bool>(
       ChatCallDialog._(isVideoCall: isVideoCall, userId: userId),
     );
@@ -65,45 +66,48 @@ class ChatCallDialog extends StatelessWidget {
               ),
               margin: FEdgeInsets(horizontal: 16.rpx, top: 16.rpx),
               padding: EdgeInsets.all(24.rpx),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if(freeChatHintText.isNotEmpty) Text(
-                    freeChatHintText,
-                    style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
-                  ),
-                  if(priceHintText.isNotEmpty)Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        isVideoCall ? "实时视频" : "实时语音",
-                        style:
-                            AppTextStyle.fs14m.copyWith(color: AppColor.black6),
-                      ),
-                      Text(
-                        priceHintText,
-                        style:
-                            AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
-                      ),
-                    ],
-                  ),
-                  if(balanceHintText.isNotEmpty) Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "管佳金库余额",
-                        style: AppTextStyle.fs14m
-                            .copyWith(color: AppColor.black6),
-                      ),
-                      Text(
-                        balanceHintText,
-                        style: AppTextStyle.fs14b
-                            .copyWith(color: AppColor.primary),
-                      ),
-                    ],
-                  ),
-                ].separated(Spacing.h16).toList(),
-              ),
+              child: Obx((){
+                SS.appConfig.configRx();
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if(freeChatHintText.isNotEmpty) Text(
+                      freeChatHintText,
+                      style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
+                    ),
+                    if(priceHintText.isNotEmpty)Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          isVideoCall ? "实时视频" : "实时语音",
+                          style:
+                          AppTextStyle.fs14m.copyWith(color: AppColor.black6),
+                        ),
+                        Text(
+                          priceHintText,
+                          style:
+                          AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
+                        ),
+                      ],
+                    ),
+                    if(balanceHintText.isNotEmpty) Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "管佳金库余额",
+                          style: AppTextStyle.fs14m
+                              .copyWith(color: AppColor.black6),
+                        ),
+                        Text(
+                          balanceHintText,
+                          style: AppTextStyle.fs14b
+                              .copyWith(color: AppColor.primary),
+                        ),
+                      ],
+                    ),
+                  ].separated(Spacing.h16).toList(),
+                );
+              }),
             ),
             Padding(
               padding: FEdgeInsets(all: 16.rpx, top: 40.rpx),

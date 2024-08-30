@@ -166,6 +166,14 @@ class ChatCallEndMessage extends StatelessWidget {
           label: '平台费',
           value: content.platformFee.toCurrencyString(),
         ),
+        if(content.hasAgent) buildItem(
+          label: '经纪人收取比例',
+          value: (content.agentRate ?? 0).toPercent(scale: 1),
+        ),
+        if(content.hasAgent) buildItem(
+          label: '经纪人收费',
+          value: (content.agentFee ?? 0).toCurrencyString(),
+        ),
         buildItem(
           label: '陪聊实收金额',
           value: content.beautyFee.toCurrencyString(),

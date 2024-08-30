@@ -33,11 +33,14 @@ class MessageCallEndContent {
   ///佳丽收益
   final num beautyFee;
 
-  ///经纪人分成百分百0-100
-  final num agentRate;
+  ///经纪人分成百分百0-100，佳丽有经纪人的情况下才会返回
+  final num? agentRate;
 
-  ///经纪人收益
-  final num agentFee;
+  ///经纪人收益,佳丽有经纪人的情况下才会返回
+  final num? agentFee;
+
+  ///佳丽是否有经纪人
+  bool get hasAgent => agentRate != null && agentFee != null;
 
   MessageCallEndContent({
     required this.isVideoCall,
@@ -68,8 +71,8 @@ class MessageCallEndContent {
       platformRate: json['platformRate'] ?? 0,
       beautyFee: json['beautyFee'] ?? 0,
       beautyRate: json['beautyRate'] ?? 0,
-      agentFee: json['agentFee'] ?? 0,
-      agentRate: json['agentRate'] ?? 0,
+      agentFee: json['agentFee'],
+      agentRate: json['agentRate'],
     );
   }
 }

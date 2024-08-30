@@ -159,27 +159,41 @@ class SpeedDatingPage extends StatelessWidget {
                       height: 38.rpx,
                       alignment: Alignment.center,
                       child: !state.isAnimation.value
-                          ? Text.rich(
-                              TextSpan(
-                                children: [
-                                  const TextSpan(
-                                    text: '前1分钟免费聊天！',
-                                  ),
-                                  TextSpan(
-                                    text:
-                                        '${isVideo ? '视频聊天' : '语音聊天'}120钻/15min',
-                                    style: AppTextStyle.st
-                                        .size(12.rpx)
-                                        .textColor(Colors.white),
-                                  ),
-                                ],
-                              ),
-                              style: AppTextStyle.st.bold
-                                  .size(14.rpx)
-                                  .textColor(Colors.white),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            )
+                          ? Builder(builder: (context) {
+                              final config = SS.appConfig.configRx.value;
+                              final freeTime =
+                                  ((config?.chatFreeSecond ?? 60) / 60)
+                                      .floor()
+                                      .toString();
+
+                              final price = isVideo
+                                  ? config?.videoChatPrice ?? 0
+                                  : config?.voiceChatPrice ?? 0;
+
+                              final priceAmount = (price * 15).toString();
+
+                              return Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "前$freeTime分钟免费聊天！",
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '${isVideo ? '视频聊天' : '语音聊天'}$priceAmount钻/15min',
+                                      style: AppTextStyle.st
+                                          .size(12.rpx)
+                                          .textColor(Colors.white),
+                                    ),
+                                  ],
+                                ),
+                                style: AppTextStyle.st.bold
+                                    .size(14.rpx)
+                                    .textColor(Colors.white),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              );
+                            })
                           : null,
                     ),
                     SizedBox(height: 42.rpx),

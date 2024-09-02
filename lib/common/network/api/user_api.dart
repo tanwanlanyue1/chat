@@ -513,8 +513,8 @@ class UserApi {
     );
   }
 
-  /// 契约单 - 获取经纪人团队列表
-  static Future<ApiResponse<List<TeamUser>>> getTeamUserList({
+  /// 契约单 - 获取经纪人团队列表 TeamUser
+  static Future<ApiResponse<ApiPageData<TeamUser>>> getTeamUserList({
     int page = 1,
     int size = 10,
   }) {
@@ -524,12 +524,16 @@ class UserApi {
         "page": page,
         "size": size,
       },
-      dataConverter: (json) {
-        if (json is List) {
-          return json.map((e) => TeamUser.fromJson(e)).toList();
-        }
-        return [];
-      },
+      dataConverter: (data) => ApiPageData.fromJson(data, TeamUser.fromJson,dataFieldName: "list"),
+      // dataConverter: (json) {
+      //   if(json != null && json['list'] is List){
+      //     return {
+      //       "total": json['total'] ?? 0,
+      //       "list": json['list'].map((e) => TeamUser.fromJson(e)).toList(),
+      //     };
+      //   }
+      //   return {};
+      // }
     );
   }
 

@@ -170,13 +170,15 @@ class PlazaCard extends StatelessWidget {
 
   ///卡片内容
   Widget _buildBody(){
-    return Container(
+    return item.content != null && item.content!.isNotEmpty ?
+    Container(
         margin: EdgeInsets.only(top: user ? 0 : 10.rpx,bottom: 4.rpx),
         alignment: Alignment.centerLeft,
         child: Text(
-          item.content ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),maxLines: 6,overflow: TextOverflow.ellipsis,
+          item.content!,style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),maxLines: 6,overflow: TextOverflow.ellipsis,
         )
-    );
+    ) :
+    Container();
   }
 
   ///关注轮播图
@@ -312,14 +314,13 @@ class PlazaCard extends StatelessWidget {
           child: Container(
             color: Colors.transparent,
             height: 28.rpx,
-            padding: EdgeInsets.symmetric(horizontal: 6.rpx,vertical: 4.rpx),
-            margin: EdgeInsets.only(top: 4.rpx),
+            margin: EdgeInsets.only(right: 24.rpx),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AppImage.asset((item.isLike ?? false) ? "assets/images/plaza/attention.png":"assets/images/plaza/attention_no.png",width: 16.rpx,height: 16.rpx,),
-                SizedBox(width: 6.rpx,),
-                Text(' ${(item.likeNum != null && item.likeNum != 0) ? item.likeNum : '赞'}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
+                SizedBox(width: 4.rpx,),
+                Text('${(item.likeNum != null && item.likeNum != 0) ? item.likeNum : '赞'}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
               ],
             ),
           ),
@@ -334,13 +335,16 @@ class PlazaCard extends StatelessWidget {
           child: Container(
             color: Colors.transparent,
             height: 28.rpx,
-            padding: EdgeInsets.only(top: 4.rpx,left: 20.rpx,right: 4.rpx),
+            padding: EdgeInsets.only(right: 4.rpx),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                AppImage.asset("assets/images/plaza/comment.png",width: 16.rpx,height: 16.rpx,),
-                SizedBox(width: 6.rpx,),
-                Text('${(item.commentNum != null && item.commentNum != 0) ? item.commentNum : '评论'}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx),),
+                AppImage.asset("assets/images/plaza/comment.png",width: 14.rpx,height: 14.rpx,),
+                SizedBox(width: 4.rpx,),
+                Padding(
+                  padding: EdgeInsets.only(top: 2.rpx),
+                  child: Text('${(item.commentNum != null && item.commentNum != 0) ? item.commentNum : '评论'}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx)),
+                ),
               ],
             ),
           ),

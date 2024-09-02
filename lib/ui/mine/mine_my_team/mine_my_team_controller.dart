@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/model/user/contract_model.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/ui/mine/inapp_message/inapp_message_type.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -11,7 +14,7 @@ import '../../../common/network/api/api.dart';
 import 'mine_my_team_state.dart';
 import 'widget/team_contract_terminate_dialog.dart';
 
-class MineMyTeamController extends GetxController {
+class MineMyTeamController extends GetxController with GetAutoDisposeMixin {
   final MineMyTeamState state = MineMyTeamState();
 
   //分页控制器
@@ -24,6 +27,13 @@ class MineMyTeamController extends GetxController {
   @override
   void onInit() {
     pagingController.addPageRequestListener(_fetchPage);
+    //契约状态变更监听
+    autoCancel(SS.inAppMessage.listen((message) {
+      if(message.type == InAppMessageType.contractUpdate){
+        pagingController.refresh();
+      }
+    }));
+
     super.onInit();
   }
 
@@ -33,9 +43,12 @@ class MineMyTeamController extends GetxController {
       size: pagingController.pageSize,
     );
 
-    final list = res.data ?? [];
+    List<TeamUser>? list= res.data?.records;
     if (res.isSuccess) {
-      pagingController.appendPageData(list);
+      if(page == 1){
+        state.total = res.data?.total ?? 0;
+      }
+      pagingController.appendPageData(list ?? []);
     } else {
       pagingController.error = res.errorMessage;
     }

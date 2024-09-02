@@ -44,14 +44,25 @@ class MineMyTeamPage extends StatelessWidget {
       body: SmartRefresher(
         controller: controller.pagingController.refreshController,
         onRefresh: controller.pagingController.onRefresh,
-          child: PagedListView(
-            pagingController: controller.pagingController,
-            builderDelegate: DefaultPagedChildBuilderDelegate<TeamUser>(
-              pagingController: controller.pagingController,
-              itemBuilder: (_, item, index) {
-                return jiaItem(item,index);
-              },
-            ),
+          child: CustomScrollView(
+            slivers: [
+              PagedSliverList(
+                  pagingController: controller.pagingController,
+                  builderDelegate: DefaultPagedChildBuilderDelegate<TeamUser>(
+                    pagingController: controller.pagingController,
+                    itemBuilder: (_, item, index) {
+                      return jiaItem(item,index);
+                    },
+                  )
+              ),
+              SliverToBoxAdapter(
+                child: Container(
+                  margin: EdgeInsets.only(top: 24.rpx),
+                  alignment: Alignment.center,
+                  child: Text("共${state.total}位艺人",style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
+                ),
+              ),
+            ],
           )
       ),
     );

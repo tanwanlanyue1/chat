@@ -22,10 +22,19 @@ class AppConfigService extends GetxService {
   num get redPacketMaxAmount{
     return configRx()?.redPacketMaxAmount ?? AppConfig.redPacketMaxAmount;
   }
+  ///红包描述文字个数
+  int get redPacketDescLimit{
+    return configRx()?.redPacketDescLimit ?? AppConfig.redPacketDescLimit;
+  }
 
   ///转账最大金额
   num get transferMaxAmount{
     return configRx()?.transferMaxAmount ?? AppConfig.transferMaxAmount;
+  }
+
+  ///金额小数位精度
+  int get decimalDigits{
+    return configRx()?.decimalDigits ?? AppConfig.decimalDigits;
   }
 
   Future<void> fetchData() async {

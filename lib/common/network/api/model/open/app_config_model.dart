@@ -61,8 +61,14 @@ class AppConfigModel {
   ///红包最大金额 TODO 预留字段，服务端还没有
   num? redPacketMaxAmount;
 
+  ///红包描述文字数量 TODO 预留字段，服务端还没有
+  int? redPacketDescLimit;
+
   ///最大转账金额 TODO 预留字段，服务端还没有
   num? transferMaxAmount;
+
+  ///金额小数位精度 TODO 预留字段，服务端还没有
+  int? decimalDigits;
 
   ///速配倒计时
   int? matchingCountDown;
@@ -153,7 +159,9 @@ class AppConfigModel {
     chatMinBalance = json['chatMinBalance'];
     matchingCountDown = json['matchingCountDown'];
     redPacketMaxAmount = json['redPacketMaxAmount'];
+    redPacketDescLimit = json['redPacketDescLimit'];
     transferMaxAmount = json['transferMaxAmount'];
+    decimalDigits = json['decimalDigits'];
     systemMessage = json['systemMessage'];
     lookMessage = json['lookMessage'];
   }

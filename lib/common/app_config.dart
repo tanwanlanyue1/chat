@@ -48,7 +48,13 @@ class AppConfig{
   ///红包最大金额
   static const redPacketMaxAmount = 200.0;
 
+  ///红包描述文字个数
+  static const redPacketDescLimit = 10;
+
   ///转账最大金额
   static const transferMaxAmount = 99999999.0;
+
+  ///金额小数位精度
+  static const decimalDigits = 2;
 
 }

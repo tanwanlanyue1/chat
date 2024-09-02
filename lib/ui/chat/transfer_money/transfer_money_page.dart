@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/decimal_text_input_formatter.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
@@ -18,7 +20,7 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         // 不要让全局隐藏键盘影响
       },
       child: Scaffold(
@@ -58,7 +60,7 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius:
-                  BorderRadius.vertical(top: Radius.circular(16.rpx)),
+                      BorderRadius.vertical(top: Radius.circular(16.rpx)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,8 +75,13 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
               ),
             ),
             TransferMoneyKeyboard(
-              maxValue: SS.appConfig.transferMaxAmount,
-              onChanged: (value){
+              formatter: DecimalTextInputFormatter(
+                decimalDigits: SS.appConfig.decimalDigits,
+                maxValue: SS.appConfig.transferMaxAmount,
+                maxValueHint:
+                    '转账金额不能大于${SS.appConfig.transferMaxAmount.toCurrencyString()}',
+              ),
+              onChanged: (value) {
                 controller.amountEditingController.text = value;
               },
               onConfirm: (value) => controller.submit(),
@@ -125,5 +132,4 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
       ),
     );
   }
-
 }

@@ -3,10 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/decimal_text_input_formatter.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
+import 'package:number_text_input_formatter/number_text_input_formatter.dart';
 
 import 'red_packet_controller.dart';
 
@@ -66,7 +69,13 @@ class RedPacketPage extends GetView<RedPacketController> {
         signed: false,
         decimal: true,
       ),
-      inputFormatters: [LengthLimitingTextInputFormatter(8)],
+      inputFormatters: [
+        DecimalTextInputFormatter(
+          maxValue: SS.appConfig.redPacketMaxAmount,
+          maxValueHint: '最大金额不能超过${SS.appConfig.redPacketMaxAmount.toCurrencyString()}',
+          decimalDigits: SS.appConfig.decimalDigits,
+        ),
+      ],
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
@@ -108,7 +117,9 @@ class RedPacketPage extends GetView<RedPacketController> {
       child: TextField(
         controller: controller.descEditingController,
         maxLines: 1,
-        inputFormatters: [LengthLimitingTextInputFormatter(120)],
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(SS.appConfig.redPacketDescLimit)
+        ],
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,

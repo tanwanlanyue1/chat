@@ -4,22 +4,21 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
-import 'package:guanjia/common/extension/math_extension.dart';
+import 'package:guanjia/common/utils/decimal_text_input_formatter.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
-import 'package:guanjia/widgets/loading.dart';
 
 ///转账键盘
 class TransferMoneyKeyboard extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final ValueChanged<double>? onConfirm;
-  final num maxValue;
+  final DecimalTextInputFormatter formatter;
 
   const TransferMoneyKeyboard({
     super.key,
     this.onChanged,
     this.onConfirm,
-    this.maxValue = 99999999,
+    required this.formatter,
   });
 
   @override
@@ -147,7 +146,7 @@ class _TransferMoneyKeyboardState extends State<TransferMoneyKeyboard> {
         break;
       case confirm:
         var val = value;
-        if(val.endsWith(dot)){
+        if (val.endsWith(dot)) {
           val = val.replaceFirst(dot, '');
         }
         widget.onConfirm?.call(double.tryParse(val) ?? 0);
@@ -157,15 +156,13 @@ class _TransferMoneyKeyboardState extends State<TransferMoneyKeyboard> {
     }
 
     //累加值
-    var newValue = value + item;
-    if(newValue.endsWith(dot)){
-      newValue = newValue.replaceFirst(dot, '');
-    }
-    var val = double.tryParse(newValue) ?? 0;
-    if(val > widget.maxValue){
-      Loading.showToast('转账金额不能大于${widget.maxValue.toCurrencyString()}');
-    }else{
-      value = value + item;
+    final newValue = value + item;
+    final editingValue = widget.formatter.formatEditUpdate(
+      TextEditingValue(text: value),
+      TextEditingValue(text: newValue),
+    );
+    if(editingValue.text != value){
+      value = editingValue.text;
       widget.onChanged?.call(value);
     }
   }

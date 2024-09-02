@@ -6,6 +6,7 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
+import 'package:guanjia/widgets/gradient_range_slider_thumb.dart';
 
 import '../dating_hall/dating_hall_controller.dart';
 
@@ -79,10 +80,14 @@ class FiltrateBottomSheet extends StatelessWidget {
                   )),
                 ],
               ),
-              Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Obx(() => RangeSlider(
+              SizedBox(
+                height: 32.rpx,
+                child: SliderTheme(
+                  data: SliderTheme.of(context).copyWith(
+                    rangeTrackShape: CustomRangeSliderTrackShape(),
+                    rangeThumbShape: GradientRangeSliderThumbShape(),
+                  ),
+                  child: Obx(() => RangeSlider(
                     values: RangeValues(
                       state.info?.value.likeAgeMin.toDouble() ?? 20.0,
                       state.info?.value.likeAgeMax.toDouble() ?? 40.0,
@@ -94,18 +99,18 @@ class FiltrateBottomSheet extends StatelessWidget {
                           value.start.toInt(), value.end.toInt());
                     },
                   )),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        state.ageMin.toString(),
-                        style: AppTextStyle.fs14m.copyWith(color: AppColor.black9),
-                      ),
-                      Text(
-                          state.ageMax.toString(),
-                          style: AppTextStyle.fs14m.copyWith(color: AppColor.black9)
-                      ),
-                    ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    state.ageMin.toString(),
+                    style: AppTextStyle.fs14m.copyWith(color: AppColor.black9),
+                  ),
+                  Text(
+                      state.ageMax.toString(),
+                      style: AppTextStyle.fs14m.copyWith(color: AppColor.black9)
                   ),
                 ],
               ),

@@ -5,6 +5,8 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/api/model/user/contract_model.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/ui/mine/inapp_message/inapp_message_type.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'contract_list_state.dart';
@@ -22,6 +24,12 @@ class ContractListController extends GetxController with GetAutoDisposeMixin {
   @override
   void onInit() {
     super.onInit();
+    //契约状态变更监听
+    autoCancel(SS.inAppMessage.listen((message) {
+      if(message.type == InAppMessageType.contractUpdate){
+        pagingController.refresh();
+      }
+    }));
     pagingController.addPageRequestListener(fetchPage);
     autoDisposeWorker(EventBus().listen(kEventContractUpdate, (data) {
       pagingController.refresh();

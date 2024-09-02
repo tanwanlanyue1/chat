@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/api/model/user/contract_model.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -9,7 +10,7 @@ import 'package:guanjia/widgets/loading.dart';
 import 'contract_detail_state.dart';
 import 'widget/contract_terminate_dialog.dart';
 
-class ContractDetailController extends GetxController {
+class ContractDetailController extends GetxController with GetAutoDisposeMixin {
   final ContractDetailState state;
   final int contractId;
 
@@ -22,6 +23,13 @@ class ContractDetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    //契约状态变更监听
+    autoCancel(SS.inAppMessage.listen((message) {
+      final content = message.contractUpdateContent;
+      if(content?.contractId == contractId){
+        fetchData();
+      }
+    }));
     fetchData();
   }
 

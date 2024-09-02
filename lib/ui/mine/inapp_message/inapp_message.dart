@@ -4,6 +4,7 @@ import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'inapp_message_type.dart';
 import 'models/call_match_content.dart';
+import 'models/contract_update_content.dart';
 import 'models/order_update_content.dart';
 import 'models/red_packet_update_content.dart';
 
@@ -46,6 +47,8 @@ class InAppMessage {
           return OrderUpdateContent.fromJson(jsonDecode(data));
         case InAppMessageType.redPacketUpdate:
           return RedPacketUpdateContent.fromJson(jsonDecode(data));
+        case InAppMessageType.contractUpdate:
+          return ContractUpdateContent.fromJson(jsonDecode(data));
       }
     }catch(ex){
       AppLogger.w('InAppMessage>_parseContent: $ex');
@@ -60,5 +63,8 @@ class InAppMessage {
 
   ///红包状态变更内容
   RedPacketUpdateContent? get redPacketUpdateContent => data?.tryCast<RedPacketUpdateContent>();
+
+  ///契约单状态变更内容
+  ContractUpdateContent? get contractUpdateContent => data?.tryCast<ContractUpdateContent>();
 
 }

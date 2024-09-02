@@ -15,6 +15,9 @@ enum InAppMessageType{
   ///红包状态变更 4 发起方和接收方都收到
   redPacketUpdate,
 
+  ///契约单状态变更 5 双方都收到
+  contractUpdate,
+
 }
 
 extension InAppMessageTypeX on InAppMessageType{

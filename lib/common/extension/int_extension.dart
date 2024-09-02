@@ -13,6 +13,6 @@ extension IntExtension on int {
   }
 
   DateTime get dateTime {
-    return DateTime.fromMicrosecondsSinceEpoch(this);
+    return DateTime.fromMillisecondsSinceEpoch(this);
   }
 }

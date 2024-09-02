@@ -84,14 +84,13 @@ class MineMyTeamController extends GetxController {
           Loading.showToast('解除成功');
           break;
         case 4:
-          Loading.showToast('申请解约成功');
+          Loading.showToast('已发送解约申请');
           break;
       }
       final itemList = List.of(pagingController.itemList!);
       itemList[state.currentIndex] = itemList[state.currentIndex].copyWith(
           remark: "normal"
       );
-      print("itemList===${jsonEncode(itemList)}");
       pagingController.itemList = itemList;
     }else{
       response.showErrorMessage();

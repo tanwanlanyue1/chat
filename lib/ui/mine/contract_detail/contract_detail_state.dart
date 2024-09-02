@@ -18,7 +18,7 @@ class ContractDetailState {
   }
 }
 
-///签约状态 0签约中 1生效中 2已结束
+///签约状态
 enum ContractStatus {
   ///签约中 0
   signing,
@@ -28,6 +28,9 @@ enum ContractStatus {
 
   ///已解除 2
   terminated,
+
+  ///已拒绝 3
+  reject,
 }
 
 extension ContractStatusX on ContractStatus {
@@ -45,6 +48,8 @@ extension ContractStatusX on ContractStatus {
         return S.current.contractSigned;
       case ContractStatus.terminated:
         return S.current.contractTerminated;
+      case ContractStatus.reject:
+        return '已拒绝';
     }
   }
 }

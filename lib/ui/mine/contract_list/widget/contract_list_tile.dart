@@ -47,6 +47,7 @@ class ContractListTile extends StatelessWidget {
     switch (status) {
       case null:
       case ContractStatus.signing:
+      case ContractStatus.reject:
       label = '创建时间：';
       text = model.createTime.dateTime.formatYMD2 ?? '';
       case ContractStatus.signed:
@@ -97,6 +98,7 @@ class ContractListTile extends StatelessWidget {
         color = const Color(0xFFC644FC);
         break;
       case ContractStatus.terminated:
+      case ContractStatus.reject:
         color = AppColor.gray9;
         break;
       default:

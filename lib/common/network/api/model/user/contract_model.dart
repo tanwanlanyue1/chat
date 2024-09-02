@@ -39,7 +39,7 @@ class ContractModel {
   final num brokerageService;
   ///陪聊甲方分成比例%
   final num brokerageChatting;
-  ///签约状态 0签约中 1生效中 2已结束
+  ///签约状态 0签约中 1生效中 2已结束 3已拒绝
   final int state;
   ///	备注
   final String remark;

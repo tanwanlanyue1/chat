@@ -333,7 +333,6 @@ class _MinePageState extends State<MinePage>
             MineListTile(
               title: S.current.myTeam,
               icon: "assets/images/mine/my_team.png",
-              trailing: S.current.brokerUser,
               pagePath: AppRoutes.mineMyTeamPage,
             ),
         ],

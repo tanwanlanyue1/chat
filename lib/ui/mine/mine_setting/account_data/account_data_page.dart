@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -10,6 +12,7 @@ import 'package:guanjia/ui/mine/mine_setting/account_data/widgets/account_data_i
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
+import 'package:guanjia/widgets/gradient_range_slider_thumb.dart';
 import 'package:guanjia/widgets/input_widget.dart';
 import 'package:guanjia/widgets/label_widget.dart';
 
@@ -131,39 +134,56 @@ class AccountDataPage extends StatelessWidget {
                   _columnWidget(
                     title: state.getLikeAgeTitle(info.type),
                     detail: "${info.likeAgeMin}-${info.likeAgeMax}",
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        RangeSlider(
-                          values: RangeValues(
-                            info.likeAgeMin.toDouble(),
-                            info.likeAgeMax.toDouble(),
+                    child: SizedBox(
+                      height: 40.rpx,
+                      child: Stack(
+                        children: [
+                          SizedBox(
+                            height: 30.rpx,
+                            child: SliderTheme(
+                              data: SliderTheme.of(context).copyWith(
+                                rangeTrackShape: CustomRangeSliderTrackShape(),
+                                rangeThumbShape:
+                                    GradientRangeSliderThumbShape(),
+                              ),
+                              child: RangeSlider(
+                                values: RangeValues(
+                                  info.likeAgeMin.toDouble(),
+                                  info.likeAgeMax.toDouble(),
+                                ),
+                                min: state.ageMin.toDouble(),
+                                max: state.ageMax.toDouble(),
+                                onChanged: (value) {
+                                  controller.onChangeLikeAge(
+                                      value.start.toInt(), value.end.toInt());
+                                },
+                              ),
+                            ),
                           ),
-                          min: state.ageMin.toDouble(),
-                          max: state.ageMax.toDouble(),
-                          onChanged: (value) {
-                            controller.onChangeLikeAge(
-                                value.start.toInt(), value.end.toInt());
-                          },
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              state.ageMin.toString(),
-                              style: AppTextStyle.st.medium
-                                  .size(14.rpx)
-                                  .textColor(AppColor.black9),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  state.ageMin.toString(),
+                                  style: AppTextStyle.st.medium
+                                      .size(14.rpx)
+                                      .textColor(AppColor.black9)
+                                      .textHeight(1),
+                                ),
+                                Text(
+                                  state.ageMax.toString(),
+                                  style: AppTextStyle.st.medium
+                                      .size(14.rpx)
+                                      .textColor(AppColor.black9)
+                                      .textHeight(1),
+                                ),
+                              ],
                             ),
-                            Text(
-                              state.ageMax.toString(),
-                              style: AppTextStyle.st.medium
-                                  .size(14.rpx)
-                                  .textColor(AppColor.black9),
-                            ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   // occupation

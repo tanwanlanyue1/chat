@@ -83,12 +83,12 @@ class MessageListPage extends GetView<MessageListController> {
                 child: Obx(() {
                   final user = state.userInfoRx();
                   var order = state.orderRx();
-                  if (user == null || order == null) {
+                  if (user == null) {
                     return Spacing.blank;
                   }
                   return ChatDateView(
                     user: user,
-                    order: order.id != 0 ? order : null,
+                    order: order,
                     onTapOrderAction: controller.onTapOrderAction,
                     onTapOrder: (order) => controller.toOrderDetail(order.id),
                   );

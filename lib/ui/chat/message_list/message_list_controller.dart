@@ -46,12 +46,14 @@ class MessageListController extends GetxController
       //当前登录用户不是普通用户或者对方是普通用户，则不显示发起约会
       if (!SS.login.userType.isUser || userInfo?.type.isUser == true) {
         actions.remove(ChatFeatureAction.date);
+        print('1====xxx');
       }
 
       //有进行中的订单，不能发起约会
       if (order != null &&
-          ![OrderStatus.cancel, OrderStatus.finish].contains(order.state)) {
+          ![OrderStatus.cancel, OrderStatus.finish, OrderStatus.timeOut].contains(order.state)) {
         actions.remove(ChatFeatureAction.date);
+        print('2====xxx ${order.state}');
       }
 
       if (actions.length != state.featureActionsRx.length) {

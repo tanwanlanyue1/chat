@@ -120,7 +120,7 @@ class OrderAcceptDialog extends StatelessWidget {
   Widget buildDesc() {
     return ChatUserBuilder(userId: userId.toString(), builder: (info){
       return Text(
-        '同意和 ${info?.baseInfo.userName} 发起约会？',
+        '同意和 ${info?.baseInfo.userName} 约会？',
         style: AppTextStyle.fs14m.copyWith(
           color: AppColor.gray5,
           height: 1.5,

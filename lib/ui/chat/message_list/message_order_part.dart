@@ -14,7 +14,7 @@ extension MessageOrderPart on MessageListController {
   Future<OrderItemModel?> fetchOrder() async {
     final response = await OrderApi.getLastByUid(otherUid: userId);
     if (response.isSuccess) {
-      state.orderRx.value = response.data ?? OrderItemModel.fromJson({});
+      state.orderRx.value = response.data;
     }
     return state.orderRx();
   }

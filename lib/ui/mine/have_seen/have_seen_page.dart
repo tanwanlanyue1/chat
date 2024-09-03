@@ -5,7 +5,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/ui/chat/chat_manager.dart';
+import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/mine/widgets/client_card.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';

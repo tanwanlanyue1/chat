@@ -13,7 +13,7 @@ import 'package:guanjia/ui/welcome/welcome_storage.dart';
 import 'common/app_localization.dart';
 import 'common/app_position.dart';
 import 'common/service/service.dart';
-import 'ui/chat/chat_manager.dart';
+import 'ui/chat/utils/chat_manager.dart';
 
 /// 全局静态数据
 class Global with WidgetsBindingObserver{

@@ -14,7 +14,7 @@ class AppRouteObserver extends RouteObserver<ModalRoute<void>> {
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
     _stack.insert(0, route);
-    AppLogger.d('RouteObserver > didPush > ${_stack}');
+    // AppLogger.d('RouteObserver > didPush > ${_stack}');
   }
 
   //关闭页面
@@ -22,7 +22,7 @@ class AppRouteObserver extends RouteObserver<ModalRoute<void>> {
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPop(route, previousRoute);
     _stack.remove(route);
-    AppLogger.d('RouteObserver > didPop > ${_stack}');
+    // AppLogger.d('RouteObserver > didPop > ${_stack}');
   }
 
   @override
@@ -38,14 +38,14 @@ class AppRouteObserver extends RouteObserver<ModalRoute<void>> {
         _stack.insert(0, newRoute);
       }
     }
-    AppLogger.d('RouteObserver > didReplace > ${_stack}');
+    // AppLogger.d('RouteObserver > didReplace > ${_stack}');
   }
 
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didRemove(route, previousRoute);
     _stack.remove(route);
-    AppLogger.d('RouteObserver > didRemove > ${_stack}');
+    // AppLogger.d('RouteObserver > didRemove > ${_stack}');
   }
 
 }

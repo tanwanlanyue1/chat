@@ -16,10 +16,12 @@ class ChatCallDialog extends StatelessWidget {
   final bool isVideoCall;
   final int userId;
 
-  const ChatCallDialog._({super.key, required this.isVideoCall, required this.userId});
+  const ChatCallDialog._(
+      {super.key, required this.isVideoCall, required this.userId});
 
   static Future<bool?> show({required bool isVideoCall, required int userId}) {
     SS.appConfig.fetchData();
+    SS.login.fetchMyInfo();
     return Get.dialog<bool>(
       ChatCallDialog._(isVideoCall: isVideoCall, userId: userId),
     );
@@ -66,45 +68,59 @@ class ChatCallDialog extends StatelessWidget {
               ),
               margin: FEdgeInsets(horizontal: 16.rpx, top: 16.rpx),
               padding: EdgeInsets.all(24.rpx),
-              child: Obx((){
+              child: Obx(() {
                 SS.appConfig.configRx();
+                SS.login.info;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if(freeChatHintText.isNotEmpty) Text(
-                      freeChatHintText,
-                      style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
-                    ),
-                    if(priceHintText.isNotEmpty)Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          isVideoCall ? "实时视频" : "实时语音",
-                          style:
-                          AppTextStyle.fs14m.copyWith(color: AppColor.black6),
-                        ),
-                        Text(
-                          priceHintText,
-                          style:
-                          AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
-                        ),
-                      ],
-                    ),
-                    if(balanceHintText.isNotEmpty) Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "管佳金库余额",
-                          style: AppTextStyle.fs14m
-                              .copyWith(color: AppColor.black6),
-                        ),
-                        Text(
-                          balanceHintText,
-                          style: AppTextStyle.fs14b
-                              .copyWith(color: AppColor.primary),
-                        ),
-                      ],
-                    ),
+                    if (freeChatHintText.isNotEmpty)
+                      Text(
+                        freeChatHintText,
+                        style:
+                            AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
+                      ),
+                    if (priceHintText.isNotEmpty)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            isVideoCall ? "实时视频" : "实时语音",
+                            style: AppTextStyle.fs14m
+                                .copyWith(color: AppColor.black6),
+                          ),
+                          Text(
+                            priceHintText,
+                            style: AppTextStyle.fs14b
+                                .copyWith(color: AppColor.gray5),
+                          ),
+                        ],
+                      ),
+                    if (balanceHintText.isNotEmpty)
+                      Row(
+                        children: [
+                          Text(
+                            "管佳金库余额",
+                            style: AppTextStyle.fs14m
+                                .copyWith(color: AppColor.black6),
+                          ),
+                          const Spacer(),
+                          Text(
+                            balanceHintText,
+                            style: AppTextStyle.fs14b
+                                .copyWith(color: AppColor.primary),
+                          ),
+                          Padding(
+                            padding: FEdgeInsets(left: 8.rpx),
+                            child: Text(
+                              isCallable ? '(达成)' : '(未达成)',
+                              style: AppTextStyle.fs12m.copyWith(
+                                color: isCallable ? AppColor.green : AppColor.red,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                   ].separated(Spacing.h16).toList(),
                 );
               }),
@@ -115,7 +131,12 @@ class ChatCallDialog extends StatelessWidget {
                 height: 50.rpx,
                 text: "进入聊天",
                 onTap: () {
-                  Get.back(result: true);
+                  if(isCallable){
+                    Get.back(result: true);
+                  }else{
+                    final minBalance = SS.appConfig.configRx()?.chatMinBalance ?? 0;
+                    Loading.showToast('余额需要大于${minBalance.toCurrencyString()}');
+                  }
                 },
               ),
             ),
@@ -126,36 +147,42 @@ class ChatCallDialog extends StatelessWidget {
   }
 
   ///免费聊天提示文本
-  String get freeChatHintText{
+  String get freeChatHintText {
     final freeSecond = SS.appConfig.configRx()?.chatFreeSecond ?? 0;
-    if(freeSecond <=0 ){
+    if (freeSecond <= 0) {
       return '';
     }
-    if(freeSecond % 60 == 0){
-      return '前${freeSecond~/60}分钟免费聊天！';
+    if (freeSecond % 60 == 0) {
+      return '前${freeSecond ~/ 60}分钟免费聊天！';
     }
     return '前$freeSecond秒钟免费聊天！';
   }
 
   ///价格提示文本
-  String get priceHintText{
+  String get priceHintText {
     final config = SS.appConfig.configRx();
     final price = isVideoCall ? config?.videoChatPrice : config?.voiceChatPrice;
-    if(price == null || price <= 0){
+    if (price == null || price <= 0) {
       return '';
     }
     return '${price.toCurrencyString()}/分钟';
   }
 
   ///余额要求
-  String get balanceHintText{
+  String get balanceHintText {
     final minBalance = SS.appConfig.configRx()?.chatMinBalance ?? 0;
-    if(minBalance <= 0){
+    if (minBalance <= 0) {
       return '';
     }
     return '>${minBalance.toCurrencyString()}';
   }
 
+  ///是否达到可呼叫要求
+  bool get isCallable {
+    final minBalance = SS.appConfig.configRx()?.chatMinBalance ?? 0;
+    final balance = SS.login.info?.balance ?? 0;
+    return balance > minBalance;
+  }
 
   Widget buildUserAvatar() {
     return ChatAvatar.circle(
@@ -174,18 +201,19 @@ class ChatCallDialog extends StatelessWidget {
     );
   }
 
-
   Widget buildDesc() {
-    return ChatUserBuilder(userId: userId.toString(), builder: (info){
-      return Text(
-        isVideoCall
-            ? "和${info?.baseInfo.userName}发起视频聊天？"
-            : "和${info?.baseInfo.userName}发起实时语音聊天？",
-        style: AppTextStyle.fs14m.copyWith(
-          color: AppColor.gray5,
-          height: 1.5,
-        ),
-      );
-    });
+    return ChatUserBuilder(
+        userId: userId.toString(),
+        builder: (info) {
+          return Text(
+            isVideoCall
+                ? "和${info?.baseInfo.userName}发起视频聊天？"
+                : "和${info?.baseInfo.userName}发起实时语音聊天？",
+            style: AppTextStyle.fs14m.copyWith(
+              color: AppColor.gray5,
+              height: 1.5,
+            ),
+          );
+        });
   }
 }

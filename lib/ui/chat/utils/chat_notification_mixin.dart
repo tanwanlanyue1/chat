@@ -1,7 +1,7 @@
 part of 'chat_manager.dart';
 
 ///通知mixin
-mixin ChatNotification {
+mixin _ChatNotificationMixin {
   static const _channelId = 'guajia_chat';
   static const _channelName = 'guajia_chat_notification';
   static const _channelDesc = 'guajia app chat channel';

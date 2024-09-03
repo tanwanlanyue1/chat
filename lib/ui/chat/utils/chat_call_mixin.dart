@@ -1,7 +1,6 @@
 part of 'chat_manager.dart';
 
-mixin ChatCallMixin{
-
+mixin _ChatCallMixin {
   ///当前通话ID（对应业务服务端订单id）
   var _callId = '';
 
@@ -152,13 +151,16 @@ mixin ChatCallMixin{
   }
 
   ///挂断通话
-  Future<bool> hangUpCall(){
-    return ZegoUIKitPrebuiltCallInvitationService().controller.hangUp(Get.context!);
+  Future<bool> hangUpCall() {
+    return ZegoUIKitPrebuiltCallInvitationService()
+        .controller
+        .hangUp(Get.context!);
   }
 
   ///接听通话
-  Future<bool> acceptCall({String? customData}){
-    return ZegoUIKitPrebuiltCallInvitationService().accept(customData: customData ?? '');
+  Future<bool> acceptCall({String? customData}) {
+    return ZegoUIKitPrebuiltCallInvitationService()
+        .accept(customData: customData ?? '');
   }
 
   ZegoCallInvitationPageManager? get _pageManager =>
@@ -253,14 +255,14 @@ mixin ChatCallMixin{
       plugins: [ZegoUIKitSignalingPlugin()],
       //自定义文本内容
       innerText: ZegoCallInvitationInnerText(
-          incomingVideoCallDialogMessage: '视频聊天呼入...',
-          incomingVoiceCallDialogMessage: '语音聊天呼入...',
-          incomingVideoCallPageMessage: '视频聊天呼入...',
-          incomingVoiceCallPageMessage: '语音聊天呼入...',
-          incomingCallPageDeclineButton: '',
-          incomingCallPageAcceptButton: '',
-          outgoingVideoCallPageMessage: '呼叫中...',
-          outgoingVoiceCallPageMessage: '呼叫中...',
+        incomingVideoCallDialogMessage: '视频聊天呼入...',
+        incomingVoiceCallDialogMessage: '语音聊天呼入...',
+        incomingVideoCallPageMessage: '视频聊天呼入...',
+        incomingVoiceCallPageMessage: '语音聊天呼入...',
+        incomingCallPageDeclineButton: '',
+        incomingCallPageAcceptButton: '',
+        outgoingVideoCallPageMessage: '呼叫中...',
+        outgoingVoiceCallPageMessage: '呼叫中...',
       ),
       requireConfig: _requireCallConfig,
       config: ZegoCallInvitationConfig(
@@ -278,45 +280,48 @@ mixin ChatCallMixin{
         },
       ),
       //事件说明 https://www.zegocloud.com/docs/uikit/zh/callkit-android/api-reference/event#invitationevents
-      invitationEvents: ZegoUIKitPrebuiltCallInvitationEvents(
-        onOutgoingCallAccepted: (
-          String callID,
-          ZegoCallUser callee,
-        ) {
-          AppLogger.d(
-              'ZegoUIKitPrebuiltCallInvitationEvents>onOutgoingCallAccepted: callID=${callID}');
-          _clearCallState();
-          _callId = callID;
-          _callInvitee = callee.id;
-          _callInviter = ZegoUIKit().getLocalUser().id;
-          _isWaitCallEndDialog = true;
-        },
-        onIncomingCallReceived: (
-          String callID,
-          ZegoCallUser caller,
-          ZegoCallInvitationType callType,
-          List<ZegoCallUser> callees,
-          String customData,
-        ) async{
-          _isWaitCallEndDialog = true;
-          print('onIncomingCallReceived');
+      invitationEvents:
+          ZegoUIKitPrebuiltCallInvitationEvents(onOutgoingCallAccepted: (
+        String callID,
+        ZegoCallUser callee,
+      ) {
+        AppLogger.d(
+            'ZegoUIKitPrebuiltCallInvitationEvents>onOutgoingCallAccepted: callID=${callID}');
+        _clearCallState();
+        _callId = callID;
+        _callInvitee = callee.id;
+        _callInviter = ZegoUIKit().getLocalUser().id;
+        _isWaitCallEndDialog = true;
+      }, onIncomingCallReceived: (
+        String callID,
+        ZegoCallUser caller,
+        ZegoCallInvitationType callType,
+        List<ZegoCallUser> callees,
+        String customData,
+      ) async {
+        _callId = callID;
+        _callInvitee = ZegoUIKit().getLocalUser().id;
+        _callInviter = caller.id;
+        _isWaitCallEndDialog = true;
+        print('onIncomingCallReceived');
 
-          //申请权限
-          await checkPermission(callType == ZegoCallInvitationType.videoCall);
+        //申请权限
+        await checkPermission(callType == ZegoCallInvitationType.videoCall);
 
-          //自动接听
-          if(CallCustomData.fromJsonString(customData)?.autoAccept == true){
-            acceptCall(customData: customData);
-          }
-        },
-        onOutgoingCallRejectedCauseBusy: (
-          String callID,
-          ZegoCallUser callee,
-          String customData,
-        ) {
-          Loading.showToast('对方正在通话中');
-        },
-      ),
+        //自动接听
+        if (CallCustomData.fromJsonString(customData)?.autoAccept == true) {
+          acceptCall(customData: customData);
+        }
+      }, onOutgoingCallRejectedCauseBusy: (
+        String callID,
+        ZegoCallUser callee,
+        String customData,
+      ) {
+        Loading.showToast('对方正在通话中');
+      }, onIncomingCallDeclineButtonPressed: () {
+        _sendCallRejectMessage();
+        _clearCallState();
+      }),
     );
   }
 
@@ -347,7 +352,7 @@ mixin ChatCallMixin{
       //被邀请人
       invitee: ZegoCallInvitationInviteeUIConfig(
         backgroundBuilder: backgroundBuilder,
-        requirePopUp: (data){
+        requirePopUp: (data) {
           final customData = CallCustomData.fromJsonString(data.customData);
           return ZegoCallInvitationNotifyPopUpUIConfig(
             //自动接听时，不显示顶部的呼入对话框
@@ -437,7 +442,8 @@ mixin ChatCallMixin{
 
     //发起方默认是否开启摄像头
     final customData = CallCustomData.fromJsonString(data.customData);
-    if(customData?.enableCamera == false && data.inviter?.id == SS.login.userId.toString()){
+    if (customData?.enableCamera == false &&
+        data.inviter?.id == SS.login.userId.toString()) {
       config.turnOnCameraWhenJoining = false;
     }
 
@@ -459,39 +465,42 @@ mixin ChatCallMixin{
   }
 
   ///通话计费
-  Future<void> _callingPay(Duration duration) async{
-    AppLogger.d('_callingPay: _callId=$_callId, _callInviter=$_callInviter, _callPayTime=$_callPayTime, duration=$duration');
+  Future<void> _callingPay(Duration duration) async {
+    AppLogger.d(
+        '_callingPay: _callId=$_callId, _callInviter=$_callInviter, _callPayTime=$_callPayTime, duration=$duration');
 
     //发起方扣费
-    if(_callId.isEmpty || _callInviter != SS.login.userId.toString()){
+    if (_callId.isEmpty || _callInviter != SS.login.userId.toString()) {
       return;
     }
     //每分钟调一次接口进行扣费
     final now = DateTime.now();
-    if(_callPayTime != null && now.difference(_callPayTime ?? now).inMinutes <= 0){
+    if (_callPayTime != null &&
+        now.difference(_callPayTime ?? now).inMinutes <= 0) {
       return;
     }
     _callPayTime = now;
 
     final orderId = int.tryParse(_callId);
-    if(orderId == null){
+    if (orderId == null) {
       hangUpCall();
       AppLogger.w('订单ID解析失败，无法扣费');
       return;
     }
 
     AppLogger.d('扣费前时间： ${DateTime.now()}');
-    final response = await IMApi.chatOrderPay(orderId: orderId, uuid: _callPayUuid);
-    if(response.isSuccess){
+    final response =
+        await IMApi.chatOrderPay(orderId: orderId, uuid: _callPayUuid);
+    if (response.isSuccess) {
       AppLogger.d('扣费成功: ${DateTime.now()}');
-      _callPayUuid  = response.data;
-    }else{
+      _callPayUuid = response.data;
+    } else {
       hangUpCall();
       AppLogger.w('扣费失败，挂断通话');
     }
   }
 
-  void _clearCallState(){
+  void _clearCallState() {
     _callId = '';
     _callInviter = '';
     _callInvitee = '';
@@ -499,18 +508,30 @@ mixin ChatCallMixin{
     _callPayUuid = null;
   }
 
-  Future<void> _uninitChatCall() async{
+  ///发送拒绝接听自定义消息
+  Future<void> _sendCallRejectMessage() async {
+    if (_callInviter.isNotEmpty) {
+      ChatManager().sendCustomMessage(
+        conversationId: _callInviter,
+        conversationType: ZIMConversationType.peer,
+        customType: CustomMessageType.callReject.value,
+        customMessage: MessageCallRejectContent(
+          isVideoCall: false,
+          message: '已取消',
+        ).toJsonString(),
+      );
+    }
+  }
+
+  Future<void> _uninitChatCall() async {
     await ZegoUIKitPrebuiltCallInvitationService().uninit();
     _clearCallState();
     _isWaitCallEndDialog = false;
   }
-
 }
 
-
 ///音视频通话自定义数据
-class CallCustomData{
-
+class CallCustomData {
   ///是否自动接听
   final bool autoAccept;
 
@@ -518,21 +539,23 @@ class CallCustomData{
   final bool enableCamera;
 
   CallCustomData(this.autoAccept, this.enableCamera);
-  static CallCustomData? fromJsonString(String jsonStr){
-    try{
-      if(jsonStr.isNotEmpty){
+
+  static CallCustomData? fromJsonString(String jsonStr) {
+    try {
+      if (jsonStr.isNotEmpty) {
         final json = jsonDecode(jsonStr);
         return CallCustomData(
           json['autoAccept'],
           json['enableCamera'],
         );
       }
-    }catch(ex){
+    } catch (ex) {
       AppLogger.w(ex);
     }
     return null;
   }
-  String toJsonString(){
+
+  String toJsonString() {
     return jsonEncode({
       'autoAccept': autoAccept,
       'enableCamera': enableCamera,

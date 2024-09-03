@@ -5,7 +5,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
-import 'package:guanjia/ui/chat/chat_manager.dart';
+import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
@@ -65,20 +65,16 @@ class ContactListTile extends StatelessWidget {
                     Spacing.h8,
                     Row(
                       children: [
-                        Visibility(
-                          visible: userModel.gender == UserGender.female,
-                          replacement: AppImage.asset(
-                            "assets/images/mine/man.png",
-                            width: 16.rpx,
-                            height: 16.rpx,
-                          ),
-                          child: AppImage.asset(
-                            "assets/images/mine/woman.png",
-                            width: 16.rpx,
-                            height: 16.rpx,
-                          ),
-                        ),
-                        SizedBox(width: 8.rpx),
+                        if(userModel.gender.icon != null)
+                          Padding(
+                            padding: FEdgeInsets(right: 8.rpx),
+                            child: AppImage.asset(
+                              userModel.gender.icon ?? '',
+                              width: 16.rpx,
+                              height: 16.rpx,
+                            ),
+                          )
+                        ,
                         if (age > 0) ...[
                           Text(
                             age.toString(),
@@ -111,9 +107,9 @@ class ContactListTile extends StatelessWidget {
                   onPressed: toChatPage,
                   width: 80.rpx,
                   height: 28.rpx,
-                  backgroundColor: userModel.gender == UserGender.female
-                      ? AppColor.dateButton
-                      : AppColor.primaryBlue,
+                  backgroundColor: userModel.gender == UserGender.male
+                      ? AppColor.primaryBlue
+                      : AppColor.dateButton,
                   child: Text(
                     '发起聊天',
                     style: AppTextStyle.fs12m.copyWith(color: Colors.white),

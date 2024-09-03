@@ -10,6 +10,17 @@ enum UserGender {
 
   bool get isMale => this == UserGender.male;
   bool get isFemale => this == UserGender.female;
+
+  String? get icon{
+    switch(this){
+      case male:
+        return 'assets/images/mine/man.png';
+      case female:
+        return 'assets/images/mine/woman.png';
+      default:
+        return null;
+    }
+  }
 }
 
 /// 用户类型

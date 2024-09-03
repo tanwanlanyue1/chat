@@ -8,6 +8,7 @@ import 'package:zego_zimkit/zego_zimkit.dart';
 import 'message_call_end_content.dart';
 import 'message_call_invite_content.dart';
 import 'message_call_match_content.dart';
+import 'message_call_reject_content.dart';
 import 'message_order_content.dart';
 import 'message_red_packet_content.dart';
 
@@ -105,6 +106,13 @@ extension ZIMKitMessageExt on ZIMKitMessage {
     );
   }
 
+  ///音视频通话邀请消息内容
+  MessageCallRejectContent? get callRejectContent {
+    return _getOrParse(
+      type: CustomMessageType.callReject,
+      parse: MessageCallRejectContent.fromJson,
+    );
+  }
 
   ///是否隐藏头像
   set isHideAvatar(bool isHide) {

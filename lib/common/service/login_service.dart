@@ -10,7 +10,7 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/common/utils/result.dart';
-import 'package:guanjia/ui/chat/chat_manager.dart';
+import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/home/home_page.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/widgets.dart';

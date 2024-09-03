@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import 'spacing.dart';
 
 ///倒计时控件
 class CountdownBuilder extends StatefulWidget {
@@ -70,7 +69,9 @@ class _CountdownBuilderState extends State<CountdownBuilder> {
       text += fmt(seconds % 60);
     }
     duration = diff;
-    setState(() {});
+    if(mounted){
+      setState(() {});
+    }
   }
 
   @override

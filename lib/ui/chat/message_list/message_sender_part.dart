@@ -1,93 +1,85 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:get/get.dart';
-import 'package:guanjia/common/network/api/api.dart';
-import 'package:guanjia/common/network/api/im_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
-import 'package:guanjia/ui/chat/custom/zim_kit_core_extension.dart';
 import 'package:guanjia/ui/chat/message_list/message_order_part.dart';
+import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
-import 'package:guanjia/ui/order/widgets/order_create_dialog.dart';
+import 'package:guanjia/widgets/loading.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_size_getter/file_input.dart';
-import 'package:image_size_getter/image_size_getter.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
+import 'package:mime/mime.dart';
 
 import 'message_list_controller.dart';
 import 'widgets/chat_feature_panel.dart';
 
 ///消息发送功能
 extension MessageSenderPart on MessageListController {
-  ///检查消息是否可发送
-  ///- type 消息类型 1文字 2图片 3视频 4定位
-  ///- msg 消息内容
-  Future<bool> _checkMessage({
-    required int type,
-    Map<String, dynamic> msg = const {},
-  }) async {
-    final response = await IMApi.sendMessage(type: type, msg: msg);
-    return response.isSuccess;
-  }
 
   ///发送文本消息
   Future<void> sendTextMessage(String text) async {
-    if (await _checkMessage(type: 1, msg: {'message': text})) {
-      await ZIMKit().sendTextMessage(
-        state.conversationId,
-        state.conversationType,
-        text,
-      );
+    final result = await ChatManager().sendTextMessage(
+      text: text,
+      conversationId: state.conversationId,
+      conversationType: state.conversationType,
+    );
+    if (result) {
       scrollController.jumpTo(0);
     }
   }
 
-  ///发送图片消息
-  Future<void> sendPictureMessage() async {
+  ///发送图片+视频消息
+  Future<void> sendMediaMessage() async {
     // iOS端需要判断权限
     if (GetPlatform.isIOS) {
       final isGranted = await PermissionsUtils.requestPhotosPermission();
       if (!isGranted) return;
     }
-    final files = await ImagePicker().pickMultiImage(
+
+    final files = await ImagePicker().pickMultipleMedia(
       imageQuality: 90,
       limit: 9,
     );
+
+    const videoMimeTypes = ['video/mp4', 'video/quicktime'];
+    String? errorMsg;
+    files.removeWhere((element) {
+      final mimeType = element.mimeType ?? lookupMimeType(element.name) ?? '';
+      AppLogger.d('mineType: $mimeType  name:${element.name}');
+      if (mimeType.startsWith('video') && !videoMimeTypes.contains(mimeType)) {
+        errorMsg = '只支持MP4、MOV格式的视频';
+      }
+      return !mimeType.startsWith('image/') &&
+          !videoMimeTypes.contains(mimeType);
+    });
+    if (errorMsg != null) {
+      Loading.showToast(errorMsg!);
+    }
+
     if (files.isEmpty) {
-      //没选图片
+      //没选图片或视频
       return;
     }
 
     for (final file in files) {
-      String? localExtendedData;
-      try {
-        final input = AsyncImageInput.input(FileInput(File(file.path)));
-        final size = await ImageSizeGetter.getSizeAsync(input);
-        if (size.width > 0 && size.height > 0) {
-          localExtendedData = jsonEncode({
-            'width': size.needRotate ? size.height : size.width,
-            'height': size.needRotate ? size.width : size.height,
-          });
-        }
-      } catch (ex) {
-        AppLogger.w('获取图片尺寸信息失败，$ex');
-      }
-
-      if(await _checkMessage(type: 2)){
-        await ZIMKitCore.instance.sendMediaMessageExt(
-          state.conversationId,
-          state.conversationType,
-          file.path,
-          ZIMMessageType.image,
-          localExtendedData: localExtendedData,
-        );
+      final mimeType = file.mimeType ?? lookupMimeType(file.name) ?? '';
+      if (videoMimeTypes.contains(mimeType)) {
+        await _sendVideoMessage(file.path);
+      } else {
+        await _sendImageMessage(file.path);
       }
     }
-    scrollController.jumpTo(0);
+  }
+
+  Future<void> _sendImageMessage(String filePath) async {
+
+    final result = await ChatManager().sendImageMessage(
+      filePath: filePath,
+      conversationId: state.conversationId,
+      conversationType: state.conversationType,
+    );
+    if (result) {
+      scrollController.jumpTo(0);
+    }
   }
 
   ///发送视频消息
@@ -104,34 +96,17 @@ extension MessageSenderPart on MessageListController {
     if (file == null) {
       return;
     }
+    return _sendVideoMessage(file.path);
+  }
 
-    String? extendedData;
-    try {
-      final videoInfo = await FlutterVideoInfo().getVideoInfo(file.path);
-      final durationMs = videoInfo?.duration ?? 0;
-      if (videoInfo != null && durationMs > 0) {
-        final needRotate = [90, 270].contains(videoInfo.orientation);
-        final width = videoInfo.width ?? 0;
-        final height = videoInfo.height ?? 0;
-
-        extendedData = jsonEncode({
-          'duration': (durationMs / 1000).ceil(), //毫秒转成秒
-          'width': needRotate ? height : width,
-          'height': needRotate ? width : height,
-        });
-      }
-    } catch (ex) {
-      AppLogger.w('获取视频信息失败，$ex');
-    }
-
-    if(await _checkMessage(type: 3)){
-      await ZIMKitCore.instance.sendMediaMessageExt(
-        state.conversationId,
-        state.conversationType,
-        file.path,
-        ZIMMessageType.video,
-        extendedData: extendedData,
-      );
+  ///发送视频消息
+  Future<void> _sendVideoMessage(String filePath) async {
+    final result = await ChatManager().sendVideoMessage(
+      filePath: filePath,
+      conversationId: state.conversationId,
+      conversationType: state.conversationType,
+    );
+    if (result) {
       scrollController.jumpTo(0);
     }
   }
@@ -160,7 +135,7 @@ extension MessageSenderPart on MessageListController {
   void onTapFeatureAction(ChatFeatureAction action) {
     switch (action) {
       case ChatFeatureAction.picture:
-        sendPictureMessage();
+        sendMediaMessage();
         break;
       case ChatFeatureAction.recordVideo:
         sendVideoMessage();

@@ -9,7 +9,7 @@ import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
-import 'package:guanjia/ui/chat/chat_manager.dart';
+import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
@@ -173,9 +173,15 @@ class _ConversationListTileState extends State<ConversationListTile>
     if (message == null) {
       return Spacing.blank;
     }
-    var text = conversation.lastMessage?.toPlainText() ?? '';
+    var text = message.toPlainText() ?? '';
     if (conversation.lastMessage?.isMine == false) {
       text = '— $text';
+    }
+    var textColor = AppColor.black3;
+    if(!message.isMine){
+      textColor = conversation.unreadMessageCount > 0
+          ? AppColor.primaryBlue
+          : AppColor.grayText;
     }
 
     final maxWidth = ConversationListTile._messageContentMaxWidth ??=
@@ -187,9 +193,7 @@ class _ConversationListTileState extends State<ConversationListTile>
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: AppTextStyle.fs14b.copyWith(
-          color: conversation.unreadMessageCount > 0
-              ? AppColor.primaryBlue
-              : AppColor.grayText,
+          color: textColor,
           height: 1.0,
         ),
       ),

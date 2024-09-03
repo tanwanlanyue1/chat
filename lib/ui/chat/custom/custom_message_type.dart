@@ -21,8 +21,12 @@ enum CustomMessageType{
   ///速配 5
   callMatch,
 
-  ///音视频通话发起 6
+  /// 音视频通话发起 6
+  @Deprecated('产品说不需要了')
   callInvite,
+
+  ///被邀请人拒绝接听 7
+  callReject,
 
 }
 

@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/network/api/im_api.dart';
@@ -19,12 +20,16 @@ import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/chat/custom/message_call_reject_content.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
+import 'package:guanjia/ui/chat/custom/zim_kit_core_extension.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_controller.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_end_dialog.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/loading.dart';
+import 'package:image_size_getter/file_input.dart';
+import 'package:image_size_getter/image_size_getter.dart' hide Size;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:vibration/vibration.dart';
 import 'package:zego_uikit_prebuilt_call/src/invitation/internal/defines.dart';
@@ -38,14 +43,15 @@ import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
+import '../custom/custom_message_type.dart';
 import 'chat_event_notifier.dart';
-import 'custom/custom_message_type.dart';
 
 part 'chat_call_mixin.dart';
 part 'chat_notification_mixin.dart';
+part 'chat_sender_mixin.dart';
 
 ///IM聊天，音视频通话 服务管理
-class ChatManager with WidgetsBindingObserver, ChatCallMixin, ChatNotification {
+class ChatManager with WidgetsBindingObserver, _ChatCallMixin, _ChatNotificationMixin, _ChatSenderMixin {
   ChatManager._();
 
   factory ChatManager() => instance;

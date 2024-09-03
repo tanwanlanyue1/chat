@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/network/api/im_api.dart';
-import 'package:guanjia/ui/chat/chat_manager.dart';
+import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 import 'chat_call_dialog.dart';

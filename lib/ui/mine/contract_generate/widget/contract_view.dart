@@ -41,15 +41,8 @@ class ContractView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          //甲已双方
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     buildRichText(S.current.partyA, partyA),
-          //     buildRichText(S.current.partyB, partyB),
-          //   ],
-          // ),
           buildRichText(S.current.partyA, partyA),
+          Spacing.h4,
           buildRichText(S.current.partyB, partyB),
           Spacing.h24,
           Text(content),

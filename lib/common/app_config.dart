@@ -7,7 +7,7 @@ class AppConfig{
 
   ///开发环境接口地址
   // static const urlDevServer = 'https://jingxiu-api.happysport-666.cn';
-  static const urlDevServer = 'http://192.168.2.117:20000';
+  static const urlDevServer = 'http://192.168.2.17:20000';
 
   ///正式环境接口地址
   static const urlProdServer = 'https://jxapi.amiyosz.com';

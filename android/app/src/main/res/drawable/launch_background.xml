@@ -3,11 +3,13 @@
 
     <item android:drawable="@android:color/white" />
 
-    <item android:drawable="@mipmap/launch_image" />
+    <item android:drawable="@drawable/launch_image" />
 
     <item
-        android:drawable="@mipmap/launch_image_1"
-        android:gravity="center" />
+        android:drawable="@drawable/launch_image_1"
+        android:gravity="center"
+        android:bottom="140dp"/>
+
 
 
 </layer-list>

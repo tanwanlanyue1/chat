@@ -65,6 +65,7 @@ class ChatCallRejectMessage extends StatelessWidget {
             vertical: 8.rpx,
           ),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               AppImage.asset(
                 icon,

@@ -4,6 +4,9 @@ mixin _ChatCallMixin {
   ///当前通话ID（对应业务服务端订单id）
   var _callId = '';
 
+  ///是否是视频通话
+  var _isVideoCall = false;
+
   ///当前通话发起方用户ID
   var _callInviter = '';
 
@@ -140,6 +143,12 @@ mixin _ChatCallMixin {
         timeoutSeconds: timeoutSeconds,
       ),
     );
+
+    _clearCallState();
+    _callId = callId;
+    _isVideoCall = isVideoCall;
+    _callInvitee = invitee.id;
+    _callInviter = ZegoUIKit().getLocalUser().id;
 
     _requesting = false;
 
@@ -280,48 +289,59 @@ mixin _ChatCallMixin {
         },
       ),
       //事件说明 https://www.zegocloud.com/docs/uikit/zh/callkit-android/api-reference/event#invitationevents
-      invitationEvents:
-          ZegoUIKitPrebuiltCallInvitationEvents(onOutgoingCallAccepted: (
-        String callID,
-        ZegoCallUser callee,
-      ) {
-        AppLogger.d(
-            'ZegoUIKitPrebuiltCallInvitationEvents>onOutgoingCallAccepted: callID=${callID}');
-        _clearCallState();
-        _callId = callID;
-        _callInvitee = callee.id;
-        _callInviter = ZegoUIKit().getLocalUser().id;
-        _isWaitCallEndDialog = true;
-      }, onIncomingCallReceived: (
-        String callID,
-        ZegoCallUser caller,
-        ZegoCallInvitationType callType,
-        List<ZegoCallUser> callees,
-        String customData,
-      ) async {
-        _callId = callID;
-        _callInvitee = ZegoUIKit().getLocalUser().id;
-        _callInviter = caller.id;
-        _isWaitCallEndDialog = true;
-        print('onIncomingCallReceived');
+      invitationEvents: ZegoUIKitPrebuiltCallInvitationEvents(
+        onOutgoingCallAccepted: (
+          String callID,
+          ZegoCallUser callee,
+        ) {
+          AppLogger.d(
+              'ZegoUIKitPrebuiltCallInvitationEvents>onOutgoingCallAccepted: callID=${callID}');
+          final isVideoCall = _isVideoCall;
+          _clearCallState();
+          _callId = callID;
+          _isVideoCall = isVideoCall;
+          _callInvitee = callee.id;
+          _callInviter = ZegoUIKit().getLocalUser().id;
+          _isWaitCallEndDialog = true;
+        },
+        onIncomingCallReceived: (
+          String callID,
+          ZegoCallUser caller,
+          ZegoCallInvitationType callType,
+          List<ZegoCallUser> callees,
+          String customData,
+        ) async {
+          _callId = callID;
+          _isVideoCall = callType == ZegoCallInvitationType.videoCall;
+          _callInvitee = ZegoUIKit().getLocalUser().id;
+          _callInviter = caller.id;
+          _isWaitCallEndDialog = true;
+          print('onIncomingCallReceived');
 
-        //申请权限
-        await checkPermission(callType == ZegoCallInvitationType.videoCall);
+          //申请权限
+          await checkPermission(callType == ZegoCallInvitationType.videoCall);
 
-        //自动接听
-        if (CallCustomData.fromJsonString(customData)?.autoAccept == true) {
-          acceptCall(customData: customData);
-        }
-      }, onOutgoingCallRejectedCauseBusy: (
-        String callID,
-        ZegoCallUser callee,
-        String customData,
-      ) {
-        Loading.showToast('对方正在通话中');
-      }, onIncomingCallDeclineButtonPressed: () {
-        _sendCallRejectMessage();
-        _clearCallState();
-      }),
+          //自动接听
+          if (CallCustomData.fromJsonString(customData)?.autoAccept == true) {
+            acceptCall(customData: customData);
+          }
+        },
+        onOutgoingCallRejectedCauseBusy: (
+          String callID,
+          ZegoCallUser callee,
+          String customData,
+        ) {
+          Loading.showToast('对方正在通话中');
+        },
+        onIncomingCallDeclineButtonPressed: () {
+          _sendCallRejectMessage(_callInviter);
+          _clearCallState();
+        },
+        onOutgoingCallCancelButtonPressed: () {
+          _sendCallRejectMessage(_callInvitee);
+          _clearCallState();
+        },
+      ),
     );
   }
 
@@ -502,6 +522,7 @@ mixin _ChatCallMixin {
 
   void _clearCallState() {
     _callId = '';
+    _isVideoCall = false;
     _callInviter = '';
     _callInvitee = '';
     _callPayTime = null;
@@ -509,14 +530,14 @@ mixin _ChatCallMixin {
   }
 
   ///发送拒绝接听自定义消息
-  Future<void> _sendCallRejectMessage() async {
-    if (_callInviter.isNotEmpty) {
+  Future<void> _sendCallRejectMessage(String conversationId) async {
+    if (conversationId.isNotEmpty) {
       ChatManager().sendCustomMessage(
-        conversationId: _callInviter,
+        conversationId: conversationId,
         conversationType: ZIMConversationType.peer,
         customType: CustomMessageType.callReject.value,
         customMessage: MessageCallRejectContent(
-          isVideoCall: false,
+          isVideoCall: _isVideoCall,
           message: '已取消',
         ).toJsonString(),
       );

@@ -13,7 +13,9 @@ mixin _ChatNotificationMixin {
   ///初始化通知
   Future<void> _initNotification() async {
     if (Platform.isAndroid) {
-      final androidPlugin = FlutterLocalNotificationsPlugin().resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+      final androidPlugin = FlutterLocalNotificationsPlugin()
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
       await androidPlugin?.requestNotificationsPermission();
       const channel = AndroidNotificationChannel(
         _channelId,
@@ -43,28 +45,29 @@ mixin _ChatNotificationMixin {
 
   ///点击通知
   void _onTapNotification(NotificationResponse response) {
-    try{
+    try {
       final payloadStr = response.payload ?? '';
-      if(payloadStr.isEmpty){
+      if (payloadStr.isEmpty) {
         return;
       }
       final payload = NotificationPayload.fromJson(jsonDecode(payloadStr));
-      if(payload.type == NotificationTypes.chatMessage){
+      if (payload.type == NotificationTypes.chatMessage) {
         final userId = int.tryParse('${payload.data}');
-        if(userId != null){
+        if (userId != null) {
           ChatManager().startChat(userId: userId);
         }
       }
-    }catch(ex){
+    } catch (ex) {
       AppLogger.d('_onTapNotification: $ex');
     }
   }
 
   ///新消息提醒通知
   void _onMessageArrivedNotification(List<ZIMMessage> messageList) {
-
     //是否需要提醒
     var reminder = false;
+    final nowMs = DateTime.now().millisecondsSinceEpoch;
+    const thresholdMs = 1 * 60 * 1000;
     for (var message in messageList) {
       //往外发的消息不弹通知
       if (message.direction == ZIMMessageDirection.send) {
@@ -72,8 +75,12 @@ mixin _ChatNotificationMixin {
       }
       final kitMessage = message.toKIT();
 
-      //音视频通话不弹通知
-      if (![CustomMessageType.callInvite, CustomMessageType.callEnd].contains(kitMessage.customType)) {
+      //音视频通话不弹通知，时间相差1分钟不弹
+      if (![
+        CustomMessageType.callInvite,
+        CustomMessageType.callEnd,
+        CustomMessageType.callReject,
+      ].contains(kitMessage.customType) && (nowMs - message.timestamp <= thresholdMs)) {
         reminder = true;
         _showNotification(kitMessage);
       }
@@ -91,12 +98,12 @@ mixin _ChatNotificationMixin {
 
   ///显示通知
   void _showNotification(ZIMKitMessage message) async {
-
     //在聊天页不显示通知
     final route = AppPages.routeObserver.stack.firstOrNull;
-    if(route?.settings.name == AppRoutes.messageListPage){
-      final registered = Get.isRegistered<MessageListController>(tag: message.info.conversationID);
-      if(registered){
+    if (route?.settings.name == AppRoutes.messageListPage) {
+      final registered = Get.isRegistered<MessageListController>(
+          tag: message.info.conversationID);
+      if (registered) {
         return;
       }
     }
@@ -110,13 +117,13 @@ mixin _ChatNotificationMixin {
     }
     final content = message.toPlainText();
     AndroidBitmap<Object>? largeIcon;
-    try{
+    try {
       final fileResp = DefaultCacheManager().getImageFile(user.userAvatarUrl);
       final resp = await fileResp.first.timeout(2.seconds);
-      if(resp is FileInfo){
+      if (resp is FileInfo) {
         largeIcon = FilePathAndroidBitmap(resp.file.path);
       }
-    }catch(ex){
+    } catch (ex) {
       AppLogger.w('发通知时，获取用户头像失败, $ex');
     }
 
@@ -167,7 +174,6 @@ mixin _ChatNotificationMixin {
 
 ///通知Payload
 class NotificationPayload {
-
   ///类型
   final int type;
 

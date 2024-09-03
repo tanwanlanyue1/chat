@@ -47,11 +47,18 @@ import '../custom/custom_message_type.dart';
 import 'chat_event_notifier.dart';
 
 part 'chat_call_mixin.dart';
+
 part 'chat_notification_mixin.dart';
+
 part 'chat_sender_mixin.dart';
 
 ///IM聊天，音视频通话 服务管理
-class ChatManager with WidgetsBindingObserver, _ChatCallMixin, _ChatNotificationMixin, _ChatSenderMixin {
+class ChatManager
+    with
+        WidgetsBindingObserver,
+        _ChatCallMixin,
+        _ChatNotificationMixin,
+        _ChatSenderMixin {
   ChatManager._();
 
   factory ChatManager() => instance;

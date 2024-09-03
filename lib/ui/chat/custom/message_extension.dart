@@ -181,6 +181,10 @@ extension ZIMKitMessageExt on ZIMKitMessage {
         return message.callEndContent?.isVideoCall == true
             ? '[视频聊天]'
             : '[语音聊天]';
+      case CustomMessageType.callReject:
+        return message.callRejectContent?.isVideoCall == true
+            ? '[视频聊天]'
+            : '[语音聊天]';
       case CustomMessageType.callMatch:
         return message.callMatchContent?.message ?? '[速配]';
       case CustomMessageType.order:

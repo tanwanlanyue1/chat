@@ -135,7 +135,7 @@ class AccountDataPage extends StatelessWidget {
                     title: state.getLikeAgeTitle(info.type),
                     detail: "${info.likeAgeMin}-${info.likeAgeMax}",
                     child: SizedBox(
-                      height: 40.rpx,
+                      height: 46.rpx,
                       child: Stack(
                         children: [
                           SizedBox(

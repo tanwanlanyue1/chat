@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
@@ -27,6 +28,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
 
   final UserCenterState state = UserCenterState();
   final ScrollController scrollController = ScrollController();
+  final SwiperController swiper = SwiperController();
 
   final pagingController = DefaultPagingController<PlazaListModel>(
     firstPage: 1,
@@ -172,6 +174,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
         state.authorInfo = state.authorInfo.copyWith(
             images: jsonEncode(state.imgList)
         );
+        swiper.index = 0;
         update(['userInfo']);
         Get.back();
       }else{

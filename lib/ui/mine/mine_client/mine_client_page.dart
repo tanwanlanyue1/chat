@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
@@ -43,20 +44,40 @@ class MineClientPage extends StatelessWidget {
       body: SmartRefresher(
         controller: controller.pagingController.refreshController,
         onRefresh: controller.pagingController.onRefresh,
-        child: PagedListView(
-          pagingController: controller.pagingController,
-          builderDelegate: DefaultPagedChildBuilderDelegate<UserModel>(
-            pagingController: controller.pagingController,
-            itemBuilder: (_, item, index) {
-              return ClientCard(
-                  item: item,
-                  onTap: (){
-                    ChatManager().startChat(userId: item.uid);
-                  },
-              );
-            },
-          ),
-        ),),
+        child: CustomScrollView(
+          slivers: [
+            PagedSliverList(
+              pagingController: controller.pagingController,
+              builderDelegate: DefaultPagedChildBuilderDelegate<UserModel>(
+                pagingController: controller.pagingController,
+                itemBuilder: (_, item, index) {
+                  return ClientCard(
+                    item: item,
+                    onTap: (){
+                      ChatManager().startChat(userId: item.uid);
+                    },
+                  );
+                },
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: GetBuilder<MineClientController>(
+                id: 'bottomLength',
+                builder: (_) {
+                  return Visibility(
+                    visible: (controller.pagingController.itemList?.length ?? 0) > 0,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 24.rpx,bottom: 24.rpx),
+                      alignment: Alignment.center,
+                      child: Text("共${controller.pagingController.itemList?.length}位客户",style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

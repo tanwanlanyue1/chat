@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -114,7 +115,7 @@ class FortuneSquareView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppImage.asset("assets/images/plaza/compile.png",width: 24.rpx,height: 24.rpx,),
-                  Text("发帖",style: AppTextStyle.fs14m.copyWith(color: Colors.white),),
+                  Text(S.current.postMessage,style: AppTextStyle.fs14m.copyWith(color: Colors.white),),
                 ],
               ),
             ),
@@ -158,7 +159,7 @@ class FortuneSquareView extends StatelessWidget {
                         child: Container(
                           margin: EdgeInsets.only(right: 8.rpx),
                           child: Text(
-                            "地图",
+                            S.current.map,
                             style:AppTextStyle.fs12m,
                           ),
                         )
@@ -191,7 +192,7 @@ class FortuneSquareView extends StatelessWidget {
                         child: Container(
                           margin: EdgeInsets.only(right: 8.rpx),
                           child: Text(
-                            "筛选",
+                            S.current.filtrate,
                             style:AppTextStyle.fs12m,
                           ),
                         )

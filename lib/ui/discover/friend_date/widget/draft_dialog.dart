@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
-import 'package:guanjia/common/network/api/discover_api.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
-import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/loading.dart';
@@ -76,13 +75,13 @@ class DraftDialog extends StatelessWidget {
                 ),
                 SizedBox(height: 12.rpx),
                 Text(
-                  "同意和${item.userInfo?.nickname ?? ''}约会？",
+                  "${S.current.agreedSum}${item.userInfo?.nickname ?? ''}${S.current.appointment}？",
                   style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 12.rpx),
                   child: Text(
-                    "注：为保障权益，约会双方均需缴纳保证金，保证金在订单结束后将会原路退回。",
+                    S.current.inOrderToProtect,
                     style: AppTextStyle.fs12m.copyWith(color: AppColor.black92),
                   ),
                 ),
@@ -96,7 +95,7 @@ class DraftDialog extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Ta愿支付",
+                        S.current.beWillingPay,
                         style:
                             AppTextStyle.fs14b.copyWith(color: AppColor.black20),
                       ),
@@ -106,7 +105,7 @@ class DraftDialog extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "服务费",
+                              S.current.serviceCharge,
                               style: AppTextStyle.fs14m
                                   .copyWith(color: AppColor.black6),
                             ),
@@ -122,7 +121,7 @@ class DraftDialog extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "保证金",
+                            S.current.earnestMoney,
                             style: AppTextStyle.fs14m
                                 .copyWith(color: AppColor.black6),
                           ),
@@ -139,7 +138,7 @@ class DraftDialog extends StatelessWidget {
                         height: 2.rpx,
                       ),
                       Text(
-                        "你需支付",
+                        S.current.youHavePay,
                         style:
                             AppTextStyle.fs14b.copyWith(color: AppColor.black20),
                       ),
@@ -148,7 +147,7 @@ class DraftDialog extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "保证金",
+                            S.current.earnestMoney,
                             style: AppTextStyle.fs14m
                                 .copyWith(color: AppColor.black6),
                           ),
@@ -165,7 +164,7 @@ class DraftDialog extends StatelessWidget {
                 const Spacer(),
                 CommonGradientButton(
                   height: 50.rpx,
-                  text: "同意约会",
+                  text: S.current.agreeDate,
                   onTap: () {
                     Get.back();
                     participate();

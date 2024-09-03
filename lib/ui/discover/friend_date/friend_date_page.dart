@@ -1,4 +1,3 @@
-import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -7,6 +6,7 @@ import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart'
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -191,7 +191,7 @@ class FriendDatePage extends StatelessWidget {
                               shape: BoxShape.circle,
                             ),
                           ),
-                          Text("个人",style: AppTextStyle.fs12m.copyWith(color: AppColor.black22),),
+                          Text(S.current.personage,style: AppTextStyle.fs12m.copyWith(color: AppColor.black22),),
                         ],
                       ),
                     ],
@@ -268,7 +268,7 @@ class FriendDatePage extends StatelessWidget {
             children: [
               Visibility(
                 visible: item.serviceCharge != null && item.serviceCharge! > 0,
-                child: Text("提供服务费",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                child: Text(S.current.provideService,style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
               ),
               const Spacer(),
               Visibility(
@@ -278,7 +278,7 @@ class FriendDatePage extends StatelessWidget {
                   height: 30.rpx,
                   margin: EdgeInsets.only(top: 8.rpx),
                   child: CommonGradientButton(
-                    text: "参与",
+                    text: S.current.participation,
                     borderRadius: BorderRadius.circular(32.rpx),
                     textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
                     onTap: ()=> controller.onTapParticipation(item),

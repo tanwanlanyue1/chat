@@ -81,7 +81,6 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin{
       pagingController.itemList?.clear();
       res = await getOneself();
     }
-    print("state.sortIndex===${state.sortIndex}");
     final response = await DiscoverApi.appointmentList(
       type: state.typeIndex.value > -1 ? state.typeList[state.typeIndex.value]['type'] : null,
       subTypes: state.sortIndex,
@@ -132,7 +131,7 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin{
     if(state.userInfo?.type.index != 2){
       DraftDialog.show(item: item);
     }else{
-      Loading.showToast("该约会邀约仅对普通用户和佳丽生效");
+      Loading.showToast(S.current.theDateOnlyUsersBeauties);
     }
   }
 

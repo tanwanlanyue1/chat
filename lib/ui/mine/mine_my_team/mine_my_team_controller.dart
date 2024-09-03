@@ -46,7 +46,7 @@ class MineMyTeamController extends GetxController with GetAutoDisposeMixin {
     List<TeamUser>? list= res.data?.records;
     if (res.isSuccess) {
       if(page == 1){
-        state.total = res.data?.total ?? 0;
+        state.total.value = res.data?.total ?? 0;
       }
       pagingController.appendPageData(list ?? []);
     } else {

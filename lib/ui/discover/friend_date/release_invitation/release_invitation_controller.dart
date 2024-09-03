@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 import '../../../../common/network/api/api.dart';
@@ -75,9 +76,9 @@ class ReleaseInvitationController extends GetxController {
   void onTapRelease() async {
     int comparison = timeDate(time: state.endTime, hour: state.endHour).compareTo( timeDate(time: state.startTime, hour: state.startHour+1));
     if(contentController.text.isEmpty){
-      Loading.showToast("约会内容不能为空");
+      Loading.showToast(S.current.appointmentNoEmpty);
     }else if(comparison < 0){
-      Loading.showToast("结束日期最少需要大于开始时间2小时");
+      Loading.showToast(S.current.theMustLonger);
     }else{
       Loading.show();
       String tag = "";

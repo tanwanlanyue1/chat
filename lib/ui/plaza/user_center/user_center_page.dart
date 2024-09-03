@@ -160,6 +160,7 @@ class UserCenterPage extends StatelessWidget {
           child: state.authorInfo.images != null ?
           Swiper(
             autoplay: jsonDecode(state.authorInfo.images!).length > 1 ? true : false,
+            controller: controller.swiper,
             itemBuilder: (BuildContext context, int index) {
               return AppImage.network(
                 jsonDecode(state.authorInfo.images!)[index],

@@ -77,20 +77,40 @@ class HaveSeenPage extends StatelessWidget {
     return SmartRefresher(
         controller: controller.pagingController.refreshController,
         onRefresh: controller.pagingController.onRefresh,
-        child: PagedListView(
-          pagingController: controller.pagingController,
-          builderDelegate: DefaultPagedChildBuilderDelegate<VisitList>(
-            pagingController: controller.pagingController,
-            itemBuilder: (_, item, index) {
-              return ClientCard(
-                item: item.userInfo,
-                visitTime: item.visitTime,
-                onTap: (){
-                  ChatManager().startChat(userId: item.userInfo!.uid);
+        child: CustomScrollView(
+          slivers: [
+            PagedSliverList(
+              pagingController: controller.pagingController,
+              builderDelegate: DefaultPagedChildBuilderDelegate<VisitList>(
+                pagingController: controller.pagingController,
+                itemBuilder: (_, item, index) {
+                  return ClientCard(
+                    item: item.userInfo,
+                    visitTime: item.visitTime,
+                    onTap: (){
+                      ChatManager().startChat(userId: item.userInfo!.uid);
+                    },
+                  );
                 },
-              );
-            },
-          ),
-        ),);
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: GetBuilder<HaveSeenController>(
+                id: 'bottomLength',
+                builder: (_) {
+                  return Visibility(
+                    visible: (controller.pagingController.itemList?.length ?? 0) > 0,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 24.rpx,bottom: 24.rpx),
+                      alignment: Alignment.center,
+                      child: Text("共${controller.pagingController.itemList?.length}位客户查看过我",style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+    );
   }
 }

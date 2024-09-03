@@ -10,13 +10,13 @@ class RectifyTheWorkplaceState {
   List speedDating = [
     {
       "name":S.current.videoDating,
-      "subtitle":"面对面交流情感",
+      "subtitle": S.current.communicateEmotionsFace,
       "image":"assets/images/plaza/video_back.png",
       "isVideo": true,
     },
     {
       "name":S.current.voiceDating,
-      "subtitle":"用声音探索灵魂",
+      "subtitle": S.current.exploreSoulSound,
       "image":"assets/images/plaza/voice_back.png",
       "isVideo": false,
     },
@@ -26,12 +26,12 @@ class RectifyTheWorkplaceState {
   //筛选类型
   List filtrateType = [
     {
-      "name":"男士",
+      "name": S.current.questionMan,
       "image":"assets/images/plaza/man_no.png",
       "activeImage":"assets/images/plaza/man.png",
     },
     {
-      "name":"女士",
+      "name": S.current.questionWoman,
       "image":"assets/images/plaza/woman_no.png",
       "activeImage":"assets/images/plaza/woman.png",
     },

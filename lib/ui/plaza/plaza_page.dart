@@ -56,7 +56,7 @@ class _PlazaPageState extends State<PlazaPage>
         return Container(
           height: Get.mediaQuery.padding.top+44.rpx,
           color: Colors.white,
-          padding: EdgeInsets.only(top: Get.mediaQuery.padding.top+12.rpx,left: 16.rpx),
+          padding: EdgeInsets.only(top: Get.mediaQuery.padding.top,left: 16.rpx,bottom: 10.rpx),
           child: Row(
               children: List.generate(state.tabBarList.length, (index) {
                 return GestureDetector(
@@ -65,37 +65,41 @@ class _PlazaPageState extends State<PlazaPage>
                     controller.update(['appBar']);
                   },
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ShaderMask(
                           shaderCallback: (Rect bounds) {
                             return LinearGradient(
                               begin: Alignment.centerLeft,
                               end: Alignment.centerRight,
-                              colors: [controller.tabController.index == index ? AppColor.gradientBegin: AppColor.gray30,controller.tabController.index == index ? AppColor.gradientEnd : AppColor.gray30],
+                              colors: [controller.tabController.index == index ? AppColor.gradientBegin: AppColor.gray9,
+                                controller.tabController.index == index ? AppColor.gradientEnd : AppColor.gray9],
                             ).createShader(Offset.zero & bounds.size);
                           },
                           blendMode: BlendMode.srcATop,
                           child: Container(
-                            margin: EdgeInsets.only(right: 36.rpx),
+                            margin: EdgeInsets.only(right: 32.rpx),
                             child: Text(
                               state.tabBarList[index]['name'],
-                              style:controller.tabController.index == index ? AppTextStyle.fs18b:AppTextStyle.fs16b,
+                              style: controller.tabController.index == index ? (index == 2 ? AppTextStyle.fs24b.copyWith(height: 1) : AppTextStyle.fs18b.copyWith(height: 1)):AppTextStyle.fs16b.copyWith(height: 1),
                             ),
                           )
                       ),
                       Container(
                         width: 24.rpx,
                         height: 3.rpx,
-                        margin: EdgeInsets.only(right: 36.rpx),
+                        margin: EdgeInsets.only(right: 36.rpx,top: 4.rpx),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4.rpx),
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [controller.tabController.index == index ? AppColor.gradientBegin: Colors.transparent,controller.tabController.index == index ? AppColor.gradientEnd : Colors.transparent],
-                          )
+                            borderRadius: BorderRadius.circular(4.rpx),
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: (controller.tabController.index == index && index != 2)?
+                              [AppColor.gradientBegin, AppColor.gradientEnd]:
+                              [Colors.transparent,Colors.transparent],
+                            )
                         ),
-                      ),
+                      )
                     ],
                   ),
                 );

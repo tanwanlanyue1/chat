@@ -86,11 +86,11 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
           "data":"gender",
         },
         {
-          "name": "身份",
-          "data":"用户",
+          "name": S.current.identity,
+          "data": S.current.user,
         },
         {
-          "name": "地址",
+          "name": S.current.site,
           "data":"position",
         },
       ] : state.userBasics;
@@ -101,11 +101,11 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
   String label(){
     switch(state.authorInfo.type){
       case UserType.user:
-        return '个人';
+        return S.current.personage;
       case UserType.beauty:
-        return '佳丽';
+        return S.current.goodGirl;
       case UserType.agent:
-        return '经纪人';
+        return S.current.brokerP;
     }
   }
 
@@ -113,12 +113,12 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
   String basicsInfo({required int index}){
     var info = jsonDecode(jsonEncode(state.authorInfo))[state.userBasics[index]['data']] ?? '-';
     if(index == 1){
-      info = (info == 0) ? "-" : ((info == 1) ? "男":"女");
+      info = (info == 0) ? "-" : ((info == 1) ? S.current.male:S.current.female);
     }else if(info == '0.00' || info == '0'|| info == 0){
       info = '-';
     }
     if(state.authorInfo.type.isUser && index == 2){
-      info = "用户";
+      info = S.current.user;
     }
     if(!state.authorInfo.type.isUser && index == 2 && info != '-'){
       NumberFormat format = NumberFormat('0.#####');
@@ -163,7 +163,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
   //上传封面图
   void updateInfoImage() async {
     if(state.imgList.isEmpty){
-      Loading.showToast("请选择要上传的图片");
+      Loading.showToast(S.current.pleaseSelectImage);
     }else{
       final res = await UserApi.updateInfoFull(
         data: {

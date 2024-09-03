@@ -158,7 +158,7 @@ class DatingHallView extends StatelessWidget {
         child: Column(
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:( item.age != null || item.style != null )? CrossAxisAlignment.start : CrossAxisAlignment.center,
               children: [
                 Container(
                   margin: EdgeInsets.only(right: 8.rpx),
@@ -214,8 +214,8 @@ class DatingHallView extends StatelessWidget {
                   onPressed: () {
                     ChatManager().startChat(userId: item.uid!);
                   },
-                  width: 82.rpx,
-                  height: 28.rpx,
+                  width: 67.rpx,
+                  height: 30.rpx,
                   backgroundColor:
                   item.gender == 1 ? AppColor.textBlue : AppColor.purple6,
                   child: Text(

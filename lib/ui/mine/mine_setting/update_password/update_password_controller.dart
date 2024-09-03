@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
@@ -32,19 +30,24 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
 
   /// 获取短信验证码
   Future<bool> fetchSms() async {
-
-    Loading.show();
-    final res = await state.loginService.fetchSms(
-        type: state.isPhone.value ? 1 : 2,
-        phone: state.phone
-    );
-    Loading.dismiss();
-
-    return res.when(success: (_) {
-      return true;
-    }, failure: (errorMessage) {
+    if(!state.isPhone.value && !GetUtils.isEmail(state.phone)){
+      Loading.showToast('邮箱格式错误');
       return false;
-    });
+    }else{
+      Loading.show();
+      final res = await state.loginService.fetchSms(
+          type: state.isPhone.value ? 1 : 2,
+          phone: state.phone
+      );
+      Loading.dismiss();
+
+      return res.when(success: (_) {
+        return true;
+      }, failure: (errorMessage) {
+        Loading.showToast(errorMessage);
+        return false;
+      });
+    }
   }
 
   /// 提交修改-登录密码

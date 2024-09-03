@@ -136,7 +136,14 @@ class FortuneSquareView extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(24.rpx),
-          border: Border.all(color: Colors.grey.withOpacity(0.4), width: 1,),
+          boxShadow: [
+            BoxShadow(
+                color: AppColor.gray11,
+                offset: const Offset(0, 2),
+                blurRadius: 6.rpx,
+                spreadRadius: 0
+            ),
+          ],
         ),
         padding: EdgeInsets.symmetric(horizontal: 20.rpx),
         margin: EdgeInsets.only(left: 36.rpx),

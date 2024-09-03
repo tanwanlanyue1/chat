@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/widgets/app_image.dart';
 
 ///单选
 ///isSelect:判断的参数
@@ -24,18 +26,20 @@ class DiscoverRadio extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SizedBox(
-          width: 24.rpx,
-          child: Radio(
-            value: true,
-            groupValue: isSelect,
-            fillColor:  MaterialStateProperty.resolveWith<Color>(
-            (states) {
-              if (states.contains(MaterialState.selected)) {return selectColor ?? Colors.blue;}
-              return unselectColor ?? const Color(0xff999999); }),
-            onChanged: (bool? val) {
-              titleCall?.call(val);
-            },
+        GestureDetector(
+          onTap: (){
+            titleCall?.call(true);
+          },
+          child: SizedBox(
+            width: 24.rpx,
+            child: AppImage.asset(
+              isSelect ?
+              "assets/images/discover/select.png" :
+              "assets/images/discover/select_un.png",
+              width: 24.rpx,
+              height: 24.rpx,
+              color: isSelect ? AppColor.gradientBegin : AppColor.black9,
+            ),
           ),
         ),
         GestureDetector(
@@ -43,7 +47,7 @@ class DiscoverRadio extends StatelessWidget {
             padding: EdgeInsets.only(left: 6.rpx),
             child: Text(
               title,
-              style: TextStyle(fontSize: 14.rpx,color: isSelect ? selectColor : unselectColor),
+              style: TextStyle(fontSize: 14.rpx,color: isSelect ? AppColor.black3 : AppColor.black9),
             ),
           ),
           onTap: (){
@@ -53,22 +57,24 @@ class DiscoverRadio extends StatelessWidget {
         Container(
           width: 35.rpx,
           margin: EdgeInsets.only(left: left.rpx),
-          child: Radio(
-            value: false,
-            groupValue: isSelect,
-            fillColor:  MaterialStateProperty.resolveWith<Color>(
-                    (states) {
-                      if (states.contains(MaterialState.selected)) {return selectColor ?? Colors.blue;}
-                      return unselectColor ?? const Color(0xff999999); }),
-            onChanged: (bool? val) {
-              titleCall?.call(val);
+          child: GestureDetector(
+            onTap: (){
+              titleCall?.call(false);
             },
-          ),
+            child: AppImage.asset(
+              !isSelect ?
+              "assets/images/discover/select.png" :
+              "assets/images/discover/select_un.png",
+              width: 24.rpx,
+              height: 24.rpx,
+              color: !isSelect ? AppColor.gradientBegin : AppColor.black9,
+            ),
+          )
         ),
         GestureDetector(
           child: Text(
             titleFalse,
-            style: TextStyle(fontSize: 14.rpx,color: isSelect ? unselectColor : selectColor),
+            style: TextStyle(fontSize: 14.rpx,color: isSelect ? AppColor.black9 : AppColor.black3),
           ),
           onTap: (){
             titleCall?.call(false);

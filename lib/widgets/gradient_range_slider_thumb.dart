@@ -32,12 +32,18 @@ class GradientRangeSliderThumbShape extends RangeSliderThumbShape {
         end: Alignment.bottomRight,
       ).createShader(Rect.fromCircle(center: center, radius: radius))
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.rpx; // Border width
+      ..strokeWidth = 3.rpx;
 
     final Paint innerPaint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
+    final Paint shadowPaint = Paint()
+      ..color = const Color(0x24000000)
+      ..style = PaintingStyle.fill
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 4.rpx,);
+
+    canvas.drawCircle(center + Offset(0, 4.rpx), radius, shadowPaint);
     canvas.drawCircle(center, radius, borderPaint);
     canvas.drawCircle(center, radius, innerPaint);
   }

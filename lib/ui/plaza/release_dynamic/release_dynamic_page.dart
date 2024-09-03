@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:guanjia/widgets/input_widget.dart';
 import 'package:guanjia/widgets/upload_image.dart';
@@ -20,7 +21,7 @@ class ReleaseDynamicPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("新帖子"),
+        title: Text(S.current.newPost),
       ),
       backgroundColor: AppColor.scaffoldBackground,
       body: buildDynamic(),
@@ -33,16 +34,42 @@ class ReleaseDynamicPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.only(top: 12.rpx,bottom: 16.rpx),
+          padding: EdgeInsets.only(top: 12.rpx),
           margin: EdgeInsets.only(top: 12.rpx),
           color: Colors.white,
           child: InputWidget(
-              hintText: '请输入内容',
+              hintText: S.current.pleaseEnterContent,
               inputController: controller.contentController,
               fillColor: Colors.white,
               maxLength: 100,
-              lines: 8,
+              counterText: '',
+              lines: 7,
+              onChanged: (val){
+                controller.update(['textLength']);
+              },
           ),
+        ),
+        GetBuilder<ReleaseDynamicController>(
+          id: 'textLength',
+          builder: (_){
+            return Container(
+              padding: EdgeInsets.only(right: 16.rpx,bottom: 16.rpx),
+              alignment: Alignment.centerRight,
+              color: Colors.white,
+              child: RichText(
+                text: TextSpan(
+                  text: '${controller.contentController.text.length}',
+                  style: AppTextStyle.fs14m.copyWith(color: AppColor.red),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: "/100",
+                      style: AppTextStyle.fs14m.copyWith(color: AppColor.black999,),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
         Container(
           margin: EdgeInsets.only(top: 2.rpx),
@@ -51,12 +78,12 @@ class ReleaseDynamicPage extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: RichText(
             text: TextSpan(
-              text: '上传照片',
+              text: S.current.uploadPictures,
               style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),
               children: <TextSpan>[
                 TextSpan(
-                  text: '(最多9张)',
-                  style: AppTextStyle.fs14m.copyWith(color: AppColor.red53,),
+                  text: S.current.upTo9photos,
+                  style: AppTextStyle.fs14m.copyWith(color: AppColor.red,),
                 ),
               ],
             ),
@@ -93,7 +120,7 @@ class ReleaseDynamicPage extends StatelessWidget {
           child: CommonGradientButton(
             onTap: controller.addCommunity,
             height: 50.rpx,
-            text: "立即发布",
+            text: S.current.publishNow,
           ),
         ),
       ],

@@ -83,6 +83,7 @@ class _ContactViewState extends State<ContactView>
       alignment: Alignment.topCenter,
       child: Obx(() {
         final userInfo = SS.login.info;
+        final isVip = SS.login.isVip;
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -97,7 +98,7 @@ class _ContactViewState extends State<ContactView>
                     height: 80.rpx,
                     shape: BoxShape.circle,
                   ),
-                  AppImage.asset(
+                  if(isVip) AppImage.asset(
                     'assets/images/mine/ic_vip.png',
                     width: 24.rpx,
                     height: 24.rpx,

@@ -1,7 +1,4 @@
-import 'dart:convert';
 
-import 'package:guanjia/common/extension/iterable_extension.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
 
 ///红包
 class RedPacketModel {

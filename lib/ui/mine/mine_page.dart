@@ -111,6 +111,7 @@ class _MinePageState extends State<MinePage>
       final userInfo = SS.login.info;
       final status = state.beautifulStatusRx;
       final userType = userTypeRx;
+      final isVip = SS.login.isVip;
 
       return Padding(
         padding: FEdgeInsets(horizontal: 16.rpx),
@@ -138,7 +139,7 @@ class _MinePageState extends State<MinePage>
                           height: 90.rpx,
                           shape: BoxShape.circle,
                         ),
-                        AppImage.asset(
+                        if(isVip) AppImage.asset(
                           'assets/images/mine/ic_vip.png',
                           width: 24.rpx,
                           height: 24.rpx,

@@ -51,8 +51,9 @@ class LoginService extends GetxService {
   // 用户昵称
   String get nickname => info?.nickname ?? "";
 
-  // 用户是否为VIP
-  bool get isVip => info?.vip ?? false;
+  // TODO 用户是否为VIP
+  // bool get isVip => info?.vip ?? false;
+  bool get isVip => true;
 
   // 用户类型 默认用户
   UserType get userType => _info.value?.type ?? UserType.user;

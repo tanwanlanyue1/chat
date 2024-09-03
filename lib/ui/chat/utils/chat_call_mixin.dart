@@ -19,6 +19,9 @@ mixin _ChatCallMixin {
   ///扣费UUID
   String? _callPayUuid;
 
+  ///是否需要再次显示充值提醒对话框
+  var _callRechargeDialogAgain = true;
+
   ///开始音视频通话
   ///- userId 接收方用户ID
   ///- nickname 接收方昵称
@@ -511,12 +514,40 @@ mixin _ChatCallMixin {
     AppLogger.d('扣费前时间： ${DateTime.now()}');
     final response =
         await IMApi.chatOrderPay(orderId: orderId, uuid: _callPayUuid);
-    if (response.isSuccess) {
+    if (response.isSuccess && response.data != null) {
       AppLogger.d('扣费成功: ${DateTime.now()}');
-      _callPayUuid = response.data;
+      final data = response.data!;
+      _callPayUuid = data.uuid;
+      //扣费提醒
+      _showPayDialogIfNeed(data, duration);
     } else {
       hangUpCall();
       AppLogger.w('扣费失败，挂断通话');
+    }
+  }
+
+  ///扣费提醒对话框
+  void _showPayDialogIfNeed(ChatCallPayModel data, Duration duration) async {
+    final userId = int.tryParse(_callInvitee);
+    if (data.windows.isEmpty || !_callRechargeDialogAgain || userId == null) {
+      return;
+    }
+    //可用分钟数
+    final usableMinutes = (data.duration / 60).floor();
+    if (data.windows.contains(usableMinutes)) {
+      final result = await ChatCallRechargeDialog.show(
+        isVideoCall: _isVideoCall,
+        userId: userId,
+      );
+      if(result == true){
+        //TODO 弹出充值对话框
+        Loading.showToast('弹出充值对话框');
+        return;
+      }
+      if(result == false){
+        _callRechargeDialogAgain = false;
+        return;
+      }
     }
   }
 
@@ -527,6 +558,7 @@ mixin _ChatCallMixin {
     _callInvitee = '';
     _callPayTime = null;
     _callPayUuid = null;
+    _callRechargeDialogAgain = true;
   }
 
   ///发送拒绝接听自定义消息

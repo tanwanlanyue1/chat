@@ -79,7 +79,7 @@ class ContractDetailController extends GetxController with GetAutoDisposeMixin {
           Loading.showToast('解除成功');
           break;
         case 4:
-          Loading.showToast('申请解约成功');
+          Loading.showToast('已发送解约申请');
           break;
       }
       EventBus().emit(kEventContractUpdate);

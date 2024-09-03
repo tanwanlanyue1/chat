@@ -1,5 +1,6 @@
 import 'package:guanjia/common/network/httpclient/http_client.dart';
 
+import 'model/im/chat_call_pay_model.dart';
 import 'model/im/red_packet_model.dart';
 
 /// IM API
@@ -59,8 +60,7 @@ class IMApi {
   /// 通话-实时扣费接口
   ///- orderId 订单ID
   ///- uuid 扣费uuid 只能用一次
-  ///- return uuid
-  static Future<ApiResponse<String>> chatOrderPay(
+  static Future<ApiResponse<ChatCallPayModel>> chatOrderPay(
       {required int orderId, String? uuid}) {
     return HttpClient.post(
       '/api/im/chatOrderPay',
@@ -68,6 +68,7 @@ class IMApi {
         "id": orderId,
         if (uuid != null) "uuid": uuid,
       },
+      dataConverter: (json) => ChatCallPayModel.fromJson(json),
     );
   }
 

@@ -9,13 +9,12 @@ import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
-import 'package:guanjia/ui/chat/chat_event_notifier.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
+import 'package:guanjia/ui/chat/utils/chat_event_notifier.dart';
 import 'package:guanjia/ui/mine/inapp_message/inapp_message.dart';
 import 'package:guanjia/ui/mine/inapp_message/inapp_message_type.dart';
 import 'package:guanjia/ui/mine/inapp_message/models/red_packet_update_content.dart';
-import 'package:vibration/vibration.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 ///应用消息服务

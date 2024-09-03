@@ -164,7 +164,7 @@ class _OrderDropMenuWidgetState extends State<OrderDropMenuWidget>
                 e['label'],
                 style: e['value'] == _currentValue
                     ? widget.selectTextStyle ??
-                        AppTextStyle.st.size(10.rpx).textColor(AppColor.primary)
+                        AppTextStyle.st.size(10.rpx).textColor(AppColor.primaryBlue)
                     : widget.normalTextStyle ??
                         AppTextStyle.st.size(10.rpx).textColor(AppColor.black9),
                 textAlign: TextAlign.center,

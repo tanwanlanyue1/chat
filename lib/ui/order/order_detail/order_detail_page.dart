@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_constant.dart';
@@ -35,6 +36,7 @@ class OrderDetailPage extends StatelessWidget {
             ),
           ),
           backgroundColor: Colors.transparent,
+          systemOverlayStyle: SystemUiOverlayStyle.light,
           leading: AppBackButton.light(),
           actions: [
             if (model != null && model.hasCancel)

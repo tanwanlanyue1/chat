@@ -397,7 +397,7 @@ class _OrderListItemWidgetState extends State<OrderListItemWidget> {
                       "剩余等待 ${CommonUtils.convertCountdownToHMS(item.countDown, hasHours: false)}",
                       style: AppTextStyle.st
                           .size(12.rpx)
-                          .textColor(AppColor.primary),
+                          .textColor(AppColor.primaryBlue),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

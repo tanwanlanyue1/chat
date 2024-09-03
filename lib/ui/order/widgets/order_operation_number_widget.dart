@@ -36,7 +36,7 @@ class OrderOperationNumberWidget extends StatelessWidget {
             number.toString(),
             style: AppTextStyle.st.bold
                 .size(18.rpx)
-                .textColor(numberColor ?? AppColor.primary),
+                .textColor(numberColor ?? AppColor.primaryBlue),
           ),
           SizedBox(height: 4.rpx),
           Text(

@@ -128,6 +128,7 @@ class _ContactViewState extends State<ContactView>
                       userInfo?.position ?? '',
                       style: AppTextStyle.fs12m.copyWith(
                         color: AppColor.grayText,
+                        height: 1.0,
                       ),
                     ),
                   ),
@@ -136,7 +137,7 @@ class _ContactViewState extends State<ContactView>
                     onTap: () => '${userInfo?.chatNo}'.copy(),
                     behavior: HitTestBehavior.translucent,
                     child: Padding(
-                      padding: FEdgeInsets(top: 10.rpx),
+                      padding: FEdgeInsets(top: 8.rpx),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [

@@ -327,6 +327,8 @@ class LoginService extends GetxService {
   Future<Result<void, String>> signOut({bool userAction = true}) async {
     if (userAction) {
       final res = await UserApi.signOut();
+      //不接单
+      UserApi.updateState(0);
       // 清空数据
       await _clearData();
       LoginEvent(false).emit();

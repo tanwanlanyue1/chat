@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -47,7 +45,7 @@ class MyVipPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.only(top: 8.rpx),
+                    padding: EdgeInsets.only(top: 8.rpx, bottom: 16.rpx),
                     child: Column(
                       children: [
                         Builder(builder: (context) {
@@ -383,7 +381,6 @@ class MyVipPage extends StatelessWidget {
                   color: Colors.white,
                   width: double.infinity,
                   height: 131.rpx + Get.mediaQuery.padding.bottom,
-                  margin: EdgeInsets.only(top: 16.rpx),
                   padding: EdgeInsets.symmetric(horizontal: 28.rpx),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

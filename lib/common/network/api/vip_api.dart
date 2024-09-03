@@ -18,7 +18,7 @@ class VipApi {
   static Future<ApiResponse> openVip({
     required int packageId,
   }) {
-    return HttpClient.post(
+    return HttpClient.get(
       '/api/vip/openVip',
       params: {
         "packageId": packageId,

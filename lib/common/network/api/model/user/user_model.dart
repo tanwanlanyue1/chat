@@ -11,8 +11,8 @@ enum UserGender {
   bool get isMale => this == UserGender.male;
   bool get isFemale => this == UserGender.female;
 
-  String? get icon{
-    switch(this){
+  String? get icon {
+    switch (this) {
       case male:
         return 'assets/images/mine/man.png';
       case female:
@@ -92,6 +92,7 @@ class UserModel {
     this.payPwd,
     required this.balance,
     required this.vip,
+    required this.expirationTime,
   });
 
   final int uid; // 用户id
@@ -122,7 +123,8 @@ class UserModel {
   int? dealNum; // 成交单数 30天内的
   bool? payPwd; // 是否设置支付密码 true已设置 false未设置
   num balance = 0; //余额
-  bool vip;
+  bool vip; // 是否为VIP
+  int expirationTime; // VIP到期时间
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -155,6 +157,7 @@ class UserModel {
       payPwd: json["payPwd"] ?? false,
       balance: json["balance"] ?? 0,
       vip: json["vip"] ?? false,
+      expirationTime: json["expirationTime"] ?? 0,
     );
   }
 
@@ -186,7 +189,8 @@ class UserModel {
         "praiseRate": praiseRate,
         "dealNum": dealNum,
         "payPwd": payPwd,
-        "vip": vip
+        "vip": vip,
+        "expirationTime": expirationTime,
       };
 
   UserModel copyWith({
@@ -219,6 +223,7 @@ class UserModel {
     bool? payPwd,
     num? balance,
     bool? vip,
+    int? expirationTime,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -250,6 +255,7 @@ class UserModel {
       payPwd: payPwd ?? this.payPwd,
       balance: balance ?? this.balance,
       vip: vip ?? this.vip,
+      expirationTime: expirationTime ?? this.expirationTime,
     );
   }
 }

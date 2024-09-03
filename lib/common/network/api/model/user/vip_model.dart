@@ -1,18 +1,23 @@
+import 'package:guanjia/common/network/api/api.dart';
+
 class VipModel {
   VipModel({
     required this.userInfo,
     required this.benefits,
     required this.packages,
+    required this.swiperList,
   });
 
-  final UserInfo? userInfo;
+  final UserModel? userInfo;
   final List<Benefit> benefits;
   final List<Package> packages;
+  final List<String> swiperList;
 
   factory VipModel.fromJson(Map<String, dynamic> json) {
     return VipModel(
-      userInfo:
-          json["userInfo"] == null ? null : UserInfo.fromJson(json["userInfo"]),
+      userInfo: json["userInfo"] == null
+          ? null
+          : UserModel.fromJson(json["userInfo"]),
       benefits: json["benefits"] == null
           ? []
           : List<Benefit>.from(
@@ -21,13 +26,17 @@ class VipModel {
           ? []
           : List<Package>.from(
               json["packages"]!.map((x) => Package.fromJson(x))),
+      swiperList: json["swiperList"] == null
+          ? []
+          : List<String>.from(json["swiperList"]!.map((x) => x)),
     );
   }
 
   Map<String, dynamic> toJson() => {
         "userInfo": userInfo?.toJson(),
-        "benefits": benefits.map((x) => x?.toJson()).toList(),
-        "packages": packages.map((x) => x?.toJson()).toList(),
+        "benefits": benefits.map((x) => x.toJson()).toList(),
+        "packages": packages.map((x) => x.toJson()).toList(),
+        "swiperList": swiperList.map((x) => x).toList(),
       };
 }
 
@@ -40,11 +49,11 @@ class Benefit {
     required this.count,
   });
 
-  final int type;
-  final String title;
-  final String subTitle;
-  final String icon;
-  final int count;
+  final int type; // 权益类型
+  final String title; // 权益标题
+  final String subTitle; // 权益副标题
+  final String icon; // 权益图标
+  final int count; // 权益次数 0=不限
 
   factory Benefit.fromJson(Map<String, dynamic> json) {
     return Benefit(
@@ -72,13 +81,15 @@ class Package {
     required this.discountPrice,
     required this.duration,
     required this.discount,
+    required this.title,
   });
 
-  final int id;
-  final int price;
-  final int discountPrice;
-  final int duration;
-  final int discount;
+  final int id; // id
+  final num price; // 价格
+  final num discountPrice; // 优惠价格
+  final int duration; // 开通时长(月)
+  final int discount; // 优惠 0无优惠 1限时特惠
+  final String title; // 标题
 
   factory Package.fromJson(Map<String, dynamic> json) {
     return Package(
@@ -87,6 +98,7 @@ class Package {
       discountPrice: json["discountPrice"] ?? 0,
       duration: json["duration"] ?? 0,
       discount: json["discount"] ?? 0,
+      title: json["title"] ?? "",
     );
   }
 
@@ -96,43 +108,6 @@ class Package {
         "discountPrice": discountPrice,
         "duration": duration,
         "discount": discount,
-      };
-}
-
-class UserInfo {
-  UserInfo({
-    required this.uid,
-    required this.nickName,
-    required this.avatar,
-    required this.type,
-    required this.isOpen,
-    required this.expirationTime,
-  });
-
-  final int uid;
-  final String nickName;
-  final String avatar;
-  final int type;
-  final bool isOpen;
-  final int expirationTime;
-
-  factory UserInfo.fromJson(Map<String, dynamic> json) {
-    return UserInfo(
-      uid: json["uid"] ?? 0,
-      nickName: json["nickName"] ?? "",
-      avatar: json["avatar"] ?? "",
-      type: json["type"] ?? 0,
-      isOpen: json["isOpen"] ?? false,
-      expirationTime: json["expirationTime"] ?? 0,
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        "uid": uid,
-        "nickName": nickName,
-        "avatar": avatar,
-        "type": type,
-        "isOpen": isOpen,
-        "expirationTime": expirationTime,
+        "title": title,
       };
 }

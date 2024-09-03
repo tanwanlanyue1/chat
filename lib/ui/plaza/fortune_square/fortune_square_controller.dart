@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -16,7 +13,6 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/common/utils/show_dialog.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/chat_manager.dart';
-import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:guanjia/ui/plaza/widgets/filtrate_bottom_sheet.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
@@ -115,7 +111,7 @@ class FortuneSquareController extends GetxController
 
   //选择更多
   Future<void> selectMore(PlazaListModel item) async {
-    var more = (item.uid == state.userInfo?.uid) ? [S.current.deletePublisher,"重复发布"] : ['取消关注','发起聊天'];
+    var more = (item.uid == state.userInfo?.uid) ? [S.current.deletePublisher,S.current.duplicateRelease] : [S.current.unfollow,S.current.initiateChat];
     Get.bottomSheet(
       CommonBottomSheet(
         titles: more,
@@ -133,7 +129,7 @@ class FortuneSquareController extends GetxController
               ShowDialog.show(
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 38.rpx).copyWith(bottom: 24.rpx),
-                  child: Text("确认是否删除该帖子及相关内容数据？",style: AppTextStyle.fs18m.copyWith(color: AppColor.black20),textAlign: TextAlign.center,),
+                  child: Text(S.current.confirmDelete,style: AppTextStyle.fs18m.copyWith(color: AppColor.black20),textAlign: TextAlign.center,),
                 ),
                 callBack: (){
                   Get.back();

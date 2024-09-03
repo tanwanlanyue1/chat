@@ -104,7 +104,7 @@ class DatingHallView extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  "交友大厅",
+                  S.current.datingHall,
                   style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),
                 ),
                 const Spacer(),
@@ -114,7 +114,7 @@ class DatingHallView extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        "筛选",
+                        S.current.filtrate,
                         style:
                             AppTextStyle.fs12m.copyWith(color: AppColor.gray5),
                       ),
@@ -187,7 +187,7 @@ class DatingHallView extends StatelessWidget {
                             child: Row(
                               children: [
                                 Text(
-                                  item.age != null ? "${item.age}岁":"",
+                                  item.age != null ? "${item.age}${S.current.yearAge}":"",
                                   style:
                                   AppTextStyle.fs12m.copyWith(color: AppColor.black92),
                                 ),

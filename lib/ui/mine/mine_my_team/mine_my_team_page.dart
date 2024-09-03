@@ -56,11 +56,14 @@ class MineMyTeamPage extends StatelessWidget {
                   )
               ),
               SliverToBoxAdapter(
-                child: Container(
-                  margin: EdgeInsets.only(top: 24.rpx),
-                  alignment: Alignment.center,
-                  child: Text("共${state.total}位艺人",style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
-                ),
+                child: Obx(() => Visibility(
+                  visible: state.total.value > 0,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 24.rpx,bottom: 24.rpx),
+                    alignment: Alignment.center,
+                    child: Text("共${state.total}位艺人",style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
+                  ),
+                )),
               ),
             ],
           )
@@ -87,8 +90,9 @@ class MineMyTeamPage extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: SizedBox(
+                child: Container(
                   height: 40.rpx,
+                  margin: EdgeInsets.only(right: 4.rpx),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,17 +138,23 @@ class MineMyTeamPage extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible: item.remark == 'apply',
+                // visible: item.remark == 'apply',
                 child: GestureDetector(
                   onTap: (){
                     controller.getContract(item.contractId!,index: index);
                   },
                   child: Container(
                     height: 40.rpx,
-                    margin: EdgeInsets.only(right: 24.rpx),
+                    margin: EdgeInsets.only(right: 16.rpx),
                     alignment: Alignment.topCenter,
                     color: Colors.transparent,
-                    child: AppImage.asset("assets/images/mine/cancelAContract.png",width: 20.rpx,height: 20.rpx,),
+                    child: Column(
+                      children: [
+                        AppImage.asset("assets/images/mine/cancelAContract.png",width: 20.rpx,height: 20.rpx,),
+                        SizedBox(height: 2.rpx,),
+                        Text(S.current.cancelContract,style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -154,7 +164,7 @@ class MineMyTeamPage extends StatelessWidget {
                 },
                 child: Container(
                   height: 40.rpx,
-                  margin: EdgeInsets.only(right: 24.rpx),
+                  margin: EdgeInsets.only(right: 16.rpx),
                   child: Column(
                     children: [
                       AppImage.asset("assets/images/mine/look_contract_detail.png",width: 20.rpx,height: 20.rpx,),

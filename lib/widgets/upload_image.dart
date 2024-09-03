@@ -51,7 +51,7 @@ class _UploadImageState extends State<UploadImage> {
     for(var i = 0; i < file.length; i++){
       var result = await FlutterImageCompress.compressAndGetFile(
         file[i].absolute.path, '${directory.path}/$i.jpg',
-        quality: 88,
+        quality: 100,
       );
       if(result != null){
         compressedList.add(File(result.path));

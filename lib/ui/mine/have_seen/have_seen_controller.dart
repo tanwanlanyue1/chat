@@ -34,6 +34,7 @@ class HaveSeenController extends GetxController {
     if (response.isSuccess) {
       final items = response.data ?? [];
       pagingController.appendPageData(items);
+      update(['bottomLength']);
       SS.appConfig.configRx.update((val) {
         val?.lookMessage = false;
       });

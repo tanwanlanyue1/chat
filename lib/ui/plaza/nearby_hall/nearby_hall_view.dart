@@ -6,6 +6,7 @@ import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart'
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/chat_manager.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -137,7 +138,7 @@ class NearbyHallView extends StatelessWidget {
                       child: Row(
                         children: [
                           AppImage.asset("assets/images/plaza/relation.png",width: 14.rpx,height: 14.rpx,),
-                          Text("  联系Ta",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+                          Text("  ${S.current.contactBeauty}",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
                         ],
                       ),
                     ),
@@ -187,7 +188,7 @@ class NearbyHallView extends StatelessWidget {
                         child: Container(
                           margin: EdgeInsets.only(right: 8.rpx),
                           child: Text(
-                            "地图",
+                            S.current.map,
                             style:AppTextStyle.fs12m,
                           ),
                         )
@@ -221,7 +222,7 @@ class NearbyHallView extends StatelessWidget {
                         child: Container(
                           margin: EdgeInsets.only(right: 8.rpx),
                           child: Text(
-                            "筛选",
+                            S.current.filtrate,
                             style:AppTextStyle.fs12m,
                           ),
                         )

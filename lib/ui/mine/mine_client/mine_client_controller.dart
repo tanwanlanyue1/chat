@@ -33,6 +33,7 @@ class MineClientController extends GetxController {
     if (response.isSuccess) {
       final items = response.data ?? [];
       pagingController.appendPageData(items);
+      update(['bottomLength']);
     } else {
       pagingController.error = response.errorMessage;
     }

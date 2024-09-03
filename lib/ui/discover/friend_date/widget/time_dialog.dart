@@ -97,7 +97,7 @@ class TimeDialog extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("时间选择",style: AppTextStyle.fs14b.copyWith(color: AppColor.black92),),
+                          Text(S.current.timeSelect,style: AppTextStyle.fs14b.copyWith(color: AppColor.black92),),
                           Text("${controller.state.hour}:00",style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),),
                         ],
                       ),

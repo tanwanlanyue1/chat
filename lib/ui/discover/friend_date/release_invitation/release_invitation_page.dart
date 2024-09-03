@@ -43,11 +43,11 @@ class ReleaseInvitationPage extends StatelessWidget {
                 ],
               ),
             ),
-            Text("最多发布一个!",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
+            Text(S.current.publishMostOne,style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
             SizedBox(height: 6.rpx,),
             CommonGradientButton(
               height: 50.rpx,
-              text: '立即发布',
+              text: S.current.publishNow,
               onTap: controller.onTapRelease,
             ),
           ],
@@ -109,7 +109,7 @@ class ReleaseInvitationPage extends StatelessWidget {
           Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(bottom: 8.rpx),
-            child: Text("等待其他用户/佳丽参与一起约会吧",style: AppTextStyle.fs12r.copyWith(color: AppColor.black92),),
+            child: Text(S.current.waitOtherUsers,style: AppTextStyle.fs12r.copyWith(color: AppColor.black92),),
           ),
           Container(
             padding: EdgeInsets.only(bottom: 16.rpx),
@@ -119,7 +119,7 @@ class ReleaseInvitationPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.rpx),
             ),
             child: InputWidget(
-              hintText: '添加邀约行程的简单介绍',
+              hintText: S.current.addDescriptionItinerary,
               maxLength: 30,
               lines: 3,
               fillColor: Colors.white,
@@ -134,14 +134,14 @@ class ReleaseInvitationPage extends StatelessWidget {
             ),
           ),
           DiscoverItem(
-            title: "约会地点",
+            title: S.current.datingSite,
             trailing: Text(
-              "(必选)",
+              S.current.required,
               style: AppTextStyle.fs14b.copyWith(color: AppColor.black92),
             ),
           ),
           DiscoverItem(
-            title: "开始时间",
+            title: S.current.startTime,
             callBack: (){
               state.time = state.startTime;
               state.hour = state.startHour;
@@ -153,7 +153,7 @@ class ReleaseInvitationPage extends StatelessWidget {
             ),
           ),
           DiscoverItem(
-            title: "结束时间",
+            title: S.current.endTime,
             trailing: Text(
               DateUtil.formatDateStr('${controller.timeDate(time: state.endTime,hour: state.endHour)}', format: 'yyyy MM/dd HH:00'),
               style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),
@@ -179,7 +179,7 @@ class ReleaseInvitationPage extends StatelessWidget {
       padding: EdgeInsets.all(16.rpx),
       child: Column(
         children: [
-          Text("附加标签 (${state.labelList.length}/3)",style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),),
+          Text("${S.current.additionalLabel} (${state.labelList.length}/3)",style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),),
           SizedBox(height: 16.rpx,),
           Container(
             alignment: Alignment.centerLeft,
@@ -208,8 +208,8 @@ class ReleaseInvitationPage extends StatelessWidget {
             children: [
               DiscoverRadio(
                   isSelect: state.serve.value,
-                  title: "无服务费",
-                  titleFalse: "有服务费",
+                  title: S.current.noServiceCharge,
+                  titleFalse: S.current.haveServiceCharge,
                   selectColor: AppColor.gradientBegin,
                   unselectColor: AppColor.gray9,
                   titleCall: (bool? val) {
@@ -257,7 +257,6 @@ class ReleaseInvitationPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      // prefixText: "\$",
                       prefixIconConstraints: BoxConstraints(minHeight: 34.rpx),
                       constraints: BoxConstraints(minHeight: 34.rpx),
                       contentPadding: EdgeInsets.zero,

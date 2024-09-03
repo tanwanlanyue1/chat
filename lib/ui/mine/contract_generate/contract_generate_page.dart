@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -77,7 +79,9 @@ class ContractGeneratePage extends GetView<ContractGenerateController> {
             state.selectedBeautyRx(value);
           },
           hintText: S.current.selectFriendBinding,
+          textStyle: AppTextStyle.fs12b.copyWith(color: AppColor.blackBlue),
           menuStyle: MenuStyle(
+            elevation: MaterialStateProperty.all(1),
             alignment: const Alignment(-1.0, 1.4),
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(
@@ -99,9 +103,8 @@ class ContractGeneratePage extends GetView<ContractGenerateController> {
               gapPadding: 0,
             ),
             isDense: true,
-            hintStyle: TextStyle(
-              fontSize: 14.rpx,
-              color: AppColor.gray9,
+            hintStyle: AppTextStyle.fs12b.copyWith(
+              color: AppColor.black666,
             ),
             contentPadding: FEdgeInsets(horizontal: 16.rpx),
             constraints: BoxConstraints(maxHeight: 40.rpx),
@@ -111,7 +114,8 @@ class ContractGeneratePage extends GetView<ContractGenerateController> {
                 value: item,
                 label: item.nickname,
                 style: TextButton.styleFrom(
-                  foregroundColor: AppColor.gray5,
+                  foregroundColor: AppColor.blackBlue,
+                  textStyle: AppTextStyle.fs14b,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   minimumSize: Size.zero,
                   fixedSize: Size(double.infinity, 36.rpx),
@@ -135,7 +139,7 @@ class ContractGeneratePage extends GetView<ContractGenerateController> {
             top: Radius.circular(24.rpx),
           ),
         ),
-        padding: FEdgeInsets(horizontal: 16.rpx, vertical: 36.rpx),
+        padding: FEdgeInsets(horizontal: 28.rpx, top: 36.rpx, bottom: Get.padding.bottom),
         child: Column(
           children: [
             Expanded(
@@ -152,15 +156,16 @@ class ContractGeneratePage extends GetView<ContractGenerateController> {
                 }),
               ),
             ),
-
-            Button(
-              width: 200.rpx,
+            Button.stadium(
+              width: 146.rpx,
+              height: 36.rpx,
               onPressed: controller.onTapEditContract,
               child: Text(S.current.contractEdit),
             ),
-            Button(
-              margin: FEdgeInsets(top: 24.rpx, bottom: 36.rpx),
-              width: 200.rpx,
+            Button.stadium(
+              width: 146.rpx,
+              height: 36.rpx,
+              margin: FEdgeInsets(vertical: 36.rpx),
               onPressed: controller.pushContract,
               child: Text(S.current.contractPush),
             ),

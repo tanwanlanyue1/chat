@@ -47,7 +47,7 @@ class SignOutDialog extends StatelessWidget {
                       padding: FEdgeInsets(top: 12.rpx, bottom: 24.rpx),
                       child: Text(
                         '退出登录后，我们任会继续保留您的账户数据，以便您再次登录查看。',
-                        style: AppTextStyle.fs12m.copyWith(
+                        style: AppTextStyle.fs12b.copyWith(
                           color: AppColor.blackText,
                           height: 1.5,
                         ),

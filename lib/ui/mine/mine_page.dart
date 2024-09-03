@@ -49,17 +49,17 @@ class _MinePageState extends State<MinePage>
                   child: SmartRefresher(
                     controller: controller.refreshController,
                     onRefresh: controller.onRefresh,
-                  child: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    padding: FEdgeInsets(bottom: 24.rpx, horizontal: 16.rpx),
-                    children: [
-                      buildBanner(),
-                      buildSectionOne(),
-                      buildSectionTwo(),
-                      buildSignOutButton(),
-                    ],
+                    child: ListView(
+                      physics: const BouncingScrollPhysics(),
+                      padding: FEdgeInsets(bottom: 24.rpx, horizontal: 16.rpx),
+                      children: [
+                        buildBanner(),
+                        buildSectionOne(),
+                        buildSectionTwo(),
+                        buildSignOutButton(),
+                      ],
+                    ),
                   ),
-                ),
                 ),
                 Padding(
                   padding: padding,
@@ -112,6 +112,10 @@ class _MinePageState extends State<MinePage>
       final status = state.beautifulStatusRx;
       final userType = userTypeRx;
       final isVip = SS.login.isVip;
+      var position = userInfo?.position ?? '';
+      if (position.isEmpty) {
+        position = '地区·未知';
+      }
 
       return Padding(
         padding: FEdgeInsets(horizontal: 16.rpx),
@@ -139,11 +143,12 @@ class _MinePageState extends State<MinePage>
                           height: 90.rpx,
                           shape: BoxShape.circle,
                         ),
-                        if(isVip) AppImage.asset(
-                          'assets/images/mine/ic_vip.png',
-                          width: 24.rpx,
-                          height: 24.rpx,
-                        ),
+                        if (isVip)
+                          AppImage.asset(
+                            'assets/images/mine/ic_vip.png',
+                            width: 24.rpx,
+                            height: 24.rpx,
+                          ),
                       ],
                     ),
                   ),
@@ -155,47 +160,62 @@ class _MinePageState extends State<MinePage>
                       children: [
                         AutoSizeText(
                           minFontSize: 10,
-                          maxLines: 2,
+                          maxLines: 1,
                           userInfo?.nickname ?? '',
                           style: AppTextStyle.fs18b.copyWith(
                             color: AppColor.blackBlue,
+                            height: 1.0,
                           ),
                         ),
-                        if (userInfo?.position?.isNotEmpty == true)
-                          Padding(
-                            padding: FEdgeInsets(top: 4.rpx),
-                            child: Text(
-                              userInfo?.position ?? '',
-                              style: AppTextStyle.fs16b.copyWith(
-                                color: AppColor.black999,
-                              ),
-                            ),
-                          ),
-                        if (userInfo?.chatNo != null)
-                          GestureDetector(
-                            onTap: () => '${userInfo?.chatNo}'.copy(),
-                            behavior: HitTestBehavior.translucent,
-                            child: Padding(
-                              padding: FEdgeInsets(top: 4.rpx),
-                              child: Text(
-                                'ID:${userInfo?.chatNo}',
-                                style: AppTextStyle.fs12m.copyWith(
-                                  color: AppColor.black999,
+                        Padding(
+                          padding: FEdgeInsets(top: 12.rpx),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      position,
+                                      style: AppTextStyle.fs14m.copyWith(
+                                        color: AppColor.black999,
+                                        height: 1.0,
+                                      ),
+                                    ),
+                                    if (userInfo?.chatNo != null)
+                                      GestureDetector(
+                                        onTap: () =>
+                                            '${userInfo?.chatNo}'.copy(),
+                                        behavior: HitTestBehavior.translucent,
+                                        child: Padding(
+                                          padding: FEdgeInsets(top: 12.rpx),
+                                          child: Text(
+                                            'ID:${userInfo?.chatNo}',
+                                            style: AppTextStyle.fs12m.copyWith(
+                                              color: AppColor.black999,
+                                              height: 1.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                  ],
                                 ),
                               ),
-                            ),
+                              if (status != null && userType.isBeauty)
+                                Padding(
+                                  padding: FEdgeInsets(left: 4.rpx),
+                                  child: BeautifulStatusSwitch(
+                                    status: status,
+                                    onChange: controller.onTapBeautifulStatus,
+                                  ),
+                                ),
+                            ],
                           ),
+                        ),
                       ],
                     ),
                   ),
-                  if (status != null && userType.isBeauty)
-                    Padding(
-                      padding: FEdgeInsets(left: 4.rpx),
-                      child: BeautifulStatusSwitch(
-                        status: status,
-                        onChange: controller.onTapBeautifulStatus,
-                      ),
-                    ),
                 ],
               ),
             ),
@@ -308,13 +328,16 @@ class _MinePageState extends State<MinePage>
             pagePath: AppRoutes.mineSettingPage,
           ),
           //激活/进阶
-            MineListTile(
-              title: S.current.activationProgression,
-              icon: "assets/images/mine/activate.png",
-              trailing:
-                  userType.isUser ? S.current.normalUser : ( userType.isBeauty ? S.current.beautifulUser : S.current.brokerUser),
-              onTap: controller.onTapUserAdvanced,
-            ),
+          MineListTile(
+            title: S.current.activationProgression,
+            icon: "assets/images/mine/activate.png",
+            trailing: userType.isUser
+                ? S.current.normalUser
+                : (userType.isBeauty
+                    ? S.current.beautifulUser
+                    : S.current.brokerUser),
+            onTap: controller.onTapUserAdvanced,
+          ),
           //评价我的
           if (userType.isBeauty)
             MineListTile(

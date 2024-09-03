@@ -33,9 +33,9 @@ class ContractView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: AppTextStyle.fs14m.copyWith(
-        color: AppColor.gray5,
-        height: 21 / 14,
+      style: AppTextStyle.fs12b.copyWith(
+        color: AppColor.blackText,
+        height: 1.5,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -48,7 +48,7 @@ class ContractView extends StatelessWidget {
           Text(content),
           Container(
             alignment: Alignment.centerRight,
-            padding: FEdgeInsets(top: 80.rpx),
+            padding: FEdgeInsets(top: 60.rpx),
             child: buildRichText(
               dateLabel ?? S.current.contractDate,
               date,
@@ -65,8 +65,8 @@ class ContractView extends StatelessWidget {
         TextSpan(text: text1),
         TextSpan(
             text: text2,
-            style: AppTextStyle.fs14m.copyWith(
-              color: AppColor.gray30,
+            style: AppTextStyle.fs12b.copyWith(
+              color: AppColor.black666,
             )),
       ],
     ));

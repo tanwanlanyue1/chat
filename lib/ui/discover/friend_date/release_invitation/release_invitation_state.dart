@@ -12,6 +12,9 @@ class ReleaseInvitationState {
 
   final serve = false.obs;
 
+  //剩余次数
+  final surplus = {}.obs;
+
   //时间选择
   int time = 0;
   int hour = 0;
@@ -19,7 +22,7 @@ class ReleaseInvitationState {
   int endTime = 0;
   int startHour = 0;
   int endHour = 0;
-  List<String> timeList = [];
+  List<Map> timeList = [];
 
   //约会类型
   List<Map<String, dynamic>> typeList = [

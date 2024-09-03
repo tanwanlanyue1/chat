@@ -14,6 +14,7 @@ class DiscoverItem extends StatelessWidget {
   final Widget? right;
   final BorderRadiusGeometry? borderRadius;
   final bool autoHeight;
+  final bool location;
   const DiscoverItem({
     super.key,
     required this.title,
@@ -23,6 +24,7 @@ class DiscoverItem extends StatelessWidget {
     this.right,
     this.borderRadius,
     this.autoHeight = false,
+    this.location = false,
   });
 
   @override
@@ -44,7 +46,15 @@ class DiscoverItem extends StatelessWidget {
               title,
               style: TextStyle(fontSize: 14.rpx,color: AppColor.black92),
             ),
-            SizedBox(width: 1.rpx),
+            SizedBox(width: 4.rpx),
+            Visibility(
+              visible: location,
+              child: AppImage.asset(
+                "assets/images/discover/location.png",
+                width: 16.rpx,
+                height: 16.rpx,
+              ),
+            ),
             Expanded(
               child: Align(
                 alignment: Alignment.centerRight,
@@ -54,7 +64,7 @@ class DiscoverItem extends StatelessWidget {
             SizedBox(width: 2.rpx),
             right ??
                 AppImage.asset(
-                  "assets/images/mine/mine_right.png",
+                  "assets/images/discover/discover_right.png",
                   width: 16.rpx,
                   height: 16.rpx,
                 ),

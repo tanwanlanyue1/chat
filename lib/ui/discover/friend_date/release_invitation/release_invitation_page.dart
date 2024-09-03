@@ -43,13 +43,29 @@ class ReleaseInvitationPage extends StatelessWidget {
                 ],
               ),
             ),
-            Text(S.current.publishMostOne,style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
-            SizedBox(height: 6.rpx,),
-            CommonGradientButton(
+            Container(
+              margin: EdgeInsets.only(top: 8.rpx),
               height: 50.rpx,
-              text: S.current.publishNow,
-              onTap: controller.onTapRelease,
-            ),
+              child: CommonGradientButton(
+                textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
+                widget: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        margin: EdgeInsets.only(right: 36.rpx),
+                        child: Text(S.current.publishNow,style: AppTextStyle.fs16b.copyWith(color: Colors.white),),
+                      ),
+                    ),
+                    Obx(() => Padding(
+                      padding: EdgeInsets.only(right: 16.rpx),
+                      child: Text("${S.current.publishMostOne}（${state.surplus['surplus'] ?? 0}/${state.surplus['total'] ?? 0}）",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+                    )),
+                  ],
+                ),
+                onTap: controller.onTapRelease,
+              ),
+            )
           ],
         ),
       ),
@@ -81,8 +97,8 @@ class ReleaseInvitationPage extends StatelessWidget {
               child: Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: current == index ? AppColor.primary : Colors.white,
-                  borderRadius: BorderRadius.circular(8.rpx),
+                  color: current == index ? AppColor.primaryBlue : Colors.white,
+                  borderRadius: BorderRadius.circular(4.rpx),
                 ),
                 child: Text(
                   "${item['title']}",
@@ -135,6 +151,7 @@ class ReleaseInvitationPage extends StatelessWidget {
           ),
           DiscoverItem(
             title: S.current.datingSite,
+            location: true,
             trailing: Text(
               S.current.required,
               style: AppTextStyle.fs14b.copyWith(color: AppColor.black92),
@@ -212,6 +229,7 @@ class ReleaseInvitationPage extends StatelessWidget {
                   titleFalse: S.current.haveServiceCharge,
                   selectColor: AppColor.gradientBegin,
                   unselectColor: AppColor.gray9,
+                  left: 24.rpx,
                   titleCall: (bool? val) {
                     state.serve.value = val ?? false;
                     if(val ?? false){
@@ -224,7 +242,7 @@ class ReleaseInvitationPage extends StatelessWidget {
                   margin: EdgeInsets.only(left: 32.rpx),
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: !state.serve.value ? AppColor.gradientBegin : AppColor.gray9,width: 2.rpx),
+                      border: Border.all(color: !state.serve.value ? AppColor.primaryBlue : AppColor.gray9,width: 1.rpx),
                       borderRadius: BorderRadius.all(Radius.circular(4.rpx))
                   ),
                   child: TextField(

@@ -198,7 +198,7 @@ class UserCenterPage extends StatelessWidget {
               height: 220.rpx,
               color: AppColor.black6,
               alignment: Alignment.center,
-              child: Text(SS.login.userId == state.authorId ? "轻触上传主题背景" : '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+              child: Text(SS.login.userId == state.authorId ? S.current.tapUploadThemeBackground : '',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
             ),
           ),
         );
@@ -253,7 +253,7 @@ class UserCenterPage extends StatelessWidget {
                               Container(
                                 width: 50.rpx,
                                 alignment: Alignment.center,
-                                child: Text(isAttentionRx() ? "已关注" : '关注',style: AppTextStyle.fs14b.copyWith(color: AppColor.gray30),),
+                                child: Text(isAttentionRx() ? S.current.followed : S.current.attention,style: AppTextStyle.fs14b.copyWith(color: AppColor.gray30),),
                               )
                             ],
                           );
@@ -294,7 +294,7 @@ class UserCenterPage extends StatelessWidget {
             Container(
               alignment: Alignment.centerLeft,
               margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-              child: Text("个人简介",style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),),
+              child: Text(S.current.userSignature,style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),),
             ),
             Text(state.authorInfo.signature ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue),),
             Container(
@@ -315,8 +315,8 @@ class UserCenterPage extends StatelessWidget {
       child: Container(
         color: Colors.white,
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.only(left: 16.rpx),
-        child: Text("个人帖子",style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),),
+        padding: EdgeInsets.only(left: 16.rpx,bottom: 4.rpx),
+        child: Text(S.current.personalPost,style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),),
       ),
     );
   }
@@ -342,7 +342,7 @@ class UserCenterPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('想了解我更多，跟我1对1私聊吧！',style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),
+            Text(S.current.talkToMe1v1,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8.rpx),
               child: Row(
@@ -359,7 +359,7 @@ class UserCenterPage extends StatelessWidget {
                       margin: EdgeInsets.only(right: 8.rpx),
                       child: CommonGradientButton(
                         height: 50.rpx,
-                        text: "实时\n语音",
+                        text: "${S.current.realTime}\n${S.current.voice}",
                         textStyle: AppTextStyle.fs16b.copyWith(color: Colors.white,height: 1.18,),
                       ),
                     ),
@@ -373,7 +373,7 @@ class UserCenterPage extends StatelessWidget {
                       jumpToChatPage: true,
                       child: CommonGradientButton(
                         height: 50.rpx,
-                        text: "视频1V1聊天",
+                        text: S.current.video1V1Chat,
                         textStyle: AppTextStyle.fs16b.copyWith(color: Colors.white,),
                       ),
                     ),

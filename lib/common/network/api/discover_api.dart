@@ -88,4 +88,11 @@ class DiscoverApi {
       data: {"id": id},
     );
   }
+
+  /// 获取发布约会剩余次数
+  static Future<ApiResponse> getSurplus() {
+    return HttpClient.get(
+      '/api/Appointment/getSurplus',
+    );
+  }
 }

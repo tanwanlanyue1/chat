@@ -6,6 +6,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
 
@@ -30,7 +31,7 @@ class SpeedDatingPage extends StatelessWidget {
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             title: Text(
-              isVideo ? '视频速配' : '语音速配',
+              isVideo ? S.current.videoDating : S.current.voiceDating,
               style: AppTextStyle.st.textColor(Colors.white),
             ),
             backgroundColor: Colors.transparent,
@@ -63,7 +64,7 @@ class SpeedDatingPage extends StatelessWidget {
                       ),
                       alignment: Alignment.center,
                       child: Text(
-                        '与在线用户实时匹配，随缘聊天',
+                        S.current.matchChat,
                         style: AppTextStyle.st
                             .size(14.rpx)
                             .textColor(Colors.white),
@@ -74,7 +75,7 @@ class SpeedDatingPage extends StatelessWidget {
                     const Spacer(),
                     if (state.isAnimation.value)
                       Text(
-                        '正在速配有缘人，请稍等···',
+                        S.current.pleaseHoldOn,
                         style: AppTextStyle.st.medium
                             .size(16.rpx)
                             .textColor(Colors.white),
@@ -98,7 +99,7 @@ class SpeedDatingPage extends StatelessWidget {
                                       top: Radius.circular(12.rpx)),
                                 ),
                                 child: Text(
-                                  "免费",
+                                  S.current.freeCharge,
                                   textAlign: TextAlign.center,
                                   style: AppTextStyle.st
                                       .size(12.rpx)
@@ -124,7 +125,7 @@ class SpeedDatingPage extends StatelessWidget {
                                 alignment: Alignment.center,
                                 child: state.isAnimation.value
                                     ? Text(
-                                        '取消匹配',
+                                        S.current.unmatch,
                                         style: AppTextStyle.st
                                             .size(16.rpx)
                                             .textColor(AppColor.blackText),
@@ -141,7 +142,7 @@ class SpeedDatingPage extends StatelessWidget {
                                           ),
                                           SizedBox(width: 16.rpx),
                                           Text(
-                                            isVideo ? '视频速配' : '语音速配',
+                                            isVideo ? S.current.videoDating : S.current.voiceDating,
                                             style: AppTextStyle.st
                                                 .size(16.rpx)
                                                 .textColor(AppColor.black3),
@@ -176,11 +177,11 @@ class SpeedDatingPage extends StatelessWidget {
                                 TextSpan(
                                   children: [
                                     TextSpan(
-                                      text: "前$freeTime分钟免费聊天！",
+                                      text: "${S.current.front}$freeTime${S.current.minuteFreeChat}！",
                                     ),
                                     TextSpan(
                                       text:
-                                          '${isVideo ? '视频聊天' : '语音聊天'}$priceAmount钻/15min',
+                                          '${isVideo ? S.current.videoChat : S.current.voiceChat}$priceAmount\$/15min',
                                       style: AppTextStyle.st
                                           .size(12.rpx)
                                           .textColor(Colors.white),
@@ -246,7 +247,7 @@ class SpeedDatingPage extends StatelessWidget {
                 length: 24.rpx,
               ),
               Text(
-                state.isCameraOpen.value ? '开启' : '关闭',
+                state.isCameraOpen.value ? S.current.open : S.current.close,
                 style: AppTextStyle.st.size(12.rpx).textColor(Colors.white),
               ),
             ],

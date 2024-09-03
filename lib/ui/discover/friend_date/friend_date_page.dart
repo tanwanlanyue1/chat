@@ -93,8 +93,8 @@ class FriendDatePage extends StatelessWidget {
                 child: Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: current == index ? AppColor.primary : AppColor.grayF7,
-                    borderRadius: BorderRadius.circular(8.rpx),
+                    color: current == index ? AppColor.primaryBlue : AppColor.grayF7,
+                    borderRadius: BorderRadius.circular(4.rpx),
                   ),
                   child: Text(
                     "${item['title']}",

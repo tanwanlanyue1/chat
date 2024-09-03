@@ -163,7 +163,19 @@ class NearbyHallView extends StatelessWidget {
         width: 180.rpx,
         decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(24.rpx)
+            borderRadius: BorderRadius.circular(24.rpx),
+            border: Border.all(
+            color: AppColor.gray39,
+            width: 1.rpx,
+          ),
+            boxShadow: [
+              BoxShadow(
+                  color: AppColor.gray26,
+                  offset: const Offset(0, 4),
+                  blurRadius: 4.rpx,
+                  spreadRadius: 0
+              ),
+            ],
         ),
         padding: EdgeInsets.symmetric(horizontal: 20.rpx),
         margin: EdgeInsets.only(bottom: 24.rpx),

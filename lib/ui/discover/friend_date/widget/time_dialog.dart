@@ -74,19 +74,21 @@ class TimeDialog extends StatelessWidget {
                             controller.update(['timeDialog']);
                           },
                           child: Container(
-                            alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: controller.state.time == index ? AppColor.gradientBegin : AppColor.scaffoldBackground,
                               borderRadius: BorderRadius.circular(8.rpx),
                             ),
-                            child: Text(
-                              controller.state.timeList[index],
-                              style: TextStyle(
-                                color: controller.state.time == index ? Colors.white : AppColor.gray5,
-                                fontWeight: controller.state.time == index ? FontWeight.bold : FontWeight.normal,
-                                fontSize: 14.rpx,
-                              ),
-                              textAlign: TextAlign.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("${controller.state.timeList[index]['day']}",style: AppTextStyle.fs12b.copyWith(
+                                  color: controller.state.time == index ? Colors.white : AppColor.grayText,height: 1
+                                ),),
+                                SizedBox(height: 10.rpx,),
+                                Text("${controller.state.timeList[index]['time']}",style: AppTextStyle.fs14b.copyWith(
+                                  color: controller.state.time == index ? Colors.white : AppColor.blackBlue,height: 1
+                                ),),
+                              ],
                             ),
                           ),
                         );

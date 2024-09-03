@@ -1,16 +1,13 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/upload_image.dart';
 
-import '../../../common/network/api/api.dart';
 import '../user_center/user_center_controller.dart';
 
 //上传封面图-弹窗
@@ -49,8 +46,8 @@ class UploadCoverDialog extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text("上传封面图",style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
-                          Text("（最多6张）",style: AppTextStyle.fs12m.copyWith(color: AppColor.red53),),
+                          Text(S.current.uploadCoverImage,style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
+                          Text(S.current.upTo6photos,style: AppTextStyle.fs12m.copyWith(color: AppColor.red53),),
                           const Spacer(),
                           GestureDetector(
                             onTap: (){
@@ -74,7 +71,7 @@ class UploadCoverDialog extends StatelessWidget {
                       const Spacer(),
                       CommonGradientButton(
                         height: 50.rpx,
-                        text: "确定上传",
+                        text: S.current.confirmUpload,
                         onTap: controller.updateInfoImage,
                       )
                     ],

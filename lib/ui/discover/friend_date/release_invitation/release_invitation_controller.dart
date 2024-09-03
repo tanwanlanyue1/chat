@@ -47,14 +47,18 @@ class ReleaseInvitationController extends GetxController {
 
   //获取七天
   void getNextSevenDays() {
-    List<String> list = [];
+    List<Map> list = [];
     DateTime today = DateTime.now();
     state.hour = today.hour;
     state.startHour = today.hour;
     state.endHour = today.hour+2;
     for (int i = 0; i < 7; i++) {
       DateTime nextDay = today.add(Duration(days: i));
-      list.add(CommonUtils.dateString('$nextDay',lineFeed: true));
+      List<String> fruits = CommonUtils.dateString('$nextDay',lineFeed: true).split(',');
+      list.add({
+        "day":fruits[0],
+        "time":fruits[1],
+      });
     }
     state.timeList = list;
   }
@@ -69,7 +73,18 @@ class ReleaseInvitationController extends GetxController {
     // TODO: implement onInit
     additionLabel();
     getNextSevenDays();
+    getSurplus();
     super.onInit();
+  }
+
+  ///获取发布约会剩余次数
+  void getSurplus() async {
+    final response = await DiscoverApi.getSurplus();
+    if (response.isSuccess) {
+      state.surplus.value = response.data;
+    } else {
+      response.showErrorMessage();
+    }
   }
 
   //发布

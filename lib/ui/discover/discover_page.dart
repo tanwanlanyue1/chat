@@ -41,7 +41,9 @@ class DiscoverPage extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: AppDecorations.backgroundImage(
-              "assets/images/discover/activity_back.png"),
+              "assets/images/discover/activity_back.png",
+            fit: BoxFit.cover
+          ),
         ),
         child: TabBarView(
           controller: controller.tabController,

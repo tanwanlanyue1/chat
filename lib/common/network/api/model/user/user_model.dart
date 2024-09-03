@@ -100,7 +100,7 @@ class UserModel {
   UserType type; // 用户类型 0普通用户 1佳丽 2经纪人
   UserStatus state; // 在线状态 0不接约 1接约中 2约会进行中
   String? avatar; // 头像
-  final double serviceCharge; // 服务费
+  double serviceCharge; // 服务费
   String nickname; // 昵称
   String? signature; // 个性签名
   String? images; // 个人图片 "1, 2, 4" 逗号隔开

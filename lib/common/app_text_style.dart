@@ -185,6 +185,11 @@ class AppTextStyle {
     fontSize: 24.rpx,
   );
 
+  ///24号字体，字重bold
+  static final fs24b = pingFangBold.copyWith(
+    fontSize: 24.rpx,
+  );
+
   ///26号字体
   static final fs26r = pingFangRegular.copyWith(
     fontSize: 26.rpx,

@@ -92,7 +92,7 @@ class MineFeedbackPage extends StatelessWidget {
                   height: 20.rpx,
                   margin: EdgeInsets.only(right: 8.rpx),
                   decoration: BoxDecoration(
-                    color: AppColor.primary,
+                    color: AppColor.primaryBlue,
                     borderRadius: BorderRadius.circular(4.rpx),
                   ),
                 ),
@@ -122,7 +122,7 @@ class MineFeedbackPage extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: state.typeIndex == index ? AppColor.primary : AppColor.white8,
+                      color: state.typeIndex == index ? AppColor.primaryBlue : AppColor.white8,
                       borderRadius: BorderRadius.circular(8.rpx),
                     ),
                     child: Text(
@@ -149,7 +149,7 @@ class MineFeedbackPage extends StatelessWidget {
                   height: 20.rpx,
                   margin: EdgeInsets.only(right: 8.rpx),
                   decoration: BoxDecoration(
-                    color: AppColor.primary,
+                    color: AppColor.primaryBlue,
                     borderRadius: BorderRadius.circular(4.rpx),
                   ),
                 ),
@@ -197,7 +197,7 @@ class MineFeedbackPage extends StatelessWidget {
                   height: 20.rpx,
                   margin: EdgeInsets.only(right: 8.rpx),
                   decoration: BoxDecoration(
-                    color: AppColor.primary,
+                    color: AppColor.primaryBlue,
                     borderRadius: BorderRadius.circular(4.rpx),
                   ),
                 ),

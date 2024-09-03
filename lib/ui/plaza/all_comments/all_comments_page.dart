@@ -33,17 +33,20 @@ class AllCommentsPage extends StatelessWidget {
             child: SmartRefresher(
                 controller: controller.pagingController.refreshController,
                 onRefresh: controller.pagingController.onRefresh,
-                child: PagedListView(
+                child: PagedListView.separated(
                   pagingController: controller.pagingController,
+                  padding: EdgeInsets.only(bottom: 8.rpx),
                   builderDelegate: DefaultPagedChildBuilderDelegate<CommentListModel>(
                       pagingController: controller.pagingController,
                       itemBuilder: (_,item,index){
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12.rpx),
-                          child: commentItem(item),
-                        );
+                        return commentItem(item);
                       }
                   ),
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Container(
+                      height: 1.rpx,
+                    );
+                  },
                 ),
             ),
           ),
@@ -113,14 +116,15 @@ class AllCommentsPage extends StatelessWidget {
                   onTap: ()=> controller.toggleAttention(state.userId),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: AppColor.textPurple,
+                        color: controller.isAttentionRx.value ? AppColor.gray39 : AppColor.textPurple,
                         borderRadius: BorderRadius.circular(20.rpx)
                     ),
                     width: 60.rpx,
                     height: 32.rpx,
                     alignment: Alignment.center,
                     margin: EdgeInsets.only(right: 16.rpx),
-                    child: Text(controller.isAttentionRx.value ? "已关注":"关注",style: AppTextStyle.fs14b.copyWith(color: Colors.white),),
+                    child: Text(controller.isAttentionRx.value ? "已关注":"关注",style: AppTextStyle.fs14r.copyWith(
+                        color: controller.isAttentionRx.value ? AppColor.grayText : Colors.white),),
                   ),
                 ),
               ))
@@ -160,15 +164,20 @@ class AllCommentsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('${item.nickname}',style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                      Text('${item.nickname}',style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),maxLines: 1,overflow: TextOverflow.ellipsis,),
                       Row(
                         children: [
                           Visibility(
-                            visible: item.gender == 1,
-                            replacement: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
-                            child: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
+                            visible: item.gender != 0,
+                            child: Container(
+                              margin: EdgeInsets.only(right: 8.rpx),
+                              child: Visibility(
+                                visible: item.gender == 1,
+                                replacement: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
+                                child: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
+                              ),
+                            ),
                           ),
-                          SizedBox(width: 8.rpx),
                           Text("${item.age ?? ''}",style: AppTextStyle.fs12m.copyWith(color: AppColor.black92),),
                         ],
                       ),
@@ -180,7 +189,7 @@ class AllCommentsPage extends StatelessWidget {
             ],
           ),
           SizedBox(height: 12.rpx,),
-          Text(item.content ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),),
+          Text(item.content ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.black20,height: 1.5),),
         ],
       ),
     );
@@ -190,8 +199,17 @@ class AllCommentsPage extends StatelessWidget {
   Widget bottomComment(){
     return Container(
       height: 68.rpx,
-      color: Colors.white,
       padding: EdgeInsets.only(right: 16.rpx,left: 16.rpx),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 2.rpx,
+            offset: Offset(0, -2.rpx),
+          ),
+        ],
+      ),
       child: GestureDetector(
         onTap: (){
           ReviewDialog.show(

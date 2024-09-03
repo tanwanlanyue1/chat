@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/plaza/widgets/publish_success.dart';
 import 'package:guanjia/widgets/loading.dart';
 
@@ -32,7 +33,7 @@ class ReleaseDynamicController extends GetxController with GetSingleTickerProvid
   ///发布帖子
   void addCommunity() async {
     if(contentController.text.isEmpty && state.imgList.isEmpty){
-      Loading.showToast("您还未输入内容");
+      Loading.showToast(S.current.youHaveNotContent);
     }else{
       final response = await PlazaApi.addCommunity(
           content: contentController.text,

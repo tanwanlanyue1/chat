@@ -128,7 +128,7 @@ class CommonUtils {
 
     // "今天 04月16日 星期二"
     return lineFeed
-        ? "${today.isNotEmpty ? today : weekday.toUpperCase()} \n ${DateUtil.formatDate(date, format: 'MM' + "/" + 'dd')}"
+        ? "${today.isNotEmpty ? today : weekday.toUpperCase()},${DateUtil.formatDate(date, format: 'MM' + "/" + 'dd')}"
         : "$today${DateUtil.formatDate(date, format: 'yyyy' + "-" + 'MM' + "-" + 'dd')} ${weekday.toUpperCase()}";
   }
 

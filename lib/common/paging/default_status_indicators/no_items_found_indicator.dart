@@ -30,17 +30,17 @@ class NoItemsFoundIndicator extends StatelessWidget {
           children: [
             AppImage.asset(
               'assets/images/common/default_empty.png',
-              width: 176.rpx,
-              height: 140.rpx,
+              width: 150.rpx,
+              height: 100.rpx,
             ),
             Padding(
-              padding: EdgeInsets.only(top: 20.rpx),
+              padding: EdgeInsets.only(top: 12.rpx),
               child: Text(
                 title,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 16.rpx,
-                  color: AppColor.gray9,
+                  fontSize: 14.rpx,
+                  color: AppColor.grayText,
                 ),
               ),
             ),

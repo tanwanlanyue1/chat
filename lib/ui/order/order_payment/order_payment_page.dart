@@ -6,24 +6,29 @@ import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';
 
 import 'order_payment_controller.dart';
 
 class OrderPaymentPage extends GetView<OrderPaymentController> {
-  const OrderPaymentPage({super.key, required this.orderId});
+  const OrderPaymentPage({
+    super.key,
+    required this.orderId,
+    this.type = OrderPaymentType.dating,
+  });
 
-  final int orderId;
+  final String orderId;
+  final OrderPaymentType type;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OrderPaymentController>(
-      init: OrderPaymentController(orderId),
+      init: OrderPaymentController(orderId, type: type),
       builder: (controller) {
         final state = Get.find<OrderPaymentController>().state;
 
-        final isRequest = state.detailModel.value?.requestId == SS.login.userId;
         return Scaffold(
           appBar: AppBar(
             title: const Text("支付订单"),
@@ -32,32 +37,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
             padding: EdgeInsets.only(
                 top: 16.rpx, bottom: Get.mediaQuery.padding.bottom + 16.rpx),
             children: [
-              Container(
-                height: 128.rpx,
-                color: Colors.white,
-                child: Column(
-                  children: [
-                    SizedBox(height: 24.rpx),
-                    Text(
-                      isRequest ? "缴纳服务费及保证金" : "缴纳保证金",
-                      style: AppTextStyle.st
-                          .size(16.rpx)
-                          .textColor(Colors.black)
-                          .textHeight(1),
-                    ),
-                    SizedBox(height: 16.rpx),
-                    Text(
-                      "支付剩余时间",
-                      style: AppTextStyle.st
-                          .size(12.rpx)
-                          .textColor(Colors.black)
-                          .textHeight(1),
-                    ),
-                    SizedBox(height: 16.rpx),
-                    countDownWidget(),
-                  ],
-                ),
-              ),
+              type == OrderPaymentType.dating ? _datingTop() : _vipTop(),
               Container(
                 margin: EdgeInsets.only(top: 36.rpx),
                 color: Colors.white,
@@ -123,14 +103,22 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                 }),
               ),
               Builder(builder: (context) {
-                final deposit = state.detailModel.value?.deposit ?? 0;
-                final serviceCharge =
-                    state.detailModel.value?.serviceCharge ?? 0;
-                final result =
-                    isRequest ? deposit + serviceCharge : deposit;
+                final num result;
+
+                if (type == OrderPaymentType.dating) {
+                  final isRequest =
+                      state.datingModel.value?.requestId == SS.login.userId;
+                  final deposit = state.datingModel.value?.deposit ?? 0;
+                  final serviceCharge =
+                      state.datingModel.value?.serviceCharge ?? 0;
+                  result = isRequest ? deposit + serviceCharge : deposit;
+                } else {
+                  result = state.vipModel.value?.amount ?? 0;
+                }
 
                 return Button(
-                  onPressed: () => controller.onTapOrderPayment(orderId),
+                  onPressed: () =>
+                      controller.onTapOrderPayment(int.tryParse(orderId) ?? 0),
                   margin: EdgeInsets.symmetric(horizontal: 22.rpx)
                       .copyWith(top: 60.rpx),
                   child: Text(
@@ -143,6 +131,64 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
           ),
         );
       },
+    );
+  }
+
+  Widget _vipTop() {
+    return Container(
+      height: 92.rpx,
+      color: Colors.white,
+      child: Column(
+        children: [
+          SizedBox(height: 24.rpx),
+          Text(
+            "充值VIP会员",
+            style: AppTextStyle.st
+                .size(16.rpx)
+                .textColor(AppColor.blackBlue)
+                .textHeight(1),
+          ),
+          SizedBox(height: 16.rpx),
+          Text(
+            "(${controller.state.vipModel.value?.skuId})",
+            style: AppTextStyle.st
+                .size(12.rpx)
+                .textColor(AppColor.blackBlue)
+                .textHeight(1),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _datingTop() {
+    final isRequest =
+        controller.state.datingModel.value?.requestId == SS.login.userId;
+    return Container(
+      height: 128.rpx,
+      color: Colors.white,
+      child: Column(
+        children: [
+          SizedBox(height: 24.rpx),
+          Text(
+            isRequest ? "缴纳服务费及保证金" : "缴纳保证金",
+            style: AppTextStyle.st
+                .size(16.rpx)
+                .textColor(AppColor.blackBlue)
+                .textHeight(1),
+          ),
+          SizedBox(height: 16.rpx),
+          Text(
+            "支付剩余时间",
+            style: AppTextStyle.st
+                .size(12.rpx)
+                .textColor(AppColor.blackBlue)
+                .textHeight(1),
+          ),
+          SizedBox(height: 16.rpx),
+          countDownWidget(),
+        ],
+      ),
     );
   }
 

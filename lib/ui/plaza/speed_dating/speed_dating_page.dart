@@ -9,6 +9,7 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/widgets.dart';
 
 import 'speed_dating_controller.dart';
 
@@ -35,7 +36,7 @@ class SpeedDatingPage extends StatelessWidget {
               style: AppTextStyle.st.textColor(Colors.white),
             ),
             backgroundColor: Colors.transparent,
-            systemOverlayStyle: SystemUiOverlayStyle.light,
+            systemOverlayStyle: SystemUI.lightStyle,
             leading: state.isAnimation.value
                 ? const SizedBox()
                 : AppBackButton.light(),

@@ -4,27 +4,27 @@ class HomeState {
   List<AppBarItem> allBottomNavItems = [
     const AppBarItem(
       icon: 'assets/images/home/tab_chat.png',
-      activeIcon: 'assets/images/home/tab_chat_active.png',
+      activeIcon: 'assets/images/home/tab_chat.json',
       title: '聊天',
     ),
     const AppBarItem(
       icon: 'assets/images/home/tab_order.png',
-      activeIcon: 'assets/images/home/tab_order_active.png',
+      activeIcon: 'assets/images/home/tab_order.json',
       title: '订单',
     ),
     const AppBarItem(
         icon: 'assets/images/home/tab_community.png',
-        activeIcon: 'assets/images/home/tab_community_active.png',
+        activeIcon: 'assets/images/home/tab_community.json',
         title: '交友大厅',
     ),
     const AppBarItem(
         icon: 'assets/images/home/tab_discovery.png',
-        activeIcon: 'assets/images/home/tab_discovery_active.png',
+        activeIcon: 'assets/images/home/tab_discovery.json',
         title: '发现',
     ),
     const AppBarItem(
         icon: 'assets/images/home/tab_mine.png',
-        activeIcon: 'assets/images/home/tab_mine_active.png',
+        activeIcon: 'assets/images/home/tab_mine.json',
         title: '我的',
     ),
   ];

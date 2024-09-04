@@ -98,3 +98,9 @@ enum OrderDetailDisplayType {
   agentFee, // 经纪人介绍费
   amount, // 金额 不同身份状态显示不同
 }
+
+/// 订单支付类型
+enum OrderPaymentType {
+  dating, // 约会订单
+  vip, // VIP订单
+}

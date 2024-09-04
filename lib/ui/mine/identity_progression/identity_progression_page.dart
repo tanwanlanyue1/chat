@@ -11,6 +11,7 @@ import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';
+import 'package:guanjia/widgets/system_ui.dart';
 
 import 'identity_progression_controller.dart';
 
@@ -48,7 +49,7 @@ class IdentityProgressionPage extends StatelessWidget {
                     ),
                     elevation: 5.rpx,
                     shadowColor: AppColor.gray11,
-                    systemOverlayStyle: SystemUiOverlayStyle.light,
+                    systemOverlayStyle: SystemUI.lightStyle,
                     leading: AppBackButton(brightness:state.audit == 2 ? Brightness.light : Brightness.dark),
                     backgroundColor: state.audit == 2 ? Colors.transparent : Colors.white,
                   ),

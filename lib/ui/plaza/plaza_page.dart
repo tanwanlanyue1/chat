@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/plaza/fortune_square/fortune_square_view.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/system_ui.dart';
 
 import 'dating_hall/dating_hall_view.dart';
 import 'nearby_hall/nearby_hall_view.dart';
@@ -26,22 +27,24 @@ class _PlazaPageState extends State<PlazaPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      backgroundColor: AppColor.scaffoldBackground,
-      body: Column(
-        children: [
-          appBar(),
-          Expanded(
-            child: TabBarView(
-                controller: controller.tabController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: <Widget>[
-                  DatingHallView(),
-                  NearbyHallView(),
-                  FortuneSquareView(),
-                ]),
-          )
-        ],
+    return SystemUI.dark(
+      child: Scaffold(
+        backgroundColor: AppColor.scaffoldBackground,
+        body: Column(
+          children: [
+            appBar(),
+            Expanded(
+              child: TabBarView(
+                  controller: controller.tabController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: <Widget>[
+                    DatingHallView(),
+                    NearbyHallView(),
+                    FortuneSquareView(),
+                  ]),
+            )
+          ],
+        ),
       ),
     );
   }

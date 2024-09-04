@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/paging/default_status_indicators/first_page_progress_indicator.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
+import 'package:guanjia/widgets/system_ui.dart';
 import 'package:video_player/video_player.dart';
 
 import 'package:zego_zimkit/src/components/messages/video_message_controls.dart';
@@ -94,7 +95,7 @@ class _ChatVideoMessagePlayerState extends State<ChatVideoMessagePlayer> {
       appBar: AppBar(
         leading: AppBackButton.light(),
         backgroundColor: Colors.transparent,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        systemOverlayStyle: SystemUI.lightStyle,
       ),
       extendBody: true,
       extendBodyBehindAppBar: true,

@@ -22,6 +22,7 @@ import 'package:guanjia/widgets/widgets.dart';
 
 import '../../../common/network/api/api.dart';
 import 'user_center_controller.dart';
+import 'widget/swiper_pagination.dart';
 
 ///广场-用户中心
 class UserCenterPage extends StatelessWidget {
@@ -177,7 +178,7 @@ class UserCenterPage extends StatelessWidget {
             SwiperPagination(
                 alignment:  Alignment.bottomRight,
                 margin: EdgeInsets.only(bottom: 30.rpx,right: 16.rpx),
-                builder: DotSwiperPaginationBuilder(
+                builder: UserSwiperPagination(
                   color: const Color(0xffD1D8E6),
                   size: 8.rpx,
                   activeSize:8.rpx,

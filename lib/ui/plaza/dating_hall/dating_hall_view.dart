@@ -56,7 +56,7 @@ class DatingHallView extends StatelessWidget {
                       height: 70.rpx,
                       alignment: Alignment.centerLeft,
                       margin: EdgeInsets.only(right: 15.rpx),
-                      padding: EdgeInsets.only(left: 8.rpx),
+                      padding: EdgeInsets.only(left: 12.rpx),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,7 +161,7 @@ class DatingHallView extends StatelessWidget {
                 item.avatar ?? '',
                 width: 80.rpx,
                 height: 80.rpx,
-                borderRadius: BorderRadius.circular(16.rpx),
+                borderRadius: BorderRadius.circular(12.rpx),
               ),
             ),
             Expanded(child: SizedBox(
@@ -250,8 +250,8 @@ class DatingHallView extends StatelessWidget {
                     children: [
                       AppImage.asset(
                         'assets/images/plaza/accost.png',
-                        width: 18.rpx,
-                        height: 17.rpx,
+                        width: 24.rpx,
+                        height: 24.rpx,
                       ),
                       SizedBox(width: 4.rpx,),
                       Text("搭讪",style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),)

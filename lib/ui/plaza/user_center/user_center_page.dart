@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
@@ -74,6 +75,7 @@ class UserCenterPage extends StatelessWidget {
                       )
                     ],
                   ),
+                  systemOverlayStyle: SystemUiOverlayStyle.light,
                 )),
                 SliverToBoxAdapter(
                   child: Column(
@@ -129,6 +131,7 @@ class UserCenterPage extends StatelessWidget {
               child: AppBar(
                 backgroundColor: Colors.transparent,
                 leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
+                systemOverlayStyle: SystemUiOverlayStyle.light,
                 actions: [
                   Visibility(
                     visible: SS.login.userId == state.authorId,

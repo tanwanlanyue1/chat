@@ -261,7 +261,7 @@ class PlazaCard extends StatelessWidget {
         itemCount: jsonDecode(item.images).length,
         padding: EdgeInsets.zero,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: user ? 2 : 3,
+            crossAxisCount: 3,
             childAspectRatio: 1,
             mainAxisSpacing: 8.rpx,
             mainAxisExtent: 109.rpx,

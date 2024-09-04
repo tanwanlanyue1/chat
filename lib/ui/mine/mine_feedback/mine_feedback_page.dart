@@ -240,38 +240,29 @@ class MineFeedbackPage extends StatelessWidget {
     return Container(
       color: Colors.white,
       margin: EdgeInsets.symmetric(vertical: 8.rpx),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      padding: EdgeInsets.symmetric(horizontal: 16.rpx,vertical: 8.rpx),
+      child: Row(
         children: [
           Container(
-            color: Colors.white,
-            margin: EdgeInsets.only(top: 8.rpx),
-            padding: EdgeInsets.symmetric(horizontal: 16.rpx),
-            child: Row(
-              children: [
-                Container(
-                  height: 50.rpx,
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.only(right: 12.rpx),
-                  child: Text(
-                    S.current.contactNumber,
-                    style: TextStyle(color: AppColor.gray30, fontSize: 16.rpx),
-                  ),
-                ),
-                Expanded(
-                  child: InputWidget(
-                      hintText: '请先输入手机/邮箱',
-                      fillColor: AppColor.white8,
-                      inputController: controller.contactController,
-                      textStyle: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.all(Radius.circular(8.rpx))),
-                  ),
-                ),
-              ],
+            height: 50.rpx,
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(right: 12.rpx),
+            child: Text(
+              S.current.contactNumber,
+              style: TextStyle(color: AppColor.gray30, fontSize: 16.rpx),
             ),
-          )
+          ),
+          Expanded(
+            child: InputWidget(
+              hintText: '请先输入手机/邮箱',
+              fillColor: AppColor.white8,
+              inputController: controller.contactController,
+              textStyle: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.all(Radius.circular(8.rpx))),
+            ),
+          ),
         ],
       ),
     );

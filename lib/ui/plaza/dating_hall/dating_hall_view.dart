@@ -8,7 +8,6 @@ import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart'
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
-import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/button.dart';
@@ -60,16 +59,18 @@ class DatingHallView extends StatelessWidget {
                       padding: EdgeInsets.only(left: 8.rpx),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             state.speedDating[i]['name'],
-                            style: AppTextStyle.fs22b
+                            style: AppTextStyle.fs20b
                                 .copyWith(color: Colors.white),
                           ),
                           Text(
                             state.speedDating[i]['subtitle'],
                             style: AppTextStyle.fs10m
-                                .copyWith(color: Colors.white),
+                                .copyWith(color: AppColor.white5),
+                                // .copyWith(color: Colors.white),
                           ),
                         ],
                       ),
@@ -88,62 +89,52 @@ class DatingHallView extends StatelessWidget {
 
   ///交友大厅列表
   Widget hallItem() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20.rpx),
-          topRight: Radius.circular(20.rpx),
-        ),
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.rpx),
-            height: 45.rpx,
-            child: Row(
-              children: [
-                Text(
-                  S.current.datingHall,
-                  style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),
-                ),
-                const Spacer(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: controller.onTapFiltrate,
-                  child: Row(
-                    children: [
-                      Text(
-                        S.current.filtrate,
-                        style:
-                            AppTextStyle.fs12m.copyWith(color: AppColor.gray5),
-                      ),
-                      const Icon(
-                        Icons.arrow_drop_down_sharp,
-                        color: Colors.grey,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-              child: SmartRefresher(
-              controller: controller.pagingController.refreshController,
-              onRefresh: controller.pagingController.onRefresh,
-              child: PagedListView(
-                pagingController: controller.pagingController,
-                builderDelegate: DefaultPagedChildBuilderDelegate<RecommendModel>(
-                  pagingController: controller.pagingController,
-                  itemBuilder: (_, item, index) {
-                    return friendsItem(item);
-                  },
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 8.rpx),
+          child: Row(
+            children: [
+              Text(
+                S.current.datingHall,
+                style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),
+              ),
+              const Spacer(),
+              GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: controller.onTapFiltrate,
+                child: Row(
+                  children: [
+                    Text(
+                      S.current.filtrate,
+                      style:
+                      AppTextStyle.fs12m.copyWith(color: AppColor.gray5),
+                    ),
+                    const Icon(
+                      Icons.arrow_drop_down_sharp,
+                      color: Colors.grey,
+                    ),
+                  ],
                 ),
               ),
-          )),
-        ],
-      ),
+            ],
+          ),
+        ),
+        // Expanded(
+        //     child: SmartRefresher(
+        //       controller: controller.pagingController.refreshController,
+        //       onRefresh: controller.pagingController.onRefresh,
+        //       child: PagedListView(
+        //         pagingController: controller.pagingController,
+        //         builderDelegate: DefaultPagedChildBuilderDelegate<RecommendModel>(
+        //           pagingController: controller.pagingController,
+        //           itemBuilder: (_, item, index) {
+        //             return friendsItem(item);
+        //           },
+        //         ),
+        //       ),
+        //     )),
+      ],
     );
   }
 
@@ -153,8 +144,12 @@ class DatingHallView extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: () => Get.toNamed(AppRoutes.userCenterPage, arguments: {'userId': item.uid}),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 12.rpx, horizontal: 16.rpx),
-        margin: EdgeInsets.only(bottom: 8.rpx),
+        margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(bottom: 8.rpx),
+        padding: EdgeInsets.all(16.rpx).copyWith(right: 8.rpx),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.rpx),
+        ),
         child: Column(
           children: [
             Row(
@@ -244,11 +239,6 @@ class DatingHallView extends StatelessWidget {
                     ),
                   )
                 : Container(),
-            Container(
-              height: 1.rpx,
-              margin: EdgeInsets.only(top: 24.rpx,left: 54.rpx),
-              color: AppColor.white8,
-            )
           ],
         ),
       ),

@@ -84,7 +84,7 @@ class RectifyTheWorkplaceController extends GetxController {
   //附加标签
   void additionLabel() async {
     final response = await OpenApi.getStyleList(
-      type: state.filtrateIndex == -1 ? 0 : state.filtrateIndex,
+      type: state.filtrateIndex != null ? (state.filtrateIndex == -1 ? 0 : state.filtrateIndex!) : 0,
     );
     if (response.isSuccess) {
       state.styleList = response.data ?? [];

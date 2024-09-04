@@ -16,7 +16,7 @@ class GroundGlass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
+    return Obx(() => Visibility(
       visible: !SS.login.isVip,
       child: SizedBox(
         width: double.infinity,
@@ -78,6 +78,6 @@ class GroundGlass extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 }

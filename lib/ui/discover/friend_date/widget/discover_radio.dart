@@ -38,7 +38,6 @@ class DiscoverRadio extends StatelessWidget {
               "assets/images/discover/select_un.png",
               width: 24.rpx,
               height: 24.rpx,
-              color: isSelect ? AppColor.gradientBegin : AppColor.black9,
             ),
           ),
         ),
@@ -67,7 +66,6 @@ class DiscoverRadio extends StatelessWidget {
               "assets/images/discover/select_un.png",
               width: 24.rpx,
               height: 24.rpx,
-              color: !isSelect ? AppColor.gradientBegin : AppColor.black9,
             ),
           )
         ),

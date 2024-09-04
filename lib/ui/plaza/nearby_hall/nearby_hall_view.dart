@@ -156,26 +156,26 @@ class NearbyHallView extends StatelessWidget {
 
   //筛选
   Widget filtrateMap(){
-    return Visibility(
+    return Obx(() => Visibility(
       visible: SS.login.isVip,
       child: Container(
         height: 46.rpx,
         width: 180.rpx,
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(24.rpx),
-            border: Border.all(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24.rpx),
+          border: Border.all(
             color: AppColor.gray39,
             width: 1.rpx,
           ),
-            boxShadow: [
-              BoxShadow(
-                  color: AppColor.gray26,
-                  offset: const Offset(0, 4),
-                  blurRadius: 4.rpx,
-                  spreadRadius: 0
-              ),
-            ],
+          boxShadow: [
+            BoxShadow(
+                color: AppColor.gray26,
+                offset: const Offset(0, 4),
+                blurRadius: 4.rpx,
+                spreadRadius: 0
+            ),
+          ],
         ),
         padding: EdgeInsets.symmetric(horizontal: 20.rpx),
         margin: EdgeInsets.only(bottom: 24.rpx),
@@ -246,6 +246,6 @@ class NearbyHallView extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 }

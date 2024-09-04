@@ -22,7 +22,7 @@ class RectifyTheWorkplaceState {
     },
   ];
 
-  int filtrateIndex = -1;
+  int? filtrateIndex;
   //筛选类型
   List filtrateType = [
     {

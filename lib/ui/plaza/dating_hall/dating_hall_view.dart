@@ -233,8 +233,8 @@ class DatingHallView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(40.rpx),
                   gradient: const LinearGradient(
                     colors: [AppColor.purple4, AppColor.purple8],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                   ),
                 ),
                 height: 38.rpx,
@@ -254,7 +254,7 @@ class DatingHallView extends StatelessWidget {
                         height: 17.rpx,
                       ),
                       SizedBox(width: 4.rpx,),
-                      Text("搭讪",style: AppTextStyle.fs14m.copyWith(color: AppColor.primaryBlue),)
+                      Text("搭讪",style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),)
                     ],
                   ),
                 ),

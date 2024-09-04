@@ -215,7 +215,7 @@ class UserCenterPage extends StatelessWidget {
       id: 'userInfo',
       builder: (_) {
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.rpx),
+        padding: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(right: 10.rpx),
         color: Colors.white,
         child: Column(
           children: [
@@ -223,6 +223,7 @@ class UserCenterPage extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 16.rpx),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Container(
@@ -247,6 +248,7 @@ class UserCenterPage extends StatelessWidget {
                         },
                         child: ObxValue((isAttentionRx){
                           return Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Visibility(
                                 visible: isAttentionRx(),
@@ -254,7 +256,8 @@ class UserCenterPage extends StatelessWidget {
                                 child: AppImage.asset("assets/images/plaza/attention.png",width: 24.rpx,height: 24.rpx,),
                               ),
                               Container(
-                                width: 50.rpx,
+                                width: 44.rpx,
+                                margin: EdgeInsets.only(left: 4.rpx),
                                 alignment: Alignment.center,
                                 child: Text(isAttentionRx() ? S.current.followed : S.current.attention,style: AppTextStyle.fs14b.copyWith(color: AppColor.gray30),),
                               )

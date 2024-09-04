@@ -71,6 +71,21 @@ class PaymentApi {
     );
   }
 
+  /// 查询订单详情
+  /// orderNo: 订单号
+  static Future<ApiResponse<PaymentOrderInfoModel>> getOrderInfo(
+      {required String orderNo}) {
+    return HttpClient.get(
+      '/api/pay/getOrderInfo',
+      params: {
+        'orderNo': orderNo,
+      },
+      dataConverter: (data) {
+        return PaymentOrderInfoModel.fromJson(data);
+      },
+    );
+  }
+
   /// 获取小程序跳转路径
   static Future<ApiResponse<String?>> getWechatMiniProgramLink() {
     return HttpClient.post('/api/wx/miniapp/openlink', dataConverter: (data) {

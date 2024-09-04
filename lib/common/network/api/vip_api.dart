@@ -15,7 +15,7 @@ class VipApi {
 
   /// 开通会员
   ///- packageId 套餐id
-  static Future<ApiResponse> openVip({
+  static Future<ApiResponse<String>> openVip({
     required int packageId,
   }) {
     return HttpClient.get(

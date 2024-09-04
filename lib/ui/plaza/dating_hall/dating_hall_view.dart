@@ -176,6 +176,7 @@ class DatingHallView extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
+                      SizedBox(height: 6.rpx,),
                       Visibility(
                         visible: item.age != null || item.style != null,
                         child: Row(
@@ -187,13 +188,13 @@ class DatingHallView extends StatelessWidget {
                             ),
                             Text(
                               (item.age != null && item.style != null) ? "|":"",
-                              style: AppTextStyle.fs12m.copyWith(color: AppColor.black92),
+                              style: AppTextStyle.fs12m.copyWith(color: AppColor.black92,height: 1),
                             ),
                             Expanded(
                                 child: Text(
                                   item.style?.replaceAll(',', '｜') ?? '',
                                   style:
-                                  AppTextStyle.fs12m.copyWith(color: AppColor.black92),
+                                  AppTextStyle.fs12m.copyWith(color: AppColor.black92,height: 1),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 )),

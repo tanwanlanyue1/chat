@@ -4,6 +4,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
+import 'package:guanjia/widgets/widgets.dart';
 import 'package:material_color_generator/material_color_generator.dart';
 
 import 'app_constant.dart';
@@ -30,7 +31,7 @@ class AppTheme {
       foregroundColor: const Color(0xff333333),
       titleTextStyle: AppTextStyle.fs18b.copyWith(color: AppColor.blackBlue),
       centerTitle: true,
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
+      systemOverlayStyle: SystemUI.darkStyle,
       toolbarHeight: kNavigationBarHeight,
     ),
   );

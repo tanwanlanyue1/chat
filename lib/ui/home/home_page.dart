@@ -1,17 +1,13 @@
-import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
-import 'package:guanjia/common/app_text_style.dart';
-import 'package:guanjia/ui/discover/discover_page.dart';
 import 'package:guanjia/ui/chat/chat_page.dart';
+import 'package:guanjia/ui/discover/discover_page.dart';
 import 'package:guanjia/ui/mine/mine_page.dart';
 import 'package:guanjia/ui/order/order_page.dart';
 import 'package:guanjia/ui/plaza/plaza_page.dart';
-import 'package:guanjia/widgets/app_image.dart';
-import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/widgets.dart';
+
 import 'app_navigation_bar.dart';
 import 'home_controller.dart';
 
@@ -38,6 +34,7 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
   //底部
   Widget buildBottomNavigationBar() {
     return Obx(() {

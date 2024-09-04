@@ -44,6 +44,7 @@ class UserCenterPage extends StatelessWidget {
                 Obx(() => SliverAppBar(
                   pinned: true,
                   leadingWidth: 0,
+                  systemOverlayStyle: SystemUI.lightStyle,
                   leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
                   expandedHeight: 220.rpx,
                   flexibleSpace: Stack(
@@ -129,6 +130,7 @@ class UserCenterPage extends StatelessWidget {
               child: AppBar(
                 backgroundColor: Colors.transparent,
                 leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
+                systemOverlayStyle: SystemUI.lightStyle,
                 actions: [
                   Visibility(
                     visible: SS.login.userId == state.authorId,

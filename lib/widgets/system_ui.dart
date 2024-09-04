@@ -10,15 +10,33 @@ class SystemUI extends AnnotatedRegion<SystemUiOverlayStyle> {
     super.sized,
   });
 
+  static SystemUiOverlayStyle get lightStyle {
+    return SystemUiOverlayStyle.light.transparentSystemNavigationBar();
+  }
+
+  static SystemUiOverlayStyle get darkStyle {
+    return SystemUiOverlayStyle.dark.transparentSystemNavigationBar();
+  }
+
   factory SystemUI.light({Key? key, required Widget child}) =>
       SystemUI(
-        value: SystemUiOverlayStyle.light,
+        value: lightStyle,
         child: child,
       );
 
   factory SystemUI.dark({Key? key, required Widget child}) =>
       SystemUI(
-        value: SystemUiOverlayStyle.dark,
+        value: darkStyle,
         child: child,
       );
+}
+
+extension SystemUiOverlayStyleExt on SystemUiOverlayStyle{
+  ///透明底部系统导航栏
+  SystemUiOverlayStyle transparentSystemNavigationBar(){
+    return copyWith(
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarContrastEnforced: false,
+    );
+  }
 }

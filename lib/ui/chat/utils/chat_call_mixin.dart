@@ -367,7 +367,7 @@ mixin _ChatCallMixin {
     return ZegoCallInvitationUIConfig(
       prebuiltWithSafeArea: false,
       invitationWithSafeArea: false,
-      systemUiOverlayStyle: SystemUiOverlayStyle.light,
+      systemUiOverlayStyle: SystemUI.lightStyle,
       //邀请人
       inviter: ZegoCallInvitationInviterUIConfig(
         backgroundBuilder: backgroundBuilder,

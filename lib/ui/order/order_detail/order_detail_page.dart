@@ -12,6 +12,7 @@ import 'package:guanjia/ui/order/model/order_detail.dart';
 import 'package:guanjia/ui/order/order_detail/widget/order_detail_operation_buttons.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/system_ui.dart';
 import 'package:guanjia/widgets/title_space_between_widget.dart';
 
 import 'order_detail_controller.dart';
@@ -36,7 +37,7 @@ class OrderDetailPage extends StatelessWidget {
             ),
           ),
           backgroundColor: Colors.transparent,
-          systemOverlayStyle: SystemUiOverlayStyle.light,
+          systemOverlayStyle: SystemUI.lightStyle,
           leading: AppBackButton.light(),
           actions: [
             if (model != null && model.hasCancel)

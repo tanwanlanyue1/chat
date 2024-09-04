@@ -168,7 +168,7 @@ class _AppNavigationBarState extends State<AppNavigationBar>
       builder: (ctx, _, child) {
         final offset = controller.offset;
         return Positioned(
-          top: 8.rpx,
+          top: 6.rpx,
           left: offset.dx + dx,
           child: Container(
             width: 32.rpx,
@@ -213,7 +213,7 @@ class _Tile extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
       child: Padding(
-        padding: FEdgeInsets(vertical: 8.rpx),
+        padding: FEdgeInsets(vertical: 6.rpx),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,

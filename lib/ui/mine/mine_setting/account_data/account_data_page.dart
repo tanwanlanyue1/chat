@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_pickers/pickers.dart';
+import 'package:flutter_pickers/style/picker_style.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -12,6 +13,7 @@ import 'package:guanjia/ui/mine/mine_setting/account_data/widgets/account_data_i
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
+import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:guanjia/widgets/gradient_range_slider_thumb.dart';
 import 'package:guanjia/widgets/input_widget.dart';
 import 'package:guanjia/widgets/label_widget.dart';
@@ -53,8 +55,8 @@ class AccountDataPage extends StatelessWidget {
                     trailing: AppImage.network(
                       controller.avatarController.avatar.value,
                       borderRadius: BorderRadius.circular(4.rpx),
-                      width: 76.rpx,
-                      height: 76.rpx,
+                      width: 66.rpx,
+                      height: 66.rpx,
                     ),
                   ),
                   _padding(),
@@ -67,6 +69,8 @@ class AccountDataPage extends StatelessWidget {
                       textAlign: TextAlign.right,
                       fillColor: Colors.transparent,
                       contentPadding: EdgeInsets.zero,
+                      textStyle:
+                          AppTextStyle.fs16b.textColor(AppColor.blackBlue),
                     ),
                   ),
                   _padding(),
@@ -83,6 +87,22 @@ class AccountDataPage extends StatelessWidget {
                     onTap: () {
                       Pickers.showSinglePicker(
                         context,
+                        pickerStyle: PickerStyle(
+                          cancelButton: Padding(
+                            padding: FEdgeInsets(horizontal: 16.rpx),
+                            child: Text(
+                              '取消',
+                              style: AppTextStyle.fs14b.copyWith(color: AppColor.black999),
+                            ),
+                          ),
+                          commitButton: Padding(
+                            padding: FEdgeInsets(horizontal: 16.rpx),
+                            child: Text(
+                              '确定',
+                              style: AppTextStyle.fs14b,
+                            ),
+                          ),
+                        ),
                         selectData: info.age ?? 24,
                         onConfirm: (value, __) {
                           controller.onConfirmAge(value);
@@ -213,10 +233,12 @@ class AccountDataPage extends StatelessWidget {
                             return LabelWidget(
                               onTap: () => controller.onTapLabel(item),
                               item: item,
-                              selectedBackgroundColor: AppColor.primary,
+                              selectedBackgroundColor: AppColor.primaryBlue,
                               selectedTextColor: Colors.white,
-                              borderColor: AppColor.primary,
-                              textColor: AppColor.primary,
+                              borderColor: AppColor.primaryBlue,
+                              textColor: AppColor.primaryBlue,
+                              borderRadius: BorderRadius.circular(4.rpx),
+                              height: 42.rpx,
                             );
                           });
                         }),
@@ -288,15 +310,12 @@ class AccountDataPage extends StatelessWidget {
           children: [
             Text(
               title,
-              style:
-                  AppTextStyle.st.bold.size(16.rpx).textColor(AppColor.black3),
+              style: AppTextStyle.fs18b.textColor(AppColor.blackBlue),
             ),
             if (detail != null)
               Text(
                 detail,
-                style: AppTextStyle.st.bold
-                    .size(14.rpx)
-                    .textColor(AppColor.black3),
+                style: AppTextStyle.fs14b.textColor(AppColor.blackBlue),
               ),
           ],
         ),
@@ -310,8 +329,8 @@ class AccountDataPage extends StatelessWidget {
     final bool isSelect = info.likeSex == gender;
 
     final String title = gender.isMale ? S.current.male : S.current.female;
-    const String normalPath = "assets/images/mine/choose_normal.png";
-    const String selectPath = "assets/images/mine/choose_select.png";
+    const String normalPath = "assets/images/mine/gender_choose_normal.png";
+    const String selectPath = "assets/images/mine/gender_choose_select.png";
 
     return GestureDetector(
       onTap: () => controller.onTapLikeGender(gender),
@@ -321,14 +340,13 @@ class AccountDataPage extends StatelessWidget {
         children: [
           AppImage.asset(
             isSelect ? selectPath : normalPath,
-            width: 24.rpx,
-            height: 24.rpx,
+            width: 20.rpx,
+            height: 20.rpx,
           ),
           SizedBox(width: 4.rpx),
           Text(title,
-              style: AppTextStyle.st.medium
-                  .size(14.rpx)
-                  .textColor(AppColor.black3)),
+              style: AppTextStyle.fs14b
+                  .textColor(AppColor.blackBlue)),
         ],
       ),
     );
@@ -371,9 +389,8 @@ class AccountDataPage extends StatelessWidget {
           SizedBox(height: 8.rpx),
           Text(
             title,
-            style: AppTextStyle.st.medium
-                .size(14.rpx)
-                .textColor(AppColor.black3)
+            style: AppTextStyle.fs12b
+                .textColor(AppColor.blackBlue)
                 .copyWith(height: 1),
           ),
         ],

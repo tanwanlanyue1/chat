@@ -30,9 +30,8 @@ class AccountDataItem extends StatelessWidget {
     detailWidget() {
       return Text(
         detail ?? detailHintText ?? "",
-        style: AppTextStyle.st.medium
-            .size(14.rpx)
-            .textColor(detail != null ? AppColor.black3 : AppColor.black9),
+        style: AppTextStyle.fs14b
+            .textColor(detail != null ? AppColor.blackBlue : AppColor.black9),
       );
     }
 
@@ -53,9 +52,8 @@ class AccountDataItem extends StatelessWidget {
           children: [
             Text(
               title ?? "",
-              style: AppTextStyle.st.medium
-                  .size(14.rpx)
-                  .textColor(AppColor.black3),
+              style: AppTextStyle.fs14b
+                  .textColor(AppColor.tab),
             ),
             SizedBox(width: 8.rpx),
             Expanded(

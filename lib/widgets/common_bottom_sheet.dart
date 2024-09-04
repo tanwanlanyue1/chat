@@ -57,7 +57,7 @@ class CommonBottomSheet extends StatelessWidget {
                 child: Text(
                   titles.safeElementAt(index) ?? "",
                   style:
-                      AppTextStyle.st.size(14.rpx).textColor(AppColor.black3),
+                      AppTextStyle.fs14b.textColor(AppColor.black3),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -76,7 +76,7 @@ class CommonBottomSheet extends StatelessWidget {
                 child: Text(
                   S.current.cancel,
                   style:
-                      AppTextStyle.st.size(14.rpx).textColor(AppColor.black9),
+                      AppTextStyle.fs14b.textColor(AppColor.black9),
                   textAlign: TextAlign.center,
                 ),
               ),

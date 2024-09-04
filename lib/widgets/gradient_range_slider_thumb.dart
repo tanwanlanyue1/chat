@@ -107,7 +107,8 @@ class CustomRangeSliderTrackShape extends RangeSliderTrackShape {
       trackRect.height,
     );
 
-    canvas.drawRect(trackRect, inactiveTrackPaint);
+    canvas.drawRRect(RRect.fromRectAndRadius(trackRect, Radius.circular(trackRect.height)), inactiveTrackPaint);
+    // canvas.drawRect(trackRect, inactiveTrackPaint);
     if (activeTrackRight > activeTrackLeft) {
       canvas.drawRect(activeTrackRect, activeTrackPaint);
     }

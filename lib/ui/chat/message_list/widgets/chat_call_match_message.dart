@@ -48,10 +48,8 @@ class ChatCallMatchMessage extends StatelessWidget {
             message.callMatchContent?.message ?? '',
             textAlign: TextAlign.left,
             style: AppTextStyle.fs14m.copyWith(
-              color: message.isMine
-                  ? Colors.white
-                  : AppColor.gray5,
-              height: 21/14,
+              color: message.isMine ? Colors.white : AppColor.blackBlue,
+              height: 1.5,
             ),
           ),
         ),

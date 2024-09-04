@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/auto_dispose_mixin.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -102,8 +103,8 @@ class ChatInputViewState extends State<ChatInputView>
         constraints:
             BoxConstraints(minHeight: 40.rpx, maxHeight: Get.height * 0.25),
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.05),
-          borderRadius: BorderRadius.circular(8.rpx),
+          color: AppColor.background,
+          borderRadius: BorderRadius.circular(4.rpx),
         ),
         child: TextField(
           onTap: () {
@@ -121,15 +122,18 @@ class ChatInputViewState extends State<ChatInputView>
           keyboardType: TextInputType.multiline,
           textInputAction: TextInputAction.newline,
           maxLines: null,
-          style: TextStyle(
-            fontSize: 14.rpx,
+          style: AppTextStyle.fs14m.copyWith(
             height: 1.5,
-            color: AppColor.gray5,
+            color: AppColor.blackBlue,
           ),
           decoration: InputDecoration(
             border: InputBorder.none,
             enabledBorder: InputBorder.none,
             contentPadding: FEdgeInsets(horizontal: 8.rpx, vertical: 8.rpx),
+            hintText: '输入文字',
+            hintStyle: AppTextStyle.fs14m.copyWith(
+              color: AppColor.grayText,
+            )
           ),
         ),
       ),

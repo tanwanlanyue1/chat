@@ -6,7 +6,6 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
-
 ///文本消息
 class ChatTextMessage extends StatelessWidget {
   const ChatTextMessage({
@@ -49,10 +48,8 @@ class ChatTextMessage extends StatelessWidget {
             message.textContent!.text,
             textAlign: TextAlign.left,
             style: AppTextStyle.fs14m.copyWith(
-              color: message.isMine
-                  ? Colors.white
-                  : AppColor.gray5,
-              height: 21/14,
+              color: message.isMine ? Colors.white : AppColor.blackBlue,
+              height: 1.5,
             ),
           ),
         ),

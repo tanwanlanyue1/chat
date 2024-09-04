@@ -108,7 +108,7 @@ class ConfirmDialog extends StatelessWidget {
         Button.stadium(
           width: 110.rpx,
           height: 36.rpx,
-          backgroundColor: AppColor.primary,
+          backgroundColor: AppColor.primaryBlue,
           child: DefaultTextStyle(
             style: AppTextStyle.fs16m,
             child: okButtonText ?? const Text('确定'),

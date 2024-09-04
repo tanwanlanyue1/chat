@@ -26,6 +26,7 @@ class HaveSeenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(S.current.whoSeenMe),
         flexibleSpace: Container(

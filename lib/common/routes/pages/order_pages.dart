@@ -6,6 +6,7 @@ import 'package:guanjia/ui/order/order_detail/order_detail_page.dart';
 import 'package:guanjia/ui/order/order_evaluation/order_evaluation_page.dart';
 import 'package:guanjia/ui/order/order_page.dart';
 import 'package:guanjia/ui/order/order_payment/order_payment_page.dart';
+import 'package:guanjia/ui/order/order_payment/order_payment_state.dart';
 import 'package:guanjia/ui/order/order_payment_result/order_payment_result_page.dart';
 
 class OrderPages {
@@ -37,8 +38,13 @@ class OrderPages {
       name: AppRoutes.orderPaymentPage,
       page: () {
         var args = Get.tryGetArgs("orderId");
+        var type = Get.tryGetArgs("type");
         return OrderPaymentPage(
-            orderId: (args != null && args is int) ? args : 0);
+          orderId: (args != null && args is String) ? args : "0",
+          type: (type != null && type is OrderPaymentType)
+              ? type
+              : OrderPaymentType.dating,
+        );
       },
     ),
     GetPage(

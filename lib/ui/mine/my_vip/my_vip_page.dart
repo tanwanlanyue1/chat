@@ -584,12 +584,12 @@ class MyVipPage extends StatelessWidget {
                                             ..onTap = () =>
                                                 controller.onTapProtocol(1),
                                         ),
-                                        TextSpan(
-                                          text: "《自动续费协议》",
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () =>
-                                                controller.onTapProtocol(2),
-                                        ),
+                                        // TextSpan(
+                                        //   text: "《自动续费协议》",
+                                        //   recognizer: TapGestureRecognizer()
+                                        //     ..onTap = () =>
+                                        //         controller.onTapProtocol(2),
+                                        // ),
                                         TextSpan(
                                           text: "《隐私政策》",
                                           recognizer: TapGestureRecognizer()

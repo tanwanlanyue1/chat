@@ -64,6 +64,7 @@ class AppColor {
   static const gray80 = Color(0x80999999);
   static const grayF7 = Color(0xFFF7F7F7);
 
+  static const white5 = Color(0xE5F8F9FE);
   static const white8 = Color(0xFFF8F9FE);
 
   static const blue3 = Color(0xFF4754B3);
@@ -119,6 +120,8 @@ class AppColor {
   static const green2 = Color(0xff2E9959);
 
   static const purple6 = Color(0xffC644FC);
+  static const purple4 = Color(0x4D226EF0);
+  static const purple8 = Color(0x4DBD3CFF);
   static const orange6 = Color(0xFFFA9D3B);
 
   ///主色渐变色(水平渐变)

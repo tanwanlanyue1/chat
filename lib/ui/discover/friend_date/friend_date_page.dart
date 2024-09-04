@@ -77,6 +77,7 @@ class FriendDatePage extends StatelessWidget {
                 visible: state.userInfo?.type.index == 0,
                 child: CommonGradientButton(
                   text: state.typeList[index]['title'],
+                  borderRadius: BorderRadius.circular(4.rpx),
                   textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
                   onTap: controller.onTapInvitation,
                 ),

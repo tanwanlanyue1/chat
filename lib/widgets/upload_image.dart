@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,12 +21,14 @@ class UploadImage extends StatefulWidget {
     required this.imgList,
     this.callback,
     this.closeIcon = true,
+    this.spacing,
     this.url,
     this.limit,
   });
 
   final void Function(List<String>)? callback;
   final bool closeIcon;
+  final double? spacing;
   final List<String> imgList;
   final String? url;
   final int? limit; // 选择图片最大数量
@@ -124,6 +127,8 @@ class _UploadImageState extends State<UploadImage> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
+      runSpacing:10.rpx,
+      spacing: widget.spacing ?? 0,
       children: List.generate(
           widget.closeIcon ? _imagesList.length + 1 : _imagesList.length,
           (index) {
@@ -133,21 +138,11 @@ class _UploadImageState extends State<UploadImage> {
                 selectCamera();
               },
               child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(width: 1.rpx,color: AppColor.gray9),
-                  borderRadius: BorderRadius.circular(8.rpx),
-                ),
-                width: 80.rpx,
-                height: 80.rpx,
-                margin: EdgeInsets.only(
-                  top: 8.rpx,
-                ),
-                alignment: Alignment.center,
+                margin: EdgeInsets.only(top: 9.rpx),
                 child: AppImage.asset(
                   'assets/images/mine/add_image.png',
-                  width: 20.rpx,
-                  height: 20.rpx,
+                  width: 80.rpx,
+                  height: 80.rpx,
                 ),
               ));
         }
@@ -184,37 +179,39 @@ class _UploadImageState extends State<UploadImage> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.rpx),
         ),
-        child: Stack(children: [
-          InkWell(
-            child: child,
-            onTap: () async {
-              PhotoViewGalleryPage.show(
-                  context,
-                  PhotoViewGalleryPage(
-                    images: _imagesList,
-                    index: index,
-                    heroTag: '',
-                  ));
-            },
-          ),
-          if (widget.closeIcon)
-            Positioned(
-              top: 0,
-              right: 0,
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _imagesList.removeAt(index);
-                    widget.callback?.call(_imagesList);
-                  });
+        child: Stack(
+            children: [
+              InkWell(
+                child: child,
+                onTap: () async {
+                  PhotoViewGalleryPage.show(
+                      context,
+                      PhotoViewGalleryPage(
+                        images: _imagesList,
+                        index: index,
+                        heroTag: '',
+                      ));
                 },
-                child: AppImage.asset(
-                  'assets/images/common/ic_close_gray.png',
-                  width: 16.rpx,
-                  height: 16.rpx,
-                ),
               ),
-            )
-        ]));
+              if (widget.closeIcon)
+              Positioned(
+                  top: 0,
+                  right: 2.rpx,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _imagesList.removeAt(index);
+                        widget.callback?.call(_imagesList);
+                      });
+                    },
+                    child: AppImage.asset(
+                      'assets/images/common/ic_close_gray.png',
+                      width: 18.rpx,
+                      height: 18.rpx,
+                    ),
+                  ),
+                )
+            ]
+        ));
   }
 }

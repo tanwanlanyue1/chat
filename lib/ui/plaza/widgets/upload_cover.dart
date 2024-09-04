@@ -46,8 +46,8 @@ class UploadCoverDialog extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text(S.current.uploadCoverImage,style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
-                          Text(S.current.upTo6photos,style: AppTextStyle.fs12m.copyWith(color: AppColor.red53),),
+                          Text(S.current.uploadCoverImage,style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),),
+                          Text(S.current.upTo6photos,style: AppTextStyle.fs12m.copyWith(color: AppColor.textRed),),
                           const Spacer(),
                           GestureDetector(
                             onTap: (){
@@ -58,10 +58,12 @@ class UploadCoverDialog extends StatelessWidget {
                         ],
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 12.rpx),
+                        margin: EdgeInsets.only(top: 7.rpx),
+                        width: 300.rpx,
                         child: UploadImage(
                           limit: 6,
                           imgList: controller.state.imgList,
+                          spacing: 14.rpx,
                           callback: (val) {
                             controller.state.imgList = val;
                             controller.update(['upload']);

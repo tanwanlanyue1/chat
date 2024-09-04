@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -28,6 +29,7 @@ class MineEvaluatePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: AppBackButton.light(),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
         title: Text(S.current.myAssessment,style: AppTextStyle.fs18b.copyWith(color: Colors.white),),
         flexibleSpace: Container(
           decoration: const BoxDecoration(

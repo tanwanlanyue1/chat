@@ -39,10 +39,13 @@ class DiscoverPage extends StatelessWidget {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          image: AppDecorations.backgroundImage(
-              "assets/images/discover/activity_back.png",
-            fit: BoxFit.cover
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AppAssetImage(
+              'assets/images/discover/activity_back.png',
+            ),
+            fit: BoxFit.cover,
+            alignment: Alignment.topCenter,
           ),
         ),
         child: TabBarView(

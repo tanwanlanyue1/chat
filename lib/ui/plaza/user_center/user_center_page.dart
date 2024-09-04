@@ -76,7 +76,6 @@ class UserCenterPage extends StatelessWidget {
                       )
                     ],
                   ),
-                  systemOverlayStyle: SystemUiOverlayStyle.light,
                 )),
                 SliverToBoxAdapter(
                   child: Column(

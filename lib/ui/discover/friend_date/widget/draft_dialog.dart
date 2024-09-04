@@ -35,13 +35,13 @@ class DraftDialog extends StatelessWidget {
         body: Center(
           child: Container(
             width: 331.rpx,
-            height: 520.rpx,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(8.rpx)),
             ),
-            padding: EdgeInsets.all(16.rpx),
+            padding: EdgeInsets.all(16.rpx).copyWith(bottom: 24.rpx),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
                   onTap: () {
@@ -91,13 +91,14 @@ class DraftDialog extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(8.rpx)),
                   ),
                   padding: EdgeInsets.all(24.rpx),
+                  margin: EdgeInsets.only(bottom: 24.rpx),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         S.current.beWillingPay,
                         style:
-                            AppTextStyle.fs14b.copyWith(color: AppColor.black20),
+                        AppTextStyle.fs14b.copyWith(color: AppColor.black20),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 16.rpx),
@@ -140,7 +141,7 @@ class DraftDialog extends StatelessWidget {
                       Text(
                         S.current.youHavePay,
                         style:
-                            AppTextStyle.fs14b.copyWith(color: AppColor.black20),
+                        AppTextStyle.fs14b.copyWith(color: AppColor.black20),
                       ),
                       SizedBox(height: 16.rpx),
                       Row(
@@ -161,7 +162,6 @@ class DraftDialog extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Spacer(),
                 CommonGradientButton(
                   height: 50.rpx,
                   text: S.current.agreeDate,

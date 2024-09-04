@@ -8,6 +8,7 @@ import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
+import 'package:guanjia/common/paging/default_status_indicators/no_items_found_indicator.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_button.dart';
@@ -113,6 +114,12 @@ class UserCenterPage extends StatelessWidget {
                             ),
                           ],
                         ),
+                      );
+                    },
+                    noItemsFoundIndicatorBuilder:(_){
+                      return const NoItemsFoundIndicator(
+                        title: '暂无数据',
+                        backgroundColor: Colors.white,
                       );
                     },
                   ),

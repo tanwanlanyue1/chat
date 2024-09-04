@@ -53,7 +53,6 @@ class ChatRedPacketMessage extends StatelessWidget {
             final status = message.redPacketLocal.status;
             if (message.isMine) {
               if(message.isInsertMessage){
-                print('====>>>${message.localExtendedData.value}  |  ${message.zim.localExtendedData}  | status=$status');
                 if (status == 1) {
                   return RedPacketDetailsView(message: message);
                 } else {
@@ -137,9 +136,8 @@ class RedPacketTipsView extends StatelessWidget {
               child: Text(
                 text,
                 textAlign: TextAlign.center,
-                style: AppTextStyle.pingFangRegular.copyWith(
-                  fontSize: 14.rpx,
-                  color: AppColor.gray5,
+                style: AppTextStyle.fs14m.copyWith(
+                  color: AppColor.black3,
                 ),
               ),
             ),
@@ -171,9 +169,8 @@ class RedPacketTipsView extends StatelessWidget {
                 padding: FEdgeInsets(left: 4.rpx),
                 child: Text.rich(
                   TextSpan(
-                    style: AppTextStyle.pingFangRegular.copyWith(
-                      fontSize: 14.rpx,
-                      color: AppColor.gray5,
+                    style: AppTextStyle.fs14m.copyWith(
+                      color: AppColor.black3,
                     ),
                     text: '您向Ta发了个红包，金额 ',
                     children: [
@@ -196,9 +193,8 @@ class RedPacketTipsView extends StatelessWidget {
             padding: FEdgeInsets(horizontal: 12.rpx, vertical: 4.rpx),
             child: Text(
               '撤回',
-              style: AppTextStyle.pingFangRegular.copyWith(
-                fontSize: 14.rpx,
-                color: AppColor.gradientBegin,
+              style: AppTextStyle.fs14m.copyWith(
+                color: AppColor.primaryBlue,
                 decoration: TextDecoration.underline,
               ),
             ),
@@ -315,7 +311,7 @@ class RedPacketDetailsView extends StatelessWidget {
       padding: FEdgeInsets(top: 12.rpx, bottom: 4.rpx),
       child: DefaultTextStyle(
         style: AppTextStyle.fs12m.copyWith(
-          color: message.isMine ? Colors.white : AppColor.gray30,
+          color: message.isMine ? Colors.white : AppColor.black666,
           height: 1.00001,
         ),
         child: Column(

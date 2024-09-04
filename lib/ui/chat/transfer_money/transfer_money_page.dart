@@ -47,7 +47,7 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
                     user?.baseInfo.userName ?? '',
                     textAlign: TextAlign.center,
                     style: AppTextStyle.fs16b.copyWith(
-                      color: AppColor.gray5,
+                      color: AppColor.blackBlue,
                       height: 1.0001,
                     ),
                   ),
@@ -93,9 +93,9 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
   }
 
   Widget buildAmountInput() {
-    final style = TextStyle(
+    final style = PFTextStyle(
       fontSize: 40.rpx,
-      color: const Color(0xFF020635),
+      color: AppColor.blackBlue,
       fontWeight: FontWeight.bold,
     );
     const border = UnderlineInputBorder(
@@ -108,7 +108,7 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
         controller: controller.amountEditingController,
         maxLines: 1,
         style: style,
-        cursorColor: AppColor.gradientBegin,
+        cursorColor: AppColor.primaryBlue,
         decoration: InputDecoration(
           border: border,
           enabledBorder: border,

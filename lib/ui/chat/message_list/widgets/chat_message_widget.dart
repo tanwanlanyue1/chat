@@ -236,21 +236,6 @@ class ChatMessageWidget extends StatelessWidget {
     );
   }
 
-  Widget buildTime({double horizontalPadding = 0}) {
-    return Padding(
-      padding:
-          EdgeInsets.symmetric(vertical: 8.rpx, horizontal: horizontalPadding),
-      child: Text(
-        DateTime.fromMillisecondsSinceEpoch(message.info.timestamp)
-            .friendlyTime,
-        style: AppTextStyle.fs12m.copyWith(
-          color: AppColor.black92,
-          height: 1.0001,
-        ),
-      ),
-    );
-  }
-
   Widget buildNickName(context) {
     if (message.isMine ||
         message.info.conversationType != ZIMConversationType.group) {

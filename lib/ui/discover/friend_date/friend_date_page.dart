@@ -269,7 +269,7 @@ class FriendDatePage extends StatelessWidget {
             children: [
               Visibility(
                 visible: item.serviceCharge != null && item.serviceCharge! > 0,
-                child: Text(S.current.provideService,style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                child: Text(S.current.provideService,style: AppTextStyle.fs12m.copyWith(color: AppColor.black666),),
               ),
               const Spacer(),
               Visibility(

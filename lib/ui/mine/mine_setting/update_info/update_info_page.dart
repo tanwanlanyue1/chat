@@ -76,7 +76,7 @@ class UpdateInfoPage extends StatelessWidget {
           padding: EdgeInsets.only(left: 8.rpx),
           child: Text(
             "当前昵称：${state.nickName}",
-            style: TextStyle(color: AppColor.gray30, fontSize: 14.rpx),
+            style: TextStyle(color: AppColor.black666, fontSize: 14.rpx),
           ),
         ),
         Container(

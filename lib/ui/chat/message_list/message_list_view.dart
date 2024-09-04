@@ -362,9 +362,8 @@ class _MessageListViewState extends State<MessageListView> with AutoDisposeMixin
       ),
       child: Text(
         dateTimeStr,
-        style: AppTextStyle.pingFangRegular.copyWith(
-          fontSize: 14.rpx,
-          color: AppColor.gray5,
+        style: AppTextStyle.fs12m.copyWith(
+          color: AppColor.black3,
         ),
       ),
     );

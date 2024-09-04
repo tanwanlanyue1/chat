@@ -260,7 +260,7 @@ class UserCenterPage extends StatelessWidget {
                                 width: 44.rpx,
                                 margin: EdgeInsets.only(left: 4.rpx),
                                 alignment: Alignment.center,
-                                child: Text(isAttentionRx() ? S.current.followed : S.current.attention,style: AppTextStyle.fs14b.copyWith(color: AppColor.gray30),),
+                                child: Text(isAttentionRx() ? S.current.followed : S.current.attention,style: AppTextStyle.fs14b.copyWith(color: AppColor.black666),),
                               )
                             ],
                           );
@@ -349,7 +349,7 @@ class UserCenterPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(S.current.talkToMe1v1,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),
+            Text(S.current.talkToMe1v1,style: AppTextStyle.fs14m.copyWith(color: AppColor.black666),),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8.rpx),
               child: Row(

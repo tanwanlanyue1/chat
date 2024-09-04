@@ -122,8 +122,8 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
     return ChatUserBuilder(userId: message.info.conversationID, builder: (info){
       return Text(
         info?.baseInfo.userName ?? '',
-        style: AppTextStyle.fs14m.copyWith(
-          color: AppColor.gray5,
+        style: AppTextStyle.fs14b.copyWith(
+          color: AppColor.blackBlue,
           height: 1.00001,
         ),
       );
@@ -160,7 +160,7 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
               padding: EdgeInsets.only(left: 4.rpx),
               child: Text(
                 "关注",
-                style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),
+                style: AppTextStyle.fs14m.copyWith(color: AppColor.black666),
               ),
             )
           ],
@@ -241,7 +241,7 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
       padding: FEdgeInsets(top: 50.rpx, bottom: 24.rpx),
       child: DefaultTextStyle(
         style: AppTextStyle.fs12m.copyWith(
-          color: AppColor.gray30,
+          color: AppColor.black666,
           height: 1.00001,
         ),
         child: Column(

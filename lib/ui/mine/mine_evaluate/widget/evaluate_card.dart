@@ -98,7 +98,7 @@ class EvaluateCard extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: "【${item.fromName}】",
-                      style: AppTextStyle.fs14b.copyWith(color: AppColor.gray30),
+                      style: AppTextStyle.fs14b.copyWith(color: AppColor.black666),
                     ),
                   ],
                 ),

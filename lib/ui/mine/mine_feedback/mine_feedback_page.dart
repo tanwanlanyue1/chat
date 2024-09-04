@@ -98,7 +98,7 @@ class MineFeedbackPage extends StatelessWidget {
                 ),
                 Text(
                   S.current.pleaseSelectATag,
-                  style: TextStyle(color: AppColor.gray30, fontSize: 16.rpx),
+                  style: TextStyle(color: AppColor.black666, fontSize: 16.rpx),
                 ),
               ],
             ),
@@ -155,7 +155,7 @@ class MineFeedbackPage extends StatelessWidget {
                 ),
                 Text(
                   S.current.specificProposalContent,
-                  style: TextStyle(color: AppColor.gray30, fontSize: 16.rpx),
+                  style: TextStyle(color: AppColor.black666, fontSize: 16.rpx),
                 ),
               ],
             ),
@@ -203,7 +203,7 @@ class MineFeedbackPage extends StatelessWidget {
                 ),
                 Text(
                   S.current.uploadPictures,
-                  style: TextStyle(color: AppColor.gray30, fontSize: 16.rpx),
+                  style: TextStyle(color: AppColor.black666, fontSize: 16.rpx),
                 ),
               ],
             ),
@@ -249,7 +249,7 @@ class MineFeedbackPage extends StatelessWidget {
             margin: EdgeInsets.only(right: 12.rpx),
             child: Text(
               S.current.contactNumber,
-              style: TextStyle(color: AppColor.gray30, fontSize: 16.rpx),
+              style: TextStyle(color: AppColor.black666, fontSize: 16.rpx),
             ),
           ),
           Expanded(

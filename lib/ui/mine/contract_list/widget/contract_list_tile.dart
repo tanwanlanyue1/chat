@@ -69,7 +69,7 @@ class ContractListTile extends StatelessWidget {
   Widget buildRichText(String text1, String text2) {
     return Text.rich(TextSpan(
       style: AppTextStyle.fs14m.copyWith(
-        color: AppColor.gray30,
+        color: AppColor.black666,
       ),
       children: [
         TextSpan(text: text1),

@@ -82,7 +82,7 @@ class ClientCard extends StatelessWidget {
                           Text(
                             item!.type.label,
                             style: AppTextStyle.fs12m
-                                .copyWith(color: AppColor.gray30),
+                                .copyWith(color: AppColor.black666),
                           ) :
                           Text("${CommonUtils.getPostTime(time: visitTime,)}",style: AppTextStyle.fs12m.copyWith(color: AppColor.blue56),),
                         ],

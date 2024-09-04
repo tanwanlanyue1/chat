@@ -106,7 +106,7 @@ class AllCommentsPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 2.rpx),
-                    Text("${state.authorInfo.age ?? ''}",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30),),
+                    Text("${state.authorInfo.age ?? ''}",style: AppTextStyle.fs12m.copyWith(color: AppColor.black666),),
                   ],
                 ),
               ),
@@ -185,7 +185,7 @@ class AllCommentsPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(CommonUtils.getPostTime(time: item.createTime),style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30))
+              Text(CommonUtils.getPostTime(time: item.createTime),style: AppTextStyle.fs12m.copyWith(color: AppColor.black666))
             ],
           ),
           SizedBox(height: 12.rpx,),

@@ -157,7 +157,7 @@ class BindingPage extends StatelessWidget {
             text: "${S.current.notReceiveTheVerification}? ",
             style: TextStyle(
               fontSize: 12.rpx,
-              color: AppColor.gray30,
+              color: AppColor.black666,
             ),
             children: [
               TextSpan(

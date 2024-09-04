@@ -118,6 +118,7 @@ class ChatInputViewState extends State<ChatInputView>
           },
           focusNode: focusNode,
           controller: textEditingController,
+          cursorColor: AppColor.primaryBlue,
           inputFormatters: [LengthLimitingTextInputFormatter(500)],
           keyboardType: TextInputType.multiline,
           textInputAction: TextInputAction.newline,

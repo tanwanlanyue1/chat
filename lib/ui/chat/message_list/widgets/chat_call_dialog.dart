@@ -78,7 +78,7 @@ class ChatCallDialog extends StatelessWidget {
                       Text(
                         freeChatHintText,
                         style:
-                            AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
+                            AppTextStyle.fs14b.copyWith(color: AppColor.blackBlue),
                       ),
                     if (priceHintText.isNotEmpty)
                       Row(
@@ -86,13 +86,13 @@ class ChatCallDialog extends StatelessWidget {
                         children: [
                           Text(
                             isVideoCall ? "实时视频" : "实时语音",
-                            style: AppTextStyle.fs14m
-                                .copyWith(color: AppColor.black6),
+                            style: AppTextStyle.fs14b
+                                .copyWith(color: AppColor.grayText),
                           ),
                           Text(
                             priceHintText,
                             style: AppTextStyle.fs14b
-                                .copyWith(color: AppColor.gray5),
+                                .copyWith(color: AppColor.primaryBlue),
                           ),
                         ],
                       ),
@@ -101,14 +101,14 @@ class ChatCallDialog extends StatelessWidget {
                         children: [
                           Text(
                             "管佳金库余额",
-                            style: AppTextStyle.fs14m
-                                .copyWith(color: AppColor.black6),
+                            style: AppTextStyle.fs14b
+                                .copyWith(color: AppColor.grayText),
                           ),
                           const Spacer(),
                           Text(
                             balanceHintText,
                             style: AppTextStyle.fs14b
-                                .copyWith(color: AppColor.primary),
+                                .copyWith(color: AppColor.primaryBlue),
                           ),
                           Padding(
                             padding: FEdgeInsets(left: 8.rpx),
@@ -126,7 +126,7 @@ class ChatCallDialog extends StatelessWidget {
               }),
             ),
             Padding(
-              padding: FEdgeInsets(all: 16.rpx, top: 40.rpx),
+              padding: FEdgeInsets(horizontal: 16.rpx, vertical: 24.rpx),
               child: CommonGradientButton(
                 height: 50.rpx,
                 text: "进入聊天",
@@ -209,8 +209,8 @@ class ChatCallDialog extends StatelessWidget {
             isVideoCall
                 ? "和${info?.baseInfo.userName}发起视频聊天？"
                 : "和${info?.baseInfo.userName}发起实时语音聊天？",
-            style: AppTextStyle.fs14m.copyWith(
-              color: AppColor.gray5,
+            style: AppTextStyle.fs16b.copyWith(
+              color: AppColor.blackBlue,
               height: 1.5,
             ),
           );

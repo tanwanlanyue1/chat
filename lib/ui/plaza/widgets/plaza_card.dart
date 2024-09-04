@@ -403,7 +403,7 @@ class PlazaCard extends StatelessWidget {
                       children: [
                         TextSpan(
                             text: '${commentList.content}',
-                            style: AppTextStyle.fs12m.copyWith(color: AppColor.gray30,height: 1.5)
+                            style: AppTextStyle.fs12m.copyWith(color: AppColor.black666,height: 1.5)
                         ),
                       ],
                     ),

@@ -82,7 +82,7 @@ class MineMessagePage extends StatelessWidget {
               margin: EdgeInsets.only(top: 12.rpx,bottom: 16.rpx),
               color: AppColor.scaffoldBackground,
             ),
-            Text("  您的提现申请已成功通过了我们的系统审核，请耐心等待到账通知!",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray30),),
+            Text("  您的提现申请已成功通过了我们的系统审核，请耐心等待到账通知!",style: AppTextStyle.fs14m.copyWith(color: AppColor.black666),),
           ],
         ),
       ),

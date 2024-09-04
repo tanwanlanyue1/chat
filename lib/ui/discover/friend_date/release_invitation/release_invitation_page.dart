@@ -103,7 +103,7 @@ class ReleaseInvitationPage extends StatelessWidget {
                 child: Text(
                   "${item['title']}",
                   style: TextStyle(
-                      color: current == index ? Colors.white : AppColor.gray30,
+                      color: current == index ? Colors.white : AppColor.black666,
                       fontWeight: current == index ? FontWeight.bold : FontWeight.normal,
                       fontSize: 14.rpx),
                 ),

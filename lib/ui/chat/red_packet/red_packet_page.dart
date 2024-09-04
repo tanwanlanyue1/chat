@@ -9,7 +9,6 @@ import 'package:guanjia/common/utils/decimal_text_input_formatter.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
-import 'package:number_text_input_formatter/number_text_input_formatter.dart';
 
 import 'red_packet_controller.dart';
 
@@ -20,6 +19,7 @@ class RedPacketPage extends GetView<RedPacketController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('发红包'),
       ),
@@ -43,7 +43,7 @@ class RedPacketPage extends GetView<RedPacketController> {
 
   Widget buildBody() {
     return DefaultTextStyle(
-      style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),
+      style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),
       child: ListView(
         padding: FEdgeInsets(all: 24.rpx),
         children: [
@@ -69,6 +69,7 @@ class RedPacketPage extends GetView<RedPacketController> {
         signed: false,
         decimal: true,
       ),
+      style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),
       inputFormatters: [
         DecimalTextInputFormatter(
           maxValue: SS.appConfig.redPacketMaxAmount,
@@ -120,6 +121,7 @@ class RedPacketPage extends GetView<RedPacketController> {
         inputFormatters: [
           LengthLimitingTextInputFormatter(SS.appConfig.redPacketDescLimit)
         ],
+        style: AppTextStyle.fs14b.copyWith(color: AppColor.blackBlue),
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
@@ -127,7 +129,7 @@ class RedPacketPage extends GetView<RedPacketController> {
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(8.rpx),
           ),
-          hintStyle: const TextStyle(color: AppColor.gray9),
+          hintStyle: AppTextStyle.fs14m.copyWith(color: AppColor.black999),
           hintText: '${controller.defaultDesc}（红包文字可输入）',
           prefixIcon: SizedBox(width: 16.rpx),
           prefixIconConstraints: BoxConstraints(minHeight: 54.rpx),

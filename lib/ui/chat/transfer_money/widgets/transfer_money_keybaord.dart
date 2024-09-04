@@ -93,14 +93,14 @@ class _TransferMoneyKeyboardState extends State<TransferMoneyKeyboard> {
             child: item == backspace
                 ? Icon(
                     Icons.backspace,
-                    color: AppColor.gray5,
+                    color: AppColor.blackBlue,
                     size: 24.rpx,
                   )
                 : Text(
                     item,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.fs20b
-                        .copyWith(color: const Color(0xFF020635)),
+                        .copyWith(color: AppColor.blackBlue),
                   ),
           ),
         ),
@@ -114,7 +114,7 @@ class _TransferMoneyKeyboardState extends State<TransferMoneyKeyboard> {
       height: itemSize.height * 3 + 2 * spacing,
       child: Material(
         borderRadius: BorderRadius.circular(4.rpx),
-        color: AppColor.gradientBegin,
+        color: AppColor.primaryBlue,
         elevation: 0,
         child: InkWell(
           borderRadius: BorderRadius.circular(4.rpx),

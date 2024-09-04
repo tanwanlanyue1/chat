@@ -194,7 +194,7 @@ class _ConversationListTileState extends State<ConversationListTile>
         overflow: TextOverflow.ellipsis,
         style: AppTextStyle.fs14b.copyWith(
           color: textColor,
-          height: 1.0,
+          height: 1.1,
         ),
       ),
     );

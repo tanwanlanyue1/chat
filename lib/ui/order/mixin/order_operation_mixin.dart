@@ -51,14 +51,14 @@ mixin OrderOperationMixin {
       res.showErrorMessage();
       Get.offNamed(
         AppRoutes.orderPaymentResultPage,
-        arguments: {"orderId": orderId, "isSuccess": false},
+        arguments: {"orderId": orderId.toString(), "isSuccess": false},
       );
       return false;
     }
 
     Get.offNamed(
       AppRoutes.orderPaymentResultPage,
-      arguments: {"orderId": orderId, "isSuccess": true},
+      arguments: {"orderId": orderId.toString(), "isSuccess": true},
     );
 
     return true;

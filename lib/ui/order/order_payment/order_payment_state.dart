@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 
-enum OrderPaymentType { dating, vip }
-
 class OrderPaymentState {
 
   final datingModel = Rxn<OrderItemModel>();

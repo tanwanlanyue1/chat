@@ -6,11 +6,11 @@ import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';
 
 import 'order_payment_controller.dart';
-import 'order_payment_state.dart';
 
 class OrderPaymentPage extends GetView<OrderPaymentController> {
   const OrderPaymentPage({

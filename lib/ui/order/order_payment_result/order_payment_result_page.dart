@@ -5,8 +5,10 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';
+import 'package:guanjia/widgets/common_gradient_button.dart';
 
 import 'order_payment_result_controller.dart';
 
@@ -14,16 +16,20 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
   const OrderPaymentResultPage({
     super.key,
     required this.orderId,
+    required this.type,
     required this.isSuccess,
   });
 
-  final int orderId;
+  final String orderId;
+
+  final OrderPaymentType type;
+
   final bool isSuccess;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OrderPaymentResultController>(
-      init: OrderPaymentResultController(orderId),
+      init: OrderPaymentResultController(orderId, type: type),
       builder: (controller) {
         return Scaffold(
           backgroundColor: Colors.white,
@@ -41,13 +47,28 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
 
   ListView _buildSuccess() {
     final state = controller.state;
-    final isRequest = state.detailModel.value?.requestId == SS.login.userId;
 
-    final deposit = state.detailModel.value?.deposit ?? 0;
-    final serviceCharge = state.detailModel.value?.serviceCharge ?? 0;
-    final result = isRequest ? deposit + serviceCharge : deposit;
+    final String title;
+    final String orderNumber;
+    final num result;
+    final String remark;
+    if (type == OrderPaymentType.dating) {
+      final isRequest = state.detailModel.value?.requestId == SS.login.userId;
 
-    final orderNumber = state.detailModel.value?.number ?? "";
+      title = isRequest ? "保证金服务费支付成功！" : "保证金支付成功！";
+
+      orderNumber = state.detailModel.value?.number ?? "";
+
+      final deposit = state.detailModel.value?.deposit ?? 0;
+      final serviceCharge = state.detailModel.value?.serviceCharge ?? 0;
+      result = isRequest ? deposit + serviceCharge : deposit;
+      remark = "注：保证金在订单结束后将在24小时内原路返回。";
+    } else {
+      title = "VIP充值成功！";
+      orderNumber = state.vipModel.value?.orderNo ?? "";
+      result = state.vipModel.value?.amount ?? 0;
+      remark = "注：成为VIP后可享受多项VIP权益。";
+    }
 
     return ListView(
       children: [
@@ -58,11 +79,11 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
         ),
         SizedBox(height: 24.rpx),
         Text(
-          isRequest ? "保证金服务费支付成功！" : "保证金支付成功！",
+          title,
           textAlign: TextAlign.center,
           style: AppTextStyle.st
               .size(16.rpx)
-              .textColor(Colors.black)
+              .textColor(AppColor.blackBlue)
               .textHeight(1),
         ),
         SizedBox(height: 24.rpx),
@@ -109,34 +130,48 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
                 color: AppColor.scaffoldBackground,
               ),
               Text(
-                "注：保证金在订单结束后将在24小时内原路返回。",
+                remark,
                 style: AppTextStyle.st
                     .size(14.rpx)
                     .textColor(AppColor.black6)
                     .textHeight(1),
               ),
-              GestureDetector(
-                onTap: () => controller.toOrderDetail(orderId),
-                child: Container(
-                  height: 50.rpx,
-                  margin: EdgeInsets.symmetric(horizontal: 22.rpx)
-                      .copyWith(top: 60.rpx),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      color: AppColor.black9,
-                    ),
-                    borderRadius: BorderRadius.circular(8.rpx),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    "查看订单",
-                    style: AppTextStyle.st
-                        .size(16.rpx)
-                        .textColor(AppColor.black9)
-                        .textHeight(1),
-                  ),
-                ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 22.rpx)
+                    .copyWith(top: 60.rpx),
+                child: type == OrderPaymentType.dating
+                    ? GestureDetector(
+                        onTap: () => controller.toOrderDetail(orderId),
+                        child: Container(
+                          height: 50.rpx,
+                          margin: EdgeInsets.symmetric(horizontal: 22.rpx)
+                              .copyWith(top: 60.rpx),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              color: AppColor.black9,
+                            ),
+                            borderRadius: BorderRadius.circular(8.rpx),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "查看订单",
+                            style: AppTextStyle.st
+                                .size(16.rpx)
+                                .textColor(AppColor.black9)
+                                .textHeight(1),
+                          ),
+                        ),
+                      )
+                    : Button(
+                        onPressed: Get.back,
+                        child: Text(
+                          "立即享受VIP权益",
+                          style: AppTextStyle.st
+                              .size(16.rpx)
+                              .textColor(Colors.white),
+                        ),
+                      ),
               ),
             ],
           ),
@@ -159,7 +194,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
           textAlign: TextAlign.center,
           style: AppTextStyle.st
               .size(16.rpx)
-              .textColor(Colors.black)
+              .textColor(AppColor.blackBlue)
               .textHeight(1),
         ),
         SizedBox(height: 16.rpx),

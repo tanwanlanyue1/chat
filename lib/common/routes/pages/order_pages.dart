@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/order_detail/order_detail_controller.dart';
 import 'package:guanjia/ui/order/order_detail/order_detail_page.dart';
 import 'package:guanjia/ui/order/order_evaluation/order_evaluation_page.dart';
 import 'package:guanjia/ui/order/order_page.dart';
 import 'package:guanjia/ui/order/order_payment/order_payment_page.dart';
-import 'package:guanjia/ui/order/order_payment/order_payment_state.dart';
 import 'package:guanjia/ui/order/order_payment_result/order_payment_result_page.dart';
 
 class OrderPages {
@@ -52,15 +52,20 @@ class OrderPages {
       page: () {
         var orderId = Get.tryGetArgs("orderId");
         var isSuccess = Get.tryGetArgs("isSuccess");
+        var type = Get.tryGetArgs("type");
 
-        if (orderId == null || orderId is! int) {
+        if (orderId == null || orderId is! String) {
           orderId = 0;
         }
         if (isSuccess == null || isSuccess is! bool) {
           isSuccess = false;
         }
+        if (type == null || type is! OrderPaymentType) {
+          type = OrderPaymentType.dating;
+        }
         return OrderPaymentResultPage(
           orderId: orderId,
+          type: type,
           isSuccess: isSuccess,
         );
       },

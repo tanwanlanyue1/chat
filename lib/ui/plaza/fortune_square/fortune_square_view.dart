@@ -27,41 +27,46 @@ class FortuneSquareView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          discoverClassify(),
-          SizedBox(height: 8.rpx,),
-          Expanded(
-            child: SmartRefresher(
-              controller: controller.pagingController.refreshController,
-              onRefresh: controller.pagingController.onRefresh,
-              child: CustomScrollView(
-                slivers: [
-                  PagedSliverList(
-                    pagingController: controller.pagingController,
-                    builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
+          Column(
+            children: [
+              SizedBox(height: 40.rpx,),
+              Expanded(
+                child: SmartRefresher(
+                  controller: controller.pagingController.refreshController,
+                  onRefresh: controller.pagingController.onRefresh,
+                  child: CustomScrollView(
+                    slivers: [
+                      PagedSliverList(
                         pagingController: controller.pagingController,
-                        itemBuilder: (_,item,index){
-                          return PlazaCard(
-                            item: item,
-                            plazaIndex: controller.tabController.index,
-                            more: () {
-                              controller.selectMore(item);
-                            },
-                            isLike: (like){
-                              controller.getCommentLike(like, index);
-                            },
-                            callBack: (val){
-                              controller.setComment(val ?? '',index);
-                            },
-                          );
-                        }
-                    ),
-                  )
-                ],
-              ),
-            ),
-          )
+                        builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
+                            pagingController: controller.pagingController,
+                            itemBuilder: (_,item,index){
+                              return PlazaCard(
+                                item: item,
+                                plazaIndex: controller.tabController.index,
+                                margin: index == 0 ? EdgeInsets.only(top: 8.rpx) : EdgeInsets.only(top: 4.rpx),
+                                more: () {
+                                  controller.selectMore(item);
+                                },
+                                isLike: (like){
+                                  controller.getCommentLike(like, index);
+                                },
+                                callBack: (val){
+                                  controller.setComment(val ?? '',index);
+                                },
+                              );
+                            }
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+          discoverClassify(),
         ],
       ),
       floatingActionButton: floatingAction(),
@@ -72,6 +77,8 @@ class FortuneSquareView extends StatelessWidget {
   Widget discoverClassify(){
     return Material(
       color: Colors.white,
+      elevation: 4,
+      shadowColor: Colors.black.withOpacity(0.2),
       child: TabBar(
         controller: controller.tabController,
         labelStyle: AppTextStyle.fs14b,

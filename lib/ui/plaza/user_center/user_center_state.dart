@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/model/talk_model.dart';
 import 'package:guanjia/generated/l10n.dart';
@@ -9,6 +7,8 @@ class UserCenterState {
   int authorId = 0;
 
   final isAppBarExpanded = false.obs;
+
+  final isShow = true.obs;
   //作者信息
   UserModel authorInfo = UserModel.fromJson({});
 

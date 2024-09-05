@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
+import 'package:guanjia/common/paging/default_status_indicators/no_items_found_indicator.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/mine_evaluate/widget/evaluate_card.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/system_ui.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -26,6 +28,7 @@ class JiaEvaluatePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: AppBackButton.light(),
+        systemOverlayStyle: SystemUI.lightStyle,
         title: Text(S.current.appraiseMe,style: AppTextStyle.fs18b.copyWith(color: Colors.white),),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -58,10 +61,25 @@ class JiaEvaluatePage extends StatelessWidget {
                       SliverToBoxAdapter(
                           child: customerEvaluation()
                       ),
-                      PagedSliverList(
+                      PagedSliverList.separated(
                         pagingController: controller.pagingController,
                         builderDelegate: DefaultPagedChildBuilderDelegate<EvaluationItemModel>(
                           pagingController: controller.pagingController,
+                          noItemsFoundIndicatorBuilder:(_){
+                            return Container(
+                              margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(bottom: 24.rpx),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(8.rpx),
+                                  bottomLeft: Radius.circular(8.rpx),
+                                )
+                              ),
+                              child: const NoItemsFoundIndicator(
+                                title: '暂无数据',
+                              ),
+                            );
+                          },
                           itemBuilder: (_, item, index) {
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16.rpx),
@@ -69,11 +87,30 @@ class JiaEvaluatePage extends StatelessWidget {
                                 index: index,
                                 item: item,
                                 goodGirl: true,
-                                margin: EdgeInsets.only(bottom: 1.rpx),
+                                margin: EdgeInsets.zero,
+                                borderRadius: (index+1 == controller.pagingController.length) ?
+                                BorderRadius.only(
+                                  bottomRight: Radius.circular(8.rpx),
+                                  bottomLeft: Radius.circular(8.rpx),
+                                ):null,
                               ),
                             );
                           },
                         ),
+                        separatorBuilder: (BuildContext context, int index) {
+                          return Visibility(
+                            visible: (index+1) != controller.pagingController.length,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 16.rpx),
+                              color: Colors.white,
+                              child: Container(
+                                height: 1.rpx,
+                                color: AppColor.black91,
+                                margin: EdgeInsets.symmetric(horizontal: 16.rpx),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   )

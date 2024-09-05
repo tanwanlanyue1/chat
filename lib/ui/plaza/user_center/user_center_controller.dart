@@ -4,6 +4,8 @@ import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
@@ -46,7 +48,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
   void onInit() {
     scrollController.addListener(() {
       double offset = scrollController.offset;
-      double appBarHeight = 250.rpx;
+      double appBarHeight = 220.rpx;
       state.isAppBarExpanded.value = (appBarHeight - kToolbarHeight) < offset;
     });
     getUserInfo();
@@ -110,7 +112,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
   }
 
   //简介信息
-  String basicsInfo({required int index}){
+  Widget basicsInfo({required int index}){
     var info = jsonDecode(jsonEncode(state.authorInfo))[state.userBasics[index]['data']] ?? '-';
     if(index == 1){
       info = (info == 0) ? "-" : ((info == 1) ? S.current.male:S.current.female);
@@ -123,9 +125,23 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
     if(!state.authorInfo.type.isUser && index == 2 && info != '-'){
       NumberFormat format = NumberFormat('0.#####');
       String formattedValue = format.format(double.parse(info));
-      return '$formattedValue%';
+      return Padding(
+        padding: EdgeInsets.only(left: 4.rpx),
+        child: RichText(
+          text: TextSpan(
+            text: formattedValue,
+            style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),
+            children: <TextSpan>[
+              TextSpan(
+                text: "%",
+                style: AppTextStyle.fs12b.copyWith(color: AppColor.blackBlue,),
+              ),
+            ],
+          ),
+        ),
+      );
     }
-    return info.toString();
+    return Text('$info',style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),);
   }
 
   ///点赞或者取消点赞
@@ -210,7 +226,7 @@ mixin UserAttentionMixin on GetxController implements GetAutoDisposeMixin{
   ///切换 关注，取消关注
   ///- return true关注，false取消关注
   Future<bool> toggleAttention(int userId) async {
-    Loading.show();
+    // Loading.show();
     final response = await UserApi.attention(uid: userId);
     Loading.dismiss();
     if (!response.isSuccess) {

@@ -11,6 +11,7 @@ import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart'
 import 'package:guanjia/common/paging/default_status_indicators/no_items_found_indicator.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_button.dart';
 import 'package:guanjia/widgets/photo_view_gallery_page.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -82,7 +83,7 @@ class UserCenterPage extends StatelessWidget {
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      userInfo(),
+                      userInfo(context),
                       creativeDynamics(),
                     ],
                   ),
@@ -126,21 +127,37 @@ class UserCenterPage extends StatelessWidget {
                 ),
               ],
             ),
-            Container(
+            Obx(() => Container(
               height: 44.rpx+Get.mediaQuery.padding.top,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [AppColor.gray40, Color(0x00000000)],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-                //Color(0x4D000000)
+              decoration: BoxDecoration(
+                color: state.isAppBarExpanded.value ? Colors.white : Colors.transparent
               ),
               child: AppBar(
                 backgroundColor: Colors.transparent,
                 leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
                 systemOverlayStyle: SystemUI.lightStyle,
                 actions: [
+                  Visibility(
+                    visible: state.isAppBarExpanded.value,
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(left: 52.rpx,right: 12.rpx),
+                      child: AppImage.network(
+                        state.authorInfo.avatar ?? '',
+                        width: 32.rpx,
+                        height: 32.rpx,
+                        fit: BoxFit.cover,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: state.isAppBarExpanded.value,
+                    child: Center(
+                      child: Text(state.authorInfo.nickname,style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue,height: 1),),
+                    ),
+                  ),
+                  const Spacer(),
                   Visibility(
                     visible: SS.login.userId == state.authorId,
                     child: InkWell(
@@ -153,7 +170,7 @@ class UserCenterPage extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
+            )),
           ],
         ),
       ),
@@ -218,7 +235,7 @@ class UserCenterPage extends StatelessWidget {
   }
 
   ///用户信息
-  Widget userInfo(){
+  Widget userInfo(BuildContext context){
     return GetBuilder<UserCenterController>(
       id: 'userInfo',
       builder: (_) {
@@ -280,12 +297,14 @@ class UserCenterPage extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.center,
-              child: Text(state.authorInfo.nickname,style: AppTextStyle.fs20b.copyWith(color: AppColor.blackBlue),textAlign: TextAlign.center,),
+              margin: EdgeInsets.only(bottom: 12.rpx),
+              child: Text(state.authorInfo.nickname,style: AppTextStyle.fs20b.copyWith(color: AppColor.blackBlue,height: 1),textAlign: TextAlign.center,),
             ),
             Visibility(
               visible: state.authorInfo.type.index != 0,
-              child: Text("${controller.label()}   ${state.authorInfo.position ?? ''}",style: AppTextStyle.fs16r.copyWith(color: AppColor.black92),),
+              child: Text("${controller.label()}   ${state.authorInfo.position ?? ''}",style: AppTextStyle.fs14m.copyWith(color: AppColor.black92,height: 1),),
             ),
+            SizedBox(height: 8.rpx,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(state.userBasics.length, (i) {
@@ -294,8 +313,8 @@ class UserCenterPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text("${state.userBasics[i]['name']}",style: AppTextStyle.fs16r.copyWith(color: AppColor.black92),),
-                      Text(controller.basicsInfo(index: i),style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),),
+                      Text("${state.userBasics[i]['name']}",style: AppTextStyle.fs16m.copyWith(color: AppColor.black92),),
+                      controller.basicsInfo(index: i),
                     ],
                   ),
                 );
@@ -310,7 +329,56 @@ class UserCenterPage extends StatelessWidget {
               margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
               child: Text(S.current.userSignature,style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),),
             ),
-            Text(state.authorInfo.signature ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue),),
+            Obx(() => Stack(
+              children: [
+                Container(
+                  constraints: BoxConstraints(
+                      minHeight: 63.rpx
+                  ),
+                  alignment: Alignment.topLeft,
+                  child: Text(state.authorInfo.signature?.fixAutoLines() ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue,),maxLines: state.isShow.value ? 3 :  null,),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Visibility(
+                    visible: calculateTextWidth(context,state.authorInfo.signature ?? '') && state.isShow.value,
+                    child: GestureDetector(
+                      onTap: (){
+                        state.isShow.value = false;
+                      },
+                      behavior: HitTestBehavior.translucent,
+                      child: Container(
+                        height: 21.rpx,
+                        padding: EdgeInsets.only(left: 50.rpx),
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: const Alignment(-0.2, 0),
+                              colors: [
+                                Colors.white.withOpacity(0),
+                                Colors.white,
+                              ],
+                            )
+                        ),
+                        child: RichText(
+                          text: TextSpan(
+                            text: "... ",
+                            style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: "Read more",
+                                style: AppTextStyle.fs14m.copyWith(color: AppColor.primaryBlue,height: 1.5),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            )),
             Container(
               height: 1.rpx,
               margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
@@ -399,5 +467,30 @@ class UserCenterPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  ///value: 文本内容；fontSize : 文字的大小；fontWeight：文字权重；maxWidth：文本框的最大宽度；maxLines：文本支持最大多少行
+  bool calculateTextWidth(BuildContext context, String value,){
+    if(value.isEmpty){
+      return false;
+    }
+
+    TextPainter painter = TextPainter(
+      maxLines: 3,
+      text: TextSpan(
+        text: value,
+        style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue,height:1.5),
+      ),
+      locale: Localizations.localeOf(context),
+      textDirection: TextDirection.ltr,
+    );
+    painter.layout(maxWidth: Get.width-32.rpx);
+    return painter.didExceedMaxLines;
+  }
+}
+
+extension FixAutoLines on String {
+  String fixAutoLines() {
+    return Characters(this).join('\u{200B}');
   }
 }

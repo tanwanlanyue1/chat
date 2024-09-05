@@ -17,7 +17,8 @@ class ClientCard extends StatelessWidget {
   final UserModel? item;
   final int? visitTime;
   final VoidCallback? onTap;
-  const ClientCard({super.key, this.onTap,this.item,this.visitTime});
+  final bool show;
+  const ClientCard({super.key, this.onTap,this.item,this.visitTime,this.show = true});
 
   @override
   Widget build(BuildContext context) {
@@ -100,11 +101,14 @@ class ClientCard extends StatelessWidget {
               )
             ],
           ),
-          Container(
-            height: 1.rpx,
-            alignment: Alignment.center,
-            color: AppColor.gray39,
-            margin: EdgeInsets.only(top: 24.rpx),
+          SizedBox(height: 24.rpx,),
+          Visibility(
+            visible: show,
+            child: Container(
+              height: 1.rpx,
+              alignment: Alignment.center,
+              color: AppColor.black91,
+            ),
           ),
         ],
       ),

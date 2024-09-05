@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -27,35 +28,34 @@ class MineServiceChargePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          SizedBox(height: 36.rpx),
-          Text(S.current.chargeService,style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 24.rpx),
-            color: Colors.white,
+            margin: EdgeInsets.only(left: 16.rpx,top: 24.rpx,bottom: 16.rpx),
+            alignment: Alignment.centerLeft,
+            child: Text(S.current.chargeService,style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16.rpx),
             height: 50.rpx,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                SizedBox(
-                  height: 30.rpx,
-                  child: InputWidget(
-                    hintText: '${SS.login.info?.serviceCharge ?? S.current.pleaseEnterService}',
-                    lines: 1,
-                    fillColor: Colors.white,
-                    textAlign: TextAlign.center,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                    ],
-                    inputController: controller.contentController,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 6.rpx),
-                  child: Text("数字1-999999",style: AppTextStyle.fs10m.copyWith(color: AppColor.gray10),),
-                ),
-              ],
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.rpx)
             ),
+            child: InputWidget(
+              hintText: '${SS.login.info?.serviceCharge ?? S.current.pleaseEnterService}',
+              lines: 1,
+              fillColor: Colors.white,
+              textAlign: TextAlign.center,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+              ],
+              inputController: controller.contentController,
+            ),
+          ),
+          Container(
+            alignment: Alignment.centerRight,
+            margin: EdgeInsets.only(right: 16.rpx,top: 12.rpx),
+            child: Text("数字1-999999",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
           ),
           Button(
             height: 50.rpx,

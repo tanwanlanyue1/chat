@@ -32,6 +32,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         actions: [
@@ -83,14 +84,14 @@ class LoginPage extends StatelessWidget {
                     children: [
                       Text(
                         S.current.loginWelcome,
-                        style: AppTextStyle.st.medium
+                        style: AppTextStyle.st.bold
                             .size(30.rpx)
                             .textColor(Colors.white),
                       ),
                       SizedBox(height: 50.rpx),
                       LoginTextField(
                         controller: controller.accountController,
-                        labelText: S.current.loginAccount,
+                        labelText: '用户名',
                       ),
                       SizedBox(height: 16.rpx),
                       LoginTextField(

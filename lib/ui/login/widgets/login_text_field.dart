@@ -67,7 +67,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
                 focusNode: focusNode,
                 obscureText: widget.obscureText,
                 keyboardType: widget.keyboardType,
-                style: AppTextStyle.st.medium
+                style: AppTextStyle.st.bold
                     .size(14.rpx)
                     .textColor(AppColor.black3),
                 decoration: InputDecoration(

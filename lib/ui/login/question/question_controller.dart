@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
+import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/widgets/label_widget.dart';
@@ -12,12 +13,7 @@ class QuestionController extends GetxController {
 
   @override
   void onInit() {
-    SS.appConfig.configRx.value?.labels?.forEach((element) {
-      state.labelItems.add(LabelItem(
-        id: element.id,
-        title: element.tag,
-      ));
-    });
+    _getStyle();
 
     super.onInit();
   }
@@ -40,11 +36,6 @@ class QuestionController extends GetxController {
         .where((item) => item.selected)
         .map((item) => item.id.toString())
         .join(',');
-
-    if (state.likeGender.value == null && selectedIdString.isEmpty) {
-      _goHome();
-      return;
-    }
 
     Loading.show();
     final res = await SS.login.initUserInfo(
@@ -69,6 +60,7 @@ class QuestionController extends GetxController {
 
   void onTapLikeGender(int gender, int page) {
     state.likeGender.value = gender;
+    _getStyle();
   }
 
   void onTapLabel(LabelItem item) {
@@ -78,5 +70,25 @@ class QuestionController extends GetxController {
 
   void _goHome() {
     Get.navigateToHomeOrLogin();
+  }
+
+  void _getStyle() {
+    final List<LabelModel> list;
+    if (state.likeGender.value == 1) {
+      list = SS.appConfig.configRx.value?.maleStyleList ?? [];
+    } else {
+      list = SS.appConfig.configRx.value?.femaleStyleList ?? [];
+    }
+
+    state.labelItems.clear();
+
+    for (var element in list) {
+      state.labelItems.add(LabelItem(
+        id: element.id,
+        title: element.tag,
+      ));
+    }
+
+    update();
   }
 }

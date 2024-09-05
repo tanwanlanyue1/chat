@@ -6,7 +6,7 @@ class QuestionState {
 
   final gender = Rxn<bool>(); // 当前选择性别，默认为null
 
-  final likeGender = Rxn<int>(); // 喜好性别 1：男 2：女
+  final likeGender = 2.obs; // 喜好性别 1：男 2：女
 
   final birthday = Rxn<String>(); // 当前选择生日，默认为null
 

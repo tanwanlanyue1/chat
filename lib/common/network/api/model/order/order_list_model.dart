@@ -167,6 +167,7 @@ class OrderItemModel {
     required this.evaluateScore,
     required this.countDown,
     required this.timeout,
+    required this.exempt,
   });
 
   final int id; // 订单id
@@ -207,6 +208,7 @@ class OrderItemModel {
   final int evaluateScore; // 评级星级
   final int countDown; // 倒计时
   final int timeout; // 超时时间
+  final bool exempt; // 是否免除违约金
 
   factory OrderItemModel.fromJson(Map<String, dynamic> json) {
     return OrderItemModel(
@@ -248,6 +250,7 @@ class OrderItemModel {
       evaluateScore: json["evaluateScore"] ?? 0,
       countDown: json["countDown"] ?? 0,
       timeout: json["timeout"] ?? 0,
+      exempt: json["exempt"] ?? false,
     );
   }
 
@@ -290,5 +293,6 @@ class OrderItemModel {
         "evaluateScore": evaluateScore,
         "countDown": countDown,
         "timeout": timeout,
+        "exempt": exempt,
       };
 }

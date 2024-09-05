@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 
@@ -42,7 +43,7 @@ class SettingItem extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 16.rpx,color: AppColor.gray5),
+              style: AppTextStyle.fs16m.copyWith(color: AppColor.black3),
             ),
             SizedBox(width: 8.rpx),
             Expanded(

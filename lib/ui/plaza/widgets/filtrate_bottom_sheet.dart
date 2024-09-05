@@ -137,7 +137,7 @@ class FiltrateBottomSheet extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: state.labelList.contains(index) ? AppColor.gradientBegin : Colors.white,
                           border: Border.all(color: AppColor.gradientBegin),
-                          borderRadius: BorderRadius.all(Radius.circular(8.rpx))
+                          borderRadius: BorderRadius.all(Radius.circular(4.rpx))
                       ),
                       alignment: Alignment.center,
                       child: Text(item.tag,style: AppTextStyle.fs14b.copyWith(color: state.labelList.contains(index) ? Colors.white : AppColor.gradientBegin),),

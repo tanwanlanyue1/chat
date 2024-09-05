@@ -44,6 +44,8 @@ class ReleaseDynamicPage extends StatelessWidget {
               maxLength: 100,
               counterText: '',
               lines: 7,
+              keyboardType: TextInputType.multiline,
+              textAction: TextInputAction.newline,
               onChanged: (val){
                 controller.update(['textLength']);
               },

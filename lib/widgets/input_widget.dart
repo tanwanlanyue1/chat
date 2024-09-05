@@ -26,6 +26,7 @@ class InputWidget extends StatelessWidget {
   final InputBorder? border;
   final FocusNode? focusNode;
   final TextInputType? keyboardType;
+  final TextInputAction? textAction;
   final Function(String val)? onChanged;
   final TextEditingController? inputController;
   final EdgeInsetsGeometry? contentPadding;
@@ -47,6 +48,7 @@ class InputWidget extends StatelessWidget {
     this.focusNode,
     this.border,
     this.onChanged,
+    this.textAction,
     this.inputController,
     this.contentPadding,
     this.inputFormatters,
@@ -81,13 +83,13 @@ class InputWidget extends StatelessWidget {
             ),
             textAlign: textAlign ?? TextAlign.left,
             maxLines: lines,
-            maxLength: maxLength,
             focusNode: focusNode,
             controller: inputController ?? controller,
             onChanged: (val) {
               onChanged?.call(val);
             },
             keyboardType: keyboardType ?? TextInputType.text,
+            textInputAction: textAction ?? TextInputAction.none,
             obscureText: isPassWord,
             style: textStyle ?? TextStyle(
               color: const Color(0XFF2E2F33),

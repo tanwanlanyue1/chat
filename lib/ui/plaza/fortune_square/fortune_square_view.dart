@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -107,15 +108,18 @@ class FortuneSquareView extends StatelessWidget {
               width: 80.rpx,
               height: 40.rpx,
               margin: EdgeInsets.only(bottom: 24.rpx),
-              decoration: BoxDecoration(
+              decoration: const ShapeDecoration(
                 color: AppColor.purple6,
-                borderRadius: BorderRadius.circular(50.rpx),
+                shape: StadiumBorder()
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppImage.asset("assets/images/plaza/compile.png",width: 24.rpx,height: 24.rpx,),
-                  Text(S.current.postMessage,style: AppTextStyle.fs14m.copyWith(color: Colors.white),),
+                  Padding(
+                    padding: FEdgeInsets(left: 4.rpx),
+                    child: Text(S.current.postMessage,style: AppTextStyle.fs14m.copyWith(color: Colors.white),),
+                  )
                 ],
               ),
             ),

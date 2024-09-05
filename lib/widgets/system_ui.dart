@@ -36,7 +36,7 @@ extension SystemUiOverlayStyleExt on SystemUiOverlayStyle{
   SystemUiOverlayStyle transparentSystemNavigationBar(){
     return copyWith(
       systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarContrastEnforced: false,
+      systemNavigationBarContrastEnforced: true,
     );
   }
 }

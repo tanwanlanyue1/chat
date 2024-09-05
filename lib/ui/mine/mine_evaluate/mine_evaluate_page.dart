@@ -11,6 +11,7 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -29,7 +30,7 @@ class MineEvaluatePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: AppBackButton.light(),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        systemOverlayStyle: SystemUI.lightStyle,
         title: Text(S.current.myAssessment,style: AppTextStyle.fs18b.copyWith(color: Colors.white),),
         flexibleSpace: Container(
           decoration: const BoxDecoration(

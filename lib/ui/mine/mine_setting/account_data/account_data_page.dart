@@ -271,7 +271,7 @@ class AccountDataPage extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 38.rpx).copyWith(
+              padding: EdgeInsets.symmetric(horizontal: 16 .rpx).copyWith(
                   top: 14.rpx, bottom: 14.rpx + Get.mediaQuery.padding.bottom),
               decoration: BoxDecoration(color: Colors.white, boxShadow: [
                 BoxShadow(

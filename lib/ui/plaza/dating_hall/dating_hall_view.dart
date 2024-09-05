@@ -229,9 +229,9 @@ class DatingHallView extends StatelessWidget {
               },
               behavior: HitTestBehavior.translucent,
               child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40.rpx),
-                  gradient: const LinearGradient(
+                decoration: const ShapeDecoration(
+                  shape: StadiumBorder(),
+                  gradient: LinearGradient(
                     colors: [AppColor.purple4, AppColor.purple8],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -241,9 +241,9 @@ class DatingHallView extends StatelessWidget {
                 width: 84.rpx,
                 child: Container(
                   margin: EdgeInsets.all(1.rpx),
-                  decoration: BoxDecoration(
+                  decoration: const ShapeDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(40.rpx),
+                    shape: StadiumBorder(),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -254,7 +254,7 @@ class DatingHallView extends StatelessWidget {
                         height: 24.rpx,
                       ),
                       SizedBox(width: 4.rpx,),
-                      Text("搭讪",style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),)
+                      Text("搭讪",style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue),)
                     ],
                   ),
                 ),

@@ -27,6 +27,7 @@ class CommonGradientButton extends StatelessWidget {
     this.begin,
     this.end,
     this.widget,
+    this.backgroundColor,
   });
 
   final VoidCallback? onTap;
@@ -39,6 +40,7 @@ class CommonGradientButton extends StatelessWidget {
   final AlignmentGeometry? begin;
   final AlignmentGeometry? end;
   final Widget? widget;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -49,21 +51,25 @@ class CommonGradientButton extends StatelessWidget {
         height: height,
         padding: padding,
         decoration: BoxDecoration(
-            borderRadius: borderRadius ?? BorderRadius.circular(8.rpx),
-            gradient: LinearGradient(
-              begin: begin ?? Alignment.topLeft,
-              end: end ?? Alignment.bottomRight,
-              colors: const [
-                AppColor.gradientBegin,
-                AppColor.gradientEnd,
-              ],
-            )),
-        alignment: Alignment.center,
-        child: widget ?? Text(
-          text ?? "",
-          style: textStyle ??
-              AppTextStyle.fs16b.textColor(Colors.white),
+          borderRadius: borderRadius ?? BorderRadius.circular(8.rpx),
+          gradient: backgroundColor == null
+              ? LinearGradient(
+                  begin: begin ?? Alignment.topLeft,
+                  end: end ?? Alignment.bottomRight,
+                  colors: const [
+                    AppColor.gradientBegin,
+                    AppColor.gradientEnd,
+                  ],
+                )
+              : null,
+          color: backgroundColor,
         ),
+        alignment: Alignment.center,
+        child: widget ??
+            Text(
+              text ?? "",
+              style: textStyle ?? AppTextStyle.fs16b.textColor(Colors.white),
+            ),
       ),
     );
   }

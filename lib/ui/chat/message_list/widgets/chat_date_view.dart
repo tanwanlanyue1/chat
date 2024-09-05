@@ -9,6 +9,7 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/mine/mine_controller.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
+import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///约会状态View（显示在消息列表顶部）
@@ -33,10 +34,8 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
     this.onTapOrder,
   });
 
-
   ///获取订单UI状态
   UIOrderState? _getUIState(final OrderItemModel? order, UserModel? selfUser) {
-
     //对方用户类型
     final targetType = user.type;
 
@@ -49,7 +48,8 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
     }
 
     if (order == null ||
-        [OrderStatus.finish, OrderStatus.cancel, OrderStatus.timeOut].contains(order.state)) {
+        [OrderStatus.finish, OrderStatus.cancel, OrderStatus.timeOut]
+            .contains(order.state)) {
       //订单为空，或者订单已完结 佳丽和经纪人不显示发起约会
       if (selfType.isUser && !targetType.isUser) {
         return UIOrderState(
@@ -67,6 +67,7 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
           icon: 'assets/images/chat/ic_offline_tips.png',
           desc: '您当前处于“不接约”状态，请注意及时调整。',
           button: '上线接约',
+          buttonColor: AppColor.dateButton,
           onTap: () {
             Get.tryFind<MineController>()
                 ?.onTapBeautifulStatus(UserStatus.online);
@@ -80,7 +81,7 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Obx((){
+    return Obx(() {
       final uiState = _getUIState(order, SS.login.info);
       if (uiState == null) {
         return Spacing.blank;
@@ -88,7 +89,8 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
       return GestureDetector(
         onTap: () {
           if (order != null &&
-              ![OrderStatus.cancel, OrderStatus.finish, OrderStatus.timeOut].contains(order?.state)) {
+              ![OrderStatus.cancel, OrderStatus.finish, OrderStatus.timeOut]
+                  .contains(order?.state)) {
             onTapOrder?.call(order!);
           }
         },
@@ -99,11 +101,21 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              if (uiState.icon != null)
+                Padding(
+                  padding: FEdgeInsets(right: 4.rpx, bottom: 12.rpx),
+                  child: AppImage.asset(
+                    uiState.icon ?? '',
+                    width: 16.rpx,
+                    height: 16.rpx,
+                  ),
+                ),
               Expanded(
                 child: Text(
                   uiState.desc,
-                  textAlign:
-                  uiState.button != null ? TextAlign.left : TextAlign.center,
+                  textAlign: uiState.button != null
+                      ? TextAlign.left
+                      : TextAlign.center,
                   style: AppTextStyle.fs14m.copyWith(
                     color: AppColor.blackBlue,
                     height: 1.2,
@@ -114,7 +126,7 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
                 Padding(
                   padding: FEdgeInsets(left: 16.rpx),
                   child: CommonGradientButton(
-                    onTap: (){
+                    onTap: () {
                       onTapOrderAction?.call(uiState.operation, order);
                       uiState.onTap?.call();
                     },
@@ -122,6 +134,7 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
                     padding: FEdgeInsets(horizontal: 16.rpx),
                     borderRadius: BorderRadius.zero,
                     text: uiState.button,
+                    backgroundColor: uiState.buttonColor,
                     textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
                   ),
                 ),
@@ -133,8 +146,7 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
   }
 }
 
-mixin UIOrderStateMixin{
-
+mixin UIOrderStateMixin {
   ///普通订单UI状态
   Map<OrderItemState, Map<UserType, UIOrderState>> get _uiStateNormal {
     return {
@@ -295,8 +307,8 @@ mixin UIOrderStateMixin{
       final userType = userId == order.requestId
           ? UserType.user
           : userId == order.receiveId
-          ? UserType.beauty
-          : UserType.agent;
+              ? UserType.beauty
+              : UserType.agent;
       return _uiStateNormal[orderState]?[userType];
     } else {
       final userType = order.requestId == SS.login.userId
@@ -316,6 +328,9 @@ class UIOrderState {
   ///按钮文本
   final String? button;
 
+  ///按钮颜色
+  final Color? buttonColor;
+
   ///按钮操作
   final OrderOperationType operation;
 
@@ -329,10 +344,9 @@ class UIOrderState {
     this.icon,
     required this.desc,
     this.button,
+    this.buttonColor,
     this.operation = OrderOperationType.none,
     this.onTap,
     this.isCountdown = false,
   });
 }
-
-

@@ -106,6 +106,7 @@ class ChatInputViewState extends State<ChatInputView>
           color: AppColor.background,
           borderRadius: BorderRadius.circular(4.rpx),
         ),
+        margin: FEdgeInsets(right: 4.rpx),
         child: TextField(
           onTap: () {
             if (featurePanelVisibleRx.isTrue) {

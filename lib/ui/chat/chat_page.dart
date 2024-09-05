@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -10,6 +11,7 @@ import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/contact/contact_view.dart';
 import 'package:guanjia/ui/chat/conversation_list/conversation_list_view.dart';
 import 'package:guanjia/ui/home/home_controller.dart';
+import 'package:guanjia/ui/mine/inapp_message/models/call_match_content.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
@@ -74,13 +76,13 @@ class _ChatPageState extends State<ChatPage>
                 color: Colors.black.withOpacity(0.5),
                 alignment: Alignment.center,
                 child: Container(
-                  height: 258.rpx,
                   width: 311.rpx,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8.rpx),
                   ),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Align(
                         alignment: Alignment.centerRight,
@@ -158,28 +160,29 @@ class _ChatPageState extends State<ChatPage>
                       Text(
                         "该用户在实时${callContent.isVideo ? "视频" : "语音"}聊天匹配寻找好友",
                         textAlign: TextAlign.center,
-                        style: AppTextStyle.st.medium
-                            .size(16.rpx)
+                        style: AppTextStyle.fs16b
                             .textHeight(1)
-                            .copyWith(color: AppColor.black3),
+                            .copyWith(color: AppColor.blackBlue),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: 16.rpx),
-                      Text(
-                        "注：陪聊时间越长，可获得的收益越多哦～",
-                        textAlign: TextAlign.center,
-                        style: AppTextStyle.st
-                            .size(12.rpx)
-                            .textHeight(1)
-                            .copyWith(color: AppColor.black92),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      Container(
+                        alignment: Alignment.center,
+                        padding: FEdgeInsets(top: 16.rpx),
+                        child: Text(
+                          "注：陪聊时间越长，可获得的收益越多哦～",
+                          textAlign: TextAlign.start,
+                          style: AppTextStyle.fs12m
+                              .textHeight(1)
+                              .copyWith(color: AppColor.black92),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       Padding(
                         padding: FEdgeInsets(
                           horizontal: 16.rpx,
-                          top: 24.rpx,
+                          vertical: 24.rpx,
                         ),
                         child: CommonGradientButton(
                           onTap: controller.onTapGrab,

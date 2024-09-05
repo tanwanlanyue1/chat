@@ -3,12 +3,14 @@
 
     <item android:drawable="@android:color/white" />
 
-    <item android:drawable="@drawable/launch_image" />
+<!--    <item android:drawable="@drawable/launch_image_0" android:gravity="center"/>-->
+
+        <item android:drawable="@drawable/launch_image"/>
 
     <item
         android:drawable="@drawable/launch_image_1"
         android:gravity="center"
-        android:bottom="140dp"/>
+        />
 
 
 

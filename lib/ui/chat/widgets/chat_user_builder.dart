@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 ///聊天用户信息builder
@@ -14,8 +15,12 @@ class ChatUserBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final info = ChatUserInfoCache().get(userId);
+    if(info != null){
+      return builder.call(info);
+    }
     return  FutureBuilder(
-      future: ZIMKit().queryUser(userId), //TODO 可以做一下内存缓存
+      future: ChatUserInfoCache().getOrQuery(userId),
       builder: (context, snapshot) {
         return builder.call(snapshot.data);
       },

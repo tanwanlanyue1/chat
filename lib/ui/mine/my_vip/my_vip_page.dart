@@ -438,26 +438,47 @@ class MyVipPage extends StatelessWidget {
                                                           children: [
                                                             Row(
                                                               children: [
-                                                                Text(
-                                                                  "\$",
-                                                                  style: AppTextStyle
-                                                                      .st
-                                                                      .size(18
-                                                                          .rpx)
-                                                                      .textColor(
-                                                                          AppColor
-                                                                              .blackBlue),
+                                                                Baseline(
+                                                                  baseline:
+                                                                      22.rpx,
+                                                                  baselineType:
+                                                                      TextBaseline
+                                                                          .alphabetic,
+                                                                  child: Text(
+                                                                    "\$",
+                                                                    style: AppTextStyle
+                                                                        .st
+                                                                        .size(18
+                                                                            .rpx)
+                                                                        .textColor(isSelect
+                                                                            ? AppColor.primaryBlue
+                                                                            : AppColor.blackBlue),
+                                                                  ),
                                                                 ),
-                                                                Text(
-                                                                  item.price
-                                                                      .toString(),
-                                                                  style: AppTextStyle
-                                                                      .st
-                                                                      .size(24
-                                                                          .rpx)
-                                                                      .textColor(
-                                                                          AppColor
-                                                                              .blackBlue),
+                                                                Baseline(
+                                                                  baseline:
+                                                                      24.rpx,
+                                                                  baselineType:
+                                                                      TextBaseline
+                                                                          .alphabetic,
+                                                                  child:
+                                                                      GradientText(
+                                                                    item.price
+                                                                        .toString(),
+                                                                    colors: isSelect
+                                                                        ? const [
+                                                                            AppColor.gradientBegin,
+                                                                            AppColor.gradientEnd,
+                                                                          ]
+                                                                        : const [
+                                                                            AppColor.blackBlue,
+                                                                            AppColor.blackBlue,
+                                                                          ],
+                                                                    style: AppTextStyle
+                                                                        .st
+                                                                        .size(24
+                                                                            .rpx),
+                                                                  ),
                                                                 ),
                                                               ],
                                                             ),

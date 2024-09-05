@@ -57,15 +57,16 @@ class SpeedDatingController extends GetxController
         _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
           final index = state.avatarIndex.value;
 
-          if (index + 5 >= state.avatars.length - 1) {
+          if (index + state.roundCount > state.avatars.length - 1) {
             state.avatarIndex.value = 0;
           } else {
-            state.avatarIndex.value = index + 5;
+            state.avatarIndex.value = index + state.roundCount;
           }
         });
 
         final countDown = SS.appConfig.configRx.value?.matchingCountDown ?? 90;
         _endTimer = Timer(Duration(seconds: countDown), () {
+          Loading.showToast("等待超时，请稍后重试");
           state.isAnimation.value = false;
         });
       } else {

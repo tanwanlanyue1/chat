@@ -70,7 +70,7 @@ class LabelWidget extends StatelessWidget {
               item.title,
               style: AppTextStyle.fs14b
                   .textColor(item.selected
-                      ? selectedTextColor ?? AppColor.black3
+                      ? selectedTextColor ?? AppColor.blackBlue
                       : textColor ?? Colors.white)
                   .copyWith(
                     fontWeight: fontWeight,

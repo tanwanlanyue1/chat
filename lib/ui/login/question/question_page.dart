@@ -26,31 +26,32 @@ class QuestionPage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          leading: null,
-          actions: [
-            GestureDetector(
-              onTap: () => controller.onTapSkip(),
-              child: Center(
-                child: Container(
-                  margin: EdgeInsets.only(right: 16.rpx),
-                  width: 60.rpx,
-                  height: 26.rpx,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(13.rpx),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    S.current.questionSkip,
-                    style: AppTextStyle.st.medium
-                        .size(14.rpx)
-                        .textColor(Colors.white),
-                  ),
+        backgroundColor: Colors.transparent,
+        leading: page != 0 ? AppBackButton.light() : null,
+        actions: [
+          GestureDetector(
+            onTap: () => controller.onTapSkip(),
+            child: Center(
+              child: Container(
+                margin: EdgeInsets.only(right: 16.rpx),
+                width: 60.rpx,
+                height: 26.rpx,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(13.rpx),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  S.current.questionSkip,
+                  style: AppTextStyle.st.medium
+                      .size(14.rpx)
+                      .textColor(Colors.white),
                 ),
               ),
             ),
-          ]),
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           const Positioned.fill(
@@ -221,7 +222,7 @@ class QuestionPage extends StatelessWidget {
                       S.current.questionBegin,
                       style: AppTextStyle.st.medium
                           .size(16.rpx)
-                          .textColor(AppColor.black3),
+                          .textColor(AppColor.blackBlue),
                     ),
                   ),
                 ),

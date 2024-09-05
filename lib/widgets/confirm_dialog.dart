@@ -100,6 +100,10 @@ class ConfirmDialog extends StatelessWidget {
   }
 
   Widget buildButtons() {
+    String? okText;
+    if(okButtonText is Text){
+      okText = (okButtonText as Text).data;
+    }
     return Padding(
       padding: FEdgeInsets(horizontal: 16.rpx, vertical: 24.rpx),
       child: Row(
@@ -118,10 +122,11 @@ class ConfirmDialog extends StatelessWidget {
                 Get.back(result: false);
               },
             ),
-          okButtonText ?? CommonGradientButton(
+          if(okButtonText != null && okText == null) okButtonText!,
+          CommonGradientButton(
             width: 120.rpx,
             height: 50.rpx,
-            text: '确定',
+            text: okText ?? '确定',
             textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
             onTap: () {
               Get.back(result: true);

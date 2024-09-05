@@ -261,6 +261,8 @@ class AccountDataPage extends StatelessWidget {
                         maxLength: 200,
                         lines: 100,
                         fillColor: Colors.transparent,
+                        keyboardType: TextInputType.multiline,
+                        textAction: TextInputAction.newline,
                         inputController: controller.signatureController,
                         contentPadding: EdgeInsets.zero,
                       ),

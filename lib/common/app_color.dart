@@ -183,4 +183,6 @@ class AppColor {
   ///666
   static const black666 = Color(0xFF666666);
 
+  static Color black91 = const Color(0xFF999999).withOpacity(0.1);
+
 }

@@ -138,7 +138,8 @@ class OrderDetailItem {
       case OrderDetailDisplayType.breachFee:
         return OrderDetailItemWrapper(
           title: changeTitle ?? '违约金：',
-          detail: changeDetail ?? model.breachAmount.toString(),
+          detail: changeDetail ??
+              (model.exempt ? "VIP限免" : model.breachAmount.toString()),
         );
       case OrderDetailDisplayType.platformFeeProportion:
         return OrderDetailItemWrapper(

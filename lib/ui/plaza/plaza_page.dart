@@ -66,23 +66,28 @@ class _PlazaPageState extends State<PlazaPage>
                     controller.tabController.index = index;
                     controller.update(['appBar']);
                   },
-                  child: ShaderMask(
-                      shaderCallback: (Rect bounds) {
-                        return LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [controller.tabController.index == index ? AppColor.gradientBegin: AppColor.gray9,
-                            controller.tabController.index == index ? AppColor.gradientEnd : AppColor.gray9],
-                        ).createShader(Offset.zero & bounds.size);
-                      },
-                      blendMode: BlendMode.srcATop,
-                      child: Container(
-                        margin: EdgeInsets.only(right: 32.rpx),
-                        child: Text(
-                          state.tabBarList[index]['name'],
-                          style: controller.tabController.index == index ? AppTextStyle.fs24b.copyWith(height: 1):AppTextStyle.fs16b.copyWith(height: 1),
-                        ),
-                      )
+                  behavior: HitTestBehavior.translucent,
+                  child: Container(
+                    height: 30.rpx,
+                    alignment: Alignment.center,
+                    child: ShaderMask(
+                        shaderCallback: (Rect bounds) {
+                          return LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [controller.tabController.index == index ? AppColor.gradientBegin: AppColor.gray9,
+                              controller.tabController.index == index ? AppColor.gradientEnd : AppColor.gray9],
+                          ).createShader(Offset.zero & bounds.size);
+                        },
+                        blendMode: BlendMode.srcATop,
+                        child: Container(
+                          margin: EdgeInsets.only(right: 32.rpx),
+                          child: Text(
+                            state.tabBarList[index]['name'],
+                            style: controller.tabController.index == index ? AppTextStyle.fs24b.copyWith(height: 1):AppTextStyle.fs16b.copyWith(height: 1),
+                          ),
+                        )
+                    ),
                   ),
                 );
               },)),

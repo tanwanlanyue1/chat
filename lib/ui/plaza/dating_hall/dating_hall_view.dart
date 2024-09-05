@@ -168,7 +168,7 @@ class DatingHallView extends StatelessWidget {
                   height: 80.rpx,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: (item.age != null || item.style != null) ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,
+                    mainAxisAlignment:  MainAxisAlignment.center,
                     children: [
                       Text(
                         item.nickname ?? '',

@@ -17,14 +17,18 @@ class EvaluateCard extends StatelessWidget {
   bool goodGirl;
   EvaluationItemModel item;
   EdgeInsetsGeometry? margin;
-  EvaluateCard({super.key,required this.index,required this.item,this.margin,this.team = false,this.goodGirl = false});
+  BorderRadius? borderRadius;
+  EvaluateCard({super.key,required this.index,required this.item,this.margin,this.team = false,this.goodGirl = false,this.borderRadius});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
       padding: EdgeInsets.all(16.rpx),
       margin: margin ?? EdgeInsets.only(bottom: 8.rpx),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: borderRadius ?? BorderRadius.zero
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

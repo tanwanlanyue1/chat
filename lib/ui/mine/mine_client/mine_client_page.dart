@@ -6,8 +6,6 @@ import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart'
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
-import 'package:guanjia/ui/chat/contact/widgets/contact_list_tile.dart';
-import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/mine/widgets/client_card.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -40,7 +38,7 @@ class MineClientPage extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: AppColor.scaffoldBackground,
+      backgroundColor: AppColor.grayF7,
       body: SmartRefresher(
         controller: controller.pagingController.refreshController,
         onRefresh: controller.pagingController.onRefresh,
@@ -53,6 +51,7 @@ class MineClientPage extends StatelessWidget {
                 itemBuilder: (_, item, index) {
                   return ClientCard(
                     item: item,
+                    show: !(index + 1 == controller.pagingController.length),
                     onTap: (){
                       ChatManager().startChat(userId: item.uid);
                     },
@@ -65,11 +64,11 @@ class MineClientPage extends StatelessWidget {
                 id: 'bottomLength',
                 builder: (_) {
                   return Visibility(
-                    visible: (controller.pagingController.itemList?.length ?? 0) > 0,
+                    visible: (controller.pagingController.length ?? 0) > 0,
                     child: Container(
                       margin: EdgeInsets.only(top: 24.rpx,bottom: 24.rpx),
                       alignment: Alignment.center,
-                      child: Text("共${controller.pagingController.itemList?.length}位客户",style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
+                      child: Text("共${controller.pagingController.length}位客户",style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
                     ),
                   );
                 },

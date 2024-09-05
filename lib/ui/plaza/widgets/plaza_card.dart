@@ -11,6 +11,7 @@ import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
+import 'package:guanjia/ui/plaza/user_center/user_center_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/photo_view_gallery_page.dart';
@@ -179,7 +180,7 @@ class PlazaCard extends StatelessWidget {
         margin: EdgeInsets.only(top: user ? 0 : 10.rpx,bottom: 4.rpx),
         alignment: Alignment.centerLeft,
         child: Text(
-          item.content!,style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),maxLines: 6,overflow: TextOverflow.ellipsis,
+          item.content!.fixAutoLines(),style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),maxLines: 6,overflow: TextOverflow.ellipsis,
         )
     ) :
     Container();

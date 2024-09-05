@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
-import 'package:guanjia/common/extension/int_extension.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -14,12 +13,12 @@ import 'package:guanjia/widgets/widgets.dart';
 
 ///缴纳保证金、服务费对话框
 class OrderPaymentDialog extends StatelessWidget {
-
   final OrderItemModel order;
+
   const OrderPaymentDialog._({super.key, required this.order});
 
   ///- return true 跳转缴纳
-  static Future<bool?> show({required OrderItemModel order}){
+  static Future<bool?> show({required OrderItemModel order}) {
     return Get.dialog<bool>(
       OrderPaymentDialog._(order: order),
     );
@@ -50,11 +49,11 @@ class OrderPaymentDialog extends StatelessWidget {
             ),
             SS.login.userId == order.requestId ? requestView() : receiveView(),
             Padding(
-              padding: FEdgeInsets(all: 16.rpx, top: 40.rpx),
+              padding: FEdgeInsets(all: 16.rpx, vertical: 24.rpx),
               child: CommonGradientButton(
                 height: 50.rpx,
                 text: "去支付",
-                onTap: (){
+                onTap: () {
                   Get.back(result: true);
                 },
               ),
@@ -65,9 +64,8 @@ class OrderPaymentDialog extends StatelessWidget {
     );
   }
 
-
   ///订单发起方(缴纳保证金和服务费)
-  Widget requestView(){
+  Widget requestView() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -79,12 +77,12 @@ class OrderPaymentDialog extends StatelessWidget {
           ],
         ),
         Padding(
-          padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
+          padding: FEdgeInsets(top: 14.rpx, horizontal: 16.rpx),
           child: buildDesc(),
         ),
         Container(
           decoration: BoxDecoration(
-            color: AppColor.scaffoldBackground,
+            color: AppColor.background,
             borderRadius: BorderRadius.all(Radius.circular(8.rpx)),
           ),
           margin: FEdgeInsets(horizontal: 16.rpx, top: 16.rpx),
@@ -97,13 +95,11 @@ class OrderPaymentDialog extends StatelessWidget {
                 children: [
                   Text(
                     "服务费",
-                    style:
-                    AppTextStyle.fs14m.copyWith(color: AppColor.black6),
+                    style: AppTextStyle.fs14m.copyWith(color: AppColor.black6),
                   ),
                   Text(
                     order.serviceCharge.toCurrencyString(),
-                    style:
-                    AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
+                    style: AppTextStyle.fs14b.copyWith(color: AppColor.blackBlue),
                   ),
                 ],
               ),
@@ -114,13 +110,13 @@ class OrderPaymentDialog extends StatelessWidget {
                   children: [
                     Text(
                       "保证金",
-                      style: AppTextStyle.fs14m
-                          .copyWith(color: AppColor.black6),
+                      style:
+                          AppTextStyle.fs14m.copyWith(color: AppColor.black6),
                     ),
                     Text(
                       order.deposit.toCurrencyString(),
-                      style: AppTextStyle.fs14b
-                          .copyWith(color: AppColor.primary),
+                      style:
+                          AppTextStyle.fs14b.copyWith(color: AppColor.primaryBlue),
                     ),
                   ],
                 ),
@@ -133,13 +129,12 @@ class OrderPaymentDialog extends StatelessWidget {
                   children: [
                     Text(
                       "总计花费",
-                      style: AppTextStyle.fs14m
-                          .copyWith(color: AppColor.black6),
+                      style:
+                          AppTextStyle.fs14m.copyWith(color: AppColor.black6),
                     ),
                     Text(
                       (order.deposit + order.serviceCharge).toCurrencyString(),
-                      style: AppTextStyle.fs14b
-                          .copyWith(color: AppColor.gray5),
+                      style: AppTextStyle.fs14b.copyWith(color: AppColor.blackBlue),
                     ),
                   ],
                 ),
@@ -152,32 +147,33 @@ class OrderPaymentDialog extends StatelessWidget {
   }
 
   ///订单接收方（缴纳保证金）
-  Widget receiveView(){
+  Widget receiveView() {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
           child: Text(
             "请先缴纳保证金${order.deposit.toCurrencyString()}，点击下方按钮立即缴纳！",
             textAlign: TextAlign.center,
-            style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
+            style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue, height: 1.5),
           ),
         ),
         Padding(
           padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
           child: Text(
             "注：保证金在订单结束后将会原路退回。",
+            textAlign: TextAlign.start,
             style: AppTextStyle.fs12m.copyWith(
               color: AppColor.gray9,
-              height: 18 / 12,
+              height: 1.0,
             ),
           ),
         ),
       ],
     );
   }
-
 
   Widget buildSelfAvatar() {
     return AppImage.network(
@@ -201,15 +197,18 @@ class OrderPaymentDialog extends StatelessWidget {
         userId: order.receiveId.toString(),
         builder: (info) {
           var text = '';
-          if(order.type.isNormal){
+          if (order.type.isNormal) {
             text = '${info?.baseInfo.userName} 已同意您的邀约，\n请支付保证金和服务费。';
-          }else{
+          } else {
             text = '${info?.baseInfo.userName} 已参与您的征友约会，\n请支付保证金和服务费。';
           }
           return Text(
             text,
             textAlign: TextAlign.center,
-            style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),
+            style: AppTextStyle.fs16b.copyWith(
+              color: AppColor.blackBlue,
+              height: 1.5,
+            ),
           );
         });
   }

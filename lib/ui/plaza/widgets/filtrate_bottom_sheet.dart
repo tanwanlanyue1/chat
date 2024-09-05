@@ -62,7 +62,7 @@ class FiltrateBottomSheet extends StatelessWidget {
                       state.filtrateType[index]['activeImage']:state.filtrateType[index]['image'],width: 60.rpx,height: 60.rpx,),
                       Padding(
                         padding: EdgeInsets.only(top: 8.rpx),
-                        child: Text(state.filtrateType[index]['name'],style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+                        child: Text(state.filtrateType[index]['name'],style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5, height: 1),),
                       ),
                     ],
                   ),

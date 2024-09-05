@@ -104,7 +104,7 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
                   uiState.desc,
                   textAlign:
                   uiState.button != null ? TextAlign.left : TextAlign.center,
-                  style: AppTextStyle.fs14b.copyWith(
+                  style: AppTextStyle.fs14m.copyWith(
                     color: AppColor.blackBlue,
                     height: 1.2,
                   ),

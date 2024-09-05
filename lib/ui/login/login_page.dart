@@ -11,6 +11,7 @@ import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/widgets/system_ui.dart';
 import 'login_controller.dart';
 
 class LoginPage extends StatelessWidget {
@@ -55,6 +56,9 @@ class LoginPage extends StatelessWidget {
               ],
             ),
         ],
+        systemOverlayStyle: SystemUI.lightStyle.copyWith(
+          systemNavigationBarColor: Colors.black,
+        ),
       ),
       body: Stack(
         children: [

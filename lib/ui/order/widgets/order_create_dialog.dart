@@ -56,11 +56,11 @@ class OrderCreateDialog extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
+              padding: FEdgeInsets(top: 14.rpx, horizontal: 16.rpx),
               child: buildDesc(),
             ),
             Padding(
-              padding: FEdgeInsets(all: 16.rpx, top: 40.rpx),
+              padding: FEdgeInsets(horizontal: 16.rpx, top: 36.rpx, vertical: 24.rpx),
               child: CommonGradientButton(
                 height: 50.rpx,
                 text: "发起约会",
@@ -94,8 +94,9 @@ class OrderCreateDialog extends StatelessWidget {
     return ChatUserBuilder(userId: userId.toString(), builder: (info){
       return Text(
         '确定和 ${info?.baseInfo.userName} 发起约会？\n点击确定后系统将向其发送约会邀约。',
-        style: AppTextStyle.fs14m.copyWith(
-          color: AppColor.gray5,
+        textAlign: TextAlign.center,
+        style: AppTextStyle.fs14b.copyWith(
+          color: AppColor.blackBlue,
           height: 1.5,
         ),
       );

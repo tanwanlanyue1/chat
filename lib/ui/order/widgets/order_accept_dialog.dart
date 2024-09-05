@@ -53,7 +53,7 @@ class OrderAcceptDialog extends StatelessWidget {
               ]
             ),
             Padding(
-              padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
+              padding: FEdgeInsets(top: 14.rpx, horizontal: 16.rpx),
               child: buildDesc(),
             ),
             Padding(
@@ -61,13 +61,13 @@ class OrderAcceptDialog extends StatelessWidget {
               child: Text(
                 "注：为保障权益，约会双方均需缴纳保证金，保证金在订单结束后将会原路退回。",
                 style: AppTextStyle.fs12m.copyWith(
-                  color: AppColor.gray9,
-                  height: 18 / 12,
+                  color: AppColor.grayText,
+                  height: 1.5,
                 ),
               ),
             ),
             Padding(
-              padding: FEdgeInsets(all: 16.rpx, top: 40.rpx),
+              padding: FEdgeInsets(horizontal: 16.rpx, vertical: 24.rpx),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -121,8 +121,9 @@ class OrderAcceptDialog extends StatelessWidget {
     return ChatUserBuilder(userId: userId.toString(), builder: (info){
       return Text(
         '同意和 ${info?.baseInfo.userName} 约会？',
-        style: AppTextStyle.fs14m.copyWith(
-          color: AppColor.gray5,
+        textAlign: TextAlign.center,
+        style: AppTextStyle.fs14b.copyWith(
+          color: AppColor.blackBlue,
           height: 1.5,
         ),
       );

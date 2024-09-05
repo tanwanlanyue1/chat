@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///确认对话框
@@ -60,21 +62,31 @@ class ConfirmDialog extends StatelessWidget {
     return Center(
       child: Material(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12.rpx),
-        child: Container(
-          width: 295.rpx,
-          padding: FEdgeInsets(horizontal: 24.rpx, vertical: 26.rpx),
+        borderRadius: BorderRadius.circular(8.rpx),
+        child: SizedBox(
+          width: 311.rpx,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  onPressed: Get.back,
+                  icon: AppImage.asset(
+                    'assets/images/common/close.png',
+                    width: 24.rpx,
+                    height: 24.rpx,
+                  ),
+                ),
+              ),
               Padding(
-                padding: FEdgeInsets(bottom: 26.rpx),
+                padding: FEdgeInsets(horizontal: 16.rpx),
                 child: DefaultTextStyle(
                   textAlign: TextAlign.center,
-                  style: AppTextStyle.fs20m.copyWith(
-                    color: AppColor.gray5,
-                    height: 30 / 20,
+                  style: AppTextStyle.fs16b.copyWith(
+                    color: AppColor.blackBlue,
+                    height: 1.5,
                   ),
                   child: message,
                 ),
@@ -88,36 +100,35 @@ class ConfirmDialog extends StatelessWidget {
   }
 
   Widget buildButtons() {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (cancelButtonText != null)
-          Button.stadium(
-            width: 110.rpx,
-            height: 36.rpx,
-            margin: FEdgeInsets(right: 24.rpx),
-            backgroundColor: AppColor.gray9.withAlpha(80),
-            child: DefaultTextStyle(
-              style: AppTextStyle.fs16m,
-              child: cancelButtonText ?? const Text('取消'),
+    return Padding(
+      padding: FEdgeInsets(horizontal: 16.rpx, vertical: 24.rpx),
+      child: Row(
+        mainAxisAlignment: cancelButtonText != null ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
+        children: [
+          if (cancelButtonText != null)
+            Button(
+              width: 120.rpx,
+              height: 50.rpx,
+              backgroundColor: AppColor.black999,
+              child: DefaultTextStyle(
+                style: AppTextStyle.fs16m,
+                child: cancelButtonText ?? const Text('取消'),
+              ),
+              onPressed: () {
+                Get.back(result: false);
+              },
             ),
-            onPressed: () {
-              Get.back(result: false);
+          okButtonText ?? CommonGradientButton(
+            width: 120.rpx,
+            height: 50.rpx,
+            text: '确定',
+            textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
+            onTap: () {
+              Get.back(result: true);
             },
           ),
-        Button.stadium(
-          width: 110.rpx,
-          height: 36.rpx,
-          backgroundColor: AppColor.primaryBlue,
-          child: DefaultTextStyle(
-            style: AppTextStyle.fs16m,
-            child: okButtonText ?? const Text('确定'),
-          ),
-          onPressed: () {
-            Get.back(result: true);
-          },
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

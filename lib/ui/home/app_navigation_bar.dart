@@ -69,7 +69,7 @@ class _AppNavigationBarState extends State<AppNavigationBar>
     _controllers =
         List<AnimationController>.generate(widget.items.length, (int index) {
       return AnimationController(
-        duration: const Duration(milliseconds: 175),
+        duration: Duration(milliseconds: (175 * 0.6).toInt()),
         vsync: this,
       );
     });

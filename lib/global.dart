@@ -14,6 +14,7 @@ import 'common/app_localization.dart';
 import 'common/app_position.dart';
 import 'common/service/service.dart';
 import 'ui/chat/utils/chat_manager.dart';
+import 'widgets/system_ui.dart';
 
 /// 全局静态数据
 class Global with WidgetsBindingObserver{
@@ -44,9 +45,7 @@ class Global with WidgetsBindingObserver{
 
       //android状态栏透明
       if (Platform.isAndroid) {
-        SystemChrome.setSystemUIOverlayStyle(
-          const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
-        );
+        SystemChrome.setSystemUIOverlayStyle(SystemUI.darkStyle);
       }
 
       //多语言支持

@@ -119,7 +119,7 @@ class _ChatPageState extends State<ChatPage>
                                   Text(
                                     callContent.nickname,
                                     textAlign: TextAlign.center,
-                                    style: AppTextStyle.st.medium
+                                    style: AppTextStyle.st.bold
                                         .size(16.rpx)
                                         .copyWith(color: AppColor.black3),
                                     maxLines: 1,

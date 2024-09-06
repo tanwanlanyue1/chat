@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:guanjia/widgets/input_widget.dart';
 import 'package:guanjia/widgets/upload_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/widgets/widgets.dart';
 
 import 'mine_feedback_controller.dart';
 
@@ -48,23 +51,12 @@ class MineFeedbackPage extends StatelessWidget {
                   ],
                 ),
               ),
-              GestureDetector(
-                onTap: () => controller.submit(),
-                child: Container(
-                  height: 50.rpx,
-                  decoration: BoxDecoration(
-                      color: AppColor.gradientBegin,
-                      borderRadius: BorderRadius.circular(8.rpx)),
-                  margin: EdgeInsets.symmetric(horizontal: 37.rpx,vertical: 8.rpx),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "提交",
-                        style: TextStyle(color: Colors.white, fontSize: 16.rpx),
-                      )
-                    ],
-                  ),
+              Padding(
+                padding: FEdgeInsets(horizontal: 36.rpx, vertical: 24.rpx + Get.padding.bottom),
+                child: Button(
+                  onPressed: controller.submit,
+                  borderRadius: BorderRadius.circular(8.rpx),
+                  child: const Text('提交'),
                 ),
               ),
             ],

@@ -22,7 +22,7 @@ class FiltrateBottomSheet extends StatelessWidget {
       builder: (controller){
         var state = controller.state;
         return Container(
-          padding: EdgeInsets.all(16.rpx).copyWith(bottom: Get.mediaQuery.padding.bottom+16.rpx),
+          padding: EdgeInsets.all(16.rpx).copyWith(bottom: Get.mediaQuery.padding.bottom+24.rpx),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(

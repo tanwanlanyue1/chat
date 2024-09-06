@@ -7,9 +7,9 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 ///按钮
 class Button extends StatelessWidget {
   ///默认背景色
-  static const _defaultBackgroundColor = AppColor.gradientBegin;
+  static const _defaultBackgroundColor = AppColor.primaryBlue;
 
-  static const _defaultOutlineColor = AppColor.gradientBegin;
+  static const _defaultOutlineColor = AppColor.primaryBlue;
 
   static get _defaultBorderRadius => BorderRadius.circular(8.rpx);
   static get _defaultHeight => 50.rpx;
@@ -317,7 +317,7 @@ class Button extends StatelessWidget {
     }
     var backgroundColor = this.backgroundColor;
     var borderColor = this.borderColor;
-    var textStyle = AppTextStyle.fs14m.copyWith(
+    var textStyle = AppTextStyle.fs16m.copyWith(
       color: isOutline ? borderColor : Colors.white,
     );
     BoxBorder? border;

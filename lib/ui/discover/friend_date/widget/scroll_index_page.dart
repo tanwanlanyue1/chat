@@ -25,7 +25,7 @@ class _ScrollIndexPageState extends State<ScrollIndexPage> {
   final List<int> data = List.generate(30, (index) => index-3);
   late double maxExtent = _scrollController.position.maxScrollExtent;
   late double threshold = maxExtent - 50.0;
-  Color textColor = AppColor.gray9;
+  Color textColor = AppColor.black20;
   double fontSize = 14;
   final double _itemWidth = 299.rpx / 7;
 
@@ -44,10 +44,8 @@ class _ScrollIndexPageState extends State<ScrollIndexPage> {
       double offset = _scrollController.offset;
       double scrollIndex = offset / _itemWidth;
       if ((scrollIndex.round() + 3) == index) {
-        textColor = AppColor.black20;
         fontSize = 18;
       }else{
-        textColor = AppColor.gray9;
         fontSize = 14;
       }
       if(first){
@@ -110,11 +108,26 @@ class _ScrollIndexPageState extends State<ScrollIndexPage> {
         setState(() {});
         return true;
       },
-      child: SingleChildScrollView(
-        controller: _scrollController,
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: buildChildren(),
+      child: Container(
+        width: 300.rpx,
+        foregroundDecoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.white.withOpacity(0.8),
+              Color(0x3aFFFFFF),
+              Color(0xFFFFFFFF).withOpacity(0),
+              Color(0x3aFFFFFF),
+              Colors.white.withOpacity(0.8),
+            ],
+            stops: [0, 0.3, 0.5, 0.7, 1],
+          ),
+        ),
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: buildChildren(),
+          ),
         ),
       ),
     );

@@ -164,17 +164,36 @@ class DatingHallView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12.rpx),
               ),
             ),
-            Expanded(child: SizedBox(
+            Expanded(
+                child: SizedBox(
                   height: 80.rpx,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment:  MainAxisAlignment.center,
                     children: [
-                      Text(
-                        item.nickname ?? '',
-                        style: AppTextStyle.fs16b.copyWith(color: AppColor.black20,height: 1),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            constraints: BoxConstraints(
+                              maxWidth: item.gender != 0 ? (Get.width-244.rpx):(Get.width-228.rpx)
+                            ),
+                            padding: EdgeInsets.only(right: item.gender == 1 ? 2.rpx : 0),
+                            child: Text(
+                              item.nickname ?? '',
+                              style: AppTextStyle.fs14b.copyWith(color: AppColor.black20,height: 1,),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Visibility(
+                            visible: item.gender != 0,
+                            child: Visibility(
+                              visible: item.gender == 2,
+                              replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
+                              child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
+                            ),
+                          )
+                        ],
                       ),
                       SizedBox(height: 6.rpx,),
                       Visibility(
@@ -238,7 +257,7 @@ class DatingHallView extends StatelessWidget {
                   ),
                 ),
                 height: 38.rpx,
-                width: 84.rpx,
+                width: 80.rpx,
                 child: Container(
                   margin: EdgeInsets.all(1.rpx),
                   decoration: const ShapeDecoration(

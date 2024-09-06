@@ -24,6 +24,7 @@ class RectifyTheWorkplaceController extends GetxController {
         FiltrateBottomSheet(
           callBack: (){
             Get.back();
+            state.filtrateIndex = (state.filtrateIndex ?? -1);
             pagingController.onRefresh();
           },
         )

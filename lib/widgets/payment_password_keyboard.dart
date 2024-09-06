@@ -4,17 +4,22 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///支付密码键盘对话框
 class PaymentPasswordKeyboard extends StatefulWidget {
-  String? titleStr;
-  PaymentPasswordKeyboard._({super.key,this.titleStr});
+  final String? titleStr;
+  const PaymentPasswordKeyboard._({super.key,this.titleStr});
 
   /// - return 返回支付密码
   static Future<String?> show({String? titleStr}) async {
+    if(SS.login.info?.payPwd != true){
+      Loading.showToast('请先设置支付密码');
+      return null;
+    }
     return Get.bottomSheet<String>(
       PaymentPasswordKeyboard._(titleStr: titleStr,),
       ignoreSafeArea: true,

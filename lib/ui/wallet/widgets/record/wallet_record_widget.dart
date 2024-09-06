@@ -25,21 +25,51 @@ class WalletRecordWidget extends GetView<WalletRecordController> {
     return GetBuilder<WalletRecordController>(
       init: WalletRecordController(),
       builder: (controller) {
-        return PagedListView.separated(
-          padding: EdgeInsets.symmetric(horizontal: 16.rpx, vertical: 24.rpx),
-          pagingController: controller.pagingController,
-          builderDelegate: DefaultPagedChildBuilderDelegate(
-            pagingController: controller.pagingController,
-            itemBuilder: (_, item, index) {
-              if (item is PurseLogList) {
-                return _buildItem(item);
-              }
-              return const SizedBox();
-            },
-          ),
-          separatorBuilder: (_, __) {
-            return SizedBox(height: 24.rpx);
-          },
+        return Stack(
+          children: [
+            PagedListView.separated(
+              padding:
+                  EdgeInsets.symmetric(horizontal: 16.rpx, vertical: 24.rpx),
+              pagingController: controller.pagingController,
+              builderDelegate: DefaultPagedChildBuilderDelegate(
+                pagingController: controller.pagingController,
+                itemBuilder: (_, item, index) {
+                  if (item is PurseLogList) {
+                    return _buildItem(item);
+                  }
+                  return const SizedBox();
+                },
+              ),
+              separatorBuilder: (_, __) {
+                return SizedBox(height: 24.rpx);
+              },
+            ),
+            Positioned(
+              top: 24.rpx,
+              right: 16.rpx,
+              child: GestureDetector(
+                onTap: controller.onTapStyle,
+                behavior: HitTestBehavior.translucent,
+                child: Row(
+                  children: [
+                    Obx(() {
+                      return Text(
+                        controller.logTypeName.value,
+                        style: AppTextStyle.st
+                            .size(12.rpx)
+                            .textColor(AppColor.black3),
+                      );
+                    }),
+                    Icon(
+                      Icons.arrow_drop_down,
+                      size: 20.rpx,
+                      color: AppColor.black3,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         );
       },
     );

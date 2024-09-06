@@ -84,6 +84,8 @@ class AppConfigModel {
 
   List<LabelModel>? styleList;
 
+  ///
+
   List<LabelModel> get commonStyleList {
     if (styleList == null) return [];
     return styleList!.where((element) => element.type == 0).toList();

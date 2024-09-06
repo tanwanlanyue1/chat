@@ -1,11 +1,10 @@
-import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 
 import '../../../common/network/api/api.dart';
 
 class IdentityProgressionState {
   //用户信息
-  final loginInfo = SS.login.info;
+  late UserModel? loginInfo;
   //上一次的进阶
   UserAdvanced advanced = UserAdvanced.fromJson({});
   //0审核中，1成功，2失败

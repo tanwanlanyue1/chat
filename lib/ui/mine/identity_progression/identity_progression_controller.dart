@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/ui/mine/widgets/activation_progression.dart';
 import 'package:guanjia/widgets/loading.dart';
 
@@ -11,7 +12,7 @@ class IdentityProgressionController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
-    setInterests();
+    SS.login.fetchMyInfo().whenComplete(() => setInterests());
     onTapActivation();
     super.onInit();
   }
@@ -23,6 +24,7 @@ class IdentityProgressionController extends GetxController {
   }
 
   void setInterests(){
+    state.loginInfo = SS.login.info;
     state.current = state.loginInfo?.type.index ?? 0;
     if(state.current == 0){
       state.interests = state.clientInterests;

@@ -94,10 +94,18 @@ class FortuneSquareController extends GetxController
   Future<void> getCommunityList({
     required int page,
   }) async {
+    if(page == 1){
+      pagingController.itemList?.clear();
+    }
+    String tag = "";
+    for(var i = 0; i < controller.state.labelList.length; i++){
+      tag += "${controller.state.styleList[controller.state.labelList[i]].id},";
+    }
     final response = await PlazaApi.getCommunityList(
       gender: controller.state.filtrateIndex,
       minAge: controller.state.info?.value.likeAgeMin,
       maxAge: controller.state.info?.value.likeAgeMax,
+      style: tag,
       currentPage: page,
       pageSize: pagingController.pageSize,
     );
@@ -205,6 +213,7 @@ class FortuneSquareController extends GetxController
         FiltrateBottomSheet(
           callBack: (){
             Get.back();
+            controller.state.filtrateIndex = (controller.state.filtrateIndex ?? -1);
             pagingController.onRefresh();
           },
         )

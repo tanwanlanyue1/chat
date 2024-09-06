@@ -10,6 +10,7 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/wallet/enum/wallet_enum.dart';
 import 'package:guanjia/ui/wallet/wallet_controller.dart';
+import 'package:guanjia/ui/wallet/widgets/record/wallet_record_widget.dart';
 import 'package:guanjia/ui/wallet/widgets/wallet_top_up_widget.dart';
 import 'package:guanjia/ui/wallet/widgets/wallet_transfer_widget.dart';
 import 'package:guanjia/ui/wallet/widgets/wallet_withdrawal_widget.dart';
@@ -231,7 +232,7 @@ class WalletPage extends StatelessWidget {
       ),
       child: Row(
         children: List.generate(4, (index) {
-          final type = WalletOperationType.valueForIndex(index + 1);
+          final type = WalletOperationType.valueForIndex(index);
           return _buildOperationButton(
             onTap: () => controller.onTapOperation(type),
             type: type,
@@ -306,9 +307,6 @@ class WalletPage extends StatelessWidget {
     final Widget widget;
 
     switch (state.typeIndex.value) {
-      case WalletOperationType.normal:
-        widget = Container();
-        break;
       case WalletOperationType.topUp:
         widget = WalletTopUpWidget();
         break;
@@ -319,7 +317,7 @@ class WalletPage extends StatelessWidget {
         widget = WalletWithdrawalWidget();
         break;
       case WalletOperationType.record:
-        widget = Container(color: Colors.purple);
+        widget = WalletRecordWidget();
         break;
     }
 

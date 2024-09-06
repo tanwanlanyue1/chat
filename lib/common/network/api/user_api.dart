@@ -524,7 +524,8 @@ class UserApi {
         "page": page,
         "size": size,
       },
-      dataConverter: (data) => ApiPageData.fromJson(data, TeamUser.fromJson,dataFieldName: "list"),
+      dataConverter: (data) =>
+          ApiPageData.fromJson(data, TeamUser.fromJson, dataFieldName: "list"),
       // dataConverter: (json) {
       //   if(json != null && json['list'] is List){
       //     return {
@@ -755,6 +756,31 @@ class UserApi {
         "latitude": latitude,
       },
       dataConverter: (json) => json,
+    );
+  }
+
+  /// 获取钱包日志记录
+  /// logType: 记录类型 -1查询全部 1 充值 2.后台下发 3.后台扣减 4 订单保证金或服务费 5 通话实时扣费 6通话订单收益 7转账 8红包
+  /// page: 页码（默认1）,示例值(1)
+  /// size: 每页数量（默认10）,示例值(10)
+  static Future<ApiResponse<List<PurseLogList>>> getPurseLogList({
+    required int logType,
+    int page = 1,
+    int size = 10,
+  }) {
+    return HttpClient.get(
+      '/api/user/getPurseLogList',
+      params: {
+        "logType": logType,
+        "page": page,
+        "size": size,
+      },
+      dataConverter: (json) {
+        if (json is List) {
+          return json.map((e) => PurseLogList.fromJson(e)).toList();
+        }
+        return [];
+      },
     );
   }
 }

@@ -27,5 +27,4 @@ class WalletController extends GetxController {
   void onTapSubmitTransfer() {}
 
   void onTapReload() {}
-
 }

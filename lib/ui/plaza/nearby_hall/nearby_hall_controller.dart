@@ -55,6 +55,7 @@ class NearbyHallController extends GetxController {
         FiltrateBottomSheet(
           callBack: (){
             Get.back();
+            controller.state.filtrateIndex = (controller.state.filtrateIndex ?? -1);
             pagingController.onRefresh();
           },
         )

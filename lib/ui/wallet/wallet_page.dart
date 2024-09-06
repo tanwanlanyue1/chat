@@ -116,7 +116,7 @@ class WalletPage extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  "管家钱包",
+                  "管佳钱包",
                   style: AppTextStyle.st.bold
                       .size(16.rpx)
                       .textColor(AppColor.primary)

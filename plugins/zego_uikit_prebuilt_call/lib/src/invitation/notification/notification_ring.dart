@@ -56,7 +56,7 @@ class ZegoRingtone {
     AudioPlayer.global.setAudioContext(audioContext);
   }
 
-  Future<void> startRing() async {
+  Future<void> startRing({bool? isVibrate, bool isRing = true}) async {
     if (isRingTimerRunning) {
       ZegoLoggerService.logInfo(
         'ring is running',
@@ -80,13 +80,15 @@ class ZegoRingtone {
 
     audioPlayer.setReleaseMode(ReleaseMode.loop);
     try {
-      await audioPlayer.play(AssetSource(sourcePath)).then((value) {
-        ZegoLoggerService.logInfo(
-          'audioPlayer play done',
-          tag: 'call-invitation',
-          subTag: 'ringtone',
-        );
-      });
+      if(isRing){
+        await audioPlayer.play(AssetSource(sourcePath)).then((value) {
+          ZegoLoggerService.logInfo(
+            'audioPlayer play done',
+            tag: 'call-invitation',
+            subTag: 'ringtone',
+          );
+        });
+      }
     } catch (e) {
       ZegoLoggerService.logInfo(
         'audioPlayer play error:$e',
@@ -94,7 +96,7 @@ class ZegoRingtone {
         subTag: 'ringtone',
       );
     }
-    if (isVibrate) {
+    if (isVibrate ?? this.isVibrate) {
       Vibration.hasVibrator().then((hasVibrator) {
         if (hasVibrator ?? false) {
           Vibration.vibrate();
@@ -134,7 +136,7 @@ class ZegoRingtone {
 
         timer.cancel();
       } else {
-        if (isVibrate) {
+        if (isVibrate ?? this.isVibrate) {
           Vibration.hasVibrator().then((hasVibrator) {
             if (hasVibrator ?? false) {
               Vibration.vibrate();

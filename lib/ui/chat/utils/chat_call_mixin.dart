@@ -276,6 +276,14 @@ mixin _ChatCallMixin {
         outgoingVideoCallPageMessage: '呼叫中...',
         outgoingVoiceCallPageMessage: '呼叫中...',
       ),
+      ringtoneConfig: ZegoCallRingtoneConfig(
+        isVibrate: (data){
+          return SS.inAppMessage.vibrationReminderRx();
+        },
+        isRing: (data){
+          return SS.inAppMessage.bellReminderRx();
+        }
+      ),
       requireConfig: _requireCallConfig,
       config: ZegoCallInvitationConfig(
         endCallWhenInitiatorLeave: false,

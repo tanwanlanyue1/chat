@@ -4,6 +4,7 @@ import 'dart:io' show Platform;
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
 
 // Package imports:
 import 'package:zego_callkit/zego_callkit.dart';
@@ -38,6 +39,7 @@ class ZegoCallInvitationPageManager {
   final _defaultPackagePrefix = 'packages/zego_uikit_prebuilt_call/';
   final _callerRingtone = ZegoRingtone();
   final _calleeRingtone = ZegoRingtone();
+  ZegoCallRingtoneConfig? _ringtoneConfig;
 
   bool _init = false;
   ZegoCallingMachine? callingMachine;
@@ -196,6 +198,7 @@ class ZegoCallInvitationPageManager {
   }
 
   void initRing(ZegoCallRingtoneConfig ringtoneConfig) {
+    _ringtoneConfig = ringtoneConfig;
     if (ringtoneConfig.outgoingCallPath != null) {
       ZegoLoggerService.logInfo(
         'reset caller ring, source path:${ringtoneConfig.outgoingCallPath}',
@@ -1039,7 +1042,9 @@ class ZegoCallInvitationPageManager {
     //  if inputting right now
     FocusManager.instance.primaryFocus?.unfocus();
 
-    _calleeRingtone.startRing();
+    final isVibrate = _ringtoneConfig?.isVibrate?.call(_invitationData) ?? true;
+    final isRing = _ringtoneConfig?.isRing?.call(_invitationData) ?? true;
+    _calleeRingtone.startRing(isVibrate: isVibrate, isRing: isRing);
 
     callInvitationData.invitationEvents?.onIncomingCallReceived?.call(
       _invitationData.callID,

@@ -86,8 +86,8 @@ class ContactListTile extends StatelessWidget {
                             width: 4.rpx,
                             height: 4.rpx,
                             margin: EdgeInsets.symmetric(horizontal: 8.rpx),
-                            decoration: BoxDecoration(
-                              color: AppColor.blackBlue.withOpacity(0.7),
+                            decoration: const BoxDecoration(
+                              color: AppColor.grayText,
                               shape: BoxShape.circle,
                             ),
                           )

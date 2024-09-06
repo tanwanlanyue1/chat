@@ -109,8 +109,7 @@ mixin _ChatNotificationMixin {
     }
 
     final notificationId = message.info.messageID.hashCode;
-    //TODO 可以做一下内存缓存
-    final user = await ZIMKit().queryUser(message.zim.senderUserID);
+    final user = await ChatUserInfoCache().getOrQuery(message.zim.senderUserID);
     var nickname = user.baseInfo.userName;
     if (nickname.isEmpty) {
       nickname = user.baseInfo.userID;

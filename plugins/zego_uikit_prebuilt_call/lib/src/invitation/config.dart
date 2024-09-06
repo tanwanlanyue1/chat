@@ -248,9 +248,17 @@ class ZegoCallRingtoneConfig {
   /// example: "assets/ringtone/outgoingCallRingtone.mp3"
   String? outgoingCallPath;
 
+  ///震动开关
+  final bool Function(ZegoCallInvitationData data)? isVibrate;
+
+  ///铃声开关
+  final bool Function(ZegoCallInvitationData data)? isRing;
+
   ZegoCallRingtoneConfig({
     this.incomingCallPath,
     this.outgoingCallPath,
+    this.isVibrate,
+    this.isRing,
   });
 
   @override

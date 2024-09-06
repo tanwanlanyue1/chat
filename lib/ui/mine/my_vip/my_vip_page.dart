@@ -10,6 +10,7 @@ import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
+import 'package:guanjia/widgets/widgets.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import 'my_vip_controller.dart';
@@ -159,8 +160,8 @@ class MyVipPage extends StatelessWidget {
                                                     children: [
                                                       GradientText(
                                                         isVip
-                                                            ? "管家VIP"
-                                                            : "成为管家VIP",
+                                                            ? "管佳VIP"
+                                                            : "成为管佳VIP",
                                                         style: AppTextStyle.st
                                                             .size(18.rpx)
                                                             .textHeight(1),
@@ -333,6 +334,7 @@ class MyVipPage extends StatelessWidget {
                                             item.icon,
                                             length: 44.rpx,
                                           ),
+                                          Spacing.w8,
                                           Expanded(
                                             child: Column(
                                               mainAxisAlignment:

@@ -8,6 +8,7 @@ import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
@@ -70,6 +71,7 @@ class _ConversationListTileState extends State<ConversationListTile>
 
   @override
   Widget build(BuildContext context) {
+    final orderInfoView = isOrderMsg ? _buildOrderInfo() : null;
     return Slidable(
       enabled: !isSysNotice,
       key: ValueKey(conversation.id),
@@ -101,7 +103,7 @@ class _ConversationListTileState extends State<ConversationListTile>
                   children: [
                     _buildNameAndTime(),
                     _buildMessageContent(),
-                    if (isOrderMsg) _buildOrderInfo(),
+                    if (orderInfoView != null) orderInfoView,
                   ].separated(Spacing.h(10)).toList(growable: false),
                 ),
               )
@@ -237,12 +239,20 @@ class _ConversationListTileState extends State<ConversationListTile>
   }
 
   ///订单信息
-  Widget _buildOrderInfo() {
+  Widget? _buildOrderInfo() {
     final message = conversation.lastMessage;
     final order = message?.orderContent?.order;
     if (message == null || order == null) {
-      return Spacing.blank;
+      return null;
     }
+
+    print('${conversation.name}====>${order.introducerId}');
+
+    //已指派订单不显示倒计时
+    if(order.introducerId.toString() == conversation.id){
+      return null;
+    }
+
     if ([OrderStatus.waitingAcceptance, OrderStatus.waitingPayment]
             .contains(order.state) &&
         order.timeout <= DateTime.now().millisecondsSinceEpoch) {
@@ -251,7 +261,7 @@ class _ConversationListTileState extends State<ConversationListTile>
 
     final uiState = getUIOrderState(order);
     if (uiState == null) {
-      return Spacing.blank;
+      return null;
     }
 
     final children = <Widget>[];

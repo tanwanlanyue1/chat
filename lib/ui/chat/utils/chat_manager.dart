@@ -27,6 +27,7 @@ import 'package:guanjia/ui/chat/custom/zim_kit_core_extension.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_controller.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_end_dialog.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_recharge_dialog.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/loading.dart';

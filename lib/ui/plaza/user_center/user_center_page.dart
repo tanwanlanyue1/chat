@@ -185,7 +185,7 @@ class UserCenterPage extends StatelessWidget {
       builder: (_){
         return SizedBox(
           height: 220.rpx,
-          child: state.authorInfo.images != null ?
+          child: state.authorInfo.images != null && jsonDecode(state.authorInfo.images!).isNotEmpty?
           Swiper(
             autoplay: jsonDecode(state.authorInfo.images!).length > 1 ? true : false,
             controller: controller.swiper,

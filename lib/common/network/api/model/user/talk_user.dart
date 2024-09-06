@@ -9,3 +9,4 @@ export 'user_advanced.dart';
 export 'visit_list.dart';
 export 'recommend_model.dart';
 export 'team_user.dart';
+export 'purse_log_list.dart';

@@ -82,6 +82,14 @@ class ChatManager
     await ZIMKit().init(
       appID: AppConfig.zegoAppId,
       appSign: AppConfig.zegoAppSign,
+      notificationConfig: ZegoZIMKitNotificationConfig(
+        resourceID: AppConfig.zegoChatResourceId,
+        supportOfflineMessage: true,
+        androidNotificationConfig: ZegoZIMKitAndroidNotificationConfig(
+          channelID: AppConfig.zegoChatResourceId,
+          channelName: '新消息通知'
+        )
+      )
     );
     //ZEGO 音视频通话
     ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(Get.key);

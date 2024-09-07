@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "935099426738",
+    "project_id": "guanjia-33491",
+    "storage_bucket": "guanjia-33491.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:935099426738:android:635a6feef2bc2e9b04e6ab",
+        "android_client_info": {
+          "package_name": "com.social.guanjia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBC3hUzhkwp-VewNurOhFVr4QXLy9CtLGA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

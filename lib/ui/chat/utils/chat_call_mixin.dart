@@ -65,7 +65,6 @@ mixin _ChatCallMixin {
     );
 
     final customData = CallCustomData(autoAccept, enableCamera).toJsonString();
-    final resourceID = '';
     String? notificationTitle;
     String? notificationMessage;
 
@@ -77,7 +76,7 @@ mixin _ChatCallMixin {
     ).toJson();
 
     final notificationConfig = ZegoNotificationConfig(
-      resourceID: resourceID,
+      resourceID: AppConfig.zegoCallResourceId,
       title: getNotificationTitle(
         defaultTitle: notificationTitle,
         callees: [ZegoCallUser(invitee.id, invitee.name)],
@@ -140,7 +139,7 @@ mixin _ChatCallMixin {
       invitationID: invitationID,
       errorInvitees: errorInvitees,
       localConfig: ZegoCallInvitationLocalParameter(
-        resourceID: resourceID,
+        resourceID: AppConfig.zegoCallResourceId,
         notificationTitle: notificationTitle,
         notificationMessage: notificationMessage,
         timeoutSeconds: timeoutSeconds,
@@ -276,14 +275,19 @@ mixin _ChatCallMixin {
         outgoingVideoCallPageMessage: '呼叫中...',
         outgoingVoiceCallPageMessage: '呼叫中...',
       ),
-      ringtoneConfig: ZegoCallRingtoneConfig(
-        isVibrate: (data){
-          return SS.inAppMessage.vibrationReminderRx();
-        },
-        isRing: (data){
-          return SS.inAppMessage.bellReminderRx();
-        }
+      notificationConfig: ZegoCallInvitationNotificationConfig(
+        androidNotificationConfig: ZegoCallAndroidNotificationConfig(
+          channelID: AppConfig.zegoCallResourceId,
+          channelName: '音视频通话邀请通知',
+          messageChannelID: AppConfig.zegoChatResourceId,
+          messageChannelName: '新消息通知',
+        ),
       ),
+      ringtoneConfig: ZegoCallRingtoneConfig(isVibrate: (data) {
+        return SS.inAppMessage.vibrationReminderRx();
+      }, isRing: (data) {
+        return SS.inAppMessage.bellReminderRx();
+      }),
       requireConfig: _requireCallConfig,
       config: ZegoCallInvitationConfig(
         endCallWhenInitiatorLeave: false,
@@ -547,12 +551,12 @@ mixin _ChatCallMixin {
         isVideoCall: _isVideoCall,
         userId: userId,
       );
-      if(result == true){
+      if (result == true) {
         //TODO 弹出充值对话框
         Loading.showToast('弹出充值对话框');
         return;
       }
-      if(result == false){
+      if (result == false) {
         _callRechargeDialogAgain = false;
         return;
       }

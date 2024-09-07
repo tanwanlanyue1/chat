@@ -2,9 +2,7 @@ part of 'chat_manager.dart';
 
 ///通知mixin
 mixin _ChatNotificationMixin {
-  static const _channelId = 'guajia_chat';
-  static const _channelName = 'guajia_chat_notification';
-  static const _channelDesc = 'guajia app chat channel';
+  static const _channelName = '新消息通知';
   static const _chatNotificationType = 1;
 
   ///会话对应的通知id
@@ -18,9 +16,9 @@ mixin _ChatNotificationMixin {
               AndroidFlutterLocalNotificationsPlugin>();
       await androidPlugin?.requestNotificationsPermission();
       const channel = AndroidNotificationChannel(
-        _channelId,
+        AppConfig.zegoChatResourceId,
         _channelName,
-        description: _channelDesc,
+        description: _channelName,
         importance: Importance.max,
         enableVibration: false,
         showBadge: false,
@@ -133,9 +131,9 @@ mixin _ChatNotificationMixin {
       content,
       NotificationDetails(
         android: AndroidNotificationDetails(
-          _channelId,
+          AppConfig.zegoChatResourceId,
           _channelName,
-          channelDescription: _channelDesc,
+          channelDescription: _channelName,
           priority: Priority.max,
           importance: Importance.max,
           visibility: NotificationVisibility.public,

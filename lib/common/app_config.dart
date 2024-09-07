@@ -40,6 +40,8 @@ class AppConfig{
   ///ZEGO即时通讯
   static const zegoAppId = 1161912283;
   static const zegoAppSign = 'bb69e72800b6de21038b9e1a9044e229ee48d79b89c7ef2961e5175c6ccc934d';
+  static const zegoChatResourceId = 'guanjia_chat';
+  static const zegoCallResourceId = 'guanjia_call';
 
   ///ICP备案号
   static String icp = S.current.guangdongICP;

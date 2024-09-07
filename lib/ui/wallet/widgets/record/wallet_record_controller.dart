@@ -31,11 +31,8 @@ class WalletRecordController extends GetxController {
   }
 
   void onTapStyle() {
-    final types = SS.appConfig.configRx.value?.logTypeIcon ?? [];
-    if (types.isEmpty) {
-      Loading.showToast("数据错误");
-      return;
-    }
+    final types = [LogTypeIcon(logType: -1, icon: "", name: "全部")];
+    types.addAll(SS.appConfig.configRx.value?.logTypeIcon ?? []);
 
     Get.bottomSheet(
       isScrollControlled: true,

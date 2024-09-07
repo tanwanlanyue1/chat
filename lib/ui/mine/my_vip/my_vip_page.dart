@@ -465,8 +465,14 @@ class MyVipPage extends StatelessWidget {
                                                                           .alphabetic,
                                                                   child:
                                                                       GradientText(
-                                                                    item.price
-                                                                        .toString(),
+                                                                    item.discountPrice !=
+                                                                            0
+                                                                        ? item
+                                                                            .discountPrice
+                                                                            .toString()
+                                                                        : item
+                                                                            .price
+                                                                            .toString(),
                                                                     colors: isSelect
                                                                         ? const [
                                                                             AppColor.gradientBegin,
@@ -487,7 +493,7 @@ class MyVipPage extends StatelessWidget {
                                                             if (item.discountPrice !=
                                                                 0)
                                                               Text(
-                                                                "\$${item.discountPrice}",
+                                                                "\$${item.price}",
                                                                 style: AppTextStyle
                                                                     .st
                                                                     .size(

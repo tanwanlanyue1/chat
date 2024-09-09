@@ -3,7 +3,6 @@ part of 'chat_manager.dart';
 ///通知mixin
 mixin _ChatNotificationMixin {
   static const _channelName = '新消息通知';
-  static const _chatNotificationType = 1;
 
   ///会话对应的通知id
   final _conversationNotificationIds = <String, Set<int>>{};
@@ -41,6 +40,18 @@ mixin _ChatNotificationMixin {
     );
   }
 
+  ///应用启动后跳转聊天页
+  void startChatWithNotification() async{
+    final options = await PluginUtil.getAppLaunchOptions();
+    FileLogger.d('details: ${options}');
+    // final appLaunchDetails = await FlutterLocalNotificationsPlugin().getNotificationAppLaunchDetails();
+    // AppLogger.d('details: ${appLaunchDetails?.notificationResponse?.payload}');
+    // FileLogger.d('details: ${appLaunchDetails?.notificationResponse?.payload}');
+    // if(appLaunchDetails != null && appLaunchDetails.didNotificationLaunchApp){
+    //   appLaunchDetails.notificationResponse?.let(_onTapNotification);
+    // }
+  }
+
   ///点击通知
   void _onTapNotification(NotificationResponse response) {
     try {
@@ -57,40 +68,6 @@ mixin _ChatNotificationMixin {
       }
     } catch (ex) {
       AppLogger.d('_onTapNotification: $ex');
-    }
-  }
-
-  ///新消息提醒通知
-  void _onMessageArrivedNotification(List<ZIMMessage> messageList) {
-    //是否需要提醒
-    var reminder = false;
-    final nowMs = DateTime.now().millisecondsSinceEpoch;
-    const thresholdMs = 1 * 60 * 1000;
-    for (var message in messageList) {
-      //往外发的消息不弹通知
-      if (message.direction == ZIMMessageDirection.send) {
-        continue;
-      }
-      final kitMessage = message.toKIT();
-
-      //音视频通话不弹通知，时间相差1分钟不弹
-      if (![
-        CustomMessageType.callInvite,
-        CustomMessageType.callEnd,
-        CustomMessageType.callReject,
-      ].contains(kitMessage.customType) && (nowMs - message.timestamp <= thresholdMs)) {
-        reminder = true;
-        _showNotification(kitMessage);
-      }
-    }
-
-    if (reminder) {
-      if (SS.inAppMessage.bellReminderRx()) {
-        FlutterRingtonePlayer().playNotification();
-      }
-      if (SS.inAppMessage.vibrationReminderRx()) {
-        Vibration.vibrate();
-      }
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
+import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -49,6 +50,7 @@ class HomeController extends GetxController {
     if(Platform.isAndroid){
       AppUpdateManager.instance.checkAppUpdate();
     }
+    ChatManager().startChatWithNotification();
   }
 
   void setCurrentPage(int index) {

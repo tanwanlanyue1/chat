@@ -1,3 +1,4 @@
 -keep class **.zego.**  { *; }
 -keep class **.**.zego_zpns.** { *; }
-
+-dontwarn com.google.**
+-keep class com.google.** {*;}

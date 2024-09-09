@@ -11,6 +11,8 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import java.io.File
 import java.lang.ref.WeakReference
+import android.util.Log
+import android.os.Bundle
 
 
 /**
@@ -43,6 +45,8 @@ class PluginUtil : MethodCallHandler {
             installApk(call, result)
         } else if (call.method.equals("getDeviceId")) {
             getDeviceId(call, result)
+        } else if (call.method.equals("getAppLaunchOptions")) {
+            getAppLaunchOptions(call, result)
         } else {
             result.notImplemented()
         }
@@ -80,6 +84,26 @@ class PluginUtil : MethodCallHandler {
             result.success(androidId)
         }else{
             result.error("0","applicationContext is null, cannot get device id", null)
+        }
+    }
+
+    private fun getAppLaunchOptions(call: MethodCall, result: MethodChannel.Result){
+        val activity = activityRef?.get()
+        if(activity != null){
+            val options = mutableMapOf<String, Any>()
+            activity.intent.extras?.keySet()?.forEach { key ->
+                try {
+                    val value = activity.intent.extras?.get(key)
+                    if(value != null){
+                        options[key] = value
+                    }
+                }catch (ex: Exception) {
+                    Log.e("PluginUtil", "getAppLaunchOptions exception.", ex)
+                }
+            }
+            result.success(options)
+        }else{
+            result.error("0","activity is null", null)
         }
     }
 

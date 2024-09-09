@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -9,6 +11,8 @@ import 'package:guanjia/common/network/network.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_info.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/common/utils/file_logger.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/setting_item.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -159,6 +163,7 @@ class MineSettingPage extends StatelessWidget {
                   if (!AppInfo.isRelease) _buildSection(children: [
                     _buildDevServerSwitch(),
                     _buildProxySetting(),
+                    _buildLogfile(),
                   ]),
                 ],
               ),
@@ -238,6 +243,39 @@ class MineSettingPage extends StatelessWidget {
         child: Row(
           children: [
             Text('代理设置', style: TextStyle(fontSize: 15.rpx)),
+            const Spacer(),
+            AppImage.asset(
+              "assets/images/mine/mine_right.png",
+              width: 20.rpx,
+              height: 20.rpx,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLogfile() {
+    return GestureDetector(
+      onTap: () {
+        FileLogger.printFileLog();
+      },
+      onLongPress: () async{
+        await FileLogger.clear();
+        Loading.showToast('clear success');
+      },
+      behavior: HitTestBehavior.translucent,
+      child: Container(
+        height: 50.rpx,
+        margin: FEdgeInsets(top: 8.rpx),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.rpx),
+        ),
+        padding: FEdgeInsets(horizontal: 12.rpx, vertical: 4.rpx),
+        child: Row(
+          children: [
+            Text('日志文件', style: TextStyle(fontSize: 15.rpx)),
             const Spacer(),
             AppImage.asset(
               "assets/images/mine/mine_right.png",

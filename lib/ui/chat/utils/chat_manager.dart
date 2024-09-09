@@ -7,19 +7,21 @@ import 'dart:io';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/network/api/im_api.dart';
 import 'package:guanjia/common/network/api/model/im/chat_call_pay_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/common/utils/file_logger.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
+import 'package:guanjia/common/utils/plugin_util.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/message_call_reject_content.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
@@ -80,17 +82,15 @@ class ChatManager
 
     //ZEGO 即时通信
     await ZIMKit().init(
-      appID: AppConfig.zegoAppId,
-      appSign: AppConfig.zegoAppSign,
-      notificationConfig: ZegoZIMKitNotificationConfig(
-        resourceID: AppConfig.zegoChatResourceId,
-        supportOfflineMessage: true,
-        androidNotificationConfig: ZegoZIMKitAndroidNotificationConfig(
-          channelID: AppConfig.zegoChatResourceId,
-          channelName: '新消息通知'
-        )
-      )
-    );
+        appID: AppConfig.zegoAppId,
+        appSign: AppConfig.zegoAppSign,
+        notificationConfig: ZegoZIMKitNotificationConfig(
+            resourceID: AppConfig.zegoChatResourceId,
+            supportOfflineMessage: true,
+            androidNotificationConfig: ZegoZIMKitAndroidNotificationConfig(
+                channelID: AppConfig.zegoChatResourceId,
+                channelName: '新消息通知',
+                icon: 'logo')));
     //ZEGO 音视频通话
     ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(Get.key);
 
@@ -103,18 +103,40 @@ class ChatManager
     _initNotification();
 
     //监听聊天消息
+    final initTimestamp = DateTime.now().millisecondsSinceEpoch;
     ChatEventNotifier().onReceivePeerMessage.listen((event) {
-      _onMessageArrivedNotification(event.messageList);
-      for (var message in event.messageList) {
-        if (message is! ZIMCustomMessage) {
-          continue;
+      var reminder = false;
+      event.messageList
+          .where((element) => element.timestamp > initTimestamp)
+          .map((element) => element.toKIT())
+          .forEach((message) {
+
+        //通话结束对话框
+        if (message.customType == CustomMessageType.callEnd) {
+          _showCallEndDialog(message);
         }
-        final kitMessage = message.toKIT();
-        if (kitMessage.customType == CustomMessageType.callEnd) {
-          _showCallEndDialog(kitMessage);
-          break;
+
+        //新消息通知，发送的消息和通话消息不弹通知
+        if(message.info.direction == ZIMMessageDirection.receive && ![
+          CustomMessageType.callInvite,
+          CustomMessageType.callEnd,
+          CustomMessageType.callReject,
+        ].contains(message.customType)){
+          reminder = true;
+          _showNotification(message);
+        }
+      });
+
+      //声音震动提醒
+      if (reminder) {
+        if (SS.inAppMessage.bellReminderRx()) {
+          FlutterRingtonePlayer().playNotification();
+        }
+        if (SS.inAppMessage.vibrationReminderRx()) {
+          Vibration.vibrate();
         }
       }
+
     });
 
     //监听连接状态更新用户信息

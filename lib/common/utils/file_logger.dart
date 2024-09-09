@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:common_utils/common_utils.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:developer' as developer;
 
 import 'app_info.dart';
 import 'app_logger.dart';
@@ -15,6 +16,20 @@ class FileLogger{
   static void printFilePath() async{
     if(isEnabled){
       AppLogger.d(await getFilePath());
+    }
+  }
+
+  ///输出日志内容
+  static void printFileLog() async{
+    if(isEnabled){
+      final path = await getFilePath();
+      final file = File(path);
+      if(await file.exists()){
+        final content = await file.readAsString();
+        developer.log(content);
+      }else{
+        AppLogger.d('log file not found!, path=$path');
+      }
     }
   }
 

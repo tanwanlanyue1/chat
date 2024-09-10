@@ -90,12 +90,12 @@ class PluginUtil : MethodCallHandler {
     private fun getAppLaunchOptions(call: MethodCall, result: MethodChannel.Result){
         val activity = activityRef?.get()
         if(activity != null){
-            val options = mutableMapOf<String, Any>()
+            val options = mutableMapOf<String, String>()
             activity.intent.extras?.keySet()?.forEach { key ->
                 try {
                     val value = activity.intent.extras?.get(key)
                     if(value != null){
-                        options[key] = value
+                        options[key] = "$value"
                     }
                 }catch (ex: Exception) {
                     Log.e("PluginUtil", "getAppLaunchOptions exception.", ex)

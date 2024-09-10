@@ -42,8 +42,29 @@ mixin _ChatNotificationMixin {
 
   ///应用启动后跳转聊天页
   void startChatWithNotification() async{
+    // payload: {"operation_type":"text_msg","id":"21","sender":{"id":"20","name":"Beauty"},"type":1},
     final options = await PluginUtil.getAppLaunchOptions();
-    FileLogger.d('details: ${options}');
+    FileLogger.d('details: ${jsonEncode(options)}');
+    final payload = options['payload'];
+    if(payload == null){
+      return;
+    }
+    try{
+      final json = jsonDecode(payload);
+      final sender = json['sender'];
+      if(json['type'] != ZIMConversationType.peer.index || sender is! Map){
+        return;
+      }
+      final senderUid = int.tryParse("${sender['id']}");
+      if(senderUid != null){
+        ChatManager().startChat(userId: senderUid);
+      }
+    }catch(ex){
+      AppLogger.w('startChatWithNotification ex=$ex');
+    }
+
+
+
     // final appLaunchDetails = await FlutterLocalNotificationsPlugin().getNotificationAppLaunchDetails();
     // AppLogger.d('details: ${appLaunchDetails?.notificationResponse?.payload}');
     // FileLogger.d('details: ${appLaunchDetails?.notificationResponse?.payload}');

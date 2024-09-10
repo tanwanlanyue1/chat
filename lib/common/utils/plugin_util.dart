@@ -28,10 +28,10 @@ class PluginUtil {
   }
 
   ///获取APP启动参数
-  static Future<Map<dynamic, dynamic>> getAppLaunchOptions() async{
+  static Future<Map<String, String>> getAppLaunchOptions() async{
     try {
       final result =
-      await _methodChannel.invokeMethod<Map<dynamic, dynamic>>('getAppLaunchOptions');
+      await _methodChannel.invokeMethod<Map<String, String>>('getAppLaunchOptions');
       return result ?? {};
     } catch (ex) {
       debugPrint('getAppLaunchOptions error: $ex');

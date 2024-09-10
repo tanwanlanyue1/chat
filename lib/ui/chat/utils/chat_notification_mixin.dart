@@ -38,6 +38,21 @@ mixin _ChatNotificationMixin {
       onDidReceiveNotificationResponse: _onTapNotification,
       onDidReceiveBackgroundNotificationResponse: _onTapNotification,
     );
+
+    // 注意，开启 fcm 推送时，其他厂商推送通道不可用
+    ZPNsConfig zpnsConfig = ZPNsConfig();
+    zpnsConfig.enableFCMPush = true;
+    zpnsConfig.appType = 1;
+    ZPNs.setPushConfig(zpnsConfig);
+    ZPNsEventHandler.onNotificationArrived = (message){
+      FileLogger.d('onNotificationArrived: ${message}');
+    };
+    ZPNsEventHandler.onNotificationClicked = (message){
+      FileLogger.d('onNotificationClicked: ${message}');
+    };
+    ZPNsEventHandler.onThroughMessageReceived = (message){
+      FileLogger.d('onThroughMessageReceived: ${message}');
+    };
   }
 
   ///应用启动后跳转聊天页
@@ -62,15 +77,6 @@ mixin _ChatNotificationMixin {
     }catch(ex){
       AppLogger.w('startChatWithNotification ex=$ex');
     }
-
-
-
-    // final appLaunchDetails = await FlutterLocalNotificationsPlugin().getNotificationAppLaunchDetails();
-    // AppLogger.d('details: ${appLaunchDetails?.notificationResponse?.payload}');
-    // FileLogger.d('details: ${appLaunchDetails?.notificationResponse?.payload}');
-    // if(appLaunchDetails != null && appLaunchDetails.didNotificationLaunchApp){
-    //   appLaunchDetails.notificationResponse?.let(_onTapNotification);
-    // }
   }
 
   ///点击通知
@@ -99,7 +105,7 @@ mixin _ChatNotificationMixin {
     if (route?.settings.name == AppRoutes.messageListPage) {
       final registered = Get.isRegistered<MessageListController>(
           tag: message.info.conversationID);
-      if (registered) {
+      if (registered && Global().appStateRx() == AppLifecycleState.resumed) {
         return;
       }
     }

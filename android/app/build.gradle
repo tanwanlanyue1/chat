@@ -86,7 +86,7 @@ flutter {
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:29.3.1')
+    implementation platform('com.google.firebase:firebase-bom:32.3.1')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging'
 //    implementation 'im.zego:zpns-fcm:2.7.0' // 用于 Google FCM 推送的 ZPNs 包

@@ -21,14 +21,26 @@ import android.os.Bundle
 class PluginUtil : MethodCallHandler {
     private var activityRef: WeakReference<Activity?>? = null
     private var methodChannel: MethodChannel? = null
+    private var launchOptions = mutableMapOf<String, String>()
 
     /**
      * 注册插件
      * @param activity
      * @param flutterEngine
      */
-    fun register(activity: Activity?, flutterEngine: FlutterEngine) {
+    fun register(activity: Activity, flutterEngine: FlutterEngine) {
         if (activityRef == null) {
+            activity.intent.extras?.keySet()?.forEach { key ->
+                try {
+                    val value = activity.intent.extras?.get(key)
+                    if(value != null){
+                        launchOptions[key] = "$value"
+                    }
+                }catch (ex: Exception) {
+                    Log.e("register", "activity.intent.extras exception.", ex)
+                }
+            }
+
             activityRef = WeakReference(activity)
             methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).apply {
                 setMethodCallHandler(this@PluginUtil)
@@ -88,23 +100,7 @@ class PluginUtil : MethodCallHandler {
     }
 
     private fun getAppLaunchOptions(call: MethodCall, result: MethodChannel.Result){
-        val activity = activityRef?.get()
-        if(activity != null){
-            val options = mutableMapOf<String, String>()
-            activity.intent.extras?.keySet()?.forEach { key ->
-                try {
-                    val value = activity.intent.extras?.get(key)
-                    if(value != null){
-                        options[key] = "$value"
-                    }
-                }catch (ex: Exception) {
-                    Log.e("PluginUtil", "getAppLaunchOptions exception.", ex)
-                }
-            }
-            result.success(options)
-        }else{
-            result.error("0","activity is null", null)
-        }
+        result.success(launchOptions)
     }
 
     companion object {

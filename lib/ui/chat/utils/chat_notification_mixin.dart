@@ -6,6 +6,7 @@ mixin _ChatNotificationMixin {
 
   ///会话对应的通知id
   final _conversationNotificationIds = <String, Set<int>>{};
+  var _isStartChatWithAppLaunched = false;
 
   ///初始化通知
   Future<void> _initNotification() async {
@@ -38,25 +39,15 @@ mixin _ChatNotificationMixin {
       onDidReceiveNotificationResponse: _onTapNotification,
       onDidReceiveBackgroundNotificationResponse: _onTapNotification,
     );
-
-    // 注意，开启 fcm 推送时，其他厂商推送通道不可用
-    ZPNsConfig zpnsConfig = ZPNsConfig();
-    zpnsConfig.enableFCMPush = true;
-    zpnsConfig.appType = 1;
-    ZPNs.setPushConfig(zpnsConfig);
-    ZPNsEventHandler.onNotificationArrived = (message){
-      FileLogger.d('onNotificationArrived: ${message}');
-    };
-    ZPNsEventHandler.onNotificationClicked = (message){
-      FileLogger.d('onNotificationClicked: ${message}');
-    };
-    ZPNsEventHandler.onThroughMessageReceived = (message){
-      FileLogger.d('onThroughMessageReceived: ${message}');
-    };
   }
 
   ///应用启动后跳转聊天页
-  void startChatWithNotification() async{
+  void _startChatWithAppLaunch() async{
+    if(_isStartChatWithAppLaunched){
+      return;
+    }
+    _isStartChatWithAppLaunched = true;
+
     // payload: {"operation_type":"text_msg","id":"21","sender":{"id":"20","name":"Beauty"},"type":1},
     final options = await PluginUtil.getAppLaunchOptions();
     FileLogger.d('details: ${jsonEncode(options)}');

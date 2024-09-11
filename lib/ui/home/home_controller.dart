@@ -50,7 +50,6 @@ class HomeController extends GetxController {
     if(Platform.isAndroid){
       AppUpdateManager.instance.checkAppUpdate();
     }
-    ChatManager().startChatWithNotification();
   }
 
   void setCurrentPage(int index) {

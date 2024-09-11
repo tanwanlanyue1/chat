@@ -170,6 +170,7 @@ class ChatManager
 
     //初始化音视频通话服务
     await _initChatCall(userId: userId, nickname: nickname);
+    _startChatWithAppLaunch();
   }
 
   ///断开连接

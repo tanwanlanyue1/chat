@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:guanjia/common/utils/file_logger.dart';
 
 /// 通用插件，桥接到原生
 class PluginUtil {
@@ -27,14 +28,15 @@ class PluginUtil {
     }
   }
 
-  ///获取APP启动参数
-  static Future<Map<String, String>> getAppLaunchOptions() async{
+  ///获取APP启动参数 TODO iOS未实现
+  static Future<Map<dynamic, dynamic>> getAppLaunchOptions() async{
     try {
       final result =
-      await _methodChannel.invokeMethod<Map<String, String>>('getAppLaunchOptions');
+      await _methodChannel.invokeMethod<Map<dynamic, dynamic>>('getAppLaunchOptions');
       return result ?? {};
     } catch (ex) {
       debugPrint('getAppLaunchOptions error: $ex');
+      FileLogger.d('getAppLaunchOptions error: $ex');
     }
     return {};
   }

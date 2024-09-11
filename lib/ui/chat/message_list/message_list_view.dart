@@ -8,6 +8,7 @@ import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/extension/list_extension.dart';
+import 'package:guanjia/common/paging/default_status_indicators/first_page_error_indicator.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/auto_dispose_mixin.dart';
@@ -177,20 +178,9 @@ class _MessageListViewState extends State<MessageListView> with AutoDisposeMixin
               },
             );
           } else if (snapshot.hasError) {
-            // TODO 未实现加载失败
-            // defaultWidget
-            final Widget defaultWidget = Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () => setState(() {}),
-                    icon: const Icon(Icons.refresh_rounded),
-                  ),
-                  Text(snapshot.error.toString()),
-                  const Text('Load failed, please click to retry'),
-                ],
-              ),
+            final defaultWidget = FirstPageErrorIndicator(
+              title: '加载失败',
+              onTryAgain: () => setState(() {}),
             );
 
             // customWidget

@@ -8,13 +8,6 @@ import android.os.Bundle
 
 class MainActivity: FlutterActivity(){
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val payload = intent.getStringExtra("payload")
-        val file = File(cacheDir, "log0910.txt")
-        file.appendText("${Date().toLocaleString()}  payload=$payload\n")
-    }
-
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         PluginUtil().register(this, flutterEngine)

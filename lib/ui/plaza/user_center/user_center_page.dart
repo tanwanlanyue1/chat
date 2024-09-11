@@ -350,7 +350,7 @@ class UserCenterPage extends StatelessWidget {
                       behavior: HitTestBehavior.translucent,
                       child: Container(
                         height: 21.rpx,
-                        padding: EdgeInsets.only(left: 50.rpx),
+                        padding: EdgeInsets.only(left: 50.rpx,right: 14.rpx),
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.centerLeft,
@@ -367,7 +367,7 @@ class UserCenterPage extends StatelessWidget {
                             style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),
                             children: <TextSpan>[
                               TextSpan(
-                                text: "Read more",
+                                text: S.current.readMore,
                                 style: AppTextStyle.fs14m.copyWith(color: AppColor.primaryBlue,height: 1.5),
                               ),
                             ],

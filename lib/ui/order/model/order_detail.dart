@@ -133,7 +133,8 @@ class OrderDetailItem {
       case OrderDetailDisplayType.breachFeeProportion:
         return OrderDetailItemWrapper(
           title: changeTitle ?? '违约收取保证金比例：',
-          detail: "${changeDetail ?? model.proportionBreach.toString()}%",
+          detail: changeDetail ??
+              (model.exempt ? "0%" : "${model.proportionBreach.toString()}%"),
         );
       case OrderDetailDisplayType.breachFee:
         return OrderDetailItemWrapper(
@@ -174,8 +175,10 @@ class OrderDetailItem {
       case OrderDetailDisplayType.amount:
         return OrderDetailItemWrapper(
           title: changeTitle ?? '实付金额：',
-          detail:
-              changeDetail ?? (model.deposit + model.serviceCharge).toString(),
+          detail: changeDetail ??
+              (model.exempt
+                  ? "0"
+                  : (model.deposit + model.serviceCharge).toString()),
         );
     }
   }
@@ -785,7 +788,9 @@ class OrderDetail {
                 OrderDetailItem(
                   model: model,
                   displayType: OrderDetailDisplayType.amount,
-                  changeDetail: model.breachAmount.toString(),
+                  changeDetail: model.exempt
+                      ? "0"
+                      :  model.breachAmount.toString(),
                 ),
               ],
               bottomTipText: "约会进行中，主动取消订单需扣除${model.proportionBreach}%违约金",
@@ -990,7 +995,9 @@ class OrderDetail {
                 OrderDetailItem(
                   model: model,
                   displayType: OrderDetailDisplayType.amount,
-                  changeDetail: model.breachAmount.toString(),
+                  changeDetail: model.exempt
+                      ? "0"
+                      : model.breachAmount.toString(),
                 ),
               ],
               bottomTipText: "约会进行中，主动取消订单需扣除${model.proportionBreach}%违约金",
@@ -1044,7 +1051,9 @@ class OrderDetail {
                     model: model,
                     displayType: OrderDetailDisplayType.amount,
                     changeTitle: "佳丽实付金额：",
-                    changeDetail: model.breachAmount.toString(),
+                    changeDetail: model.exempt
+                        ? "0"
+                        : model.breachAmount.toString(),
                   ),
                 ],
                 bottomTipText: "约会进行中，主动取消订单需扣除${model.proportionBreach}%违约金"),

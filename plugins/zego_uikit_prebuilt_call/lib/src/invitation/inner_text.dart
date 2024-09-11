@@ -111,6 +111,12 @@ class ZegoCallInvitationInnerText {
   /// The **default value** is *"Accept"*.
   String incomingCallPageAcceptButton;
 
+  /// 离线时通过VoIP拨入界面 -> 拒绝接听按钮文本
+  String incomingCallVoIPDeclineButton;
+
+  /// 离线时通过VoIP拨入界面 -> 同意接听按钮文本
+  String incomingCallVoIPAcceptButton;
+
   ZegoCallInvitationInnerText({
     String? incomingVideoCallDialogTitle,
     String? incomingVideoCallDialogMessage,
@@ -122,6 +128,8 @@ class ZegoCallInvitationInnerText {
     String? incomingVoiceCallPageMessage,
     String? incomingCallPageDeclineButton,
     String? incomingCallPageAcceptButton,
+    String? incomingCallVoIPDeclineButton,
+    String? incomingCallVoIPAcceptButton,
     String? outgoingVideoCallPageTitle,
     String? outgoingVideoCallPageMessage,
     String? outgoingVoiceCallPageTitle,
@@ -153,6 +161,9 @@ class ZegoCallInvitationInnerText {
         incomingCallPageDeclineButton =
             incomingCallPageDeclineButton ?? 'Decline',
         incomingCallPageAcceptButton = incomingCallPageAcceptButton ?? 'Accept',
+        incomingCallVoIPDeclineButton =
+            incomingCallVoIPDeclineButton ?? 'Decline',
+        incomingCallVoIPAcceptButton = incomingCallVoIPAcceptButton ?? 'Accept',
         outgoingVideoCallPageTitle = outgoingVideoCallPageTitle ?? param_1,
         outgoingVideoCallPageMessage =
             outgoingVideoCallPageMessage ?? 'Calling...',

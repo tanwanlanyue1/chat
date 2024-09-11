@@ -272,6 +272,8 @@ mixin _ChatCallMixin {
         incomingVoiceCallPageMessage: '语音聊天呼入...',
         incomingCallPageDeclineButton: '',
         incomingCallPageAcceptButton: '',
+        incomingCallVoIPDeclineButton: '挂断',
+        incomingCallVoIPAcceptButton: '接听',
         outgoingVideoCallPageMessage: '呼叫中...',
         outgoingVoiceCallPageMessage: '呼叫中...',
       ),

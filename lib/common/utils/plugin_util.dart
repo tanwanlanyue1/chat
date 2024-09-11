@@ -36,7 +36,6 @@ class PluginUtil {
       return result ?? {};
     } catch (ex) {
       debugPrint('getAppLaunchOptions error: $ex');
-      FileLogger.d('getAppLaunchOptions error: $ex');
     }
     return {};
   }

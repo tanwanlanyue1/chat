@@ -48,7 +48,6 @@ import 'package:zego_uikit_prebuilt_call/src/minimizing/overlay_machine.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
-import 'package:zego_zpns/zego_zpns.dart';
 
 import '../custom/custom_message_type.dart';
 import 'chat_event_notifier.dart';

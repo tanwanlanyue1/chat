@@ -251,6 +251,7 @@ class ZegoUIKitPrebuiltCallInvitationService
       pageManager: private._pageManager!,
       androidNotificationConfig:
           private._data!.notificationConfig.androidNotificationConfig,
+      innerText: private._data!.innerText,
     );
 
     await private._initPlugins(

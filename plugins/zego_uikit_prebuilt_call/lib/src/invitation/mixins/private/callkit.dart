@@ -18,6 +18,7 @@ class ZegoCallInvitationServiceCallKitPrivateImpl {
   Future<void> _initCallKit({
     required ZegoCallInvitationPageManager pageManager,
     ZegoCallAndroidNotificationConfig? androidNotificationConfig,
+    ZegoCallInvitationInnerText? innerText,
   }) async {
     if (_callKitServiceInit) {
       ZegoLoggerService.logInfo(
@@ -62,7 +63,9 @@ class ZegoCallInvitationServiceCallKitPrivateImpl {
           androidNotificationConfig?.showFullScreen ?? false,
       CallKitInnerVariable.ringtonePath: androidNotificationConfig?.sound,
       CallKitInnerVariable.backgroundUrl:
-          androidNotificationConfig?.fullScreenBackground ?? ''
+          androidNotificationConfig?.fullScreenBackground ?? '',
+      CallKitInnerVariable.textAccept: innerText?.incomingCallVoIPAcceptButton,
+      CallKitInnerVariable.textDecline: innerText?.incomingCallVoIPDeclineButton,
     });
 
     ZegoLoggerService.logInfo(

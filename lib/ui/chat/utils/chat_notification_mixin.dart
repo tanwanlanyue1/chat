@@ -50,7 +50,7 @@ mixin _ChatNotificationMixin {
 
     // payload: {"operation_type":"text_msg","id":"21","sender":{"id":"20","name":"Beauty"},"type":1},
     final options = await PluginUtil.getAppLaunchOptions();
-    FileLogger.d('details: ${jsonEncode(options)}');
+    // FileLogger.d('details: ${jsonEncode(options)}');
     final payload = options['payload'];
     if(payload == null){
       return;

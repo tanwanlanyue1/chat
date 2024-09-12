@@ -10,6 +10,7 @@ import 'package:guanjia/common/network/config/server_config.dart';
 import 'package:guanjia/common/network/httpclient/interceptor/header_interceptor.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/common/utils/firebase_util.dart';
 import 'package:guanjia/common/utils/image_gallery_utils.dart';
 import 'package:guanjia/global.dart';
 import 'package:guanjia/widgets/loading.dart';
@@ -84,6 +85,12 @@ class JsInjector{
           break;
         case 'emailVerify':
           _emailVerify(method, uuid);
+          break;
+        case 'phoneVerify':
+          _phoneVerify(method, uuid);
+          break;
+        case 'accountCancellation':
+          _accountCancellation(method, uuid, json);
           break;
       }
     }catch(ex){
@@ -229,4 +236,45 @@ class JsInjector{
       _invokeJavaScript(method, "false", uuid);
     });
   }
+
+
+  ///获取手机短信验证码
+  void _phoneVerify(String method,int uuid) async{
+    Loading.show();
+    final verificationId = await FirebaseUtil().sendSmsCode(SS.login.info?.phone ?? '');
+    if(verificationId == null){
+      Loading.showToast('获取验证码失败');
+      _invokeJavaScript(method, "false", uuid);
+    }
+
+    final res = await SS.login.fetchSms(
+        type: 2,
+        phone: SS.login.info?.email ?? ''
+    );
+    return res.when(success: (_) {
+      Loading.dismiss();
+      _invokeJavaScript(method, verificationId, uuid);
+    }, failure: (errorMessage) {
+      Loading.showToast(errorMessage);
+      _invokeJavaScript(method, "false", uuid);
+    });
+  }
+
+  ///账号注销
+  void _accountCancellation(String method,int uuid, Map data) async{
+    final verificationId = data['verificationId'] ?? '';
+    final smsCode = data['smsCode'] ?? '';
+    Loading.show();
+    final idToken = await FirebaseUtil().verifySmsCode(verificationId, smsCode);
+    if(idToken == null){
+      Loading.dismiss();
+      Loading.showToast('验证码错误');
+      _invokeJavaScript(method, "false", uuid);
+      return;
+    }
+
+    //调用注销接口
+
+  }
+
 }

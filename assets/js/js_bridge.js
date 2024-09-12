@@ -97,4 +97,15 @@ async function _callAppMethod(method, context, args = {}){
        */
      context.emailVerify = () => _callAppMethod('emailVerify', context);
 
+      /**
+       * 获取短信验证码
+       * return verificationId | "false"
+       */
+     context.phoneVerify = () => _callAppMethod('phoneVerify', context);
+
+       /**
+        * 账号注销
+        */
+       context.accountCancellation = (verificationId = '', smsCode = '') => _callAppMethod('accountCancellation', context, {verificationId, smsCode});
+
 })(window.JSBridge = {});

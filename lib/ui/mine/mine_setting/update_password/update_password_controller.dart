@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/user_api.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/firebase_util.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/payment_password_keyboard.dart';
@@ -28,15 +29,15 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
   final newPasswordInputController = TextEditingController();
   final confirmPasswordInputController = TextEditingController();
 
-  /// 获取短信验证码
-  Future<bool> fetchSms() async {
+  /// 获取邮箱验证码
+  Future<bool> fetchEmailVerificationCode() async {
     if(!state.isPhone.value && !GetUtils.isEmail(state.phone)){
       Loading.showToast('邮箱格式错误');
       return false;
     }else{
       Loading.show();
       final res = await state.loginService.fetchSms(
-          type: state.isPhone.value ? 1 : 2,
+          type: 2,
           phone: state.phone
       );
       Loading.dismiss();
@@ -50,18 +51,51 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
     }
   }
 
+
+  /// 获取短信验证码
+  Future<bool> fetchSmsVerificationCode() async {
+    if(state.phone.isEmpty){
+      Loading.showToast('请输入手机号码');
+      return false;
+    }
+    Loading.show();
+    final verificationId = await FirebaseUtil().sendSmsCode('${state.countryCode}${state.phone}');
+    Loading.dismiss();
+    if(verificationId != null){
+      state.verificationId = verificationId;
+      return true;
+    }else{
+      Loading.showToast('获取验证码失败');
+      return false;
+    }
+  }
+
   /// 提交修改-登录密码
   void submit() async {
-    final verifyCode = verificationInputController.text;
+    final isPhone = state.isPhone();
+    final phoneOrEmail = state.phone;
+    final verificationCode = verificationInputController.text.trim();
     final newPassword = newPasswordInputController.text;
     final confirmPassword = confirmPasswordInputController.text;
 
     Loading.show();
+    String? idToken;
+    if(isPhone){
+      idToken = await FirebaseUtil().verifySmsCode(state.verificationId, verificationCode);
+      if(idToken == null){
+        Loading.dismiss();
+        Loading.showToast('验证码错误，请重新输入');
+        return;
+      }
+    }
+
+    Loading.show();
     final res = await state.loginService.forgotOrResetPassword(
-      type: state.isPhone.value ? 1 : 2,
-      phone: state.phone,
-      email: state.phone,
-      verifyCode: verifyCode,
+      type: isPhone ? 1 : 2,
+      phone: isPhone ? phoneOrEmail : null,
+      email: isPhone ? null : phoneOrEmail,
+      verifyCode: isPhone ? null : verificationCode,
+      idToken: isPhone ? idToken : null,
       password: newPassword,
       confirmPassword: confirmPassword,
     );
@@ -77,12 +111,27 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
 
   /// 提交修改-支付密码
   void submitPayment() async {
+    final isPhone = state.isPhone();
+    final phoneOrEmail = state.phone;
+    final verificationCode = verificationInputController.text.trim();
+
     Loading.show();
+    String? idToken;
+    if(isPhone){
+      idToken = await FirebaseUtil().verifySmsCode(state.verificationId, verificationCode);
+      if(idToken == null){
+        Loading.dismiss();
+        Loading.showToast('验证码错误，请重新输入');
+        return;
+      }
+    }
+
     final response = await UserApi.updatePayPwd(
-      type: state.isPhone.value ? 1 : 2,
-      phone: state.phone,
-      email: state.phone,
-      verifyCode: verificationInputController.text,
+      type: isPhone ? 1 : 2,
+      phone: isPhone ? phoneOrEmail : null,
+      email: isPhone ? null : phoneOrEmail,
+      verifyCode: isPhone ? null : verificationCode,
+      idToken: isPhone ? idToken : null,
       password: newPasswordInputController.text,
       confirmPassword: confirmPasswordInputController.text,
     );
@@ -146,8 +195,15 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
 
   //判断是否绑定了其他验证方式
   void verificationMode(){
-    if((state.loginService.info?.email?.isNotEmpty ?? false) && (state.loginService.info?.phone?.isNotEmpty ?? false)){
+    final info = state.loginService.info;
+    if((info?.email?.isNotEmpty ?? false) && (info?.phone?.isNotEmpty ?? false)){
       state.isPhone.value = !state.isPhone.value;
+      if(state.isPhone()){
+        state.phone = info?.phone ?? '';
+      }else{
+        state.phone = info?.email ?? '';
+      }
+      phoneNumberInputController.text = maskSubstring(state.phone);
     }else{
       if(state.isPhone.value){
         Loading.showToast("${S.current.unboundMailbox}，${S.current.pleaseBindFirst}");

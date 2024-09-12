@@ -1,18 +1,21 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/network/httpclient/http_client.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/common/utils/firebase_util.dart';
 import 'package:guanjia/ui/ad/ad_manager.dart';
 import 'package:guanjia/ui/welcome/welcome_storage.dart';
 
 import 'common/app_localization.dart';
 import 'common/app_position.dart';
 import 'common/service/service.dart';
+import 'common/firebase_options.dart';
 import 'ui/chat/utils/chat_manager.dart';
 import 'widgets/system_ui.dart';
 
@@ -61,6 +64,9 @@ class Global with WidgetsBindingObserver{
           logPrint: AppLogger.d,
         ),
       );
+
+      //初始化firebase
+      FirebaseUtil().init();
 
       await WelcomeStorage.initialize();
       WelcomeStorage.saveAdFirstOpen([]);

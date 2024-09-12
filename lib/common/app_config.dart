@@ -43,6 +43,12 @@ class AppConfig{
   static const zegoChatResourceId = 'guanjia_chat';
   static const zegoCallResourceId = 'guanjia_call';
 
+  //后台管理 https://www.google.com/recaptcha/admin/site/708806082?hl=zh-cn
+  static const recaptchaApiKey = '6LfChT8qAAAAACW9sgMYpQNJLF9Mx-jL8iRofe-N';
+  //服务端验证 https://developers.google.com/recaptcha/docs/verify
+  static const recaptchaApiSecret = '6LfChT8qAAAAAOEiALil_tKbEccPoGehztrWoymu';
+  static const recaptchaWebSite = 'https://recaptcha-flutter-plugin.firebaseapp.com/';
+
   ///ICP备案号
   static String icp = S.current.guangdongICP;
   static const urlIcp = 'https://beian.miit.gov.cn';

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
@@ -75,7 +76,6 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
 
   void onTapLogin() async {
     FocusScope.of(Get.context!).unfocus();
-
     Loading.show();
     Result<void, String> result = await SS.login.loginByPassword(
       account: accountController.text,

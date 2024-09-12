@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:intl_phone_field/countries.dart';
 
 class BindingState {
   final isVisible = false.obs;
@@ -7,4 +8,9 @@ class BindingState {
   final isPhone = true.obs;
   //0:手机，1:邮箱
   int currentIndex = -1;
+
+  //手机号 国家码 +86
+  var countryCode = '';
+  var verificationId = '';
+
 }

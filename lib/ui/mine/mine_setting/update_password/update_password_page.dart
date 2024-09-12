@@ -21,7 +21,9 @@ class UpdatePasswordPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          state.isLogin.value ? S.current.changingPassword : S.current.changingPaymentPassword,
+          state.isLogin.value
+              ? S.current.changingPassword
+              : S.current.changingPaymentPassword,
         ),
       ),
       backgroundColor: AppColor.grayF7,
@@ -38,7 +40,8 @@ class UpdatePasswordPage extends StatelessWidget {
           ),
           _buildConfirmPasswordField(),
           _buildSubmitButton(),
-        ].separated(SizedBox(
+        ]
+            .separated(SizedBox(
               height: 1.rpx,
             ))
             .toList(),
@@ -48,18 +51,20 @@ class UpdatePasswordPage extends StatelessWidget {
 
   Widget _buildPhoneNumberTips() {
     return Obx(() => Container(
-      alignment: Alignment.center,
-      margin: EdgeInsets.only(bottom: 16.rpx,left: 6.rpx,right: 6.rpx),
-      child: Text(
-        state.isPhone.value ?
-        '${S.current.phoneVerificationCode}${controller.phoneNumberInputController.text}${S.current.cellPhone}':
-        S.current.emailVerificationCode+controller.phoneNumberInputController.text+S.current.cellEmail,
-        style: TextStyle(
-          fontSize: 12.rpx,
-          color: AppColor.gray80,
-        ),
-      ),
-    ));
+          alignment: Alignment.center,
+          margin: EdgeInsets.only(bottom: 16.rpx, left: 6.rpx, right: 6.rpx),
+          child: Text(
+            state.isPhone.value
+                ? '${S.current.phoneVerificationCode}${controller.phoneNumberInputController.text}${S.current.cellPhone}'
+                : S.current.emailVerificationCode +
+                    controller.phoneNumberInputController.text +
+                    S.current.cellEmail,
+            style: TextStyle(
+              fontSize: 12.rpx,
+              color: AppColor.gray80,
+            ),
+          ),
+        ));
   }
 
   //验证方式
@@ -68,7 +73,7 @@ class UpdatePasswordPage extends StatelessWidget {
       onTap: controller.verificationMode,
       child: Container(
         alignment: Alignment.centerRight,
-        margin: EdgeInsets.only(bottom: 24.rpx,top: 11.rpx,right: 16.rpx),
+        margin: EdgeInsets.only(bottom: 24.rpx, top: 11.rpx, right: 16.rpx),
         child: Visibility(
           visible: !state.type,
           child: RichText(
@@ -96,37 +101,40 @@ class UpdatePasswordPage extends StatelessWidget {
   //验证码输入框
   Widget _buildVerificationCodeField() {
     return Obx(() => SettingTextField(
-      inputController: controller.verificationInputController,
-      labelText: state.isPhone.value ?
-      S.current.cellPhoneVerificationCode:S.current.cellEmailVerificationCode,
-      hintText: S.current.pleaseEnterTheVerificationCode,
-      keyboardType: TextInputType.number,
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-        LengthLimitingTextInputFormatter(6),
-      ],
-      suffixIcon: LoginVerificationCodeButton(
-        onFetch: controller.fetchSms,
-      ),
-    ));
+          inputController: controller.verificationInputController,
+          labelText: state.isPhone.value
+              ? S.current.cellPhoneVerificationCode
+              : S.current.cellEmailVerificationCode,
+          hintText: S.current.pleaseEnterTheVerificationCode,
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+            LengthLimitingTextInputFormatter(6),
+          ],
+          suffixIcon: LoginVerificationCodeButton(
+            onFetch: state.isPhone.isTrue
+                ? controller.fetchSmsVerificationCode
+                : controller.fetchEmailVerificationCode,
+          ),
+        ));
   }
 
   //新密码输入框
   Widget _buildNewPasswordField() {
     return Obx(() => SettingTextField(
-      labelText: S.current.enterYourPIN,
-      inputController: controller.newPasswordInputController,
-      hintText: S.current.pleaseEnter620Characters,
-      inputFormatters: [
-        FilteringTextInputFormatter.deny(RegExp(r'\s')),
-        LengthLimitingTextInputFormatter(16),
-      ],
-      obscureText: state.obscure.value,
-      showPasswordVisible: true,
-      callBack: (){
-        state.obscure.value = !state.obscure.value;
-      },
-    ));
+          labelText: S.current.enterYourPIN,
+          inputController: controller.newPasswordInputController,
+          hintText: S.current.pleaseEnter620Characters,
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(RegExp(r'\s')),
+            LengthLimitingTextInputFormatter(16),
+          ],
+          obscureText: state.obscure.value,
+          showPasswordVisible: true,
+          callBack: () {
+            state.obscure.value = !state.obscure.value;
+          },
+        ));
   }
 
   //支付输入密码
@@ -147,27 +155,33 @@ class UpdatePasswordPage extends StatelessWidget {
   //确认密码输入框
   Widget _buildConfirmPasswordField() {
     return Obx(() => SettingTextField(
-      labelText: S.current.pleaseConfirmThePassword,
-      inputController: controller.confirmPasswordInputController,
-      hintText: S.current.pleaseEnterYourConfirmationPassword,
-      inputFormatters: [
-        FilteringTextInputFormatter.deny(RegExp(r'\s')),
-        LengthLimitingTextInputFormatter(16),
-      ],
-      obscureText: state.obscure.value,
-      showPasswordVisible: state.isLogin.value,
-      callBack: (){
-        state.obscure.value = !state.obscure.value;
-      },
-      readOnly: !state.isLogin.value,
-      onTapCall: ()=> !state.isLogin.value ? controller.setPayPassword(affirm: true) : null,
-    ));
+          labelText: S.current.pleaseConfirmThePassword,
+          inputController: controller.confirmPasswordInputController,
+          hintText: S.current.pleaseEnterYourConfirmationPassword,
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(RegExp(r'\s')),
+            LengthLimitingTextInputFormatter(16),
+          ],
+          obscureText: state.obscure.value,
+          showPasswordVisible: state.isLogin.value,
+          callBack: () {
+            state.obscure.value = !state.obscure.value;
+          },
+          readOnly: !state.isLogin.value,
+          onTapCall: () => !state.isLogin.value
+              ? controller.setPayPassword(affirm: true)
+              : null,
+        ));
   }
 
   Widget _buildSubmitButton() {
     return Obx(() {
       return GestureDetector(
-        onTap: state.isVisible.value ? (state.isLogin.value ? controller.submit : controller.submitPayment) : null,
+        onTap: state.isVisible.value
+            ? (state.isLogin.value
+                ? controller.submit
+                : controller.submitPayment)
+            : null,
         child: Container(
           height: 42.rpx,
           decoration: BoxDecoration(

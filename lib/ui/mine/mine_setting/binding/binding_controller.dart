@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/firebase_util.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 
@@ -20,35 +21,68 @@ class BindingController extends GetxController {
 
   final loginService = SS.login;
 
-  /// 获取短信验证码
-  Future<bool> fetchSms() async {
-    final phone = phoneNumberInputController.text;
-    if(!state.isPhone.value && !GetUtils.isEmail(phone)){
+  /// 获取邮箱验证码
+  Future<bool> fetchEmailVerificationCode() async {
+    final email = phoneNumberInputController.text.trim();
+    if(!GetUtils.isEmail(email)){
       Loading.showToast('邮箱格式错误');
       return false;
+    }
+    Loading.show();
+    final res = await loginService.fetchSms(
+        type: state.isPhone.value ? 1 : 2,
+        phone: email,
+    );
+    Loading.dismiss();
+    return res.when(success: (_) {
+      return true;
+    }, failure: (errorMessage) {
+      Loading.showToast(errorMessage);
+      return false;
+    });
+  }
+
+  /// 获取短信验证码
+  Future<bool> fetchSmsVerificationCode() async {
+    final phone = phoneNumberInputController.text.trim();
+    if(phone.isEmpty){
+      Loading.showToast('请输入手机号码');
+      return false;
+    }
+    Loading.show();
+    final verificationId = await FirebaseUtil().sendSmsCode('${state.countryCode}$phone');
+    Loading.dismiss();
+    if(verificationId != null){
+      state.verificationId = verificationId;
+      return true;
     }else{
-      Loading.show();
-      final res = await loginService.fetchSms(
-          type: state.isPhone.value ? 1 : 2,
-          phone: phone);
-      Loading.dismiss();
-      return res.when(success: (_) {
-        return true;
-      }, failure: (errorMessage) {
-        Loading.showToast(errorMessage);
-        return false;
-      });
+      Loading.showToast('获取验证码失败');
+      return false;
     }
   }
 
-  ///  绑定手机号/邮箱
+  ///绑定
   void submit() async {
+    final isPhone = state.isPhone();
+    final phoneOrEmail = phoneNumberInputController.text.trim();
+    final verificationCode = verificationInputController.text.trim();
+
     Loading.show();
+    String? idToken;
+    if(isPhone){
+      idToken = await FirebaseUtil().verifySmsCode(state.verificationId, verificationCode);
+      if(idToken == null){
+        Loading.dismiss();
+        Loading.showToast('验证码错误，请重新输入');
+        return;
+      }
+    }
     final response = await UserApi.userBind(
-      type: state.isPhone.value ? 1 :2,
-      phone: state.isPhone.value ? phoneNumberInputController.text : '',
-      email: state.isPhone.value ? "" : phoneNumberInputController.text,
-      verifyCode: verificationInputController.text,
+      type: isPhone ? 1 : 2,
+      email: isPhone ? null : phoneOrEmail,
+      phone: isPhone ? state.countryCode + phoneOrEmail : null,
+      verifyCode: isPhone ? null : verificationCode,
+      idToken: idToken,
     );
     Loading.dismiss();
     if(response.isSuccess){
@@ -58,7 +92,6 @@ class BindingController extends GetxController {
     }else{
       response.showErrorMessage();
     }
-
   }
 
   @override

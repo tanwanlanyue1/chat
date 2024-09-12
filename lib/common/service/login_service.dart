@@ -363,13 +363,15 @@ class LoginService extends GetxService {
   /// type: 验证类型 1手机号 2邮箱
   /// phone: 用户手机号
   /// verifyCode：验证码
+  /// idToken：SMS验证码idToken
   /// password：用户密码
   /// confirmPassword：确认密码
   Future<Result<void, String>> forgotOrResetPassword({
     required int type,
     String? phone,
     String? email,
-    required String verifyCode,
+    String? verifyCode,
+    String? idToken,
     required String password,
     required String confirmPassword,
   }) async {
@@ -378,6 +380,7 @@ class LoginService extends GetxService {
       phone: phone,
       email: email,
       verifyCode: verifyCode,
+      idToken: idToken,
       password: password,
       confirmPassword: confirmPassword,
     );

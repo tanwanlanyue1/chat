@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_recaptcha_v2_compat/recaptcha_v2.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/common/app_localization.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/login_verification_code_button.dart';
@@ -24,35 +28,45 @@ class BindingPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Obx(() => Text(
-          state.isPhone.value ? S.current.bindPhone : S.current.bindEmail,
-          style: TextStyle(
-            color: const Color(0xff333333),
-            fontSize: 18.rpx,
-          ),
-        )),
+              state.isPhone.value ? S.current.bindPhone : S.current.bindEmail,
+              style: TextStyle(
+                color: const Color(0xff333333),
+                fontSize: 18.rpx,
+              ),
+            )),
       ),
       backgroundColor: AppColor.grayF7,
       body: Obx(() => ListView(
-        padding: EdgeInsets.only(top: 24.rpx),
-        children: [
-          _buildPhoneNumberTips(),
-          Visibility(
-            visible: state.isPhone.value,
-            replacement: _buildMailboxField(),
-            child: _buildPhoneField(),
-          ),
-          _buildVerificationCodeField(),
-          Visibility(
-            visible: state.currentIndex == -1,
-            child: _buildVerificationMode(),
-          ),
-          _buildSubmitButton(),
-        ].separated(
-          SizedBox(
-            height: 12.rpx,
-          ),
-        ).toList(),
-      )),
+            padding: EdgeInsets.only(top: 24.rpx),
+            children: [
+              _buildPhoneNumberTips(),
+              Visibility(
+                visible: state.isPhone.value,
+                replacement: _buildMailboxField(),
+                child: _buildPhoneField(),
+              ),
+              _buildVerificationCodeField(),
+              Visibility(
+                visible: state.currentIndex == -1,
+                child: _buildVerificationMode(),
+              ),
+              // RecaptchaV2Button(
+              //   onVerified: (value) {
+              //     AppLogger.d('RecaptchaV2Button: $value');
+              //   },
+              //   apiKey: AppConfig.recaptchaApiKey,
+              //   apiSecret: AppConfig.recaptchaApiSecret,
+              //   pluginURL: AppConfig.recaptchaWebSite,
+              // ),
+              _buildSubmitButton(),
+            ]
+                .separated(
+                  SizedBox(
+                    height: 12.rpx,
+                  ),
+                )
+                .toList(),
+          )),
     );
   }
 
@@ -78,7 +92,10 @@ class BindingPage extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(S.current.phone,style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),),
+          Text(
+            S.current.phone,
+            style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
+          ),
           Expanded(
             child: IntlPhoneField(
               decoration: InputDecoration(
@@ -89,24 +106,22 @@ class BindingPage extends StatelessWidget {
                   color: AppColor.gray9,
                 ),
               ),
-              initialCountryCode: 'CN',
-              languageCode: "ZH",
+              initialCountryCode: Get.locale?.countryCode,
+              languageCode: Get.locale?.languageCode ?? 'en',
               disableLengthCheck: true,
               dropdownIconPosition: IconPosition.trailing,
-              dropdownIcon: const Icon(Icons.keyboard_arrow_down_sharp,color: AppColor.gray5,),
-              onCountryChanged: (val){
-                print("val==$val");
-              },
+              dropdownIcon: const Icon(
+                Icons.keyboard_arrow_down_sharp,
+                color: AppColor.gray5,
+              ),
               pickerDialogStyle: PickerDialogStyle(
-                  backgroundColor: Colors.white,
-                  searchFieldInputDecoration: InputDecoration(
-                      labelText: S.current.search
-                  )
+                backgroundColor: Colors.white,
+                searchFieldInputDecoration:
+                    InputDecoration(labelText: S.current.search),
               ),
               onChanged: (phone) {
-                print(phone);
                 controller.phoneNumberInputController.text = phone.number;
-                // controller.phoneNumberInputController.text = phone.countryCode.substring(1)+phone.number;
+                state.countryCode = phone.countryCode;
               },
             ),
           ),
@@ -128,7 +143,9 @@ class BindingPage extends StatelessWidget {
   Widget _buildVerificationCodeField() {
     return SettingTextField(
       inputController: controller.verificationInputController,
-      labelText: state.isPhone.value ? S.current.cellPhoneVerificationCode : S.current.cellEmailVerificationCode,
+      labelText: state.isPhone.value
+          ? S.current.cellPhoneVerificationCode
+          : S.current.cellEmailVerificationCode,
       hintText: S.current.pleaseEnterTheVerificationCode,
       borderRadius: BorderRadius.zero,
       keyboardType: TextInputType.number,
@@ -137,7 +154,9 @@ class BindingPage extends StatelessWidget {
         LengthLimitingTextInputFormatter(6),
       ],
       suffixIcon: LoginVerificationCodeButton(
-        onFetch: controller.fetchSms,
+        onFetch: state.isPhone.value
+            ? controller.fetchSmsVerificationCode
+            : controller.fetchEmailVerificationCode,
       ),
     );
   }
@@ -145,13 +164,13 @@ class BindingPage extends StatelessWidget {
   //验证方式
   Widget _buildVerificationMode() {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         controller.phoneNumberInputController.clear();
         state.isPhone.value = !state.isPhone.value;
       },
       child: Container(
         alignment: Alignment.centerRight,
-        margin: EdgeInsets.only(bottom: 24.rpx,right: 16.rpx),
+        margin: EdgeInsets.only(bottom: 24.rpx, right: 16.rpx),
         child: RichText(
           text: TextSpan(
             text: "${S.current.notReceiveTheVerification}? ",
@@ -176,11 +195,13 @@ class BindingPage extends StatelessWidget {
   Widget _buildSubmitButton() {
     return Obx(() {
       return GestureDetector(
-        onTap: state.isVisible.value ? controller.submit : null,
+        onTap: state.isVisible.value
+            ? controller.submit
+            : null,
         child: Container(
           height: 42.rpx,
           decoration: BoxDecoration(
-              color: AppColor.primary
+              color: AppColor.primaryBlue
                   .withOpacity(state.isVisible.value ? 1 : 0.15),
               borderRadius: BorderRadius.circular(8.rpx)),
           margin: EdgeInsets.symmetric(horizontal: 38.rpx, vertical: 40.rpx),

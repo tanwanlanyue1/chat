@@ -19,4 +19,7 @@ class UpdatePasswordState {
 
   //
   String phone = "";
+
+  String verificationId = "";
+  String countryCode = "";
 }

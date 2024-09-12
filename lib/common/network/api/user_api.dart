@@ -404,11 +404,13 @@ class UserApi {
   /// phone：手机号
   /// email：邮箱
   /// verifyCode：验证码
+  /// idToken：firebase 短信验证码idToken
   static Future<ApiResponse> userBind({
     required int type,
     String? phone,
     String? email,
     String? verifyCode,
+    String? idToken,
   }) {
     return HttpClient.post(
       '/api/user/bind',
@@ -417,6 +419,7 @@ class UserApi {
         "phone": phone,
         "email": email,
         "verifyCode": verifyCode,
+        "idToken": idToken,
       },
       dataConverter: (json) => json,
     );
@@ -428,6 +431,7 @@ class UserApi {
   /// phone: 用户手机号
   /// email: 用户邮箱
   /// verifyCode：验证码
+  /// idToken：SMS验证码idToken
   /// password：用户密码
   /// confirmPassword：确认密码
   static Future<ApiResponse> updatePayPwd({
@@ -435,6 +439,7 @@ class UserApi {
     String? phone,
     String? email,
     String? verifyCode,
+    String? idToken,
     required String password,
     required String confirmPassword,
   }) {
@@ -445,6 +450,7 @@ class UserApi {
         "phone": phone,
         "email": email,
         "verifyCode": verifyCode,
+        "idToken": idToken,
         "password": password,
         "confirmPassword": confirmPassword,
       },

@@ -37,6 +37,7 @@ class AccountDataPage extends StatelessWidget {
       ),
       body: Obx(() {
         final info = state.info?.value;
+        final userInfoRx = controller.loginService.info;
         if (info == null) return const SizedBox();
 
         return Column(
@@ -127,7 +128,7 @@ class AccountDataPage extends StatelessWidget {
                   AccountDataItem(
                     onTap: controller.onTapPhone,
                     title: S.current.userPhone,
-                    detail: info.phone ?? controller.loginService.info?.phone,
+                    detail: userInfoRx?.phone,
                     detailHintText: "点击绑定手机电话",
                   ),
                   _padding(),
@@ -135,7 +136,7 @@ class AccountDataPage extends StatelessWidget {
                   AccountDataItem(
                     onTap: controller.onTapEmail,
                     title: S.current.userEmail,
-                    detail: info.email ?? controller.loginService.info?.email,
+                    detail: userInfoRx?.email,
                     detailHintText: "点击绑定邮箱",
                   ),
                   // likeSex

@@ -36,7 +36,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
     }else{
       Loading.show();
       final res = await state.loginService.fetchSms(
-          type: state.isPhone.value ? 1 : 2,
+          type: 2,
           phone: state.phone
       );
       Loading.dismiss();

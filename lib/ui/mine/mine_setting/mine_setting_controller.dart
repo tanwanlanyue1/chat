@@ -66,4 +66,13 @@ class MineSettingController extends GetxController {
       Get.toNamed(AppRoutes.bindingPage);
     }
   }
+
+  //注销账号
+  void removeAccount(){
+    if(SS.login.userBind){
+      Get.toNamed(AppRoutes.webPage,arguments: {'url':"http://192.168.20.216:5500/gj_account_cancellation.html",'title':'账号注销'});
+    }else{
+      Get.toNamed(AppRoutes.bindingPage);
+    }
+  }
 }

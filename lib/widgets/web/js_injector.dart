@@ -82,6 +82,9 @@ class JsInjector{
         case 'clearCache':
           _clearCache(method, uuid);
           break;
+        case 'emailVerify':
+          _emailVerify(method, uuid);
+          break;
       }
     }catch(ex){
       AppLogger.w(ex);
@@ -211,4 +214,19 @@ class JsInjector{
     return controller.runJavaScript('JSBridge.${method}Return($args, $uuid)');
   }
 
+  ///获取邮箱验证码
+  void _emailVerify(String method,int uuid) async{
+    Loading.show();
+    final res = await SS.login.fetchSms(
+        type: 2,
+        phone: SS.login.info?.email ?? ''
+    );
+    return res.when(success: (_) {
+      Loading.dismiss();
+       _invokeJavaScript(method, "true", uuid);
+    }, failure: (errorMessage) {
+      Loading.showToast(errorMessage);
+      _invokeJavaScript(method, "false", uuid);
+    });
+  }
 }

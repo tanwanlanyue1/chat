@@ -82,15 +82,19 @@ async function _callAppMethod(method, context, args = {}){
        */
       context.clearCache = () => _callAppMethod('clearCache', context);
 
-        /**
-         * 保存图片到相册
-         */
-        context.saveGallery = (url) => _callAppMethod('saveGallery', context, {url});
+      /**
+       * 保存图片到相册
+       */
+      context.saveGallery = (url) => _callAppMethod('saveGallery', context, {url});
 
-        /**
-         * 佛珠滚了一圈
-         */
-        context.onBeadsIncrement = () => _callAppMethod('onBeadsIncrement', context);
+      /**
+       * 佛珠滚了一圈
+       */
+      context.onBeadsIncrement = () => _callAppMethod('onBeadsIncrement', context);
 
+      /**
+       * 获取邮箱验证码
+       */
+     context.emailVerify = () => _callAppMethod('emailVerify', context);
 
 })(window.JSBridge = {});

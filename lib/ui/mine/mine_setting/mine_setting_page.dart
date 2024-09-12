@@ -154,11 +154,29 @@ class MineSettingPage extends StatelessWidget {
                       },
                     ),
                   ]),
-                  SettingItem(
-                    title: S.current.aboutUs,
-                    callBack: () {
-                      Get.toNamed(AppRoutes.aboutPage);
-                    },
+                  _buildSection(
+                      children: [
+                        SettingItem(
+                          title: S.current.aboutUs,
+                          bottom: 0,
+                          callBack: () {
+                            Get.toNamed(AppRoutes.aboutPage);
+                          },
+                        ),
+                        SettingItem(
+                          title: S.current.removeAccount,
+                          bottom: 0,
+                          trailing: Visibility(
+                            visible: !SS.login.userBind,
+                            child: Text(
+                              "请先绑定手机/邮箱",
+                              style: AppTextStyle.fs14b
+                                  .copyWith(color: AppColor.gray5),
+                            ),
+                          ),
+                          callBack: controller.removeAccount,
+                        ),
+                      ]
                   ),
                   if (!AppInfo.isRelease) _buildSection(children: [
                     _buildDevServerSwitch(),

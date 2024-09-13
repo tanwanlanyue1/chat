@@ -1,15 +1,11 @@
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/widgets/recaptcha_dialog.dart';
 import 'package:guanjia/widgets/widgets.dart';
-import 'package:recaptcha_enterprise_flutter/recaptcha.dart';
-import 'package:recaptcha_enterprise_flutter/recaptcha_action.dart';
-import 'package:recaptcha_enterprise_flutter/recaptcha_client.dart';
 
 import '../firebase_options.dart';
 import '../network/api/open_api.dart';
@@ -20,8 +16,6 @@ class FirebaseUtil{
   FirebaseUtil._();
   static final instance = FirebaseUtil._();
   factory FirebaseUtil() => instance;
-
-  RecaptchaClient? _recaptchaClient;
 
   ///初始化firebase
   Future<void> init() async{

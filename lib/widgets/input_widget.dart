@@ -83,6 +83,7 @@ class InputWidget extends StatelessWidget {
             ),
             textAlign: textAlign ?? TextAlign.left,
             maxLines: lines,
+            maxLength: maxLength,
             focusNode: focusNode,
             controller: inputController ?? controller,
             onChanged: (val) {

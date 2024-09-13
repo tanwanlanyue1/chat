@@ -266,6 +266,7 @@ class AccountDataPage extends StatelessWidget {
                         textAction: TextInputAction.newline,
                         inputController: controller.signatureController,
                         contentPadding: EdgeInsets.zero,
+                        counterStyle: AppTextStyle.fs12m.copyWith(color: AppColor.black999),
                       ),
                     ),
                   ),

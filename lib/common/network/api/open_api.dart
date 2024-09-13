@@ -1,9 +1,5 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/httpclient/http_client.dart';
-import 'package:guanjia/common/utils/app_logger.dart';
 
 enum OpenApiLoginType {
   password,
@@ -49,7 +45,7 @@ class OpenApi {
         "appleId": appleId,
         "identityToken": identityToken,
         "email": email,
-        "recaptchaToken": recaptchaToken,
+        "googleToken": recaptchaToken,
       },
       dataConverter: (json) {
         return LoginRes.fromJson(json);
@@ -103,7 +99,7 @@ class OpenApi {
       params: {
         "type": type,
         "account": account,
-        "recaptchaToken": recaptchaToken,
+        "googleToken": recaptchaToken,
       },
     );
   }
@@ -220,7 +216,7 @@ class OpenApi {
   static Future<ApiResponse<void>> recaptchaVerify(
       String recaptchaToken) async {
     return HttpClient.get(
-      '/openapi/siteverify',
+      '/openapi/googleTokenVerify',
       params: {
         'token': recaptchaToken,
       },

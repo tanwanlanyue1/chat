@@ -29,6 +29,7 @@ class _PrivacyViewState extends State<PrivacyView> {
   @override
   void initState() {
     _split();
+    print(_list);
     super.initState();
   }
 

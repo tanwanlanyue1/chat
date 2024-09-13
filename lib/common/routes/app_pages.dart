@@ -73,7 +73,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.welcome,
-      page: () => const WelcomePage(),
+      page: () => WelcomePage(),
       middlewares: [
         RouteWelcomeMiddleware(),
       ],

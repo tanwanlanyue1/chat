@@ -46,9 +46,7 @@ class OrderAssignAgentController extends GetxController {
       return;
     }
 
-    Loading.show();
     final res = await OrderApi.assign(orderId: orderId, receiveId: item.uid!);
-    Loading.dismiss();
     if (!res.isSuccess) {
       res.showErrorMessage();
       return;

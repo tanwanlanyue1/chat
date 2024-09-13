@@ -25,11 +25,9 @@ class MineClientController extends GetxController {
 
   ///获取佳丽的客户列表
   void fetchPage(int page) async {
-    Loading.show();
     final response = await OrderApi.getMyClientList(
         page: page
     );
-    Loading.dismiss();
     if (response.isSuccess) {
       final items = response.data ?? [];
       pagingController.appendPageData(items);

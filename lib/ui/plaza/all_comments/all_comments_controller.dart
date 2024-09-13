@@ -38,11 +38,9 @@ class AllCommentsController extends GetxController  with UserAttentionMixin, Get
     if(page == 1){
       pagingController.itemList?.clear();
     }
-    Loading.show();
     final response = await PlazaApi.getCommentList(
       id: state.postId,
     );
-    Loading.dismiss();
     if (response.isSuccess) {
       final items = response.data ?? [];
       pagingController.appendPageData(items);

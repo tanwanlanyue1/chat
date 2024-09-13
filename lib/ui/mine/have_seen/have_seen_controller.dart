@@ -26,11 +26,9 @@ class HaveSeenController extends GetxController {
 
   ///谁看过我
   void fetchPage(int page) async {
-    Loading.show();
     final response = await UserApi.getVisitList(
         page: page
     );
-    Loading.dismiss();
     if (response.isSuccess) {
       final items = response.data ?? [];
       pagingController.appendPageData(items);

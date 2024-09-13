@@ -25,12 +25,10 @@ class JiaEvaluateController extends GetxController {
 
   ///获取评价列表
   void fetchPage(int page) async {
-    Loading.show();
     final response = await OrderApi.getEvaluateList(
         page: page,
         type: 2
     );
-    Loading.dismiss();
     if (response.isSuccess) {
       EvaluationListModel? items = response.data;
       if(page == 1){

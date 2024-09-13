@@ -74,7 +74,6 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin{
 
   ///获取约会列表
   void fetchPage(int page) async {
-    Loading.show();
     AppointmentModel? res;
     if(page == 1){
       pagingController.itemList?.clear();
@@ -85,7 +84,6 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin{
       subTypes: state.sortIndex,
       page: page
     );
-    Loading.dismiss();
     if (response.isSuccess) {
       final items = response.data ?? [];
       if(res != null){

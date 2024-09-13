@@ -25,12 +25,10 @@ class MineEvaluateController extends GetxController {
 
   ///获取评价列表
   void fetchPage(int page) async {
-    Loading.show();
     final response = await OrderApi.getEvaluateList(
         page: page,
         type: 1
     );
-    Loading.dismiss();
     if (response.isSuccess) {
       pagingController.appendPageData(response.data?.list ?? []);
     } else {

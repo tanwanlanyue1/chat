@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/httpclient/http_client.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 
 enum OpenApiLoginType {
   password,
@@ -20,6 +24,7 @@ class OpenApi {
   ///- appleId：苹果登录用户唯一标识
   ///- identityToken：苹果登录授权token
   ///- email：邮箱
+  ///- recaptchaToken：人机校验token
   static Future<ApiResponse<LoginRes>> login({
     required int loginType,
     String? account,
@@ -30,6 +35,7 @@ class OpenApi {
     String? appleId,
     String? identityToken,
     String? email,
+    String? recaptchaToken,
   }) async {
     return HttpClient.post(
       '/openapi/login',
@@ -43,6 +49,7 @@ class OpenApi {
         "appleId": appleId,
         "identityToken": identityToken,
         "email": email,
+        "recaptchaToken": recaptchaToken,
       },
       dataConverter: (json) {
         return LoginRes.fromJson(json);
@@ -84,15 +91,19 @@ class OpenApi {
   /// 发送手机验证码
   /// type: 类型(1.手机号 2.邮箱)
   /// account: 用户手机号
+  /// account: 用户手机号
+  /// recaptchaToken: 人机校验token
   static Future<ApiResponse> sms({
     required int type,
     required String account,
+    String? recaptchaToken,
   }) {
     return HttpClient.get(
       '/openapi/sendVerifyCodeKey',
       params: {
         "type": type,
         "account": account,
+        "recaptchaToken": recaptchaToken,
       },
     );
   }
@@ -192,8 +203,7 @@ class OpenApi {
 
   /// 获取所有活动
   static Future<ApiResponse<List<AdvertisingStartupModel>>> getAdList() {
-    return HttpClient.get('/openapi/getAdList',
-      dataConverter: (data) {
+    return HttpClient.get('/openapi/getAdList', dataConverter: (data) {
       if (data is List) {
         return data.map((e) => AdvertisingStartupModel.fromJson(e)).toList();
       }
@@ -201,9 +211,19 @@ class OpenApi {
     });
   }
 
-
   static Future<ApiResponse> sendSignallingMsg() {
     return HttpClient.get('/api/im/sendSignallingMsg');
   }
 
+  ///recaptcha验证
+  ///- token 用户人机验证返回的token
+  static Future<ApiResponse<void>> recaptchaVerify(
+      String recaptchaToken) async {
+    return HttpClient.get(
+      '/openapi/siteverify',
+      params: {
+        'token': recaptchaToken,
+      },
+    );
+  }
 }

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/widgets/recaptcha_button.dart';
 
 ///获取验证码按钮
 class LoginVerificationCodeButton extends StatefulWidget {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -32,13 +33,10 @@ class RegisterController extends GetxController {
       return;
     }
 
-    Loading.show();
     Result<void, String> result = await SS.login.loginByRegister(
       account: userNameController.text,
       password: passwordController.text,
     );
-    Loading.dismiss();
-
     result.when(success: (_) {
       Get.offAllNamed(AppRoutes.loginQuestionPage);
     }, failure: (errorMessage) {

@@ -55,25 +55,6 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
         arguments: {"type": 1}, preventDuplicates: false);
   }
 
-  void onFetchSms() async {
-    FocusScope.of(Get.context!).unfocus();
-
-    if (accountController.text.isEmpty) {
-      Loading.showToast("请输入手机号码");
-      return;
-    }
-
-    Loading.show();
-    final res = await SS.login.fetchSms(type: 1,phone: accountController.text);
-    Loading.dismiss();
-    res.when(success: (_) {
-      Loading.showToast("短信发送成功");
-      _startTimer();
-    }, failure: (errorMessage) {
-      Loading.showToast(errorMessage);
-    });
-  }
-
   void onTapLogin() async {
     FocusScope.of(Get.context!).unfocus();
     Loading.show();

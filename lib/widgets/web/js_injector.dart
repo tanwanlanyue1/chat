@@ -223,13 +223,10 @@ class JsInjector{
 
   ///获取邮箱验证码
   void _emailVerify(String method,int uuid) async{
-    Loading.show();
-    final res = await SS.login.fetchSms(
-        type: 2,
-        phone: SS.login.info?.email ?? ''
+    final res = await SS.login.fetchEmailVerificationCode(
+        SS.login.info?.email ?? ''
     );
     return res.when(success: (_) {
-      Loading.dismiss();
        _invokeJavaScript(method, "true", uuid);
     }, failure: (errorMessage) {
       Loading.showToast(errorMessage);
@@ -237,27 +234,10 @@ class JsInjector{
     });
   }
 
-
   ///获取手机短信验证码
   void _phoneVerify(String method,int uuid) async{
-    Loading.show();
     final verificationId = await FirebaseUtil().sendSmsCode(SS.login.info?.phone ?? '');
-    if(verificationId == null){
-      Loading.showToast('获取验证码失败');
-      _invokeJavaScript(method, "false", uuid);
-    }
-
-    final res = await SS.login.fetchSms(
-        type: 2,
-        phone: SS.login.info?.email ?? ''
-    );
-    return res.when(success: (_) {
-      Loading.dismiss();
-      _invokeJavaScript(method, verificationId, uuid);
-    }, failure: (errorMessage) {
-      Loading.showToast(errorMessage);
-      _invokeJavaScript(method, "false", uuid);
-    });
+    _invokeJavaScript(method, verificationId ?? "false", uuid);
   }
 
   ///账号注销

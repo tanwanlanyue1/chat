@@ -35,13 +35,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
       Loading.showToast('邮箱格式错误');
       return false;
     }else{
-      Loading.show();
-      final res = await state.loginService.fetchSms(
-          type: 2,
-          phone: state.phone
-      );
-      Loading.dismiss();
-
+      final res = await state.loginService.fetchEmailVerificationCode(state.phone);
       return res.when(success: (_) {
         return true;
       }, failure: (errorMessage) {
@@ -58,16 +52,11 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
       Loading.showToast('请输入手机号码');
       return false;
     }
-    Loading.show();
+
+
     final verificationId = await FirebaseUtil().sendSmsCode('${state.countryCode}${state.phone}');
-    Loading.dismiss();
-    if(verificationId != null){
-      state.verificationId = verificationId;
-      return true;
-    }else{
-      Loading.showToast('获取验证码失败');
-      return false;
-    }
+    state.verificationId = verificationId ?? '';
+    return state.verificationId.isNotEmpty;
   }
 
   /// 提交修改-登录密码

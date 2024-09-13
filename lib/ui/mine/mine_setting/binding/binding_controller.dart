@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/common/network/api/open_api.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/firebase_util.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
+import 'package:guanjia/widgets/recaptcha_dialog.dart';
 
 import 'binding_state.dart';
 
@@ -28,12 +31,8 @@ class BindingController extends GetxController {
       Loading.showToast('邮箱格式错误');
       return false;
     }
-    Loading.show();
-    final res = await loginService.fetchSms(
-        type: state.isPhone.value ? 1 : 2,
-        phone: email,
-    );
-    Loading.dismiss();
+
+    final res = await loginService.fetchEmailVerificationCode(email);
     return res.when(success: (_) {
       return true;
     }, failure: (errorMessage) {
@@ -49,16 +48,10 @@ class BindingController extends GetxController {
       Loading.showToast('请输入手机号码');
       return false;
     }
-    Loading.show();
+
     final verificationId = await FirebaseUtil().sendSmsCode('${state.countryCode}$phone');
-    Loading.dismiss();
-    if(verificationId != null){
-      state.verificationId = verificationId;
-      return true;
-    }else{
-      Loading.showToast('获取验证码失败');
-      return false;
-    }
+    state.verificationId = verificationId ?? '';
+    return state.verificationId.isNotEmpty;
   }
 
   ///绑定

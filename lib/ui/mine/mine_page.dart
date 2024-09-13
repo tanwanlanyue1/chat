@@ -12,6 +12,7 @@ import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/beautiful_status_tips.dart';
 import 'package:guanjia/ui/mine/widgets/mine_list_tile.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/recaptcha_dialog.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 

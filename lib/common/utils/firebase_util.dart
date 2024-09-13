@@ -5,11 +5,14 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/widgets/recaptcha_dialog.dart';
+import 'package:guanjia/widgets/widgets.dart';
 import 'package:recaptcha_enterprise_flutter/recaptcha.dart';
 import 'package:recaptcha_enterprise_flutter/recaptcha_action.dart';
 import 'package:recaptcha_enterprise_flutter/recaptcha_client.dart';
 
 import '../firebase_options.dart';
+import '../network/api/open_api.dart';
 import 'app_logger.dart';
 
 ///firebase 帮助类
@@ -36,6 +39,25 @@ class FirebaseUtil{
   Future<String?> sendSmsCode(String phoneNumber) async{
     final completer = Completer<String?>();
 
+    //人机校验
+    if(AppConfig.recaptchaPhoneEnable){
+      final recaptchaToken = await ReCaptchaDialog.show();
+      if(recaptchaToken == null){
+        //用户取消校验
+        return null;
+      }
+
+      //接口校验token
+      Loading.show();
+      final resp = await OpenApi.recaptchaVerify(recaptchaToken);
+      if(!resp.isSuccess){
+        Loading.dismiss();
+        resp.showErrorMessage();
+        return null;
+      }
+    }
+
+    Loading.show();
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       timeout: const Duration(seconds: 60),
@@ -54,11 +76,19 @@ class FirebaseUtil{
         AppLogger.d('codeAutoRetrievalTimeout: $verificationId');
       },
     );
+    String? verificationId;
     try{
-      return await completer.future.timeout(const Duration(seconds: 10));
+      verificationId = await completer.future.timeout(const Duration(seconds: 10));
     }catch(ex){
-      return null;
+      AppLogger.w(ex);
     }
+
+    Loading.dismiss();
+    if(verificationId == null){
+      Loading.showToast('验证码发送失败');
+    }
+
+    return verificationId;
   }
 
   ///验证短信验证码

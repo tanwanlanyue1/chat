@@ -13,6 +13,7 @@ import 'package:guanjia/common/utils/result.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/home/home_page.dart';
 import 'package:guanjia/widgets/loading.dart';
+import 'package:guanjia/widgets/recaptcha_dialog.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
@@ -154,13 +155,25 @@ class LoginService extends GetxService {
     required String password,
     String? phone,
     String? email,
-  }) {
+  }) async{
+
+    //人机校验
+    String? recaptchaToken;
+    if(AppConfig.recaptchaRegisterEnable){
+      recaptchaToken = await ReCaptchaDialog.show();
+      if(recaptchaToken == null){
+        //用户取消校验
+        return const ResultFailure('');
+      }
+    }
+
     return _login(
       loginType: 5,
       account: account,
       password: password,
       phone: phone,
       email: email,
+      recaptchaToken: recaptchaToken,
     );
   }
 
@@ -216,6 +229,7 @@ class LoginService extends GetxService {
   ///- password：用户密码
   ///- verifyCode：验证码
   ///- code：第三方登录code
+  ///- recaptchaToken：人机校验token
   /// return 错误信息
   Future<Result<void, String>> _login({
     required int loginType,
@@ -227,6 +241,7 @@ class LoginService extends GetxService {
     String? userIdentifier,
     String? identityToken,
     String? email,
+    String? recaptchaToken,
   }) async {
     // 先请求登录接口
     final res = await OpenApi.login(
@@ -239,6 +254,7 @@ class LoginService extends GetxService {
       appleId: userIdentifier,
       identityToken: identityToken,
       email: email,
+      recaptchaToken: recaptchaToken,
     );
 
     if (!res.isSuccess) {
@@ -344,14 +360,23 @@ class LoginService extends GetxService {
     return const ResultSuccess(null);
   }
 
-  /// 发送手机验证码
-  /// phone: 用户手机号
-  /// type: 类型(1.手机号 2.邮箱)
-  Future<Result<void, String>> fetchSms({
-    required String phone,
-    required int type,
-  }) async {
-    final res = await OpenApi.sms(type: type, account: phone);
+  /// 发送邮箱验证码
+  ///- email 用户手机号
+  Future<Result<void, String>> fetchEmailVerificationCode(String email) async {
+    String? recaptchaToken;
+
+    //人机校验
+    if(AppConfig.recaptchaEmailEnable){
+      recaptchaToken = await ReCaptchaDialog.show();
+      if(recaptchaToken == null){
+        //用户取消校验
+        return const ResultFailure("");
+      }
+    }
+
+    Loading.show();
+    final res = await OpenApi.sms(type: 2, account: email, recaptchaToken: recaptchaToken);
+    Loading.dismiss();
     if (!res.isSuccess) {
       return ResultFailure(res.errorMessage ?? "data error");
     }

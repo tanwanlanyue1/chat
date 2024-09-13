@@ -24,14 +24,12 @@ class AppConfig{
   ///客服与帮助
   static const urlHelp = 'http://jxapp.amiyosz.com/protocol/jx_help.html';
 
-  ///禅房念珠
-  static const urlRosaryBeads = 'http://jxapp.amiyosz.com/protocol/jx_rosary_beads.html';
-
   ///APP下载页
   static const urlAppDownload = 'http://jxapp.amiyosz.com/protocol/jx_app_download.html';
 
   ///账号注销
-  static const urlAccountCancellation = 'http://jxapp.amiyosz.com/protocol/jx_account_cancellation.html';
+  // static const urlAccountCancellation = 'http://jxapp.amiyosz.com/protocol/jx_account_cancellation.html';
+  static const urlAccountCancellation = 'http://192.168.20.216:5500/gj_account_cancellation.html';
 
   ///iOS通用链接
   static const iosUniversalLink = 'https://jxapi.amiyosz.com/app/';
@@ -45,9 +43,12 @@ class AppConfig{
 
   //后台管理 https://www.google.com/recaptcha/admin/site/708806082?hl=zh-cn
   static const recaptchaApiKey = '6LfChT8qAAAAACW9sgMYpQNJLF9Mx-jL8iRofe-N';
-  //服务端验证 https://developers.google.com/recaptcha/docs/verify
-  static const recaptchaApiSecret = '6LfChT8qAAAAAOEiALil_tKbEccPoGehztrWoymu';
-  static const recaptchaWebSite = 'https://recaptcha-flutter-plugin.firebaseapp.com/';
+  ///邮箱验证是否启用人机校验
+  static const recaptchaEmailEnable = true;
+  ///手机验证是否启用人机校验
+  static const recaptchaPhoneEnable = true;
+  ///注册是否启用人机校验
+  static const recaptchaRegisterEnable = true;
 
   ///ICP备案号
   static String icp = S.current.guangdongICP;

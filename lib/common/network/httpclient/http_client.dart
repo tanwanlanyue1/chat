@@ -176,7 +176,7 @@ class HttpClient {
   static Future<Response<T>> request<T>(
     String url, {
     final Map<String, dynamic>? params,
-    final Map<String, dynamic>? data,
+    final Object? data,
     final Options? options,
   }) async {
     return _instance.dio.request(

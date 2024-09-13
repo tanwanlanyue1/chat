@@ -31,7 +31,8 @@ class FirstPageErrorIndicator extends StatelessWidget {
             AppImage.asset(
               'assets/images/common/default_error.png',
               width: 100.rpx,
-              height: 100.rpx,
+              height: 80.rpx,
+              fit: BoxFit.cover,
             ),
             Padding(
               padding: EdgeInsets.only(top: 20.rpx),

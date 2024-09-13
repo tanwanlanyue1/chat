@@ -10,6 +10,7 @@ import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/widgets/widgets.dart';
 
 import 'register_controller.dart';
 
@@ -28,6 +29,9 @@ class RegisterPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: AppBackButton.light(),
+        systemOverlayStyle: SystemUI.lightStyle.copyWith(
+          systemNavigationBarColor: Colors.black,
+        ),
       ),
       body: Stack(
         children: [

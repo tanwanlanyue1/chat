@@ -118,6 +118,6 @@ async function _callAppMethod(method, context, args = {}){
        /**
         * 账号注销
         */
-       context.accountCancellation = (verificationId = '', smsCode = '') => _callAppMethod('accountCancellation', context, {verificationId, smsCode});
+     context.accountCancellation = (verificationId = '', smsCode = '',type = 0,phone = true) => _callAppMethod('accountCancellation', context, {verificationId, smsCode,type,phone});
 
 })(window.JSBridge = {});

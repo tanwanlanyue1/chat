@@ -16,6 +16,8 @@ import 'package:guanjia/global.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../common/network/api/api.dart';
+
 ///JS注入
 class JsInjector{
   final WebViewController controller;
@@ -237,24 +239,47 @@ class JsInjector{
   ///获取手机短信验证码
   void _phoneVerify(String method,int uuid) async{
     final verificationId = await FirebaseUtil().sendSmsCode(SS.login.info?.phone ?? '');
-    _invokeJavaScript(method, verificationId ?? "false", uuid);
+    String? args = jsonEncode({
+      'verificationId': verificationId ?? "false",
+    });
+    _invokeJavaScript(method, args, uuid);
   }
 
   ///账号注销
+  ///type:注销理由
   void _accountCancellation(String method,int uuid, Map data) async{
     final verificationId = data['verificationId'] ?? '';
     final smsCode = data['smsCode'] ?? '';
+    final type = data['type'] ?? 0;
+    final phone = data['phone'] ?? true;
+    String? idToken;
     Loading.show();
-    final idToken = await FirebaseUtil().verifySmsCode(verificationId, smsCode);
-    if(idToken == null){
-      Loading.dismiss();
-      Loading.showToast('验证码错误');
-      _invokeJavaScript(method, "false", uuid);
-      return;
+    if(phone){
+      idToken = await FirebaseUtil().verifySmsCode(verificationId, smsCode);
+      if(idToken == null){
+        Loading.dismiss();
+        Loading.showToast('验证码错误');
+        _invokeJavaScript(method, "false", uuid);
+        return;
+      }
     }
 
     //调用注销接口
-
+    final res = await UserApi.cancelAccount(
+      phone: phone ? SS.login.info?.phone : null,
+      email: phone ? null : SS.login.info?.email,
+      type: type,
+      verifyCode: smsCode,
+      idToken: phone ? idToken : null
+    );
+    if(res.isSuccess){
+      Loading.showToast("注销成功");
+      SS.login.signOut(userAction: false).then((value) => {
+        Get.navigateToHomeOrLogin()
+      });
+    }else{
+      Loading.showToast(res.message ?? '');
+    }
   }
 
 }

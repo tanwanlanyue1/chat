@@ -1,6 +1,6 @@
 
 
-async function _callAppMethod(method, context, args = {}){
+async function _callAppMethod(method, context, args = {timeout: 8000}){
     if(window.__js_bridge__ && __js_bridge__.postMessage){
         return new Promise(function(resolve, reject){
             const _uuid = Date.now();
@@ -9,10 +9,19 @@ async function _callAppMethod(method, context, args = {}){
                 'uuid': _uuid,
                 ...args,
             }));
-            const timeoutId = setTimeout(() => reject('timeout'), 5000);
+            let timeoutId;
+            const timeout = args.timeout || 8000;
+            if(timeout > 0){
+                timeoutId = setTimeout(() => {
+                    console.log('method:', method, ' call timeout!');
+                    reject('timeout');
+                }, timeout);
+            }
             context[`${method}Return`] = function(data, uuid){
                 if(uuid == _uuid){
-                    clearTimeout(timeoutId);
+                    if(timeoutId){
+                        clearTimeout(timeoutId);
+                    }
                     resolve(data);
                 }
             }
@@ -95,13 +104,13 @@ async function _callAppMethod(method, context, args = {}){
       /**
        * 获取邮箱验证码
        */
-     context.emailVerify = () => _callAppMethod('emailVerify', context);
+     context.emailVerify = () => _callAppMethod('emailVerify', context, {timeout: 0});
 
       /**
        * 获取短信验证码
        * return verificationId | "false"
        */
-     context.phoneVerify = () => _callAppMethod('phoneVerify', context);
+     context.phoneVerify = () => _callAppMethod('phoneVerify', context, {timeout: 0});
 
        /**
         * 账号注销

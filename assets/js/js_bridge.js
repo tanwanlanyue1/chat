@@ -1,6 +1,6 @@
 
 
-async function _callAppMethod(method, context, args = {timeout: 8000}){
+async function _callAppMethod(method, context, args = {}){
     if(window.__js_bridge__ && __js_bridge__.postMessage){
         return new Promise(function(resolve, reject){
             const _uuid = Date.now();
@@ -10,7 +10,10 @@ async function _callAppMethod(method, context, args = {timeout: 8000}){
                 ...args,
             }));
             let timeoutId;
-            const timeout = args.timeout || 8000;
+            let timeout = 8000;
+            if(typeof args.timeout == 'number'){
+                timeout = args.timeout;
+            }
             if(timeout > 0){
                 timeoutId = setTimeout(() => {
                     console.log('method:', method, ' call timeout!');

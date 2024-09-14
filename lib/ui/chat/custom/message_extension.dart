@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_transfer_content.dart';
@@ -11,6 +12,7 @@ import 'message_call_match_content.dart';
 import 'message_call_reject_content.dart';
 import 'message_order_content.dart';
 import 'message_red_packet_content.dart';
+import 'message_sys_notice_content.dart';
 
 extension ZIMKitMessageExt on ZIMKitMessage {
   ///隐藏头像
@@ -27,7 +29,7 @@ extension ZIMKitMessageExt on ZIMKitMessage {
     if (type == ZIMMessageType.custom) {
       final typeVal = customContent?.type;
       if (typeVal != null) {
-        return CustomMessageTypeX.valueOf(typeVal);
+        return CustomMessageType.valueOf(typeVal);
       }
     }
     return null;
@@ -114,6 +116,14 @@ extension ZIMKitMessageExt on ZIMKitMessage {
     );
   }
 
+  ///系统通知消息内容
+  MessageSysNoticeContent? get sysNoticeContent {
+    return _getOrParse(
+      type: CustomMessageType.sysNotice,
+      parse: MessageSysNoticeContent.fromJson,
+    );
+  }
+
   ///是否隐藏头像
   set isHideAvatar(bool isHide) {
     zimkitExtraInfo[_kHideAvatar] = isHide;
@@ -138,6 +148,8 @@ extension ZIMKitMessageExt on ZIMKitMessage {
   ///是否是业务撤回消息
   bool get isRevokeMessage => zimkitExtraInfo[_kRevokeMessage] == true;
 
+  ///是否是系统通知
+  bool get isSysNotice => info.senderUserID == AppConfig.sysUserId;
 
   ///订单消息内容
   MessageOrderContent? get orderContent {
@@ -164,7 +176,7 @@ extension ZIMKitMessageExt on ZIMKitMessage {
   String? _customMsgPlainText(ZIMKitMessage message) {
     switch (message.customType) {
       case CustomMessageType.sysNotice:
-        return message.customContent?.message ?? '';
+        return message.sysNoticeContent?.content ?? '';
       case CustomMessageType.redPacket:
         return '[红包]';
       case CustomMessageType.transfer:

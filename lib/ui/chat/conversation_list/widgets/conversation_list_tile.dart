@@ -115,10 +115,6 @@ class _ConversationListTileState extends State<ConversationListTile>
   }
 
   Widget _buildAvatar() {
-    var text = '${conversation.unreadMessageCount}';
-    if (conversation.unreadMessageCount > 99) {
-      text = '99+';
-    }
     var icon = conversation.icon;
     if (isSysNotice) {
       icon = AppImage.asset('assets/images/chat/ic_sys_notice.png');

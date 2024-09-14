@@ -1,41 +1,38 @@
-
+import 'package:get/get.dart';
 
 ///自定义消息类型
-enum CustomMessageType{
-
-  ///系统通知 0
-  sysNotice,
-
+enum CustomMessageType {
   ///红包 1
-  redPacket,
+  redPacket(1),
 
   ///音视频通话结束 2
-  callEnd,
+  callEnd(2),
 
   ///转账 3
-  transfer,
+  transfer(3),
 
   ///订单消息（创建，状态变更） 4
-  order,
+  order(4),
 
   ///速配 5
-  callMatch,
+  callMatch(5),
 
   /// 音视频通话发起 6
   @Deprecated('产品说不需要了')
-  callInvite,
+  callInvite(6),
 
   ///被邀请人拒绝接听 7
-  callReject,
+  callReject(7),
 
-}
+  ///系统通知 8
+  sysNotice(8);
 
-extension CustomMessageTypeX on CustomMessageType{
+  final int value;
 
-  int get value => index;
+  const CustomMessageType(this.value);
 
-  static CustomMessageType? valueOf(int value){
-    return CustomMessageType.values.elementAtOrNull(value);
+  static CustomMessageType? valueOf(int value) {
+    return CustomMessageType.values
+        .firstWhereOrNull((element) => element.value == value);
   }
-
 }

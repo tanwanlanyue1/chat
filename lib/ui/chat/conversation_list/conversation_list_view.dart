@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/paging/default_status_indicators/first_page_error_indicator.dart';
 import 'package:guanjia/common/paging/default_status_indicators/first_page_progress_indicator.dart';
 import 'package:guanjia/common/paging/default_status_indicators/no_items_found_indicator.dart';
@@ -46,30 +48,33 @@ class _ConversationListViewState extends State<ConversationListView>
       return ValueListenableBuilder(
         valueListenable: state.conversationListNotifier,
         builder: (_, list, __) {
+          //系统消息置顶
+          list = list.sorted((a, b){
+            if(b.value.id == AppConfig.sysUserId){
+              return 1;
+            }
+            return 0;
+          });
           return LayoutBuilder(
             builder: (context, BoxConstraints constraints) {
-              return CustomScrollView(
+              return ListView.separated(
                 controller: controller.scrollController,
                 cacheExtent: constraints.maxHeight * 3,
-                slivers: [
-                  SliverList.separated(
-                    itemCount: list.length,
-                    itemBuilder: (_, index) {
-                      final conversation = list[index];
-                      return ValueListenableBuilder(
-                        valueListenable: conversation,
-                        builder: (_, conversation, __) {
-                          return ConversationListTile(
-                            conversation: conversation,
-                          );
-                        },
+                itemCount: list.length,
+                itemBuilder: (_, index) {
+                  final conversation = list[index];
+                  return ValueListenableBuilder(
+                    valueListenable: conversation,
+                    builder: (_, conversation, __) {
+                      return ConversationListTile(
+                        conversation: conversation,
                       );
                     },
-                    separatorBuilder: (_, __) {
-                      return Divider(height: 0, indent: 75.rpx);
-                    },
-                  ),
-                ],
+                  );
+                },
+                separatorBuilder: (_, index) {
+                  return Divider(height: 0, indent: 75.rpx);
+                },
               );
             },
           );

@@ -1,7 +1,6 @@
 part of 'chat_manager.dart';
 
 mixin _ChatSenderMixin {
-
   ///发送文本消息
   Future<bool> sendTextMessage({
     required String text,
@@ -96,9 +95,10 @@ mixin _ChatSenderMixin {
     required String customMessage,
     required ZIMConversationType conversationType,
     required String conversationId,
-}) async{
-
-    if(await _checkMessage(type: 5, msg: {'customType': customType, 'customMessage': customMessage})){
+  }) async {
+    if (await _checkMessage(
+        type: 5,
+        msg: {'customType': customType, 'customMessage': customMessage})) {
       await ZIMKitCore.instance.sendCustomMessage(
         conversationId,
         conversationType,
@@ -108,6 +108,21 @@ mixin _ChatSenderMixin {
       return true;
     }
     return false;
+  }
+
+  ///发送本地消息
+  Future<bool> sendLocalMessage({
+    required ZIMMessage message,
+    required String conversationId,
+    required ZIMConversationType conversationType,
+}) async{
+    final result = await ZIM.getInstance()?.insertMessageToLocalDB(
+      message,
+      conversationId,
+      conversationType,
+      SS.login.userId?.toString() ?? '',
+    );
+    return result != null;
   }
 
   ///检查消息是否可发送

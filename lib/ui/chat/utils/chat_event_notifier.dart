@@ -8,9 +8,12 @@ class ChatEventNotifier {
       StreamController<PeerMessageEvent>.broadcast();
   late final _onReceiveCommandMessageController =
       StreamController<PeerMessageEvent>.broadcast();
+  late final _onBroadcastMessageReceivedController =
+      StreamController<ZIMMessage>.broadcast();
 
   ChatEventNotifier._() {
     _onReceivePeerMessage();
+    _onBroadcastMessageReceived();
   }
   factory ChatEventNotifier() => instance;
 
@@ -40,6 +43,15 @@ class ChatEventNotifier {
 
   }
 
+  ///监听全员推送消息
+  void _onBroadcastMessageReceived(){
+    final callback = ZIMEventHandler.onBroadcastMessageReceived;
+    ZIMEventHandler.onBroadcastMessageReceived = (zim, message){
+      callback?.call(zim, message);
+      _onBroadcastMessageReceivedController.add(message);
+    };
+  }
+
   ///监听单聊消息流
   Stream<PeerMessageEvent> get onReceivePeerMessage =>
       _onReceivePeerMessageController.stream;
@@ -47,6 +59,10 @@ class ChatEventNotifier {
   ///监听信令消息流
   Stream<PeerMessageEvent> get onReceiveCommandMessage =>
       _onReceiveCommandMessageController.stream;
+
+  ///监听全员推送消息流
+  Stream<ZIMMessage> get onBroadcastMessageStream =>
+      _onBroadcastMessageReceivedController.stream;
 
 }
 

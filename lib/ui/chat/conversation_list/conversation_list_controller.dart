@@ -44,7 +44,6 @@ class ConversationListController extends GetxController
       state.loadStatusRx.value = RxStatus.loading();
       final notifier = await ZIMKit().getConversationListNotifier();
       state.conversationListNotifier.dispose();
-      notifier.insert(0, state.sysNoticeConversation, notify: false);
       state.conversationListNotifier = notifier;
       state.loadStatusRx.value = RxStatus.success();
     } catch (ex) {

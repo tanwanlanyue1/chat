@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
@@ -10,8 +11,11 @@ import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
+import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
+import 'package:guanjia/ui/chat/custom/message_sys_notice_content.dart';
 import 'package:guanjia/ui/chat/utils/chat_event_notifier.dart';
+import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/mine/inapp_message/inapp_message.dart';
 import 'package:guanjia/ui/mine/inapp_message/inapp_message_type.dart';
 import 'package:guanjia/ui/mine/inapp_message/models/red_packet_update_content.dart';
@@ -42,6 +46,22 @@ class InAppMessageService extends GetxService {
         if (message is ZIMCommandMessage) {
           _onReceiveCommandMessage(message);
         }
+      }
+    });
+
+    //监听系统消息(全员推送)
+    ChatEventNotifier().onBroadcastMessageStream.listen((event) {
+      if (event.type == ZIMMessageType.custom &&
+          event.senderUserID == AppConfig.sysUserId) {
+        event.toKIT().sysNoticeContent?.let(_updateSysNoticeConversation);
+      }
+    });
+    //监听系统消息(只发送给当前用户)
+    ChatEventNotifier().onReceivePeerMessage.listen((event) {
+      final message = event.messageList.firstOrNull;
+      if (message?.type == ZIMMessageType.custom &&
+          message?.senderUserID == AppConfig.sysUserId) {
+        message?.toKIT().sysNoticeContent?.let(_updateSysNoticeConversation);
       }
     });
 
@@ -86,6 +106,21 @@ class InAppMessageService extends GetxService {
   void _onReceiveInAppMessage(InAppMessage message) {
     if (message.type == InAppMessageType.redPacketUpdate) {
       message.redPacketUpdateContent?.let(_updateRedPacketMessageStatus);
+    }
+  }
+
+  ///更新系统通知会话
+  void _updateSysNoticeConversation(MessageSysNoticeContent content) async {
+    //全员公告需要发送本地消息来更新会话
+    if(content.type == 0){
+      await ChatManager().sendLocalMessage(
+        message: ZIMCustomMessage(
+          message: content.toJsonString(),
+          subType: CustomMessageType.sysNotice.value,
+        ),
+        conversationId: AppConfig.sysUserId,
+        conversationType: ZIMConversationType.peer,
+      );
     }
   }
 

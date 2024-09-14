@@ -9,9 +9,6 @@ class ConversationListState {
   var conversationListNotifier =
       ListNotifier<ValueNotifier<ZIMKitConversation>>([]);
 
-  ///系统通知
-  final sysNoticeConversation = ValueNotifier<SysNoticeConversation>(SysNoticeConversation());
-
   final loadStatusRx = RxStatus.loading().obs;
 }
 

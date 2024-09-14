@@ -42,8 +42,8 @@ mixin _ChatNotificationMixin {
   }
 
   ///应用启动后跳转聊天页
-  void _startChatWithAppLaunch() async{
-    if(_isStartChatWithAppLaunched){
+  void _startChatWithAppLaunch() async {
+    if (_isStartChatWithAppLaunched) {
       return;
     }
     _isStartChatWithAppLaunched = true;
@@ -52,20 +52,20 @@ mixin _ChatNotificationMixin {
     final options = await PluginUtil.getAppLaunchOptions();
     // FileLogger.d('details: ${jsonEncode(options)}');
     final payload = options['payload'];
-    if(payload == null){
+    if (payload == null) {
       return;
     }
-    try{
+    try {
       final json = jsonDecode(payload);
       final sender = json['sender'];
-      if(json['type'] != ZIMConversationType.peer.index || sender is! Map){
+      if (json['type'] != ZIMConversationType.peer.index || sender is! Map) {
         return;
       }
       final senderUid = int.tryParse("${sender['id']}");
-      if(senderUid != null){
+      if (senderUid != null) {
         ChatManager().startChat(userId: senderUid);
       }
-    }catch(ex){
+    } catch (ex) {
       AppLogger.w('startChatWithNotification ex=$ex');
     }
   }
@@ -78,11 +78,16 @@ mixin _ChatNotificationMixin {
         return;
       }
       final payload = NotificationPayload.fromJson(jsonDecode(payloadStr));
-      if (payload.type == NotificationTypes.chatMessage) {
-        final userId = int.tryParse('${payload.data}');
-        if (userId != null) {
-          ChatManager().startChat(userId: userId);
-        }
+      switch (payload.type) {
+        case NotificationType.sysNotice:
+          Get.toNamed(AppRoutes.messageNotice);
+          break;
+        case NotificationType.chatMessage:
+          final userId = int.tryParse('${payload.data}');
+          if (userId != null) {
+            ChatManager().startChat(userId: userId);
+          }
+          break;
       }
     } catch (ex) {
       AppLogger.d('_onTapNotification: $ex');
@@ -102,27 +107,38 @@ mixin _ChatNotificationMixin {
     }
 
     final notificationId = message.info.messageID.hashCode;
-    final user = await ChatUserInfoCache().getOrQuery(message.zim.senderUserID);
-    var nickname = user.baseInfo.userName;
-    if (nickname.isEmpty) {
-      nickname = user.baseInfo.userID;
-    }
-    final content = message.toPlainText();
+    String title;
+    String content;
     AndroidBitmap<Object>? largeIcon;
-    try {
-      final fileResp = DefaultCacheManager().getImageFile(user.userAvatarUrl);
-      final resp = await fileResp.first.timeout(2.seconds);
-      if (resp is FileInfo) {
-        largeIcon = FilePathAndroidBitmap(resp.file.path);
+    if (message.isSysNotice) {
+      title = message.sysNoticeContent?.title ?? '系统通知';
+      content = message.sysNoticeContent?.content ?? '';
+      final data =
+          await rootBundle.load('assets/images/chat/ic_sys_notice.png');
+      largeIcon = ByteArrayAndroidBitmap(data.buffer.asUint8List());
+    } else {
+      final user =
+          await ChatUserInfoCache().getOrQuery(message.zim.senderUserID);
+      title = user.baseInfo.userName;
+      if (title.isEmpty) {
+        title = user.baseInfo.userID;
       }
-    } catch (ex) {
-      AppLogger.w('发通知时，获取用户头像失败, $ex');
+      content = message.toPlainText() ?? '';
+      try {
+        final fileResp = DefaultCacheManager().getImageFile(user.userAvatarUrl);
+        final resp = await fileResp.first.timeout(2.seconds);
+        if (resp is FileInfo) {
+          largeIcon = FilePathAndroidBitmap(resp.file.path);
+        }
+      } catch (ex) {
+        AppLogger.w('发通知时，获取用户头像失败, $ex');
+      }
     }
 
     final conversationID = message.info.conversationID;
     await FlutterLocalNotificationsPlugin().show(
       notificationId,
-      nickname,
+      title,
       content,
       NotificationDetails(
         android: AndroidNotificationDetails(
@@ -137,10 +153,12 @@ mixin _ChatNotificationMixin {
           enableVibration: false,
           playSound: false,
         ),
-        iOS: DarwinNotificationDetails(),
+        iOS: const DarwinNotificationDetails(),
       ),
       payload: NotificationPayload(
-        type: NotificationTypes.chatMessage,
+        type: message.isSysNotice
+            ? NotificationType.sysNotice
+            : NotificationType.chatMessage,
         data: conversationID,
       ).toJsonString(),
     );
@@ -167,7 +185,7 @@ mixin _ChatNotificationMixin {
 ///通知Payload
 class NotificationPayload {
   ///类型
-  final int type;
+  final NotificationType type;
 
   ///数据
   final dynamic data;
@@ -176,12 +194,13 @@ class NotificationPayload {
 
   factory NotificationPayload.fromJson(Map<String, dynamic> json) =>
       NotificationPayload(
-        type: json['type'] ?? 0,
+        type: NotificationType.values.asNameMap()[json['type'] ?? ''] ??
+            NotificationType.chatMessage,
         data: json['data'],
       );
 
   Map<String, dynamic> toJson() => {
-        'type': type,
+        'type': type.name,
         'data': data,
       };
 
@@ -189,9 +208,10 @@ class NotificationPayload {
 }
 
 ///通知类型
-class NotificationTypes {
-  NotificationTypes._();
+enum NotificationType {
+  ///系统公告
+  sysNotice,
 
   ///聊天消息
-  static const chatMessage = 1;
+  chatMessage;
 }

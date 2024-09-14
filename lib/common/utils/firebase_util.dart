@@ -72,7 +72,7 @@ class FirebaseUtil{
     );
     String? verificationId;
     try{
-      verificationId = await completer.future.timeout(const Duration(seconds: 10));
+      verificationId = await completer.future;
     }catch(ex){
       AppLogger.w(ex);
     }

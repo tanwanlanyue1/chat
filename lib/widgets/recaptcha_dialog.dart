@@ -70,13 +70,15 @@ class _ReCaptchaDialogState extends State<ReCaptchaDialog> {
 
   void injectCss() async {
     const js = '''
-      document.body.style.setProperty('padding', 0);
-      document.body.style.setProperty('margin', 0);
-      document.body.style.setProperty('display', 'flex');
-      document.body.style.setProperty('align-items', 'center');
-      document.body.style.setProperty('justify-content', 'center');
-      document.body.style.setProperty('width', '100vw');
-      document.body.style.setProperty('height', '100vh');
+      if(document.body){
+        document.body.style.setProperty('padding', 0);
+        document.body.style.setProperty('margin', 0);
+        document.body.style.setProperty('display', 'flex');
+        document.body.style.setProperty('align-items', 'center');
+        document.body.style.setProperty('justify-content', 'center');
+        document.body.style.setProperty('width', '100vw');
+        document.body.style.setProperty('height', '100vh');
+      }
     ''';
     webViewController?.runJavaScript(js);
   }

@@ -789,4 +789,30 @@ class UserApi {
       },
     );
   }
+
+
+  /// 注销账号
+  /// type：注销理由
+  /// verifyCode：验证码
+  /// googleToken：谷歌token
+  static Future<ApiResponse> cancelAccount({
+    String? phone,
+    String? email,
+    int? type,
+    String? verifyCode,
+    String? idToken,
+}) {
+    return HttpClient.post(
+      '/api/user/cancelAccount',
+      data: {
+        "phone": phone,
+        "email": email,
+        "type": type,
+        "verifyCode": verifyCode,
+        "idToken": idToken,
+      },
+      dataConverter: (json) => json,
+    );
+  }
+
 }

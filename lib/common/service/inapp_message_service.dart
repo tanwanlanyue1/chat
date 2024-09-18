@@ -3,23 +3,25 @@ import 'dart:convert';
 
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
+import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
-import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
-import 'package:guanjia/ui/chat/custom/message_sys_notice_content.dart';
 import 'package:guanjia/ui/chat/utils/chat_event_notifier.dart';
-import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/mine/inapp_message/inapp_message.dart';
 import 'package:guanjia/ui/mine/inapp_message/inapp_message_type.dart';
 import 'package:guanjia/ui/mine/inapp_message/models/red_packet_update_content.dart';
+import 'package:vibration/vibration.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
+
+import '../network/api/model/user/message_unread_model.dart';
 
 ///应用消息服务
 class InAppMessageService extends GetxService {
@@ -29,12 +31,19 @@ class InAppMessageService extends GetxService {
   final _appSettingPrefs = LocalStorage('AppSetting');
   static const _kVibrationReminder = 'vibrationReminder';
   static const _kBellReminder = 'bellReminder';
+  static const _kLatestSysNotice = 'latestSysNotice';
+  static const _kLatestSysNoticeId = 'latestSysNoticeId';
 
   ///振动提醒
   final vibrationReminderRx = false.obs;
 
   ///铃声提醒
   final bellReminderRx = false.obs;
+
+  ///最新一条系统通知
+  final latestSysNoticeRx  = Rxn<MessageUnreadModel>();
+
+  final _debounce = Debouncer(delay: const Duration(milliseconds: 200));
 
   @override
   void onInit() {
@@ -53,19 +62,13 @@ class InAppMessageService extends GetxService {
     ChatEventNotifier().onBroadcastMessageStream.listen((event) {
       if (event.type == ZIMMessageType.custom &&
           event.senderUserID == AppConfig.sysUserId) {
-        event.toKIT().sysNoticeContent?.let(_updateSysNoticeConversation);
-      }
-    });
-    //监听系统消息(只发送给当前用户)
-    ChatEventNotifier().onReceivePeerMessage.listen((event) {
-      final message = event.messageList.firstOrNull;
-      if (message?.type == ZIMMessageType.custom &&
-          message?.senderUserID == AppConfig.sysUserId) {
-        message?.toKIT().sysNoticeContent?.let(_updateSysNoticeConversation);
+        _fetchLatestSysNotice();
       }
     });
 
     _init();
+    _initSysNotice();
+    SS.login.loginListen((isLogin) => _initSysNotice());
   }
 
   void _init() async {
@@ -77,6 +80,28 @@ class InAppMessageService extends GetxService {
       _appSettingPrefs.setBool(_kVibrationReminder, vibrationReminderRx.value);
       _appSettingPrefs.setBool(_kBellReminder, bellReminderRx.value);
     });
+  }
+
+  ///初始化系统通知
+  void _initSysNotice() async{
+    final userId = SS.login.userId;
+    if(userId != null){
+      final key = _kLatestSysNotice + userId.toString();
+      final json = await _appSettingPrefs.getJson(key);
+      if(json != null){
+        latestSysNoticeRx.value = MessageUnreadModel.fromJson(json);
+      }
+      ever(latestSysNoticeRx, (value){
+        if(value == null){
+          _appSettingPrefs.remove(key);
+        }else{
+          _appSettingPrefs.setJson(key, value.toJson());
+        }
+      });
+      _fetchLatestSysNotice();
+    }else{
+      latestSysNoticeRx.value = null;
+    }
   }
 
   ///接收到自定义信令
@@ -104,23 +129,53 @@ class InAppMessageService extends GetxService {
 
   ///接收到应用内消息
   void _onReceiveInAppMessage(InAppMessage message) {
-    if (message.type == InAppMessageType.redPacketUpdate) {
-      message.redPacketUpdateContent?.let(_updateRedPacketMessageStatus);
+    switch(message.type){
+      case InAppMessageType.redPacketUpdate:
+        message.redPacketUpdateContent?.let(_updateRedPacketMessageStatus);
+      case InAppMessageType.sysMessage:
+        _fetchLatestSysNotice();
+      default:
+        break;
     }
   }
 
-  ///更新系统通知会话
-  void _updateSysNoticeConversation(MessageSysNoticeContent content) async {
-    //全员公告需要发送本地消息来更新会话
-    if(content.type == 0){
-      await ChatManager().sendLocalMessage(
-        message: ZIMCustomMessage(
-          message: content.toJsonString(),
-          subType: CustomMessageType.sysNotice.value,
-        ),
-        conversationId: AppConfig.sysUserId,
-        conversationType: ZIMConversationType.peer,
-      );
+  ///消息提醒
+  void messageReminder(){
+    //声音震动提醒
+    if (SS.inAppMessage.bellReminderRx()) {
+      FlutterRingtonePlayer().playNotification();
+    }
+    if (SS.inAppMessage.vibrationReminderRx()) {
+      Vibration.vibrate();
+    }
+  }
+
+  ///获取最新一条消息和未读数
+  void _fetchLatestSysNotice(){
+    _debounce(() async{
+      final lastId = await _appSettingPrefs.getInt(_kLatestSysNoticeId);
+      final response = await UserApi.getMessageUnread(lastId: lastId);
+      if(response.isSuccess){
+        latestSysNoticeRx.value = response.data;
+      }
+    });
+  }
+
+  ///标记系统公告已读
+  ///- lastId 最新一条通知id
+  void markReadSysNotice(int lastId){
+    final notice = latestSysNoticeRx();
+    if(notice != null){
+      latestSysNoticeRx.value = notice.copyWith(systemCount: 0);
+      _appSettingPrefs.setInt(_kLatestSysNoticeId, lastId);
+    }
+  }
+
+  ///标记系统消息已读
+  void markReadSysMsg(){
+    final notice = latestSysNoticeRx();
+    if(notice != null){
+      latestSysNoticeRx.value = notice.copyWith(userCount: 0);
     }
   }
 

@@ -7,14 +7,11 @@ import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
-import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
-import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
-import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
@@ -50,18 +47,9 @@ class _ConversationListTileState extends State<ConversationListTile>
   }
 
   void onTap() {
-    if (isSysNotice) {
-      Get.toNamed(AppRoutes.mineMessage);
-      return;
-    }
     ChatManager().startChat(
       userId: int.parse(conversation.id),
     );
-  }
-
-  ///是否是系统通知
-  bool get isSysNotice {
-    return conversation.lastMessage?.customType == CustomMessageType.sysNotice;
   }
 
   ///是否是订单信息
@@ -73,7 +61,6 @@ class _ConversationListTileState extends State<ConversationListTile>
   Widget build(BuildContext context) {
     final orderInfoView = isOrderMsg ? _buildOrderInfo() : null;
     return Slidable(
-      enabled: !isSysNotice,
       key: ValueKey(conversation.id),
       endActionPane: ActionPane(
         extentRatio: 0.3,
@@ -115,11 +102,6 @@ class _ConversationListTileState extends State<ConversationListTile>
   }
 
   Widget _buildAvatar() {
-    var icon = conversation.icon;
-    if (isSysNotice) {
-      icon = AppImage.asset('assets/images/chat/ic_sys_notice.png');
-    }
-
     return Padding(
       padding: FEdgeInsets(right: 16.rpx),
       child: Badge(
@@ -129,7 +111,7 @@ class _ConversationListTileState extends State<ConversationListTile>
         alignment: const Alignment(-1.1, -1.1),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8.rpx),
-          child: SizedBox(width: 40.rpx, height: 40.rpx, child: icon),
+          child: SizedBox(width: 40.rpx, height: 40.rpx, child: conversation.icon),
         ),
       ),
     );
@@ -138,12 +120,13 @@ class _ConversationListTileState extends State<ConversationListTile>
   Widget _buildNameAndTime() {
     final time = conversation.lastMessage?.info.timestamp
         .let(DateTime.fromMillisecondsSinceEpoch);
+    final name = conversation.name.isNotEmpty ? conversation.name : conversation.id;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: Text(
-            conversation.name.isNotEmpty ? conversation.name : conversation.id,
+            name,
             maxLines: 1,
             style: AppTextStyle.fs16b.copyWith(
               color: AppColor.blackBlue,

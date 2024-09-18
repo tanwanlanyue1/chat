@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:guanjia/common/network/api/model/user/binding_info.dart';
 import 'package:guanjia/common/network/api/model/user/contract_model.dart';
-import 'package:guanjia/common/network/api/model/user/level_money_info.dart';
 import 'package:guanjia/common/network/httpclient/http_client.dart';
 import 'package:guanjia/common/network/api/api.dart';
+
+import 'model/user/message_unread_model.dart';
 
 /// 用户API
 class UserApi {
@@ -332,7 +332,7 @@ class UserApi {
 
   /// 获取用户消息列表
   /// type: 消息类型:0系统消息，1赞，2收藏，3评论，4回复评论，5新增关注，6系统公告，7评论消息(3和4)
-  static Future<ApiResponse<List<MessageList>>> getMessageList({
+  static Future<ApiResponse<List<MessageModel>>> getMessageList({
     required int type,
     int page = 1,
     int size = 10,
@@ -346,10 +346,24 @@ class UserApi {
       },
       dataConverter: (json) {
         if (json is List) {
-          return json.map((e) => MessageList.fromJson(e)).toList();
+          return json.map((e) => MessageModel.fromJson(e)).toList();
         }
         return [];
       },
+    );
+  }
+
+  /// 获取未读消息数量和最后一条消息内容
+  /// - lastId 最后一条系统公告消息ID
+  static Future<ApiResponse<MessageUnreadModel>> getMessageUnread({
+    int? lastId,
+  }) {
+    return HttpClient.get(
+      '/api/user/getMessageCount',
+      params: {
+        "lastId": lastId,
+      },
+      dataConverter: (json) => MessageUnreadModel.fromJson(json),
     );
   }
 
@@ -790,7 +804,6 @@ class UserApi {
     );
   }
 
-
   /// 注销账号
   /// type：注销理由
   /// verifyCode：验证码
@@ -801,7 +814,7 @@ class UserApi {
     int? type,
     String? verifyCode,
     String? idToken,
-}) {
+  }) {
     return HttpClient.post(
       '/api/user/cancelAccount',
       data: {
@@ -814,5 +827,4 @@ class UserApi {
       dataConverter: (json) => json,
     );
   }
-
 }

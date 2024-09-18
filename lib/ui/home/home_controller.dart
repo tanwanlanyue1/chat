@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
-import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -17,6 +16,7 @@ class HomeController extends GetxController {
   final HomeState state = HomeState();
   late PageController pageController =
       PageController(initialPage: state.currentPageRx.value);
+
   //分页控制器
   final pagingController = DefaultPagingController<dynamic>(
     firstPage: 1,
@@ -30,7 +30,7 @@ class HomeController extends GetxController {
     if (loginService.isLogin) {
       SS.login.fetchMyInfo();
     }
-    if(Platform.isAndroid){
+    if (Platform.isAndroid) {
       NotificationPermissionUtil.instance.initialize();
     }
 
@@ -38,7 +38,11 @@ class HomeController extends GetxController {
     final messageUnread = ZIMKit.instance.getTotalUnreadMessageCount();
     state.messageUnreadRx.value = messageUnread.value;
     messageUnread.addListener(() {
-      state.messageUnreadRx.value = messageUnread.value;
+      state.messageUnreadRx.value = messageUnread.value +
+          (SS.inAppMessage.latestSysNoticeRx()?.total ?? 0);
+    });
+    ever(SS.inAppMessage.latestSysNoticeRx, (data) {
+      state.messageUnreadRx.value = messageUnread.value + (data?.total ?? 0);
     });
 
     super.onInit();
@@ -47,13 +51,13 @@ class HomeController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    if(Platform.isAndroid){
+    if (Platform.isAndroid) {
       AppUpdateManager.instance.checkAppUpdate();
     }
   }
 
   void setCurrentPage(int index) {
-    if(index == 4){
+    if (index == 4) {
       EventBus().emit(kEventUserInfo);
     }
     state.currentPageRx.value = index;
@@ -65,5 +69,4 @@ class HomeController extends GetxController {
     if (!loginService.isLogin) return;
     loginService.fetchMyInfo();
   }
-
 }

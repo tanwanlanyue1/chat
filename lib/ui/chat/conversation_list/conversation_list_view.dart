@@ -5,11 +5,13 @@ import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/paging/default_status_indicators/first_page_error_indicator.dart';
 import 'package:guanjia/common/paging/default_status_indicators/first_page_progress_indicator.dart';
 import 'package:guanjia/common/paging/default_status_indicators/no_items_found_indicator.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
+import 'package:guanjia/widgets/spacing.dart';
 
 import 'conversation_list_controller.dart';
 import 'widgets/conversation_list_tile.dart';
+import 'widgets/conversation_notice_tile.dart';
 
 ///会话列表
 class ConversationListView extends StatefulWidget {
@@ -57,30 +59,53 @@ class _ConversationListViewState extends State<ConversationListView>
           });
           return LayoutBuilder(
             builder: (context, BoxConstraints constraints) {
-              return ListView.separated(
+              return CustomScrollView(
                 controller: controller.scrollController,
                 cacheExtent: constraints.maxHeight * 3,
-                itemCount: list.length,
-                itemBuilder: (_, index) {
-                  final conversation = list[index];
-                  return ValueListenableBuilder(
-                    valueListenable: conversation,
-                    builder: (_, conversation, __) {
-                      return ConversationListTile(
-                        conversation: conversation,
+                slivers: [
+                  buildSysNotice(),
+                  SliverList.separated(
+                    itemCount: list.length,
+                    itemBuilder: (_, index) {
+                      final conversation = list[index];
+                      return ValueListenableBuilder(
+                        valueListenable: conversation,
+                        builder: (_, conversation, __) {
+                          return ConversationListTile(
+                            conversation: conversation,
+                          );
+                        },
                       );
                     },
-                  );
-                },
-                separatorBuilder: (_, index) {
-                  return Divider(height: 0, indent: 75.rpx);
-                },
+                    separatorBuilder: (_, index) {
+                      return Divider(height: 0, indent: 75.rpx);
+                    },
+                  ),
+                ],
               );
             },
           );
         },
       );
     }, state.loadStatusRx);
+  }
+
+  Widget buildSysNotice(){
+    return SliverToBoxAdapter(
+      child: ObxValue((dataRx){
+        final data = dataRx();
+        if(data != null){
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ConversationNoticeTile(model: data),
+              Divider(height: 0, indent: 75.rpx),
+            ],
+          );
+        }
+        return Spacing.blank;
+      }, SS.inAppMessage.latestSysNoticeRx),
+    );
   }
 
   @override

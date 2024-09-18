@@ -53,7 +53,7 @@ class MinePages {
     ),
     GetPage(
       name: AppRoutes.mineMessage,
-      page: () => MineMessagePage(),
+      page: () => MineMessagePage(tabIndex: Get.getArgs('tabIndex', 0)),
     ),
     GetPage(
       name: AppRoutes.mineSettingPage,

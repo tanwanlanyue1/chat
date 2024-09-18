@@ -8,6 +8,7 @@ import 'package:guanjia/common/utils/app_info.dart';
 import 'package:guanjia/common/utils/image_cache_utils.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
+import 'package:guanjia/widgets/web/web_page.dart';
 
 import 'mine_setting_state.dart';
 
@@ -71,7 +72,10 @@ class MineSettingController extends GetxController {
   //注销账号
   void removeAccount(){
     if(SS.login.userBind){
-      Get.toNamed(AppRoutes.webPage,arguments: {'url':"http://192.168.20.216:5500/gj_account_cancellation.html",'title':'账号注销'});
+      WebPage.go(
+        url: AppConfig.urlAccountCancellation,
+        title: '账号注销',
+      );
     }else{
       Get.toNamed(AppRoutes.bindingPage);
     }

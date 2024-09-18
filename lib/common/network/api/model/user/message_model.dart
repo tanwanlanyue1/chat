@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
+
 import '../../api.dart';
 
-///消息列表
-class MessageList {
-  MessageList({
+///系统消息
+class MessageModel {
+  MessageModel({
       this.id,
     //用户ID
     this.uid,
@@ -32,7 +34,7 @@ class MessageList {
     this.isSelect = false,
   });
 
-  MessageList.fromJson(dynamic json) {
+  MessageModel.fromJson(dynamic json) {
     id = json['id'];
     uid = json['uid'];
     msgId = json['msgId'];
@@ -56,12 +58,21 @@ class MessageList {
   bool? isSelect;
   String? content;
   ExtraJson? extraJson;
-  String? createTime;
+  int? createTime;
   PlazaListModel? post;
   CommentListModel? comment;
   CommentListModel? replyComment;
   UserModel? userInfo;
   SystemMessage? systemMessage;
+
+
+  String get image{
+    return '';
+  }
+
+  Color? get color{
+    return null;
+  }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -129,7 +140,7 @@ class SystemMessage {
   String? action;
   String? link;
   dynamic extraJson;
-  String? createTime;
+  int? createTime;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

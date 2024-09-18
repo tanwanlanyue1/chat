@@ -20,22 +20,27 @@ extension StringExtension on String {
   }
 
   DateTime? get dateTime {
-    try{
+    try {
       return DateUtil.getDateTime(this);
-    }catch(ex){
+    } catch (ex) {
       AppLogger.w(ex);
       return null;
     }
   }
 
+  Color? get color {
+
+
+    return null;
+  }
+
   String get uuid => const Uuid().v5(Uuid.NAMESPACE_URL, this);
 
-  Future<void> copy({String? message}) async{
+  Future<void> copy({String? message}) async {
     await Clipboard.setData(ClipboardData(text: this));
-    if(message != null && message.isEmpty){
+    if (message != null && message.isEmpty) {
       return;
     }
     Loading.showToast(message ?? S.current.copySuccess);
   }
-
 }

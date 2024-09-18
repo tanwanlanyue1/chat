@@ -18,6 +18,9 @@ enum InAppMessageType{
   ///契约单状态变更 5 双方都收到
   contractUpdate,
 
+  ///系统消息 6 当前用户收到
+  sysMessage,
+
 }
 
 extension InAppMessageTypeX on InAppMessageType{

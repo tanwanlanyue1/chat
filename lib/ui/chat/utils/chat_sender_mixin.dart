@@ -115,12 +115,13 @@ mixin _ChatSenderMixin {
     required ZIMMessage message,
     required String conversationId,
     required ZIMConversationType conversationType,
+    required String senderUserId,
 }) async{
     final result = await ZIM.getInstance()?.insertMessageToLocalDB(
       message,
       conversationId,
       conversationType,
-      SS.login.userId?.toString() ?? '',
+      senderUserId,
     );
     return result != null;
   }

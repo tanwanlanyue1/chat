@@ -48,53 +48,61 @@ class MessageListPage extends GetView<MessageListController> {
       ),
       tag: tag,
       builder: (controller) {
-        return Scaffold(
-          appBar: buildAppBar(context),
-          resizeToAvoidBottomInset: true,
-          body: Stack(
-            children: [
-              Positioned.fill(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          controller.chatInputViewKey.currentState
-                              ?.closePanel();
-                        },
-                        child: buildMessageListView(),
+        return Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AppAssetImage('assets/images/chat/chat_bg.png'),
+            ),
+          ),
+          child: Scaffold(
+            appBar: buildAppBar(context),
+            resizeToAvoidBottomInset: true,
+            backgroundColor: Colors.transparent,
+            body: Stack(
+              children: [
+                Positioned.fill(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            controller.chatInputViewKey.currentState
+                                ?.closePanel();
+                          },
+                          child: buildMessageListView(),
+                        ),
                       ),
-                    ),
-                    ObxValue((dataRx) {
-                      return ChatInputView(
-                        key: controller.chatInputViewKey,
-                        onSend: controller.sendTextMessage,
-                        onTapFeatureAction: controller.onTapFeatureAction,
-                        featureActions: dataRx(),
-                        featureItemBuilder: buildFeatureItem,
-                      );
-                    }, state.featureActionsRx),
-                    // messageInput(),
-                  ],
+                      ObxValue((dataRx) {
+                        return ChatInputView(
+                          key: controller.chatInputViewKey,
+                          onSend: controller.sendTextMessage,
+                          onTapFeatureAction: controller.onTapFeatureAction,
+                          featureActions: dataRx(),
+                          featureItemBuilder: buildFeatureItem,
+                        );
+                      }, state.featureActionsRx),
+                      // messageInput(),
+                    ],
+                  ),
                 ),
-              ),
-              Positioned.fill(
-                bottom: null,
-                child: Obx(() {
-                  final user = state.userInfoRx();
-                  var order = state.orderRx();
-                  if (user == null) {
-                    return Spacing.blank;
-                  }
-                  return ChatDateView(
-                    user: user,
-                    order: order,
-                    onTapOrderAction: controller.onTapOrderAction,
-                    onTapOrder: (order) => controller.toOrderDetail(order.id),
-                  );
-                }),
-              ),
-            ],
+                Positioned.fill(
+                  bottom: null,
+                  child: Obx(() {
+                    final user = state.userInfoRx();
+                    var order = state.orderRx();
+                    if (user == null) {
+                      return Spacing.blank;
+                    }
+                    return ChatDateView(
+                      user: user,
+                      order: order,
+                      onTapOrderAction: controller.onTapOrderAction,
+                      onTapOrder: (order) => controller.toOrderDetail(order.id),
+                    );
+                  }),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -129,7 +137,7 @@ class MessageListPage extends GetView<MessageListController> {
       conversationType: conversationType,
       itemBuilder: buildMessageItem,
       avatarBuilder: buildAvatar,
-      backgroundBuilder: buildBackground,
+      // backgroundBuilder: buildBackground,
       listViewPadding: FEdgeInsets(top: ChatDateView.height),
       onPressed: (_, message, defaultAction) {
         switch(message.customType){
@@ -178,13 +186,6 @@ class MessageListPage extends GetView<MessageListController> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget buildBackground(_, __) {
-    return AppImage.asset(
-      'assets/images/chat/chat_bg.png',
-      fit: BoxFit.cover,
     );
   }
 

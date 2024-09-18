@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -34,6 +35,11 @@ class LoginService extends GetxService {
 
   // 当前登录用户信息, 外部可通过obx监听改变
   UserModel? get info => _info.value;
+
+  ///监听登录状态
+  StreamSubscription<bool> loginListen(void Function(bool isLogin) onData){
+    return _isLogin.listen(onData);
+  }
 
   // 提供外部修改用户信息
   void setInfo(void Function(UserModel? val) fn) {

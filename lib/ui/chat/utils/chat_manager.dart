@@ -132,12 +132,7 @@ class ChatManager
 
       //声音震动提醒
       if (reminder) {
-        if (SS.inAppMessage.bellReminderRx()) {
-          FlutterRingtonePlayer().playNotification();
-        }
-        if (SS.inAppMessage.vibrationReminderRx()) {
-          Vibration.vibrate();
-        }
+        SS.inAppMessage.messageReminder();
       }
     });
 

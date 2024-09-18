@@ -18,9 +18,9 @@ class AboutState {
       "title": S.current.serviceAgreement,
       "url": AppConfig.urlUserService,
     },
-    {
-      "title":S.current.rechargeService,
-      "url": AppConfig.urlRechargeService,
-    },
+    // {
+    //   "title":S.current.rechargeService,
+    //   "url": AppConfig.urlRechargeService,
+    // },
   ];
 }

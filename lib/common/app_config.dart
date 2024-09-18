@@ -1,4 +1,5 @@
 
+import 'package:guanjia/common/network/config/server_config.dart';
 import 'package:guanjia/generated/l10n.dart';
 
 /// 应用全局配置
@@ -12,11 +13,13 @@ class AppConfig{
   ///正式环境接口地址
   static const urlProdServer = 'https://jxapi.amiyosz.com';
 
+  static String get urlServer => ServerConfig.instance.getDefaultServer().api.toString();
+
   ///隐私政策
-  static const urlPrivacyPolicy = 'http://jxapp.amiyosz.com/protocol/jx_privacy.html';
+  static String get urlPrivacyPolicy => '$urlServer/static/gj_privacy.html';
 
   ///用户服务协议
-  static const urlUserService = 'http://jxapp.amiyosz.com/protocol/jx_service.html';
+  static String get urlUserService => '$urlServer/static/gj_service.html';
 
   ///用户充值服务协议
   static const urlRechargeService = 'http://jxapp.amiyosz.com/protocol/jx_recharge.html';
@@ -25,11 +28,10 @@ class AppConfig{
   static const urlHelp = 'http://jxapp.amiyosz.com/protocol/jx_help.html';
 
   ///APP下载页
-  static const urlAppDownload = 'http://jxapp.amiyosz.com/protocol/jx_app_download.html';
+  static String get urlAppDownload => '$urlServer/static/gj_app_download.html';
 
   ///账号注销
-  // static const urlAccountCancellation = 'http://jxapp.amiyosz.com/protocol/jx_account_cancellation.html';
-  static const urlAccountCancellation = 'http://192.168.20.216:5500/gj_account_cancellation.html';
+  static String get urlAccountCancellation => '$urlServer/static/gj_account_cancellation.html';
 
   ///iOS通用链接
   static const iosUniversalLink = 'https://jxapi.amiyosz.com/app/';

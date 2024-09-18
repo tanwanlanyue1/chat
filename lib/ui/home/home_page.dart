@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
           children: [
             const ChatPage(),
             OrderPage(),
-            PlazaPage(),
+            const PlazaPage(),
             DiscoverPage(),
             const MinePage(),
           ],

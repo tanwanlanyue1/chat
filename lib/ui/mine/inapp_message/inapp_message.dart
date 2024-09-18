@@ -49,6 +49,8 @@ class InAppMessage {
           return RedPacketUpdateContent.fromJson(jsonDecode(data));
         case InAppMessageType.contractUpdate:
           return ContractUpdateContent.fromJson(jsonDecode(data));
+        case InAppMessageType.sysMessage:
+          return data;
       }
     }catch(ex){
       AppLogger.w('InAppMessage>_parseContent: $ex');

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/network/api/im_api.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/widgets/loading.dart';
 
@@ -69,7 +70,7 @@ class ChatCallButton extends StatelessWidget {
       return;
     }
     if (orderId == null) {
-      Loading.showToast('发起失败');
+      Loading.showToast(S.current.startDateFail);
       return;
     }
 

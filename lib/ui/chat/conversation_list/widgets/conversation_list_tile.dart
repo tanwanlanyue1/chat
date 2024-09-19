@@ -8,6 +8,7 @@ import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
@@ -38,8 +39,8 @@ class _ConversationListTileState extends State<ConversationListTile>
 
   void onDelete(BuildContext context) async {
     final result = await ConfirmDialog.show(
-      message: Text('您确定要删除此对话吗?'),
-      okButtonText: Text('删除'),
+      message: Text(S.current.deleteConversationHint),
+      okButtonText: Text(S.current.deletePublisher),
     );
     if (result) {
       ZIMKit().deleteConversation(conversation.id, conversation.type);
@@ -70,7 +71,7 @@ class _ConversationListTileState extends State<ConversationListTile>
             onPressed: onDelete,
             backgroundColor: Colors.redAccent,
             foregroundColor: Colors.white,
-            label: '删除',
+            label: S.current.deletePublisher,
           ),
         ],
       ),
@@ -261,7 +262,7 @@ class _ConversationListTileState extends State<ConversationListTile>
               endTime: DateTime.fromMillisecondsSinceEpoch(order.timeout),
               builder: (dur, text) {
                 return Text(
-                  '剩余$text',
+                  S.current.remaining(text),
                   style: AppTextStyle.fs14m.copyWith(
                     color: AppColor.red,
                     height: 1.0,

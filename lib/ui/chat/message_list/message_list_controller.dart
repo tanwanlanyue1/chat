@@ -6,6 +6,7 @@ import 'package:guanjia/common/network/api/im_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
 import 'package:guanjia/ui/chat/message_list/message_order_part.dart';
@@ -222,8 +223,8 @@ class MessageListController extends GetxController
     Get.bottomSheet(
       CommonBottomSheet(
         titles: [
-          '查看个人主页',
-          isAttentionRx.isTrue ? '取消关注' : '关注',
+          S.current.viewPersonalHomepage,
+          isAttentionRx.isTrue ? S.current.unfollow : S.current.attention,
         ],
         onTap: (index) {
           switch (index) {

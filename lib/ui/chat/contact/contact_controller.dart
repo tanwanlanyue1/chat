@@ -8,6 +8,7 @@ import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -52,7 +53,7 @@ class ContactController extends GetxController with GetAutoDisposeMixin {
     }
     final chatNo = int.tryParse(text);
     if (chatNo == null) {
-      Loading.showToast('用户ID无效');
+      Loading.showToast(S.current.invalidUserId);
       return;
     }
 
@@ -67,7 +68,7 @@ class ContactController extends GetxController with GetAutoDisposeMixin {
           'userId': userId,
         });
       } else {
-        Loading.showToast('用户不存在');
+        Loading.showToast(S.current.userNotFound);
       }
     } else {
       response.showErrorMessage();

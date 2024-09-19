@@ -6,6 +6,7 @@ import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -84,7 +85,7 @@ class ChatCallRechargeDialog extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '为避免聊天中断，需保留适量金库余额',
+                      S.current.chatCallBalanceHint,
                       style: AppTextStyle.fs14b.copyWith(
                         color: AppColor.blackBlue,
                       ),
@@ -94,7 +95,7 @@ class ChatCallRechargeDialog extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            isVideoCall ? "实时视频" : "实时语音",
+                            isVideoCall ? S.current.realTimeVideo : S.current.realTimeVoice,
                             style: AppTextStyle.fs14b
                                 .copyWith(color: AppColor.grayText),
                           ),
@@ -108,7 +109,7 @@ class ChatCallRechargeDialog extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          "管佳金库余额",
+                          S.current.treasuryBalance,
                           style: AppTextStyle.fs14b
                               .copyWith(color: AppColor.grayText),
                         ),
@@ -123,7 +124,7 @@ class ChatCallRechargeDialog extends StatelessWidget {
                         Padding(
                           padding: FEdgeInsets(left: 8.rpx),
                           child: Text(
-                            '(余额不足)',
+                            S.current.insufficientBalance,
                             style: AppTextStyle.fs12m.copyWith(
                               color: AppColor.red,
                             ),
@@ -145,12 +146,12 @@ class ChatCallRechargeDialog extends StatelessWidget {
                     height: 50.rpx,
                     backgroundColor: AppColor.black999,
                     onPressed: () => Get.back(result: false),
-                    child: Text('暂不处理', style: AppTextStyle.fs16b),
+                    child: Text(S.current.leaveAside, style: AppTextStyle.fs16b),
                   ),
                   CommonGradientButton(
                     width: 120.rpx,
                     height: 50.rpx,
-                    text: "立即充值",
+                    text: S.current.rechargeNow,
                     textStyle: AppTextStyle.fs16b.copyWith(color: Colors.white),
                     onTap: () {
                       Get.back(result: true);
@@ -172,7 +173,7 @@ class ChatCallRechargeDialog extends StatelessWidget {
     if (price == null || price <= 0) {
       return '';
     }
-    return '${price.toCurrencyString()}/分钟';
+    return '${price.toCurrencyString()}/${S.current.minutes}';
   }
 
   Widget buildUserAvatar() {
@@ -197,7 +198,7 @@ class ChatCallRechargeDialog extends StatelessWidget {
         userId: userId.toString(),
         builder: (info) {
           return Text(
-            "和${info?.baseInfo.userName}聊天中",
+            S.current.chatWith(info?.baseInfo.userName ?? ''),
             style: AppTextStyle.fs16b.copyWith(
               color: AppColor.blackBlue,
               height: 1.0,

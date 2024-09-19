@@ -6,6 +6,7 @@ import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/message_call_end_content.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_end_dialog.dart';
@@ -81,17 +82,17 @@ class ChatCallEndMessage extends StatelessWidget {
     String icon;
     String title;
     if (content.isVideoCall) {
-      title = '发起了一次视频聊天';
+      title = S.current.initiatedVideoChat;
       icon = message.isMine
           ? 'assets/images/chat/ic_video_call_white.png'
           : 'assets/images/chat/ic_video_call_black.png';
     } else {
-      title = '发起了一次语音聊天';
+      title = S.current.initiatedVoiceChat;
       icon = message.isMine
           ? 'assets/images/chat/ic_voice_call_white.png'
           : 'assets/images/chat/ic_voice_call_black.png';
     }
-    title = (isSelfInviter ? '您' : 'Ta') + title;
+    title = (isSelfInviter ? S.current.you : S.current.ta) + title;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -138,16 +139,16 @@ class ChatCallEndMessage extends StatelessWidget {
 
     List<Widget> children = [
       buildItem(
-        label: '通话结束时间',
+        label: S.current.callEndTime,
         value: DateTime.fromMillisecondsSinceEpoch(content.endTime).format2,
       ),
-      buildItem(label: '本次通话时长', value: Duration(seconds: content.duration).formatHHmmss),
+      buildItem(label: S.current.callDuration, value: Duration(seconds: content.duration).formatHHmmss),
     ];
 
     if (isSelfInviter) {
       children.addAll([
         buildItem(
-          label: '本次实付金额',
+          label: S.current.actualAmountPaid,
           value: content.amount.toCurrencyString(),
           isHighlight: true,
         ),
@@ -155,27 +156,27 @@ class ChatCallEndMessage extends StatelessWidget {
     } else {
       children = [
         buildItem(
-          label: '用户缴纳费用',
+          label: S.current.userFee,
           value: content.amount.toCurrencyString(),
         ),
         buildItem(
-          label: '平台收取比例',
+          label: S.current.platformChargeRatio,
           value: content.platformRate.toPercent(scale: 1),
         ),
         buildItem(
-          label: '平台费',
+          label: S.current.platformFee,
           value: content.platformFee.toCurrencyString(),
         ),
         if(content.hasAgent) buildItem(
-          label: '经纪人收取比例',
+          label: S.current.agentChargeRatio,
           value: (content.agentRate ?? 0).toPercent(scale: 1),
         ),
         if(content.hasAgent) buildItem(
-          label: '经纪人收费',
+          label: S.current.agentFee,
           value: (content.agentFee ?? 0).toCurrencyString(),
         ),
         buildItem(
-          label: '陪聊实收金额',
+          label: S.current.beautyActualAmount,
           value: content.beautyFee.toCurrencyString(),
           isHighlight: true,
         ),

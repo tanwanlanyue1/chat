@@ -8,6 +8,7 @@ import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/message_call_end_content.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
@@ -72,7 +73,7 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
                   CommonGradientButton(
                     width: 120.rpx,
                     height: 50.rpx,
-                    text: '关闭',
+                    text: S.current.close,
                     onTap: Get.back,
                   )
                 ],
@@ -193,16 +194,16 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
 
     List<Widget> children = [
       buildItem(
-        label: '通话结束时间',
+        label: S.current.callEndTime,
         value: DateTime.fromMillisecondsSinceEpoch(content.endTime).format2,
       ),
-      buildItem(label: '本次通话时长', value: Duration(seconds: content.duration).formatHHmmss),
+      buildItem(label: S.current.callDuration, value: Duration(seconds: content.duration).formatHHmmss),
     ];
 
     if (isSelfInviter) {
       children.addAll([
         buildItem(
-          label: '本次实付金额',
+          label: S.current.actualAmountPaid,
           value: content.amount.toCurrencyString(),
           isHighlight: true,
         ),
@@ -210,27 +211,27 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
     } else {
       children = [
         buildItem(
-          label: '用户缴纳费用',
+          label: S.current.userFee,
           value: content.amount.toCurrencyString(),
         ),
         buildItem(
-          label: '平台收取比例',
+          label: S.current.platformChargeRatio,
           value: content.platformRate.toPercent(scale: 1),
         ),
         buildItem(
-          label: '平台费',
+          label: S.current.platformFee,
           value: content.platformFee.toCurrencyString(),
         ),
         if(content.hasAgent) buildItem(
-          label: '经纪人收取比例',
+          label: S.current.agentChargeRatio,
           value: (content.agentRate ?? 0).toPercent(scale: 1),
         ),
         if(content.hasAgent) buildItem(
-          label: '经纪人收费',
+          label: S.current.agentFee,
           value: (content.agentFee ?? 0).toCurrencyString(),
         ),
         buildItem(
-          label: '陪聊实收金额',
+          label: S.current.beautyActualAmount,
           value: content.beautyFee.toCurrencyString(),
           isHighlight: true,
         ),

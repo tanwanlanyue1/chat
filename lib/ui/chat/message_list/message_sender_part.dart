@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/message_list/message_order_part.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
@@ -46,7 +47,7 @@ extension MessageSenderPart on MessageListController {
       final mimeType = element.mimeType ?? lookupMimeType(element.name) ?? '';
       AppLogger.d('mineType: $mimeType  name:${element.name}');
       if (mimeType.startsWith('video') && !videoMimeTypes.contains(mimeType)) {
-        errorMsg = '只支持MP4、MOV格式的视频';
+        errorMsg = S.current.videoMsgSupportHint;
       }
       return !mimeType.startsWith('image/') &&
           !videoMimeTypes.contains(mimeType);

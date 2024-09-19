@@ -13,6 +13,7 @@ import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/auto_dispose_mixin.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
@@ -179,7 +180,7 @@ class _MessageListViewState extends State<MessageListView> with AutoDisposeMixin
             );
           } else if (snapshot.hasError) {
             final defaultWidget = FirstPageErrorIndicator(
-              title: '加载失败',
+              title: S.current.loadFail,
               onTryAgain: () => setState(() {}),
             );
 

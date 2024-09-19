@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -111,7 +112,7 @@ class ContactListTile extends StatelessWidget {
                       ? AppColor.primaryBlue
                       : AppColor.dateButton,
                   child: Text(
-                    '发起聊天',
+                    S.current.initiateChat,
                     style: AppTextStyle.fs12m.copyWith(color: Colors.white),
                   ),
                 )
@@ -142,11 +143,11 @@ extension on UserType {
   String get label {
     switch (this) {
       case UserType.user:
-        return '个人';
+        return S.current.personage;
       case UserType.beauty:
-        return '佳丽';
+        return S.current.goodGirl;
       case UserType.agent:
-        return '经纪人';
+        return S.current.brokerP;
     }
   }
 }

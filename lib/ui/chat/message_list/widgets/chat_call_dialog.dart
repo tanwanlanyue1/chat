@@ -6,6 +6,7 @@ import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -129,13 +130,13 @@ class ChatCallDialog extends StatelessWidget {
               padding: FEdgeInsets(horizontal: 16.rpx, vertical: 24.rpx),
               child: CommonGradientButton(
                 height: 50.rpx,
-                text: "进入聊天",
+                text: S.current.intoChat,
                 onTap: () {
                   if(isCallable){
                     Get.back(result: true);
                   }else{
                     final minBalance = SS.appConfig.configRx()?.chatMinBalance ?? 0;
-                    Loading.showToast('余额需要大于${minBalance.toCurrencyString()}');
+                    Loading.showToast(S.current.balanceHint(minBalance.toCurrencyString()));
                   }
                 },
               ),
@@ -153,9 +154,9 @@ class ChatCallDialog extends StatelessWidget {
       return '';
     }
     if (freeSecond % 60 == 0) {
-      return '前${freeSecond ~/ 60}分钟免费聊天！';
+      return S.current.freeChatMinutes(freeSecond ~/ 60);
     }
-    return '前$freeSecond秒钟免费聊天！';
+    return S.current.freeChatSeconds(freeSecond);
   }
 
   ///价格提示文本
@@ -165,7 +166,7 @@ class ChatCallDialog extends StatelessWidget {
     if (price == null || price <= 0) {
       return '';
     }
-    return '${price.toCurrencyString()}/分钟';
+    return '${price.toCurrencyString()}/${S.current.minutes}';
   }
 
   ///余额要求

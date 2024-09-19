@@ -7,6 +7,7 @@ import 'package:guanjia/common/paging/default_status_indicators/first_page_progr
 import 'package:guanjia/common/paging/default_status_indicators/no_items_found_indicator.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/spacing.dart';
 
 import 'conversation_list_controller.dart';
@@ -37,14 +38,14 @@ class _ConversationListViewState extends State<ConversationListView>
       }
       if (status.isError) {
         return FirstPageErrorIndicator(
-          title: '加载失败',
+          title: S.current.loadFail,
           onTryAgain: () {
             setState(() {});
           },
         );
       }
       if (status.isEmpty) {
-        return const NoItemsFoundIndicator(title: '暂无消息');
+        return NoItemsFoundIndicator(title: S.current.noMessage);
       }
 
       return ValueListenableBuilder(

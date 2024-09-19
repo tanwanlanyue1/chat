@@ -11,6 +11,7 @@ import 'package:guanjia/common/network/api/model/user/message_unread_model.dart'
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
@@ -92,7 +93,7 @@ class ConversationNoticeTile extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            '系统通知',
+            S.current.systemNotice,
             maxLines: 1,
             style: AppTextStyle.fs16b.copyWith(
               color: AppColor.blackBlue,

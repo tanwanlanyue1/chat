@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -45,13 +46,24 @@ class SpeedDatingPage extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               Container(
+                foregroundDecoration: const BoxDecoration(
+                    image: DecorationImage(
+                  image: AppAssetImage('assets/images/plaza/match_call_bg.png'),
+                  fit: BoxFit.cover,
+                )),
                 decoration: const BoxDecoration(
-                  gradient: AppColor.verticalGradient,
-                ),
-                child: AppImage.svga(
-                  "assets/images/plaza/shooting_star.svga",
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFF5738E4),
+                      Color(0xFF8534F1),
+                      Color(0xFFF07CDF),
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
                 ),
               ),
+              AppImage.svga("assets/images/plaza/shooting_star.svga"),
               SafeArea(
                 child: Column(
                   children: [
@@ -59,16 +71,14 @@ class SpeedDatingPage extends StatelessWidget {
                       width: 260.rpx,
                       height: 30.rpx,
                       margin: EdgeInsets.only(top: 16.rpx),
-                      decoration: BoxDecoration(
+                      decoration: ShapeDecoration(
                         color: Colors.white.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(15.rpx),
+                        shape: const StadiumBorder(),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         S.current.matchChat,
-                        style: AppTextStyle.st
-                            .size(14.rpx)
-                            .textColor(Colors.white),
+                        style: AppTextStyle.fs14m.textColor(Colors.white),
                       ),
                     ),
                     SizedBox(height: isVideo ? 51.rpx : 72.5.rpx),
@@ -90,24 +100,7 @@ class SpeedDatingPage extends StatelessWidget {
                             Positioned(
                               top: 0,
                               right: 24.rpx,
-                              child: Container(
-                                height: 30.rpx,
-                                width: 40.rpx,
-                                padding: EdgeInsets.only(top: 4.rpx),
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(12.rpx)),
-                                ),
-                                child: Text(
-                                  S.current.freeCharge,
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyle.st
-                                      .size(12.rpx)
-                                      .textColor(Colors.white)
-                                      .textHeight(1),
-                                ),
-                              ),
+                              child: buildFreeChatHintText(),
                             ),
                           Align(
                             alignment: Alignment.bottomCenter,
@@ -143,7 +136,9 @@ class SpeedDatingPage extends StatelessWidget {
                                           ),
                                           SizedBox(width: 16.rpx),
                                           Text(
-                                            isVideo ? S.current.videoDating : S.current.voiceDating,
+                                            isVideo
+                                                ? S.current.videoDating
+                                                : S.current.voiceDating,
                                             style: AppTextStyle.st
                                                 .size(16.rpx)
                                                 .textColor(AppColor.black3),
@@ -161,41 +156,7 @@ class SpeedDatingPage extends StatelessWidget {
                       height: 38.rpx,
                       alignment: Alignment.center,
                       child: !state.isAnimation.value
-                          ? Builder(builder: (context) {
-                              final config = SS.appConfig.configRx.value;
-                              final freeTime =
-                                  ((config?.chatFreeSecond ?? 60) / 60)
-                                      .floor()
-                                      .toString();
-
-                              final price = isVideo
-                                  ? config?.videoChatPrice ?? 0
-                                  : config?.voiceChatPrice ?? 0;
-
-                              final priceAmount = (price * 15).toString();
-
-                              return Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: "${S.current.front}$freeTime${S.current.minuteFreeChat}！",
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          '${isVideo ? S.current.videoChat : S.current.voiceChat}$priceAmount\$/15min',
-                                      style: AppTextStyle.st
-                                          .size(12.rpx)
-                                          .textColor(Colors.white),
-                                    ),
-                                  ],
-                                ),
-                                style: AppTextStyle.st.bold
-                                    .size(14.rpx)
-                                    .textColor(Colors.white),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              );
-                            })
+                          ? buildPriceHintText()
                           : null,
                     ),
                     SizedBox(height: 42.rpx),
@@ -216,6 +177,65 @@ class SpeedDatingPage extends StatelessWidget {
               child: content(),
             )
           : content();
+    });
+  }
+
+  ///免费聊天提示文本
+  Widget buildFreeChatHintText() {
+    var text = '';
+    final freeSecond = SS.appConfig.configRx()?.chatFreeSecond ?? 0;
+    if (freeSecond > 0) {
+      if (freeSecond % 60 == 0) {
+        text = '前${freeSecond ~/ 60}分钟免费';
+      } else {
+        text = '前$freeSecond秒钟免费';
+      }
+    }
+    if (text.isEmpty) {
+      return Spacing.blank;
+    }
+    return Container(
+      height: 34.rpx,
+      padding: FEdgeInsets(horizontal: 8.rpx, top: 5.rpx),
+      alignment: Alignment.topCenter,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12.rpx)),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF0F73ED), Color(0xFFC538FF)],
+          begin: Alignment(-3.5,-1.5),
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Text(
+        text,
+        style: AppTextStyle.fs12m.copyWith(
+          color: Colors.white,
+          height: 1,
+        ),
+      ),
+    );
+  }
+
+  ///价格提示文本
+  Widget buildPriceHintText() {
+    return Obx(() {
+      final config = SS.appConfig.configRx();
+      final price = isVideo ? config?.videoChatPrice : config?.voiceChatPrice;
+      var text = isVideo ? '视频聊天' : '语音聊天';
+      if (price != null && price > 0) {
+        text += '${price.toCurrencyString()}/分钟';
+      }
+
+      final minBalance = config?.chatMinBalance ?? 0;
+      if (minBalance > 0) {
+        text += '  金库余额>${minBalance.toCurrencyString()}';
+      }
+
+      return Text(text,
+          textAlign: TextAlign.center,
+          style: AppTextStyle.fs14b.copyWith(
+            color: Colors.white,
+          ));
     });
   }
 

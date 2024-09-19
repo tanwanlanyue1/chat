@@ -59,6 +59,7 @@ class WelcomePage extends StatelessWidget {
   Widget buildSwiper() {
     return Swiper(
         onIndexChanged: indexRx.call,
+        loop: false,
         itemBuilder: (_, index) {
           final item = _items[index];
           return Stack(
@@ -73,7 +74,8 @@ class WelcomePage extends StatelessWidget {
               Column(
                 children: [
                   Padding(
-                    padding: FEdgeInsets(top: Get.height - 340.rpx - Get.padding.bottom),
+                    padding: FEdgeInsets(
+                        top: Get.height - 340.rpx - Get.padding.bottom),
                     child: Text(
                       item.title,
                       style: AppTextStyle.fs24b.copyWith(
@@ -131,20 +133,28 @@ class WelcomePage extends StatelessWidget {
           Container(
             height: 50.rpx,
             margin: FEdgeInsets(top: 32.rpx),
-            child: CommonGradientButton(
-              onTap: onStartNow,
-              width: 327.rpx,
-              height: 50.rpx,
-              text: '马上开始',
-              textStyle: AppTextStyle.fs16b.copyWith(
-                color: Colors.white,
-              ),
-            ),
+            child: Obx(() {
+              final visible = indexRx() == _items.length - 1;
+              return AnimatedOpacity(
+                opacity: visible ? 1 : 0,
+                duration: const Duration(milliseconds: 200),
+                child: !visible ? null : CommonGradientButton(
+                  onTap: visible ? onStartNow : null,
+                  width: 327.rpx,
+                  height: 50.rpx,
+                  text: '马上开始',
+                  textStyle: AppTextStyle.fs16b.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            }),
           ),
           Button(
             width: 88.rpx,
             height: 50.rpx,
-            margin: FEdgeInsets(top: 32.rpx, bottom: 54.rpx + Get.padding.bottom),
+            margin:
+                FEdgeInsets(top: 32.rpx, bottom: 54.rpx + Get.padding.bottom),
             backgroundColor: Colors.transparent,
             onPressed: onStartNow,
             child: Text(
@@ -160,7 +170,7 @@ class WelcomePage extends StatelessWidget {
     );
   }
 
-  void onStartNow(){
+  void onStartNow() {
     Global.agreePrivacyPolicy().whenComplete(Get.navigateToHomeOrLogin);
   }
 }

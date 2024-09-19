@@ -412,7 +412,7 @@ class _MinePageState extends State<MinePage>
             title: S.current.myMessage,
             icon: "assets/images/mine/message.png",
             pagePath: AppRoutes.mineMessage,
-            badge: SS.appConfig.configRx.value?.systemMessage,
+            badge: (SS.inAppMessage.latestSysNoticeRx()?.total ?? 0) > 0,
           ),
         ],
       );

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/utils/app_link.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -35,16 +36,14 @@ class _AdvertisingSwiperState extends State<AdvertisingSwiper> {
 
   //广告跳转
   onTapAdvertising(int i) {
-    if (swiperImg[i].gotoType == 1) {
-      AppLink.jump(swiperImg[i].gotoUrl ?? '');
-    } else if (swiperImg[i].gotoType == 2) {
-      if (swiperImg[i].gotoParam != null &&
-          swiperImg[i].gotoParam!.isNotEmpty) {
-        AppLink.jump(swiperImg[i].gotoUrl ?? '',
-            args: jsonDecode(swiperImg[i].gotoParam ?? ''));
-      } else {
-        AppLink.jump(swiperImg[i].gotoUrl ?? '');
-      }
+    final item = swiperImg[i];
+    final url = item.gotoUrl;
+    if(url != null){
+      AppLink.jump(
+        url,
+        title: item.title,
+        args: item.gotoParam?.toJson(),
+      );
     }
   }
 

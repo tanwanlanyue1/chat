@@ -3,7 +3,9 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/widgets/recaptcha_dialog.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
@@ -19,11 +21,12 @@ class FirebaseUtil{
 
   ///初始化firebase
   Future<void> init() async{
-    await Future.wait([
-      Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      ),
-    ]);
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    FirebaseMessaging.instance.onTokenRefresh.listen((event) {
+      setFcmTokenToServer();
+    });
   }
 
 
@@ -98,6 +101,15 @@ class FirebaseUtil{
       AppLogger.w('verifySmsCode: $ex');
     }
     return null;
+  }
+
+  ///设置fcm token到服务端
+  Future<void> setFcmTokenToServer() async {
+    final token = await FirebaseMessaging.instance.getToken();
+    AppLogger.d('setFcmTokenToServer: $token');
+    if(token != null && SS.login.isLogin){
+      await OpenApi.updatePushId(token);
+    }
   }
 
 }

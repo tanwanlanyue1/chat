@@ -8,10 +8,15 @@ import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
+import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/app_link.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/common/utils/file_logger.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
+import 'package:guanjia/common/utils/plugin_util.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
 import 'package:guanjia/ui/chat/utils/chat_event_notifier.dart';
@@ -41,9 +46,11 @@ class InAppMessageService extends GetxService {
   final bellReminderRx = false.obs;
 
   ///最新一条系统通知
-  final latestSysNoticeRx  = Rxn<MessageUnreadModel>();
+  final latestSysNoticeRx = Rxn<MessageUnreadModel>();
 
   final _debounce = Debouncer(delay: const Duration(milliseconds: 200));
+
+  var _startWithAppLaunchUUid = '';
 
   @override
   void onInit() {
@@ -83,23 +90,23 @@ class InAppMessageService extends GetxService {
   }
 
   ///初始化系统通知
-  void _initSysNotice() async{
+  void _initSysNotice() async {
     final userId = SS.login.userId;
-    if(userId != null){
+    if (userId != null) {
       final key = _kLatestSysNotice + userId.toString();
       final json = await _appSettingPrefs.getJson(key);
-      if(json != null){
+      if (json != null) {
         latestSysNoticeRx.value = MessageUnreadModel.fromJson(json);
       }
-      ever(latestSysNoticeRx, (value){
-        if(value == null){
+      ever(latestSysNoticeRx, (value) {
+        if (value == null) {
           _appSettingPrefs.remove(key);
-        }else{
+        } else {
           _appSettingPrefs.setJson(key, value.toJson());
         }
       });
       _fetchLatestSysNotice();
-    }else{
+    } else {
       latestSysNoticeRx.value = null;
     }
   }
@@ -129,7 +136,7 @@ class InAppMessageService extends GetxService {
 
   ///接收到应用内消息
   void _onReceiveInAppMessage(InAppMessage message) {
-    switch(message.type){
+    switch (message.type) {
       case InAppMessageType.redPacketUpdate:
         message.redPacketUpdateContent?.let(_updateRedPacketMessageStatus);
       case InAppMessageType.sysMessage:
@@ -140,7 +147,7 @@ class InAppMessageService extends GetxService {
   }
 
   ///消息提醒
-  void messageReminder(){
+  void messageReminder() {
     //声音震动提醒
     if (SS.inAppMessage.bellReminderRx()) {
       FlutterRingtonePlayer().playNotification();
@@ -151,11 +158,11 @@ class InAppMessageService extends GetxService {
   }
 
   ///获取最新一条消息和未读数
-  void _fetchLatestSysNotice(){
-    _debounce(() async{
+  void _fetchLatestSysNotice() {
+    _debounce(() async {
       final lastId = await _appSettingPrefs.getInt(_kLatestSysNoticeId);
       final response = await UserApi.getMessageUnread(lastId: lastId);
-      if(response.isSuccess){
+      if (response.isSuccess) {
         latestSysNoticeRx.value = response.data;
       }
     });
@@ -163,18 +170,18 @@ class InAppMessageService extends GetxService {
 
   ///标记系统公告已读
   ///- lastId 最新一条通知id
-  void markReadSysNotice(int lastId){
+  void markReadSysNotice(int lastId) {
     final notice = latestSysNoticeRx();
-    if(notice != null){
+    if (notice != null) {
       latestSysNoticeRx.value = notice.copyWith(systemCount: 0);
       _appSettingPrefs.setInt(_kLatestSysNoticeId, lastId);
     }
   }
 
   ///标记系统消息已读
-  void markReadSysMsg(){
+  void markReadSysMsg() {
     final notice = latestSysNoticeRx();
-    if(notice != null){
+    if (notice != null) {
       latestSysNoticeRx.value = notice.copyWith(userCount: 0);
     }
   }
@@ -228,5 +235,68 @@ class InAppMessageService extends GetxService {
   StreamSubscription<InAppMessage> listen(
       void Function(InAppMessage message)? onData) {
     return _streamController.stream.listen(onData);
+  }
+
+  ///应用通知栏启动APP跳转
+  void startWithAppLaunch() async {
+    //jumpType 跳转类型（0无 1外链, 2内页）
+    //link 跳转链接
+    //extraJson 扩展字段json
+    // payload: {"jumpType": 1, "link":"/user/login","extraJson":""},
+    final options = await PluginUtil.getAppLaunchOptions();
+    AppLogger.d('startWithAppLaunch details: ${jsonEncode(options)}');
+    final payload = options['payload'] as String?;
+    if (payload == null) {
+      return;
+    }
+    try {
+      final uuid = payload.md5String;
+      if (_startWithAppLaunchUUid == uuid) {
+        return;
+      }
+      _startWithAppLaunchUUid = uuid;
+      final payloadObj = _Payload.fromJson(jsonDecode(payload));
+      final link = payloadObj.link;
+      if (link == null) {
+        return;
+      }
+      if ([1,2].contains(payloadObj.jumpType)) {
+        AppLink.jump(link, args: payloadObj.extraJson);
+      }
+    } catch (ex) {
+      AppLogger.w('startWithAppLaunch ex=$ex');
+    }
+  }
+}
+
+class _Payload {
+  final int? jumpType;
+  final String? link;
+  final Map<String, dynamic>? extraJson;
+
+  _Payload(this.jumpType, this.link, this.extraJson);
+
+  factory _Payload.fromJson(Map<String, dynamic> json) {
+    Map? extraMap;
+    final extraJson = json['extraJson'];
+    if (extraJson is String) {
+      try {
+        extraMap = jsonDecode(extraJson);
+        final extra = extraMap?.getStringOrNull('extra');
+        if(extra != null){
+          extra.toJson()?.let((value){
+            extraMap?.remove('extra');
+            extraMap?.addAll(value);
+          });
+        }
+      } catch (ex) {
+        AppLogger.w('_Payload.fromJson > extraJson ex=$ex');
+      }
+    }
+    return _Payload(
+      json['jumpType'],
+      json['link'],
+      extraMap?.map((key, value) => MapEntry(key.toString(), value)),
+    );
   }
 }

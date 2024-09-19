@@ -1,7 +1,10 @@
 
 import 'package:get/get.dart';
+import 'package:guanjia/common/extension/functions_extension.dart';
+import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/widgets/web/web_page.dart';
 
 ///应用链接跳转
@@ -17,6 +20,17 @@ class AppLink{
     }else{
       final page = AppPages.routes.firstWhereOrNull((element) => pathOrUrl.startsWith(element.name));
       if(page != null){
+
+        //聊天
+        if(pathOrUrl == AppRoutes.messageListPage){
+          final conversationId = args?.getStringOrNull('conversationId');
+          final userId = conversationId?.let(int.tryParse);
+          if(userId != null){
+            ChatManager().startChat(userId: userId);
+          }
+          return;
+        }
+
         Get.toNamed(pathOrUrl, arguments: args);
       }else{
         AppLogger.w('Page not found, pathOrUrl=$pathOrUrl');

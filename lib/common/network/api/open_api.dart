@@ -222,4 +222,15 @@ class OpenApi {
       },
     );
   }
+
+  ///上传推送id
+  ///- pushId 推送ID
+  static Future<ApiResponse<void>> updatePushId(String pushId) async {
+    return HttpClient.get(
+      '/api/user/updatePushId',
+      params: {
+        'pushId': pushId,
+      },
+    );
+  }
 }

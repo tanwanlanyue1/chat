@@ -22,10 +22,7 @@ enum CustomMessageType {
   callInvite(6),
 
   ///被邀请人拒绝接听 7
-  callReject(7),
-
-  ///系统通知 8
-  sysNotice(8);
+  callReject(7);
 
   final int value;
 

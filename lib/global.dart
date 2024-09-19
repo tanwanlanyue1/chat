@@ -21,9 +21,7 @@ import 'widgets/system_ui.dart';
 
 /// 全局静态数据
 class Global with WidgetsBindingObserver{
-  Global._(){
-    WidgetsBinding.instance.addObserver(this);
-  }
+  Global._();
   static final _instance = Global._();
   factory Global() => _instance;
 
@@ -45,6 +43,7 @@ class Global with WidgetsBindingObserver{
       }
       _completer = Completer<bool>();
 
+      WidgetsBinding.instance.addObserver(_instance);
 
       //android状态栏透明
       if (Platform.isAndroid) {

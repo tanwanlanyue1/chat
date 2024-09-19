@@ -9,6 +9,9 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/result.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/welcome/privacy_dialog.dart';
+import 'package:guanjia/ui/welcome/welcome_state.dart';
+import 'package:guanjia/ui/welcome/welcome_storage.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/web/web_page.dart';
 import 'login_state.dart';
@@ -55,8 +58,16 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
         arguments: {"type": 1}, preventDuplicates: false);
   }
 
-  void onTapLogin() async {
+  void onTapLogin(){
     FocusScope.of(Get.context!).unfocus();
+    if(WelcomeStorage.isPrivacyVisible){
+      PrivacyDialog.show(onAgree: _submit);
+    }else{
+      _submit();
+    }
+  }
+
+  void _submit() async{
     Loading.show();
     Result<void, String> result = await SS.login.loginByPassword(
       account: accountController.text,

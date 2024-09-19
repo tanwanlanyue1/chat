@@ -9,6 +9,7 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/httpclient/api_response.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/common/utils/firebase_util.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/common/utils/result.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
@@ -93,6 +94,7 @@ class LoginService extends GetxService {
           nickname: info?.nickname ?? '',
           avatar: info?.avatar ?? '',
         );
+        FirebaseUtil().setFcmTokenToServer();
       } else {
         //断开IM连接
         ChatManager().disconnect();

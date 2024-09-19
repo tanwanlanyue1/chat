@@ -110,29 +110,21 @@ mixin _ChatNotificationMixin {
     String title;
     String content;
     AndroidBitmap<Object>? largeIcon;
-    if (message.isSysNotice) {
-      title = message.sysNoticeContent?.title ?? '系统通知';
-      content = message.sysNoticeContent?.content ?? '';
-      final data =
-          await rootBundle.load('assets/images/chat/ic_sys_notice.png');
-      largeIcon = ByteArrayAndroidBitmap(data.buffer.asUint8List());
-    } else {
-      final user =
-          await ChatUserInfoCache().getOrQuery(message.zim.senderUserID);
-      title = user.baseInfo.userName;
-      if (title.isEmpty) {
-        title = user.baseInfo.userID;
+    final user =
+    await ChatUserInfoCache().getOrQuery(message.zim.senderUserID);
+    title = user.baseInfo.userName;
+    if (title.isEmpty) {
+      title = user.baseInfo.userID;
+    }
+    content = message.toPlainText() ?? '';
+    try {
+      final fileResp = DefaultCacheManager().getImageFile(user.userAvatarUrl);
+      final resp = await fileResp.first.timeout(2.seconds);
+      if (resp is FileInfo) {
+        largeIcon = FilePathAndroidBitmap(resp.file.path);
       }
-      content = message.toPlainText() ?? '';
-      try {
-        final fileResp = DefaultCacheManager().getImageFile(user.userAvatarUrl);
-        final resp = await fileResp.first.timeout(2.seconds);
-        if (resp is FileInfo) {
-          largeIcon = FilePathAndroidBitmap(resp.file.path);
-        }
-      } catch (ex) {
-        AppLogger.w('发通知时，获取用户头像失败, $ex');
-      }
+    } catch (ex) {
+      AppLogger.w('发通知时，获取用户头像失败, $ex');
     }
 
     final conversationID = message.info.conversationID;

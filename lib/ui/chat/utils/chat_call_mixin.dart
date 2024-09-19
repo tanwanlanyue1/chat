@@ -52,7 +52,7 @@ mixin _ChatCallMixin {
             ?.canInvitingInCalling ??
         true;
 
-    final timeoutSeconds = 60;
+    const timeoutSeconds = 60;
     final type = ZegoCallTypeExtension(
       isVideoCall
           ? ZegoCallInvitationType.videoCall
@@ -358,6 +358,10 @@ mixin _ChatCallMixin {
           _sendCallRejectMessage(_callInvitee);
           _clearCallState();
         },
+        onOutgoingCallTimeout: (callId, callees, isVideoCall){
+          _sendCallRejectMessage(callees.first.id);
+          _clearCallState();
+        }
       ),
     );
   }

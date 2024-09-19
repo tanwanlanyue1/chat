@@ -11,7 +11,6 @@ import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/contact/contact_view.dart';
 import 'package:guanjia/ui/chat/conversation_list/conversation_list_view.dart';
 import 'package:guanjia/ui/home/home_controller.dart';
-import 'package:guanjia/ui/mine/inapp_message/models/call_match_content.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/edge_insets.dart';

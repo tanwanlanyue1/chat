@@ -80,6 +80,7 @@ dependencies:
   firebase_core: ^3.4.0
   firebase_auth: ^5.2.0
   flutter_recaptcha_v2_compat: ^1.0.5
+  firebase_messaging: ^15.1.0
 
 dependency_overrides:
   http: ^1.2.1 # svgaplayer_flutter 和 flutter_cache_manager会冲突，强制使用flutter_cache_manager依赖版本

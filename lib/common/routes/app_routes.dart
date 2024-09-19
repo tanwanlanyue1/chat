@@ -9,15 +9,15 @@ abstract class AppRoutes {
   static const auth = "/auth";
 
   ///主页
-  static const home = '/home';
+  static const home = '$auth/home';
 
   static const welcome = '/welcome';
 
   ///发布动态
-  static const releaseDynamicPage = '/releaseDynamicPage';
+  static const releaseDynamicPage = '$auth/releaseDynamicPage';
 
   ///分类广场/话题广场
-  static const classificationSquarePage = '/classificationSquarePage';
+  static const classificationSquarePage = '$auth/classificationSquarePage';
 
   ///广场-用户中心
   static const userCenterPage = '$auth/userCenterPage';
@@ -26,22 +26,22 @@ abstract class AppRoutes {
   static const speedDatingPage = '$auth/speedDatingPage';
 
   ///全部评论
-  static const allCommentsPage = '/allCommentsPage';
+  static const allCommentsPage = '$auth/allCommentsPage';
 
   ///我的设置
-  static const mineSettingPage = '/mineSettingPage';
+  static const mineSettingPage = '$auth/mineSettingPage';
 
   ///个人信息
   static const accountDataPage = '$auth/accountDataPage';
 
   ///更改信息页
-  static const updateInfoPage = '/updateInfoPage';
+  static const updateInfoPage = '$auth/updateInfoPage';
 
   ///设置-账号安全
   static const accountSafetyPage = '$auth/accountSafetyPage';
 
   ///设置-绑定手机号码
-  static const bindingPage = '/BindingPage';
+  static const bindingPage = '$auth/BindingPage';
 
   ///我的-评价
   static const mineEvaluatePage = '$auth/mineEvaluatePage';
@@ -50,7 +50,7 @@ abstract class AppRoutes {
   static const jiaEvaluatePage = '$auth/jiaEvaluatePage';
 
   ///设置-修改登录密码
-  static const updatePasswordPage = '/updatePasswordPage';
+  static const updatePasswordPage = '$auth/updatePasswordPage';
 
   ///设置-支付密码
   static const paymentPasswordPage = '$auth/paymentPasswordPage';
@@ -71,16 +71,16 @@ abstract class AppRoutes {
   static const mineMyTeamPage = '$auth/mineMyTeamPage';
 
   ///设置-账户黑名单
-  static const accountBlacklistPage = '/accountBlacklistPage';
+  static const accountBlacklistPage = '$auth/accountBlacklistPage';
 
   ///设置-关于我们
-  static const aboutPage = '/aboutPage';
+  static const aboutPage = '$auth/aboutPage';
 
   ///设置-权限设置
-  static const permissions = '/permissions';
+  static const permissions = '$auth/permissions';
 
   /// 消息-设置
-  static const messageSettingPage = '/messageSettingPage';
+  static const messageSettingPage = '$auth/messageSettingPage';
 
   /// WebView页面
   static const webPage = '/webPage';
@@ -89,7 +89,7 @@ abstract class AppRoutes {
   static const mineFeedbackPage = '$auth/mineFeedbackPage';
 
   /// 佳丽-我的客户
-  static const mineClient = '/mineClient';
+  static const mineClient = '$auth/mineClient';
 
   /// 我的-帮助与客服
   static const mineHelpPage = '$auth/mineHelpPage';
@@ -119,10 +119,10 @@ abstract class AppRoutes {
   static const loginForgotPage = '/loginForgotPage';
 
   /// 登录-绑定手机
-  static const loginPhoneBindingPage = '/loginPhoneBinding';
+  static const loginPhoneBindingPage = '$auth/loginPhoneBinding';
 
   /// 登录-问题
-  static const loginQuestionPage = '/loginQuestionPage';
+  static const loginQuestionPage = '$auth/loginQuestionPage';
 
   ///开屏广告
   static const launchAd = '/launchAd';
@@ -137,7 +137,7 @@ abstract class AppRoutes {
   static const contractListPage = '$auth/ContractListPage';
 
   ///发现-发布邀约
-  static const releaseInvitation = '/releaseInvitation';
+  static const releaseInvitation = '$auth/releaseInvitation';
 
   /// 个人头像
   static const avatarPage = '$auth/avatarPage';
@@ -149,7 +149,7 @@ abstract class AppRoutes {
   static const walletPage = '$auth/walletPage';
 
   /// 订单
-  static const orderPage = '/orderPage';
+  static const orderPage = '$auth/orderPage';
 
   /// 订单 - 详情
   static const orderDetailPage = '$auth/orderDetailPage';
@@ -165,11 +165,11 @@ abstract class AppRoutes {
 
 
   ///1V1聊天消息列表页
-  static const messageListPage = '/MessageListPage';
+  static const messageListPage = '$auth/MessageListPage';
 
   ///发红包
-  static const redPacketPage = '/RedPacketPage';
+  static const redPacketPage = '$auth/RedPacketPage';
 
   ///转账
-  static const transferMoneyPage = '/TransferMoneyPage';
+  static const transferMoneyPage = '$auth/TransferMoneyPage';
 }

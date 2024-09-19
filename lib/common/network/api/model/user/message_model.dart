@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:guanjia/common/extension/functions_extension.dart';
+import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/extension/string_extension.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 
 import '../../api.dart';
 
@@ -64,47 +70,6 @@ class MessageModel {
   CommentListModel? replyComment;
   UserModel? userInfo;
   SystemMessage? systemMessage;
-
-
-  String get image{
-    return '';
-  }
-
-  Color? get color{
-    return null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = id;
-    map['uid'] = uid;
-    map['msgId'] = msgId;
-    map['type'] = type;
-    map['read'] = read;
-    map['content'] = content;
-    map['isSelect'] = isSelect;
-    if (extraJson != null) {
-      map['extraJson'] = extraJson?.toJson();
-    }
-    map['createTime'] = createTime;
-    if (post != null) {
-      map['post'] = post?.toJson();
-    }
-    if (comment != null) {
-      map['comment'] = comment?.toJson();
-    }
-    if (replyComment != null) {
-      map['replyComment'] = replyComment?.toJson();
-    }
-    if (userInfo != null) {
-      map['userInfo'] = userInfo?.toJson();
-    }
-    if (systemMessage != null) {
-      map['systemMessage'] = systemMessage?.toJson();
-    }
-    return map;
-  }
-
 }
 
 class SystemMessage {
@@ -115,45 +80,62 @@ class SystemMessage {
       this.content, 
       this.action, 
       this.extraJson,
-    //跳转类型（0无 1内页 2外链）
       this.jumpType,
-    //	跳转链接
       this.link,
       this.createTime,});
 
   SystemMessage.fromJson(dynamic json) {
+    Map? extraMap;
+    final extraJsonStr = json['extraJson'];
+    if (extraJsonStr is String) {
+      try {
+        extraMap = jsonDecode(extraJsonStr);
+        final extra = extraMap?.getStringOrNull('extra');
+        if(extra != null){
+          extra.toJson()?.let((value){
+            extraMap?.remove('extra');
+            extraMap?.addAll(value);
+          });
+        }
+      } catch (ex) {
+        AppLogger.w('SystemMessage.fromJson ex=$ex');
+      }
+    }
+
+
     id = json['id'];
     type = json['type'];
     title = json['title'];
     content = json['content'];
     action = json['action'];
     link = json['link'];
-    extraJson = json['extraJson'];
+    extraJson = extraMap?.map((key, value) => MapEntry(key.toString(), value));
     jumpType = json['jumpType'];
     createTime = json['createTime'];
   }
   int? id;
   int? type;
+  /// 跳转类型（0无 1外链 2内页）
   int? jumpType;
   String? title;
   String? content;
   String? action;
+  /// 跳转链接
   String? link;
-  dynamic extraJson;
+  Map<String,dynamic>? extraJson;
   int? createTime;
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = id;
-    map['type'] = type;
-    map['title'] = title;
-    map['content'] = content;
-    map['action'] = action;
-    map['extraJson'] = extraJson;
-    map['link'] = link;
-    map['createTime'] = createTime;
-    return map;
+
+  String? get image{
+    return extraJson?.getStringOrNull('image');
   }
+
+  //#FF07FF
+  Color? get color{
+    final hex = extraJson?.getStringOrNull('color');
+    return hex?.color;
+  }
+
 
 }
 

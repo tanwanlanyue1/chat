@@ -31,7 +31,7 @@ class MineMessageListTile extends StatelessWidget {
                   height: 10.rpx,
                   margin: EdgeInsets.only(right: 8.rpx),
                   decoration: BoxDecoration(
-                    color: item.color ?? AppColor.primaryBlue,
+                    color: item.systemMessage?.color ?? AppColor.primaryBlue,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -52,11 +52,11 @@ class MineMessageListTile extends StatelessWidget {
               ],
             ),
             Divider(height: 32.rpx),
-            if (item.image.isNotEmpty)
+            if (item.systemMessage?.image?.isNotEmpty == true)
               Padding(
                 padding: FEdgeInsets(bottom: 12.rpx),
                 child: AppImage.network(
-                  item.image,
+                  item.systemMessage?.image ?? '',
                   width: 320.rpx,
                   height: 100.rpx,
                 ),

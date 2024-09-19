@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/utils/app_link.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/welcome/welcome_storage.dart';
@@ -60,14 +61,13 @@ class _AppAdDialogState extends State<AppAdDialog> {
   //广告跳转
   onTapAdvertising(){
     Get.back();
-    if(item.gotoType == 1){
-      AppLink.jump(item.gotoUrl ?? '');
-    }else if(item.gotoType == 2){
-      if(item.gotoParam != null && item.gotoParam!.isNotEmpty){
-        AppLink.jump(item.gotoUrl ?? '',args: jsonDecode(item.gotoParam ?? ''));
-      }else{
-        AppLink.jump(item.gotoUrl ?? '');
-      }
+    final url = item.gotoUrl;
+    if(url != null){
+      AppLink.jump(
+        url,
+        title: item.title,
+        args: item.gotoParam?.toJson(),
+      );
     }
   }
 

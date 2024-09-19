@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/welcome/welcome_storage.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:guanjia/widgets/web/web_page.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -17,15 +19,22 @@ class PrivacyDialog extends StatelessWidget {
 
   const PrivacyDialog._({super.key});
 
-  static Future<bool?> show() async {
+  static void show({VoidCallback? onCancel, VoidCallback? onAgree}) async {
     if (_visible) {
-      return null;
+      return;
     }
     _visible = true;
-    return Get.dialog<bool>(
+    final result = await Get.dialog<bool>(
       const PrivacyDialog._(),
       barrierDismissible: false,
     ).whenComplete(() => _visible = false);
+
+    if(result == true){
+      WelcomeStorage.savePrivacyVisible(false);
+      onAgree?.call();
+    }else{
+      onCancel?.call();
+    }
   }
 
   @override

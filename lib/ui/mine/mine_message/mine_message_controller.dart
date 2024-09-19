@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
+import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_link.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../common/network/network.dart';
 import 'mine_message_state.dart';
@@ -50,10 +52,9 @@ class MineMessageController extends GetxController with GetSingleTickerProviderS
   }
 
   void onTapMessage(MessageModel item){
-    if(item.systemMessage?.jumpType == 1){
-      AppLink.jump(item.systemMessage?.link ?? '');
-    }else if(item.systemMessage?.jumpType == 2){
-      AppLink.jump(item.systemMessage?.link ?? '',args: jsonDecode(item.systemMessage?.extraJson ?? ''));
+    final msg = item.systemMessage;
+    if([1,2].contains(msg?.jumpType)){
+      AppLink.jump(msg?.link ?? '',args: msg?.extraJson);
     }
   }
 

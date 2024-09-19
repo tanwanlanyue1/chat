@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
+import 'package:guanjia/global.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -12,7 +14,7 @@ import 'package:guanjia/ui/mine/mine_setting/push_setting/notification_permissio
 import 'package:zego_zimkit/zego_zimkit.dart';
 import 'home_state.dart';
 
-class HomeController extends GetxController {
+class HomeController extends GetxController with GetAutoDisposeMixin {
   final HomeState state = HomeState();
   late PageController pageController =
       PageController(initialPage: state.currentPageRx.value);
@@ -41,9 +43,17 @@ class HomeController extends GetxController {
       state.messageUnreadRx.value = messageUnread.value +
           (SS.inAppMessage.latestSysNoticeRx()?.total ?? 0);
     });
-    ever(SS.inAppMessage.latestSysNoticeRx, (data) {
+
+
+    autoDisposeWorker(ever(SS.inAppMessage.latestSysNoticeRx, (data) {
       state.messageUnreadRx.value = messageUnread.value + (data?.total ?? 0);
-    });
+    }));
+
+    autoDisposeWorker(ever(Global().appStateRx, (state){
+      if(state == AppLifecycleState.resumed){
+        SS.inAppMessage.startWithAppLaunch();
+      }
+    }));
 
     super.onInit();
   }
@@ -54,6 +64,7 @@ class HomeController extends GetxController {
     if (Platform.isAndroid) {
       AppUpdateManager.instance.checkAppUpdate();
     }
+    SS.inAppMessage.startWithAppLaunch();
   }
 
   void setCurrentPage(int index) {

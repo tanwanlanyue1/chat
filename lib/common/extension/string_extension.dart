@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:common_utils/common_utils.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart';
+import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -29,9 +30,16 @@ extension StringExtension on String {
   }
 
   Color? get color {
-
-
-    return null;
+    var value = this;
+    if(value.startsWith('#')){
+      value = value.substring(1);
+    }
+    if(value.length == 6){
+      value = '0xFF$value';
+    }else if(value.length == 8){
+      value = '0x$value';
+    }
+    return int.tryParse(value)?.let(Color.new);
   }
 
   String get uuid => const Uuid().v5(Uuid.NAMESPACE_URL, this);
@@ -42,5 +50,17 @@ extension StringExtension on String {
       return;
     }
     Loading.showToast(message ?? S.current.copySuccess);
+  }
+
+  Map<String,dynamic>? toJson(){
+    try{
+      final json = jsonDecode(this);
+      if(json is Map){
+        return json.map((key, value) => MapEntry(key.toString(), value));
+      }
+    }catch(ex){
+      AppLogger.w('StringExtension > toJson : ex=$ex');
+    }
+    return null;
   }
 }

@@ -52,6 +52,8 @@ class MessageListPage extends GetView<MessageListController> {
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AppAssetImage('assets/images/chat/chat_bg.png'),
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
           ),
           child: Scaffold(

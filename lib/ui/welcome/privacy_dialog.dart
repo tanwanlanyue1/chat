@@ -4,14 +4,10 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/app_text_style.dart';
-import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/welcome/welcome_storage.dart';
-import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:guanjia/widgets/web/web_page.dart';
 import 'package:guanjia/widgets/widgets.dart';
-
-import 'privacy.dart';
 
 ///隐私协议对话框
 class PrivacyDialog extends StatelessWidget {

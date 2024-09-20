@@ -35,7 +35,6 @@ class AppUpdateManager {
   Future<void> checkAppUpdate({bool userAction = false}) async {
     if (userAction) {
       Loading.show();
-      return;
     }
     final info = downloadUpdateInfoRx() ?? await _fetchAppUpdateInfo();
     if (userAction) {
@@ -77,7 +76,7 @@ class AppUpdateManager {
     await FlutterLocalNotificationsPlugin().show(
       notificationId,
       isFinish ? '下载完成，点击开始安装' : '正在下载',
-      null,
+      '版本更新',
       notificationDetails,
       payload: AppUpdatePayload(
         progress: progress,
@@ -111,6 +110,11 @@ class AppUpdateManager {
 
   ///下载并安装
   void downloadAndInstall(AppUpdateVersionModel info) async {
+    if(downloadUpdateInfoRx() != null){
+      Loading.showToast('正在下载');
+      return;
+    }
+
     final dir = await getTemporaryDirectory();
     var tempPath = join(dir.path, '${info.version}.tmp');
     final targetPath = join(dir.path, '${info.link.md5String}.apk');
@@ -122,6 +126,7 @@ class AppUpdateManager {
       return;
     }
     //下载
+    Loading.showToast('开始下载');
     downloadUpdateInfoRx(info);
     Dio().download(info.link, tempPath,
         onReceiveProgress: (int count, int total) {

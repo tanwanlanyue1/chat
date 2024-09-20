@@ -37,7 +37,7 @@ class MineMessageListTile extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    (item.systemMessage?.title ?? '') * 3,
+                    item.systemMessage?.title ?? '',
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyle.fs16b.copyWith(
                       color: AppColor.blackText,

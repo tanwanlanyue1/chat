@@ -1,26 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
-import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
-import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
 import 'package:guanjia/common/network/api/model/user/message_unread_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/ui/chat/utils/chat_manager.dart';
-import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
-import 'package:guanjia/ui/chat/custom/message_extension.dart';
-import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
-
-import '../../../../common/network/api/model/talk_model.dart';
 
 ///聊天会话列表-系统通知
 class ConversationNoticeTile extends StatelessWidget {
@@ -93,7 +82,7 @@ class ConversationNoticeTile extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            S.current.systemNotice,
+            model.title.isNotEmpty ? model.title : S.current.systemNotice,
             maxLines: 1,
             style: AppTextStyle.fs16b.copyWith(
               color: AppColor.blackBlue,

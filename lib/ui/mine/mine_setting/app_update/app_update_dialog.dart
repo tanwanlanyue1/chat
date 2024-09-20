@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/ui/mine/mine_setting/push_setting/notification_permission_util.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -52,14 +53,14 @@ class AppUpdateDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: info.force != 1,
+      canPop: isCancelable,
       child: Center(
         child: Material(
           color: Colors.transparent,
           child: Stack(
             children: [
               _buildContent(),
-              if (info.force != 1) _buildCloseIcon(),
+              if (isCancelable) _buildCloseIcon(),
             ],
           ),
         ),
@@ -67,101 +68,93 @@ class AppUpdateDialog extends StatelessWidget {
     );
   }
 
+  bool get isCancelable => info.force != 1;
+
   Widget _buildContent() {
     return Container(
-      width: 326.rpx,
-      height: 203.rpx,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AppAssetImage('assets/images/mine/update_bg.png')
-        )
+      width: 311.rpx,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.rpx),
+        color: Colors.white,
       ),
-      padding: FEdgeInsets(all: 20.rpx),
-      child: ObxValue<Rxn<AppUpdateVersionModel>>((downloadInfoRx) {
-        final downloadInfo = downloadInfoRx();
-        final isCancelable = info.force != 1 && downloadInfo == null;
+      padding: FEdgeInsets(horizontal: 16.rpx, top: 36.rpx, bottom: 24.rpx),
+      child: Obx((){
+        final downloadInfo = updateManager.downloadUpdateInfoRx();
+        final isDownloadFinish = updateManager.downloadProgressRx() == 1;
+        final isSingleButton = !isCancelable || isDownloadFinish;
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               '发现新版本',
               style: AppTextStyle.fs18b.copyWith(
-                color: AppColor.gray5,
-                height: 22 / 16,
+                color: AppColor.blackBlue,
+                height: 1,
               ),
             ),
-            Spacing.h8,
-            Expanded(
-              child: SingleChildScrollView(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    info.content,
-                    style: AppTextStyle.fs12m.copyWith(
-                      color: AppColor.gray5,
-                      height: 24 / 13,
-                    ),
-                  ),
+            Spacing.h16,
+            Container(
+              width: double.infinity,
+              padding: FEdgeInsets(all: 16.rpx),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.rpx),
+                color: AppColor.background,
+              ),
+              child: Text(
+                info.content,
+                style: AppTextStyle.fs14m.copyWith(
+                  color: AppColor.blackBlue,
                 ),
               ),
             ),
-            Spacing.h8,
-            if (downloadInfo == null)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (isCancelable) ...[
-                    Button.image(
-                      image: AppImage.asset('assets/images/mine/btn_ignore_update.png', fit: BoxFit.fill,),
-                      width: 117.rpx,
-                      height: 35.rpx,
-                      child: Text(userAction ? '暂不更新' : '忽略'),
-                      onPressed: () {
-                        if (!userAction) {
-                          updateManager.setIgnoreUpdate(info.version);
-                        }
+            Spacing.h24,
+            if(downloadInfo == null) Row(
+              mainAxisAlignment: !isSingleButton
+                  ? MainAxisAlignment.spaceBetween
+                  : MainAxisAlignment.center,
+              children: [
+                if (!isSingleButton)
+                  Button(
+                    onPressed: dismiss,
+                    height: 50.rpx,
+                    width: 120.rpx,
+                    backgroundColor: AppColor.gray9,
+                    child: Text('暂时忽略', style: AppTextStyle.fs16m),
+                  ),
+                CommonGradientButton(
+                  height: 50.rpx,
+                  width: isSingleButton ? 260.rpx : 120.rpx,
+                  text: isDownloadFinish ? '立即安装' : '马上升级',
+                  onTap: (){
+                    if (info.flag == 2 && info.link.trim().startsWith('http')) {
+                      //有通知栏显示进度，且不是强制更新时，才需要隐藏对话框
+                      if(isCancelable && NotificationPermissionUtil.instance.isGrantedRx()){
                         dismiss();
-                      },
-                    ),
-                    Spacing.w(30),
-                  ],
-                  Button.image(
-                    image: AppImage.asset('assets/images/mine/btn_update_now.png', fit: BoxFit.fill,),
-                    width: 117.rpx,
-                    height: 35.rpx,
-                    child: const Text('马上升级'),
-                    onPressed: () {
-                      if (info.flag == 2 &&
-                          info.link.trim().startsWith('http')) {
-                        updateManager.downloadAndInstall(info);
-                      } else {
-                        _jumpToAppMarket();
                       }
-                    },
-                  )
-                ],
-              ),
-            if (downloadInfo != null) _buildDownloadProgress(),
+                      updateManager.downloadAndInstall(info);
+                    } else {
+                      _jumpToAppMarket();
+                    }
+                  },
+                  textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
+                ),
+              ],
+            ),
+            if(downloadInfo != null) _buildDownloadProgress(),
           ],
         );
-      }, updateManager.downloadUpdateInfoRx),
+      }),
     );
   }
 
-  ///跳转应用市场
-  void _jumpToAppMarket() async {
-    final packageName = (await PackageInfo.fromPlatform()).packageName;
-    launchUrlString('market://details?id=$packageName');
-    // launchUrlString('market://details?id=com.hl.tbsport');
-  }
 
   Widget _buildDownloadProgress() {
-    final buttonSize = Size(230.rpx, 35.rpx);
+    final buttonSize = Size(230.rpx, 36.rpx);
     return ClipRRect(
       clipBehavior: Clip.antiAlias,
       borderRadius: BorderRadius.circular(buttonSize.height / 2),
       child: ObxValue<RxDouble>(
-        (progressRx) {
+            (progressRx) {
           final progress = progressRx();
           return Stack(
             alignment: Alignment.center,
@@ -177,7 +170,7 @@ class AppUpdateDialog extends StatelessWidget {
                 child: Container(
                   width: buttonSize.width * progress,
                   height: buttonSize.height,
-                  color: AppColor.primary,
+                  color: AppColor.primaryBlue,
                 ),
               ),
               Text(
@@ -195,6 +188,12 @@ class AppUpdateDialog extends StatelessWidget {
     );
   }
 
+  ///跳转应用市场
+  void _jumpToAppMarket() async {
+    final packageName = (await PackageInfo.fromPlatform()).packageName;
+    launchUrlString('market://details?id=$packageName');
+  }
+
   Widget _buildCloseIcon() {
     return Positioned(
       top: 0,
@@ -204,12 +203,12 @@ class AppUpdateDialog extends StatelessWidget {
         behavior: HitTestBehavior.translucent,
         child: Container(
           alignment: Alignment.center,
-          width: 48.rpx,
-          height: 48.rpx,
+          width: 40.rpx,
+          height: 40.rpx,
           child: Icon(
             Icons.close,
-            color: AppColor.gray5,
-            size: 18.rpx,
+            color: AppColor.black3,
+            size: 22.rpx,
           ),
         ),
       ),

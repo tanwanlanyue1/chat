@@ -20,11 +20,10 @@ class NotificationPermissionUtil with WidgetsBindingObserver {
   ///是否已打开通知栏权限
   final isGrantedRx = false.obs;
 
-  NotificationPermissionUtil._() {
-    WidgetsBinding.instance.addObserver(this);
-  }
+  NotificationPermissionUtil._();
 
   Future<void> initialize() async {
+    WidgetsBinding.instance..removeObserver(this)..addObserver(this);
     await _refresh();
     _requestIfNeed();
   }

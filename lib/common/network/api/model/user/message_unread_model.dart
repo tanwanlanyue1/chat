@@ -2,6 +2,7 @@ class MessageUnreadModel {
   MessageUnreadModel({
     required this.systemCount,
     required this.userCount,
+    required this.title,
     required this.content,
     required this.type,
     required this.id,
@@ -16,6 +17,9 @@ class MessageUnreadModel {
 
   ///未读个人消息总数
   final int userCount;
+
+  ///	最新消息标题
+  final String title;
 
   ///	最新消息内容
   final String content;
@@ -33,6 +37,7 @@ class MessageUnreadModel {
     return MessageUnreadModel(
       systemCount: json["systemCount"] ?? 0,
       userCount: json["userCount"] ?? 0,
+      title: json["title"] ?? "",
       content: json["content"] ?? "",
       type: json["type"] ?? 0,
       id: json["id"] ?? 0,
@@ -43,6 +48,7 @@ class MessageUnreadModel {
   Map<String, dynamic> toJson() => {
     "systemCount": systemCount,
     "userCount": userCount,
+    "title": title,
     "content": content,
     "type": type,
     "id": id,
@@ -53,6 +59,7 @@ class MessageUnreadModel {
     int? systemCount,
     int? userCount,
     String? content,
+    String? title,
     int? type,
     int? id,
     int? time,
@@ -60,6 +67,7 @@ class MessageUnreadModel {
     return MessageUnreadModel(
       systemCount: systemCount ?? this.systemCount,
       userCount: userCount ?? this.userCount,
+      title: title ?? this.title,
       content: content ?? this.content,
       type: type ?? this.type,
       id: id ?? this.id,

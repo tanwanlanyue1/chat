@@ -157,7 +157,9 @@ class _ChatPageState extends State<ChatPage>
                       ),
                       SizedBox(height: 24.rpx),
                       Text(
-                        "该用户在实时${callContent.isVideo ? "视频" : "语音"}聊天匹配寻找好友",
+                        callContent.isVideo ?
+                        S.current.theUserVideo:
+                        S.current.theUserVoice,
                         textAlign: TextAlign.center,
                         style: AppTextStyle.fs16b
                             .textHeight(1)
@@ -169,7 +171,7 @@ class _ChatPageState extends State<ChatPage>
                         alignment: Alignment.center,
                         padding: FEdgeInsets(top: 16.rpx),
                         child: Text(
-                          "注：陪聊时间越长，可获得的收益越多哦～",
+                          S.current.longerConversationMoreMoney,
                           textAlign: TextAlign.start,
                           style: AppTextStyle.fs12m
                               .textHeight(1)
@@ -186,7 +188,7 @@ class _ChatPageState extends State<ChatPage>
                         child: CommonGradientButton(
                           onTap: controller.onTapGrab,
                           height: 50.rpx,
-                          text: "立即抢单",
+                          text: S.current.takeOrdersImmediately,
                         ),
                       ),
                     ],

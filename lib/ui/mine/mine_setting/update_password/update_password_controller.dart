@@ -32,7 +32,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
   /// 获取邮箱验证码
   Future<bool> fetchEmailVerificationCode() async {
     if(!state.isPhone.value && !GetUtils.isEmail(state.phone)){
-      Loading.showToast('邮箱格式错误');
+      Loading.showToast(S.current.mailboxFormatError);
       return false;
     }else{
       final res = await state.loginService.fetchEmailVerificationCode(state.phone);
@@ -49,7 +49,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
   /// 获取短信验证码
   Future<bool> fetchSmsVerificationCode() async {
     if(state.phone.isEmpty){
-      Loading.showToast('请输入手机号码');
+      Loading.showToast(S.current.pleaseEnterPhone);
       return false;
     }
 
@@ -73,7 +73,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
       idToken = await FirebaseUtil().verifySmsCode(state.verificationId, verificationCode);
       if(idToken == null){
         Loading.dismiss();
-        Loading.showToast('验证码错误，请重新输入');
+        Loading.showToast(S.current.verificationCodeError);
         return;
       }
     }
@@ -91,7 +91,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
     Loading.dismiss();
 
     res.when(success: (_) {
-      Loading.showToast("修改成功");
+      Loading.showToast(S.current.modifySuccessfully);
       Get.back();
     }, failure: (errorMessage) {
       Loading.showToast(errorMessage);
@@ -110,7 +110,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
       idToken = await FirebaseUtil().verifySmsCode(state.verificationId, verificationCode);
       if(idToken == null){
         Loading.dismiss();
-        Loading.showToast('验证码错误，请重新输入');
+        Loading.showToast(S.current.verificationCodeError);
         return;
       }
     }

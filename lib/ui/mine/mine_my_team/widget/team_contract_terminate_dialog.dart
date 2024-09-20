@@ -44,7 +44,7 @@ class TeamContractTerminateDialog extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(bottom: 36.rpx),
                       child: Text(
-                        '是否同意佳丽 ${contract.partyBName} 确定解除契约吗？',
+                        S.current.rescissionOrNot(contract.partyBName),
                         textAlign: TextAlign.center,
                         style: AppTextStyle.fs16m.copyWith(
                           color: AppColor.gray5,
@@ -65,14 +65,14 @@ class TeamContractTerminateDialog extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8.rpx),
                             ),
                             alignment: Alignment.center,
-                            child: Text("拒绝",style: AppTextStyle.fs16m.copyWith(color: Colors.white),),
+                            child: Text(S.current.refuse,style: AppTextStyle.fs16m.copyWith(color: Colors.white),),
                           ),
                         ),
                         SizedBox(
                           width: 120.rpx,
                           child: CommonGradientButton(
                             height: 50.rpx,
-                            text: '立即解约',
+                            text: S.current.immediateDestination,
                             onTap: () => Get.back(result: 1),
                           ),
                         ),

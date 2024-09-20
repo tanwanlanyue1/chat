@@ -9,6 +9,7 @@ import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart'
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
 import 'package:guanjia/ui/order/model/order_team_list_item.dart';
@@ -96,19 +97,19 @@ class _OrderListPageState extends State<OrderListPage>
             Expanded(
               child: OrderOperationNumberWidget(
                 number: state.waitTimeCount.value,
-                title: "等待超时",
+                title: S.current.waitTimeout,
               ),
             ),
             Expanded(
               child: OrderOperationNumberWidget(
                 number: state.otherCancelCount.value,
-                title: "对方取消",
+                title: S.current.counterpartyCancel,
               ),
             ),
             Expanded(
               child: OrderOperationNumberWidget(
                 number: state.selfCancelCount.value,
-                title: "主动取消",
+                title: S.current.activeCancellation,
               ),
             ),
           ],

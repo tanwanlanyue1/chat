@@ -8,6 +8,7 @@ import 'package:guanjia/common/extension/list_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -29,7 +30,7 @@ class MyVipPage extends StatelessWidget {
       return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          title: const Text('会员中心'),
+          title: Text(S.current.memberCenter),
           backgroundColor: Colors.transparent,
         ),
         body: Builder(builder: (context) {
@@ -64,10 +65,10 @@ class MyVipPage extends StatelessWidget {
                             Builder(builder: (context) {
                               final userType = userInfo.type;
                               final userTypeString = userType.isUser
-                                  ? '用户'
+                                  ? S.current.user
                                   : userType.isBeauty
-                                      ? '佳丽'
-                                      : '经纪人';
+                                      ? S.current.goodGirl
+                                      : S.current.brokerP;
 
                               return Container(
                                 width: 343.rpx,
@@ -160,8 +161,8 @@ class MyVipPage extends StatelessWidget {
                                                     children: [
                                                       GradientText(
                                                         isVip
-                                                            ? "管佳VIP"
-                                                            : "成为管佳VIP",
+                                                            ? S.current.guanJiaVIP
+                                                            : S.current.becomeGuanJiaVIP,
                                                         style: AppTextStyle.st
                                                             .size(18.rpx)
                                                             .textHeight(1),
@@ -184,8 +185,8 @@ class MyVipPage extends StatelessWidget {
                                                                     .expirationTime,
                                                                 newPattern:
                                                                     'yyyy.MM.dd',
-                                                              )} 到期"
-                                                            : "开通立享超值会员权益",
+                                                              )} ${S.current.expire}"
+                                                            : S.current.enjoyPremiumBenefits,
                                                         style: AppTextStyle.st
                                                             .size(12.rpx),
                                                         gradientDirection:
@@ -223,7 +224,7 @@ class MyVipPage extends StatelessWidget {
                                                       alignment:
                                                           Alignment.center,
                                                       child: Text(
-                                                        "未开通",
+                                                        S.current.haveNotOpened,
                                                         style: AppTextStyle.st
                                                             .size(14.rpx)
                                                             .textColor(
@@ -308,7 +309,7 @@ class MyVipPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "会员尊享权益",
+                                    S.current.memberInterests,
                                     style: AppTextStyle.st
                                         .size(16.rpx)
                                         .textColor(AppColor.blackBlue)
@@ -374,7 +375,7 @@ class MyVipPage extends StatelessWidget {
                                   ),
                                   SizedBox(height: 36.rpx),
                                   Text(
-                                    "套餐选择",
+                                    S.current.packageSelection,
                                     style: AppTextStyle.st
                                         .size(16.rpx)
                                         .textColor(AppColor.blackBlue)
@@ -427,7 +428,7 @@ class MyVipPage extends StatelessWidget {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                          "${item.duration}个月",
+                                                          S.current.entriesMonth(item.duration),
                                                           style: AppTextStyle.st
                                                               .size(14.rpx)
                                                               .textColor(AppColor
@@ -532,7 +533,7 @@ class MyVipPage extends StatelessWidget {
                                                       alignment:
                                                           Alignment.center,
                                                       child: Text(
-                                                        "限时特惠",
+                                                        S.current.flashSales,
                                                         style: AppTextStyle.st
                                                             .size(12.rpx)
                                                             .textColor(
@@ -584,7 +585,7 @@ class MyVipPage extends StatelessWidget {
                             CommonGradientButton(
                               onTap: controller.onTapOpen,
                               height: 50.rpx,
-                              text: "确认协议并立即开通",
+                              text: S.current.confirmAgreement,
                             ),
                             Row(
                               children: [
@@ -603,12 +604,12 @@ class MyVipPage extends StatelessWidget {
                                     TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: "确认",
+                                          text: S.current.affirm,
                                           style: AppTextStyle.st
                                               .textColor(AppColor.black999),
                                         ),
                                         TextSpan(
-                                          text: "《会员服务协议》",
+                                          text: S.current.memberServiceAgreement,
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () =>
                                                 controller.onTapProtocol(1),
@@ -620,7 +621,7 @@ class MyVipPage extends StatelessWidget {
                                         //         controller.onTapProtocol(2),
                                         // ),
                                         TextSpan(
-                                          text: "《隐私政策》",
+                                          text: S.current.privacyPolicy,
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () =>
                                                 controller.onTapProtocol(3),

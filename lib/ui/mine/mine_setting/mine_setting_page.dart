@@ -95,7 +95,7 @@ class MineSettingPage extends StatelessWidget {
                         trailing: Visibility(
                           visible: !SS.login.userBind,
                           child: Text(
-                            "请先绑定手机/邮箱",
+                            S.current.pleaseBindPhone,
                             style:
                             AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
                           ),
@@ -110,7 +110,7 @@ class MineSettingPage extends StatelessWidget {
                           trailing: Visibility(
                             visible: !SS.login.userBind,
                             child: Text(
-                              "请先绑定手机/邮箱",
+                              S.current.pleaseBindPhone,
                               style: AppTextStyle.fs14b
                                   .copyWith(color: AppColor.gray5),
                             ),
@@ -169,7 +169,7 @@ class MineSettingPage extends StatelessWidget {
                           trailing: Visibility(
                             visible: !SS.login.userBind,
                             child: Text(
-                              "请先绑定手机/邮箱",
+                              S.current.pleaseBindPhone,
                               style: AppTextStyle.fs14b
                                   .copyWith(color: AppColor.gray5),
                             ),

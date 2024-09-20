@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/order/order_list/order_list_page.dart';
 import 'package:guanjia/ui/order/widgets/order_drop_menu_widget.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -21,7 +22,7 @@ class OrderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SS.login.userType.isAgent ? "团队订单" : "我的订单"),
+        title: Text(SS.login.userType.isAgent ? S.current.teamOrder : S.current.myOrder),
         elevation: 4,
         shadowColor: Colors.black.withOpacity(0.2),
         bottom: TabBar(

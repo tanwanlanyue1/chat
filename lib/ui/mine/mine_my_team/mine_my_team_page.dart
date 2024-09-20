@@ -61,7 +61,7 @@ class MineMyTeamPage extends StatelessWidget {
                   child: Container(
                     margin: EdgeInsets.only(top: 24.rpx,bottom: 24.rpx),
                     alignment: Alignment.center,
-                    child: Text("共${state.total}位艺人",style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
+                    child: Text(S.current.totalArtist(state.total),style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
                   ),
                 )),
               ),

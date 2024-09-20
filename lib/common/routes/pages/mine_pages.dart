@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:guanjia/common/network/api/model/user/contract_model.dart';
-import 'package:guanjia/ui/chat/message_list/message_list_controller.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/chat/red_packet/red_packet_controller.dart';
 import 'package:guanjia/ui/chat/red_packet/red_packet_page.dart';
@@ -9,7 +7,6 @@ import 'package:guanjia/ui/chat/transfer_money/transfer_money_page.dart';
 import 'package:guanjia/ui/mine/avatar/avatar_page.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_controller.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_page.dart';
-import 'package:guanjia/ui/mine/contract_detail/contract_detail_state.dart';
 import 'package:guanjia/ui/mine/have_seen/have_seen_page.dart';
 import 'package:guanjia/ui/mine/identity_progression/identity_progression_page.dart';
 import 'package:guanjia/ui/mine/contract_generate/contract_generate_controller.dart';
@@ -32,9 +29,7 @@ import '../app_pages.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/ui/mine/mine_message/mine_message_page.dart';
 import '../../../ui/mine/mine_feedback/mine_feedback_page.dart';
-import '../../../ui/mine/mine_help/mine_help_page.dart';
 import '../../../ui/mine/mine_setting/about/about_page.dart';
-import '../../../ui/mine/mine_setting/account_blacklist/account_blacklist_page.dart';
 import '../../../ui/mine/mine_setting/account_data/account_data_page.dart';
 import '../../../ui/mine/mine_setting/mine_permissions/mine_permissions_page.dart';
 import '../../../ui/mine/mine_setting/mine_setting_page.dart';
@@ -46,10 +41,6 @@ class MinePages {
     GetPage(
       name: AppRoutes.mineFeedbackPage,
       page: () => MineFeedbackPage(),
-    ),
-    GetPage(
-      name: AppRoutes.mineHelpPage,
-      page: () => MineHelpPage(),
     ),
     GetPage(
       name: AppRoutes.mineMessage,
@@ -77,10 +68,6 @@ class MinePages {
             type: Get.tryGetArgs('type'),
             text: Get.tryGetArgs('text'),
           )),
-    ),
-    GetPage(
-      name: AppRoutes.accountBlacklistPage,
-      page: () => AccountBlacklistPage(),
     ),
     GetPage(
       name: AppRoutes.aboutPage,

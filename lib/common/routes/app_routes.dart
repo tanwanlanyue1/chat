@@ -70,9 +70,6 @@ abstract class AppRoutes {
   ///我的-经纪人-我的团队
   static const mineMyTeamPage = '$auth/mineMyTeamPage';
 
-  ///设置-账户黑名单
-  static const accountBlacklistPage = '$auth/accountBlacklistPage';
-
   ///设置-关于我们
   static const aboutPage = '$auth/aboutPage';
 
@@ -90,9 +87,6 @@ abstract class AppRoutes {
 
   /// 佳丽-我的客户
   static const mineClient = '$auth/mineClient';
-
-  /// 我的-帮助与客服
-  static const mineHelpPage = '$auth/mineHelpPage';
 
   /// 我的-消息
   static const mineMessage = '$auth/mineMessage';

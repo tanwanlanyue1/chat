@@ -92,11 +92,11 @@ class AccountDataController extends GetxController {
     // 更新本地缓存
     loginService.fetchMyInfo();
 
-    Loading.showToast('保存成功');
+    Loading.showToast(S.current.saveSuccessfully);
   }
 
   void onTapPosition() {
-    Loading.showToast("待定");
+    Loading.showToast(S.current.undetermined);
   }
 
   void onTapPhone() {

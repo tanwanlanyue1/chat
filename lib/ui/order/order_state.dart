@@ -1,20 +1,21 @@
 import 'package:get/get.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 class OrderState {
   final titleList = [
-    "进行中",
-    '已取消',
-    '已完成',
+    S.current.underway,
+    S.current.canceled,
+    S.current.completed,
   ];
 
   final selectIndex = 0.obs;
 
   final days = [
-    {'label': '汇总当天', 'value': 0},
-    {'label': '3天', 'value': 3},
-    {'label': '7天', 'value': 7},
-    {'label': '15天', 'value': 15},
-    {'label': '30天', 'value': 30},
+    {'label': S.current.summaryDay, 'value': 0},
+    {'label': '3${S.current.day}', 'value': 3},
+    {'label': '7${S.current.day}', 'value': 7},
+    {'label': '15${S.current.day}', 'value': 15},
+    {'label': '30${S.current.day}', 'value': 30},
   ];
 
   // 当前选择天数

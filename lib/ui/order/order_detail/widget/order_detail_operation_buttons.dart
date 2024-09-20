@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/model/order_detail.dart';
 import 'package:guanjia/ui/order/order_detail/order_detail_controller.dart';
@@ -23,27 +24,27 @@ class OrderDetailOperationButtons extends StatelessWidget {
 
     switch (model.operation) {
       case OrderOperationType.accept:
-        title = "立即接单";
+        title = S.current.immediateOrder;
         onTap = () => controller.onTapOrderAcceptOrReject(true, model.id);
         break;
       case OrderOperationType.assign:
-        title = "指派接单";
+        title = S.current.assignmentOfOrder;
         onTap = () => controller.onTapOrderAssign(model.id);
         break;
       case OrderOperationType.payment:
-        title = "立即缴纳";
+        title = S.current.depositNow;
         onTap = () => controller.toOrderPayment(model.itemModel);
         break;
       case OrderOperationType.cancelAndFinish:
-        title = "我已到位";
+        title = S.current.imInPlace;
         onTap = () => controller.onTapOrderFinish(model.id);
         break;
       case OrderOperationType.finish:
-        title = "确认完成";
+        title = S.current.confirmCompletion;
         onTap = () => controller.onTapOrderFinish(model.id);
         break;
       case OrderOperationType.evaluation:
-        title = "立即评价";
+        title = S.current.immediateEvaluation;
         onTap = () => controller.toOrderEvaluation(model.id);
         break;
       default:

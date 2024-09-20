@@ -23,7 +23,7 @@ class OrderEvaluationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('评价'),
+        title: Text(S.current.evaluation),
       ),
       body: Obx(() {
         return Stack(
@@ -45,7 +45,7 @@ class OrderEvaluationPage extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    "本次订单已完成",
+                    S.current.orderBeenCompleted,
                     style: AppTextStyle.st.medium
                         .size(20.rpx)
                         .textColor(AppColor.black3)
@@ -53,7 +53,7 @@ class OrderEvaluationPage extends StatelessWidget {
                   ),
                   SizedBox(height: 12.rpx),
                   Text(
-                    "请对该位佳丽进行评价",
+                    S.current.pleaseCommentBeauty,
                     style: AppTextStyle.st.medium
                         .size(14.rpx)
                         .textColor(AppColor.black6)
@@ -82,7 +82,7 @@ class OrderEvaluationPage extends StatelessWidget {
                       }),
                     ),
                   ),
-                  _buildSubTitle("服务态度"),
+                  _buildSubTitle(S.current.serviceAttitude),
                   Container(
                     margin: EdgeInsets.only(top: 16.rpx),
                     height: 50.rpx,
@@ -109,7 +109,7 @@ class OrderEvaluationPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 24.rpx),
-                  _buildSubTitle("其他建议"),
+                  _buildSubTitle(S.current.otherAdvice),
                   Container(
                     height: 150.rpx,
                     margin: EdgeInsets.only(top: 16.rpx),
@@ -120,7 +120,7 @@ class OrderEvaluationPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.rpx),
                     ),
                     child: InputWidget(
-                      hintText: "请填写对该位佳丽的建议",
+                      hintText: S.current.pleaseFillYourBeauty,
                       // hintText: S.current.userSignatureHint,
                       maxLength: 200,
                       lines: 100,
@@ -135,7 +135,7 @@ class OrderEvaluationPage extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: 22.rpx)
                         .copyWith(top: 22.rpx),
                     child: Text(
-                      "提交",
+                      S.current.submit,
                       style: TextStyle(color: Colors.white, fontSize: 16.rpx),
                     ),
                   ),

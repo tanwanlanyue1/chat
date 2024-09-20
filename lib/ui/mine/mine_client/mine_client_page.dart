@@ -64,11 +64,11 @@ class MineClientPage extends StatelessWidget {
                 id: 'bottomLength',
                 builder: (_) {
                   return Visibility(
-                    visible: (controller.pagingController.length ?? 0) > 0,
+                    visible: controller.pagingController.length > 0,
                     child: Container(
                       margin: EdgeInsets.only(top: 24.rpx,bottom: 24.rpx),
                       alignment: Alignment.center,
-                      child: Text("共${controller.pagingController.length}位客户",style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
+                      child: Text(S.current.totalClients(controller.pagingController.length),style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
                     ),
                   );
                 },

@@ -86,7 +86,7 @@ class ChatCallDialog extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            isVideoCall ? "实时视频" : "实时语音",
+                            isVideoCall ? S.current.realTimeVideo : S.current.realTimeVoice,
                             style: AppTextStyle.fs14b
                                 .copyWith(color: AppColor.grayText),
                           ),
@@ -101,7 +101,7 @@ class ChatCallDialog extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            "管佳金库余额",
+                            S.current.treasuryBalance,
                             style: AppTextStyle.fs14b
                                 .copyWith(color: AppColor.grayText),
                           ),
@@ -114,7 +114,7 @@ class ChatCallDialog extends StatelessWidget {
                           Padding(
                             padding: FEdgeInsets(left: 8.rpx),
                             child: Text(
-                              isCallable ? '(达成)' : '(未达成)',
+                              isCallable ? S.current.conclude : S.current.notReach,
                               style: AppTextStyle.fs12m.copyWith(
                                 color: isCallable ? AppColor.green : AppColor.red,
                               ),
@@ -208,8 +208,8 @@ class ChatCallDialog extends StatelessWidget {
         builder: (info) {
           return Text(
             isVideoCall
-                ? "和${info?.baseInfo.userName}发起视频聊天？"
-                : "和${info?.baseInfo.userName}发起实时语音聊天？",
+                ? S.current.initiateAVideo(info?.baseInfo.userName ?? '')
+                : S.current.initiateAVoice(info?.baseInfo.userName ?? ''),
             style: AppTextStyle.fs16b.copyWith(
               color: AppColor.blackBlue,
               height: 1.5,

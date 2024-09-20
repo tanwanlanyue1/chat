@@ -272,6 +272,7 @@ class JsInjector{
       verifyCode: smsCode,
       idToken: phone ? idToken : null
     );
+    Loading.dismiss();
     if(res.isSuccess){
       Loading.showToast("注销成功");
       SS.login.signOut(userAction: false).then((value) => {

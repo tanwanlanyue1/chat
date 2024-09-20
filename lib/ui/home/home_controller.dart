@@ -5,13 +5,15 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
-import 'package:guanjia/global.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:guanjia/common/notification/notification_manager.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/global.dart';
 import 'package:guanjia/ui/mine/mine_setting/app_update/app_update_manager.dart';
 import 'package:guanjia/ui/mine/mine_setting/push_setting/notification_permission_util.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
+
 import 'home_state.dart';
 
 class HomeController extends GetxController with GetAutoDisposeMixin {
@@ -51,7 +53,7 @@ class HomeController extends GetxController with GetAutoDisposeMixin {
 
     autoDisposeWorker(ever(Global().appStateRx, (state){
       if(state == AppLifecycleState.resumed){
-        SS.inAppMessage.startWithAppLaunch();
+        NotificationManager().jumpWithAppLaunch();
       }
     }));
 
@@ -64,7 +66,7 @@ class HomeController extends GetxController with GetAutoDisposeMixin {
     if (Platform.isAndroid) {
       AppUpdateManager.instance.checkAppUpdate();
     }
-    SS.inAppMessage.startWithAppLaunch();
+    NotificationManager().jumpWithAppLaunch();
   }
 
   void setCurrentPage(int index) {

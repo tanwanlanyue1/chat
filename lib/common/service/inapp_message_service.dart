@@ -8,15 +8,10 @@ import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
-import 'package:guanjia/common/extension/iterable_extension.dart';
-import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
-import 'package:guanjia/common/utils/app_link.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
-import 'package:guanjia/common/utils/file_logger.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
-import 'package:guanjia/common/utils/plugin_util.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
 import 'package:guanjia/ui/chat/utils/chat_event_notifier.dart';
@@ -50,7 +45,6 @@ class InAppMessageService extends GetxService {
 
   final _debounce = Debouncer(delay: const Duration(milliseconds: 200));
 
-  var _startWithAppLaunchUUid = '';
 
   @override
   void onInit() {
@@ -236,67 +230,5 @@ class InAppMessageService extends GetxService {
       void Function(InAppMessage message)? onData) {
     return _streamController.stream.listen(onData);
   }
-
-  ///应用通知栏启动APP跳转
-  void startWithAppLaunch() async {
-    //jumpType 跳转类型（0无 1外链, 2内页）
-    //link 跳转链接
-    //extraJson 扩展字段json
-    // payload: {"jumpType": 1, "link":"/user/login","extraJson":""},
-    final options = await PluginUtil.getAppLaunchOptions();
-    AppLogger.d('startWithAppLaunch details: ${jsonEncode(options)}');
-    final payload = options['payload'] as String?;
-    if (payload == null) {
-      return;
-    }
-    try {
-      final uuid = payload.md5String;
-      if (_startWithAppLaunchUUid == uuid) {
-        return;
-      }
-      _startWithAppLaunchUUid = uuid;
-      final payloadObj = _Payload.fromJson(jsonDecode(payload));
-      final link = payloadObj.link;
-      if (link == null) {
-        return;
-      }
-      if ([1,2].contains(payloadObj.jumpType)) {
-        AppLink.jump(link, args: payloadObj.extraJson);
-      }
-    } catch (ex) {
-      AppLogger.w('startWithAppLaunch ex=$ex');
-    }
-  }
 }
 
-class _Payload {
-  final int? jumpType;
-  final String? link;
-  final Map<String, dynamic>? extraJson;
-
-  _Payload(this.jumpType, this.link, this.extraJson);
-
-  factory _Payload.fromJson(Map<String, dynamic> json) {
-    Map? extraMap;
-    final extraJson = json['extraJson'];
-    if (extraJson is String) {
-      try {
-        extraMap = jsonDecode(extraJson);
-        final extra = extraMap?.getStringOrNull('extra');
-        if(extra != null){
-          extra.toJson()?.let((value){
-            extraMap?.remove('extra');
-            extraMap?.addAll(value);
-          });
-        }
-      } catch (ex) {
-        AppLogger.w('_Payload.fromJson > extraJson ex=$ex');
-      }
-    }
-    return _Payload(
-      json['jumpType'],
-      json['link'],
-      extraMap?.map((key, value) => MapEntry(key.toString(), value)),
-    );
-  }
-}

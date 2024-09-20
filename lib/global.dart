@@ -14,6 +14,7 @@ import 'package:guanjia/ui/welcome/welcome_storage.dart';
 
 import 'common/app_localization.dart';
 import 'common/app_position.dart';
+import 'common/notification/notification_manager.dart';
 import 'common/service/service.dart';
 import 'common/firebase_options.dart';
 import 'ui/chat/utils/chat_manager.dart';
@@ -91,6 +92,9 @@ class Global with WidgetsBindingObserver{
 
     //初始化IM服务
     await ChatManager().init();
+
+    //初始化通知服务
+    NotificationManager().initialize();
 
     //初始化服务
     await SS.initServices();

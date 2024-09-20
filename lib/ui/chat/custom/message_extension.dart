@@ -139,9 +139,6 @@ extension ZIMKitMessageExt on ZIMKitMessage {
   ///是否是业务撤回消息
   bool get isRevokeMessage => zimkitExtraInfo[_kRevokeMessage] == true;
 
-  ///是否是系统通知
-  bool get isSysNotice => info.senderUserID == AppConfig.sysUserId;
-
   ///订单消息内容
   MessageOrderContent? get orderContent {
     return _getOrParse(

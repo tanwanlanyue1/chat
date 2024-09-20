@@ -16,6 +16,8 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/network/api/im_api.dart';
 import 'package:guanjia/common/network/api/model/im/chat_call_pay_model.dart';
+import 'package:guanjia/common/notification/notification_manager.dart';
+import 'package:guanjia/common/notification/payload/chat_message_payload.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
@@ -102,8 +104,6 @@ class ChatManager
         [ZegoUIKitSignalingPlugin()],
       );
     });
-
-    _initNotification();
 
     //监听聊天消息
     final initTimestamp = DateTime.now().millisecondsSinceEpoch;

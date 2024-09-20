@@ -2,44 +2,11 @@ part of 'chat_manager.dart';
 
 ///通知mixin
 mixin _ChatNotificationMixin {
-  static const _channelName = '新消息通知';
 
   ///会话对应的通知id
   final _conversationNotificationIds = <String, Set<int>>{};
   var _isStartChatWithAppLaunched = false;
 
-  ///初始化通知
-  Future<void> _initNotification() async {
-    if (Platform.isAndroid) {
-      final androidPlugin = FlutterLocalNotificationsPlugin()
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>();
-      await androidPlugin?.requestNotificationsPermission();
-      const channel = AndroidNotificationChannel(
-        AppConfig.zegoChatResourceId,
-        _channelName,
-        description: _channelName,
-        importance: Importance.max,
-        enableVibration: false,
-        showBadge: false,
-        playSound: false,
-      );
-      await androidPlugin?.createNotificationChannel(channel);
-    }
-
-    await FlutterLocalNotificationsPlugin().initialize(
-      const InitializationSettings(
-        android: AndroidInitializationSettings('logo'),
-        iOS: DarwinInitializationSettings(
-            // requestSoundPermission: true,
-            // requestBadgePermission: false,
-            // requestAlertPermission: false,
-            ),
-      ),
-      onDidReceiveNotificationResponse: _onTapNotification,
-      onDidReceiveBackgroundNotificationResponse: _onTapNotification,
-    );
-  }
 
   ///应用启动后跳转聊天页
   void _startChatWithAppLaunch() async {
@@ -67,30 +34,6 @@ mixin _ChatNotificationMixin {
       }
     } catch (ex) {
       AppLogger.w('startChatWithNotification ex=$ex');
-    }
-  }
-
-  ///点击通知
-  void _onTapNotification(NotificationResponse response) {
-    try {
-      final payloadStr = response.payload ?? '';
-      if (payloadStr.isEmpty) {
-        return;
-      }
-      final payload = NotificationPayload.fromJson(jsonDecode(payloadStr));
-      switch (payload.type) {
-        case NotificationType.sysNotice:
-          Get.toNamed(AppRoutes.messageNotice);
-          break;
-        case NotificationType.chatMessage:
-          final userId = int.tryParse('${payload.data}');
-          if (userId != null) {
-            ChatManager().startChat(userId: userId);
-          }
-          break;
-      }
-    } catch (ex) {
-      AppLogger.d('_onTapNotification: $ex');
     }
   }
 
@@ -134,9 +77,9 @@ mixin _ChatNotificationMixin {
       content,
       NotificationDetails(
         android: AndroidNotificationDetails(
-          AppConfig.zegoChatResourceId,
-          _channelName,
-          channelDescription: _channelName,
+          NotificationManager.chatChannel.id,
+          NotificationManager.chatChannel.name,
+          channelDescription: NotificationManager.chatChannel.name,
           priority: Priority.max,
           importance: Importance.max,
           visibility: NotificationVisibility.public,
@@ -147,12 +90,7 @@ mixin _ChatNotificationMixin {
         ),
         iOS: const DarwinNotificationDetails(),
       ),
-      payload: NotificationPayload(
-        type: message.isSysNotice
-            ? NotificationType.sysNotice
-            : NotificationType.chatMessage,
-        data: conversationID,
-      ).toJsonString(),
+      payload: ChatMessagePayload(conversationId: conversationID).toJsonString(),
     );
 
     _conversationNotificationIds
@@ -174,36 +112,3 @@ mixin _ChatNotificationMixin {
   }
 }
 
-///通知Payload
-class NotificationPayload {
-  ///类型
-  final NotificationType type;
-
-  ///数据
-  final dynamic data;
-
-  NotificationPayload({required this.type, this.data});
-
-  factory NotificationPayload.fromJson(Map<String, dynamic> json) =>
-      NotificationPayload(
-        type: NotificationType.values.asNameMap()[json['type'] ?? ''] ??
-            NotificationType.chatMessage,
-        data: json['data'],
-      );
-
-  Map<String, dynamic> toJson() => {
-        'type': type.name,
-        'data': data,
-      };
-
-  String toJsonString() => jsonEncode(toJson());
-}
-
-///通知类型
-enum NotificationType {
-  ///系统公告
-  sysNotice,
-
-  ///聊天消息
-  chatMessage;
-}

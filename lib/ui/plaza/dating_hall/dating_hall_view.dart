@@ -273,7 +273,7 @@ class DatingHallView extends StatelessWidget {
                         height: 24.rpx,
                       ),
                       SizedBox(width: 4.rpx,),
-                      Text("搭讪",style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue),)
+                      Text(S.current.accost,style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue),)
                     ],
                   ),
                 ),

@@ -32,7 +32,7 @@ class MineServiceChargeController extends GetxController {
         response.showErrorMessage();
       }
     }else{
-      Loading.showToast("服务费超出规定范围");
+      Loading.showToast(S.current.serviceBeyond);
     }
   }
 

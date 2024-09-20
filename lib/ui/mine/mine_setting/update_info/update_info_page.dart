@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/input_widget.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -26,7 +27,7 @@ class UpdateInfoPage extends StatelessWidget {
           backgroundColor: const Color(0xffF6F8FE),
           appBar: AppBar(
             title: Text(
-              type == 0 ? "设置昵称" : "设置签名",
+              type == 0 ? S.current.setNickname : S.current.setSignature,
               style: TextStyle(
                 color: const Color(0xff333333),
                 fontSize: 18.rpx,
@@ -39,7 +40,7 @@ class UpdateInfoPage extends StatelessWidget {
                   width: 80.rpx,
                   alignment: Alignment.center,
                   child: Text(
-                    "保存",
+                    S.current.save,
                     style: TextStyle(
                         color: state.canSave
                             ? const Color(0xff8D310F)
@@ -75,14 +76,14 @@ class UpdateInfoPage extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 8.rpx),
           child: Text(
-            "当前昵称：${state.nickName}",
+            "${S.current.currentNickname}${state.nickName}",
             style: TextStyle(color: AppColor.black666, fontSize: 14.rpx),
           ),
         ),
         Container(
           margin: EdgeInsets.only(top: 10.rpx),
           child: InputWidget(
-            hintText: '请输入您的昵称',
+            hintText: S.current.pleaseEnterNickname,
             lines: 1,
             fillColor: Colors.white,
             inputController: controller.textController,
@@ -95,9 +96,7 @@ class UpdateInfoPage extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 8.rpx, top: 12.rpx),
           child: Text(
-            "昵称设置2-10个字，仅限汉字、字母、数字"
-            "\n昵称代表了您在站内的形象,30天内不能再次更改\n更改昵称需要1-2个工作日审核"
-            "\n昵称设置不可出现违法、时政敏感、淫秽血腥、攻击谩骂、广告等内容，请谨慎设置",
+            S.current.nicknameSetCharacters,
             style: TextStyle(
               color: AppColor.gray9,
               fontSize: 11.rpx,
@@ -117,7 +116,7 @@ class UpdateInfoPage extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 8.rpx),
           child: Text(
-            "当前签名：${state.synopsis}",
+            "${S.current.currentSignature}${state.synopsis}",
             style: TextStyle(color: Color(0xff666666), fontSize: 14.rpx),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -134,7 +133,7 @@ class UpdateInfoPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.rpx),
           ),
           child: InputWidget(
-            hintText: '请输入您的签名',
+            hintText: S.current.pleaseEnterSignature,
             maxLength: 60,
             lines: 3,
             fillColor: Colors.white,
@@ -146,8 +145,7 @@ class UpdateInfoPage extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 8.rpx, top: 12.rpx),
           child: Text(
-            "个人签名设置60个字以内\n设置个人签名需要1-2个工作日审核"
-            "\n个人签名设置不可出现违法、时政敏感、淫秽血腥、攻击谩骂、广告等内容，请谨慎设置",
+            S.current.signatureSettingsWithin,
             style: TextStyle(
               color: AppColor.gray9,
               fontSize: 11.rpx,

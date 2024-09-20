@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 import 'update_info_state.dart';
@@ -28,7 +29,7 @@ class UpdateInfoController extends GetxController {
       return;
     }
 
-    Loading.showToast("已提交审核");
+    Loading.showToast(S.current.submittedForReview);
 
     Get.back();
   }

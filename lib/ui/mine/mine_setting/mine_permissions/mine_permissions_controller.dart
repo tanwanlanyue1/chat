@@ -2,6 +2,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 import 'mine_permissions_state.dart';
 
@@ -69,32 +70,32 @@ class MinePermissionsController extends GetxController
     state.items.addAll([
       MinePermissionsItem(
         icon: "assets/images/mine/mine_notification.png",
-        title: "通知权限",
-        detail: "用于给你提供即时通知服务，以便你即时接收账号消息及个性化广告推送",
+        title: S.current.authorityNotify,
+        detail: S.current.usedToYouNotification,
         type: MinePermissionsItemType.notification,
         isOpen: await PermissionsUtils.getNotificationPermission(),
       ),
       if (isShowCamera)
         MinePermissionsItem(
           icon: "assets/images/mine/mine_camera.png",
-          title: "相机权限",
-          detail: "头像上传、发布创作信息时选择图片上传需要使用你的手机相机功能",
+          title: S.current.cameraPermission,
+          detail: S.current.pictureUpload,
           type: MinePermissionsItemType.camera,
           isOpen: await PermissionsUtils.getCameraPermission(),
         ),
       if (isShowPhotos)
         MinePermissionsItem(
           icon: "assets/images/mine/mine_photo.png",
-          title: "相册权限",
-          detail: "头像上传、发布创作信息时选择图片上传需要访问你的手机相册信息",
+          title: S.current.albumPermission,
+          detail: S.current.photoAlbumUpload,
           type: MinePermissionsItemType.photos,
           isOpen: await PermissionsUtils.getPhotosPermission(),
         ),
       if (isShowStorage)
         MinePermissionsItem(
           icon: "assets/images/mine/mine_storage.png",
-          title: "存储权限",
-          detail: "允许保存图片至本地相册，需要获取存储空间权限",
+          title: S.current.storagePermission,
+          detail: S.current.saveImages,
           type: MinePermissionsItemType.storage,
           isOpen: await PermissionsUtils.getStoragePermission(),
         ),

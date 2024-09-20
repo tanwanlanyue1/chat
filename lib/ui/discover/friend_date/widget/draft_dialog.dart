@@ -111,7 +111,7 @@ class DraftDialog extends StatelessWidget {
                                   .copyWith(color: AppColor.black6),
                             ),
                             Text(
-                              (item.serviceCharge != null && item.serviceCharge! > 0) ? "\$${item.serviceCharge}":"免费",
+                              (item.serviceCharge != null && item.serviceCharge! > 0) ? "\$${item.serviceCharge}":S.current.freeCharge,
                               style: AppTextStyle.fs14b
                                   .copyWith(color: AppColor.black20),
                             ),

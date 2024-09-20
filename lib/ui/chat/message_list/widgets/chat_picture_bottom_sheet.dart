@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -41,7 +42,7 @@ class ChatPictureBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CommonBottomSheet(
-      titles: const ["相册", "拍摄"],
+      titles: [S.current.photoAlbum, S.current.shoot],
       autoBack: true,
       onTap: (index) async {
         final isGallery = index == 0;

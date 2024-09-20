@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/extension/list_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 import 'mine_feedback_state.dart';
@@ -28,7 +29,7 @@ class MineFeedbackController extends GetxController {
   void submit() async {
     final content = contentController.text;
     if (content.isEmpty) {
-      Loading.showToast("问题与意见不能为空");
+      Loading.showToast(S.current.questionsNotEmpty);
       return;
     }
 
@@ -49,7 +50,7 @@ class MineFeedbackController extends GetxController {
       return;
     }
 
-    Loading.showToast("提交成功");
+    Loading.showToast(S.current.submitSuccessfully);
 
     Get.back();
   }

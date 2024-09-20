@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'mine_permissions_controller.dart';
 
@@ -15,7 +16,7 @@ class MinePermissionsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF6F8FE),
       appBar: AppBar(
-        title: const Text("权限设置"),
+        title: Text(S.current.permissionSetting),
       ),
       body: GetBuilder<MinePermissionsController>(builder: (_) {
         return Center(
@@ -25,7 +26,7 @@ class MinePermissionsPage extends StatelessWidget {
               Container(
                 margin: EdgeInsets.all(12.rpx),
                 child: Text(
-                  "为了保障产品及功能的使用，向您申请使用手机系统权限。可在下方查看及操作管理以下常用权限，了解平台使用权限信息以及如何保障您的信息安全。",
+                  S.current.useProductsFunctions,
                   style: TextStyle(
                     color: const Color(0xFF999999),
                     fontWeight: FontWeight.w500,
@@ -75,7 +76,7 @@ class MinePermissionsPage extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      item.isOpen ? "已开启" : "未开启",
+                                      item.isOpen ? S.current.alreadyOpen : S.current.alreadyNot,
                                       style: TextStyle(
                                         color: const Color(0xFF888888),
                                         fontSize: 11.rpx,

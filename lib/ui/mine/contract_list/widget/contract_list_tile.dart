@@ -29,7 +29,7 @@ class ContractListTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  buildRichText(S.current.broker, model.partyAName),
+                  buildRichText("${S.current.brokerP}:", model.partyAName),
                   if(dateTime != null) dateTime,
                 ],
               ),

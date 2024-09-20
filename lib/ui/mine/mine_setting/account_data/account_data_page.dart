@@ -80,7 +80,7 @@ class AccountDataPage extends StatelessWidget {
                     onTap: controller.onTapGender,
                     title: S.current.userGender,
                     detail: state.getGenderString(info.gender),
-                    detailHintText: "点击输入",
+                    detailHintText: S.current.clickToEnter,
                   ),
                   _padding(),
                   // age
@@ -92,14 +92,14 @@ class AccountDataPage extends StatelessWidget {
                           cancelButton: Padding(
                             padding: FEdgeInsets(horizontal: 16.rpx),
                             child: Text(
-                              '取消',
+                              S.current.cancel,
                               style: AppTextStyle.fs14b.copyWith(color: AppColor.black999),
                             ),
                           ),
                           commitButton: Padding(
                             padding: FEdgeInsets(horizontal: 16.rpx),
                             child: Text(
-                              '确定',
+                              S.current.confirm,
                               style: AppTextStyle.fs14b,
                             ),
                           ),
@@ -113,7 +113,7 @@ class AccountDataPage extends StatelessWidget {
                     },
                     title: S.current.userAge,
                     detail: info.age?.toString(),
-                    detailHintText: "点击输入",
+                    detailHintText: S.current.clickToEnter,
                   ),
                   _padding(),
                   // position
@@ -121,7 +121,7 @@ class AccountDataPage extends StatelessWidget {
                     onTap: controller.onTapPosition,
                     title: S.current.userPosition,
                     detail: info.position,
-                    detailHintText: "点击输入",
+                    detailHintText: S.current.clickToEnter,
                   ),
                   _padding(),
                   // phone
@@ -129,7 +129,7 @@ class AccountDataPage extends StatelessWidget {
                     onTap: controller.onTapPhone,
                     title: S.current.userPhone,
                     detail: userInfoRx?.phone,
-                    detailHintText: "点击绑定手机电话",
+                    detailHintText: S.current.clickBindCellPhone,
                   ),
                   _padding(),
                   // email
@@ -137,7 +137,7 @@ class AccountDataPage extends StatelessWidget {
                     onTap: controller.onTapEmail,
                     title: S.current.userEmail,
                     detail: userInfoRx?.email,
-                    detailHintText: "点击绑定邮箱",
+                    detailHintText: S.current.clickBindEmail,
                   ),
                   // likeSex
                   if (info.type.isUser)

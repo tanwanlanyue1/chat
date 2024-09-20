@@ -160,7 +160,7 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
             Container(
               padding: EdgeInsets.only(left: 4.rpx),
               child: Text(
-                "关注",
+                S.current.attention,
                 style: AppTextStyle.fs14m.copyWith(color: AppColor.black666),
               ),
             )

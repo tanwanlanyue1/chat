@@ -2,6 +2,7 @@ import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
 import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
 
@@ -75,12 +76,12 @@ class OrderDetailItem {
     switch (displayType) {
       case OrderDetailDisplayType.number:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '订单编号：',
+          title: changeTitle ?? S.current.orderReference,
           detail: changeDetail ?? model.number,
         );
       case OrderDetailDisplayType.request:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? (model.type.isNormal ? '下单用户：' : '征友约会：'),
+          title: changeTitle ?? (model.type.isNormal ? S.current.orderUser : '${S.current.dating}：'),
           detail: changeDetail ?? model.requestName,
           avatar: changeAvatar ?? model.requestAvatar,
         );
@@ -91,90 +92,90 @@ class OrderDetailItem {
             model.receiveId == 0 ? model.introducerAvatar : model.receiveAvatar;
 
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '接单用户：',
+          title: changeTitle ?? S.current.incomingSubscriber,
           detail: changeDetail ?? receiveName,
           avatar: changeAvatar ?? receiveAvatar,
         );
       case OrderDetailDisplayType.requestTime:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '下单时间：',
+          title: changeTitle ?? S.current.orderTime,
           detail: changeDetail ?? _getTime(model.createTime),
         );
       case OrderDetailDisplayType.receiveTime:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '接单时间：',
+          title: changeTitle ?? S.current.orderReceivingTime,
           detail: changeDetail ?? _getTime(model.receiveTime),
         );
       case OrderDetailDisplayType.finishTime:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '结束时间：',
+          title: changeTitle ?? '${S.current.endTime}：',
           detail: changeDetail ?? _getTime(model.completeTime),
         );
       case OrderDetailDisplayType.cancelTime:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '取消时间：',
+          title: changeTitle ?? S.current.cancellationTime,
           detail: changeDetail ?? _getTime(model.cancelTime),
         );
       case OrderDetailDisplayType.reason:
         return OrderDetailItemWrapper(
           title: changeTitle ?? '',
-          detail: changeDetail ?? '等待超时',
+          detail: changeDetail ?? S.current.waitTimeout,
         );
       case OrderDetailDisplayType.margin:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '保证金：',
+          title: changeTitle ?? '${S.current.earnestMoney}：',
           detail: changeDetail ?? model.deposit.toString(),
         );
       case OrderDetailDisplayType.requestServiceFee:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '服务费：',
+          title: changeTitle ?? '${S.current.serviceCharge}：',
           detail: changeDetail ?? model.serviceCharge.toString(),
         );
       case OrderDetailDisplayType.breachFeeProportion:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '违约收取保证金比例：',
+          title: changeTitle ?? S.current.defaultMarginRatio,
           detail: changeDetail ??
               (model.exempt ? "0%" : "${model.proportionBreach.toString()}%"),
         );
       case OrderDetailDisplayType.breachFee:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '违约金：',
+          title: changeTitle ?? S.current.liquidatedDamages,
           detail: changeDetail ??
-              (model.exempt ? "VIP限免" : model.breachAmount.toString()),
+              (model.exempt ? S.current.VIPExemption : model.breachAmount.toString()),
         );
       case OrderDetailDisplayType.platformFeeProportion:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '平台收取比例：',
+          title: changeTitle ?? '${S.current.platformChargeRatio}：',
           detail: "${changeDetail ?? model.proportionPlatform.toString()}%",
         );
       case OrderDetailDisplayType.platformFee:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '平台费：',
+          title: changeTitle ?? '${S.current.platformFee}：',
           detail: changeDetail ?? model.platformAmount.toString(),
         );
       case OrderDetailDisplayType.receiveFee:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '佳丽服务费：',
+          title: changeTitle ?? S.current.beautyServiceFee,
           detail: changeDetail ?? model.beautyAmount.toString(),
         );
       case OrderDetailDisplayType.receiveFeeProportion:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '佳丽收取比例：',
+          title: changeTitle ?? S.current.rateOfCharge,
           detail: "${changeDetail ?? model.proportionBeauty.toString()}%",
         );
       case OrderDetailDisplayType.agentFeeProportion:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '经纪人收取比例：',
+          title: changeTitle ?? '${S.current.agentChargeRatio}：',
           detail: "${changeDetail ?? model.proportionBroker.toString()}%",
         );
       case OrderDetailDisplayType.agentFee:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '经纪人介绍费：',
+          title: changeTitle ?? S.current.brokerFee,
           detail: changeDetail ?? model.brokerAmount.toString(),
         );
       case OrderDetailDisplayType.amount:
         return OrderDetailItemWrapper(
-          title: changeTitle ?? '实付金额：',
+          title: changeTitle ?? S.current.amountPaid,
           detail: changeDetail ??
               (model.exempt
                   ? "0"
@@ -297,8 +298,8 @@ class OrderDetail {
     return {
       OrderItemState.waitingAcceptance: {
         UserType.user: OrderDetailWrapper(
-          stateText: "等待佳丽接单中···",
-          stateDetailText: "佳丽正在接单中，请耐心等待哦~",
+          stateText: S.current.waitingBelleOrder,
+          stateDetailText: S.current.belleTakingOrder,
           hasCancel: true,
           upDisplayTypes: [
             OrderDetailItem(
@@ -308,7 +309,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "待接单佳丽：",
+              changeTitle: S.current.waitingListMiss,
             ),
             OrderDetailItem(
               model: model,
@@ -317,8 +318,8 @@ class OrderDetail {
           ],
         ),
         UserType.beauty: OrderDetailWrapper(
-          stateText: "等待您接单中···",
-          stateDetailText: "接单后，用户才能缴纳费用哦~",
+          stateText: S.current.waitingYourOrder,
+          stateDetailText: S.current.afterReceivingOrder,
           hasCancel: true,
           operation: OrderOperationType.accept,
           upDisplayTypes: [
@@ -331,8 +332,8 @@ class OrderDetail {
           ],
         ),
         UserType.agent: OrderDetailWrapper(
-          stateText: "等待佳丽接单中···",
-          stateDetailText: "佳丽正在接单中，请耐心等待哦~",
+          stateText: S.current.waitingBelleOrder,
+          stateDetailText: S.current.belleTakingOrder,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
@@ -341,7 +342,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "待接单佳丽：",
+              changeTitle: S.current.waitingListMiss,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -350,8 +351,8 @@ class OrderDetail {
       },
       OrderItemState.waitingAssign: {
         UserType.agent: OrderDetailWrapper(
-          stateText: "等待您接单中···",
-          stateDetailText: "接单后，用户才能缴纳费用哦~",
+          stateText: S.current.waitingYourOrder,
+          stateDetailText: S.current.afterReceivingOrder,
           hasCancel: true,
           operation: OrderOperationType.assign,
           upDisplayTypes: [
@@ -366,8 +367,8 @@ class OrderDetail {
       },
       OrderItemState.waitingPaymentForRequest: {
         UserType.user: OrderDetailWrapper(
-          stateText: "待您缴纳保证金服务费···",
-          stateDetailText: "保证金在订单结束后会原路返回的哦~",
+          stateText: S.current.waitYouPayFee,
+          stateDetailText: S.current.depositReturned,
           hasCancel: true,
           upDisplayTypes: [
             OrderDetailItem(
@@ -375,19 +376,19 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: isNormal ? "接单佳丽：" : "参与约会：",
+              changeTitle: isNormal ? S.current.orderReceivingBelle : S.current.goOnADate,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.receiveTime),
           ],
-          bottomTipText: "保证金将在订单完成后原账户退回",
+          bottomTipText: S.current.depositReturnedAccountCompleted,
           operation: OrderOperationType.payment,
         ),
         UserType.beauty: OrderDetailWrapper(
-          stateText: "待用户缴纳保证金服务费···",
-          stateDetailText: "双方缴纳的保证金在订单结束后会原路返回哦~",
+          stateText: S.current.waitUserPayFee,
+          stateDetailText: S.current.bothPartiesWillReturned,
           hasCancel: true,
           upDisplayTypes: [
             OrderDetailItem(
@@ -397,7 +398,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: isNormal ? "接单佳丽：" : "参与约会：",
+              changeTitle: isNormal ? S.current.orderReceivingBelle : S.current.goOnADate,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -406,8 +407,8 @@ class OrderDetail {
           ],
         ),
         UserType.agent: OrderDetailWrapper(
-          stateText: "待用户缴纳保证金服务费···",
-          stateDetailText: "双方缴纳的保证金在订单结束后会原路返回哦~",
+          stateText: S.current.waitUserPayFee,
+          stateDetailText: S.current.bothPartiesWillReturned,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
@@ -416,7 +417,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: isNormal ? "接单佳丽：" : "参与约会：",
+              changeTitle: isNormal ? S.current.orderReceivingBelle : S.current.goOnADate,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -427,8 +428,8 @@ class OrderDetail {
       },
       OrderItemState.waitingPaymentForReceive: {
         UserType.user: OrderDetailWrapper(
-          stateText: "待佳丽缴纳保证金···",
-          stateDetailText: "Ta缴纳后，约会将正式开始。",
+          stateText: S.current.waitBellePayFee,
+          stateDetailText: S.current.afterPaymentBegin,
           hasCancel: true,
           upDisplayTypes: [
             OrderDetailItem(
@@ -436,18 +437,18 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: isNormal ? "接单佳丽：" : "参与约会：",
+              changeTitle: isNormal ? S.current.orderReceivingBelle : S.current.goOnADate,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.receiveTime),
           ],
-          bottomTipText: "保证金将在订单完成后原账户退回",
+          bottomTipText: S.current.depositReturnedAccountCompleted,
         ),
         UserType.beauty: OrderDetailWrapper(
-          stateText: "待您缴纳保证金···",
-          stateDetailText: "缴纳后，约会将正式开始。",
+          stateText: "${S.current.waitYouPayGuaranteeFee}···",
+          stateDetailText: S.current.afterPaymentTheBegin,
           hasCancel: true,
           upDisplayTypes: [
             OrderDetailItem(
@@ -457,19 +458,19 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: isNormal ? "接单佳丽：" : "参与约会：",
+              changeTitle: isNormal ? S.current.orderReceivingBelle : S.current.goOnADate,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.receiveTime),
           ],
-          bottomTipText: "保证金将在订单完成后原账户退回",
+          bottomTipText: S.current.depositReturnedAccountCompleted,
           operation: OrderOperationType.payment,
         ),
         UserType.agent: OrderDetailWrapper(
-          stateText: "待佳丽缴纳保证金···",
-          stateDetailText: "双方缴纳的保证金在订单结束后会原路返回哦~",
+          stateText: S.current.waitBellePayFee,
+          stateDetailText: S.current.bothPartiesWillReturned,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
@@ -478,7 +479,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: isNormal ? "接单佳丽：" : "参与约会：",
+              changeTitle: isNormal ? S.current.orderReceivingBelle : S.current.goOnADate,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -489,15 +490,15 @@ class OrderDetail {
       },
       OrderItemState.waitingConfirmForRequest: {
         UserType.user: OrderDetailWrapper(
-          stateText: "订单进行中···",
-          stateDetailText: "订单完成后，保证金将原路退回，服务费将付给佳丽。",
+          stateText: S.current.orderInProgress,
+          stateDetailText: S.current.serviceFeeReturnedBelle,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: isNormal ? "接单佳丽：" : "参与约会：",
+              changeTitle: isNormal ? S.current.orderReceivingBelle : S.current.goOnADate,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -514,12 +515,12 @@ class OrderDetail {
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.amount),
           ],
-          bottomTipText: "保证金将在订单完成后原账户退回",
+          bottomTipText: S.current.depositReturnedAccountCompleted,
           operation: OrderOperationType.finish,
         ),
         UserType.beauty: OrderDetailWrapper(
-          stateText: "订单进行中···",
-          stateDetailText: "订单完成后，保证金将原路退回，服务费将付给佳丽。",
+          stateText: S.current.orderInProgress,
+          stateDetailText: S.current.serviceFeeReturnedBelle,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
@@ -528,7 +529,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: S.current.orderReceivingBelle,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -542,7 +543,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.requestServiceFee,
-              changeTitle: "用户缴纳服务费：",
+              changeTitle: S.current.userPaysServiceFee,
             ),
             OrderDetailItem(
                 model: model,
@@ -557,15 +558,15 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.amount,
-              changeTitle: "待收金额：",
+              changeTitle: S.current.receivableAmount,
               changeDetail: model.beautyAmount.toString(),
             ),
           ],
-          bottomTipText: "保证金将在订单完成后原账户退回",
+          bottomTipText: S.current.depositReturnedAccountCompleted,
         ),
         UserType.agent: OrderDetailWrapper(
-          stateText: "订单进行中···",
-          stateDetailText: "订单完成后，保证金将原路退回，服务费将付给佳丽。",
+          stateText: S.current.orderInProgress,
+          stateDetailText: S.current.serviceFeeReturnedBelle,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
@@ -574,7 +575,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: S.current.orderReceivingBelle,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -604,17 +605,17 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.amount,
-              changeTitle: "待收金额：",
+              changeTitle: S.current.receivableAmount,
               changeDetail: model.brokerAmount.toString(),
             ),
           ],
-          bottomTipText: "保证金将在订单完成后原账户退回",
+          bottomTipText: S.current.depositReturnedAccountCompleted,
         ),
       },
       OrderItemState.waitingConfirmForReceive: {
         UserType.user: OrderDetailWrapper(
-          stateText: "订单进行中···",
-          stateDetailText: "订单完成后，保证金将原路退回，服务费将付给佳丽。",
+          stateText: S.current.orderInProgress,
+          stateDetailText: S.current.serviceFeeReturnedBelle,
           hasCancel: true,
           upDisplayTypes: [
             OrderDetailItem(
@@ -622,7 +623,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: S.current.orderReceivingBelle,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -639,11 +640,11 @@ class OrderDetail {
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.amount),
           ],
-          bottomTipText: "保证金将在订单完成后原账户退回",
+          bottomTipText: S.current.depositReturnedAccountCompleted,
         ),
         UserType.beauty: OrderDetailWrapper(
-          stateText: "订单进行中···",
-          stateDetailText: "订单完成后，保证金将原路退回，服务费将付给佳丽。",
+          stateText: S.current.orderInProgress,
+          stateDetailText: S.current.serviceFeeReturnedBelle,
           hasCancel: true,
           upDisplayTypes: [
             OrderDetailItem(
@@ -653,7 +654,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: S.current.orderReceivingBelle,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -667,7 +668,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.requestServiceFee,
-              changeTitle: "用户缴纳服务费：",
+              changeTitle: S.current.userPaysServiceFee,
             ),
             OrderDetailItem(
                 model: model,
@@ -682,16 +683,16 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.amount,
-              changeTitle: "待收金额：",
+              changeTitle: S.current.receivableAmount,
               changeDetail: model.beautyAmount.toString(),
             ),
           ],
-          bottomTipText: "保证金将在订单完成后原账户退回",
+          bottomTipText: S.current.depositReturnedAccountCompleted,
           operation: OrderOperationType.cancelAndFinish,
         ),
         UserType.agent: OrderDetailWrapper(
-          stateText: "订单进行中···",
-          stateDetailText: "订单完成后，保证金将原路退回，服务费将付给佳丽。",
+          stateText: S.current.orderInProgress,
+          stateDetailText: S.current.serviceFeeReturnedBelle,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
@@ -700,7 +701,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: S.current.orderReceivingBelle,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -730,11 +731,11 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.amount,
-              changeTitle: "待收金额：",
+              changeTitle: S.current.receivableAmount,
               changeDetail: model.brokerAmount.toString(),
             ),
           ],
-          bottomTipText: "保证金将在订单完成后原账户退回",
+          bottomTipText: S.current.depositReturnedAccountCompleted,
         ),
       },
       OrderItemState.cancelForRequest: () {
@@ -744,15 +745,15 @@ class OrderDetail {
         if (isCancelGoingAfter) {
           return {
             UserType.user: OrderDetailWrapper(
-              stateText: "订单已取消",
-              stateDetailText: "保证金以及服务费已原路退回，请注意查收。",
+              stateText: S.current.orderCancelled,
+              stateDetailText: S.current.serviceFeeBeenReturned,
               upDisplayTypes: [
                 OrderDetailItem(
                     model: model, displayType: OrderDetailDisplayType.number),
                 OrderDetailItem(
                   model: model,
                   displayType: OrderDetailDisplayType.receive,
-                  changeTitle: "接单佳丽：",
+                  changeTitle: S.current.orderReceivingBelle,
                 ),
                 OrderDetailItem(
                     model: model,
@@ -766,7 +767,7 @@ class OrderDetail {
                 OrderDetailItem(
                   model: model,
                   displayType: OrderDetailDisplayType.reason,
-                  changeDetail: "您主动取消订单",
+                  changeDetail: S.current.youCancelOrderVoluntarily,
                 ),
               ],
               hasDivider: true,
@@ -793,11 +794,11 @@ class OrderDetail {
                       :  model.breachAmount.toString(),
                 ),
               ],
-              bottomTipText: "约会进行中，主动取消订单需扣除${model.proportionBreach}%违约金",
+              bottomTipText: S.current.duringTheAppointment(model.proportionBreach),
             ),
             UserType.beauty: OrderDetailWrapper(
-              stateText: "订单已取消",
-              stateDetailText: "保证金已原路退回，请注意查收。",
+              stateText: S.current.orderCancelled,
+              stateDetailText: S.current.beenReturnedTheOriginalWay,
               upDisplayTypes: [
                 OrderDetailItem(
                     model: model, displayType: OrderDetailDisplayType.number),
@@ -815,14 +816,14 @@ class OrderDetail {
                 OrderDetailItem(
                   model: model,
                   displayType: OrderDetailDisplayType.reason,
-                  changeDetail: "用户取消订单",
+                  changeDetail: S.current.userCancelsOrder,
                 ),
               ],
-              bottomTipText: "对方取消订单，您无需承担违约金，保证金原路退回。",
+              bottomTipText: S.current.theOtherPartyCancelsTheOrder,
             ),
             UserType.agent: OrderDetailWrapper(
-              stateText: "订单已取消",
-              stateDetailText: "保证金以及服务费已原路退回。",
+              stateText: S.current.orderCancelled,
+              stateDetailText: S.current.depositAndServiceChargeReturned,
               upDisplayTypes: [
                 OrderDetailItem(
                     model: model, displayType: OrderDetailDisplayType.number),
@@ -831,7 +832,7 @@ class OrderDetail {
                 OrderDetailItem(
                   model: model,
                   displayType: OrderDetailDisplayType.receive,
-                  changeTitle: "接单佳丽：",
+                  changeTitle: S.current.orderReceivingBelle,
                 ),
                 OrderDetailItem(
                     model: model,
@@ -842,24 +843,24 @@ class OrderDetail {
                 OrderDetailItem(
                   model: model,
                   displayType: OrderDetailDisplayType.reason,
-                  changeDetail: "用户取消订单",
+                  changeDetail: S.current.userCancelsOrder,
                 ),
               ],
-              bottomTipText: "约会进行中，主动取消订单需扣除${model.proportionBreach}%违约金",
+              bottomTipText: S.current.duringTheAppointment(model.proportionBreach),
             ),
           };
         }
         return {
           UserType.user: OrderDetailWrapper(
-            stateText: "订单已取消",
-            stateDetailText: "保证金以及服务费已原路退回，请注意查收。",
+            stateText: S.current.orderCancelled,
+            stateDetailText: S.current.serviceFeeBeenReturned,
             upDisplayTypes: [
               OrderDetailItem(
                   model: model, displayType: OrderDetailDisplayType.number),
               OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.receive,
-                changeTitle: "接单佳丽：",
+                changeTitle: S.current.orderReceivingBelle,
               ),
               OrderDetailItem(
                   model: model,
@@ -869,14 +870,14 @@ class OrderDetail {
               OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.reason,
-                changeDetail: "您主动取消订单",
+                changeDetail: S.current.youCancelOrderVoluntarily,
               ),
             ],
-            bottomTipText: "该订单已取消，保证金和服务费均会原路返回",
+            bottomTipText: S.current.theOrderHasBeenCancelled,
           ),
           UserType.beauty: OrderDetailWrapper(
-            stateText: "订单已取消",
-            stateDetailText: "保证金已原路退回，请注意查收。",
+            stateText: S.current.orderCancelled,
+            stateDetailText: S.current.beenReturnedTheOriginalWay,
             upDisplayTypes: [
               OrderDetailItem(
                   model: model, displayType: OrderDetailDisplayType.number),
@@ -890,14 +891,14 @@ class OrderDetail {
               OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.reason,
-                changeDetail: "用户取消订单",
+                changeDetail: S.current.userCancelsOrder,
               ),
             ],
-            bottomTipText: "该订单已取消，保证金和服务费均会原路返回",
+            bottomTipText: S.current.theOrderHasBeenCancelled,
           ),
           UserType.agent: OrderDetailWrapper(
-            stateText: "订单已取消",
-            stateDetailText: "保证金以及服务费已原路退回。",
+            stateText: S.current.orderCancelled,
+            stateDetailText: S.current.depositAndServiceChargeReturned,
             upDisplayTypes: [
               OrderDetailItem(
                   model: model, displayType: OrderDetailDisplayType.number),
@@ -906,7 +907,7 @@ class OrderDetail {
               OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.receive,
-                changeTitle: "接单佳丽：",
+                changeTitle: S.current.orderReceivingBelle,
               ),
               OrderDetailItem(
                   model: model,
@@ -916,10 +917,10 @@ class OrderDetail {
               OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.reason,
-                changeDetail: "用户取消订单",
+                changeDetail: S.current.userCancelsOrder,
               ),
             ],
-            bottomTipText: "该订单已取消，保证金和服务费均会原路返回",
+            bottomTipText: S.current.theOrderHasBeenCancelled,
           ),
         };
       }(),
@@ -930,15 +931,15 @@ class OrderDetail {
         if (isCancelGoingAfter) {
           return {
             UserType.user: OrderDetailWrapper(
-              stateText: "订单已取消",
-              stateDetailText: "保证金以及服务费已原路退回，请注意查收。",
+              stateText: S.current.orderCancelled,
+              stateDetailText: S.current.serviceFeeBeenReturned,
               upDisplayTypes: [
                 OrderDetailItem(
                     model: model, displayType: OrderDetailDisplayType.number),
                 OrderDetailItem(
                   model: model,
                   displayType: OrderDetailDisplayType.receive,
-                  changeTitle: "接单佳丽：",
+                  changeTitle: S.current.orderReceivingBelle,
                 ),
                 OrderDetailItem(
                     model: model,
@@ -952,14 +953,14 @@ class OrderDetail {
                 OrderDetailItem(
                   model: model,
                   displayType: OrderDetailDisplayType.reason,
-                  changeDetail: "佳丽主动取消订单",
+                  changeDetail: S.current.belleCancelsVoluntarily,
                 ),
               ],
-              bottomTipText: "对方取消订单，您无需承担违约金，保证金原路退回。",
+              bottomTipText: S.current.theOtherPartyCancelsTheOrder,
             ),
             UserType.beauty: OrderDetailWrapper(
-              stateText: "订单已取消",
-              stateDetailText: "保证金已原路退回，请注意查收。",
+              stateText: S.current.orderCancelled,
+              stateDetailText: S.current.beenReturnedTheOriginalWay,
               upDisplayTypes: [
                 OrderDetailItem(
                     model: model, displayType: OrderDetailDisplayType.number),
@@ -977,7 +978,7 @@ class OrderDetail {
                 OrderDetailItem(
                   model: model,
                   displayType: OrderDetailDisplayType.reason,
-                  changeDetail: "您主动取消订单",
+                  changeDetail: S.current.youCancelOrderVoluntarily,
                 ),
               ],
               hasDivider: true,
@@ -1000,11 +1001,11 @@ class OrderDetail {
                       : model.breachAmount.toString(),
                 ),
               ],
-              bottomTipText: "约会进行中，主动取消订单需扣除${model.proportionBreach}%违约金",
+              bottomTipText: S.current.duringTheAppointment(model.proportionBreach),
             ),
             UserType.agent: OrderDetailWrapper(
-                stateText: "订单已取消",
-                stateDetailText: "保证金以及服务费已原路退回。",
+                stateText: S.current.orderCancelled,
+                stateDetailText: S.current.depositAndServiceChargeReturned,
                 upDisplayTypes: [
                   OrderDetailItem(
                       model: model, displayType: OrderDetailDisplayType.number),
@@ -1014,7 +1015,7 @@ class OrderDetail {
                   OrderDetailItem(
                     model: model,
                     displayType: OrderDetailDisplayType.receive,
-                    changeTitle: "接单佳丽：",
+                    changeTitle: S.current.orderReceivingBelle,
                   ),
                   OrderDetailItem(
                       model: model,
@@ -1028,7 +1029,7 @@ class OrderDetail {
                   OrderDetailItem(
                     model: model,
                     displayType: OrderDetailDisplayType.reason,
-                    changeDetail: "佳丽取消订单",
+                    changeDetail: S.current.belleCancelsOrder,
                   ),
                 ],
                 hasDivider: true,
@@ -1050,26 +1051,27 @@ class OrderDetail {
                   OrderDetailItem(
                     model: model,
                     displayType: OrderDetailDisplayType.amount,
-                    changeTitle: "佳丽实付金额：",
+                    changeTitle: S.current.beautifulAmount,
                     changeDetail: model.exempt
                         ? "0"
                         : model.breachAmount.toString(),
                   ),
                 ],
-                bottomTipText: "约会进行中，主动取消订单需扣除${model.proportionBreach}%违约金"),
+              bottomTipText: S.current.duringTheAppointment(model.proportionBreach),
+            ),
           };
         }
         return {
           UserType.user: OrderDetailWrapper(
-            stateText: "订单已取消",
-            stateDetailText: "保证金以及服务费已原路退回，请注意查收。",
+            stateText: S.current.orderCancelled,
+            stateDetailText: S.current.serviceFeeBeenReturned,
             upDisplayTypes: [
               OrderDetailItem(
                   model: model, displayType: OrderDetailDisplayType.number),
               OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.receive,
-                changeTitle: "接单佳丽：",
+                changeTitle: S.current.orderReceivingBelle,
                 changeAvatar:
                     model.receiveId == 0 ? model.introducerAvatar : null,
                 changeDetail:
@@ -1083,14 +1085,14 @@ class OrderDetail {
               OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.reason,
-                changeDetail: "佳丽取消订单",
+                changeDetail: S.current.belleCancelsOrder,
               ),
             ],
-            bottomTipText: "该订单已取消，保证金和服务费均会原路返回",
+            bottomTipText: S.current.theOrderHasBeenCancelled,
           ),
           UserType.beauty: OrderDetailWrapper(
-            stateText: "订单已取消",
-            stateDetailText: "保证金已原路退回，请注意查收。",
+            stateText: S.current.orderCancelled,
+            stateDetailText: S.current.beenReturnedTheOriginalWay,
             upDisplayTypes: [
               OrderDetailItem(
                   model: model, displayType: OrderDetailDisplayType.number),
@@ -1104,14 +1106,14 @@ class OrderDetail {
               OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.reason,
-                changeDetail: "您主动取消订单",
+                changeDetail: S.current.youCancelOrderVoluntarily,
               ),
             ],
-            bottomTipText: "该订单已取消，保证金和服务费均会原路返回",
+            bottomTipText: S.current.theOrderHasBeenCancelled,
           ),
           UserType.agent: OrderDetailWrapper(
-            stateText: "订单已取消",
-            stateDetailText: "保证金以及服务费已原路退回。",
+            stateText: S.current.orderCancelled,
+            stateDetailText: S.current.depositAndServiceChargeReturned,
             upDisplayTypes: [
               OrderDetailItem(
                   model: model, displayType: OrderDetailDisplayType.number),
@@ -1120,7 +1122,7 @@ class OrderDetail {
               OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.receive,
-                changeTitle: "接单佳丽：",
+                changeTitle: S.current.orderReceivingBelle,
                 changeAvatar:
                     model.receiveId == 0 ? model.introducerAvatar : null,
                 changeDetail:
@@ -1134,24 +1136,24 @@ class OrderDetail {
               OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.reason,
-                changeDetail: "佳丽取消订单",
+                changeDetail: S.current.belleCancelsOrder,
               ),
             ],
-            bottomTipText: "该订单已取消，保证金和服务费均会原路返回",
+            bottomTipText: S.current.theOrderHasBeenCancelled,
           ),
         };
       }(),
       OrderItemState.timeOut: {
         UserType.user: OrderDetailWrapper(
-          stateText: "订单已取消",
-          stateDetailText: "保证金以及服务费已原路退回，请注意查收。",
+          stateText: S.current.orderCancelled,
+          stateDetailText: S.current.serviceFeeBeenReturned,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: S.current.orderReceivingBelle,
               changeAvatar:
                   model.receiveId == 0 ? model.introducerAvatar : null,
               changeDetail: model.receiveId == 0 ? model.introducerName : null,
@@ -1163,14 +1165,14 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.reason,
-              changeDetail: "等待超时",
+              changeDetail: S.current.waitTimeout,
             ),
           ],
-          bottomTipText: "该订单已取消，保证金和服务费均会原路返回",
+          bottomTipText: S.current.theOrderHasBeenCancelled,
         ),
         UserType.beauty: OrderDetailWrapper(
-          stateText: "订单已取消",
-          stateDetailText: "保证金已原路退回，请注意查收。",
+          stateText: S.current.orderCancelled,
+          stateDetailText: S.current.beenReturnedTheOriginalWay,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
@@ -1183,14 +1185,14 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.reason,
-              changeDetail: "等待超时",
+              changeDetail: S.current.waitTimeout,
             ),
           ],
-          bottomTipText: "该订单已取消，保证金和服务费均会原路返回",
+          bottomTipText: S.current.theOrderHasBeenCancelled,
         ),
         UserType.agent: OrderDetailWrapper(
-          stateText: "订单已取消",
-          stateDetailText: "保证金以及服务费已原路退回。",
+          stateText: S.current.orderCancelled,
+          stateDetailText: S.current.depositAndServiceChargeReturned,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
@@ -1199,7 +1201,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: S.current.orderReceivingBelle,
               changeAvatar:
                   model.receiveId == 0 ? model.introducerAvatar : null,
               changeDetail: model.receiveId == 0 ? model.introducerName : null,
@@ -1211,23 +1213,23 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.reason,
-              changeDetail: "等待超时",
+              changeDetail: S.current.waitTimeout,
             ),
           ],
-          bottomTipText: "该订单已取消，保证金和服务费均会原路返回",
+          bottomTipText: S.current.theOrderHasBeenCancelled,
         ),
       },
       OrderItemState.finish: {
         UserType.user: OrderDetailWrapper(
-          stateText: "订单已完成",
-          stateDetailText: "保证金已原路退回，请注意查收。",
+          stateText: S.current.orderCompleted,
+          stateDetailText: S.current.beenReturnedTheOriginalWay,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: S.current.orderReceivingBelle,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -1243,7 +1245,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.margin,
-              changeTitle: "保证金退回金额：",
+              changeTitle: S.current.marginReturn,
             ),
             OrderDetailItem(
                 model: model,
@@ -1254,11 +1256,11 @@ class OrderDetail {
               changeDetail: model.serviceCharge.toString(),
             ),
           ],
-          bottomTipText: "保证金将在订单完成后原账户退回",
+          bottomTipText: S.current.depositReturnedAccountCompleted,
         ),
         UserType.beauty: OrderDetailWrapper(
-          stateText: "订单已完成",
-          stateDetailText: "保证金已原路退回，请注意查收。",
+          stateText: S.current.orderCompleted,
+          stateDetailText: S.current.beenReturnedTheOriginalWay,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
@@ -1278,7 +1280,7 @@ class OrderDetail {
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.requestServiceFee,
-                changeTitle: "用户缴纳服务费："),
+                changeTitle: S.current.userPaysServiceFee),
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.platformFeeProportion),
@@ -1292,15 +1294,15 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.amount,
-              changeTitle: "实收金额：",
+              changeTitle: S.current.fundsReceived,
               changeDetail: model.beautyAmount.toString(),
             ),
           ],
-          bottomTipText: "保证金将在订单完成后原账户退回",
+          bottomTipText: S.current.depositReturnedAccountCompleted,
         ),
         UserType.agent: OrderDetailWrapper(
-          stateText: "订单已完成",
-          stateDetailText: "保证金已原路退回，请注意查收。",
+          stateText: S.current.orderCompleted,
+          stateDetailText: S.current.beenReturnedTheOriginalWay,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
@@ -1309,7 +1311,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: S.current.orderReceivingBelle,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -1325,7 +1327,7 @@ class OrderDetail {
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.requestServiceFee,
-                changeTitle: "用户缴纳服务费："),
+                changeTitle: S.current.userPaysServiceFee),
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.platformFeeProportion),
@@ -1342,24 +1344,24 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.amount,
-              changeTitle: "实收金额：",
+              changeTitle: S.current.fundsReceived,
               changeDetail: model.brokerAmount.toString(),
             ),
           ],
-          bottomTipText: "保证金将在订单完成后原账户退回",
+          bottomTipText: S.current.depositReturnedAccountCompleted,
         ),
       },
       OrderItemState.waitingEvaluation: {
         UserType.user: OrderDetailWrapper(
-          stateText: "订单已完成，待评价",
-          stateDetailText: "保证金已原路退回，请注意查收。",
+          stateText: S.current.completedPendingEvaluation,
+          stateDetailText: S.current.beenReturnedTheOriginalWay,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: S.current.orderReceivingBelle,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -1375,7 +1377,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.margin,
-              changeTitle: "保证金退回金额：",
+              changeTitle: S.current.marginReturn,
             ),
             OrderDetailItem(
                 model: model,
@@ -1386,12 +1388,12 @@ class OrderDetail {
               changeDetail: model.serviceCharge.toString(),
             ),
           ],
-          bottomTipText: "保证金将在订单完成后原账户退回",
+          bottomTipText: S.current.depositReturnedAccountCompleted,
           operation: OrderOperationType.evaluation,
         ),
         UserType.beauty: OrderDetailWrapper(
-          stateText: "订单已完成，待用户评价",
-          stateDetailText: "保证金已原路退回，请注意查收。",
+          stateText: S.current.completedPendingUserEvaluation,
+          stateDetailText: S.current.beenReturnedTheOriginalWay,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
@@ -1411,7 +1413,7 @@ class OrderDetail {
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.requestServiceFee,
-                changeTitle: "用户缴纳服务费："),
+                changeTitle: S.current.userPaysServiceFee),
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.platformFeeProportion),
@@ -1425,14 +1427,14 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.amount,
-              changeTitle: "实收金额：",
+              changeTitle: S.current.fundsReceived,
               changeDetail: model.beautyAmount.toString(),
             ),
           ],
         ),
         UserType.agent: OrderDetailWrapper(
-          stateText: "订单已完成，待用户评价",
-          stateDetailText: "保证金已原路退回佳丽账户，请注意查收。",
+          stateText: S.current.completedPendingUserEvaluation,
+          stateDetailText: S.current.pleaseCheckAccount,
           upDisplayTypes: [
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.number),
@@ -1441,7 +1443,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.receive,
-              changeTitle: "接单佳丽：",
+              changeTitle: S.current.orderReceivingBelle,
             ),
             OrderDetailItem(
                 model: model, displayType: OrderDetailDisplayType.requestTime),
@@ -1457,7 +1459,7 @@ class OrderDetail {
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.requestServiceFee,
-                changeTitle: "用户缴纳服务费："),
+                changeTitle: S.current.userPaysServiceFee),
             OrderDetailItem(
                 model: model,
                 displayType: OrderDetailDisplayType.platformFeeProportion),
@@ -1474,7 +1476,7 @@ class OrderDetail {
             OrderDetailItem(
               model: model,
               displayType: OrderDetailDisplayType.amount,
-              changeTitle: "实收金额：",
+              changeTitle: S.current.fundsReceived,
               changeDetail: model.brokerAmount.toString(),
             ),
           ],
@@ -1483,105 +1485,4 @@ class OrderDetail {
     };
   }
 
-  // static Map<OrderItemState, Map<OrderItemUserType, OrderDetailWrapper>>
-  //     buildFriendWrapperMap(OrderItemModel model) {
-  //   return {
-  //     OrderItemState.waitingPaymentForRequest: {
-  //       OrderItemUserType.request: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //       OrderItemUserType.receive: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //     },
-  //     OrderItemState.waitingPaymentForReceive: {
-  //       OrderItemUserType.request: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //       OrderItemUserType.receive: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //     },
-  //     OrderItemState.waitingConfirmForRequest: {
-  //       OrderItemUserType.request: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //       OrderItemUserType.receive: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //     },
-  //     OrderItemState.waitingConfirmForReceive: {
-  //       OrderItemUserType.request: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //       OrderItemUserType.receive: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //     },
-  //     OrderItemState.cancelForRequest: {
-  //       OrderItemUserType.request: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //       OrderItemUserType.receive: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //     },
-  //     OrderItemState.cancelForReceive: {
-  //       OrderItemUserType.request: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //       OrderItemUserType.receive: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //     },
-  //     OrderItemState.timeOut: {
-  //       OrderItemUserType.request: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //       OrderItemUserType.receive: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //     },
-  //     OrderItemState.finish: {
-  //       OrderItemUserType.request: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //       OrderItemUserType.receive: OrderDetailWrapper(
-  //         stateText: "",
-  //         stateDetailText: "",
-  //         upDisplayTypes: [],
-  //       ),
-  //     },
-  //   };
-  // }
 }

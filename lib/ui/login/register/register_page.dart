@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/app_constant.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
@@ -8,6 +10,7 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/login/widgets/login_text_field.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/web/web_page.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 import 'register_controller.dart';
@@ -105,6 +108,9 @@ class RegisterPage extends StatelessWidget {
                                     style: style.copyWith(
                                       decoration: TextDecoration.underline,
                                     ),
+                                    recognizer: TapGestureRecognizer()..onTap = () {
+                                      WebPage.go(url: AppConfig.urlUserService, title: S.current.webUser);
+                                    },
                                   ),
                                 ],
                               ),

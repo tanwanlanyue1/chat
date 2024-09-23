@@ -8,6 +8,7 @@ import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/custom/message_transfer_content.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -103,7 +104,7 @@ class ChatTransferMessage extends StatelessWidget {
                     style: AppTextStyle.fs16b.copyWith(color: Colors.white),
                   ),
                   Text(
-                    isReceiveMoney ? 'Ta成功收款' : '向您转账',
+                    isReceiveMoney ? S.current.TaSuccessfulCollection : S.current.transferMoneyToYou,
                     style: AppTextStyle.fs12m.copyWith(color: Colors.white),
                   )
                 ],
@@ -138,8 +139,8 @@ class ChatTransferMessage extends StatelessWidget {
   }
 
   Widget buildTitle() {
-    String title = '发起了一笔转账';
-    title = (message.isMine ? '您向Ta' : 'Ta向您') + title;
+    String title = S.current.initiatedTransfer;
+    title = (message.isMine ? S.current.youTowardsTa : S.current.TaTowardsYou) + title;
     return Padding(
       padding: FEdgeInsets(top: 6.rpx),
       child: Row(
@@ -190,14 +191,14 @@ class ChatTransferMessage extends StatelessWidget {
 
     List<Widget> children = [
       buildItem(
-        label: '转账时间',
+        label: S.current.transferTime,
         value: DateTime.fromMillisecondsSinceEpoch(content.time).format2,
       ),
       buildItem(
-        label: '到账时间',
+        label: S.current.accountingDate,
         value: DateTime.fromMillisecondsSinceEpoch(content.time).format2,
       ),
-      buildItem(label: message.isMine ? '转账实付金额' :  '实收金额', value: content.amount.toCurrencyString(), isHighlight: true),
+      buildItem(label: message.isMine ? S.current.transferActualAmount :  S.current.fundsReceive, value: content.amount.toCurrencyString(), isHighlight: true),
     ];
 
     return Padding(

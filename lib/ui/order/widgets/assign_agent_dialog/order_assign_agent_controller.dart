@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/extension/list_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 class OrderAssignAgentController extends GetxController {
@@ -36,13 +37,13 @@ class OrderAssignAgentController extends GetxController {
   void onTapConfirm() async {
     final index = selectIndex.value;
     if (index == null) {
-      Loading.showToast("请选择");
+      Loading.showToast(S.current.pleaseChoose);
       return;
     }
 
     final item = pagingController.itemList?.safeElementAt(index);
     if (item == null) {
-      Loading.showToast("数据异常");
+      Loading.showToast(S.current.dataException);
       return;
     }
 

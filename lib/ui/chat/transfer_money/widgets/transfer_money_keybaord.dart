@@ -6,6 +6,7 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/utils/decimal_text_input_formatter.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
 
 ///转账键盘
@@ -121,7 +122,7 @@ class _TransferMoneyKeyboardState extends State<TransferMoneyKeyboard> {
           onTap: () => onTapItem(confirm),
           child: Center(
             child: Text(
-              '转账',
+              S.current.transferAccounts,
               textAlign: TextAlign.center,
               style: AppTextStyle.fs16b.copyWith(color: Colors.white),
             ),

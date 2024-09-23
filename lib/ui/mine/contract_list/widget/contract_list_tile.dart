@@ -48,7 +48,7 @@ class ContractListTile extends StatelessWidget {
       case null:
       case ContractStatus.signing:
       case ContractStatus.reject:
-      label = '创建时间：';
+      label = S.current.creationTime;
       text = model.createTime.dateTime.formatYMD2 ?? '';
       case ContractStatus.signed:
         label = S.current.effectiveTime;

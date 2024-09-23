@@ -125,7 +125,7 @@ class _OrderListPageState extends State<OrderListPage>
               flex: 2,
               child: OrderOperationNumberWidget(
                 number: state.evaluateCount.value,
-                title: "待评价",
+                title: S.current.remainBeEvaluated,
                 numberColor: AppColor.textGreen,
               ),
             ),
@@ -133,7 +133,7 @@ class _OrderListPageState extends State<OrderListPage>
               flex: 2,
               child: OrderOperationNumberWidget(
                 number: state.completeCount.value,
-                title: "已完成",
+                title: S.current.completed,
                 numberColor: AppColor.textGreen,
               ),
             ),
@@ -214,7 +214,7 @@ class _OrderListPageState extends State<OrderListPage>
                                 .textColor(AppColor.textGreen),
                           ),
                           TextSpan(
-                            text: " 单",
+                            text: " ${S.current.bill}",
                             style: AppTextStyle.st
                                 .size(12.rpx)
                                 .textColor(AppColor.black6),
@@ -244,7 +244,7 @@ class _OrderListPageState extends State<OrderListPage>
                       ),
                       SizedBox(height: 4.rpx),
                       Text(
-                        "待评价",
+                        S.current.remainBeEvaluated,
                         style: AppTextStyle.st
                             .size(12.rpx)
                             .textColor(AppColor.black3),
@@ -275,7 +275,7 @@ class _OrderListPageState extends State<OrderListPage>
                       ),
                       SizedBox(height: 4.rpx),
                       Text(
-                        "已完成",
+                        S.current.completed,
                         style: AppTextStyle.st
                             .size(12.rpx)
                             .textColor(AppColor.black3),
@@ -395,7 +395,7 @@ class _OrderListItemWidgetState extends State<OrderListItemWidget> {
                 if (item.countDown > 0)
                   Flexible(
                     child: Text(
-                      "剩余等待 ${CommonUtils.convertCountdownToHMS(item.countDown, hasHours: false)}",
+                      "${S.current.residualWait} ${CommonUtils.convertCountdownToHMS(item.countDown, hasHours: false)}",
                       style: AppTextStyle.st
                           .size(12.rpx)
                           .textColor(AppColor.primaryBlue),

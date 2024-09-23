@@ -1,31 +1,32 @@
 import 'package:get/get.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 class HomeState {
   List<AppBarItem> allBottomNavItems = [
-    const AppBarItem(
+    AppBarItem(
       icon: 'assets/images/home/tab_chat.png',
       activeIcon: 'assets/images/home/tab_chat.json',
-      title: '聊天',
+      title: S.current.chat,
     ),
-    const AppBarItem(
+    AppBarItem(
       icon: 'assets/images/home/tab_order.png',
       activeIcon: 'assets/images/home/tab_order.json',
-      title: '订单',
+      title: S.current.order,
     ),
-    const AppBarItem(
+    AppBarItem(
         icon: 'assets/images/home/tab_community.png',
         activeIcon: 'assets/images/home/tab_community.json',
-        title: '交友大厅',
+        title: S.current.datingHall,
     ),
-    const AppBarItem(
+    AppBarItem(
         icon: 'assets/images/home/tab_discovery.png',
         activeIcon: 'assets/images/home/tab_discovery.json',
-        title: '发现',
+        title: S.current.discover,
     ),
-    const AppBarItem(
+    AppBarItem(
         icon: 'assets/images/home/tab_mine.png',
         activeIcon: 'assets/images/home/tab_mine.json',
-        title: '我的',
+        title: S.current.mini,
     ),
   ];
 

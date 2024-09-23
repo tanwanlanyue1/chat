@@ -74,7 +74,7 @@ class MineSettingController extends GetxController {
     if(SS.login.userBind){
       WebPage.go(
         url: AppConfig.urlAccountCancellation,
-        title: '账号注销',
+        title: S.current.removeAccount,
       );
     }else{
       Get.toNamed(AppRoutes.bindingPage);

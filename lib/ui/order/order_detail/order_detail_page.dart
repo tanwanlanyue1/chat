@@ -7,6 +7,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/model/order_detail.dart';
 import 'package:guanjia/ui/order/order_detail/widget/order_detail_operation_buttons.dart';
@@ -30,9 +31,9 @@ class OrderDetailPage extends StatelessWidget {
       return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          title: const Text(
-            '订单详情',
-            style: TextStyle(
+          title: Text(
+            S.current.orderDetails,
+            style: const TextStyle(
               color: Colors.white,
             ),
           ),
@@ -49,7 +50,7 @@ class OrderDetailPage extends StatelessWidget {
                   padding: EdgeInsets.only(right: 16.rpx),
                   alignment: Alignment.center,
                   child: Text(
-                    '取消订单',
+                    S.current.cancellationOrder,
                     style: AppTextStyle.st.medium
                         .size(14.rpx)
                         .textColor(Colors.white),

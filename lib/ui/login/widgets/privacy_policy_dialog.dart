@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/web/web_page.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
@@ -55,24 +56,24 @@ class PrivacyPolicyDialog extends StatelessWidget {
         color: Colors.black,
       ),
       TextSpan(children: [
-        const TextSpan(text: '已阅读并同意'),
+        TextSpan(text: S.current.readAndAgree),
         TextSpan(
           style: highlightTextStyle,
-          text: '用户协议、',
+          text: '${S.current.webUser}、',
           recognizer: TapGestureRecognizer()..onTap = () {
             dismiss();
-            WebPage.go(url: AppConfig.urlUserService, title: '用户协议');
+            WebPage.go(url: AppConfig.urlUserService, title: S.current.webUser);
           },
         ),
         TextSpan(
           style: highlightTextStyle,
-          text: '隐私政策',
+          text: S.current.privacyPolicyTitle,
           recognizer: TapGestureRecognizer()..onTap = () {
             dismiss();
-            WebPage.go(url: AppConfig.urlPrivacyPolicy, title: '隐私政策');
+            WebPage.go(url: AppConfig.urlPrivacyPolicy, title: S.current.privacyPolicyTitle);
           },
         ),
-        const TextSpan(text: '并授权使用您的账号信息（如头像、昵称、地址）以便您统一管理'),
+        TextSpan(text: S.current.andAuthorizeUseNickname),
       ]),
     );
   }
@@ -84,7 +85,7 @@ class PrivacyPolicyDialog extends StatelessWidget {
           width: 110.rpx,
           height: 36.rpx,
           backgroundColor: AppColor.gray9.withAlpha(80),
-          child: Text('不同意', style: TextStyle(fontSize: 16.rpx)),
+          child: Text(S.current.noConsent, style: TextStyle(fontSize: 16.rpx)),
           onPressed: () {
             Get.back(result: false);
           },
@@ -94,7 +95,7 @@ class PrivacyPolicyDialog extends StatelessWidget {
           height: 36.rpx,
           margin: FEdgeInsets(left: 24.rpx),
           backgroundColor: AppColor.primary,
-          child: Text('同意', style: TextStyle(fontSize: 16.rpx)),
+          child: Text(S.current.consent, style: TextStyle(fontSize: 16.rpx)),
           onPressed: () {
             Get.back(result: true);
           },

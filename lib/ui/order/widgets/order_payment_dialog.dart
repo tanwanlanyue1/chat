@@ -6,6 +6,7 @@ import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -52,7 +53,7 @@ class OrderPaymentDialog extends StatelessWidget {
               padding: FEdgeInsets(all: 16.rpx, vertical: 24.rpx),
               child: CommonGradientButton(
                 height: 50.rpx,
-                text: "去支付",
+                text: S.current.goToPay,
                 onTap: () {
                   Get.back(result: true);
                 },
@@ -94,7 +95,7 @@ class OrderPaymentDialog extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "服务费",
+                    S.current.serviceCharge,
                     style: AppTextStyle.fs14m.copyWith(color: AppColor.black6),
                   ),
                   Text(
@@ -109,7 +110,7 @@ class OrderPaymentDialog extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "保证金",
+                      S.current.earnestMoney,
                       style:
                           AppTextStyle.fs14m.copyWith(color: AppColor.black6),
                     ),
@@ -128,7 +129,7 @@ class OrderPaymentDialog extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "总计花费",
+                      S.current.totalCost,
                       style:
                           AppTextStyle.fs14m.copyWith(color: AppColor.black6),
                     ),
@@ -155,7 +156,7 @@ class OrderPaymentDialog extends StatelessWidget {
         Padding(
           padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
           child: Text(
-            "请先缴纳保证金${order.deposit.toCurrencyString()}，点击下方按钮立即缴纳！",
+            S.current.securityDepositHint(order.deposit.toCurrencyString()),
             textAlign: TextAlign.center,
             style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue, height: 1.5),
           ),
@@ -163,7 +164,7 @@ class OrderPaymentDialog extends StatelessWidget {
         Padding(
           padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
           child: Text(
-            "注：保证金在订单结束后将会原路退回。",
+            S.current.noteDepositWillBeRefunded,
             textAlign: TextAlign.start,
             style: AppTextStyle.fs12m.copyWith(
               color: AppColor.gray9,
@@ -198,9 +199,9 @@ class OrderPaymentDialog extends StatelessWidget {
         builder: (info) {
           var text = '';
           if (order.type.isNormal) {
-            text = '${info?.baseInfo.userName} 已同意您的邀约，\n请支付保证金和服务费。';
+            text = S.current.haveAgreedYourInvitation(info?.baseInfo.userName ?? '');
           } else {
-            text = '${info?.baseInfo.userName} 已参与您的征友约会，\n请支付保证金和服务费。';
+            text = S.current.haveAgreedYourDate(info?.baseInfo.userName ?? '');
           }
           return Text(
             text,

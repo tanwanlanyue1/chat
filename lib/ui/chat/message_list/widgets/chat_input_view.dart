@@ -7,6 +7,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/auto_dispose_mixin.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'chat_feature_panel.dart';
@@ -132,7 +133,7 @@ class ChatInputViewState extends State<ChatInputView>
             border: InputBorder.none,
             enabledBorder: InputBorder.none,
             contentPadding: FEdgeInsets(horizontal: 8.rpx, vertical: 8.rpx),
-            hintText: '输入文字',
+            hintText: S.current.enterText,
             hintStyle: AppTextStyle.fs14m.copyWith(
               color: AppColor.grayText,
             )

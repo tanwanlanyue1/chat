@@ -191,11 +191,11 @@ mixin _ChatCallMixin {
       return await PermissionsUtils.requestPermissions([
         Permission.camera,
         Permission.microphone,
-      ], hintText: '需要开启相机和麦克风权限');
+      ], hintText: S.current.cameraMicrophoneNeed);
     } else {
       return await PermissionsUtils.requestPermission(
         Permission.microphone,
-        hintText: '需要开启麦克风权限',
+        hintText: S.current.needsMicrophonePermission,
       );
     }
   }
@@ -266,23 +266,23 @@ mixin _ChatCallMixin {
       plugins: [ZegoUIKitSignalingPlugin()],
       //自定义文本内容
       innerText: ZegoCallInvitationInnerText(
-        incomingVideoCallDialogMessage: '视频聊天呼入...',
-        incomingVoiceCallDialogMessage: '语音聊天呼入...',
-        incomingVideoCallPageMessage: '视频聊天呼入...',
-        incomingVoiceCallPageMessage: '语音聊天呼入...',
+        incomingVideoCallDialogMessage: S.current.videoChatCallIn,
+        incomingVoiceCallDialogMessage: S.current.voiceChatCallIn,
+        incomingVideoCallPageMessage: S.current.videoChatCallIn,
+        incomingVoiceCallPageMessage: S.current.voiceChatCallIn,
         incomingCallPageDeclineButton: '',
         incomingCallPageAcceptButton: '',
-        incomingCallVoIPDeclineButton: '挂断',
-        incomingCallVoIPAcceptButton: '接听',
-        outgoingVideoCallPageMessage: '呼叫中...',
-        outgoingVoiceCallPageMessage: '呼叫中...',
+        incomingCallVoIPDeclineButton: S.current.hangUp,
+        incomingCallVoIPAcceptButton: S.current.answer,
+        outgoingVideoCallPageMessage: S.current.onACall,
+        outgoingVoiceCallPageMessage: S.current.onACall,
       ),
       notificationConfig: ZegoCallInvitationNotificationConfig(
         androidNotificationConfig: ZegoCallAndroidNotificationConfig(
           channelID: AppConfig.zegoCallResourceId,
-          channelName: '音视频通话邀请通知',
+          channelName: S.current.audioCallInvitationNotification,
           messageChannelID: AppConfig.zegoChatResourceId,
-          messageChannelName: '新消息通知',
+          messageChannelName: S.current.newMessageNotification,
         ),
       ),
       ringtoneConfig: ZegoCallRingtoneConfig(isVibrate: (data) {
@@ -348,7 +348,7 @@ mixin _ChatCallMixin {
           ZegoCallUser callee,
           String customData,
         ) {
-          Loading.showToast('对方正在通话中');
+          Loading.showToast(S.current.thePartyEngagedCall);
         },
         onIncomingCallDeclineButtonPressed: () {
           _sendCallRejectMessage(_callInviter);
@@ -559,7 +559,7 @@ mixin _ChatCallMixin {
       );
       if (result == true) {
         //TODO 弹出充值对话框
-        Loading.showToast('弹出充值对话框');
+        Loading.showToast(S.current.theRechargeDialog);
         return;
       }
       if (result == false) {
@@ -588,7 +588,7 @@ mixin _ChatCallMixin {
         customType: CustomMessageType.callReject.value,
         customMessage: MessageCallRejectContent(
           isVideoCall: _isVideoCall,
-          message: '已取消',
+          message: S.current.canceled,
         ).toJsonString(),
       );
     }

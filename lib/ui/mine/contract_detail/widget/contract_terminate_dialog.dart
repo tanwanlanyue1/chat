@@ -43,7 +43,7 @@ class ContractTerminateDialog extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      isAgent ? '与佳丽 ${contract.partyBName} 确定解除契约吗？' : S.current.contractTerminateHint,
+                      isAgent ? S.current.confirmRescissionOrNot(contract.partyBName) : S.current.contractTerminateHint,
                       textAlign: TextAlign.center,
                       style: AppTextStyle.fs16m.copyWith(
                         color: AppColor.gray5,

@@ -49,7 +49,7 @@ extension ContractStatusX on ContractStatus {
       case ContractStatus.terminated:
         return S.current.contractTerminated;
       case ContractStatus.reject:
-        return '已拒绝';
+        return S.current.declined;
     }
   }
 }
@@ -73,13 +73,13 @@ extension ContractModelX on ContractModel {
 
   String get brokerageServiceTemplate {
     return SS.appConfig.configRx()?.brokerageServiceTemplate ??
-        '乙方在App上通过约会获得的服务费收益，甲方将获得$_kBrokerageService比例提成。';
+        S.current.partyAWillReceivePercentage(_kBrokerageService);
   }
 
   String get brokerageChattingPlaceholder => _kBrokerageChatting;
 
   String get brokerageChattingTemplate {
     return SS.appConfig.configRx()?.brokerageChattingTemplate ??
-        '乙方在App上通过 实时视频/语音获得的陪聊收益，甲方将获得$_kBrokerageChatting比例分成。';
+        S.current.partyPercentage(_kBrokerageChatting);
   }
 }

@@ -118,8 +118,8 @@ class UserCenterPage extends StatelessWidget {
                       );
                     },
                     noItemsFoundIndicatorBuilder:(_){
-                      return const NoItemsFoundIndicator(
-                        title: '暂无数据',
+                      return NoItemsFoundIndicator(
+                        title: S.current.noData,
                         backgroundColor: Colors.white,
                       );
                     },

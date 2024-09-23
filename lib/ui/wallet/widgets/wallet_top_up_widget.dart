@@ -26,14 +26,14 @@ class WalletTopUpWidget extends StatelessWidget {
           children: [
             _buildItem(
               onTap: controller.onTapSubmitTopUp,
-              title: "人工充值",
-              buttonText: "点击立即前往提交订单",
+              title: S.current.manualTopUp,
+              buttonText: S.current.clickNowSubmitOrder,
             ),
             SizedBox(height: 24.rpx),
             _buildItem(
               onTap: controller.onTapSubmitOtherTopUp,
-              title: "三方USDT充值",
-              buttonText: "点击按钮立即前往第三方充值",
+              title: S.current.threePartyUSDTRecharge,
+              buttonText: S.current.clickButtonImmediately,
             ),
           ],
         ),

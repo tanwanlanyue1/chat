@@ -6,6 +6,7 @@ import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';
@@ -31,7 +32,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text("支付订单"),
+            title: Text(S.current.payForTheOrder),
           ),
           body: ListView(
             padding: EdgeInsets.only(
@@ -122,7 +123,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                   margin: EdgeInsets.symmetric(horizontal: 22.rpx)
                       .copyWith(top: 60.rpx),
                   child: Text(
-                    "确定支付 ¥$result",
+                    "${S.current.firmPayment} ¥$result",
                     style: TextStyle(color: Colors.white, fontSize: 16.rpx),
                   ),
                 );
@@ -142,7 +143,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
         children: [
           SizedBox(height: 24.rpx),
           Text(
-            "充值VIP会员",
+            S.current.topUpVIPMembership,
             style: AppTextStyle.st
                 .size(16.rpx)
                 .textColor(AppColor.blackBlue)
@@ -171,7 +172,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
         children: [
           SizedBox(height: 24.rpx),
           Text(
-            isRequest ? "缴纳服务费及保证金" : "缴纳保证金",
+            isRequest ? S.current.payServiceFeeSecurityDeposit : S.current.payDeposit,
             style: AppTextStyle.st
                 .size(16.rpx)
                 .textColor(AppColor.blackBlue)
@@ -179,7 +180,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
           ),
           SizedBox(height: 16.rpx),
           Text(
-            "支付剩余时间",
+            S.current.remainingTimePaid,
             style: AppTextStyle.st
                 .size(12.rpx)
                 .textColor(AppColor.blackBlue)

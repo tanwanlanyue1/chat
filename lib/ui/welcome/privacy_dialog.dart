@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/welcome/welcome_storage.dart';
 import 'package:guanjia/widgets/web/web_page.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -51,7 +52,7 @@ class PrivacyDialog extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '服务协议和隐私政策',
+                  S.current.serviceAndPrivacy,
                   style: AppTextStyle.fs16b.copyWith(color: Colors.black),
                 ),
                 Padding(
@@ -63,11 +64,10 @@ class PrivacyDialog extends StatelessWidget {
                           color: AppColor.black3,
                         ),
                         children: [
-                          const TextSpan(
-                              text:
-                                  '    请您务必谨慎阅读、充分理解“服务协议”和“隐私政策”条款，包括但不限于为了更好的向您提供服务，我们需要手机你的设备标识、操作日志等信息用于分析、优化原有性能。您可阅读'),
+                           TextSpan(
+                              text: S.current.pleaseSureCarefullyReadFully),
                           TextSpan(
-                            text: '《服务协议》',
+                            text: '《${S.current.serviceAgreement}》',
                             style: AppTextStyle.fs14m.copyWith(
                               color: AppColor.primaryBlue,
                             ),
@@ -76,9 +76,9 @@ class PrivacyDialog extends StatelessWidget {
                                 WebPage.go(url: AppConfig.urlUserService);
                               },
                           ),
-                          const TextSpan(text: '和'),
+                          TextSpan(text: S.current.and),
                           TextSpan(
-                            text: '《隐私政策》',
+                            text: S.current.privacyPolicy,
                             style: AppTextStyle.fs14m.copyWith(
                               color: AppColor.primaryBlue,
                             ),
@@ -87,8 +87,8 @@ class PrivacyDialog extends StatelessWidget {
                                 WebPage.go(url: AppConfig.urlPrivacyPolicy);
                               },
                           ),
-                          const TextSpan(
-                              text: '了解详细信息。\n    如同意，请点击下面按钮开始接受我们的服务。'),
+                          TextSpan(
+                              text: S.current.learnMore),
                         ]),
                   ),
                 ),
@@ -101,14 +101,14 @@ class PrivacyDialog extends StatelessWidget {
                       width: 120.rpx,
                       backgroundColor: AppColor.gray9,
                       child: Text(
-                          '暂不同意',
+                          S.current.disagreeTemporarily,
                           style: AppTextStyle.fs16m
                       ),
                     ),
                     CommonGradientButton(
                       height: 50.rpx,
                       width: 120.rpx,
-                      text: '同意并接受',
+                      text: S.current.agreeAndAccept,
                       onTap: () => Get.back(result: true),
                       textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
                     ),

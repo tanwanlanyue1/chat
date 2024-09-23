@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
 
@@ -101,21 +102,21 @@ extension on ChatFeatureAction {
   String get label {
     switch (this) {
       case ChatFeatureAction.picture:
-        return '图片';
+        return S.current.picture;
       case ChatFeatureAction.recordVideo:
-        return '拍摄';
+        return S.current.shoot;
       case ChatFeatureAction.location:
-        return '位置';
+        return S.current.position;
       case ChatFeatureAction.redPacket:
-        return '红包';
+        return S.current.redPacket;
       case ChatFeatureAction.voiceCall:
-        return '实时语音';
+        return S.current.realTimeVoice;
       case ChatFeatureAction.videoCall:
-        return '视频认证';
+        return S.current.videoAuthentication;
       case ChatFeatureAction.date:
-        return '发起约会';
+        return S.current.initiateAppointment;
       case ChatFeatureAction.transfer:
-        return '转账';
+        return S.current.transferAccounts;
     }
   }
 

@@ -6,6 +6,7 @@ import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/decimal_text_input_formatter.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -25,7 +26,7 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('转账'),
+          title: Text(S.current.transferAccounts),
         ),
         body: Column(
           children: [
@@ -66,7 +67,7 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '转账金额',
+                      S.current.transferAmount,
                       style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),
                     ),
                     buildAmountInput(),
@@ -79,7 +80,7 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
                 decimalDigits: SS.appConfig.decimalDigits,
                 maxValue: SS.appConfig.transferMaxAmount,
                 maxValueHint:
-                    '转账金额不能大于${SS.appConfig.transferMaxAmount.toCurrencyString()}',
+                    '${S.current.theTransferGreaterThan}${SS.appConfig.transferMaxAmount.toCurrencyString()}',
               ),
               onChanged: (value) {
                 controller.amountEditingController.text = value;

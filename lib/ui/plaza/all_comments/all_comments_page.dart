@@ -7,6 +7,7 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -123,7 +124,7 @@ class AllCommentsPage extends StatelessWidget {
                     height: 32.rpx,
                     alignment: Alignment.center,
                     margin: EdgeInsets.only(right: 16.rpx),
-                    child: Text(controller.isAttentionRx.value ? "已关注":"关注",style: AppTextStyle.fs14r.copyWith(
+                    child: Text(controller.isAttentionRx.value ? S.current.followed:S.current.attention,style: AppTextStyle.fs14r.copyWith(
                         color: controller.isAttentionRx.value ? AppColor.grayText : Colors.white),),
                   ),
                 ),
@@ -234,7 +235,7 @@ class AllCommentsPage extends StatelessWidget {
                   margin: EdgeInsets.only(right: 3.rpx),
                   child: AppImage.asset("assets/images/plaza/write.png",width: 20.rpx,height: 20.rpx,),
                 ),
-                Text("写下你的评论",style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+                Text(S.current.writeYourComments,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
               ],
             ),
           ),

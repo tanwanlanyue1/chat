@@ -37,7 +37,7 @@ class FirebaseUtil{
     final completer = Completer<String?>();
 
     //人机校验
-    if(AppConfig.recaptchaPhoneEnable){
+    if(SS.appConfig.configRx()?.googleVerification == true){
       final recaptchaToken = await ReCaptchaDialog.show();
       if(recaptchaToken == null){
         //用户取消校验

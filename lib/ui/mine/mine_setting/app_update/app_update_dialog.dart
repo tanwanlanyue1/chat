@@ -78,7 +78,7 @@ class AppUpdateDialog extends StatelessWidget {
         color: Colors.white,
       ),
       padding: FEdgeInsets(horizontal: 16.rpx, top: 36.rpx, bottom: 24.rpx),
-      child: Obx((){
+      child: Obx(() {
         final downloadInfo = updateManager.downloadUpdateInfoRx();
         final isDownloadFinish = updateManager.downloadProgressRx() == 1;
         final isSingleButton = !isCancelable || isDownloadFinish;
@@ -108,45 +108,49 @@ class AppUpdateDialog extends StatelessWidget {
               ),
             ),
             Spacing.h24,
-            if(downloadInfo == null) Row(
-              mainAxisAlignment: !isSingleButton
-                  ? MainAxisAlignment.spaceBetween
-                  : MainAxisAlignment.center,
-              children: [
-                if (!isSingleButton)
-                  Button(
-                    onPressed: dismiss,
+            if (downloadInfo == null)
+              Row(
+                mainAxisAlignment: !isSingleButton
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.center,
+                children: [
+                  if (!isSingleButton)
+                    Button(
+                      onPressed: dismiss,
+                      height: 50.rpx,
+                      width: 120.rpx,
+                      backgroundColor: AppColor.gray9,
+                      child: Text('暂时忽略', style: AppTextStyle.fs16m),
+                    ),
+                  CommonGradientButton(
                     height: 50.rpx,
-                    width: 120.rpx,
-                    backgroundColor: AppColor.gray9,
-                    child: Text('暂时忽略', style: AppTextStyle.fs16m),
-                  ),
-                CommonGradientButton(
-                  height: 50.rpx,
-                  width: isSingleButton ? 260.rpx : 120.rpx,
-                  text: isDownloadFinish ? '立即安装' : '马上升级',
-                  onTap: (){
-                    if (info.flag == 2 && info.link.trim().startsWith('http')) {
-                      //有通知栏显示进度，且不是强制更新时，才需要隐藏对话框
-                      if(isCancelable && NotificationPermissionUtil.instance.isGrantedRx()){
-                        dismiss();
+                    width: isSingleButton ? 260.rpx : 120.rpx,
+                    text: isDownloadFinish ? '立即安装' : '马上升级',
+                    onTap: () {
+                      if (info.flag == 2 &&
+                          info.link.trim().startsWith('http')) {
+                        //有通知栏显示进度，且不是强制更新时，才需要隐藏对话框
+                        if (isCancelable &&
+                            NotificationPermissionUtil.instance.isGrantedRx()) {
+                          dismiss();
+                        }
+                        updateManager.downloadAndInstall(info);
+                      } else {
+                        _jumpToAppMarket();
                       }
-                      updateManager.downloadAndInstall(info);
-                    } else {
-                      _jumpToAppMarket();
-                    }
-                  },
-                  textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
-                ),
-              ],
-            ),
-            if(downloadInfo != null) _buildDownloadProgress(),
+                    },
+                    textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
+                  ),
+                ],
+              ),
+            if (downloadInfo != null &&
+                NotificationPermissionUtil.instance.isGrantedRx.isFalse)
+              _buildDownloadProgress(),
           ],
         );
       }),
     );
   }
-
 
   Widget _buildDownloadProgress() {
     final buttonSize = Size(230.rpx, 36.rpx);
@@ -154,7 +158,7 @@ class AppUpdateDialog extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       borderRadius: BorderRadius.circular(buttonSize.height / 2),
       child: ObxValue<RxDouble>(
-            (progressRx) {
+        (progressRx) {
           final progress = progressRx();
           return Stack(
             alignment: Alignment.center,

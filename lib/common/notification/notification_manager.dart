@@ -2,12 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/notification/payload/app_update_payload.dart';
 import 'package:guanjia/common/notification/payload/chat_message_payload.dart';
 import 'package:guanjia/common/notification/payload/sys_notice_payload.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
+import 'package:guanjia/ui/mine/mine_message/mine_message_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/app_update/app_update_manager.dart';
 
 import '../utils/app_link.dart';
@@ -37,7 +41,7 @@ class NotificationManager {
 
   factory NotificationManager() => instance;
 
-  var _jumpWithAppLaunchPayload = '';
+  var _jumpWithAppLaunchOptions = '';
 
   Future<void> initialize() async {
     if (Platform.isAndroid) {
@@ -115,7 +119,7 @@ class NotificationManager {
         return;
       }
       //点击系统消息通知
-      if (_jumpSysNotice(json)) {
+      if (_jumpMyMessage(json)) {
         return;
       }
 
@@ -141,17 +145,19 @@ class NotificationManager {
     return false;
   }
 
-  ///跳转系统消息通知
-  bool _jumpSysNotice(Map<String, dynamic> json){
+  ///跳转我的消息通知
+  bool _jumpMyMessage(Map<String, dynamic> json){
     final payload = SysNoticePayload.fromJson(json);
     if (payload != null) {
-      final link = payload.link;
-      if (link == null) {
-        return true;
+      final tabIndex = payload.type == 1 ? 1:0;
+      final controller = Get.tryFind<MineMessagePageController>();
+      AppLogger.d('_jumpMyMessage: $controller,  tabIndex:$tabIndex');
+      if(controller != null){
+        controller.setSelectedTabIndex(tabIndex);
       }
-      if ([1, 2].contains(payload.jumpType)) {
-        AppLink.jump(link, args: payload.extraJson);
-      }
+      Get.toNamed(AppRoutes.mineMessage, arguments: {
+        'tabIndex': tabIndex,
+      });
       return true;
     }
     return false;
@@ -174,16 +180,18 @@ class NotificationManager {
     try {
       final options = await PluginUtil.getAppLaunchOptions();
       AppLogger.d('jumpWithAppLaunch details: ${jsonEncode(options)}');
-      final payloadStr = options.getString('payload');
-      if (_jumpWithAppLaunchPayload == payloadStr) {
+      final opts = jsonEncode(options);
+      if (_jumpWithAppLaunchOptions == opts) {
         return;
       }
-      _jumpWithAppLaunchPayload = payloadStr;
+      _jumpWithAppLaunchOptions = opts;
+
+      final payloadStr = options.getString('payload');
       final json = jsonDecode(payloadStr);
       if (json == null) {
         return;
       }
-      _jumpSysNotice(json);
+      _jumpMyMessage(json);
     } catch (ex) {
       AppLogger.w('jumpWithAppLaunch ex=$ex');
     }

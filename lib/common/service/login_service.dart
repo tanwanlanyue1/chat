@@ -167,7 +167,7 @@ class LoginService extends GetxService {
 
     //人机校验
     String? recaptchaToken;
-    if(AppConfig.recaptchaRegisterEnable){
+    if(SS.appConfig.configRx()?.googleVerification == true){
       recaptchaToken = await ReCaptchaDialog.show();
       if(recaptchaToken == null){
         //用户取消校验
@@ -374,7 +374,7 @@ class LoginService extends GetxService {
     String? recaptchaToken;
 
     //人机校验
-    if(AppConfig.recaptchaEmailEnable){
+    if(SS.appConfig.configRx()?.googleVerification == true){
       recaptchaToken = await ReCaptchaDialog.show();
       if(recaptchaToken == null){
         //用户取消校验

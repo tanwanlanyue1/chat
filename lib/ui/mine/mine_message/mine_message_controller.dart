@@ -1,13 +1,10 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
-import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_link.dart';
-import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import '../../../common/network/network.dart';
 import 'mine_message_state.dart';
 
@@ -55,16 +52,6 @@ class MineMessageController extends GetxController with GetSingleTickerProviderS
     final msg = item.systemMessage;
     if([1,2].contains(msg?.jumpType)){
       AppLink.jump(msg?.link ?? '',args: msg?.extraJson);
-    }
-  }
-
-  /// 获取用户未读消息数量
-  /// type	消息类型:0系统消息，1赞，2收藏，3评论，4回复评论，5新增关注
-  void getMessagesCounts() async {
-    final response = await UserApi.getMessagesCounts();
-    if (response.isSuccess) {
-      List message = response.data ?? [];
-      update();
     }
   }
 

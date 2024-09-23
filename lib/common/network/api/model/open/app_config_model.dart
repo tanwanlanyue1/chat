@@ -70,6 +70,9 @@ class AppConfigModel {
   ///金额小数位精度 TODO 预留字段，服务端还没有
   int? decimalDigits;
 
+  ///是否启用人机校验
+  bool? googleVerification;
+
   ///速配倒计时
   int? matchingCountDown;
 
@@ -164,6 +167,7 @@ class AppConfigModel {
     redPacketDescLimit = json['redPacketDescLimit'];
     transferMaxAmount = json['transferMaxAmount'];
     decimalDigits = json['decimalDigits'];
+    googleVerification = json['googleVerification'];
     systemMessage = json['systemMessage'];
     lookMessage = json['lookMessage'];
   }

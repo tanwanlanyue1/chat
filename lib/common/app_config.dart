@@ -45,12 +45,6 @@ class AppConfig{
 
   //后台管理 https://www.google.com/recaptcha/admin/site/708806082?hl=zh-cn
   static const recaptchaApiKey = '6LfChT8qAAAAACW9sgMYpQNJLF9Mx-jL8iRofe-N';
-  ///邮箱验证是否启用人机校验
-  static const recaptchaEmailEnable = true;
-  ///手机验证是否启用人机校验
-  static const recaptchaPhoneEnable = true;
-  ///注册是否启用人机校验
-  static const recaptchaRegisterEnable = true;
 
   ///ICP备案号
   static String icp = S.current.guangdongICP;

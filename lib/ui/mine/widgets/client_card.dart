@@ -120,11 +120,11 @@ extension on UserType {
   String get label{
     switch(this){
       case UserType.user:
-        return '个人';
+        return S.current.personage;
       case UserType.beauty:
-        return '佳丽';
+        return S.current.beautifulUser;
       case UserType.agent:
-        return '经纪人';
+        return S.current.brokerUser;
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -63,7 +64,7 @@ class OrderCreateDialog extends StatelessWidget {
               padding: FEdgeInsets(horizontal: 16.rpx, top: 36.rpx, vertical: 24.rpx),
               child: CommonGradientButton(
                 height: 50.rpx,
-                text: "发起约会",
+                text: S.current.initiateAppointment,
                 onTap: () => Get.back(result: true),
               ),
             )
@@ -93,7 +94,7 @@ class OrderCreateDialog extends StatelessWidget {
   Widget buildDesc() {
     return ChatUserBuilder(userId: userId.toString(), builder: (info){
       return Text(
-        '确定和 ${info?.baseInfo.userName} 发起约会？\n点击确定后系统将向其发送约会邀约。',
+        S.current.sureToInitiateDateWith(info?.baseInfo.userName ?? ''),
         textAlign: TextAlign.center,
         style: AppTextStyle.fs14b.copyWith(
           color: AppColor.blackBlue,

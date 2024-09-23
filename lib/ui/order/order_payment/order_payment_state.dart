@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 class OrderPaymentState {
 
@@ -14,23 +15,22 @@ class OrderPaymentState {
   final list = [
     OrderPaymentListItem(
       icon: "icon",
-      title: "管佳小金库支付",
-      detail: "享会员价，立减6元",
+      title: S.current.smallTreasuryPayment,
     ),
     OrderPaymentListItem(
       icon: "icon",
-      title: "USDT支付",
-      detail: "推荐管佳用户使用",
+      title: S.current.USDTPayment,
+      detail: S.current.recommendUserUse,
     ),
     OrderPaymentListItem(
       icon: "icon",
-      title: "ETH支付",
-      detail: "推荐管佳用户使用",
+      title: S.current.ETHPayment,
+      detail: S.current.recommendUserUse,
     ),
     OrderPaymentListItem(
       icon: "icon",
-      title: "银联支付",
-      detail: "推荐银行卡用户使用",
+      title: S.current.unionPay,
+      detail: S.current.recommendUnionUse,
     ),
   ];
 }

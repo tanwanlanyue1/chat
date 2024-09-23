@@ -56,7 +56,7 @@ class MineFeedbackPage extends StatelessWidget {
                 child: Button(
                   onPressed: controller.submit,
                   borderRadius: BorderRadius.circular(8.rpx),
-                  child: const Text('提交'),
+                  child: Text(S.current.submit),
                 ),
               ),
             ],
@@ -246,7 +246,7 @@ class MineFeedbackPage extends StatelessWidget {
           ),
           Expanded(
             child: InputWidget(
-              hintText: '请先输入手机/邮箱',
+              hintText: S.current.pleaseEmailPhone,
               fillColor: AppColor.white8,
               inputController: controller.contactController,
               textStyle: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),

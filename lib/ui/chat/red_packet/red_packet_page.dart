@@ -7,6 +7,7 @@ import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/decimal_text_input_formatter.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
@@ -21,7 +22,7 @@ class RedPacketPage extends GetView<RedPacketController> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('发红包'),
+        title: Text(S.current.giveRedEnvelopes),
       ),
       body: Stack(
         children: [
@@ -52,7 +53,7 @@ class RedPacketPage extends GetView<RedPacketController> {
           buildAmountText(),
           CommonGradientButton(
             height: 50.rpx,
-            text: '塞钱进红包',
+            text: S.current.stuffMoneyIntoRedEnvelopes,
             onTap: controller.sendRedPacket,
           ),
         ],
@@ -73,7 +74,7 @@ class RedPacketPage extends GetView<RedPacketController> {
       inputFormatters: [
         DecimalTextInputFormatter(
           maxValue: SS.appConfig.redPacketMaxAmount,
-          maxValueHint: '最大金额不能超过${SS.appConfig.redPacketMaxAmount.toCurrencyString()}',
+          maxValueHint: '${S.current.theMaximumAmountCannotExceed}${SS.appConfig.redPacketMaxAmount.toCurrencyString()}',
           decimalDigits: SS.appConfig.decimalDigits,
         ),
       ],
@@ -91,7 +92,7 @@ class RedPacketPage extends GetView<RedPacketController> {
           children: [
             Padding(
               padding: FEdgeInsets(left: 16.rpx),
-              child: Text('金额'),
+              child: Text(S.current.amount),
             ),
           ],
         ),
@@ -130,7 +131,7 @@ class RedPacketPage extends GetView<RedPacketController> {
             borderRadius: BorderRadius.circular(8.rpx),
           ),
           hintStyle: AppTextStyle.fs14m.copyWith(color: AppColor.black999),
-          hintText: '${controller.defaultDesc}（红包文字可输入）',
+          hintText: '${controller.defaultDesc}（${S.current.redEnvelopeTextEntered}）',
           prefixIcon: SizedBox(width: 16.rpx),
           prefixIconConstraints: BoxConstraints(minHeight: 54.rpx),
           constraints: BoxConstraints(minHeight: 54.rpx),

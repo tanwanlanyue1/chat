@@ -5,6 +5,7 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/api/model/user/contract_model.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 import 'contract_detail_state.dart';
@@ -49,7 +50,7 @@ class ContractDetailController extends GetxController with GetAutoDisposeMixin {
   void terminateContract() async {
     var contract = state.contractRx() ?? await fetchData();
     if(contract == null){
-      Loading.showToast('解除失败');
+      Loading.showToast(S.current.dischargeFailure);
       return;
     }
 
@@ -70,16 +71,16 @@ class ContractDetailController extends GetxController with GetAutoDisposeMixin {
     if(response.isSuccess){
       switch(type){
         case 1:
-          Loading.showToast('签约成功');
+          Loading.showToast(S.current.successfulSigning);
           break;
         case 2:
           //nothing
           break;
         case 3:
-          Loading.showToast('解除成功');
+          Loading.showToast(S.current.dischargeSuccess);
           break;
         case 4:
-          Loading.showToast('已发送解约申请');
+          Loading.showToast(S.current.cancellationSent);
           break;
       }
       EventBus().emit(kEventContractUpdate);

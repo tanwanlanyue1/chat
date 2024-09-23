@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
-import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'mine_message_controller.dart';
 import 'mine_message_view.dart';
 
 ///我的-消息
@@ -58,14 +55,14 @@ class _MineMessagePageState extends State<MineMessagePage>
               if(widget.tabIndex == 0){
                 count = 0;
               }
-              return Tab(text: count > 0 ? '系统公告($count)':'系统公告', height: 40.rpx);
+              return Tab(text: count > 0 ? '${S.current.systemAnnouncement}($count)':S.current.systemAnnouncement, height: 40.rpx);
             }),
             Obx((){
               var count = SS.inAppMessage.latestSysNoticeRx()?.userCount ?? 0;
               if(widget.tabIndex == 1){
                 count = 0;
               }
-              return Tab(text: count > 0 ? '系统消息($count)':'系统消息', height: 40.rpx);
+              return Tab(text: count > 0 ? '${S.current.systemMessages}($count)':S.current.systemMessages, height: 40.rpx);
             }),
           ],
         ),

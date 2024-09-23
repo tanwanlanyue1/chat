@@ -117,7 +117,7 @@ class _MinePageState extends State<MinePage>
       final isVip = SS.login.isVip;
       var position = userInfo?.position ?? '';
       if (position.isEmpty) {
-        position = '地区·未知';
+        position = S.current.regionUnknown;
       }
 
       return Padding(

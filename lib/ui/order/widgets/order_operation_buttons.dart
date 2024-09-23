@@ -4,6 +4,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
 import 'package:guanjia/ui/order/order_list/order_list_controller.dart';
@@ -36,7 +37,7 @@ class OrderOperationButtons extends StatelessWidget {
           SizedBox(width: 24.rpx),
           _buildRight(
             onTap: () => controller.onTapOrderAcceptOrReject(true, item.id),
-            text: "立即接单",
+            text: S.current.immediateOrder,
           ),
         ]);
         break;
@@ -46,7 +47,7 @@ class OrderOperationButtons extends StatelessWidget {
           SizedBox(width: 24.rpx),
           _buildRight(
             onTap: () => controller.onTapOrderAssign(item.id),
-            text: "指派接单",
+            text: S.current.assignmentOfOrder,
           ),
         ]);
         break;
@@ -56,7 +57,7 @@ class OrderOperationButtons extends StatelessWidget {
           SizedBox(width: 24.rpx),
           _buildRight(
             onTap: () => controller.toOrderPayment(item.itemModel),
-            text: "立即缴纳",
+            text: S.current.depositNow,
           ),
         ]);
         break;
@@ -66,14 +67,14 @@ class OrderOperationButtons extends StatelessWidget {
           SizedBox(width: 24.rpx),
           _buildRight(
             onTap: () => controller.onTapOrderFinish(item.id),
-            text: "我已到位",
+            text: S.current.imInPlace,
           ),
         ]);
         break;
       case OrderOperationType.finish:
         children.add(_buildRight(
           onTap: () => controller.onTapOrderFinish(item.id),
-          text: "确认完成",
+          text: S.current.confirmCompletion,
         ));
         break;
       case OrderOperationType.cancel:
@@ -87,7 +88,7 @@ class OrderOperationButtons extends StatelessWidget {
       case OrderOperationType.evaluation:
         children.add(_buildRight(
           onTap: () => controller.toOrderEvaluation(item.id),
-          text: "立即评价",
+          text: S.current.immediateEvaluation,
         ));
         break;
       case OrderOperationType.none:
@@ -119,7 +120,7 @@ class OrderOperationButtons extends StatelessWidget {
         ),
         alignment: Alignment.center,
         child: Text(
-          text ?? "取消订单",
+          text ?? S.current.cancellationOrder,
           style: AppTextStyle.st.size(12.rpx).textColor(AppColor.black6),
         ),
       ),
@@ -155,7 +156,7 @@ class OrderOperationButtons extends StatelessWidget {
               length: 20.rpx,
             ),
             Text(
-              "联系佳丽",
+              S.current.contactToBeauty,
               style: AppTextStyle.st.medium
                   .size(12.rpx)
                   .textColor(AppColor.textPurple),

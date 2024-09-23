@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
@@ -35,8 +36,8 @@ class NotificationPermissionUtil with WidgetsBindingObserver {
     final state = await Permission.notification.request();
     if(!state.isGranted){
       final isOk = await ConfirmDialog.show(
-        message: const Text('请开启通知权限，以便接收最新消息'),
-        okButtonText: const Text('开启权限'),
+        message: Text(S.current.pleaseEnableNotification),
+        okButtonText: Text(S.current.openPermission),
       );
       if(isOk){
         PermissionsUtils.openAppSetting();

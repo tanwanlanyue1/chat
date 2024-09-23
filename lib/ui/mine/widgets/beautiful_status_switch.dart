@@ -3,6 +3,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///佳丽状态切换按钮
@@ -58,11 +59,11 @@ extension UserStatusX on UserStatus {
   String get label {
     switch (this) {
       case UserStatus.offline:
-        return '当前不接约';
+        return S.current.noCurrentAppointment;
       case UserStatus.online:
-        return '接约中···';
+        return S.current.acceptTheAppointment;
       case UserStatus.inProgress:
-        return '约会中';
+        return S.current.duringDating;
     }
   }
 

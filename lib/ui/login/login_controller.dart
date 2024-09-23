@@ -34,11 +34,11 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
   }
 
   void onTapToProtocol() {
-    WebPage.go(url: AppConfig.urlUserService, title: '用户服务协议');
+    WebPage.go(url: AppConfig.urlUserService, title: S.current.userServiceAgreement);
   }
 
   void onTapToPrivacy() {
-    WebPage.go(url: AppConfig.urlPrivacyPolicy, title: '隐私政策');
+    WebPage.go(url: AppConfig.urlPrivacyPolicy, title: S.current.privacyPolicyTitle);
   }
 
   void changeSelectPrivacy() {

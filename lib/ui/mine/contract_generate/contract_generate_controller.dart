@@ -3,6 +3,7 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/api/model/user/contract_model.dart';
 import 'package:guanjia/common/network/httpclient/api_response.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 import 'contract_generate_state.dart';
@@ -43,11 +44,11 @@ class ContractGenerateController extends GetxController {
     final beauty = state.selectedBeautyRx();
     final template = state.templateRx();
     if (beauty == null) {
-      Loading.showToast('请先选着要推送的好友');
+      Loading.showToast(S.current.pleaseSelectFriends);
       return;
     }
     if(template == null){
-      Loading.showToast('契约模板为空');
+      Loading.showToast(S.current.contractTemplateEmpty);
       return;
     }
 
@@ -63,7 +64,7 @@ class ContractGenerateController extends GetxController {
     );
     Loading.dismiss();
     if (response.isSuccess) {
-      Loading.showToast('推送成功');
+      Loading.showToast(S.current.pushSuccess);
     }else{
       response.showErrorMessage();
     }
@@ -72,7 +73,7 @@ class ContractGenerateController extends GetxController {
   void onTapEditContract() async {
     final template = state.templateRx();
     if(template == null){
-      Loading.showToast('契约模板为空');
+      Loading.showToast(S.current.contractTemplateEmpty);
       return;
     }
     final newTemplate = await ContractEditDialog.show(template);

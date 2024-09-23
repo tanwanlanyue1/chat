@@ -54,7 +54,7 @@ class OrderAssignAgentDialog extends GetView<OrderAssignAgentController> {
             Padding(
               padding: FEdgeInsets(horizontal: 16.rpx),
               child: Text(
-                "指派订单",
+                S.current.assignmentOrder,
                 textAlign: TextAlign.center,
                 style: AppTextStyle.fs18b.copyWith(color: AppColor.black3),
               ),
@@ -174,7 +174,7 @@ class OrderAssignAgentDialog extends GetView<OrderAssignAgentController> {
                 ),
                 alignment: Alignment.center,
                 child: Text(
-                  controller.selectIndex.value == index ? "派单给Ta" : "选择",
+                  controller.selectIndex.value == index ? S.current.sendOrdersToTa : S.current.choose,
                   style: AppTextStyle.st.medium.size(12.rpx).textColor(
                       controller.selectIndex.value == index
                           ? Colors.white

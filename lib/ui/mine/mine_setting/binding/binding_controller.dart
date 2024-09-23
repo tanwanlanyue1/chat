@@ -28,7 +28,7 @@ class BindingController extends GetxController {
   Future<bool> fetchEmailVerificationCode() async {
     final email = phoneNumberInputController.text.trim();
     if(!GetUtils.isEmail(email)){
-      Loading.showToast('邮箱格式错误');
+      Loading.showToast(S.current.mailboxFormatError);
       return false;
     }
 
@@ -45,7 +45,7 @@ class BindingController extends GetxController {
   Future<bool> fetchSmsVerificationCode() async {
     final phone = phoneNumberInputController.text.trim();
     if(phone.isEmpty){
-      Loading.showToast('请输入手机号码');
+      Loading.showToast(S.current.pleaseEnterPhone);
       return false;
     }
 
@@ -66,7 +66,7 @@ class BindingController extends GetxController {
       idToken = await FirebaseUtil().verifySmsCode(state.verificationId, verificationCode);
       if(idToken == null){
         Loading.dismiss();
-        Loading.showToast('验证码错误，请重新输入');
+        Loading.showToast(S.current.verificationCodeError);
         return;
       }
     }

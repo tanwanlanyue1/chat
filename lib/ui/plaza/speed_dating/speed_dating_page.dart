@@ -186,9 +186,9 @@ class SpeedDatingPage extends StatelessWidget {
     final freeSecond = SS.appConfig.configRx()?.chatFreeSecond ?? 0;
     if (freeSecond > 0) {
       if (freeSecond % 60 == 0) {
-        text = '前${freeSecond ~/ 60}分钟免费';
+        text = S.current.beforeMinutesFree(freeSecond ~/ 60);
       } else {
-        text = '前$freeSecond秒钟免费';
+        text = S.current.beforeSecondFree(freeSecond);
       }
     }
     if (text.isEmpty) {
@@ -221,14 +221,14 @@ class SpeedDatingPage extends StatelessWidget {
     return Obx(() {
       final config = SS.appConfig.configRx();
       final price = isVideo ? config?.videoChatPrice : config?.voiceChatPrice;
-      var text = isVideo ? '视频聊天' : '语音聊天';
+      var text = isVideo ? S.current.videoChat : S.current.voiceChat;
       if (price != null && price > 0) {
-        text += '${price.toCurrencyString()}/分钟';
+        text += '${price.toCurrencyString()}/${S.current.minutes}';
       }
 
       final minBalance = config?.chatMinBalance ?? 0;
       if (minBalance > 0) {
-        text += '  金库余额>${minBalance.toCurrencyString()}';
+        text += '  ${S.current.treasuryToBalance}>${minBalance.toCurrencyString()}';
       }
 
       return Text(text,

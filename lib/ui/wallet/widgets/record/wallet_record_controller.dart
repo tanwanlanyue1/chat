@@ -8,6 +8,7 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 class WalletRecordController extends GetxController {
@@ -16,7 +17,7 @@ class WalletRecordController extends GetxController {
       DefaultPagingController<PurseLogList>();
 
   final logType = RxInt(-1);
-  final logTypeName = "全部".obs;
+  final logTypeName = S.current.all.obs;
 
   @override
   void onInit() {
@@ -31,7 +32,7 @@ class WalletRecordController extends GetxController {
   }
 
   void onTapStyle() {
-    final types = [LogTypeIcon(logType: -1, icon: "", name: "全部")];
+    final types = [LogTypeIcon(logType: -1, icon: "", name: S.current.all)];
     types.addAll(SS.appConfig.configRx.value?.logTypeIcon ?? []);
 
     Get.bottomSheet(
@@ -54,7 +55,7 @@ class WalletRecordController extends GetxController {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "快捷筛选",
+                  S.current.quickFilter,
                   style: AppTextStyle.st.bold
                       .size(16.rpx)
                       .textColor(AppColor.blackBlue),

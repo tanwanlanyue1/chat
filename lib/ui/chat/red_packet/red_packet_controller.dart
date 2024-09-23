@@ -5,6 +5,7 @@ import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/network/api/im_api.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/payment_password_keyboard.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -28,19 +29,19 @@ class RedPacketController extends GetxController {
     SS.appConfig.fetchData();
   }
 
-  String get defaultDesc => '最懂你的管佳';
+  String get defaultDesc => S.current.theKnowsYou;
 
   Future<void> sendRedPacket() async {
     var amountText = state.amountRx();
     final amount = double.tryParse(amountText);
     if (amount == null || amount <= 0) {
-      Loading.showToast('红包金额不能低于0');
+      Loading.showToast(S.current.theRedPacketThan0);
       return;
     }
 
     final maxAmount = SS.appConfig.redPacketMaxAmount;
     if (amount > maxAmount) {
-      Loading.showToast('红包金额不能大于${maxAmount.toCurrencyString()}');
+      Loading.showToast('${S.current.theAmountGreaterThan}${maxAmount.toCurrencyString()}');
       return;
     }
 

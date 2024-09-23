@@ -37,11 +37,11 @@ class ContractDetailPage extends GetView<ContractDetailController> {
           switch (status) {
             case null:
             case ContractStatus.reject:
-              dateLabel = '创建时间：';
+              dateLabel = S.current.creationTime;
               date = contract.createTime.dateTime.formatYMD2;
             break;
             case ContractStatus.signing:
-              dateLabel = '签约时间：';
+              dateLabel = S.current.timeContract;
               date = DateTime.now().formatYMD2;
               break;
             case ContractStatus.signed:

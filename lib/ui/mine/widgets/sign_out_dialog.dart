@@ -38,7 +38,7 @@ class SignOutDialog extends StatelessWidget {
                   children: [
                     buildAvatar(),
                     Text(
-                      '确定要退出登录吗？',
+                      S.current.areYouSure,
                       style: AppTextStyle.fs18b.copyWith(
                         color: AppColor.blackBlue,
                       ),
@@ -46,7 +46,7 @@ class SignOutDialog extends StatelessWidget {
                     Padding(
                       padding: FEdgeInsets(top: 12.rpx, bottom: 24.rpx),
                       child: Text(
-                        '退出登录后，我们任会继续保留您的账户数据，以便您再次登录查看。',
+                       S.current.afterLoggingOut,
                         style: AppTextStyle.fs12b.copyWith(
                           color: AppColor.blackText,
                           height: 1.5,
@@ -59,7 +59,7 @@ class SignOutDialog extends StatelessWidget {
                         CommonGradientButton(
                           height: 50.rpx,
                           width: 120.rpx,
-                          text: '取消',
+                          text: S.current.cancel,
                           onTap: Get.back,
                           textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
                         ),
@@ -69,7 +69,7 @@ class SignOutDialog extends StatelessWidget {
                           width: 120.rpx,
                           backgroundColor: AppColor.gray9,
                           child: Text(
-                            '确定退出',
+                            S.current.sureLogOut,
                             style: AppTextStyle.fs16m
                           ),
                         ),

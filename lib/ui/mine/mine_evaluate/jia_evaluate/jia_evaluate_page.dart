@@ -75,8 +75,8 @@ class JiaEvaluatePage extends StatelessWidget {
                                   bottomLeft: Radius.circular(8.rpx),
                                 )
                               ),
-                              child: const NoItemsFoundIndicator(
-                                title: '暂无数据',
+                              child: NoItemsFoundIndicator(
+                                title: S.current.noData,
                               ),
                             );
                           },

@@ -4,6 +4,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -59,7 +60,7 @@ class OrderAcceptDialog extends StatelessWidget {
             Padding(
               padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
               child: Text(
-                "注：为保障权益，约会双方均需缴纳保证金，保证金在订单结束后将会原路退回。",
+                S.current.inOrderToProtect,
                 style: AppTextStyle.fs12m.copyWith(
                   color: AppColor.grayText,
                   height: 1.5,
@@ -79,14 +80,14 @@ class OrderAcceptDialog extends StatelessWidget {
                     width: 120.rpx,
                     height: 50.rpx,
                     child: Text(
-                      '拒绝',
+                      S.current.refuse,
                       style: AppTextStyle.fs16m,
                     ),
                   ),
                   CommonGradientButton(
                     width: 120.rpx,
                     height: 50.rpx,
-                    text: "接单约会",
+                    text: S.current.acceptanceAppointment,
                     onTap: () {
                       Get.back(result: true);
                     },
@@ -120,7 +121,7 @@ class OrderAcceptDialog extends StatelessWidget {
   Widget buildDesc() {
     return ChatUserBuilder(userId: userId.toString(), builder: (info){
       return Text(
-        '同意和 ${info?.baseInfo.userName} 约会？',
+        '${S.current.agreedSum} ${info?.baseInfo.userName} ${S.current.appointment}？',
         textAlign: TextAlign.center,
         style: AppTextStyle.fs14b.copyWith(
           color: AppColor.blackBlue,

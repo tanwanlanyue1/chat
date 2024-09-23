@@ -243,7 +243,7 @@ class _ContractEditDialogState extends State<ContractEditDialog> {
             borderRadius: BorderRadius.circular(4.rpx),
             borderSide: BorderSide.none,
           ),
-          hintText: '输入数字0-100%',
+          hintText: S.current.enterNumber,
           hintStyle: const TextStyle(color: AppColor.gray9),
           prefixIcon: const SizedBox(width: 0),
           prefixIconConstraints: BoxConstraints(minHeight: 40.rpx),
@@ -293,7 +293,7 @@ class _ContractEditDialogState extends State<ContractEditDialog> {
         brokerageService > 100 ||
         brokerageChatting < 0 ||
         brokerageChatting > 100) {
-      Loading.showToast('比例不能是负值或大于100%');
+      Loading.showToast(S.current.ratioCannotNegative);
       return;
     }
     Get.back(

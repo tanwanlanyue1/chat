@@ -7,6 +7,7 @@ import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -104,10 +105,10 @@ class RedPacketTipsView extends StatelessWidget {
     var text = '';
     switch(status){
       case 2:
-        text = message.isMine ? '您已主动撤回红包' : 'Ta已撤回红包';
+        text = message.isMine ? S.current.youWithdrawnRedPacket : S.current.TaWithdrawnRedPacket;
         break;
       case 3:
-        text = '红包已过期';
+        text = S.current.redPacketExpired;
         break;
     }
     if(text.isEmpty){
@@ -172,7 +173,7 @@ class RedPacketTipsView extends StatelessWidget {
                     style: AppTextStyle.fs14m.copyWith(
                       color: AppColor.black3,
                     ),
-                    text: '您向Ta发了个红包，金额 ',
+                    text: S.current.youSentRedEnvelope,
                     children: [
                       TextSpan(
                         text:
@@ -192,7 +193,7 @@ class RedPacketTipsView extends StatelessWidget {
           child: Padding(
             padding: FEdgeInsets(horizontal: 12.rpx, vertical: 4.rpx),
             child: Text(
-              '撤回',
+              S.current.withdraw,
               style: AppTextStyle.fs14m.copyWith(
                 color: AppColor.primaryBlue,
                 decoration: TextDecoration.underline,
@@ -240,7 +241,7 @@ class RedPacketDetailsView extends StatelessWidget {
 
   Widget buildTitle(MessageRedPacketContent content) {
     String title =
-        (SS.login.userId == content.fromUid ? '您向Ta发了红包' : '您领取了Ta的红包');
+        (SS.login.userId == content.fromUid ? S.current.youSentTaRedEnvelope : S.current.youGetTaRedEnvelope);
     return Padding(
       padding: FEdgeInsets(top: 6.rpx),
       child: Row(
@@ -292,17 +293,17 @@ class RedPacketDetailsView extends StatelessWidget {
 
     List<Widget> children = [
       buildItem(
-        label: '发送时间',
+        label: S.current.sentTime,
         value:
             DateTime.fromMillisecondsSinceEpoch(message.info.timestamp).format2,
       ),
       if (receiveTime != null)
         buildItem(
-          label: '领取时间',
+          label: S.current.getTime,
           value: receiveTime.format2,
         ),
       buildItem(
-          label: message.isMine ? '红包实付金额' : '实收金额',
+          label: message.isMine ? S.current.amountRedEnvelopes : S.current.fundsReceive,
           value: content.amount.toCurrencyString(),
           isHighlight: true),
     ];
@@ -337,13 +338,13 @@ class RedPacketBubbleView extends StatelessWidget {
     var statusText = '';
     switch (status) {
       case 1:
-        statusText = content?.fromUid == SS.login.userId ? '已被领取' : '已领取';
+        statusText = content?.fromUid == SS.login.userId ? S.current.haveBeenReceived : S.current.alreadyReceived;
         break;
       case 2:
-        statusText = '已撤回';
+        statusText = S.current.withdrawn;
         break;
       case 3:
-        statusText = '已过期';
+        statusText = S.current.haveExpired;
         break;
     }
 
@@ -389,7 +390,7 @@ class RedPacketBubbleView extends StatelessWidget {
               Padding(
                 padding: FEdgeInsets(top: 8.rpx),
                 child: Text(
-                  '红包金额：${content?.amount.toCurrencyString()}  $statusText',
+                  '${S.current.amountOfRedEnvelope}${content?.amount.toCurrencyString()}  $statusText',
                   style: AppTextStyle.fs12m.copyWith(color: Colors.white),
                 ),
               )

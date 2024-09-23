@@ -25,6 +25,7 @@ import 'package:guanjia/common/utils/file_logger.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
 import 'package:guanjia/common/utils/plugin_util.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/global.dart';
 import 'package:guanjia/ui/chat/custom/message_call_reject_content.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
@@ -90,7 +91,7 @@ class ChatManager
         supportOfflineMessage: true,
         androidNotificationConfig: ZegoZIMKitAndroidNotificationConfig(
           channelID: AppConfig.zegoChatResourceId,
-          channelName: '新消息通知',
+          channelName: S.current.newMessageNotification,
           icon: 'logo',
         ),
       ),

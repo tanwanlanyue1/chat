@@ -6,6 +6,7 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/im_api.dart';
 import 'package:guanjia/common/network/api/user_api.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/mine/inapp_message/inapp_message_type.dart';
 import 'package:guanjia/widgets/loading.dart';
@@ -66,7 +67,7 @@ class SpeedDatingController extends GetxController
 
         final countDown = SS.appConfig.configRx.value?.matchingCountDown ?? 90;
         _endTimer = Timer(Duration(seconds: countDown), () {
-          Loading.showToast("等待超时，请稍后重试");
+          Loading.showToast(S.current.waitTimeoutTryAgain);
           state.isAnimation.value = false;
         });
       } else {

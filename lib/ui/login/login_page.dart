@@ -91,7 +91,7 @@ class LoginPage extends StatelessWidget {
                       SizedBox(height: 50.rpx),
                       LoginTextField(
                         controller: controller.accountController,
-                        labelText: '用户名',
+                        labelText: S.current.userName,
                       ),
                       SizedBox(height: 16.rpx),
                       LoginTextField(

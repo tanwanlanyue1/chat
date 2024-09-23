@@ -99,7 +99,7 @@ class WalletPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "总共余额",
+                      S.current.totalBalance,
                       style: AppTextStyle.st
                           .size(12.rpx)
                           .textColor(AppColor.black9)
@@ -117,7 +117,7 @@ class WalletPage extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  "管佳钱包",
+                  S.current.guanJiaWallet,
                   style: AppTextStyle.st.bold
                       .size(16.rpx)
                       .textColor(AppColor.primary)
@@ -148,7 +148,7 @@ class WalletPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "历史提现",
+                              S.current.historicalWithdrawal,
                               style: AppTextStyle.st.medium
                                   .size(12.rpx)
                                   .textColor(AppColor.black9)
@@ -178,7 +178,7 @@ class WalletPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "本月可提现",
+                              S.current.monthWithdrawal,
                               style: AppTextStyle.st.medium
                                   .size(12.rpx)
                                   .textColor(AppColor.black9)
@@ -252,25 +252,25 @@ class WalletPage extends StatelessWidget {
 
     switch (type) {
       case WalletOperationType.topUp:
-        title = '充值';
+        title = S.current.topUp;
         image = isSelected
             ? "assets/images/wallet/top_up_select.png"
             : "assets/images/wallet/top_up_normal.png";
         break;
       case WalletOperationType.transfer:
-        title = '转账';
+        title = S.current.transferAccounts;
         image = isSelected
             ? "assets/images/wallet/transfer_select.png"
             : "assets/images/wallet/transfer_normal.png";
         break;
       case WalletOperationType.withdrawal:
-        title = '提现';
+        title = S.current.withdrawal;
         image = isSelected
             ? "assets/images/wallet/withdrawal_select.png"
             : "assets/images/wallet/withdrawal_normal.png";
         break;
       case WalletOperationType.record:
-        title = '记录';
+        title = S.current.record;
         image = isSelected
             ? "assets/images/wallet/record_select.png"
             : "assets/images/wallet/record_normal.png";

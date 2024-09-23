@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/notification/notification_manager.dart';
 import 'package:guanjia/common/notification/payload/app_update_payload.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:guanjia/common/network/api/api.dart';
@@ -40,7 +41,7 @@ class AppUpdateManager {
     if (userAction) {
       Loading.dismiss();
       if (info == null) {
-        Loading.showToast('当前为最新版本');
+        Loading.showToast(S.current.theVersionLatest);
       }
     }
     if (info == null) return;
@@ -75,8 +76,8 @@ class AppUpdateManager {
     );
     await FlutterLocalNotificationsPlugin().show(
       notificationId,
-      isFinish ? '下载完成，点击开始安装' : '正在下载',
-      '版本更新',
+      isFinish ? S.current.clickStartInstallation : S.current.downloading,
+      S.current.versionUpdating,
       notificationDetails,
       payload: AppUpdatePayload(
         progress: progress,
@@ -111,7 +112,7 @@ class AppUpdateManager {
   ///下载并安装
   void downloadAndInstall(AppUpdateVersionModel info) async {
     if(downloadUpdateInfoRx() != null){
-      Loading.showToast('正在下载');
+      Loading.showToast(S.current.downloading);
       return;
     }
 
@@ -126,7 +127,7 @@ class AppUpdateManager {
       return;
     }
     //下载
-    Loading.showToast('开始下载');
+    Loading.showToast(S.current.startDownloading);
     downloadUpdateInfoRx(info);
     Dio().download(info.link, tempPath,
         onReceiveProgress: (int count, int total) {
@@ -148,11 +149,11 @@ class AppUpdateManager {
       );
     }).then((value) {
       if (value.statusCode != 200) {
-        Loading.showToast("下载失败，请重试");
+        Loading.showToast(S.current.downloadFailed);
         _cleanup(targetPath);
       }
     }).catchError((ex) {
-      Loading.showToast("下载失败，请重试");
+      Loading.showToast(S.current.downloadFailed);
       _cleanup(targetPath);
     });
   }

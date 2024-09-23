@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';
@@ -35,8 +37,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
           backgroundColor: Colors.white,
           appBar: AppBar(
             title: Text(
-              // isSuccess ? S.current.payment_success : S.current.payment_fail,
-              isSuccess ? "支付成功" : "支付失败",
+              isSuccess ? S.current.paymentSuccess : S.current.paymentFail,
             ),
           ),
           body: isSuccess ? _buildSuccess() : _buildFail(),
@@ -55,19 +56,19 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
     if (type == OrderPaymentType.dating) {
       final isRequest = state.detailModel.value?.requestId == SS.login.userId;
 
-      title = isRequest ? "保证金服务费支付成功！" : "保证金支付成功！";
+      title = isRequest ? S.current.serviceFeePaidSuccessfully : S.current.marginPaymentSuccessful;
 
       orderNumber = state.detailModel.value?.number ?? "";
 
       final deposit = state.detailModel.value?.deposit ?? 0;
       final serviceCharge = state.detailModel.value?.serviceCharge ?? 0;
       result = isRequest ? deposit + serviceCharge : deposit;
-      remark = "注：保证金在订单结束后将在24小时内原路返回。";
+      remark = S.current.beReturnedWithin24Hours;
     } else {
-      title = "VIP充值成功！";
+      title = S.current.VIPRechargeSuccess;
       orderNumber = state.vipModel.value?.orderNo ?? "";
       result = state.vipModel.value?.amount ?? 0;
-      remark = "注：成为VIP后可享受多项VIP权益。";
+      remark = S.current.enjoyNumberOfVIPRights;
     }
 
     return ListView(
@@ -93,7 +94,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "订单编号：$orderNumber",
+                "${S.current.orderReference}$orderNumber",
                 style: AppTextStyle.st
                     .size(14.rpx)
                     .textColor(AppColor.black6)
@@ -103,11 +104,11 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
               Text.rich(
                 TextSpan(
                   children: [
-                    const TextSpan(
-                      text: "订单金额：",
+                    TextSpan(
+                      text: S.current.orderAmount,
                     ),
                     TextSpan(
-                        text: "$result元",
+                        text: result.toCurrencyString(),
                         style: AppTextStyle.st.textColor(AppColor.textRed)),
                   ],
                 ),
@@ -118,7 +119,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
               ),
               SizedBox(height: 14.rpx),
               Text(
-                "支付方式：管佳支付",
+                S.current.modeOfPayment,
                 style: AppTextStyle.st
                     .size(14.rpx)
                     .textColor(AppColor.black6)
@@ -155,7 +156,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            "查看订单",
+                            S.current.checkOrder,
                             style: AppTextStyle.st
                                 .size(16.rpx)
                                 .textColor(AppColor.black9)
@@ -166,7 +167,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
                     : Button(
                         onPressed: Get.back,
                         child: Text(
-                          "立即享受VIP权益",
+                          S.current.enjoyVIPRightsNow,
                           style: AppTextStyle.st
                               .size(16.rpx)
                               .textColor(Colors.white),
@@ -190,7 +191,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
         ),
         SizedBox(height: 24.rpx),
         Text(
-          "支付失败",
+          S.current.paymentFail,
           textAlign: TextAlign.center,
           style: AppTextStyle.st
               .size(16.rpx)
@@ -199,7 +200,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
         ),
         SizedBox(height: 16.rpx),
         Text(
-          "返回查看订单",
+          S.current.backViewOrder,
           textAlign: TextAlign.center,
           style: AppTextStyle.st
               .size(12.rpx)
@@ -211,7 +212,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
           margin:
               EdgeInsets.symmetric(horizontal: 38.rpx).copyWith(top: 60.rpx),
           child: Text(
-            "重新支付",
+            S.current.payAgain,
             style: AppTextStyle.st.size(16.rpx).textColor(Colors.white),
           ),
         ),

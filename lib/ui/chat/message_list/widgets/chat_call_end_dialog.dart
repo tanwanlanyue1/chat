@@ -182,9 +182,10 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
           Text(
             value,
             style: isHighlight
-                ? const TextStyle(
+                ? PFTextStyle(
                     fontWeight: FontWeight.bold,
                     color: AppColor.textYellow,
+                    fontSize: 14.rpx,
                   )
                 : null,
           ),
@@ -209,7 +210,7 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
         ),
       ]);
     } else {
-      children = [
+      children.addAll([
         buildItem(
           label: S.current.userFee,
           value: content.amount.toCurrencyString(),
@@ -235,7 +236,7 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
           value: content.beautyFee.toCurrencyString(),
           isHighlight: true,
         ),
-      ];
+      ]);
     }
 
     return Padding(

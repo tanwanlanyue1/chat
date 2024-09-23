@@ -9,6 +9,7 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
+import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 import 'transfer_money_controller.dart';
@@ -27,6 +28,16 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(S.current.transferAccounts),
+          actions: [
+            IconButton(
+              onPressed: () => controller.showMoreBottomSheet(),
+              icon: AppImage.asset(
+                'assets/images/mine/more.png',
+                width: 24.rpx,
+                height: 24.rpx,
+              ),
+            ),
+          ],
         ),
         body: Column(
           children: [

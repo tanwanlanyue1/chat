@@ -7,8 +7,9 @@ class AppConfig{
   const AppConfig._();
 
   ///开发环境接口地址
-  // static const urlDevServer = 'http://newchat.happysport-666.cn/api';
-  static const urlDevServer = 'http://192.168.2.17:20000';
+  static const urlDevServer = 'http://newchat.happysport-666.cn/app';
+  // static const urlDevServer = 'http://192.168.2.17:20000';
+  // 外网ip http://112.94.4.229:20000
 
   ///正式环境接口地址
   static const urlProdServer = 'https://jxapi.amiyosz.com';

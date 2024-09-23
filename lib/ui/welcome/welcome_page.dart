@@ -8,6 +8,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/global.dart';
@@ -171,8 +172,10 @@ class WelcomePage extends StatelessWidget {
     );
   }
 
-  void onStartNow() {
-    Global.agreePrivacyPolicy().whenComplete(Get.navigateToHomeOrLogin);
+  void onStartNow() async{
+    await Global.agreePrivacyPolicy();
+    Get.navigateToHomeOrLogin();
+    Get.toNamed(AppRoutes.loginRegisterPage);
   }
 }
 

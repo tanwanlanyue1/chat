@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/im_api.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/widgets/common_bottom_sheet.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/payment_password_keyboard.dart';
 
@@ -26,6 +28,28 @@ class TransferMoneyController extends GetxController {
     amountEditingController.bindTextRx(state.amountRx);
     focusNode.requestFocus();
     SS.appConfig.fetchData();
+  }
+
+  void showMoreBottomSheet(){
+    final hasPayPassword = SS.login.info?.payPwd == true;
+    Get.bottomSheet(
+      CommonBottomSheet(
+        titles: [
+          hasPayPassword ? S.current.changingPaymentPassword : S.current.setPaymentPassword,
+        ],
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              if(hasPayPassword){
+                Get.toNamed(AppRoutes.updatePasswordPage,arguments: {"login":false});
+              }else{
+                Get.toNamed(AppRoutes.paymentPasswordPage);
+              }
+              break;
+          }
+        },
+      ),
+    );
   }
 
   Future<void> submit() async {

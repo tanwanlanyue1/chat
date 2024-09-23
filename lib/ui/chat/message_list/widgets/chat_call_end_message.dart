@@ -154,7 +154,7 @@ class ChatCallEndMessage extends StatelessWidget {
         ),
       ]);
     } else {
-      children = [
+      children.addAll([
         buildItem(
           label: S.current.userFee,
           value: content.amount.toCurrencyString(),
@@ -180,7 +180,7 @@ class ChatCallEndMessage extends StatelessWidget {
           value: content.beautyFee.toCurrencyString(),
           isHighlight: true,
         ),
-      ];
+      ]);
     }
 
     return Padding(

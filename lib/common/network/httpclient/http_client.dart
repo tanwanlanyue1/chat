@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:guanjia/common/utils/app_info.dart';
 import 'interceptor/authentication_interceptor.dart';
@@ -140,8 +141,7 @@ class HttpClient {
         data: data,
         onSendProgress: onSendProgress,
       );
-      return ApiResponse.fromJson<T>(response.data,
-          dataConverter: dataConverter);
+      return ApiResponse.fromJson<T>(response.data, dataConverter: dataConverter);
     } catch (ex) {
       return _errorResponse<T>(ex, _instance.locale);
     }
@@ -190,6 +190,12 @@ class HttpClient {
   ///异常转换
   static ApiResponse<T> _errorResponse<T>(dynamic exception, Locale? locale) {
     // AppLogger.e('_errorResponse=$exception');
+
+    if(exception is DioError){
+      final response = exception.response;
+      AppLogger.e('_errorResponse: data=${response?.data}, statusCode=${response?.statusCode}, statusMessage=${response?.statusMessage}');
+    }
+
     AppException? appException;
     final isEnglish = locale?.languageCode == 'en';
     if (exception is DioException) {

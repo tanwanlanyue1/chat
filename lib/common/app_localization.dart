@@ -1,6 +1,7 @@
 
 import 'dart:ui';
 import 'package:get/get.dart';
+import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/generated/l10n.dart';
 
@@ -21,6 +22,7 @@ class AppLocalization{
     var languageCode = await _preferences.getString(_kLanguageCode);
     languageCode ??= Get.deviceLocale?.languageCode ?? _defaultLanguageCode;
     _locale = supportedLocales.firstWhereOrNull((element) => element.languageCode == languageCode);
+    _locale?.let(S.load);
   }
 
   ///支持的本地化语言

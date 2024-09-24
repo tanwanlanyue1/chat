@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
+import 'package:guanjia/ui/order/order_detail/widget/order_cancel_dialog.dart';
 import 'package:guanjia/ui/order/order_list/order_list_controller.dart';
 import 'package:guanjia/ui/order/widgets/assign_agent_dialog/order_assign_agent_dialog.dart';
 import 'package:guanjia/ui/order/widgets/order_payment_dialog.dart';
@@ -27,15 +29,22 @@ mixin OrderOperationMixin {
 
   /// 取消订单
   /// orderId: 订单id
-  Future<bool> onTapOrderCancel(int orderId) async {
-    Loading.show();
-    final res = await OrderApi.cancel(orderId: orderId);
-    Loading.dismiss();
-    if (!res.isSuccess) {
-      res.showErrorMessage();
+  /// peerId: 接单人id
+  /// requestId: 发起人id
+  Future<bool> onTapOrderCancel(int orderId,int peerId,int requestId) async {
+    int id = SS.login.info?.uid == peerId ? requestId : peerId;
+    final cancel = await OrderCancelDialog.show(id);
+    if(cancel == true){
+      Loading.show();
+      final res = await OrderApi.cancel(orderId: orderId);
+      Loading.dismiss();
+      if (!res.isSuccess) {
+        res.showErrorMessage();
       return false;
+      }
+      return true;
     }
-    return true;
+    return false;
   }
 
   /// 支付订单

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -56,10 +57,10 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                               EdgeInsets.all(16.rpx).copyWith(right: 24.rpx),
                           child: Row(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 40.rpx,
                                 height: 40.rpx,
-                                color: AppColor.primary,
+                                child: AppImage.asset(item.icon),
                               ),
                               SizedBox(width: 16.rpx),
                               Expanded(
@@ -75,17 +76,47 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    SizedBox(height: 10.rpx),
+                                    SizedBox(height: item.detail != null ? 10.rpx:6.rpx),
+                                    item.detail != null ?
                                     Text(
-                                      item.detail ?? "",
+                                      item.detail!,
                                       style: AppTextStyle.st
                                           .size(12.rpx)
                                           .textColor(AppColor.black9)
                                           .textHeight(1),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
+                                    ):
+                                    GestureDetector(
+                                      onTap: (){
+                                        Get.toNamed(AppRoutes.walletPage);
+                                      },
+                                      child: Container(
+                                        height: 20.rpx,
+                                        width: 40.rpx,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: AppColor.primaryBlue,
+                                              width: 1.rpx,
+                                            ),
+                                            borderRadius: BorderRadius.circular(4.rpx)
+                                        ),
+                                        child: Text("充值",style: AppTextStyle.fs12m.copyWith(color: AppColor.primaryBlue),textAlign: TextAlign.center,),
+                                      ),
                                     ),
                                   ],
+                                ),
+                              ),
+                              Visibility(
+                                visible: item.detail == null,
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(maxWidth: 120.rpx),
+                                  child: Text(
+                                    "余额：${SS.login.info?.balance ?? 0}",
+                                    style: AppTextStyle.fs14r.copyWith(color: AppColor.gray9),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ),
                               SizedBox(width: 8.rpx),

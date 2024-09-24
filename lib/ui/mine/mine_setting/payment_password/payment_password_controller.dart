@@ -59,7 +59,8 @@ class PaymentPasswordController extends GetxController {
   //设置支付密码 affirm确认
   void setPayPassword({bool affirm = false}) async{
     final result = await PaymentPasswordKeyboard.show(
-      titleStr: S.current.pleaseEnterYourPaymentPassword
+      titleStr: affirm ? S.current.confirmPayment : S.current.pleaseEnterYourPaymentPassword,
+      setPay: true
     );
     if(result != null){
       if(affirm){

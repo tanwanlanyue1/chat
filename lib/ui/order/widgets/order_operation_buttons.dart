@@ -108,7 +108,7 @@ class OrderOperationButtons extends StatelessWidget {
     String? text,
   }) {
     return GestureDetector(
-      onTap: onTap ?? () => controller.onTapOrderCancel(item.id),
+      onTap: onTap ?? () => controller.onTapOrderCancel(item.id,item.itemModel.receiveId,item.itemModel.requestId),
       child: Container(
         width: 60.rpx,
         height: 26.rpx,

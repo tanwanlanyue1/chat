@@ -44,7 +44,7 @@ class OrderDetailPage extends StatelessWidget {
             if (model != null && model.hasCancel)
               GestureDetector(
                 onTap: () {
-                  controller.onTapOrderCancel(model.id);
+                  controller.onTapOrderCancel(model.id,model.itemModel.receiveId,model.itemModel.requestId);
                 },
                 child: Container(
                   padding: EdgeInsets.only(right: 16.rpx),

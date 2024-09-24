@@ -25,37 +25,43 @@ class AllCommentsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(canPop: false,
+      onPopInvoked: (bool canPop) {
+      if(canPop){
+      } else {
+        Navigator.of(context).pop(state.comments);
+      }
+    },child: Scaffold(
       backgroundColor: AppColor.scaffoldBackground,
       body: Column(
         children: [
           appBar(),
           Expanded(
             child: SmartRefresher(
-                controller: controller.pagingController.refreshController,
-                onRefresh: controller.pagingController.onRefresh,
-                child: PagedListView.separated(
-                  pagingController: controller.pagingController,
-                  padding: EdgeInsets.only(bottom: 8.rpx),
-                  builderDelegate: DefaultPagedChildBuilderDelegate<CommentListModel>(
-                      pagingController: controller.pagingController,
-                      itemBuilder: (_,item,index){
-                        return commentItem(item);
-                      }
-                  ),
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Container(
-                      height: 1.rpx,
-                    );
-                  },
+              controller: controller.pagingController.refreshController,
+              onRefresh: controller.pagingController.onRefresh,
+              child: PagedListView.separated(
+                pagingController: controller.pagingController,
+                padding: EdgeInsets.only(bottom: 8.rpx),
+                builderDelegate: DefaultPagedChildBuilderDelegate<CommentListModel>(
+                    pagingController: controller.pagingController,
+                    itemBuilder: (_,item,index){
+                      return commentItem(item);
+                    }
                 ),
+                separatorBuilder: (BuildContext context, int index) {
+                  return Container(
+                    height: 1.rpx,
+                  );
+                },
+              ),
             ),
           ),
           //commentItem()
         ],
       ),
       bottomNavigationBar: bottomComment(),
-    );
+    ),);
   }
 
   Widget appBar(){
@@ -71,7 +77,7 @@ class AllCommentsPage extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: (){
-                  Get.back();
+                  Get.back(result: state.comments);
                 },
                 child: AppImage.asset(
                   width: 64,
@@ -216,7 +222,10 @@ class AllCommentsPage extends StatelessWidget {
           ReviewDialog.show(
               pid: state.postId,
               callBack:(val){
-                controller.pagingController.onRefresh();
+                if(val != null && val.isNotEmpty){
+                  controller.pagingController.onRefresh();
+                  state.comments = val;
+                }
               }
           );
         },

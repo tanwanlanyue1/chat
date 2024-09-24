@@ -77,7 +77,6 @@ class AccountDataController extends GetxController {
     info.email = null;
 
     final data = info.toJson();
-
     Loading.show();
     final res = await UserApi.updateInfoFull(
       data: data,

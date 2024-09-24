@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -426,8 +426,11 @@ class PlazaCard extends StatelessWidget {
           Visibility(
             visible: item.commentList!.length > 1,
             child: GestureDetector(
-              onTap: (){
-                Get.toNamed(AppRoutes.allCommentsPage,arguments: {"postId": item.postId, "userId": item.uid});
+              onTap: () async {
+                var res = await Get.toNamed(AppRoutes.allCommentsPage,arguments: {"postId": item.postId, "userId": item.uid});
+                if(res != null && res.isNotEmpty){
+                  callBack?.call(res);
+                }
               },
               child: Container(
                 margin: EdgeInsets.only(top: 12.rpx),

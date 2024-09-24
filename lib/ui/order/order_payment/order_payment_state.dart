@@ -14,21 +14,21 @@ class OrderPaymentState {
 
   final list = [
     OrderPaymentListItem(
-      icon: "icon",
+      icon: "assets/images/order/guanjia.png",
       title: S.current.smallTreasuryPayment,
     ),
     OrderPaymentListItem(
-      icon: "icon",
+      icon: "assets/images/order/usdt.png",
       title: S.current.USDTPayment,
       detail: S.current.recommendUserUse,
     ),
     OrderPaymentListItem(
-      icon: "icon",
+      icon: "assets/images/order/eth.png",
       title: S.current.ETHPayment,
       detail: S.current.recommendUserUse,
     ),
     OrderPaymentListItem(
-      icon: "icon",
+      icon: "assets/images/order/unionpay.png",
       title: S.current.unionPay,
       detail: S.current.recommendUnionUse,
     ),

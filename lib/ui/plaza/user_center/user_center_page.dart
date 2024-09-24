@@ -1,10 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
@@ -189,6 +186,7 @@ class UserCenterPage extends StatelessWidget {
           Swiper(
             autoplay: jsonDecode(state.authorInfo.images!).length > 1 ? true : false,
             controller: controller.swiper,
+            index: state.swiperIndex,
             itemBuilder: (BuildContext context, int index) {
               return AppImage.network(
                 jsonDecode(state.authorInfo.images!)[index],

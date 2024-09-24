@@ -81,6 +81,15 @@ class _PhotoViewGalleryPageState extends State<PhotoViewGalleryPage> {
               ),
             ),
           ),
+          Positioned(
+            top: 0,
+            child: Container(
+              height: 40.rpx+MediaQuery.of(context).padding.top,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+              color: Colors.black.withOpacity(0.05),
+            ),
+          ),
           if(widget.images.length > 1) Positioned(
             //图片index显示
             top: MediaQuery.of(context).padding.top + 15.rpx,

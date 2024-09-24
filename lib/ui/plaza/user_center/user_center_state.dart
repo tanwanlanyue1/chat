@@ -11,7 +11,7 @@ class UserCenterState {
   final isShow = true.obs;
   //作者信息
   UserModel authorInfo = UserModel.fromJson({});
-
+  int swiperIndex = 0;
   //上传封面图
   List<String> imgList = [];
 

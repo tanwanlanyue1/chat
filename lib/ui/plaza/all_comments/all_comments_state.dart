@@ -7,4 +7,6 @@ class AllCommentsState {
   int userId = 0;
   //作者信息
   UserModel authorInfo = UserModel.fromJson({});
+  //评论
+  String? comments;
 }

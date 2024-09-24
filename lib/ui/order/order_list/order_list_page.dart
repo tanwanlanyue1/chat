@@ -347,10 +347,12 @@ class _OrderListItemWidgetState extends State<OrderListItemWidget> {
   @override
   void initState() {
     if (widget.item.countDown > 0) {
-      widget.timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        widget.item.countDown = widget.item.countDown - 1;
-        setState(() {});
-      });
+      if(mounted){
+        widget.timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+          widget.item.countDown = widget.item.countDown - 1;
+          setState(() {});
+        });
+      }
     } else {
       widget.timer?.cancel();
     }

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -30,7 +30,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
 
   final UserCenterState state = UserCenterState();
   final ScrollController scrollController = ScrollController();
-  final SwiperController swiper = SwiperController();
+  SwiperController swiper = SwiperController();
 
   final pagingController = DefaultPagingController<PlazaListModel>(
     firstPage: 1,
@@ -190,8 +190,11 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
         state.authorInfo = state.authorInfo.copyWith(
             images: jsonEncode(state.imgList)
         );
-        swiper.index = 0;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          swiper.move(0);
+        });
         update(['userInfo']);
+        SS.login.fetchMyInfo();
         Get.back();
       }else{
         res.showErrorMessage();

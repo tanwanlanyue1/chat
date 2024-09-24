@@ -15,9 +15,10 @@ class PaymentPasswordKeyboard extends StatefulWidget {
   const PaymentPasswordKeyboard._({super.key,this.titleStr});
 
   /// - return 返回支付密码
-  static Future<String?> show({String? titleStr}) async {
-    if(SS.login.info?.payPwd != true){
-      Loading.showToast('请先设置支付密码');
+  /// setPay:设置支付
+  static Future<String?> show({String? titleStr,bool setPay = false}) async {
+    if(SS.login.info?.payPwd != true && !setPay){
+      Loading.showToast(S.current.pleasePaymentPassword);
       return null;
     }
     return Get.bottomSheet<String>(

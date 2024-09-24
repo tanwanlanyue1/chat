@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/mine_setting/push_setting/notification_permission_util.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -86,7 +87,7 @@ class AppUpdateDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              '发现新版本',
+              S.current.discoverNewVersion,
               style: AppTextStyle.fs18b.copyWith(
                 color: AppColor.blackBlue,
                 height: 1,
@@ -120,12 +121,12 @@ class AppUpdateDialog extends StatelessWidget {
                       height: 50.rpx,
                       width: 120.rpx,
                       backgroundColor: AppColor.gray9,
-                      child: Text('暂时忽略', style: AppTextStyle.fs16m),
+                      child: Text(S.current.ignoreForNow, style: AppTextStyle.fs16m),
                     ),
                   CommonGradientButton(
                     height: 50.rpx,
                     width: isSingleButton ? 260.rpx : 120.rpx,
-                    text: isDownloadFinish ? '立即安装' : '马上升级',
+                    text: isDownloadFinish ? S.current.immediateInstallation : S.current.upgradeNow,
                     onTap: () {
                       if (info.flag == 2 &&
                           info.link.trim().startsWith('http')) {
@@ -178,7 +179,7 @@ class AppUpdateDialog extends StatelessWidget {
                 ),
               ),
               Text(
-                '正在下载... ${(progress * 100).toStringAsFixed(0)}%',
+                '${S.current.downloadingProgress} ${(progress * 100).toStringAsFixed(0)}%',
                 textAlign: TextAlign.center,
                 style: AppTextStyle.fs14m.copyWith(
                   color: Colors.white,

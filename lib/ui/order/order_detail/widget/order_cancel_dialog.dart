@@ -55,7 +55,7 @@ class OrderCancelDialog extends StatelessWidget {
                     Padding(
                       padding: FEdgeInsets(top: 12.rpx, bottom: 24.rpx),
                       child: Text(
-                        "注：如约会双方均已缴纳保证金，则取消约会将需支付违约金。",
+                        S.current.cancelOrderTips,
                         style: AppTextStyle.fs12m.copyWith(
                           color: AppColor.black92,
                           height: 1.5,

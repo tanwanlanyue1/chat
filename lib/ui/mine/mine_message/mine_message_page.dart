@@ -46,7 +46,7 @@ class MineMessagePage extends StatelessWidget {
                     count = 0;
                   }
                   return Tab(
-                      text: count > 0 ? '系统公告($count)' : '系统公告',
+                      text: count > 0 ? '${S.current.systemAnnouncement}($count)' : S.current.systemAnnouncement,
                       height: 40.rpx);
                 }),
                 Obx(() {
@@ -56,7 +56,7 @@ class MineMessagePage extends StatelessWidget {
                     count = 0;
                   }
                   return Tab(
-                      text: count > 0 ? '系统消息($count)' : '系统消息',
+                      text: count > 0 ? '${S.current.systemMessages}($count)' : S.current.systemMessages,
                       height: 40.rpx);
                 }),
               ],

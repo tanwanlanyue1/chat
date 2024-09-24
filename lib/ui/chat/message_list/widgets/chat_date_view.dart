@@ -6,6 +6,7 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/mine_controller.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
@@ -53,8 +54,8 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
       //订单为空，或者订单已完结 佳丽和经纪人不显示发起约会
       if (selfType.isUser && !targetType.isUser) {
         return UIOrderState(
-          desc: '点击右侧按钮，发起约会吧！',
-          button: '发起约会',
+          desc: S.current.chatDateCreate,
+          button: S.current.initiateAppointment,
           operation: OrderOperationType.create,
         );
       }
@@ -65,8 +66,8 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
           selfUser?.state == UserStatus.offline) {
         return UIOrderState(
           icon: 'assets/images/chat/ic_offline_tips.png',
-          desc: '您当前处于“不接约”状态，请注意及时调整。',
-          button: '上线接约',
+          desc: S.current.dateModeOpenHint,
+          button: S.current.onLineEngagement,
           buttonColor: AppColor.dateButton,
           onTap: () {
             Get.tryFind<MineController>()
@@ -152,87 +153,87 @@ mixin UIOrderStateMixin {
     return {
       OrderItemState.waitingAcceptance: {
         UserType.user: UIOrderState(
-          desc: '佳丽正在接单中，请您耐心等待',
+          desc: S.current.beautyReceivingOrder,
         ),
         UserType.beauty: UIOrderState(
-          desc: '当前用户向您发起了约会请求，请注意及时接单哦～',
-          button: '立即接单',
+          desc: S.current.orderTakingTips,
+          button: S.current.immediateOrder,
           operation: OrderOperationType.accept,
           isCountdown: true,
         ),
       },
       OrderItemState.waitingAssign: {
         UserType.agent: UIOrderState(
-          desc: '当前用户向您发起了约会请求，请注意及时接单哦～',
-          button: '指派接单',
+          desc: S.current.orderTakingTips,
+          button: S.current.assignmentOfOrder,
           operation: OrderOperationType.assign,
           isCountdown: true,
         ),
       },
       OrderItemState.waitingPaymentForRequest: {
         UserType.user: UIOrderState(
-          desc: '佳丽已接单，请您及时缴纳保证金和服务费',
-          button: '立即缴纳',
+          desc: S.current.depositForUser,
+          button: S.current.depositNow,
           operation: OrderOperationType.payment,
           isCountdown: true,
         ),
         UserType.beauty: UIOrderState(
-          desc: '用户正在缴纳保证金和服务费，请您耐心等待',
+          desc: S.current.depositBeingPaidForUser,
         ),
       },
       OrderItemState.waitingPaymentForReceive: {
         UserType.user: UIOrderState(
-          desc: '佳丽正在缴纳保证金，请您耐心等待',
+          desc: S.current.depositBeingPaidForBeauty,
         ),
         UserType.beauty: UIOrderState(
-          desc: '您已接单，请您及时缴纳保证金',
-          button: '立即缴纳',
+          desc: S.current.depositBeingPaid,
+          button: S.current.depositNow,
           operation: OrderOperationType.payment,
           isCountdown: true,
         ),
       },
       OrderItemState.waitingConfirmForReceive: {
         UserType.user: UIOrderState(
-          desc: '约会已开始',
+          desc: S.current.dateBegin,
         ),
         UserType.beauty: UIOrderState(
-          desc: '点击“我已到位”，约会便正式开始哦～',
-          button: '我已到位',
+          desc: S.current.beautyReadyHint,
+          button: S.current.imInPlace,
           operation: OrderOperationType.confirm,
         ),
       },
       OrderItemState.waitingConfirmForRequest: {
         UserType.user: UIOrderState(
-          desc: '约会已开始，约会结束后记得点击右侧按钮结束订单哦～',
-          button: '确认完成订单',
+          desc: S.current.dateFinishHint,
+          button: S.current.completeOrder,
           operation: OrderOperationType.finish,
         ),
-        UserType.beauty: UIOrderState(desc: '约会已开始'),
+        UserType.beauty: UIOrderState(desc: S.current.dateBegin),
       },
       OrderItemState.cancelForRequest: {
-        UserType.user: UIOrderState(desc: '约会订单已取消'),
-        UserType.beauty: UIOrderState(desc: '约会订单已取消'),
-        UserType.agent: UIOrderState(desc: '约会订单已取消'),
+        UserType.user: UIOrderState(desc: S.current.dateOrderCanceled),
+        UserType.beauty: UIOrderState(desc: S.current.dateOrderCanceled),
+        UserType.agent: UIOrderState(desc: S.current.dateOrderCanceled),
       },
       OrderItemState.cancelForReceive: {
-        UserType.user: UIOrderState(desc: '约会订单已取消'),
-        UserType.beauty: UIOrderState(desc: '约会订单已取消'),
-        UserType.agent: UIOrderState(desc: '约会订单已取消'),
+        UserType.user: UIOrderState(desc: S.current.dateOrderCanceled),
+        UserType.beauty: UIOrderState(desc: S.current.dateOrderCanceled),
+        UserType.agent: UIOrderState(desc: S.current.dateOrderCanceled),
       },
       OrderItemState.timeOut: {
-        UserType.user: UIOrderState(desc: '约会订单已超时'),
-        UserType.beauty: UIOrderState(desc: '约会订单已超时'),
-        UserType.agent: UIOrderState(desc: '约会订单已超时'),
+        UserType.user: UIOrderState(desc: S.current.dateOrderTimeout),
+        UserType.beauty: UIOrderState(desc: S.current.dateOrderTimeout),
+        UserType.agent: UIOrderState(desc: S.current.dateOrderTimeout),
       },
       OrderItemState.waitingEvaluation: {
-        UserType.user: UIOrderState(desc: '约会订单已完成，待您评价'),
-        UserType.beauty: UIOrderState(desc: '约会订单已完成，待用户评价'),
-        UserType.agent: UIOrderState(desc: '约会订单已完成，待用户评价'),
+        UserType.user: UIOrderState(desc: S.current.dateOrderCompletedHint),
+        UserType.beauty: UIOrderState(desc: S.current.dateOrderCompletedHintForUser),
+        UserType.agent: UIOrderState(desc: S.current.dateOrderCompletedHintForUser),
       },
       OrderItemState.finish: {
-        UserType.user: UIOrderState(desc: '您已评价'),
-        UserType.beauty: UIOrderState(desc: '用户已评价'),
-        UserType.agent: UIOrderState(desc: '用户已评价'),
+        UserType.user: UIOrderState(desc: S.current.youHaveRated),
+        UserType.beauty: UIOrderState(desc: S.current.userHaveRated),
+        UserType.agent: UIOrderState(desc: S.current.userHaveRated),
       },
     };
   }
@@ -242,59 +243,59 @@ mixin UIOrderStateMixin {
     return {
       OrderItemState.waitingPaymentForRequest: {
         OrderItemUserType.request: UIOrderState(
-          desc: '对方已参与您的征友约会，请您及时缴纳保证金和服务费',
-          button: '立即缴纳',
+          desc: S.current.friendDeposit,
+          button: S.current.depositNow,
           operation: OrderOperationType.payment,
           isCountdown: true,
         ),
         OrderItemUserType.receive: UIOrderState(
-          desc: '对方正在缴纳保证金和服务费，请您耐心等待',
+          desc: S.current.friendDepositBeingPaidForUser,
         ),
       },
       OrderItemState.waitingPaymentForReceive: {
         OrderItemUserType.request: UIOrderState(
-          desc: '对方正在缴纳保证金和服务费，请您耐心等待',
+          desc: S.current.friendDepositBeingPaidForUser,
         ),
         OrderItemUserType.receive: UIOrderState(
-          desc: '您已参与Ta的征友约会，请您及时缴纳保证金',
-          button: '立即缴纳',
+          desc: S.current.friendDepositBeingPaid,
+          button: S.current.depositNow,
           operation: OrderOperationType.payment,
           isCountdown: true,
         ),
       },
       OrderItemState.waitingConfirmForReceive: {
         OrderItemUserType.request: UIOrderState(
-          desc: '约会已开始',
+          desc: S.current.dateBegin,
         ),
         OrderItemUserType.receive: UIOrderState(
-          desc: '点击“我已到位”，约会便正式开始哦～',
-          button: '我已到位',
+          desc: S.current.beautyReadyHint,
+          button: S.current.imInPlace,
           operation: OrderOperationType.confirm,
         ),
       },
       OrderItemState.waitingConfirmForRequest: {
         OrderItemUserType.request: UIOrderState(
-          desc: '约会已开始，约会结束后记得点击右侧按钮结束订单哦～',
-          button: '确认完成订单',
+          desc: S.current.dateFinishHint,
+          button: S.current.completeOrder,
           operation: OrderOperationType.finish,
         ),
-        OrderItemUserType.receive: UIOrderState(desc: '约会已开始'),
+        OrderItemUserType.receive: UIOrderState(desc: S.current.dateBegin),
       },
       OrderItemState.cancelForRequest: {
-        OrderItemUserType.request: UIOrderState(desc: '约会订单已取消'),
-        OrderItemUserType.receive: UIOrderState(desc: '约会订单已取消'),
+        OrderItemUserType.request: UIOrderState(desc: S.current.dateOrderCanceled),
+        OrderItemUserType.receive: UIOrderState(desc: S.current.dateOrderCanceled),
       },
       OrderItemState.cancelForReceive: {
-        OrderItemUserType.request: UIOrderState(desc: '约会订单已取消'),
-        OrderItemUserType.receive: UIOrderState(desc: '约会订单已取消'),
+        OrderItemUserType.request: UIOrderState(desc: S.current.dateOrderCanceled),
+        OrderItemUserType.receive: UIOrderState(desc: S.current.dateOrderCanceled),
       },
       OrderItemState.timeOut: {
-        OrderItemUserType.request: UIOrderState(desc: '约会订单已超时'),
-        OrderItemUserType.receive: UIOrderState(desc: '约会订单已超时'),
+        OrderItemUserType.request: UIOrderState(desc: S.current.dateOrderTimeout),
+        OrderItemUserType.receive: UIOrderState(desc: S.current.dateOrderTimeout),
       },
       OrderItemState.finish: {
-        OrderItemUserType.request: UIOrderState(desc: '约会订单已完成'),
-        OrderItemUserType.receive: UIOrderState(desc: '约会订单已完成'),
+        OrderItemUserType.request: UIOrderState(desc: S.current.dateOrderCompleted),
+        OrderItemUserType.receive: UIOrderState(desc: S.current.dateOrderCompleted),
       },
     };
   }

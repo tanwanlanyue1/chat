@@ -99,8 +99,6 @@ class Global with WidgetsBindingObserver{
     //初始化服务
     await SS.initServices();
 
-    await AppPosition.updatePosition();
-
     //广告
     await ADManager.instance.initialize();
 

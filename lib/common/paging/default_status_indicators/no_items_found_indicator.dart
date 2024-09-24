@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
@@ -67,9 +68,9 @@ class NoItemsFoundIndicator extends StatelessWidget {
               height: 48.rpx,
               margin: FEdgeInsets(horizontal: 24.rpx),
               onPressed: onTryAgain,
-              child: const Text(
-                '点击重试',
-                style: TextStyle(
+              child: Text(
+                S.current.retryClick,
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.white,
                 ),

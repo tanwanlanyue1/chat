@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:guanjia/common/network/api/user_api.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -79,9 +80,9 @@ class PhotoAndCameraBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> titles = ["拍照", "从手机相册选择"];
+    List<String> titles = [S.current.takePhoto, S.current.chooseFromAlbum];
     if (hasSave) {
-      titles.add("保存图片");
+      titles.add(S.current.saveImage);
     }
 
     return CommonBottomSheet(
@@ -146,7 +147,7 @@ class PhotoAndCameraBottomSheet extends StatelessWidget {
           final url = await _uploadImageBytes(bytes, files.first.name);
           Loading.dismiss();
           if (url == null) {
-            Loading.showToast("图片上传失败，请重新尝试");
+            Loading.showToast(S.current.imageUploadFailHint);
             return;
           }
           onUploadUrls?.call([url]);
@@ -159,7 +160,7 @@ class PhotoAndCameraBottomSheet extends StatelessWidget {
         Loading.dismiss();
 
         if (urls.isEmpty || urls.length != files.length) {
-          Loading.showToast("图片上传失败，请重新尝试");
+          Loading.showToast(S.current.imageUploadFailHint);
           return;
         }
 

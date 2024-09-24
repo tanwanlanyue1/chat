@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -33,7 +34,7 @@ class ConfirmDialog extends StatelessWidget {
       _isVisible = true;
       final result = await Get.dialog<bool>(ConfirmDialog._(
         message: message,
-        cancelButtonText: cancelButtonText ?? const Text('取消'),
+        cancelButtonText: cancelButtonText ?? Text(S.current.cancel),
         okButtonText: okButtonText,
       )).whenComplete(() => _isVisible = false);
       return result == true;
@@ -116,7 +117,7 @@ class ConfirmDialog extends StatelessWidget {
               backgroundColor: AppColor.black999,
               child: DefaultTextStyle(
                 style: AppTextStyle.fs16m,
-                child: cancelButtonText ?? const Text('取消'),
+                child: cancelButtonText ?? Text(S.current.cancel),
               ),
               onPressed: () {
                 Get.back(result: false);
@@ -126,7 +127,7 @@ class ConfirmDialog extends StatelessWidget {
           CommonGradientButton(
             width: 120.rpx,
             height: 50.rpx,
-            text: okText ?? '确定',
+            text: okText ?? S.current.confirm,
             textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
             onTap: () {
               Get.back(result: true);

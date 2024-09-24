@@ -12,6 +12,7 @@ import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/firebase_util.dart';
 import 'package:guanjia/common/utils/image_gallery_utils.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/global.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -258,7 +259,7 @@ class JsInjector{
       idToken = await FirebaseUtil().verifySmsCode(verificationId, smsCode);
       if(idToken == null){
         Loading.dismiss();
-        Loading.showToast('验证码错误');
+        Loading.showToast(S.current.verificationCodeError);
         _invokeJavaScript(method, "false", uuid);
         return;
       }
@@ -274,7 +275,7 @@ class JsInjector{
     );
     Loading.dismiss();
     if(res.isSuccess){
-      Loading.showToast("注销成功");
+      Loading.showToast(S.current.logoutSuccessful);
       SS.login.signOut(userAction: false).then((value) => {
         Get.navigateToHomeOrLogin()
       });

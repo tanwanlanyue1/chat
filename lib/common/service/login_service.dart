@@ -13,6 +13,7 @@ import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/firebase_util.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/common/utils/result.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/home/home_page.dart';
 import 'package:guanjia/widgets/loading.dart';
@@ -127,7 +128,7 @@ class LoginService extends GetxService {
     if (isLogin) {
       runnable();
     } else {
-      Loading.showToast('请先登录');
+      Loading.showToast(S.current.loginPlease);
       Get.toNamed(AppRoutes.loginPage);
       onUnauthorized?.call();
     }
@@ -473,8 +474,8 @@ class LoginService extends GetxService {
       return;
     }
     final result = await ConfirmDialog.show(
-      message: const Text('登录已过期，请重新登录'),
-      okButtonText: const Text('重新登录'),
+      message: Text(S.current.loginExpired),
+      okButtonText: Text(S.current.reLogin),
     );
     await signOut(userAction: false);
     Get.navigateToHomeOrLogin();

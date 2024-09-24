@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:image_editor/image_editor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -61,11 +62,11 @@ class _ImageCropPageState extends State<ImageCropPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: const AppBackButton(brightness: Brightness.light),
-        title: Text(widget.title ?? '图片裁剪', style: const TextStyle(color: Colors.white)),
+        title: Text(widget.title ?? S.current.pictureCrop, style: const TextStyle(color: Colors.white)),
         actions: [
           TextButton(
             onPressed: _cropImage,
-            child: const Text('确定', style: TextStyle(color: Colors.white)),
+            child: Text(S.current.confirm, style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),

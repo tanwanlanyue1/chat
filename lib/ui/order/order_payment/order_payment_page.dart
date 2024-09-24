@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -101,7 +102,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                                             ),
                                             borderRadius: BorderRadius.circular(4.rpx)
                                         ),
-                                        child: Text("充值",style: AppTextStyle.fs12m.copyWith(color: AppColor.primaryBlue),textAlign: TextAlign.center,),
+                                        child: Text(S.current.topUp,style: AppTextStyle.fs12m.copyWith(color: AppColor.primaryBlue),textAlign: TextAlign.center,),
                                       ),
                                     ),
                                   ],
@@ -112,7 +113,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                                 child: ConstrainedBox(
                                   constraints: BoxConstraints(maxWidth: 120.rpx),
                                   child: Text(
-                                    "余额：${SS.login.info?.balance ?? 0}",
+                                    S.current.balanceLabel((SS.login.info?.balance ?? 0).toCurrencyString()),
                                     style: AppTextStyle.fs14r.copyWith(color: AppColor.gray9),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,

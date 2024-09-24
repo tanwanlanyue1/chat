@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 import '../common/app_text_style.dart';
 import 'app_image.dart';
@@ -46,7 +47,7 @@ class GroundGlass extends StatelessWidget {
                   //     end: Alignment.centerRight,
                   //   ),
                   // ),
-                  child: Text("开通VIP,查看“附近”地图位置的新动态,享更多权益！",
+                  child: Text(S.current.openVipTips,
                     style: AppTextStyle.fs16m.copyWith(color: Colors.black,height: 1.5,
                         shadows: [Shadow(color: Colors.white.withOpacity(0.9), offset: const Offset(0,0), blurRadius: 2)]
                     ),
@@ -59,7 +60,7 @@ class GroundGlass extends StatelessWidget {
                     widget: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("立即开通VIP",
+                        Text(S.current.openVipNow,
                           style: AppTextStyle.fs16m.copyWith(color: Colors.white),
                         ),
                         SizedBox(width: 8.rpx,),

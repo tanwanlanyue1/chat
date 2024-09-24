@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:get/get.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 import 'app_exceptions.dart';
@@ -37,7 +38,7 @@ class ApiResponse<T> {
       }
     }catch(ex){
       AppLogger.w('数据解析失败, $ex');
-      exception = JsonParseException(-1, '数据解析失败');
+      exception = JsonParseException(-1, S.current.requestFail);
     }
 
     return ApiResponse<T>(
@@ -50,7 +51,7 @@ class ApiResponse<T> {
 
   static ApiResponse<T> fromBytes<T>(Uint8List bytes, {final DataConverter<T>? dataConverter}){
     final text = utf8.decode(bytes, allowMalformed: true);
-    final json = jsonDecode(text) ?? {'code': -1, 'msg': '数据解析失败'};
+    final json = jsonDecode(text) ?? {'code': -1, 'msg': S.current.requestFail};
     return fromJson<T>(json, dataConverter: dataConverter);
   }
 
@@ -79,7 +80,7 @@ class ApiResponse<T> {
       return;
     }else if(code == 1103){
       // TODO: 支付余额不足后续改为显示统一的弹窗
-      Loading.showToast("余额不足");
+      Loading.showToast(S.current.insufficientBalance1);
       return;
     }
     final msg = errorMessage;

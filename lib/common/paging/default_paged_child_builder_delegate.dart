@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart'
     show PagedChildBuilderDelegate, PagingController;
 import 'package:guanjia/common/paging/default_status_indicators/new_page_error_indicator.dart';
@@ -44,13 +45,13 @@ class DefaultPagedChildBuilderDelegate<ItemType>
   WidgetBuilder? get firstPageErrorIndicatorBuilder =>
       super.firstPageErrorIndicatorBuilder ??
       (_) => FirstPageErrorIndicator(
-            title: '加载失败',
+            title: S.current.loadFail,
             onTryAgain: pagingController.retryLastFailedRequest,
           );
 
   @override
   WidgetBuilder? get noItemsFoundIndicatorBuilder =>
-      super.noItemsFoundIndicatorBuilder ?? (_) => const NoItemsFoundIndicator(title: '暂无数据');
+      super.noItemsFoundIndicatorBuilder ?? (_) => NoItemsFoundIndicator(title: S.current.noData);
 
   @override
   WidgetBuilder? get newPageProgressIndicatorBuilder =>

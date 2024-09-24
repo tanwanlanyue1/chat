@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:guanjia/common/utils/app_info.dart';
 import 'interceptor/authentication_interceptor.dart';
@@ -204,13 +205,13 @@ class HttpClient {
         case DioExceptionType.sendTimeout:
         case DioExceptionType.receiveTimeout:
           appException = BadRequestException(
-              -1, isEnglish ? 'Connection timeout' : '连接超时');
+              -1, isEnglish ? 'Connection timeout' : S.current.connectTimeout);
           break;
         case DioExceptionType.badResponse:
         case DioExceptionType.connectionError:
         case DioExceptionType.badCertificate:
           appException =
-              BadRequestException(-1, isEnglish ? 'Request failed' : '请求失败');
+              BadRequestException(-1, isEnglish ? 'Request failed' : S.current.requestFail);
           break;
         case DioExceptionType.unknown:
         case DioExceptionType.cancel:
@@ -222,7 +223,7 @@ class HttpClient {
     return ApiResponse<T>(
       code: -1,
       exception: appException ??
-          AppException(-1, isEnglish ? 'Unknown error' : '未知错误'),
+          AppException(-1, isEnglish ? 'Unknown error' : S.current.unknownError),
     );
   }
 }

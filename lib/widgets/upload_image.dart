@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -107,7 +108,7 @@ class _UploadImageState extends State<UploadImage> {
             break;
           case 0:
             if(_imagesList.length == limit){
-              Loading.showToast("最多选择$limit张图片");
+              Loading.showToast(S.current.chooseImageLimit(limit));
               return;
             }
             final XFile? photo =

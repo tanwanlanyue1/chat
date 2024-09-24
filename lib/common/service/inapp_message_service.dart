@@ -200,11 +200,6 @@ class InAppMessageService extends GetxService {
           ZIMConversationType.peer,
           config,
         );
-    print('更新红包消息状态: ${results?.messageList.length}');
-    results?.messageList.forEach((element) {
-      print(
-          '更新红包消息状态 element:${(element as ZIMCustomMessage).message}  timestamp=${element.timestamp}');
-    });
     final message = results?.messageList.firstOrNull;
     if (message != null && message.messageID == content.msgId) {
       final receiveTime =

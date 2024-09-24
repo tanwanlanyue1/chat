@@ -10,6 +10,7 @@ import 'package:guanjia/common/notification/payload/app_update_payload.dart';
 import 'package:guanjia/common/notification/payload/chat_message_payload.dart';
 import 'package:guanjia/common/notification/payload/sys_notice_payload.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/mine/mine_message/mine_message_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/app_update/app_update_manager.dart';
@@ -22,19 +23,19 @@ import '../utils/plugin_util.dart';
 class NotificationManager {
   NotificationManager._();
 
-  static NotificationChannel get chatChannel => const NotificationChannel(
+  static NotificationChannel get chatChannel => NotificationChannel(
         id: AppConfig.zegoChatResourceId,
-        name: '新消息通知',
+        name: S.current.newMessageNotification,
       );
 
-  static NotificationChannel get callChannel => const NotificationChannel(
+  static NotificationChannel get callChannel => NotificationChannel(
         id: AppConfig.zegoCallResourceId,
-        name: '音视频通话邀请通知',
+        name: S.current.audioCallInvitationNotification,
       );
 
-  static NotificationChannel get appUpdateChannel => const NotificationChannel(
+  static NotificationChannel get appUpdateChannel => NotificationChannel(
         id: 'guanjia_update',
-        name: '应用更新通知',
+        name: S.current.appUpdateNotification,
       );
 
   static final instance = NotificationManager._();

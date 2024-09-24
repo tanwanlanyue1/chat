@@ -68,7 +68,7 @@ class OrderCancelDialog extends StatelessWidget {
                         CommonGradientButton(
                           height: 50.rpx,
                           width: 120.rpx,
-                          text: "我再想想",
+                          text: S.current.thinkItOver,
                           onTap: Get.back,
                           textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
                         ),
@@ -78,7 +78,7 @@ class OrderCancelDialog extends StatelessWidget {
                           width: 120.rpx,
                           backgroundColor: AppColor.gray9,
                           child: Text(
-                              "确定取消订单",
+                              S.current.firmCancellation,
                               style: AppTextStyle.fs16m
                           ),
                         ),

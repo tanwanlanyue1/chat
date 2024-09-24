@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 extension GetExtension on GetInterface {
   ///Get.arguments未map类型时，尝试获取指定key的值
@@ -40,8 +41,8 @@ extension GetExtension on GetInterface {
   Future<bool?> alertDialog({
     Widget? title,
     Widget? content,
-    String cancelText = '取消',
-    String confirmText = '确定',
+    String? cancelText,
+    String? confirmText,
     VoidCallback? onCancel,
     VoidCallback? onConfirm,
   }) {
@@ -55,7 +56,7 @@ extension GetExtension on GetInterface {
             onCancel?.call();
           },
           style: TextButton.styleFrom(foregroundColor: Colors.blue),
-          child: Text(cancelText),
+          child: Text(cancelText ?? S.current.cancel),
         ),
         TextButton(
           onPressed: () {
@@ -63,7 +64,7 @@ extension GetExtension on GetInterface {
             onConfirm?.call();
           },
           style: TextButton.styleFrom(foregroundColor: Colors.blue),
-          child: Text(confirmText),
+          child: Text(confirmText ?? S.current.confirm),
         ),
       ],
     ));

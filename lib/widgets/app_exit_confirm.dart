@@ -3,15 +3,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 ///APP退出确认提醒消息(只针对Android做提醒)
 class AppExitConfirm extends StatelessWidget {
-  final String message;
+  final String? message;
   final Widget child;
   static const _delayMs = 2000;
   static var _lastMs = 0;
-  const AppExitConfirm({super.key, required this.child, this.message = '再按一次退出'});
+  const AppExitConfirm({super.key, required this.child, this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class AppExitConfirm extends StatelessWidget {
         final now = DateTime.now().millisecondsSinceEpoch;
         if(_lastMs == 0 || (now - _lastMs) > _delayMs){
           _lastMs = now;
-          Loading.showToast(message);
+          Loading.showToast(message ?? S.current.pressAgainExit);
           return;
         }
         _lastMs = 0;

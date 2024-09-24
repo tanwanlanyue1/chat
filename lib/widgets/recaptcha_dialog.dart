@@ -5,6 +5,7 @@ import 'package:guanjia/common/extension/web_view_controller_extension.dart';
 import 'package:guanjia/common/paging/default_status_indicators/first_page_error_indicator.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -61,7 +62,7 @@ class _ReCaptchaDialogState extends State<ReCaptchaDialog> {
           Loading.dismiss();
           setState(() {
             isLoading = false;
-            errorMsg = '加载失败';
+            errorMsg = S.current.loadFail;
           });
         }
       }))
@@ -124,7 +125,7 @@ class _ReCaptchaDialogState extends State<ReCaptchaDialog> {
             color: Colors.white,
           ),
           child: FirstPageErrorIndicator(
-            title: '加载验证码失败',
+            title: S.current.loadVCodeFail,
             onTryAgain: () {
               setState(() {
                 isLoading = true;

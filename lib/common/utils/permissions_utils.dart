@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:guanjia/widgets/confirm_dialog.dart';
 
@@ -79,9 +80,9 @@ class PermissionsUtils {
 
     // 如果权限被限制 并且 允许打开跳转 跳转到系统设置权限界面
     if (!isGranted && isOpenSetting) {
-      final message = hintText ?? '需要同意权限才可以该功能';
+      final message = hintText ?? S.current.needPermission;
       final result = await ConfirmDialog.show(
-          message: Text(message), okButtonText: const Text('前往设置'));
+          message: Text(message), okButtonText: Text(S.current.gotoSettings));
       if (result) {
         Future.delayed(const Duration(milliseconds: 300), openAppSettings);
       }
@@ -102,9 +103,9 @@ class PermissionsUtils {
 
     // 如果权限被限制 并且 允许打开跳转 跳转到系统设置权限界面
     if (!isGranted && isOpenSetting) {
-      final message = hintText ?? '需要同意权限才可以该功能';
+      final message = hintText ?? S.current.needPermission;
       final result = await ConfirmDialog.show(
-          message: Text(message), okButtonText: const Text('前往设置'));
+          message: Text(message), okButtonText: Text(S.current.gotoSettings));
       if (result) {
         Future.delayed(const Duration(milliseconds: 300), openAppSettings);
       }

@@ -1,4 +1,5 @@
 import 'package:common_utils/common_utils.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 ///日期扩展
 extension DateTimeExtension on DateTime {
@@ -50,17 +51,16 @@ extension DateTimeExtension on DateTime {
     final duration = now.difference(this);
     var timeStr = '';
     if (duration.inMinutes < 1) {
-      timeStr = '刚刚';
+      timeStr = S.current.justNow;
     } else if (duration.inHours < 1) {
-      timeStr = '${duration.inMinutes}分钟前';
+      timeStr = S.current.aMinuteAgo(duration.inMinutes);
     } else if (duration.inDays < 1) {
-      timeStr = '${duration.inHours}小时前';
+      timeStr = S.current.aHoursAgo(duration.inHours);
     } else if (now.year == year) {
-      timeStr = '$month月$day日 ${fmtNumber(hour)}:${fmtNumber(minute)}';
+      timeStr = S.current.mdFormat(month, day, fmtNumber(hour), fmtNumber(minute));
     } else {
-      timeStr = '$year年$month月$day日 ${fmtNumber(hour)}:${fmtNumber(minute)}';
+      timeStr = S.current.ymdFormat(year, month, day, fmtNumber(hour), fmtNumber(minute));
     }
-
     return timeStr;
   }
 }

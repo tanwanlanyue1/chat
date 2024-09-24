@@ -6,6 +6,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
@@ -30,7 +31,7 @@ class ImageGalleryUtils {
       AppLogger.w('文件下载失败, ex=$ex');
     }
     Loading.dismiss();
-    Loading.showToast(result ? '保存成功' : '保存失败');
+    Loading.showToast(result ? S.current.saveSuccessfully : S.current.saveFail);
     return result;
   }
 
@@ -46,7 +47,7 @@ class ImageGalleryUtils {
 
     final obj = repaintKey.currentContext?.findRenderObject();
     if (obj is! RenderRepaintBoundary) {
-      Loading.showToast('保存失败');
+      Loading.showToast(S.current.saveFail);
       AppLogger.w('render object is not RenderRepaintBoundary');
       return false;
     }
@@ -58,14 +59,14 @@ class ImageGalleryUtils {
     final bytes = byteData?.buffer.asUint8List();
     if (bytes == null) {
       Loading.dismiss();
-      Loading.showToast('保存失败');
+      Loading.showToast(S.current.saveFail);
       AppLogger.w('image bytes null');
       return false;
     }
 
     final result = await _saveImage(bytes);
     Loading.dismiss();
-    Loading.showToast(result ? '保存成功' : '保存失败');
+    Loading.showToast(result ? S.current.saveSuccessfully : S.current.saveFail);
     return result;
   }
 
@@ -83,12 +84,12 @@ class ImageGalleryUtils {
     if (isGranted) {
       return true;
     }
-    const message = '需要同意权限才可以使用保存到相册功能';
+    final message = S.current.saveToAlbumPermissionHint;
 
     //提前弹出提示对话框（华为上架要求)
     if (Platform.isAndroid) {
       final result = await ConfirmDialog.show(
-        message: const Text(message),
+        message: Text(message),
       );
       if(!result){
         AppLogger.w('用户不同意权限请求');
@@ -102,8 +103,8 @@ class ImageGalleryUtils {
     }
     //用户不同意，继续提醒用户手动开启权限
     final result = await ConfirmDialog.show(
-      message: const Text(message),
-      okButtonText: const Text('前往设置')
+      message: Text(message),
+      okButtonText: Text(S.current.gotoSettings)
     );
     if(result){
       Future.delayed(const Duration(milliseconds: 300), openAppSettings);

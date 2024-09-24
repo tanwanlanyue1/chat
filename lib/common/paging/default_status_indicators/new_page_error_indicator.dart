@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 import 'footer_tile.dart';
 
@@ -12,18 +13,18 @@ class NewPageErrorIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) => InkWell(
         onTap: onTap,
-        child: const FooterTile(
+        child: FooterTile(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '加载失败，点击重试',
+                S.current.retryWithLoadFail,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 4,
               ),
-              Icon(
+              const Icon(
                 Icons.refresh,
                 size: 16,
               ),

@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/recaptcha_dialog.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
@@ -82,7 +83,7 @@ class FirebaseUtil{
 
     Loading.dismiss();
     if(verificationId == null){
-      Loading.showToast('验证码发送失败');
+      Loading.showToast(S.current.sendCodeFail);
     }
 
     return verificationId;

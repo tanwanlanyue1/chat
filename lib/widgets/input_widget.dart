@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 ///输入框
 ///disabled:启用
@@ -14,7 +15,7 @@ class InputWidget extends StatelessWidget {
   final bool? disabled;
   final Color? fillColor;
   final bool isPassWord;
-  final String hintText;
+  final String? hintText;
   final TextStyle? textStyle;
   final TextStyle? hintStyle;
   final TextStyle? counterStyle;
@@ -36,7 +37,7 @@ class InputWidget extends StatelessWidget {
     this.disabled,
     this.fillColor,
     this.isPassWord = false,
-    this.hintText = "请输入",
+    this.hintText,
     this.hintVal = '',
     this.lines = 1,
     this.textStyle,
@@ -65,7 +66,7 @@ class InputWidget extends StatelessWidget {
           child: TextFormField(
             enabled: disabled,
             decoration: InputDecoration(
-              hintText: hintText,
+              hintText: hintText ?? S.current.pleaseInput,
               hintStyle: hintStyle ??
                   TextStyle(
                     color: const Color(0XFF999999),

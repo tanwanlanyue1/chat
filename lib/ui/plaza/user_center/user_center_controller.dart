@@ -11,6 +11,7 @@ import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
@@ -97,6 +98,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
         },
       ] : state.userBasics;
       update(['userInfo']);
+      ChatUserInfoCache().updateWithUserModel(state.authorInfo);
     }
   }
 

@@ -422,6 +422,10 @@ mixin _ChatCallMixin {
       ZegoUIKitUser? user,
       Map extraInfo,
     ) {
+      //不显示自己的头像
+      if(user?.id == SS.login.userId?.toString()){
+        return SizedBox.fromSize(size: size);
+      }
       return ChatAvatar.circle(
         userId: user?.id ?? '',
         width: size.width,

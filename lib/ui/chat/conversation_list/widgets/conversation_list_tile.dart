@@ -13,6 +13,7 @@ import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
+import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
@@ -110,9 +111,11 @@ class _ConversationListTileState extends State<ConversationListTile>
         smallSize: 8.rpx,
         isLabelVisible: conversation.unreadMessageCount > 0,
         alignment: const Alignment(-1.1, -1.1),
-        child: ClipRRect(
+        child: ChatAvatar(
+          width: 40.rpx,
+          height: 40.rpx,
+          userId: conversation.id,
           borderRadius: BorderRadius.circular(8.rpx),
-          child: SizedBox(width: 40.rpx, height: 40.rpx, child: conversation.icon),
         ),
       ),
     );

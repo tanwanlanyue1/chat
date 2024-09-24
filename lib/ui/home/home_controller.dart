@@ -40,24 +40,25 @@ class HomeController extends GetxController with GetAutoDisposeMixin {
 
     //监听消息未读数
     final messageUnread = ZIMKit.instance.getTotalUnreadMessageCount();
-    state.messageUnreadRx.value = messageUnread.value;
-    messageUnread.addListener(() {
-      state.messageUnreadRx.value = messageUnread.value +
-          (SS.inAppMessage.latestSysNoticeRx()?.total ?? 0);
-    });
+    _refreshMessageUnread(messageUnread);
+    messageUnread.addListener(() => _refreshMessageUnread(messageUnread));
+    autoDisposeWorker(
+      ever(SS.inAppMessage.latestSysNoticeRx,
+          (data) => _refreshMessageUnread(messageUnread)),
+    );
 
-
-    autoDisposeWorker(ever(SS.inAppMessage.latestSysNoticeRx, (data) {
-      state.messageUnreadRx.value = messageUnread.value + (data?.total ?? 0);
-    }));
-
-    autoDisposeWorker(ever(Global().appStateRx, (state){
-      if(state == AppLifecycleState.resumed){
+    autoDisposeWorker(ever(Global().appStateRx, (state) {
+      if (state == AppLifecycleState.resumed) {
         NotificationManager().jumpWithAppLaunch();
       }
     }));
 
     super.onInit();
+  }
+
+  void _refreshMessageUnread(ValueNotifier<int> messageUnread) {
+    state.messageUnreadRx.value =
+        messageUnread.value + (SS.inAppMessage.latestSysNoticeRx()?.total ?? 0);
   }
 
   @override

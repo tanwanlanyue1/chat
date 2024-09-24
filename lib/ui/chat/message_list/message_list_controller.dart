@@ -94,6 +94,7 @@ class MessageListController extends GetxController
     final userResponse = responses[1] as ApiResponse<UserModel>;
     if (userResponse.isSuccess) {
       state.userInfoRx.value = userResponse.data;
+      userResponse.data?.let(ChatUserInfoCache().updateWithUserModel);
     }
   }
 

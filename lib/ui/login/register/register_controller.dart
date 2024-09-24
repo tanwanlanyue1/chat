@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:guanjia/common/app_config.dart';
-import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
-import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/common/utils/result.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/welcome/privacy_dialog.dart';

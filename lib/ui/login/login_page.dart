@@ -49,6 +49,11 @@ class LoginPage extends StatelessWidget {
                   api: Uri.parse('http://192.168.2.17:20000'),
                   ws: Uri.parse(''),
                 ),
+                //测试服
+                Server(
+                  api: Uri.parse('http://192.168.2.79:20000'),
+                  ws: Uri.parse(''),
+                ),
               ],
             ),
         ],

@@ -192,9 +192,20 @@ class HttpClient {
   static ApiResponse<T> _errorResponse<T>(dynamic exception, Locale? locale) {
     // AppLogger.e('_errorResponse=$exception');
 
-    if(exception is DioError){
+    if(exception is DioError || exception is DioException){
       final response = exception.response;
-      AppLogger.e('_errorResponse: data=${response?.data}, statusCode=${response?.statusCode}, statusMessage=${response?.statusMessage}');
+      final sb = StringBuffer();
+      sb.writeln('type=${exception.type}');
+      sb.writeln('message=${exception.message}');
+      sb.writeln('error=${exception.error}');
+      sb.writeln('stackTrace=${exception.stackTrace}');
+      sb.writeln('response.data=${response?.data}');
+      sb.writeln('response.statusCode=${response?.statusCode}');
+      sb.writeln('response.statusMessage=${response?.statusMessage}');
+      sb.writeln('response.extra=${response?.extra}');
+      sb.writeln('response.headers=${response?.headers}');
+      sb.writeln('response.isRedirect=${response?.isRedirect}');
+      AppLogger.e('${DateTime.now().toString()} _errorResponse: $sb');
     }
 
     AppException? appException;

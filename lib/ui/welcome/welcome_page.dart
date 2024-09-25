@@ -173,8 +173,7 @@ class WelcomePage extends StatelessWidget {
 
   void onStartNow() async{
     await Global.agreePrivacyPolicy();
-    Get.navigateToHomeOrLogin();
-    Get.toNamed(AppRoutes.loginRegisterPage);
+    Get.offAllNamed(AppRoutes.loginPage, arguments: {'isFirstOpenApp': true});
   }
 }
 

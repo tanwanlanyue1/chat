@@ -28,6 +28,17 @@ class LoginController extends GetxController with GetAutoDisposeMixin {
 
   Timer? _timer;
   var _remainingSeconds = 60;
+  ///是否是安装应用后首次打开APP
+  final bool isFirstOpenApp;
+  LoginController(this.isFirstOpenApp);
+
+  @override
+  void onReady() {
+    super.onReady();
+    if(isFirstOpenApp){
+      Get.toNamed(AppRoutes.loginRegisterPage);
+    }
+  }
 
   void changeVisible() {
     state.isVisible.value = !state.isVisible.value;

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
+import 'package:guanjia/common/extension/int_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
-import 'package:guanjia/common/extension/int_extension.dart';
 import 'package:guanjia/widgets/app_image.dart';
-import 'package:guanjia/widgets/edge_insets.dart';
+import 'package:guanjia/widgets/widgets.dart';
 
 class MineMessageListTile extends StatelessWidget {
   final MessageModel item;
@@ -61,16 +61,49 @@ class MineMessageListTile extends StatelessWidget {
                   height: 100.rpx,
                 ),
               ),
-            Text(
-              item.systemMessage?.content ?? '',
-              style: AppTextStyle.fs14m.copyWith(
-                color: AppColor.blackText,
-                height: 1.5,
-              ),
-            ),
+            buildContent(),
           ],
         ),
       ),
     );
+  }
+
+  Widget buildContent() {
+    final content = item.systemMessage?.content ?? '';
+    final highlightText = item.systemMessage?.highlightText ?? '';
+    if (content.isEmpty) {
+      return Spacing.blank;
+    }
+    final index = content.indexOf(highlightText);
+    if (highlightText.isEmpty || index == -1) {
+      return Text(
+        item.systemMessage?.content ?? '',
+        style: AppTextStyle.fs14m.copyWith(
+          color: AppColor.blackText,
+          height: 1.5,
+        ),
+      );
+    }
+
+    final items = [
+      content.substring(0, index),
+      highlightText,
+      content.substring(index + highlightText.length),
+    ];
+
+    return Text.rich(TextSpan(
+        style: AppTextStyle.fs14m.copyWith(
+          color: AppColor.blackText,
+          height: 1.5,
+        ),
+        children: [
+          if (items[0].isNotEmpty) TextSpan(text: items[0]),
+          if (items[1].isNotEmpty)
+            TextSpan(
+              text: items[1],
+              style: const TextStyle(color: AppColor.primaryBlue),
+            ),
+          if (items[2].isNotEmpty) TextSpan(text: items[2]),
+        ]));
   }
 }

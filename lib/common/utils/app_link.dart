@@ -23,7 +23,7 @@ class AppLink{
 
         //聊天
         if(pathOrUrl == AppRoutes.messageListPage){
-          final conversationId = args?.getStringOrNull('conversationId');
+          final conversationId = args?['conversationId']?.toString();
           final userId = conversationId?.let(int.tryParse);
           if(userId != null){
             ChatManager().startChat(userId: userId);

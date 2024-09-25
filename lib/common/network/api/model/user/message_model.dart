@@ -136,7 +136,10 @@ class SystemMessage {
     return hex?.color;
   }
 
-
+  //内容高亮文本
+  String? get highlightText{
+    return extraJson?.getStringOrNull('highlightText');
+  }
 }
 
 class ExtraJson {

@@ -47,7 +47,7 @@ class OrderCancelDialog extends StatelessWidget {
                     ),
                     SizedBox(height: 16.rpx,),
                     Text(
-                      S.current.areYouSure,
+                      '确定要取消订单吗？',
                       style: AppTextStyle.fs16b.copyWith(
                         color: AppColor.blackBlue,
                       ),

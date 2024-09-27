@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
+import 'package:guanjia/ui/order/order_detail/widget/order_cancel_dialog.dart';
 import 'package:guanjia/ui/order/order_list/order_list_controller.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
@@ -32,7 +34,15 @@ class OrderOperationButtons extends StatelessWidget {
       case OrderOperationType.accept:
         children.addAll([
           _buildLeft(
-            onTap: () => controller.onTapOrderAcceptOrReject(false, item.id),
+            onTap: () async{
+              final receiveId = item.itemModel.receiveId;
+              final requestId = item.itemModel.requestId;
+              final userId = SS.login.info?.uid == receiveId ? requestId : receiveId;
+              final cancel = await OrderCancelDialog.show(userId);
+              if(cancel == true){
+                controller.onTapOrderAcceptOrReject(false, item.id);
+              }
+            },
           ),
           SizedBox(width: 24.rpx),
           _buildRight(

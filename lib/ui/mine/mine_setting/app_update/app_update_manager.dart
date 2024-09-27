@@ -63,15 +63,14 @@ class AppUpdateManager {
       android: AndroidNotificationDetails(
         NotificationManager.appUpdateChannel.id,
         NotificationManager.appUpdateChannel.name,
+        icon: 'logo',
         channelShowBadge: false,
         importance: Importance.max,
         priority: Priority.high,
         onlyAlertOnce: true,
         showProgress: true,
-        icon: 'logo',
         maxProgress: 100,
         progress: (progress * 100).toInt(),
-        autoCancel: false,
       ),
     );
     await FlutterLocalNotificationsPlugin().show(

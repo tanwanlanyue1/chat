@@ -100,7 +100,6 @@ class NotificationManager {
       appUpdateChannel.id,
       appUpdateChannel.name,
       description: appUpdateChannel.name,
-      importance: Importance.max,
       enableVibration: false,
       showBadge: false,
       playSound: false,

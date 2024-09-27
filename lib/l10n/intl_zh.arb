@@ -731,6 +731,7 @@
   "friendDepositBeingPaid": "您已参与Ta的征友约会，请您及时缴纳保证金",
   "dateOrderCompleted": "约会订单已完成",
   "cancelOrderTips": "注：如约会双方均已缴纳保证金，则取消约会将需支付违约金。",
+  "cancelOrderTitle": "取消与 {name} 的约会订单？",
   "thinkItOver": "我再想想",
   "firmCancellation": "确定取消订单",
   "balanceLabel": "余额：{balance}",

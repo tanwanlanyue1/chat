@@ -53,8 +53,8 @@ class OrderDetailController extends GetxController
   }
 
   @override
-  Future<bool> onTapOrderCancel(int orderId,int peerId,int requestId) async {
-    final res = await super.onTapOrderCancel(orderId,peerId,requestId);
+  Future<bool> onTapOrderCancel(int orderId,int receiveId,int requestId) async {
+    final res = await super.onTapOrderCancel(orderId,receiveId,requestId);
     if (res) return await _fetchData();
     return res;
   }

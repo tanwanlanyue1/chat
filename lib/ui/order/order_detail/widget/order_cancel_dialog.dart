@@ -46,12 +46,7 @@ class OrderCancelDialog extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 16.rpx,),
-                    Text(
-                      '确定要取消订单吗？',
-                      style: AppTextStyle.fs16b.copyWith(
-                        color: AppColor.blackBlue,
-                      ),
-                    ),
+                    buildDesc(),
                     Padding(
                       padding: FEdgeInsets(top: 12.rpx, bottom: 24.rpx),
                       child: Text(
@@ -126,7 +121,7 @@ class OrderCancelDialog extends StatelessWidget {
   Widget buildDesc() {
     return ChatUserBuilder(userId: id.toString(), builder: (info){
       return Text(
-        S.current.sureToInitiateDateWith(info?.baseInfo.userName ?? ''),
+        S.current.cancelOrderTitle(info?.baseInfo.userName ?? ''),
         textAlign: TextAlign.center,
         style: AppTextStyle.fs14b.copyWith(
           color: AppColor.blackBlue,

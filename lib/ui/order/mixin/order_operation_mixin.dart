@@ -29,10 +29,10 @@ mixin OrderOperationMixin {
 
   /// 取消订单
   /// orderId: 订单id
-  /// peerId: 接单人id
+  /// receiveId: 接单人id
   /// requestId: 发起人id
-  Future<bool> onTapOrderCancel(int orderId,int peerId,int requestId) async {
-    int id = SS.login.info?.uid == peerId ? requestId : peerId;
+  Future<bool> onTapOrderCancel(int orderId,int receiveId,int requestId) async {
+    int id = SS.login.info?.uid == receiveId ? requestId : receiveId;
     final cancel = await OrderCancelDialog.show(id);
     if(cancel == true){
       Loading.show();

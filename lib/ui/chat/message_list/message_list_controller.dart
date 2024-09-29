@@ -208,8 +208,6 @@ class MessageListController extends GetxController
     _conversationNotifier?.removeListener(_onConversationChanged);
     recordProcessor.unregister();
     scrollController.dispose();
-    ChatUserInfoCache().delete(userId.toString());
-    ChatUserInfoCache().delete(SS.login.userId.toString());
   }
 
   MessageListController({

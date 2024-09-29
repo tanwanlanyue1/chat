@@ -75,11 +75,4 @@ class ContactController extends GetxController with GetAutoDisposeMixin {
     }
   }
 
-  void onTapItem(int index) {
-    final users = [19, 20, 21];
-    final id = users.elementAtOrNull(index);
-    if (id != null && id != SS.login.userId) {
-      ChatManager().startChat(userId: id);
-    }
-  }
 }

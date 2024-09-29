@@ -1,27 +1,20 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/app_position.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/httpclient/api_response.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/firebase_util.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/common/utils/result.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
-import 'package:guanjia/ui/home/home_page.dart';
-import 'package:guanjia/widgets/loading.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
 import 'package:guanjia/widgets/recaptcha_dialog.dart';
 import 'package:guanjia/widgets/widgets.dart';
-import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
-import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
 
 import '../event/login_event.dart';
 import 'service.dart';
@@ -465,6 +458,7 @@ class LoginService extends GetxService {
     _info.value = null;
 
     _isLogin.value = false;
+    ChatUserInfoCache().clear();
   }
 
   ///用户未登录，接口401回调

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -9,13 +10,18 @@ import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/wallet/enum/wallet_enum.dart';
+import 'package:guanjia/ui/wallet/recharge/wallet_recharge_view.dart';
+import 'package:guanjia/ui/wallet/record/wallet_record_view.dart';
 import 'package:guanjia/ui/wallet/wallet_controller.dart';
 import 'package:guanjia/ui/wallet/widgets/record/wallet_record_widget.dart';
-import 'package:guanjia/ui/wallet/widgets/wallet_top_up_widget.dart';
+import 'package:guanjia/ui/wallet/widgets/wallet_recharge_widget.dart';
 import 'package:guanjia/ui/wallet/widgets/wallet_transfer_widget.dart';
 import 'package:guanjia/ui/wallet/widgets/wallet_withdrawal_widget.dart';
+import 'package:guanjia/ui/wallet/withdraw/wallet_withdraw_view.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/widgets.dart';
 
+///我的钱包
 class WalletPage extends StatelessWidget {
   WalletPage({super.key});
 
@@ -45,15 +51,13 @@ class WalletPage extends StatelessWidget {
       body: Stack(
         children: [
           _buildTopBackground(),
-          Obx(() {
-            return Column(
-              children: [
-                _buildCard(),
-                _buildOperationWidget(),
-                _buildBottom(),
-              ],
-            );
-          }),
+          Column(
+            children: [
+              _buildCard(),
+              _buildOperationWidget(),
+              Expanded(child: _buildTabBarView()),
+            ],
+          ),
         ],
       ),
     );
@@ -61,7 +65,7 @@ class WalletPage extends StatelessWidget {
 
   Widget _buildTopBackground() {
     return Container(
-      height: 310.rpx,
+      height: 274.rpx,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.centerLeft,
@@ -77,65 +81,56 @@ class WalletPage extends StatelessWidget {
 
   Widget _buildCard() {
     return Container(
-      height: 190.rpx,
-      width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 36.rpx),
       padding: EdgeInsets.symmetric(horizontal: 16.rpx, vertical: 24.rpx),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.rpx),
-      ),
+          borderRadius: BorderRadius.circular(8.rpx),
+          image: const DecorationImage(
+            image: AppAssetImage('assets/images/wallet/wallet_card_bg.png'),
+            fit: BoxFit.cover,
+          )),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 44.rpx,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      S.current.totalBalance,
-                      style: AppTextStyle.st
-                          .size(12.rpx)
-                          .textColor(AppColor.black9)
-                          .copyWith(height: 1),
-                    ),
-                    Obx((){
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '当前余额【USDT】',
+                    style: AppTextStyle.st.medium
+                        .size(12.rpx)
+                        .textColor(AppColor.blackBlue)
+                        .copyWith(height: 1),
+                  ),
+                  Padding(
+                    padding: FEdgeInsets(top: 10.rpx),
+                    child: Obx(() {
                       return Text(
-                        SS.login.info?.balance.toCurrencyString() ?? '',
+                        SS.login.info?.balance.toStringAsTrimZero() ?? '',
                         style: AppTextStyle.st.medium
-                            .size(20.rpx)
+                            .size(24.rpx)
                             .textColor(AppColor.black3)
                             .copyWith(height: 1),
                       );
                     }),
-                  ],
-                ),
-                Text(
-                  S.current.guanJiaWallet,
-                  style: AppTextStyle.st.bold
-                      .size(16.rpx)
-                      .textColor(AppColor.primary)
-                      .copyWith(height: 1),
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              Text(
+                S.current.guanJiaWallet,
+                style: AppTextStyle.st.bold
+                    .size(16.rpx)
+                    .textColor(AppColor.primaryBlue)
+                    .copyWith(height: 1),
+              ),
+            ],
           ),
-          SizedBox(height: 24.rpx),
-          Text(
-            "****   ****   ****   5126",
-            style: AppTextStyle.st.medium
-                .size(16.rpx)
-                .textColor(AppColor.black6)
-                .copyWith(height: 1),
-          ),
-          const Spacer(),
-          SizedBox(
+          Container(
+            margin: FEdgeInsets(top: 26.rpx),
             height: 34.rpx,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -155,7 +150,7 @@ class WalletPage extends StatelessWidget {
                                   .copyWith(height: 1),
                             ),
                             Text(
-                              "￥5460.00",
+                              "5460.00",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyle.st.medium
@@ -185,7 +180,7 @@ class WalletPage extends StatelessWidget {
                                   .copyWith(height: 1),
                             ),
                             Text(
-                              "￥9888.10",
+                              "9888.10",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyle.st.medium
@@ -214,11 +209,9 @@ class WalletPage extends StatelessWidget {
 
   Widget _buildOperationWidget() {
     return Container(
-      height: 118.rpx,
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 24.rpx),
-      padding: EdgeInsets.symmetric(horizontal: 16.rpx)
-          .copyWith(top: 16.rpx, bottom: 24.rpx),
+      padding: FEdgeInsets(top: 12.rpx, bottom: 16.rpx),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8.rpx),
@@ -230,14 +223,20 @@ class WalletPage extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
-        children: List.generate(4, (index) {
-          final type = WalletOperationType.valueForIndex(index);
-          return _buildOperationButton(
-            onTap: () => controller.onTapOperation(type),
-            type: type,
+      child: AnimatedBuilder(
+        animation: controller.tabController,
+        builder: (_, child){
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: List.generate(WalletOperationType.values.length, (index) {
+              final type = WalletOperationType.valueForIndex(index);
+              return _buildOperationButton(
+                onTap: () => controller.onTapOperation(type),
+                type: type,
+              );
+            }),
           );
-        }).separated(const Spacer()).toList(),
+        },
       ),
     );
   }
@@ -248,20 +247,14 @@ class WalletPage extends StatelessWidget {
   }) {
     final String title;
     final String image;
-    final bool isSelected = type == state.typeIndex.value;
+    final bool isSelected = type.index == controller.tabController.index;
 
     switch (type) {
-      case WalletOperationType.topUp:
+      case WalletOperationType.recharge:
         title = S.current.topUp;
         image = isSelected
             ? "assets/images/wallet/top_up_select.png"
             : "assets/images/wallet/top_up_normal.png";
-        break;
-      case WalletOperationType.transfer:
-        title = S.current.transferAccounts;
-        image = isSelected
-            ? "assets/images/wallet/transfer_select.png"
-            : "assets/images/wallet/transfer_normal.png";
         break;
       case WalletOperationType.withdrawal:
         title = S.current.withdrawal;
@@ -285,44 +278,35 @@ class WalletPage extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           AppImage.asset(
             image,
             length: 60.rpx,
           ),
-          Text(
-            title,
-            style: AppTextStyle.st
-                .size(14.rpx)
-                .textColor(AppColor.black3)
-                .copyWith(height: 1),
+          Padding(
+            padding: FEdgeInsets(top: 4.rpx),
+            child: Text(
+              title,
+              style: AppTextStyle.st
+                  .size(14.rpx)
+                  .textColor(AppColor.black6)
+                  .copyWith(height: 1),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBottom() {
-    final Widget widget;
-
-    switch (state.typeIndex.value) {
-      case WalletOperationType.topUp:
-        widget = WalletTopUpWidget();
-        break;
-      case WalletOperationType.transfer:
-        widget = WalletTransferWidget();
-        break;
-      case WalletOperationType.withdrawal:
-        widget = WalletWithdrawalWidget();
-        break;
-      case WalletOperationType.record:
-        widget = WalletRecordWidget();
-        break;
-    }
-
-    return Expanded(
-      child: widget,
+  Widget _buildTabBarView() {
+    return TabBarView(
+      controller: controller.tabController,
+      physics: const NeverScrollableScrollPhysics(),
+      children: const [
+        WalletRechargeView(),
+        WalletWithdrawView(),
+        WalletRecordView(),
+      ],
     );
   }
 }

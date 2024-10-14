@@ -1,6 +1,5 @@
 enum WalletOperationType {
-  topUp, // 充值
-  transfer, // 转账
+  recharge, // 充值
   withdrawal, // 提现
   record; // 记录
 

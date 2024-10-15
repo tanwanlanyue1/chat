@@ -92,7 +92,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
                   !widget.obscureText
                       ? "assets/images/common/password_visible.png"
                       : "assets/images/common/password_invisible.png",
-                  length: 24.rpx,
+                  size: 24.rpx,
                 ),
               ),
           ],

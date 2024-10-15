@@ -125,7 +125,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                                 state.selectIndex.value == index
                                     ? "assets/images/order/choose_select.png"
                                     : "assets/images/order/choose_normal.png",
-                                length: 24.rpx,
+                                size: 24.rpx,
                               ),
                             ],
                           ),

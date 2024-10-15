@@ -132,7 +132,7 @@ class SpeedDatingPage extends StatelessWidget {
                                             isVideo
                                                 ? "assets/images/plaza/video.png"
                                                 : "assets/images/plaza/voice.png",
-                                            length: 24.rpx,
+                                            size: 24.rpx,
                                           ),
                                           SizedBox(width: 16.rpx),
                                           Text(
@@ -265,7 +265,7 @@ class SpeedDatingPage extends StatelessWidget {
                 state.isCameraOpen.value
                     ? "assets/images/plaza/camera_open.png"
                     : "assets/images/plaza/camera_close.png",
-                length: 24.rpx,
+                size: 24.rpx,
               ),
               Text(
                 state.isCameraOpen.value ? S.current.open : S.current.close,
@@ -376,7 +376,7 @@ class SpeedDatingPage extends StatelessWidget {
         ),
         AppImage.asset(
           "assets/images/plaza/speed_head_default.png",
-          length: 80.rpx,
+          size: 80.rpx,
         ),
         if (state.isAnimation.value) ...avatarList(),
       ],
@@ -409,13 +409,13 @@ class SpeedDatingPage extends StatelessWidget {
                 shape: BoxShape.circle,
                 placeholder: AppImage.asset(
                   "assets/images/plaza/speed_head_bg.png",
-                  length: 100.rpx,
+                  size: 100.rpx,
                 ),
               ),
             ),
             AppImage.asset(
               "assets/images/plaza/speed_head_default.png",
-              length: 100.rpx,
+              size: 100.rpx,
             ),
           ],
         ),

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/common/network/api/model/payment/talk_payment.dart';
 import 'package:guanjia/generated/l10n.dart';
 
 class OrderPaymentState {

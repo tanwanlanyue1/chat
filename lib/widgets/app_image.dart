@@ -14,7 +14,7 @@ class AppImage extends StatelessWidget {
   ///本地图片资源
   AppImage.asset(
     String name, {
-    double? length, // 当宽高一致时方便调用，有值时width和height的设置无效
+    double? size, // 当宽高一致时方便调用，有值时width和height的设置无效
     double? width,
     double? height,
     Color? color,
@@ -25,8 +25,8 @@ class AppImage extends StatelessWidget {
     super.key,
   }) : child = Image.asset(
           name,
-          width: length ?? width,
-          height: length ?? height,
+          width: size ?? width,
+          height: size ?? height,
           color: color,
           opacity: opacity,
           fit: fit,

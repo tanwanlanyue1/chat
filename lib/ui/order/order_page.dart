@@ -53,7 +53,7 @@ class OrderPage extends StatelessWidget {
                       padding: EdgeInsets.only(left: 4.rpx),
                       child: AppImage.asset(
                         "assets/images/common/solid_arrow_down.png",
-                        length: 12.rpx,
+                        size: 12.rpx,
                       ),
                     ),
                     selectedValue: state.selectDay.value,

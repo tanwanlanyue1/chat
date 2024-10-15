@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/ui/wallet/enum/wallet_enum.dart';
 
@@ -21,7 +22,9 @@ class WalletController extends GetxController
     SS.login.fetchMyInfo();
   }
 
-  void onTapOrder() {}
+  void onTapOrder() {
+    Get.toNamed(AppRoutes.walletOrderListPage);
+  }
 
   void onTapOperation(WalletOperationType type) {
     tabController.index = type.index;

@@ -290,7 +290,7 @@ class _OrderListPageState extends State<OrderListPage>
                   item.isSelect
                       ? "assets/images/common/arrow_up.png"
                       : "assets/images/common/arrow_down.png",
-                  length: 20.rpx,
+                  size: 20.rpx,
                 ),
               ],
             ),
@@ -382,7 +382,7 @@ class _OrderListItemWidgetState extends State<OrderListItemWidget> {
                   children: [
                     AppImage.asset(
                       "assets/images/order/time.png",
-                      length: 16.rpx,
+                      size: 16.rpx,
                     ),
                     SizedBox(width: 8.rpx),
                     Text(

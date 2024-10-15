@@ -102,7 +102,7 @@ class OrderEvaluationPage extends StatelessWidget {
                             isSelected
                                 ? "assets/images/order/star_select.png"
                                 : "assets/images/order/star_normal.png",
-                            length: 36.rpx,
+                            size: 36.rpx,
                           ),
                         );
                       }),

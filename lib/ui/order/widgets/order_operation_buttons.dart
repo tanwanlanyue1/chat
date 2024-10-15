@@ -163,7 +163,7 @@ class OrderOperationButtons extends StatelessWidget {
           children: [
             AppImage.asset(
               "assets/images/common/contact.png",
-              length: 20.rpx,
+              size: 20.rpx,
             ),
             Text(
               S.current.contactToBeauty,

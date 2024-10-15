@@ -27,7 +27,7 @@ class AvatarPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 10.rpx),
               child: AppImage.asset(
                 "assets/images/mine/more.png",
-                length: 24.rpx,
+                size: 24.rpx,
               ),
             ),
           ),

@@ -110,7 +110,7 @@ class MyVipPage extends StatelessWidget {
                                                   if (isVip)
                                                     AppImage.asset(
                                                       "assets/images/mine/vip_avatar_frame.png",
-                                                      length: 50.rpx,
+                                                      size: 50.rpx,
                                                     ),
                                                 ],
                                               ),
@@ -595,7 +595,7 @@ class MyVipPage extends StatelessWidget {
                                     state.selectProtocol.value
                                         ? "assets/images/order/choose_select.png"
                                         : "assets/images/order/choose_normal.png",
-                                    length: 16.rpx,
+                                    size: 16.rpx,
                                   ),
                                 ),
                                 SizedBox(width: 8.rpx),

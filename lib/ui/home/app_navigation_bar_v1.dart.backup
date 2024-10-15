@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -11,10 +10,7 @@ import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:guanjia/widgets/foreground_gradient_mask.dart';
 import 'package:lottie/lottie.dart';
 
-typedef AppNavigationIconBuilder = Widget Function(
-    AppBarItem item, Widget icon);
-
-const _kAppNavigationBarHeight = 56.0;
+typedef AppNavigationIconBuilder = Widget Function(AppBarItem item, Widget icon);
 
 class AppNavigationBar extends StatefulWidget {
   final List<AppBarItem> items;
@@ -22,12 +18,13 @@ class AppNavigationBar extends StatefulWidget {
   final int currentIndex;
   final AppNavigationIconBuilder? iconBuilder;
 
-  const AppNavigationBar(
-      {super.key,
-      required this.items,
-      this.onTap,
-      this.currentIndex = 0,
-      this.iconBuilder});
+  const AppNavigationBar({
+    super.key,
+    required this.items,
+    this.onTap,
+    this.currentIndex = 0,
+    this.iconBuilder
+  });
 
   @override
   State<AppNavigationBar> createState() => _AppNavigationBarState();
@@ -55,7 +52,6 @@ class _AppNavigationBarState extends State<AppNavigationBar>
   }
 
   void _resetState() {
-    const duration = 300;
     if (_indicatorController != null) {
       _indicatorController?.dispose();
     }
@@ -63,7 +59,7 @@ class _AppNavigationBarState extends State<AppNavigationBar>
       vsync: this,
       currentIndex: widget.currentIndex,
       itemWidth: Get.width / widget.items.length,
-      duration: const Duration(milliseconds: duration),
+      duration: const Duration(milliseconds: 175),
     );
     _indicatorController?.value = 1;
 
@@ -73,7 +69,7 @@ class _AppNavigationBarState extends State<AppNavigationBar>
     _controllers =
         List<AnimationController>.generate(widget.items.length, (int index) {
       return AnimationController(
-        duration: Duration(milliseconds: duration),
+        duration: Duration(milliseconds: (175 * 0.6).toInt()),
         vsync: this,
       );
     });
@@ -109,24 +105,22 @@ class _AppNavigationBarState extends State<AppNavigationBar>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      clipBehavior: Clip.none,
-      children: [
-        Material(
-          elevation: 8,
-          color: Colors.white,
-          child: SafeArea(
-            top: false,
-            left: false,
-            right: false,
-            bottom: true,
-            child: _buildNavigationBackground(),
-          ),
+    return Material(
+      elevation: 8,
+      color: Colors.white,
+      child: SafeArea(
+        top: false,
+        left: false,
+        right: false,
+        bottom: true,
+        child: Stack(
+          children: [
+            _buildNavigationBackground(),
+            _buildHighlightIndicator(),
+            _buildNavigationForeground(),
+          ],
         ),
-        _buildHighlightIndicator(),
-        _buildNavigationForeground(),
-      ],
+      ),
     );
   }
 
@@ -134,7 +128,7 @@ class _AppNavigationBarState extends State<AppNavigationBar>
     return Row(
       children: widget.items.mapIndexed((index, item) {
         return Expanded(
-          child: _Tile(
+          child:  _Tile(
             item: item,
             selected: widget.currentIndex == index,
             animation: _animations[index],
@@ -149,9 +143,17 @@ class _AppNavigationBarState extends State<AppNavigationBar>
   }
 
   Widget _buildNavigationBackground() {
-    return SizedBox(
-      width: double.infinity,
-      height: _kAppNavigationBarHeight.rpx,
+    return Row(
+      children: widget.items.mapIndexed((index, item) {
+        return Expanded(
+          child: _Tile(
+            item: item,
+            onTap: () {
+              widget.onTap?.call(index);
+            },
+          ),
+        );
+      }).toList(growable: false),
     );
   }
 
@@ -160,37 +162,20 @@ class _AppNavigationBarState extends State<AppNavigationBar>
     if (controller == null) {
       return const SizedBox.shrink();
     }
-    final size = 50.rpx;
-    final dx = (controller.itemWidth - size) * 0.5;
+    final dx = (controller.itemWidth - 32.rpx) * 0.5;
     return ValueListenableBuilder(
       valueListenable: controller,
       builder: (ctx, _, child) {
         final offset = controller.offset;
         return Positioned(
+          top: 6.rpx,
           left: offset.dx + dx,
-          top: -12.rpx,
           child: Container(
-            width: size,
-            height: size,
-            alignment: Alignment.center,
-            decoration: ShapeDecoration(
-              shape: const CircleBorder(),
-              color: Colors.white,
-              shadows: [
-                BoxShadow(
-                  color: const Color.fromRGBO(207, 207, 207, 0.3),
-                  offset: Offset(0, -3.rpx),
-                  blurRadius: 3.rpx,
-                )
-              ],
-            ),
-            child: Container(
-              width: size * 0.8,
-              height: size * 0.8,
-              decoration: const ShapeDecoration(
-                shape: CircleBorder(),
-                gradient: AppColor.horizontalGradient,
-              ),
+            width: 32.rpx,
+            height: 32.rpx,
+            decoration: const ShapeDecoration(
+              shape: CircleBorder(),
+              gradient: AppColor.horizontalGradient,
             ),
           ),
         );
@@ -226,16 +211,15 @@ class _Tile extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
-      child: SizedBox(
-        height: _kAppNavigationBarHeight.rpx,
+      child: Padding(
+        padding: FEdgeInsets(vertical: 6.rpx),
         child: Column(
-          // mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             iconBuilder?.call(item, icon) ?? icon,
             Padding(
-              padding: FEdgeInsets(top: 2.rpx),
+              padding: FEdgeInsets(top: 4.rpx),
               child: ForegroundGradientMask(
                 gradient: AppColor.verticalGradient,
                 isMask: selected,
@@ -278,45 +262,17 @@ class _TileIcon extends StatelessWidget {
       child: animation == null
           ? AppImage.asset(
               item.icon,
-              opacity: AlwaysStoppedAnimation(0),
             )
-          : (selected
-              ? AnimatedBuilder(
-                  animation: animation,
-                  builder: (ctx, child) {
-                    const v = 0.8;
-                    if (animation.value >= v) {
-                      final anim = (animation.value - v) / (1 - v);
-
-                      //1-value/diff
-                      //0.6
-                      //0.5-1.0  0-1
-                      //0 - -8
-                      print('${animation.value}  $anim');
-                      return Transform.translate(
-                          offset: Offset(0, (-8 * anim).rpx),
-                          child: Lottie.asset(item.activeIcon, repeat: false));
-                      // return AnimatedSlide(offset: Offset(0, 6.rpx), child: Lottie.asset(item.activeIcon, repeat: false), duration: kTabScrollDuration,);
-                    } else {
-                      return const SizedBox.shrink();
-                      // return AppImage.asset(
-                      //   item.icon,
-                      // );
-                    }
-                  },
-                )
-              : AnimatedBuilder(
-                  animation: animation,
-                  builder: (ctx, child) {
-                    return Transform.translate(
-                      offset: Offset(0, (-8 * animation.value).rpx),
-                      child: AppImage.asset(
-                        item.icon,
-                        // color: ColorTween(begin: Color(0xFF4B5672), end: Colors.white).animate(animation).value,
-                      ),
-                    );
-                  },
-                )),
+          : AnimatedBuilder(
+              animation: animation,
+              builder: (ctx, child) {
+                if (animation.value >= 1) {
+                  return Lottie.asset(item.activeIcon, repeat: false);
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
     );
   }
 }
@@ -336,7 +292,7 @@ class _IndicatorAnimationController extends AnimationController {
   }) {
     txAnimation = CurvedAnimation(
       parent: this,
-      curve: Curves.easeOut,
+      curve: Curves.decelerate,
       reverseCurve: Curves.linear,
     );
     setCurrentIndex(currentIndex);

@@ -134,7 +134,7 @@ class OrderAssignAgentDialog extends GetView<OrderAssignAgentController> {
                           item.gender == 2
                               ? "assets/images/common/female.png"
                               : "assets/images/common/male.png",
-                          length: 16.rpx,
+                          size: 16.rpx,
                         ),
                       ),
                     Expanded(

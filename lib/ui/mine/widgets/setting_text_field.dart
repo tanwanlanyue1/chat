@@ -102,7 +102,7 @@ class SettingTextField extends StatelessWidget {
                   obscureText
                       ? "assets/images/common/password_invisible.png"
                       : "assets/images/common/password_visible.png",
-                  length: 24.rpx,
+                  size: 24.rpx,
                 ),
               ),
             ),

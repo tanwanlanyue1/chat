@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 class WalletRechargeController extends GetxController {
@@ -15,8 +16,11 @@ class WalletRechargeController extends GetxController {
     }
 
     //TODO 接口下单
+    Loading.show();
+    await Future.delayed(1.seconds);
+    Loading.dismiss();
 
-
+    Get.toNamed(AppRoutes.rechargeOrderPage);
 
   }
 

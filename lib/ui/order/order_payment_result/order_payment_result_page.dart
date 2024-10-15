@@ -76,7 +76,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
         SizedBox(height: 36.rpx),
         AppImage.asset(
           "assets/images/order/success.png",
-          length: 70.rpx,
+          size: 70.rpx,
         ),
         SizedBox(height: 24.rpx),
         Text(
@@ -187,7 +187,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
         SizedBox(height: 36.rpx),
         AppImage.asset(
           "assets/images/order/fail.png",
-          length: 70.rpx,
+          size: 70.rpx,
         ),
         SizedBox(height: 24.rpx),
         Text(

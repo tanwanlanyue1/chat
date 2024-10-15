@@ -1,42 +1,11 @@
 import 'package:guanjia/common/network/network.dart';
 
-/// 支付API
+import 'model/payment/payment_order_info.dart';
+
+///支付 API
 class PaymentApi {
   const PaymentApi._();
 
-  /// 查询境修币选项、活动列表
-  /// - type 0安卓，1苹果，2web
-  static Future<ApiResponse<List<PaymentConfigRes>>> configList(int type) {
-    return HttpClient.get(
-      '/api/pay/getConfigList',
-      params: {
-        'type': type,
-      },
-      dataConverter: (json) {
-        if (json is List) {
-          return json.map((e) => PaymentConfigRes.fromJson(e)).toList();
-        }
-        return [];
-      },
-    );
-  }
-
-  /// 查询充值渠道列表
-  /// - type 0安卓，1苹果，2web
-  static Future<ApiResponse<List<PaymentChannelRes>>> channelList(int type) {
-    return HttpClient.get(
-      '/api/pay/getChannelList',
-      params: {
-        'type': type,
-      },
-      dataConverter: (json) {
-        if (json is List) {
-          return json.map((e) => PaymentChannelRes.fromJson(e)).toList();
-        }
-        return [];
-      },
-    );
-  }
 
   /// 用户充值操作
   ///- payChannelId 渠道ID

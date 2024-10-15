@@ -135,7 +135,7 @@ class _ChatPageState extends State<ChatPage>
                                                     UserGender.male
                                                 ? "assets/images/mine/man.png"
                                                 : "assets/images/mine/woman.png",
-                                            length: 16.rpx,
+                                            size: 16.rpx,
                                           ),
                                         ),
                                       Text(

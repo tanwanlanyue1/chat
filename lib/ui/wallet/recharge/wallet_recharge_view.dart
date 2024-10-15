@@ -19,89 +19,86 @@ class WalletRechargeView extends StatefulWidget {
   State<WalletRechargeView> createState() => _WalletRechargeViewState();
 }
 
-class _WalletRechargeViewState extends State<WalletRechargeView> with AutomaticKeepAliveClientMixin {
-
+class _WalletRechargeViewState extends State<WalletRechargeView>
+    with AutomaticKeepAliveClientMixin {
   final controller = Get.put(WalletRechargeController());
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SingleChildScrollView(
-      physics: const ClampingScrollPhysics(),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(
-            top: 24.rpx, bottom: Get.mediaQuery.padding.bottom + 24.rpx),
-        child: Column(
-          children: [
-            _buildItem(
-              title: '充值币种：',
-              child: Container(
-                alignment: Alignment.center,
-                height: 46.rpx,
-                decoration: BoxDecoration(
-                  color: AppColor.grayBackground,
-                  borderRadius: BorderRadius.circular(8.rpx),
-                ),
-                child: Text(
-                  'USDT',
-                  style: AppTextStyle.fs18b.copyWith(
-                    color: AppColor.black3,
-                  ),
-                ),
-              ),
-            ),
-            Spacing.h24,
-            _buildItem(
-              title: '充值金额：',
-              child: Container(
-                alignment: Alignment.center,
-                height: 46.rpx,
-                decoration: BoxDecoration(
-                  color: AppColor.grayBackground,
-                  borderRadius: BorderRadius.circular(8.rpx),
-                ),
-                child: TextField(
-                  controller: controller.amountEditingController,
-                  expands: true,
-                  maxLines: null,
-                  style: AppTextStyle.fs14b.copyWith(
-                    color: AppColor.black3,
-                  ),
-                  keyboardType: const TextInputType.numberWithOptions(
-                    signed: false,
-                    decimal: true,
-                  ),
-                  inputFormatters: [
-                    DecimalTextInputFormatter(
-                      maxValue: SS.appConfig.transferMaxAmount,
-                      maxValueHint:
-                      '最大充值金额不能超过${SS.appConfig.transferMaxAmount.toStringAsTrimZero()}',
-                      decimalDigits: SS.appConfig.decimalDigits,
-                    )
-                  ],
-                  textAlignVertical: TextAlignVertical.center,
-                  decoration: InputDecoration(
-                    hintText: '请输入充值金额',
-                    hintStyle: const TextStyle(color: AppColor.black9),
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    contentPadding: FEdgeInsets(horizontal: 12.rpx),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: FEdgeInsets(top: 36.rpx, bottom: 24.rpx + Get.padding.bottom),
-              child: CommonGradientButton(
-                onTap: controller.onSubmit,
-                width: 300.rpx,
-                height: 50.rpx,
-                text: '前往充值',
-              ),
-            ),
-          ],
-        ),
+    return ListView(
+      padding: FEdgeInsets(
+        horizontal: 16.rpx,
+        top: 24.rpx,
+        bottom: Get.mediaQuery.padding.bottom + 24.rpx,
       ),
+      children: [
+        _buildItem(
+          title: '充值币种：',
+          child: Container(
+            alignment: Alignment.center,
+            height: 46.rpx,
+            decoration: BoxDecoration(
+              color: AppColor.grayBackground,
+              borderRadius: BorderRadius.circular(8.rpx),
+            ),
+            child: Text(
+              'USDT',
+              style: AppTextStyle.fs18b.copyWith(
+                color: AppColor.black3,
+              ),
+            ),
+          ),
+        ),
+        Spacing.h24,
+        _buildItem(
+          title: '充值金额：',
+          child: Container(
+            alignment: Alignment.center,
+            height: 46.rpx,
+            decoration: BoxDecoration(
+              color: AppColor.grayBackground,
+              borderRadius: BorderRadius.circular(8.rpx),
+            ),
+            child: TextField(
+              controller: controller.amountEditingController,
+              expands: true,
+              maxLines: null,
+              style: AppTextStyle.fs14b.copyWith(
+                color: AppColor.black3,
+              ),
+              keyboardType: const TextInputType.numberWithOptions(
+                signed: false,
+                decimal: true,
+              ),
+              inputFormatters: [
+                DecimalTextInputFormatter(
+                  maxValue: SS.appConfig.transferMaxAmount,
+                  maxValueHint:
+                      '金额不能超过${SS.appConfig.transferMaxAmount.toStringAsTrimZero()}',
+                  decimalDigits: SS.appConfig.decimalDigits,
+                )
+              ],
+              textAlignVertical: TextAlignVertical.center,
+              decoration: InputDecoration(
+                hintText: '请输入充值金额',
+                hintStyle: AppTextStyle.fs14m.copyWith(color: AppColor.black9),
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                contentPadding: FEdgeInsets(horizontal: 12.rpx),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: FEdgeInsets(top: 36.rpx, horizontal: 20.rpx),
+          child: CommonGradientButton(
+            onTap: controller.onSubmit,
+            height: 50.rpx,
+            text: '前往充值',
+          ),
+        ),
+      ],
     );
   }
 

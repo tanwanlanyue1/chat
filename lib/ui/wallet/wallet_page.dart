@@ -13,10 +13,6 @@ import 'package:guanjia/ui/wallet/enum/wallet_enum.dart';
 import 'package:guanjia/ui/wallet/recharge/wallet_recharge_view.dart';
 import 'package:guanjia/ui/wallet/record/wallet_record_view.dart';
 import 'package:guanjia/ui/wallet/wallet_controller.dart';
-import 'package:guanjia/ui/wallet/widgets/record/wallet_record_widget.dart';
-import 'package:guanjia/ui/wallet/widgets/wallet_recharge_widget.dart';
-import 'package:guanjia/ui/wallet/widgets/wallet_transfer_widget.dart';
-import 'package:guanjia/ui/wallet/widgets/wallet_withdrawal_widget.dart';
 import 'package:guanjia/ui/wallet/withdraw/wallet_withdraw_view.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -41,8 +37,8 @@ class WalletPage extends StatelessWidget {
               margin: EdgeInsets.only(right: 16.rpx),
               padding: EdgeInsets.symmetric(horizontal: 10.rpx),
               child: AppImage.asset(
-                "assets/images/wallet/order.png",
-                length: 24.rpx,
+                "assets/images/wallet/ic_order_list.png",
+                size: 24.rpx,
               ),
             ),
           ),
@@ -281,7 +277,7 @@ class WalletPage extends StatelessWidget {
         children: [
           AppImage.asset(
             image,
-            length: 60.rpx,
+            size: 60.rpx,
           ),
           Padding(
             padding: FEdgeInsets(top: 4.rpx),

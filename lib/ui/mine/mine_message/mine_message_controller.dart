@@ -10,7 +10,6 @@ import 'mine_message_state.dart';
 
 class MineMessageController extends GetxController with GetSingleTickerProviderStateMixin {
   final MineMessageState state = MineMessageState();
-  final refreshController = RefreshController();
   ///0系统消息,6系统公告
   final int type;
 

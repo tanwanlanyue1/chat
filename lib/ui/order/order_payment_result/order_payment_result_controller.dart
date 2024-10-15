@@ -51,7 +51,7 @@ class OrderPaymentResultController extends GetxController {
     } else {
       Loading.show();
       final res = await PaymentApi.getOrderInfo(
-        orderNo: orderId,
+        orderId,
       );
       Loading.dismiss();
 

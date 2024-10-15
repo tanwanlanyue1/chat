@@ -1,36 +1,24 @@
 import 'package:guanjia/common/network/network.dart';
-
-import 'model/payment/payment_order_info.dart';
+import 'model/payment/payment_order_model.dart';
 
 ///支付 API
 class PaymentApi {
   const PaymentApi._();
 
-
-  /// 用户充值操作
-  ///- payChannelId 渠道ID
-  ///- type 下单类型： 1APP下单(直接请求支付参数) 2小程序下单(只保存订单记录), 3苹果内购
-  ///- configId 快捷选择境修币ID(自定义充值不用传)
-  ///- goldNum 自定义充值币的数量
-  static Future<ApiResponse<dynamic>> createOrder({
-    required int payChannelId,
-    required int type,
-    int? configId,
-    int? goldNum,
-  }) {
+  /// 创建充值订单
+  ///- amount 充值金额
+  static Future<ApiResponse<PaymentOrderModel>> createRechargeOrder(num amount) {
     return HttpClient.post(
       '/api/pay/createOrder',
       data: {
-        'payChannelId': payChannelId,
-        'type': type,
-        if (configId != null) 'configId': configId,
-        if (goldNum != null) 'goldNum': goldNum,
+        'amount': amount,
       },
+      dataConverter: (json) => PaymentOrderModel.fromJson(json),
     );
   }
 
   /// 查询订单状态
-  /// - return 0未付款 1已付款 2已退款
+  /// - return 0待支付 1已支付 2已超时
   static Future<ApiResponse<int>> getOrderState(String orderNo) {
     return HttpClient.get(
       '/api/pay/getOrderStatus',
@@ -41,16 +29,15 @@ class PaymentApi {
   }
 
   /// 查询订单详情
-  /// orderNo: 订单号
-  static Future<ApiResponse<PaymentOrderInfoModel>> getOrderInfo(
-      {required String orderNo}) {
+  ///- orderNo: 订单号
+  static Future<ApiResponse<PaymentOrderModel>> getOrderInfo(String orderNo) {
     return HttpClient.get(
       '/api/pay/getOrderInfo',
       params: {
         'orderNo': orderNo,
       },
       dataConverter: (data) {
-        return PaymentOrderInfoModel.fromJson(data);
+        return PaymentOrderModel.fromJson(data);
       },
     );
   }

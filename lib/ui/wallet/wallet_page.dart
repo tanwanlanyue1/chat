@@ -6,6 +6,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
+import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
@@ -76,131 +77,132 @@ class WalletPage extends StatelessWidget {
   }
 
   Widget _buildCard() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 36.rpx),
-      padding: EdgeInsets.symmetric(horizontal: 16.rpx, vertical: 24.rpx),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.rpx),
-          image: const DecorationImage(
-            image: AppAssetImage('assets/images/wallet/wallet_card_bg.png'),
-            fit: BoxFit.cover,
-          )),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '当前余额【USDT】',
-                    style: AppTextStyle.st.medium
-                        .size(12.rpx)
-                        .textColor(AppColor.blackBlue)
-                        .copyWith(height: 1),
-                  ),
-                  Padding(
-                    padding: FEdgeInsets(top: 10.rpx),
-                    child: Obx(() {
-                      return Text(
-                        SS.login.info?.balance.toStringAsTrimZero() ?? '',
+    return Obx((){
+      final info = SS.login.info ?? UserModel.fromJson({});
+      return Container(
+        margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 36.rpx),
+        padding: EdgeInsets.symmetric(horizontal: 16.rpx, vertical: 24.rpx),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.rpx),
+            image: const DecorationImage(
+              image: AppAssetImage('assets/images/wallet/wallet_card_bg.png'),
+              fit: BoxFit.cover,
+            )),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '当前余额【USDT】',
+                      style: AppTextStyle.st.medium
+                          .size(12.rpx)
+                          .textColor(AppColor.blackBlue)
+                          .copyWith(height: 1),
+                    ),
+                    Padding(
+                      padding: FEdgeInsets(top: 10.rpx),
+                      child: Text(
+                        info.balance.toStringAsTrimZero(),
                         style: AppTextStyle.st.medium
                             .size(24.rpx)
                             .textColor(AppColor.black3)
                             .copyWith(height: 1),
-                      );
-                    }),
-                  ),
-                ],
-              ),
-              Text(
-                S.current.guanJiaWallet,
-                style: AppTextStyle.st.bold
-                    .size(16.rpx)
-                    .textColor(AppColor.primaryBlue)
-                    .copyWith(height: 1),
-              ),
-            ],
-          ),
-          Container(
-            margin: FEdgeInsets(top: 26.rpx),
-            height: 34.rpx,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              S.current.historicalWithdrawal,
-                              style: AppTextStyle.st.medium
-                                  .size(12.rpx)
-                                  .textColor(AppColor.black9)
-                                  .copyWith(height: 1),
-                            ),
-                            Text(
-                              "5460.00",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: AppTextStyle.st.medium
-                                  .size(14.rpx)
-                                  .textColor(AppColor.black3)
-                                  .copyWith(height: 1),
-                            ),
-                          ],
-                        ),
                       ),
-                      VerticalDivider(
-                        width: 25.rpx,
-                        thickness: 1.rpx,
-                        indent: 7.rpx,
-                        endIndent: 7.rpx,
-                        color: AppColor.black9.withOpacity(0.2),
-                      ),
-                      Flexible(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              S.current.monthWithdrawal,
-                              style: AppTextStyle.st.medium
-                                  .size(12.rpx)
-                                  .textColor(AppColor.black9)
-                                  .copyWith(height: 1),
-                            ),
-                            Text(
-                              "9888.10",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: AppTextStyle.st.medium
-                                  .size(14.rpx)
-                                  .textColor(AppColor.black3)
-                                  .copyWith(height: 1),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                AppImage.asset(
-                  "assets/images/wallet/card.png",
-                  width: 48.rpx,
-                  height: 30.rpx,
-                )
+                Text(
+                  S.current.guanJiaWallet,
+                  style: AppTextStyle.st.bold
+                      .size(16.rpx)
+                      .textColor(AppColor.primaryBlue)
+                      .copyWith(height: 1),
+                ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
+            Container(
+              margin: FEdgeInsets(top: 26.rpx),
+              height: 34.rpx,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                S.current.historicalWithdrawal,
+                                style: AppTextStyle.st.medium
+                                    .size(12.rpx)
+                                    .textColor(AppColor.black9)
+                                    .copyWith(height: 1),
+                              ),
+                              Text(
+                                info.withdrawals.toStringAsTrimZero(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTextStyle.st.medium
+                                    .size(14.rpx)
+                                    .textColor(AppColor.black3)
+                                    .copyWith(height: 1),
+                              ),
+                            ],
+                          ),
+                        ),
+                        VerticalDivider(
+                          width: 25.rpx,
+                          thickness: 1.rpx,
+                          indent: 7.rpx,
+                          endIndent: 7.rpx,
+                          color: AppColor.black9.withOpacity(0.2),
+                        ),
+                        Flexible(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                S.current.monthWithdrawal,
+                                style: AppTextStyle.st.medium
+                                    .size(12.rpx)
+                                    .textColor(AppColor.black9)
+                                    .copyWith(height: 1),
+                              ),
+                              Text(
+                                info.withdrawalsAble.toStringAsTrimZero(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTextStyle.st.medium
+                                    .size(14.rpx)
+                                    .textColor(AppColor.black3)
+                                    .copyWith(height: 1),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  AppImage.asset(
+                    "assets/images/wallet/card.png",
+                    width: 48.rpx,
+                    height: 30.rpx,
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildOperationWidget() {

@@ -72,7 +72,7 @@ class OrderPaymentController extends GetxController with OrderOperationMixin {
     } else {
       Loading.show();
       final res = await PaymentApi.getOrderInfo(
-        orderNo: orderId,
+        orderId,
       );
       Loading.dismiss();
 

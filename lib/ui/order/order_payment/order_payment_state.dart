@@ -7,7 +7,7 @@ class OrderPaymentState {
 
   final datingModel = Rxn<OrderItemModel>();
 
-  final vipModel = Rxn<PaymentOrderInfoModel>();
+  final vipModel = Rxn<PaymentOrderModel>();
 
   final selectIndex = Rxn<int>();
 

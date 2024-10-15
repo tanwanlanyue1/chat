@@ -91,6 +91,8 @@ class UserModel {
     this.dealNum,
     this.payPwd,
     required this.balance,
+    required this.withdrawals,
+    required this.withdrawalsAble,
     required this.vip,
     required this.expirationTime,
   });
@@ -125,6 +127,10 @@ class UserModel {
   num balance = 0; //余额
   bool vip; // 是否为VIP
   int expirationTime; // VIP到期时间
+  ///钱包历史提现金额
+  num withdrawals = 0;
+  ///	钱包可提现金额
+  num withdrawalsAble = 0;
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -156,6 +162,8 @@ class UserModel {
       dealNum: json["dealNum"],
       payPwd: json["payPwd"] ?? false,
       balance: json["balance"] ?? 0,
+      withdrawalsAble: json["withdrawalsAble"] ?? 0,
+      withdrawals: json["withdrawals"] ?? 0,
       vip: json["vip"] ?? false,
       expirationTime: json["expirationTime"] ?? 0,
     );
@@ -191,6 +199,9 @@ class UserModel {
         "payPwd": payPwd,
         "vip": vip,
         "expirationTime": expirationTime,
+        "balance": balance,
+        "withdrawalsAble": withdrawalsAble,
+        "withdrawals": withdrawals,
       };
 
   UserModel copyWith({
@@ -222,6 +233,8 @@ class UserModel {
     int? dealNum,
     bool? payPwd,
     num? balance,
+    num? withdrawals,
+    num? withdrawalsAble,
     bool? vip,
     int? expirationTime,
   }) {
@@ -254,6 +267,8 @@ class UserModel {
       dealNum: dealNum ?? this.dealNum,
       payPwd: payPwd ?? this.payPwd,
       balance: balance ?? this.balance,
+      withdrawals: withdrawals ?? this.withdrawals,
+      withdrawalsAble: withdrawalsAble ?? this.withdrawalsAble,
       vip: vip ?? this.vip,
       expirationTime: expirationTime ?? this.expirationTime,
     );

@@ -183,7 +183,8 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
           ),
           SizedBox(height: 16.rpx),
           Text(
-            "(${controller.state.vipModel.value?.skuId})",
+            // "(${controller.state.vipModel.value?.skuId})",
+            "skuId",
             style: AppTextStyle.st
                 .size(12.rpx)
                 .textColor(AppColor.blackBlue)

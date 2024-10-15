@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/int_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/extension/string_extension.dart';
+import 'package:guanjia/common/network/api/model/payment/talk_payment.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -13,9 +16,8 @@ import 'recharge_order_controller.dart';
 import 'recharge_order_state.dart';
 
 ///充值订单详情
-class RechargeOrderPage extends StatelessWidget {
-  final controller = Get.put(RechargeOrderController());
-  final state = Get.find<RechargeOrderController>().state;
+class RechargeOrderPage extends GetView<RechargeOrderController> {
+  late final state = controller.state;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,12 @@ class RechargeOrderPage extends StatelessWidget {
         title: const Text('充值'),
       ),
       body: Obx((){
-        final orderStatus = state.orderStatusRx();
+        final orderStatus = state.orderStatusRx;
+        final order = state.orderRx();
+        if(order == null){
+          return Spacing.blank;
+        }
+
         return ListView(
           padding: FEdgeInsets(horizontal: 16.rpx, vertical: 12.rpx),
           children: [
@@ -35,10 +42,10 @@ class RechargeOrderPage extends StatelessWidget {
                 color: AppColor.black3,
               ),
             ),
-            buildAmount(),
-            buildAddress(),
-            buildQrCode(),
-            buildCountdown(),
+            buildAmount(order.amount),
+            buildAddress(order.collectionAddress),
+            buildQrCode(order),
+            buildCountdown(order),
             Divider(height: 32.rpx),
             buildDesc(),
             Button.outlineStadium(
@@ -51,7 +58,7 @@ class RechargeOrderPage extends StatelessWidget {
                 style: AppTextStyle.fs14m.copyWith(color: AppColor.black6),
               ),
             ),
-            if(orderStatus.isPending) Button.stadium(
+            if(orderStatus?.isPending == true) Button.stadium(
               margin: FEdgeInsets(horizontal: 22.rpx, top: 16.rpx),
               onPressed: controller.onTapComplete,
               height: 46.rpx,
@@ -67,20 +74,20 @@ class RechargeOrderPage extends StatelessWidget {
   }
 
   ///金额
-  Widget buildAmount() {
-    final amount = '133.012';
+  Widget buildAmount(num amount) {
+    final amountText = amount.toStringAsTrimZero();
     return Container(
       margin: FEdgeInsets(top: 12.rpx, bottom: 16.rpx),
       alignment: Alignment.center,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: amount.copy,
+        onTap: amountText.copy,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              amount,
+              amountText,
               style: AppTextStyle.fs26b.copyWith(
                 color: AppColor.black3,
                 height: 1.0,
@@ -110,8 +117,7 @@ class RechargeOrderPage extends StatelessWidget {
   }
 
   ///地址
-  Widget buildAddress() {
-    final address = 'TAALiTehrjjAwp8oFXddpmUUwc1t5Jz36z';
+  Widget buildAddress(String address) {
     return GestureDetector(
       onTap: address.copy,
       behavior: HitTestBehavior.translucent,
@@ -144,7 +150,7 @@ class RechargeOrderPage extends StatelessWidget {
   }
 
   ///二维码
-  Widget buildQrCode() {
+  Widget buildQrCode(PaymentOrderModel order) {
     return Center(
       child: Container(
         width: 170.rpx,
@@ -168,7 +174,7 @@ class RechargeOrderPage extends StatelessWidget {
               ),
             ),
             //超时
-            if (state.orderStatusRx().isExpired)
+            if (state.orderStatusRx?.isExpired == true)
               Container(
                 color: Colors.white.withOpacity(0.7),
                 width: double.infinity,
@@ -189,7 +195,7 @@ class RechargeOrderPage extends StatelessWidget {
                 ),
               ),
             //完成
-            if (state.orderStatusRx().isSuccess)
+            if (state.orderStatusRx?.isSuccess == true)
               Container(
                 width: double.infinity,
                 height: double.infinity,
@@ -215,8 +221,8 @@ class RechargeOrderPage extends StatelessWidget {
   }
 
   ///倒计时
-  Widget buildCountdown() {
-    if(state.orderStatusRx().isSuccess) {
+  Widget buildCountdown(PaymentOrderModel order) {
+    if(state.orderStatusRx?.isSuccess == true) {
       return Spacing.h(46);
     }
 
@@ -251,22 +257,17 @@ class RechargeOrderPage extends StatelessWidget {
       );
     }
 
-    final endTime = DateTime.now().add(10.seconds);
     return Container(
       alignment: Alignment.center,
       margin: FEdgeInsets(top: 10.rpx),
       child: CountdownBuilder(
-        endTime: endTime,
-        onFinish: (){
-          if(state.orderStatusRx().isPending){
-            state.orderStatusRx.value = RechargeOrderStatus.expired;
-          }
-        },
+        endTime: order.timeout.dateTime,
+        onFinish: controller.onExpired,
         builder: (duration, text) {
           final hours = duration.inHours.toString().padLeft(2, '0');
           final minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
           final seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
-          final textColor = state.orderStatusRx().isExpired? AppColor.red : null;
+          final textColor = state.orderStatusRx?.isExpired == true ? AppColor.red : null;
 
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,

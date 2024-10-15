@@ -4,5 +4,5 @@ import 'package:guanjia/common/network/api/model/payment/talk_payment.dart';
 
 class OrderPaymentResultState {
   final detailModel = Rxn<OrderItemModel>();
-  final vipModel = Rxn<PaymentOrderInfoModel>();
+  final vipModel = Rxn<PaymentOrderModel>();
 }

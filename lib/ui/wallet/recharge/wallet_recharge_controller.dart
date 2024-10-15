@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/network/api/payment_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
@@ -15,13 +16,16 @@ class WalletRechargeController extends GetxController {
       return;
     }
 
-    //TODO 接口下单
     Loading.show();
-    await Future.delayed(1.seconds);
+    final response = await PaymentApi.createRechargeOrder(amount);
     Loading.dismiss();
-
-    Get.toNamed(AppRoutes.rechargeOrderPage);
-
+    if(response.isSuccess){
+      Get.toNamed(AppRoutes.rechargeOrderPage, arguments: {
+        'orderNo': response.data?.orderNo
+      });
+    }else{
+      response.showErrorMessage();
+    }
   }
 
 }

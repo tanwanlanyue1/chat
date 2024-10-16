@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:guanjia/common/network/api/model/user/vip_model.dart';
 import 'package:guanjia/common/network/api/order_api.dart';
 import 'package:guanjia/common/network/api/payment_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
@@ -11,60 +12,45 @@ class OrderPaymentResultController extends GetxController {
   OrderPaymentResultController(
     this.orderId, {
     this.type = OrderPaymentType.dating,
+    this.vipPackage,
   });
 
-  final String orderId;
+  final int orderId;
 
   final OrderPaymentType type;
+  final VipPackageModel? vipPackage;
 
   final OrderPaymentResultState state = OrderPaymentResultState();
 
   @override
   void onInit() {
-    _fetchData();
+    if(type == OrderPaymentType.dating){
+      _fetchData();
+    }
     super.onInit();
   }
 
-  void toOrderDetail(String orderId) {
+  void toOrderDetail(int orderId) {
     Get.offNamed(AppRoutes.orderDetailPage,
-        arguments: {"orderId": int.tryParse(orderId) ?? 0});
+        arguments: {"orderId": orderId});
   }
 
   Future<void> _fetchData() async {
-    if (type == OrderPaymentType.dating) {
-      Loading.show();
-      final res = await OrderApi.get(
-        orderId: int.tryParse(orderId) ?? 0,
-      );
-      Loading.dismiss();
+    Loading.show();
+    final res = await OrderApi.get(
+      orderId: orderId,
+    );
+    Loading.dismiss();
 
-      if (!res.isSuccess) {
-        res.showErrorMessage();
-        return;
-      }
+    if (!res.isSuccess) {
+      res.showErrorMessage();
+      return;
+    }
 
-      final model = res.data;
-      if (model != null) {
-        state.detailModel.value = model;
-        update();
-      }
-    } else {
-      Loading.show();
-      final res = await PaymentApi.getOrderInfo(
-        orderId,
-      );
-      Loading.dismiss();
-
-      if (!res.isSuccess) {
-        res.showErrorMessage();
-        return;
-      }
-
-      final model = res.data;
-      if (model != null) {
-        state.vipModel.value = model;
-        update();
-      }
+    final model = res.data;
+    if (model != null) {
+      state.detailModel.value = model;
+      update();
     }
   }
 }

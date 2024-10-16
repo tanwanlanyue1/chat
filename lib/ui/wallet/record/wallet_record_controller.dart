@@ -57,7 +57,7 @@ class WalletRecordController extends GetxController {
   }
 }
 
-///记录类型 -1查询全部 1 充值 2.后台下发 3.后台扣减 4 订单保证金或服务费 5 通话实时扣费 6通话订单收益 7转账 8红包
+///记录类型 -1查询全部 1 充值 2.后台下发 3.后台扣减 4 订单保证金或服务费 5 通话实时扣费 6通话订单收益 7转账 8红包 9开通会员
 class RecordType {
   final int value;
   final String label;
@@ -75,6 +75,7 @@ class RecordType {
       RecordType(6, '通话收益'),
       RecordType(7, '转账'),
       RecordType(8, '红包'),
+      RecordType(9, '开通会员'),
     ];
   }
 }

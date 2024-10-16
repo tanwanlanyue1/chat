@@ -48,7 +48,7 @@ class VipPackageListTile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      S.current.entriesMonth(item.duration),
+                      item.durationText,
                       style: AppTextStyle.fs14m.copyWith(
                         color: AppColor.blackBlue,
                       ),

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
+import 'package:guanjia/common/network/api/model/user/vip_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/order_detail/order_detail_controller.dart';
@@ -37,36 +38,30 @@ class OrderPages {
     GetPage(
       name: AppRoutes.orderPaymentPage,
       page: () {
-        var args = Get.tryGetArgs("orderId");
-        var type = Get.tryGetArgs("type");
+        final orderId = Get.getArgs<int>("orderId", 0);
+        final type =
+            Get.getArgs<OrderPaymentType>("type", OrderPaymentType.dating);
+        final vipPackage = Get.tryGetArgs<VipPackageModel>("vipPackage");
         return OrderPaymentPage(
-          orderId: (args != null && args is String) ? args : "0",
-          type: (type != null && type is OrderPaymentType)
-              ? type
-              : OrderPaymentType.dating,
+          orderId: orderId,
+          type: type,
+          vipPackage: vipPackage,
         );
       },
     ),
     GetPage(
       name: AppRoutes.orderPaymentResultPage,
       page: () {
-        var orderId = Get.tryGetArgs("orderId");
-        var isSuccess = Get.tryGetArgs("isSuccess");
-        var type = Get.tryGetArgs("type");
-
-        if (orderId == null || orderId is! String) {
-          orderId = 0;
-        }
-        if (isSuccess == null || isSuccess is! bool) {
-          isSuccess = false;
-        }
-        if (type == null || type is! OrderPaymentType) {
-          type = OrderPaymentType.dating;
-        }
+        final isSuccess = Get.getArgs<bool>("isSuccess", false);
+        final orderId = Get.getArgs<int>("orderId", 0);
+        final type =
+            Get.getArgs<OrderPaymentType>("type", OrderPaymentType.dating);
+        final vipPackage = Get.tryGetArgs<VipPackageModel>("vipPackage");
         return OrderPaymentResultPage(
           orderId: orderId,
           type: type,
           isSuccess: isSuccess,
+          vipPackage: vipPackage,
         );
       },
     ),

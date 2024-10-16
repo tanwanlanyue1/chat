@@ -1,9 +1,11 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
+import 'package:guanjia/common/network/api/model/user/vip_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
@@ -20,18 +22,25 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
     super.key,
     required this.orderId,
     this.type = OrderPaymentType.dating,
+    this.vipPackage,
   });
 
-  final String orderId;
+  final int orderId;
   final OrderPaymentType type;
+
+  ///VIP套餐
+  final VipPackageModel? vipPackage;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OrderPaymentController>(
-      init: OrderPaymentController(orderId, type: type),
+      init: OrderPaymentController(
+        orderId: orderId,
+        type: type,
+        vipPackage: vipPackage,
+      ),
       builder: (controller) {
-        final state = Get.find<OrderPaymentController>().state;
-
+        final state = controller.state;
         return Scaffold(
           appBar: AppBar(
             title: Text(S.current.payForTheOrder),
@@ -77,45 +86,61 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    SizedBox(height: item.detail != null ? 10.rpx:6.rpx),
-                                    item.detail != null ?
-                                    Text(
-                                      item.detail!,
-                                      style: AppTextStyle.st
-                                          .size(12.rpx)
-                                          .textColor(AppColor.black9)
-                                          .textHeight(1),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ):
-                                    GestureDetector(
-                                      onTap: (){
-                                        Get.toNamed(AppRoutes.walletPage);
-                                      },
-                                      child: Container(
-                                        height: 20.rpx,
-                                        width: 40.rpx,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: AppColor.primaryBlue,
-                                              width: 1.rpx,
+                                    SizedBox(
+                                        height: item.detail != null
+                                            ? 10.rpx
+                                            : 6.rpx),
+                                    item.detail != null
+                                        ? Text(
+                                            item.detail!,
+                                            style: AppTextStyle.st
+                                                .size(12.rpx)
+                                                .textColor(AppColor.black9)
+                                                .textHeight(1),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          )
+                                        : GestureDetector(
+                                            onTap: () {
+                                              Get.toNamed(AppRoutes.walletPage);
+                                            },
+                                            child: Container(
+                                              height: 20.rpx,
+                                              width: 40.rpx,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: AppColor.primaryBlue,
+                                                    width: 1.rpx,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          4.rpx)),
+                                              child: Text(
+                                                S.current.topUp,
+                                                style: AppTextStyle.fs12m
+                                                    .copyWith(
+                                                        color: AppColor
+                                                            .primaryBlue),
+                                                textAlign: TextAlign.center,
+                                              ),
                                             ),
-                                            borderRadius: BorderRadius.circular(4.rpx)
-                                        ),
-                                        child: Text(S.current.topUp,style: AppTextStyle.fs12m.copyWith(color: AppColor.primaryBlue),textAlign: TextAlign.center,),
-                                      ),
-                                    ),
+                                          ),
                                   ],
                                 ),
                               ),
                               Visibility(
                                 visible: item.detail == null,
                                 child: ConstrainedBox(
-                                  constraints: BoxConstraints(maxWidth: 120.rpx),
-                                  child: Text(
-                                    S.current.balanceLabel((SS.login.info?.balance ?? 0).toCurrencyString()),
-                                    style: AppTextStyle.fs14r.copyWith(color: AppColor.gray9),
+                                  constraints:
+                                      BoxConstraints(maxWidth: 140.rpx),
+                                  child: AutoSizeText(
+                                    S.current.balanceLabel(
+                                        (SS.login.info?.balance ?? 0)
+                                            .toCurrencyString()),
+                                    style: AppTextStyle.fs14m
+                                        .copyWith(color: AppColor.gray9),
                                     maxLines: 1,
+                                    minFontSize: 8,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
@@ -135,31 +160,15 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                   );
                 }),
               ),
-              Builder(builder: (context) {
-                final num result;
-
-                if (type == OrderPaymentType.dating) {
-                  final isRequest =
-                      state.datingModel.value?.requestId == SS.login.userId;
-                  final deposit = state.datingModel.value?.deposit ?? 0;
-                  final serviceCharge =
-                      state.datingModel.value?.serviceCharge ?? 0;
-                  result = isRequest ? deposit + serviceCharge : deposit;
-                } else {
-                  result = state.vipModel.value?.amount ?? 0;
-                }
-
-                return Button(
-                  onPressed: () =>
-                      controller.onTapOrderPayment(int.tryParse(orderId) ?? 0),
-                  margin: EdgeInsets.symmetric(horizontal: 22.rpx)
-                      .copyWith(top: 60.rpx),
-                  child: Text(
-                    "${S.current.firmPayment} ¥$result",
-                    style: TextStyle(color: Colors.white, fontSize: 16.rpx),
-                  ),
-                );
-              }),
+              Button(
+                onPressed: controller.onTapPay,
+                margin: EdgeInsets.symmetric(horizontal: 22.rpx)
+                    .copyWith(top: 60.rpx),
+                child: Text(
+                  "${S.current.firmPayment} ${controller.paymentAmountRx.toCurrencyString()}",
+                  style: TextStyle(color: Colors.white, fontSize: 16.rpx),
+                ),
+              ),
             ],
           ),
         );
@@ -183,8 +192,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
           ),
           SizedBox(height: 16.rpx),
           Text(
-            // "(${controller.state.vipModel.value?.skuId})",
-            "skuId",
+            "(${vipPackage?.durationText})",
             style: AppTextStyle.st
                 .size(12.rpx)
                 .textColor(AppColor.blackBlue)
@@ -205,7 +213,9 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
         children: [
           SizedBox(height: 24.rpx),
           Text(
-            isRequest ? S.current.payServiceFeeSecurityDeposit : S.current.payDeposit,
+            isRequest
+                ? S.current.payServiceFeeSecurityDeposit
+                : S.current.payDeposit,
             style: AppTextStyle.st
                 .size(16.rpx)
                 .textColor(AppColor.blackBlue)

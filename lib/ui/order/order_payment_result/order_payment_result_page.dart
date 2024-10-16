@@ -12,6 +12,7 @@ import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 
+import '../../../common/network/api/model/user/vip_model.dart';
 import 'order_payment_result_controller.dart';
 
 class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
@@ -20,18 +21,23 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
     required this.orderId,
     required this.type,
     required this.isSuccess,
+    this.vipPackage,
   });
 
-  final String orderId;
+  final int orderId;
 
   final OrderPaymentType type;
-
   final bool isSuccess;
+  final VipPackageModel? vipPackage;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OrderPaymentResultController>(
-      init: OrderPaymentResultController(orderId, type: type),
+      init: OrderPaymentResultController(
+        orderId,
+        type: type,
+        vipPackage: vipPackage,
+      ),
       builder: (controller) {
         return Scaffold(
           backgroundColor: Colors.white,
@@ -51,12 +57,14 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
 
     final String title;
     final String orderNumber;
-    final num result;
+    num result = 0;
     final String remark;
     if (type == OrderPaymentType.dating) {
       final isRequest = state.detailModel.value?.requestId == SS.login.userId;
 
-      title = isRequest ? S.current.serviceFeePaidSuccessfully : S.current.marginPaymentSuccessful;
+      title = isRequest
+          ? S.current.serviceFeePaidSuccessfully
+          : S.current.marginPaymentSuccessful;
 
       orderNumber = state.detailModel.value?.number ?? "";
 
@@ -66,8 +74,11 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
       remark = S.current.beReturnedWithin24Hours;
     } else {
       title = S.current.VIPRechargeSuccess;
-      orderNumber = state.vipModel.value?.orderNo ?? "";
-      result = state.vipModel.value?.amount ?? 0;
+      orderNumber = "";
+      final vipPackage = this.vipPackage;
+      if(vipPackage != null){
+        result = vipPackage.discountPrice > 0 ? vipPackage.discountPrice : vipPackage.price;
+      }
       remark = S.current.enjoyNumberOfVIPRights;
     }
 
@@ -93,7 +104,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              if(orderNumber.isNotEmpty) Text(
                 "${S.current.orderReference}$orderNumber",
                 style: AppTextStyle.st
                     .size(14.rpx)

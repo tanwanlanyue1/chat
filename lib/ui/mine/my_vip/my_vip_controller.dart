@@ -1,21 +1,28 @@
 import 'package:get/get.dart';
+import 'package:guanjia/common/event/event_bus.dart';
+import 'package:guanjia/common/event/event_constant.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/list_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/auto_dispose_mixin.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/payment_password_keyboard.dart';
 
 import 'my_vip_state.dart';
 
-class MyVipController extends GetxController {
+class MyVipController extends GetxController with GetAutoDisposeMixin {
   final MyVipState state = MyVipState();
 
   @override
   void onInit() {
     _fetchData();
-
+    //监听vip开通成功
+    autoDisposeWorker(EventBus().listen(kEventOpenVip, (data) {
+      _fetchData(isVisibleLoading: false);
+    }));
     super.onInit();
   }
 
@@ -23,29 +30,18 @@ class MyVipController extends GetxController {
     final packages = state.vipModel.value?.packages ?? [];
     if (packages.isEmpty) return;
 
-    final packageId = packages.safeElementAt(state.packagesIndex.value)?.id;
-    if (packageId == null) return;
+    final package = packages.safeElementAt(state.packagesIndex.value);
+    if (package == null) return;
 
-    if(state.selectProtocol.isFalse){
+    if (state.selectProtocol.isFalse) {
       Loading.showToast('请先勾选确认会员服务协议');
       return;
     }
 
-    final password = await PaymentPasswordKeyboard.show();
-    if(password == null){
-      return;
-    }
-
-    Loading.show();
-    final response = await VipApi.openVip(packageId: packageId, password: password);
-    Loading.dismiss();
-    if(response.isSuccess){
-      Loading.showToast('开通成功');
-      _fetchData();
-      SS.login.fetchMyInfo();
-    }else{
-      response.showErrorMessage();
-    }
+    Get.toNamed(AppRoutes.orderPaymentPage, arguments: {
+      "type": OrderPaymentType.vip,
+      "vipPackage": package,
+    });
   }
 
   void onTapPackages(int index) {
@@ -56,10 +52,14 @@ class MyVipController extends GetxController {
     state.selectProtocol.toggle();
   }
 
-  void _fetchData() async {
-    Loading.show();
+  void _fetchData({bool isVisibleLoading = true}) async {
+    if(isVisibleLoading){
+      Loading.show();
+    }
     final res = await VipApi.getVipIndex();
-    Loading.dismiss();
+    if(isVisibleLoading){
+      Loading.dismiss();
+    }
 
     state.vipModel.value = res.data;
     state.packagesIndex.value = 0;

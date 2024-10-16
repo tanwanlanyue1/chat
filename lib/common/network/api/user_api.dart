@@ -780,7 +780,7 @@ class UserApi {
   }
 
   /// 获取钱包日志记录
-  /// logType: 记录类型 -1查询全部 1 充值 2.后台下发 3.后台扣减 4 订单保证金或服务费 5 通话实时扣费 6通话订单收益 7转账 8红包
+  /// logType: 记录类型 -1查询全部 1 充值 2.后台下发 3.后台扣减 4 订单保证金或服务费 5 通话实时扣费 6通话订单收益 7转账 8红包 9开通会员
   /// page: 页码（默认1）,示例值(1)
   /// size: 每页数量（默认10）,示例值(10)
   static Future<ApiResponse<List<PurseLogList>>> getPurseLogList({

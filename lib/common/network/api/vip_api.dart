@@ -16,7 +16,7 @@ class VipApi {
   /// 开通会员
   ///- packageId 套餐id
   ///- password 支付密码
-  static Future<ApiResponse<String>> openVip({
+  static Future<ApiResponse<void>> openVip({
     required int packageId,
     required String password,
   }) {

@@ -20,3 +20,6 @@ const kEventRedPacketUpdate = 'kEventRedPacketUpdate';
 
 ///监听我的信息
 const kEventUserInfo = 'kEventUserInfo';
+
+///开通VIP成功
+const kEventOpenVip = 'kEventOpenVip';

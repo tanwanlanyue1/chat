@@ -562,8 +562,7 @@ mixin _ChatCallMixin {
         userId: userId,
       );
       if (result == true) {
-        //TODO 弹出充值对话框
-        Loading.showToast(S.current.theRechargeDialog);
+        Get.toNamed(AppRoutes.walletRechargePage);
         return;
       }
       if (result == false) {

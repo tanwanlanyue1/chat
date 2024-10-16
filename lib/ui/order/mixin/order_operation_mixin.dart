@@ -60,14 +60,14 @@ mixin OrderOperationMixin {
       res.showErrorMessage();
       Get.offNamed(
         AppRoutes.orderPaymentResultPage,
-        arguments: {"orderId": orderId.toString(), "isSuccess": false},
+        arguments: {"orderId": orderId, "isSuccess": false},
       );
       return false;
     }
 
     Get.offNamed(
       AppRoutes.orderPaymentResultPage,
-      arguments: {"orderId": orderId.toString(), "isSuccess": true},
+      arguments: {"orderId": orderId, "isSuccess": true},
     );
 
     return true;
@@ -132,7 +132,7 @@ mixin OrderOperationMixin {
   void toOrderPayment(OrderItemModel order) async {
     final ret = await OrderPaymentDialog.show(order: order);
     if (ret == true) {
-      Get.toNamed(AppRoutes.orderPaymentPage, arguments: {"orderId": order.id.toString()});
+      Get.toNamed(AppRoutes.orderPaymentPage, arguments: {"orderId": order.id});
     }
   }
 

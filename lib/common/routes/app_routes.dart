@@ -148,6 +148,9 @@ abstract class AppRoutes {
   /// 充值，提现订单列表
   static const walletOrderListPage = '$auth/WalletOrderListPage';
 
+  /// 充值
+  static const walletRechargePage = '$auth/WalletRechargePage';
+
   /// 订单
   static const orderPage = '$auth/orderPage';
 

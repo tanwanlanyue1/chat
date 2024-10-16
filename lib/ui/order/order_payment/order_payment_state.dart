@@ -9,7 +9,7 @@ class OrderPaymentState {
 
   final vipModel = Rxn<PaymentOrderModel>();
 
-  final selectIndex = Rxn<int>();
+  final selectIndex = Rxn<int>(0);
 
   final countDown = 0.obs;
 
@@ -17,21 +17,6 @@ class OrderPaymentState {
     OrderPaymentListItem(
       icon: "assets/images/order/guanjia.png",
       title: S.current.smallTreasuryPayment,
-    ),
-    OrderPaymentListItem(
-      icon: "assets/images/order/usdt.png",
-      title: S.current.USDTPayment,
-      detail: S.current.recommendUserUse,
-    ),
-    OrderPaymentListItem(
-      icon: "assets/images/order/eth.png",
-      title: S.current.ETHPayment,
-      detail: S.current.recommendUserUse,
-    ),
-    OrderPaymentListItem(
-      icon: "assets/images/order/unionpay.png",
-      title: S.current.unionPay,
-      detail: S.current.recommendUnionUse,
     ),
   ];
 }

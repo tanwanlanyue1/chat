@@ -1,4 +1,6 @@
 import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 class VipModel {
   VipModel({
@@ -90,6 +92,8 @@ class VipPackageModel {
   final int duration; // 开通时长(月)
   final int discount; // 优惠 0无优惠 1限时特惠
   final String title; // 标题
+
+  String get durationText => S.current.entriesMonth(duration);
 
   factory VipPackageModel.fromJson(Map<String, dynamic> json) {
     return VipPackageModel(

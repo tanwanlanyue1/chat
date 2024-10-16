@@ -452,13 +452,13 @@ class MyVipPage extends StatelessWidget {
                           text: S.current.affirm,
                           style: AppTextStyle.st.textColor(AppColor.black999),
                         ),
-                        TextSpan(
-                          text: S.current.memberServiceAgreement,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              WebPage.go(url: AppConfig.urlUserService);
-                            },
-                        ),
+                        // TextSpan(
+                        //   text: S.current.memberServiceAgreement,
+                        //   recognizer: TapGestureRecognizer()
+                        //     ..onTap = () {
+                        //       WebPage.go(url: AppConfig.urlUserService);
+                        //     },
+                        // ),
                         TextSpan(
                           text: S.current.privacyPolicy,
                           recognizer: TapGestureRecognizer()

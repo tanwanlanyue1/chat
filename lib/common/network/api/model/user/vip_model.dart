@@ -10,7 +10,7 @@ class VipModel {
 
   final UserModel? userInfo;
   final List<Benefit> benefits;
-  final List<Package> packages;
+  final List<VipPackageModel> packages;
   final List<String> swiperList;
 
   factory VipModel.fromJson(Map<String, dynamic> json) {
@@ -24,8 +24,8 @@ class VipModel {
               json["benefits"]!.map((x) => Benefit.fromJson(x))),
       packages: json["packages"] == null
           ? []
-          : List<Package>.from(
-              json["packages"]!.map((x) => Package.fromJson(x))),
+          : List<VipPackageModel>.from(
+              json["packages"]!.map((x) => VipPackageModel.fromJson(x))),
       swiperList: json["swiperList"] == null
           ? []
           : List<String>.from(json["swiperList"]!.map((x) => x)),
@@ -74,8 +74,8 @@ class Benefit {
       };
 }
 
-class Package {
-  Package({
+class VipPackageModel {
+  VipPackageModel({
     required this.id,
     required this.price,
     required this.discountPrice,
@@ -91,8 +91,8 @@ class Package {
   final int discount; // 优惠 0无优惠 1限时特惠
   final String title; // 标题
 
-  factory Package.fromJson(Map<String, dynamic> json) {
-    return Package(
+  factory VipPackageModel.fromJson(Map<String, dynamic> json) {
+    return VipPackageModel(
       id: json["id"] ?? 0,
       price: json["price"] ?? 0,
       discountPrice: json["discountPrice"] ?? 0,

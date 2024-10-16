@@ -5,6 +5,7 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/widgets/loading.dart';
+import 'package:guanjia/widgets/payment_password_keyboard.dart';
 
 import 'my_vip_state.dart';
 
@@ -25,30 +26,26 @@ class MyVipController extends GetxController {
     final packageId = packages.safeElementAt(state.packagesIndex.value)?.id;
     if (packageId == null) return;
 
-    Loading.show();
-    final res = await VipApi.openVip(packageId: packageId);
-    Loading.dismiss();
-
-    if (!res.isSuccess) {
-      res.showErrorMessage();
+    if(state.selectProtocol.isFalse){
+      Loading.showToast('请先勾选确认会员服务协议');
       return;
     }
 
-    // TODO： 目前支付还没有定，直接跳转到结果界面
-    // Get.toNamed(AppRoutes.orderPaymentPage,
-    //     arguments: {"orderId": res.data ?? "0", "type": OrderPaymentType.vip});
+    final password = await PaymentPasswordKeyboard.show();
+    if(password == null){
+      return;
+    }
 
-    Get.toNamed(
-      AppRoutes.orderPaymentResultPage,
-      arguments: {
-        "orderId": res.data ?? "0",
-        "type": OrderPaymentType.vip,
-        "isSuccess": true,
-      },
-    );
-
-    _fetchData();
-    SS.login.fetchMyInfo();
+    Loading.show();
+    final response = await VipApi.openVip(packageId: packageId, password: password);
+    Loading.dismiss();
+    if(response.isSuccess){
+      Loading.showToast('开通成功');
+      _fetchData();
+      SS.login.fetchMyInfo();
+    }else{
+      response.showErrorMessage();
+    }
   }
 
   void onTapPackages(int index) {
@@ -57,17 +54,6 @@ class MyVipController extends GetxController {
 
   void onTapSelectProtocol() {
     state.selectProtocol.toggle();
-  }
-
-  void onTapProtocol(int type) {
-    switch (type) {
-      case 1:
-        break;
-      case 2:
-        break;
-      case 3:
-        break;
-    }
   }
 
   void _fetchData() async {

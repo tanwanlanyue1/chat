@@ -7,13 +7,14 @@ import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/network/api/model/payment/talk_payment.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 import 'recharge_order_controller.dart';
-import 'recharge_order_state.dart';
 
 ///充值订单详情
 class RechargeOrderPage extends GetView<RechargeOrderController> {
@@ -26,6 +27,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
         title: const Text('充值'),
       ),
       body: Obx((){
+        final desc = state.descRx;
         final orderStatus = state.orderStatusRx;
         final order = state.orderRx();
         if(order == null){
@@ -47,10 +49,12 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
             buildQrCode(order),
             buildCountdown(order),
             Divider(height: 32.rpx),
-            buildDesc(),
-            Button.outlineStadium(
+            if(desc.isNotEmpty) buildDesc(desc),
+            if(controller.fromRechargePage) Button.outlineStadium(
               margin: FEdgeInsets(horizontal: 22.rpx, top: 16.rpx),
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed(AppRoutes.walletOrderListPage);
+              },
               height: 46.rpx,
               borderColor: AppColor.black999,
               child: Text(
@@ -311,28 +315,17 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
     );
   }
 
-  Widget buildDesc() {
-    return Text.rich(TextSpan(
-        style: AppTextStyle.fs14m.copyWith(
-          color: AppColor.black6,
-          height: 1.5,
-        ),
-        children: const [
-          TextSpan(text: '①请在'),
-          TextSpan(
-            text: '15分钟之内完成付款',
-            style: TextStyle(color: AppColor.primaryBlue),
-          ),
-          TextSpan(text: '，超时付款不会到账；\n'),
-          TextSpan(text: '②实际转账'),
-          TextSpan(
-            text: '金额需要与上方显示的订单金额一致',
-            style: TextStyle(color: AppColor.primaryBlue),
-          ),
-          TextSpan(text: '，否则系统不到账;\n'),
-          TextSpan(text: '③点击金额和地区区域，可直接复制;\n'),
-          TextSpan(text: '④如扫码后无法付款，请直接粘贴地址及金额进行付款作;\n'),
-          TextSpan(text: '⑤如出现转账金额与订单金额不一致系统未到账的情况请联系客服人员。'),
-        ]));
+  Widget buildDesc(String text) {
+    return HighlightText(
+      text,
+      style: AppTextStyle.fs14m.copyWith(
+        color: AppColor.black6,
+        height: 1.5,
+      ),
+      highlightStyle: AppTextStyle.fs14m.copyWith(
+        color: AppColor.primaryBlue,
+        height: 1.5,
+      ),
+    );
   }
 }

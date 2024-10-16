@@ -12,6 +12,7 @@ import 'package:guanjia/ui/wallet/withdraw/wallet_address_popup_menu_button.dart
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/widgets.dart';
+import 'package:highlight_text/highlight_text.dart';
 
 import 'wallet_withdraw_controller.dart';
 
@@ -33,7 +34,8 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
     return Obx(() {
       final addressList = controller.addressListRx();
       final address = controller.addressRx();
-
+      final desc = controller.descRx;
+      final withdrawFee = controller.withdrawFeeRx;
       return ListView(
         padding: FEdgeInsets(
           horizontal: 16.rpx,
@@ -71,17 +73,17 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
             ),
           ),
           buildAmount(),
-          Padding(
+          if(withdrawFee.isNotEmpty) Padding(
             padding: FEdgeInsets(top: 8.rpx, left: 8.rpx),
             child: Text(
-              '手续费：2 USDT',
+              '手续费：$withdrawFee USDT',
               style: AppTextStyle.fs12r.copyWith(
                 color: AppColor.black999,
                 height: 1,
               ),
             ),
           ),
-          buildDesc(),
+          if(desc.isNotEmpty) buildDesc(desc),
           Padding(
             padding: FEdgeInsets(top: 36.rpx, horizontal: 20.rpx),
             child: CommonGradientButton(
@@ -127,9 +129,6 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
                 ),
                 inputFormatters: [
                   DecimalTextInputFormatter(
-                    maxValue: SS.appConfig.transferMaxAmount,
-                    maxValueHint:
-                        '金额不能超过${SS.appConfig.transferMaxAmount.toStringAsTrimZero()}',
                     decimalDigits: SS.appConfig.decimalDigits,
                   )
                 ],
@@ -153,7 +152,7 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
     );
   }
 
-  Widget buildDesc() {
+  Widget buildDesc(String text) {
     return Container(
       margin: FEdgeInsets(top: 12.rpx),
       padding: FEdgeInsets(all: 12.rpx),
@@ -161,44 +160,25 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
         color: AppColor.background,
         borderRadius: BorderRadius.circular(8.rpx),
       ),
-      child: Text.rich(TextSpan(
+      child: HighlightText(
+        text,
+        words: {
+          '提现须知': HighlightedWord(
+            textStyle: AppTextStyle.fs12m.copyWith(
+              color: AppColor.black666,
+              height: 1.5,
+            )
+          ),
+        },
         style: AppTextStyle.fs12m.copyWith(
           color: AppColor.black999,
           height: 1.5,
         ),
-        children: [
-          TextSpan(
-            text: '提现须知\n',
-            style: AppTextStyle.fs12m.copyWith(
-              color: AppColor.black6,
-            ),
-          ),
-          const TextSpan(text: '支持金额：最低提现额度'),
-          TextSpan(
-            text: ' 2 ',
-            style: AppTextStyle.fs12m.copyWith(
-              color: AppColor.red,
-            ),
-          ),
-          const TextSpan(text: 'USDT；\n'),
-          const TextSpan(text: '提现限额：您的24h提现额度为'),
-          TextSpan(
-            text: ' 9999999 ',
-            style: AppTextStyle.fs12m.copyWith(
-              color: AppColor.red,
-            ),
-          ),
-          const TextSpan(text: 'USDT；\n'),
-          const TextSpan(text: '提现手续费：'),
-          TextSpan(
-            text: '10-20 ',
-            style: AppTextStyle.fs12m.copyWith(
-              color: AppColor.red,
-            ),
-          ),
-          const TextSpan(text: 'USDT。'),
-        ],
-      )),
+        highlightStyle: AppTextStyle.fs12m.copyWith(
+          color: AppColor.red,
+          height: 1.5,
+        ),
+      ),
     );
   }
 

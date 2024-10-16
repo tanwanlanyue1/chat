@@ -8,10 +8,14 @@ import 'wallet_order_list_view.dart';
 
 ///充值提现订单列表
 class WalletOrderListPage extends StatelessWidget {
+  final int tabIndex;
+  const WalletOrderListPage({this.tabIndex = 0, super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
+      initialIndex: tabIndex,
       child: Scaffold(
         appBar: AppBar(
           leading: AppBackButton.light(),
@@ -40,6 +44,7 @@ class WalletOrderListPage extends StatelessWidget {
   Widget buildTabBar() {
     return Container(
       color: Colors.white,
+      margin: const FEdgeInsets(bottom: 1),
       child: TabBar(
         labelStyle: AppTextStyle.fs16b,
         labelColor: AppColor.primaryBlue,

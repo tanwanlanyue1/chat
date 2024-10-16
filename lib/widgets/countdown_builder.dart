@@ -36,7 +36,11 @@ class _CountdownBuilderState extends State<CountdownBuilder> {
 
   void onTick() {
     var now = DateTime.now();
-    final diff = widget.endTime.difference(now);
+    var diff = widget.endTime.difference(now);
+    if(diff.isNegative){
+      diff = Duration.zero;
+    }
+
     if (diff.inSeconds <=0) {
       widget.onFinish?.call();
     } else {

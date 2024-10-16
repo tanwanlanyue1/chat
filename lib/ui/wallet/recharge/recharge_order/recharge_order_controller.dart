@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/payment_api.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 import 'recharge_order_state.dart';
@@ -10,23 +13,62 @@ class RechargeOrderController extends GetxController {
   ///订单流水号
   final String orderNo;
 
-  RechargeOrderController({required this.orderNo});
+  ///来自充值页面跳转
+  final bool fromRechargePage;
+
+   Timer? _timer;
+   ///轮询时隔
+   static const kPollingDuration = Duration(seconds: 3);
+
+  RechargeOrderController({required this.orderNo, this.fromRechargePage = false});
 
   @override
   void onInit() {
     super.onInit();
-    fetchData();
+    fetchData().then((value) => _pollingFetchData());
+
+    //如果提示文本为空，刷新提示文本
+    if(state.descRx.isEmpty){
+      SS.appConfig.fetchData();
+    }
   }
 
-  void fetchData() async{
-    Loading.show();
-    final response = await PaymentApi.getOrderInfo(orderNo);
-    Loading.dismiss();
-    if(response.isSuccess){
-
-    }else{
-      response.showErrorMessage();
+  Future<void> fetchData({bool isLoadingVisible = true}) async{
+    if(isLoadingVisible){
+      Loading.show();
     }
+    final response = await PaymentApi.getOrderInfo(orderNo);
+    if(isLoadingVisible){
+      Loading.dismiss();
+    }
+    if(response.isSuccess){
+      state.orderRx.value = response.data;
+    }else{
+      if(isLoadingVisible){
+        response.showErrorMessage();
+      }
+    }
+  }
+
+  ///轮询订单状态
+  void _pollingFetchData(){
+    //待支付 才需要轮询
+    if(state.orderStatusRx?.isPending != true || isClosed){
+      return;
+    }
+
+    _timer?.cancel();
+    _timer = Timer(kPollingDuration, () async {
+      if(!isClosed){
+        await fetchData(isLoadingVisible: false);
+        if(state.orderStatusRx?.isSuccess == true){
+          //到账，刷新余额
+          SS.login.fetchMyInfo();
+        }else{
+          _pollingFetchData();
+        }
+      }
+    });
   }
 
   ///超时
@@ -37,7 +79,16 @@ class RechargeOrderController extends GetxController {
   }
 
   ///完成转账
-  void onTapComplete(){
-    // state.orderStatusRx.value = RechargeOrderStatus.success;
+  void onTapComplete() async{
+    await fetchData();
+    if(state.orderStatusRx?.isPending == true){
+      Loading.showToast('转账后需要稍等片刻才能到账，如长时间未到账请联系客服');
+    }
+  }
+
+  @override
+  void onClose() {
+    _timer?.cancel();
+    super.onClose();
   }
 }

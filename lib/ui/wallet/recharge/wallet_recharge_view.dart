@@ -73,9 +73,6 @@ class _WalletRechargeViewState extends State<WalletRechargeView>
               ),
               inputFormatters: [
                 DecimalTextInputFormatter(
-                  maxValue: SS.appConfig.transferMaxAmount,
-                  maxValueHint:
-                      '金额不能超过${SS.appConfig.transferMaxAmount.toStringAsTrimZero()}',
                   decimalDigits: SS.appConfig.decimalDigits,
                 )
               ],

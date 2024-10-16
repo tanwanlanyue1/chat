@@ -108,7 +108,7 @@ class WalletPage extends StatelessWidget {
                     Padding(
                       padding: FEdgeInsets(top: 10.rpx),
                       child: Text(
-                        info.balance.toStringAsTrimZero(),
+                        info.balance.toCurrencyString(),
                         style: AppTextStyle.st.medium
                             .size(24.rpx)
                             .textColor(AppColor.black3)
@@ -147,7 +147,7 @@ class WalletPage extends StatelessWidget {
                                     .copyWith(height: 1),
                               ),
                               Text(
-                                info.withdrawals.toStringAsTrimZero(),
+                                info.withdrawals.toCurrencyString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyle.st.medium
@@ -177,7 +177,7 @@ class WalletPage extends StatelessWidget {
                                     .copyWith(height: 1),
                               ),
                               Text(
-                                info.withdrawalsAble.toStringAsTrimZero(),
+                                info.withdrawalsAble.toCurrencyString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyle.st.medium

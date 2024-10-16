@@ -18,3 +18,4 @@ export 'app_back_button.dart';
 export 'common_gradient_button.dart';
 export 'countdown_builder.dart';
 export 'foreground_gradient_mask.dart';
+export 'highlight_text.dart';

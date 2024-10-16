@@ -12,7 +12,7 @@ class WalletRechargeController extends GetxController {
   void onSubmit() async{
     final amount = double.tryParse(amountEditingController.text) ?? 0;
     if(amount <= 0){
-      Loading.showToast('充值金额必须大于0');
+      Loading.showToast('金额必须大于0');
       return;
     }
 
@@ -21,7 +21,8 @@ class WalletRechargeController extends GetxController {
     Loading.dismiss();
     if(response.isSuccess){
       Get.toNamed(AppRoutes.rechargeOrderPage, arguments: {
-        'orderNo': response.data?.orderNo
+        'orderNo': response.data?.orderNo,
+        'fromRechargePage': true,
       });
     }else{
       response.showErrorMessage();

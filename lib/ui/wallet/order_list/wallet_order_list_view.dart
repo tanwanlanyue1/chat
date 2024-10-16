@@ -42,14 +42,14 @@ class _WalletOrderListViewState extends State<WalletOrderListView> with Automati
           child: PagedListView.separated(
             padding: FEdgeInsets(vertical: 8.rpx),
             pagingController: controller.pagingController,
-            builderDelegate: DefaultPagedChildBuilderDelegate<MessageModel>(
+            builderDelegate: DefaultPagedChildBuilderDelegate<WalletOrderItem>(
               pagingController: controller.pagingController,
               itemBuilder: (_, item, index) {
                 return WalletOrderListTile(
-                  // item: item,
+                  item: item,
                   type: widget.type,
                   onTap: () {
-                    controller.onTapItem();
+                    controller.onTapItem(item);
                   },
                 );
               },

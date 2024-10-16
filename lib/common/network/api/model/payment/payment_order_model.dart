@@ -12,7 +12,6 @@ class PaymentOrderModel {
     required this.remark,
     required this.callbackTime,
     required this.createTime,
-    required this.payAmount,
     required this.collectionAddress,
     required this.timeout,
   });
@@ -29,7 +28,7 @@ class PaymentOrderModel {
   ///类型 （0=充值钱包、1=开通会员）
   final int type;
 
-  ///订单总金额
+  ///订单总金额(用户实际支付金额)
   final num amount;
 
   ///用户输入金额
@@ -47,9 +46,6 @@ class PaymentOrderModel {
   ///	创建时间戳
   final int createTime;
 
-  ///	用户实际支付金额
-  final num payAmount;
-
   ///	收款钱包地址
   final String collectionAddress;
 
@@ -62,13 +58,12 @@ class PaymentOrderModel {
       orderNo: json["orderNo"] ?? "",
       uid: json["uid"] ?? 0,
       type: json["type"] ?? 0,
-      amount: json["amount"] ?? 0,
+      amount: json["amount"] ?? json["payAmount"] ?? 0,
       inputAmount: json["inputAmount"] ?? 0,
       orderStatus: json["orderStatus"] ?? 0,
       remark: json["remark"] ?? "",
       callbackTime: json["callbackTime"] ?? 0,
       createTime: json["createTime"] ?? 0,
-      payAmount: json["payAmount"] ?? 0,
       collectionAddress: json["collectionAddress"] ?? "",
       timeout: json["timeout"] ?? 0,
     );

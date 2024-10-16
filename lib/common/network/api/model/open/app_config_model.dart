@@ -82,12 +82,20 @@ class AppConfigModel {
   ///谁看过我
   bool? lookMessage;
 
+  ///钱包提现提示
+  String? withdrawTips;
+
+  ///钱包充值支付提示
+  String? payTips;
+
+  ///提现手续费
+  num? withdrawFee;
+
   /// 拼接 标签
   List<LabelModel>? labels;
 
   List<LabelModel>? styleList;
 
-  ///
 
   List<LabelModel> get commonStyleList {
     if (styleList == null) return [];
@@ -170,6 +178,9 @@ class AppConfigModel {
     googleVerification = json['googleVerification'];
     systemMessage = json['systemMessage'];
     lookMessage = json['lookMessage'];
+    withdrawTips = json['withdrawTips'];
+    payTips = json['payTips'];
+    withdrawFee = json['withdrawFee'];
   }
 }
 

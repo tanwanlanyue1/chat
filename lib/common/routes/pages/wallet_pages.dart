@@ -23,13 +23,14 @@ class WalletPages {
       binding: BindingsBuilder.put(
         () => RechargeOrderController(
           orderNo: Get.getArgs('orderNo', ''),
+          fromRechargePage: Get.getArgs('fromRechargePage', false),
         ),
       ),
     ),
     GetPage(
       name: AppRoutes.walletOrderListPage,
       page: () {
-        return WalletOrderListPage();
+        return WalletOrderListPage(tabIndex: Get.getArgs('tabIndex', 0));
       },
     ),
   ];

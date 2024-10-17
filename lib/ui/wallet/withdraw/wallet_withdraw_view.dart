@@ -73,23 +73,55 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
             ),
           ),
           buildAmount(),
-          if(withdrawFee.isNotEmpty) Padding(
-            padding: FEdgeInsets(top: 8.rpx, left: 8.rpx),
-            child: Text(
-              '手续费：$withdrawFee USDT',
-              style: AppTextStyle.fs12r.copyWith(
-                color: AppColor.black999,
-                height: 1,
+          if (withdrawFee.isNotEmpty)
+            Padding(
+              padding: FEdgeInsets(top: 8.rpx, left: 8.rpx),
+              child: Text(
+                '手续费：$withdrawFee USDT',
+                style: AppTextStyle.fs12r.copyWith(
+                  color: AppColor.black999,
+                  height: 1,
+                ),
               ),
             ),
-          ),
-          if(desc.isNotEmpty) buildDesc(desc),
+          if (desc.isNotEmpty) buildDesc(desc),
           Padding(
             padding: FEdgeInsets(top: 36.rpx, horizontal: 20.rpx),
             child: CommonGradientButton(
               onTap: controller.onSubmit,
               height: 50.rpx,
               text: '立即提现',
+            ),
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () async {
+                Loading.show();
+                await SS.login.fetchMyInfo();
+                Loading.dismiss();
+              },
+              child: Padding(
+                padding: FEdgeInsets(vertical: 16.rpx),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '我已成功提现，刷新余额',
+                      style: AppTextStyle.fs12m.copyWith(
+                        color: AppColor.black9,
+                        height: 1.0,
+                      ),
+                    ),
+                    Padding(
+                      padding: FEdgeInsets(left: 8.rpx),
+                      child: AppImage.asset(
+                        'assets/images/wallet/ic_refresh_blue.png',
+                        size: 16.rpx,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
@@ -164,11 +196,10 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
         text,
         words: {
           '提现须知': HighlightedWord(
-            textStyle: AppTextStyle.fs12m.copyWith(
-              color: AppColor.black666,
-              height: 1.5,
-            )
-          ),
+              textStyle: AppTextStyle.fs12m.copyWith(
+            color: AppColor.black666,
+            height: 1.5,
+          )),
         },
         style: AppTextStyle.fs12m.copyWith(
           color: AppColor.black999,

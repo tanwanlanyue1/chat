@@ -78,8 +78,9 @@ class WalletWithdrawController extends GetxController {
 
   void onSubmit() async{
     final amount = double.tryParse(amountEditingController.text) ?? 0;
-    if(amount <= 0){
-      Loading.showToast('金额必须大于0');
+    final withdrawMinAmount = SS.appConfig.configRx()?.withdrawMinAmount ?? 0;
+    if(amount < withdrawMinAmount || amount <= 0){
+      Loading.showToast('提现金额有误');
       return;
     }
     final address = addressRx();
@@ -87,7 +88,10 @@ class WalletWithdrawController extends GetxController {
       Loading.showToast('请选择钱包地址');
       return;
     }
-
+    if(amount > (SS.login.info?.balance ?? 0)){
+      Loading.showToast('提现金额超出当前余额');
+      return;
+    }
     final password = await PaymentPasswordKeyboard.show();
     if(password == null){
       return;
@@ -106,6 +110,8 @@ class WalletWithdrawController extends GetxController {
       Get.toNamed(AppRoutes.walletOrderListPage, arguments: {
         'tabIndex': 1,
       });
+    }else if(response.code == 1103){
+      Loading.showToast(response.errorMessage ?? '提现金额超出当前余额');
     }else{
       response.showErrorMessage();
     }

@@ -32,7 +32,7 @@ class WalletWithdrawOrderItem extends WalletOrderItem<WithdrawOrderModel>{
   @override
   String get createTime => data.createTime.dateTime.format;
   @override
-  String get orderNo => data.id.toString();
+  String get orderNo => data.number;
   @override
   int get status => data.state;
   @override

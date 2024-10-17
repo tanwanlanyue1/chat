@@ -2,6 +2,7 @@
 class WithdrawOrderModel {
   WithdrawOrderModel({
     required this.id,
+    required this.number,
     required this.uid,
     required this.amount,
     required this.address,
@@ -11,6 +12,9 @@ class WithdrawOrderModel {
   });
 
   final int id;
+
+  ///流水号
+  final String number;
 
   ///	用户id
   final int uid;
@@ -33,6 +37,7 @@ class WithdrawOrderModel {
   factory WithdrawOrderModel.fromJson(Map<String, dynamic> json){
     return WithdrawOrderModel(
       id: json["id"] ?? 0,
+      number: json["number"] ?? "",
       uid: json["uid"] ?? 0,
       amount: json["amount"] ?? 0,
       address: json["address"] ?? "",

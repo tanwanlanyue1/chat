@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 /// 用户性别类型
 enum UserGender {
   unknown,
@@ -9,6 +11,7 @@ enum UserGender {
   }
 
   bool get isMale => this == UserGender.male;
+
   bool get isFemale => this == UserGender.female;
 
   String? get icon {
@@ -25,16 +28,24 @@ enum UserGender {
 
 /// 用户类型
 enum UserType {
-  user,
-  beauty,
-  agent;
+  user(0),
+  beauty(1),
+  agent(2);
 
-  static UserType valueForIndex(int index) {
-    return UserType.values.elementAtOrNull(index) ?? UserType.user;
+  final int value;
+
+  const UserType(this.value);
+
+  static UserType valueOf(int value) {
+    return UserType.values
+            .firstWhereOrNull((element) => element.value == value) ??
+        UserType.user;
   }
 
   bool get isUser => this == UserType.user;
+
   bool get isBeauty => this == UserType.beauty;
+
   bool get isAgent => this == UserType.agent;
 }
 
@@ -129,6 +140,7 @@ class UserModel {
   int expirationTime; // VIP到期时间
   ///钱包历史提现金额
   num withdrawals = 0;
+
   ///	钱包可提现金额
   num withdrawalsAble = 0;
 
@@ -136,7 +148,7 @@ class UserModel {
     return UserModel(
       uid: json["uid"] ?? 0,
       chatNo: json["chatNo"] ?? 0,
-      type: UserType.valueForIndex(json["type"] ?? 0),
+      type: UserType.valueOf(json["type"] ?? 0),
       state: UserStatus.valueForIndex(json["state"] ?? 0),
       avatar: json["avatar"] ?? "",
       serviceCharge: json["serviceCharge"] ?? 0,

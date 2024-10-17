@@ -91,6 +91,9 @@ class AppConfigModel {
   ///提现手续费
   num? withdrawFee;
 
+  ///最低提现金额
+  num? withdrawMinAmount;
+
   /// 拼接 标签
   List<LabelModel>? labels;
 
@@ -181,6 +184,7 @@ class AppConfigModel {
     withdrawTips = json['withdrawTips'];
     payTips = json['payTips'];
     withdrawFee = json['withdrawFee'];
+    withdrawMinAmount = json['withdrawMinAmount'];
   }
 }
 

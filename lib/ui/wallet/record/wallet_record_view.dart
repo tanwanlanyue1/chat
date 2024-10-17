@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/date_time_extension.dart';
+import 'package:guanjia/common/extension/int_extension.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
@@ -95,7 +97,7 @@ class _WalletRecordViewState extends State<WalletRecordView> with AutomaticKeepA
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          CommonUtils.timestamp(item.createTime, unit: "dd/MM/yyyy"),
+          item.createTime.dateTime.formatYMDHHmm2,
           style: AppTextStyle.fs12m.copyWith(
             color: AppColor.black999,
             height: 1.0,

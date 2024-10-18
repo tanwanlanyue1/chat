@@ -62,7 +62,7 @@ class WalletPage extends StatelessWidget {
 
   Widget _buildTopBackground() {
     return Container(
-      height: 274.rpx,
+      height: 264.rpx,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.centerLeft,
@@ -80,7 +80,7 @@ class WalletPage extends StatelessWidget {
     return Obx((){
       final info = SS.login.info ?? UserModel.fromJson({});
       return Container(
-        margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 36.rpx),
+        margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 24.rpx),
         padding: EdgeInsets.symmetric(horizontal: 16.rpx, vertical: 24.rpx),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.rpx),

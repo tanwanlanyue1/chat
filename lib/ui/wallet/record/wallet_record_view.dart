@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -14,7 +15,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../common/network/api/model/user/talk_user.dart';
-import '../../../common/utils/common_utils.dart';
 import 'wallet_record_controller.dart';
 
 ///钱包记录
@@ -25,71 +25,91 @@ class WalletRecordView extends StatefulWidget {
   State<WalletRecordView> createState() => _WalletRecordViewState();
 }
 
-class _WalletRecordViewState extends State<WalletRecordView> with AutomaticKeepAliveClientMixin {
-
+class _WalletRecordViewState extends State<WalletRecordView>
+    with AutomaticKeepAliveClientMixin {
   final controller = Get.put(WalletRecordController());
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Stack(
+    return Column(
       children: [
-        SmartRefresher(
-          controller: controller.pagingController.refreshController,
-          onRefresh: controller.pagingController.onRefresh,
-          child: PagedListView.separated(
-            padding:
-            EdgeInsets.symmetric(horizontal: 16.rpx, vertical: 24.rpx),
-            pagingController: controller.pagingController,
-            builderDelegate: DefaultPagedChildBuilderDelegate(
+        buildFilterBar(),
+        Expanded(
+          child: SmartRefresher(
+            controller: controller.pagingController.refreshController,
+            onRefresh: controller.pagingController.onRefresh,
+            child: PagedListView.separated(
+              padding:
+                  FEdgeInsets(horizontal: 16.rpx, bottom: 24.rpx),
               pagingController: controller.pagingController,
-              itemBuilder: (_, item, index) {
-                if (item is PurseLogList) {
-                  return _buildItem(item);
-                }
-                return const SizedBox();
+              builderDelegate: DefaultPagedChildBuilderDelegate(
+                pagingController: controller.pagingController,
+                itemBuilder: (_, item, index) {
+                  if (item is PurseLogModel) {
+                    return _buildItem(item);
+                  }
+                  return const SizedBox();
+                },
+              ),
+              separatorBuilder: (_, __) {
+                return Divider(
+                  height: 32.rpx,
+                );
               },
             ),
-            separatorBuilder: (_, __) {
-              return Divider(
-                height: 32.rpx,
-              );
-            },
           ),
-        ),
-        Positioned(
-          top: 16.rpx,
-          right: 16.rpx,
-          child: Button.outlineStadium(
-            onPressed: controller.onTapFilter,
-            height: 24.rpx,
-            backgroundColor: Colors.white,
-            borderColor: AppColor.black999.withOpacity(0.1),
-            padding: FEdgeInsets(left: 8.rpx, right: 4.rpx),
-            child: Row(
-              children: [
-                Obx(() {
-                  return Text(
-                    controller.recordTypeRx()?.label ?? '筛选',
-                    style: AppTextStyle.st
-                        .size(12.rpx)
-                        .textColor(AppColor.black3),
-                  );
-                }),
-                Icon(
-                  Icons.arrow_drop_down,
-                  size: 20.rpx,
-                  color: AppColor.black3,
-                ),
-              ],
-            ),
-          ),
-        ),
+        )
       ],
     );
   }
 
-  Widget _buildItem(PurseLogList item) {
+  Widget buildFilterBar(){
+    return Obx((){
+      final filterData = controller.filterDataRx();
+      final totalIncome = controller.totalIncomeRx();
+      final totalExpenditure = controller.totalExpenditureRx();
+      return Padding(
+        padding: FEdgeInsets(horizontal: 16.rpx, vertical: 12.rpx),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                '支出${totalIncome.toCurrencyString()}  收益${totalExpenditure.toCurrencyString()}',
+                style: AppTextStyle.fs14m.copyWith(
+                  color: AppColor.blackBlue,
+                  height: 1,
+                ),
+              ),
+            ),
+            Button.stadium(
+              onPressed: controller.onTapFilter,
+              height: 24.rpx,
+              backgroundColor: Colors.transparent,
+              padding: FEdgeInsets(left: 8.rpx, right: 4.rpx),
+              child: Row(
+                children: [
+                  Text(
+                    '筛选',
+                    style: AppTextStyle.st
+                        .size(12.rpx)
+                        .textColor(AppColor.black3),
+                  ),
+                  Icon(
+                    Icons.arrow_drop_down,
+                    size: 20.rpx,
+                    color: AppColor.black3,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  Widget _buildItem(PurseLogModel item) {
     final opt = item.optType == 1 ? "+" : "-";
 
     return Column(

@@ -780,13 +780,17 @@ class UserApi {
   }
 
   /// 获取钱包日志记录
-  /// logType: 记录类型 -1查询全部 1 充值 2.后台下发 3.后台扣减 4 订单保证金或服务费 5 通话实时扣费 6通话订单收益 7转账 8红包 9开通会员 12陪聊分成 13约会分成
-  /// page: 页码（默认1）,示例值(1)
-  /// size: 每页数量（默认10）,示例值(10)
-  static Future<ApiResponse<List<PurseLogList>>> getPurseLogList({
-    required int logType,
+  ///- logType: 记录类型 -1查询全部 1 充值 2.后台下发 3.后台扣减 4 订单保证金或服务费 5 通话实时扣费 6通话订单收益 7转账 8红包 9开通会员 12陪聊分成 13约会分成
+  ///- page: 页码（默认1）,示例值(1)
+  ///- size: 每页数量（默认10）,示例值(10)
+  ///- startDate 开始时间 yyyy-mm-dd
+  ///- endDate yyyy-mm-dd
+  static Future<ApiResponse<PurseLogListModel>> getPurseLogList({
+    required List<int> logType,
     int page = 1,
     int size = 10,
+    String? startDate,
+    String? endDate,
   }) {
     return HttpClient.get(
       '/api/user/getPurseLogList',
@@ -794,13 +798,10 @@ class UserApi {
         "logType": logType,
         "page": page,
         "size": size,
+        if(startDate != null && endDate != null) "startDate": startDate,
+        if(startDate != null && endDate != null) "endDate": endDate,
       },
-      dataConverter: (json) {
-        if (json is List) {
-          return json.map((e) => PurseLogList.fromJson(e)).toList();
-        }
-        return [];
-      },
+      dataConverter: (json) => PurseLogListModel.fromJson(json),
     );
   }
 

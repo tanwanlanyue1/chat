@@ -45,6 +45,15 @@ extension DateTimeExtension on DateTime {
     return year == other.year && month == other.month && day == other.day;
   }
 
+  ///获取本月的最后一天的时间
+  DateTime get lastDayOfMonth{
+    if(month < 12){
+      return copyWith(month: month + 1, day: 0);
+    }else{
+      return copyWith(year: year + 1, month: 1, day: 0);
+    }
+  }
+
   ///友好显示时间
   String get friendlyTime {
     String fmtNumber(int value) {

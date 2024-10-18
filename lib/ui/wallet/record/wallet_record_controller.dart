@@ -1,16 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:guanjia/common/app_color.dart';
-import 'package:guanjia/common/app_text_style.dart';
-import 'package:guanjia/common/extension/text_style_extension.dart';
+import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
-import 'package:guanjia/common/utils/screen_adapt.dart';
-import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/widgets/common_bottom_sheet.dart';
-import 'package:guanjia/widgets/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'wallet_record_filter_dialog.dart';
@@ -18,11 +10,18 @@ import 'wallet_record_filter_dialog.dart';
 class WalletRecordController extends GetxController {
   // 分页控制器
   final DefaultPagingController pagingController =
-      DefaultPagingController<PurseLogList>(
+      DefaultPagingController<PurseLogModel>(
     refreshController: RefreshController(),
   );
 
-  final recordTypeRx = Rxn<RecordType>();
+  ///筛选项
+  final filterDataRx = Rxn<RecordFilterData>();
+
+  ///总收益
+  final totalIncomeRx = RxNum(0);
+
+  ///总支出
+  final totalExpenditureRx = RxNum(0);
 
   @override
   void onInit() {
@@ -38,21 +37,33 @@ class WalletRecordController extends GetxController {
 
   ///筛选
   void onTapFilter() async {
-    final type = await WalletRecordFilterDialog.show(items: RecordType.getTypes(SS.login.userType));
-    if (type != null && type.value != recordTypeRx()?.value) {
-      recordTypeRx.value = type;
+    final result = await WalletRecordFilterDialog.show(
+      items: RecordType.getTypes(SS.login.userType),
+      data: filterDataRx(),
+    );
+    if(result != null){
+      filterDataRx.value = result;
       pagingController.refresh();
     }
   }
 
   void _fetchPage(int page) async {
-    final res =
-        await UserApi.getPurseLogList(logType: recordTypeRx()?.value ?? -1);
-    if (res.isSuccess) {
-      final listSubModel = res.data ?? [];
-      pagingController.appendPageData(listSubModel);
+    final filterData = filterDataRx();
+    final types = filterData?.types.map((e) => e.value).toList() ?? [];
+    final startDate = filterData?.beginTime?.formatYMD;
+    final endDate = filterData?.endTime?.lastDayOfMonth.formatYMD;
+    final response = await UserApi.getPurseLogList(
+      logType: types.isEmpty ? [-1] : types,
+      startDate: startDate,
+      endDate: endDate,
+    );
+    if (response.isSuccess) {
+      final data = response.data;
+      totalIncomeRx.value = data?.totalIncome ?? 0;
+      totalExpenditureRx.value = data?.totalExpenditure ?? 0;
+      pagingController.appendPageData(data?.list ?? []);
     } else {
-      pagingController.error = res.errorMessage;
+      pagingController.error = response.errorMessage;
     }
   }
 }
@@ -65,9 +76,12 @@ class RecordType {
 
   RecordType(this.value, this.label, this.roles);
 
-  static List<RecordType> getTypes(UserType userType){
+  static List<RecordType> getTypes(UserType userType) {
     return _all.where((element) => element.roles.contains(userType)).toList();
   }
+
+  ///是否是全部
+  bool get isALl => value == -1;
 
   static List<RecordType> get _all {
     return [

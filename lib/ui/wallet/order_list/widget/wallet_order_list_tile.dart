@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/wallet/order_list/wallet_order_list_state.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -85,7 +87,9 @@ class WalletOrderListTile extends StatelessWidget {
 
   Widget buildCustomService() {
     return Button(
-      onPressed: () {},
+      onPressed: () {
+        Get.toNamed(AppRoutes.mineFeedbackPage);
+      },
       width: 60.rpx,
       height: 26.rpx,
       borderRadius: BorderRadius.circular(4.rpx),

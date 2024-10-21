@@ -10,6 +10,7 @@ class PermissionsUtils {
     return await openAppSettings();
   }
 
+
   /// 请求相册权限
   static Future<bool> requestPhotosPermission(
       {bool isOpenSetting = true}) async {

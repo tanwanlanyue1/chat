@@ -139,6 +139,9 @@ abstract class AppRoutes {
   /// 我的Vip
   static const myVipPage = '$auth/myVipPage';
 
+  /// 发送位置消息
+  static const sendLocationPage = '$auth/SendLocationPage';
+
   /// 钱包
   static const walletPage = '$auth/walletPage';
 

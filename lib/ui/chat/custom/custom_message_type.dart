@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 ///自定义消息类型
 enum CustomMessageType {
+
   ///红包 1
   redPacket(1),
 
@@ -22,7 +23,10 @@ enum CustomMessageType {
   callInvite(6),
 
   ///被邀请人拒绝接听 7
-  callReject(7);
+  callReject(7),
+
+  ///位置消息 8
+  location(8);
 
   final int value;
 

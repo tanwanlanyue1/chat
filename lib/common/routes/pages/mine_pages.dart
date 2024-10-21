@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:guanjia/ui/chat/location/send_location/send_location_controller.dart';
+import 'package:guanjia/ui/chat/location/send_location/send_location_page.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/chat/red_packet/red_packet_controller.dart';
 import 'package:guanjia/ui/chat/red_packet/red_packet_page.dart';
@@ -174,6 +176,15 @@ class MinePages {
     GetPage(
       name: AppRoutes.myVipPage,
       page: () => MyVipPage(),
+    ),
+    GetPage(
+      name: AppRoutes.sendLocationPage,
+      page: () => const SendLocationPage(),
+      binding: BindingsBuilder.put(
+            () => SendLocationController(
+          userId: Get.getArgs('userId', 0),
+        ),
+      ),
     ),
   ];
 }

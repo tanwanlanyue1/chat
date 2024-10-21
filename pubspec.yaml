@@ -83,6 +83,8 @@ dependencies:
   firebase_messaging: ^15.1.0
   pretty_qr_code: ^3.3.0 #二维码生成
   highlight_text: ^1.8.0 #高亮文本
+  google_maps_flutter: ^2.6.1
+  geolocator: ^12.0.0 #获取设备定位
 
 dependency_overrides:
   http: ^1.2.1 # svgaplayer_flutter 和 flutter_cache_manager会冲突，强制使用flutter_cache_manager依赖版本

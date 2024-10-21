@@ -12,6 +12,7 @@ import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_recharge_dialog.dart';
+import 'package:guanjia/ui/map/map_page.dart';
 import 'package:guanjia/ui/mine/widgets/beautiful_status_tips.dart';
 import 'package:guanjia/ui/mine/widgets/mine_list_tile.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -297,7 +298,10 @@ class _MinePageState extends State<MinePage>
           MineListTile(
             title: S.current.personalInformation,
             icon: "assets/images/mine/personal_info.png",
-            pagePath: AppRoutes.accountDataPage,
+            // pagePath: AppRoutes.accountDataPage,
+            onTap: (){
+              Get.to(() => MapPage());
+            },
           ),
           //我的钱包
           MineListTile(

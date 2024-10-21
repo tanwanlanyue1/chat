@@ -37,6 +37,7 @@ class HomeController extends GetxController with GetAutoDisposeMixin {
     if (Platform.isAndroid) {
       NotificationPermissionUtil.instance.initialize();
     }
+    SS.location.reportPosition(silent: false);
 
     //监听消息未读数
     final messageUnread = ZIMKit.instance.getTotalUnreadMessageCount();

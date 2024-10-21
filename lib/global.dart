@@ -13,7 +13,6 @@ import 'package:guanjia/ui/ad/ad_manager.dart';
 import 'package:guanjia/ui/welcome/welcome_storage.dart';
 
 import 'common/app_localization.dart';
-import 'common/app_position.dart';
 import 'common/notification/notification_manager.dart';
 import 'common/service/service.dart';
 import 'common/firebase_options.dart';

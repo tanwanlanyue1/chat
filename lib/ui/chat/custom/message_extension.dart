@@ -10,6 +10,7 @@ import 'message_call_end_content.dart';
 import 'message_call_invite_content.dart';
 import 'message_call_match_content.dart';
 import 'message_call_reject_content.dart';
+import 'message_location_content.dart';
 import 'message_order_content.dart';
 import 'message_red_packet_content.dart';
 
@@ -115,6 +116,14 @@ extension ZIMKitMessageExt on ZIMKitMessage {
     );
   }
 
+  ///位置消息内容
+  MessageLocationContent? get locationContent {
+    return _getOrParse(
+      type: CustomMessageType.location,
+      parse: MessageLocationContent.fromJson,
+    );
+  }
+
   ///是否隐藏头像
   set isHideAvatar(bool isHide) {
     zimkitExtraInfo[_kHideAvatar] = isHide;
@@ -187,6 +196,8 @@ extension ZIMKitMessageExt on ZIMKitMessage {
         return message.callMatchContent?.message ?? '[速配]';
       case CustomMessageType.order:
         return message.orderContent?.message ?? '[订单]';
+      case CustomMessageType.location:
+        return '[位置]';
       default:
         return '[未知类型]';
     }

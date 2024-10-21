@@ -122,6 +122,16 @@ extension MessageSenderPart on MessageListController {
     );
   }
 
+  ///发位置消息
+  void sendLocationMessage() {
+    Get.toNamed(
+      AppRoutes.sendLocationPage,
+      arguments: {
+        'userId': int.parse(state.conversationId),
+      },
+    );
+  }
+
   ///发转账消息
   void sendTransferMoneyMessage() {
     Get.toNamed(
@@ -142,6 +152,7 @@ extension MessageSenderPart on MessageListController {
         sendVideoMessage();
         break;
       case ChatFeatureAction.location:
+        sendLocationMessage();
         break;
       case ChatFeatureAction.redPacket:
         sendRedPacketMessage();

@@ -27,6 +27,8 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEOS"/>
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
     <application
@@ -74,6 +76,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/cache_file_paths" />
         </provider>
+
+<!--        Google Maps 秘钥-->
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAnp77yd2SqfkSLgvY8RybPk89vMubYOHc"/>
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility?hl=en and

@@ -292,7 +292,6 @@ class _TileIcon extends StatelessWidget {
                       //0.6
                       //0.5-1.0  0-1
                       //0 - -8
-                      print('${animation.value}  $anim');
                       return Transform.translate(
                           offset: Offset(0, (-8 * anim).rpx),
                           child: Lottie.asset(item.activeIcon, repeat: false));

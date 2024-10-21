@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:guanjia/common/app_position.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/httpclient/api_response.dart';
@@ -90,7 +89,6 @@ class LoginService extends GetxService {
           avatar: info?.avatar ?? '',
         );
         FirebaseUtil().setFcmTokenToServer();
-        AppPosition.updatePosition();
       } else {
         //断开IM连接
         ChatManager().disconnect();

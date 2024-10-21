@@ -19,6 +19,7 @@ import 'chat_call_invite_message.dart';
 import 'chat_call_match_message.dart';
 import 'chat_call_reject_message.dart';
 import 'chat_image_message.dart';
+import 'chat_location_message.dart';
 import 'chat_order_message.dart';
 import 'chat_text_message.dart';
 import 'chat_transfer_message.dart';
@@ -132,6 +133,13 @@ class ChatMessageWidget extends StatelessWidget {
             break;
           case CustomMessageType.callInvite:
             defaultMessageContent = ChatCallInviteMessage(
+              onLongPress: onLongPress,
+              onPressed: onPressed,
+              message: message,
+            );
+            break;
+          case CustomMessageType.location:
+            defaultMessageContent = ChatLocationMessage(
               onLongPress: onLongPress,
               onPressed: onPressed,
               message: message,

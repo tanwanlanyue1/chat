@@ -41,7 +41,7 @@ class WalletRecordController extends GetxController {
       items: RecordType.getTypes(SS.login.userType),
       data: filterDataRx(),
     );
-    if(result != null){
+    if (result != null) {
       filterDataRx.value = result;
       pagingController.refresh();
     }
@@ -56,6 +56,8 @@ class WalletRecordController extends GetxController {
       logType: types.isEmpty ? [-1] : types,
       startDate: startDate,
       endDate: endDate,
+      page: page,
+      size: pagingController.pageSize,
     );
     if (response.isSuccess) {
       final data = response.data;

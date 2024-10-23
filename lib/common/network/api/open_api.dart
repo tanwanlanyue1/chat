@@ -1,5 +1,12 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
+import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/httpclient/http_client.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
+
+import 'model/open/google_places_model.dart';
 
 enum OpenApiLoginType {
   password,
@@ -232,5 +239,78 @@ class OpenApi {
         'pushId': pushId,
       },
     );
+  }
+
+  ///通过经纬度获取地理位置
+  ///- 文档：https://developers.google.com/maps/documentation/geocoding/requests-reverse-geocoding?hl=zh-cn#reverse-requests
+  ///- latitude 纬度
+  ///- longitude 经度
+  static Future<ApiResponse<void>> geocode({
+    required double latitude,
+    required double longitude,
+  }) async {
+    try{
+      final response = await HttpClient.request(
+        'https://maps.googleapis.com/maps/api/geocode/json',
+        params: {
+          'latlng': '$latitude,$longitude',
+          'key': AppConfig.googleMapsApiKey,
+        },
+        options: Options(
+          method: 'GET',
+          responseType: ResponseType.plain,
+        )
+      );
+      print('geocode: ${response.data}');
+      return ApiResponse.success(response.data);
+    }catch(ex){
+      return ApiResponse.error(AppException(-1, '请求失败'));
+    }
+  }
+
+  ///搜索附近地点
+  ///- 文档：https://developers.google.com/maps/documentation/places/web-service/search-nearby?hl=zh-cn
+  ///- latitude 纬度
+  ///- longitude 经度
+  ///- radius 半径（米）
+  ///- keyword 搜索关键字
+  ///- language 语言编码 https://developers.google.com/maps/faq?hl=zh-cn#languagesupport
+  ///- rankby 排序方式 prominence：该选项根据结果的重要性对结果进行排序。排名将偏向于设置半径内的突出位置，而不是附近匹配但不太突出的位置。一个地方的突出程度可能受到谷歌指数排名、全球受欢迎程度和其他因素的影响。当指定突出度时，需要radius参数； distance：此选项根据与指定位置的距离按升序对搜索结果进行偏置。当指定距离时，需要输入关键字、名称或类型中的一个或多个，不允许输入半径。
+  static Future<ApiResponse<List<PlaceModel>>> searchNearPlaces({
+    required double latitude,
+    required double longitude,
+    int? radius,
+    String? keyword,
+    String? language,
+    String rankby = 'distance',
+  }) async {
+    try{
+      final response = await HttpClient.request(
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json',
+        params: {
+          'location': '$latitude,$longitude',
+          if(rankby !='distance') 'radius': radius, //rankby=distance时，不可传入radius，否则参数错误
+          'key': AppConfig.googleMapsApiKey,
+          'rankby': rankby,
+          if(keyword != null) 'keyword': keyword,
+          if(language != null) 'language': language,
+        },
+        options: Options(
+          method: 'GET',
+          responseType: ResponseType.plain,
+        )
+      );
+      final data = response.data?.toString();
+      if(data != null){
+        final model = GooglePlacesModel.fromJson(jsonDecode(data));
+        if(model.isSuccess){
+          return ApiResponse.success(model.results);
+        }
+      }
+      return ApiResponse.error(AppException(-1, '获取数据失败'));
+    }catch(ex){
+      AppLogger.w(ex);
+      return ApiResponse.error(AppException(-1, '请求失败'));
+    }
   }
 }

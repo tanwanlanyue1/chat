@@ -7,6 +7,8 @@ class ScreenAdapt extends StatelessWidget {
   final Size designSize;
   static var _ratio = const Size(1, 1);
 
+  static Size get ratio => _ratio;
+
   ///屏幕适配
   ///- builder
   ///- designWidth 设计图宽度

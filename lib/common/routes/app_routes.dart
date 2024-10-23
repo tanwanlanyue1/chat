@@ -142,6 +142,9 @@ abstract class AppRoutes {
   /// 发送位置消息
   static const sendLocationPage = '$auth/SendLocationPage';
 
+  /// 显示位置消息
+  static const displayLocationPage = '$auth/displayLocationPage';
+
   /// 钱包
   static const walletPage = '$auth/walletPage';
 

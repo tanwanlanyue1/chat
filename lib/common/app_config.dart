@@ -47,6 +47,9 @@ class AppConfig{
   //后台管理 https://www.google.com/recaptcha/admin/site/708806082?hl=zh-cn
   static const recaptchaApiKey = '6LfChT8qAAAAACW9sgMYpQNJLF9Mx-jL8iRofe-N';
 
+  //google地图key
+  static const googleMapsApiKey = 'AIzaSyAnp77yd2SqfkSLgvY8RybPk89vMubYOHc';
+
   ///ICP备案号
   static String icp = S.current.guangdongICP;
   static const urlIcp = 'https://beian.miit.gov.cn';

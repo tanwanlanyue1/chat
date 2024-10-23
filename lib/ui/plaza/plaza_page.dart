@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/plaza/fortune_square/fortune_square_view.dart';
@@ -28,9 +27,14 @@ class _PlazaPageState extends State<PlazaPage>
   Widget build(BuildContext context) {
     super.build(context);
     return SystemUI.dark(
-      child: Scaffold(
-        backgroundColor: AppColor.scaffoldBackground,
-        body: Column(
+      child: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AppAssetImage("assets/images/plaza/recommend_back.png"),
+              fit: BoxFit.fill
+          ),
+        ),
+        child: Column(
           children: [
             appBar(),
             Expanded(
@@ -57,40 +61,39 @@ class _PlazaPageState extends State<PlazaPage>
       builder: (_) {
         return Container(
           height: Get.mediaQuery.padding.top+44.rpx,
-          color: Colors.white,
           padding: EdgeInsets.only(top: Get.mediaQuery.padding.top,left: 16.rpx),
-          child: Row(
-              children: List.generate(state.tabBarList.length, (index) {
-                return GestureDetector(
-                  onTap: (){
-                    controller.tabController.index = index;
-                    controller.update(['appBar']);
-                  },
-                  behavior: HitTestBehavior.translucent,
-                  child: Container(
-                    height: 30.rpx,
-                    alignment: Alignment.center,
-                    child: ShaderMask(
-                        shaderCallback: (Rect bounds) {
-                          return LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [controller.tabController.index == index ? AppColor.gradientBegin: AppColor.gray9,
-                              controller.tabController.index == index ? AppColor.gradientEnd : AppColor.gray9],
-                          ).createShader(Offset.zero & bounds.size);
-                        },
-                        blendMode: BlendMode.srcATop,
-                        child: Container(
-                          margin: EdgeInsets.only(right: 32.rpx),
-                          child: Text(
-                            state.tabBarList[index]['name'],
-                            style: controller.tabController.index == index ? AppTextStyle.fs24b.copyWith(height: 1):AppTextStyle.fs16b.copyWith(height: 1),
-                          ),
-                        )
-                    ),
+          alignment: Alignment.centerLeft,
+          child: TabBar(
+            controller: controller.tabController,
+            labelStyle: AppTextStyle.fs18b,
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white.withOpacity(0.6),
+            unselectedLabelStyle: AppTextStyle.fs16m,
+            isScrollable: true,
+            indicator:  BoxDecoration(
+                color: Colors.white,
+                  borderRadius: BorderRadius.circular(4.rpx)
+            ),
+            indicatorPadding: EdgeInsets.only(top: 22.rpx,right: 38.rpx,left: 4.rpx),
+            labelPadding: EdgeInsets.only(bottom: 5.rpx),
+            tabs: List.generate(state.tabBarList.length, (index) {
+              return  GestureDetector(
+                onTap: (){
+                  controller.tabController.index = index;
+                  controller.update(['appBar']);
+                },
+                behavior: HitTestBehavior.translucent,
+                child: Container(
+                  margin: EdgeInsets.only(right: 32.rpx),
+                  child: Text(
+                    state.tabBarList[index]['name'],
+                    style: controller.tabController.index == index ? AppTextStyle.fs18b.copyWith(height: 1,color: Colors.white):
+                    AppTextStyle.fs16m.copyWith(height: 1,color: Colors.white.withOpacity(0.6)),
                   ),
-                );
-              },)),
+                ),
+              );
+            }),
+          ),
         );
       },);
   }

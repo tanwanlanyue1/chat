@@ -11,14 +11,22 @@ class RectifyTheWorkplaceState {
     {
       "name":S.current.videoDating,
       "subtitle": S.current.communicateEmotionsFace,
-      "image":"assets/images/plaza/video_back.png",
+      "image":"assets/images/plaza/voice_back.png",
       "isVideo": true,
+      "color":[
+        0xff8A8CFF,
+        0xff1A49FE,
+      ],
     },
     {
       "name":S.current.voiceDating,
       "subtitle": S.current.exploreSoulSound,
-      "image":"assets/images/plaza/voice_back.png",
+      "image":"assets/images/plaza/video_back.png",
       "isVideo": false,
+      "color":[
+        0xffFF98F5,
+        0xffC701C3,
+      ],
     },
   ];
 

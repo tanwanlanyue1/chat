@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guanjia/common/utils/file_logger.dart';
+import 'package:get/get.dart';
 
 ///适配像素类工具封装
 class ScreenAdapt extends StatelessWidget {
@@ -48,6 +48,8 @@ class ScreenAdapt extends StatelessWidget {
 /// px单位转换
 extension AdaptExtension on num {
   double get rpx => ScreenAdapt._rpx(this);
+
+  double get px => ScreenAdapt._rpx(this)*Get.pixelRatio;
 
   double get rw => ScreenAdapt._rw(this);
 

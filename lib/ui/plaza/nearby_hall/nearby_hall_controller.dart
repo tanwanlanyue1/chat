@@ -10,7 +10,6 @@ import 'nearby_hall_state.dart';
 class NearbyHallController extends GetxController {
   final NearbyHallState state = NearbyHallState();
   final controller = Get.find<RectifyTheWorkplaceController>();
-
   final pagingController = DefaultPagingController<RecommendModel>(
     firstPage: 1,
     pageSize: 10,

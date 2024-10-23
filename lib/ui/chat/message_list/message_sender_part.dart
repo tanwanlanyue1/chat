@@ -1,14 +1,20 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
+import 'package:guanjia/ui/chat/custom/message_location_content.dart';
 import 'package:guanjia/ui/chat/message_list/message_order_part.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
+import 'package:guanjia/ui/map/choose_place/choose_place_page.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'message_list_controller.dart';
 import 'widgets/chat_feature_panel.dart';
@@ -123,13 +129,25 @@ extension MessageSenderPart on MessageListController {
   }
 
   ///发位置消息
-  void sendLocationMessage() {
-    Get.toNamed(
-      AppRoutes.sendLocationPage,
-      arguments: {
-        'userId': int.parse(state.conversationId),
-      },
-    );
+  void sendLocationMessage() async{
+    final place = await ChoosePlacePage.go(title: '发送位置');
+    if(place != null){
+      final content = MessageLocationContent(
+        longitude: place.geometry?.location?.lng ?? 0,
+        latitude: place.geometry?.location?.lat ?? 0,
+        poi: place.name,
+        address: place.vicinity,
+      );
+      final result = await ChatManager().sendCustomMessage(
+        customType: CustomMessageType.location.value,
+        customMessage: jsonEncode(content.toJson()),
+        conversationType: ZIMConversationType.peer,
+        conversationId: userId.toString(),
+      );
+      if (result) {
+        scrollController.jumpTo(0);
+      }
+    }
   }
 
   ///发转账消息

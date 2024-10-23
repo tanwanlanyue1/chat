@@ -18,10 +18,10 @@ import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
-import 'send_location_state.dart';
+import 'choose_place_state.dart';
 
-class SendLocationController extends GetxController with GetAutoDisposeMixin {
-  final SendLocationState state = SendLocationState();
+class ChoosePlaceController extends GetxController with GetAutoDisposeMixin {
+  final ChoosePlaceState state = ChoosePlaceState();
 
   // 分页控制器
   late final pagingController = DefaultPagingController<PlaceModel>.single()
@@ -32,12 +32,10 @@ class SendLocationController extends GetxController with GetAutoDisposeMixin {
 
   GoogleMapController? mapController;
 
-  ///接收方用户ID
-  final int userId;
   var _isUserAction = false;
   Timer? _userActionTimer;
 
-  SendLocationController({required this.userId});
+  ChoosePlaceController();
 
   @override
   void onInit() {
@@ -89,7 +87,9 @@ class SendLocationController extends GetxController with GetAutoDisposeMixin {
 
   void _fetchPlaces(int page) async {
     //清空选中
-    state.selectedPlaceRx.value = null;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      state.selectedPlaceRx.value = null;
+    });
     final target = state.cameraPositionRx().target;
     final response = await OpenApi.searchNearPlaces(
       latitude: target.latitude,
@@ -160,29 +160,13 @@ class SendLocationController extends GetxController with GetAutoDisposeMixin {
     }
   }
 
-  ///发送
-  void onTapSend() async {
+  void onTapConfirm() async {
     final place = state.selectedPlaceRx();
     if (place == null) {
-      Loading.showToast('请选择发送的位置');
+      Loading.showToast('请选择位置');
       return;
     }
-
-    Loading.show();
-    final content = MessageLocationContent(
-      longitude: place.geometry?.location?.lng ?? 0,
-      latitude: place.geometry?.location?.lat ?? 0,
-      poi: place.name,
-      address: place.vicinity,
-    );
-    final result = await ChatManager().sendCustomMessage(
-      customType: CustomMessageType.location.value,
-      customMessage: jsonEncode(content.toJson()),
-      conversationType: ZIMConversationType.peer,
-      conversationId: userId.toString(),
-    );
-    Loading.dismiss();
-    Get.back(result: result);
+    Get.back(result: place);
   }
 }
 

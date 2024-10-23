@@ -1,13 +1,12 @@
 import 'package:get/get.dart';
-import 'package:guanjia/ui/chat/location/display_location/display_location_controller.dart';
-import 'package:guanjia/ui/chat/location/display_location/display_location_page.dart';
-import 'package:guanjia/ui/chat/location/send_location/send_location_controller.dart';
-import 'package:guanjia/ui/chat/location/send_location/send_location_page.dart';
+import 'package:guanjia/ui/chat/location/display_location_page.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/ui/chat/red_packet/red_packet_controller.dart';
 import 'package:guanjia/ui/chat/red_packet/red_packet_page.dart';
 import 'package:guanjia/ui/chat/transfer_money/transfer_money_controller.dart';
 import 'package:guanjia/ui/chat/transfer_money/transfer_money_page.dart';
+import 'package:guanjia/ui/map/choose_place/choose_place_controller.dart';
+import 'package:guanjia/ui/map/choose_place/choose_place_page.dart';
 import 'package:guanjia/ui/mine/avatar/avatar_page.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_controller.dart';
 import 'package:guanjia/ui/mine/contract_detail/contract_detail_page.dart';
@@ -180,12 +179,10 @@ class MinePages {
       page: () => MyVipPage(),
     ),
     GetPage(
-      name: AppRoutes.sendLocationPage,
-      page: () => const SendLocationPage(),
+      name: AppRoutes.choosePlacePage,
+      page: () => ChoosePlacePage(title: Get.getArgs('title', '')),
       binding: BindingsBuilder.put(
-        () => SendLocationController(
-          userId: Get.getArgs('userId', 0),
-        ),
+        () => ChoosePlaceController(),
       ),
     ),
     GetPage(

@@ -5,26 +5,40 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/network/api/model/open/google_places_model.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
-import 'package:guanjia/ui/chat/location/send_location/widget/place_list_tile.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import 'send_location_controller.dart';
-import 'send_location_state.dart';
+import 'choose_place_controller.dart';
+import 'choose_place_state.dart';
+import 'widget/place_list_tile.dart';
 
-///发送位置消息
-class SendLocationPage extends GetView<SendLocationController> {
-  const SendLocationPage({super.key});
+///选择地点
+class ChoosePlacePage extends GetView<ChoosePlaceController> {
+  final String title;
 
-  SendLocationState get state => controller.state;
+  const ChoosePlacePage({super.key, this.title = ''});
+
+  ChoosePlaceState get state => controller.state;
+
+  static Future<PlaceModel?> go({String? title}) async {
+    final result = await Get.toNamed(
+      AppRoutes.choosePlacePage,
+      arguments: {'title': title},
+    );
+    if(result is PlaceModel){
+      return result;
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('发送位置'),
+        title: Text(title),
         actions: [
           Container(
             alignment: Alignment.center,
@@ -35,7 +49,7 @@ class SendLocationPage extends GetView<SendLocationController> {
               text: '确定',
               borderRadius: BorderRadius.circular(4.rpx),
               textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
-              onTap: controller.onTapSend,
+              onTap: controller.onTapConfirm,
             ),
           ),
         ],

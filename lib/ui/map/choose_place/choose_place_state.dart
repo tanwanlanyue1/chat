@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:guanjia/common/network/api/model/open/google_places_model.dart';
 
-class SendLocationState {
+class ChoosePlaceState {
 
   ///初始地图中心点位置（Google总部）
   final initPosition = const CameraPosition(

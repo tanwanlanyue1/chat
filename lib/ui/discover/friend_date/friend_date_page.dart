@@ -29,7 +29,7 @@ class FriendDatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16.rpx),
+      padding: EdgeInsets.all(16.rpx).copyWith(left: 0),
       child: SmartRefresher(
         controller: controller.pagingController.refreshController,
         onRefresh: controller.pagingController.onRefresh,
@@ -61,6 +61,7 @@ class FriendDatePage extends StatelessWidget {
     return Container(
       height: 40.rpx,
       margin: EdgeInsets.only(top: Get.mediaQuery.padding.top+24.rpx),
+      alignment: Alignment.centerLeft,
       child: Obx(() => TabBar(
         isScrollable: true,
         controller: controller.tabController,
@@ -84,7 +85,7 @@ class FriendDatePage extends StatelessWidget {
   //分类
   Widget classifyTab() {
     return Padding(
-      padding: EdgeInsets.only(bottom: 12.rpx),
+      padding: EdgeInsets.only(bottom: 12.rpx,left: 16.rpx,top: 8.rpx),
       child: Obx(() =>
           Row(
             children: List<Widget>.generate(state.sortList.length, (i) =>

@@ -13,7 +13,7 @@ class FriendDateState {
   //约会类型
   List<Map<String, dynamic>> typeList = [
     {
-      "title": "全部",
+      "title": S.current.all,
     },
     {
       "title": S.current.playEat,

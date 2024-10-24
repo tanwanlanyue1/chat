@@ -4,6 +4,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:guanjia/widgets/input_widget.dart';
 import 'package:guanjia/widgets/upload_image.dart';
@@ -21,78 +22,55 @@ class MineFeedbackPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(S.current.feedback),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                offset: const Offset(0, 4),
-                blurRadius: 8,
-              ),
-            ],
-          ),
+    return wrapGradientBackground(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(S.current.feedback),
+          backgroundColor: Colors.transparent,
         ),
-      ),
-      backgroundColor: AppColor.grayF7,
-      body: GetBuilder<MineFeedbackController>(
-        builder: (controller) {
-          return Column(
-            children: [
-              Expanded(
-                child: ListView(
-                  padding: EdgeInsets.only(bottom: 20.rpx),
-                  children: [
-                    feedbackType(),
-                    problemOpinion(),
-                  ],
+        backgroundColor: Colors.transparent,
+        body: GetBuilder<MineFeedbackController>(
+          builder: (controller) {
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.only(bottom: 20.rpx),
+                    children: [
+                      feedbackType(),
+                      problemOpinion(),
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: FEdgeInsets(horizontal: 36.rpx, vertical: 24.rpx + Get.padding.bottom),
-                child: Button(
-                  onPressed: controller.submit,
-                  borderRadius: BorderRadius.circular(8.rpx),
-                  child: Text(S.current.submit),
+                Padding(
+                  padding: FEdgeInsets(horizontal: 36.rpx, vertical: 24.rpx + Get.padding.bottom),
+                  child: Button(
+                    onPressed: controller.submit,
+                    borderRadius: BorderRadius.circular(8.rpx),
+                    child: Text(S.current.submit),
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
-      ),
+              ],
+            );
+          },
+        ),
+      )
     );
   }
 
   //反馈类型
   Widget feedbackType() {
     return Container(
-      color: Colors.white,
       padding: EdgeInsets.symmetric(horizontal: 16.rpx),
       margin: EdgeInsets.only(top: 1.rpx),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 22.rpx,bottom: 16.rpx),
-            child: Row(
-              children: [
-                Container(
-                  width: 4.rpx,
-                  height: 20.rpx,
-                  margin: EdgeInsets.only(right: 8.rpx),
-                  decoration: BoxDecoration(
-                    color: AppColor.primaryBlue,
-                    borderRadius: BorderRadius.circular(4.rpx),
-                  ),
-                ),
-                Text(
-                  S.current.pleaseSelectATag,
-                  style: TextStyle(color: AppColor.black666, fontSize: 16.rpx),
-                ),
-              ],
+            margin: EdgeInsets.only(top: 18.rpx,bottom: 16.rpx),
+            child: Text(
+              S.current.pleaseSelectATag,
+              style: TextStyle(color: AppColor.black3, fontSize: 16.rpx),
             ),
           ),
           SizedBox(
@@ -114,13 +92,13 @@ class MineFeedbackPage extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: state.typeIndex == index ? AppColor.primaryBlue : AppColor.white8,
+                      color: state.typeIndex == index ? AppColor.primaryBlue : Colors.white,
                       borderRadius: BorderRadius.circular(8.rpx),
                     ),
                     child: Text(
                       "${item['title']}",
                       style: TextStyle(
-                          color: state.typeIndex == index ? Colors.white : AppColor.gray5,
+                          color: state.typeIndex == index ? Colors.white : AppColor.black6,
                           fontSize: 14.rpx),
                     ),
                   ),
@@ -133,23 +111,21 @@ class MineFeedbackPage extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 22.rpx,bottom: 16.rpx),
-            child: Row(
-              children: [
-                Container(
-                  width: 4.rpx,
-                  height: 20.rpx,
-                  margin: EdgeInsets.only(right: 8.rpx),
-                  decoration: BoxDecoration(
-                    color: AppColor.primaryBlue,
-                    borderRadius: BorderRadius.circular(4.rpx),
-                  ),
+            margin: EdgeInsets.only(top: 22.rpx),
+            decoration:  const BoxDecoration(
+              image: DecorationImage(
+                image: AppAssetImage(
+                  "assets/images/mine/feedback_title.png",
                 ),
-                Text(
-                  S.current.specificProposalContent,
-                  style: TextStyle(color: AppColor.black666, fontSize: 16.rpx),
-                ),
-              ],
+              )
+            ),
+            width: 100.rpx,
+            height: 32.rpx,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(left: 12.rpx),
+            child: Text(
+              S.current.specificProposalContent,
+              style: TextStyle(color: AppColor.black3, fontSize: 16.rpx),
             ),
           ),
           Stack(
@@ -257,6 +233,30 @@ class MineFeedbackPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  ///渐变背景
+  Widget wrapGradientBackground({required Widget child}) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Container(
+          color: AppColor.grayBackground,
+          alignment: Alignment.topCenter,
+          child: Container(
+            height: 200.rpx,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFFF6E5FF), AppColor.grayBackground],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              )
+            ),
+          ),
+        ),
+        child,
+      ],
     );
   }
 }

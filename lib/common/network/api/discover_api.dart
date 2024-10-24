@@ -65,9 +65,14 @@ class DiscoverApi {
   }
 
   /// 获取自己的邀约
-  static Future<ApiResponse<AppointmentModel>> getOneself() {
+  static Future<ApiResponse<AppointmentModel?>> getOneself() {
     return HttpClient.get('/api/Appointment/getOneself',
-        dataConverter: (data) => AppointmentModel.fromJson(data));
+        dataConverter: (data) {
+       if(data != null){
+         return AppointmentModel.fromJson(data);
+       }
+      return null;
+    });
   }
 
   /// 删除邀约

@@ -6,6 +6,8 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/discover/friend_date/friend_date_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/edge_insets.dart';
+import 'package:guanjia/widgets/widgets.dart';
 
 import 'activity/activity_page.dart';
 import 'discover_controller.dart';
@@ -20,39 +22,56 @@ class DiscoverPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(S.current.discover),
-        elevation: 4,
-        shadowColor: Colors.black.withOpacity(0.2),
-        bottom: TabBar(
+        backgroundColor: Colors.transparent,
+        centerTitle: false,
+        title: TabBar(
+          splashFactory: NoSplash.splashFactory,
           controller: controller.tabController,
-          labelStyle: AppTextStyle.fs14b,
-          labelColor: AppColor.primaryBlue,
+          labelStyle: AppTextStyle.fs20b.copyWith(fontWeight: FontWeight.w900),
+          labelColor: AppColor.blackBlue,
+          unselectedLabelStyle:
+          AppTextStyle.fs16m.copyWith(fontWeight: FontWeight.w500),
           unselectedLabelColor: AppColor.grayText,
-          indicatorColor: AppColor.primaryBlue,
-          indicatorWeight: 2.rpx,
-          onTap: (val) {},
+          isScrollable: true,
+          labelPadding: FEdgeInsets.zero,
+          indicatorPadding: FEdgeInsets(bottom: 4.rpx),
+          indicator: TabUnderlineIndicator(
+            width: 20.rpx,
+            widthEqualTitle: false,
+            gradient: LinearGradient(
+              colors: AppColor.horizontalGradient.colors,
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderSide: BorderSide(width: 4.rpx),
+          ),
           tabs: [
+            Container(
+              margin: EdgeInsets.only(right: 20.rpx),
+              child: Tab(text: S.current.dating, height: 40.rpx),
+            ),
             Tab(text: S.current.hotActivity, height: 40.rpx),
-            Tab(text: S.current.dating, height: 40.rpx),
           ],
         ),
       ),
       body: Container(
         decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AppAssetImage(
-              'assets/images/discover/activity_back.png',
-            ),
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter,
-          ),
+            gradient: LinearGradient(
+                colors: [
+                  Color(0xffF6E5FF),
+                  Colors.white
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.center
+            )
         ),
         child: TabBarView(
           controller: controller.tabController,
           children: [
-            ActivityPage(),
             FriendDatePage(),
+            ActivityPage(),
           ],
         ),
       ),

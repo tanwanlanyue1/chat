@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
+import 'package:guanjia/common/network/api/model/user/area_model.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 class AreaListTile extends StatelessWidget {
-  final String item;
+  final AreaModel item;
   final VoidCallback? onTap;
 
   const AreaListTile({super.key, required this.item, this.onTap});
@@ -23,7 +24,7 @@ class AreaListTile extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                item,
+                item.name,
                 style: AppTextStyle.fs16m.copyWith(
                   color: AppColor.black3,
                 ),

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/event/event_bus.dart';
+import 'package:guanjia/common/event/event_constant.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
+import 'package:guanjia/common/network/api/model/user/area_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/avatar/avatar_controller.dart';
@@ -11,7 +15,7 @@ import 'package:guanjia/widgets/common_bottom_sheet.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'account_data_state.dart';
 
-class AccountDataController extends GetxController {
+class AccountDataController extends GetxController with GetAutoDisposeMixin {
   final AccountDataState state = AccountDataState();
   final ImagePicker picker = ImagePicker();
 
@@ -31,6 +35,16 @@ class AccountDataController extends GetxController {
     signatureController = TextEditingController(text: userInfo?.signature);
 
     _getLabelList();
+
+    //监听地区选择
+    autoDisposeWorker(EventBus().listen(kEventChooseArea, (data) {
+      if(data is List<AreaModel>){
+        final position = data.map((e) => e.name).join(' ');
+        state.info?.update((val) {
+          val?.position = position;
+        });
+      }
+    }));
 
     super.onInit();
   }
@@ -92,6 +106,7 @@ class AccountDataController extends GetxController {
     loginService.fetchMyInfo();
 
     Loading.showToast(S.current.saveSuccessfully);
+    Get.back();
   }
 
   ///地区

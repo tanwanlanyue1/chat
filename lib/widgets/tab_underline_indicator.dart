@@ -8,7 +8,8 @@ class TabUnderlineIndicator extends Decoration {
     this.borderSide = const BorderSide(width: 2.0, color: Colors.white),
     this.insets = EdgeInsets.zero,
     this.width = 0.0,
-    this.widthEqualTitle = true
+    this.widthEqualTitle = true,
+    this.gradient,
   });
 
   final BorderSide borderSide;
@@ -19,6 +20,8 @@ class TabUnderlineIndicator extends Decoration {
   final double width;
   ///是否等宽
   final bool widthEqualTitle;
+
+  final Gradient? gradient;
 
   @override
   Decoration? lerpFrom(Decoration? a, double t) {
@@ -83,6 +86,10 @@ class _UnderlinePainter extends BoxPainter {
     final TextDirection textDirection = configuration.textDirection!;
     final Rect indicator = decoration._indicatorRectFor(rect, textDirection).deflate(decoration.borderSide.width / 2.0);
     final Paint paint = decoration.borderSide.toPaint()..strokeCap = StrokeCap.round;
+    final gradient = decoration.gradient;
+    if(gradient != null){
+      paint.shader = gradient.createShader(rect);
+    }
     canvas.drawLine(indicator.bottomLeft, indicator.bottomRight, paint);
   }
 }

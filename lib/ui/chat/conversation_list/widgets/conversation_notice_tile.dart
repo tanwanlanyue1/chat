@@ -33,8 +33,17 @@ class ConversationNoticeTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: FEdgeInsets(all: 16.rpx),
+        margin: FEdgeInsets(horizontal: 16.rpx, vertical: 8.rpx),
+        padding: FEdgeInsets(horizontal: 12.rpx,vertical: 16.rpx),
         alignment: Alignment.centerLeft,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.rpx),
+          gradient: LinearGradient(
+            colors: AppColor.horizontalGradient.colors,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -57,19 +66,16 @@ class ConversationNoticeTile extends StatelessWidget {
 
   Widget _buildAvatar() {
     return Padding(
-      padding: FEdgeInsets(right: 16.rpx),
+      padding: FEdgeInsets(right: 12.rpx),
       child: Badge(
-        backgroundColor: AppColor.primaryBlue,
+        backgroundColor: AppColor.red,
         smallSize: 8.rpx,
         isLabelVisible: model.total > 0,
         alignment: const Alignment(-1.1, -1.1),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8.rpx),
-          child: SizedBox(
-            width: 40.rpx,
-            height: 40.rpx,
-            child: AppImage.asset('assets/images/chat/ic_sys_notice.png'),
-          ),
+        child: SizedBox(
+          width: 40.rpx,
+          height: 40.rpx,
+          child: AppImage.asset('assets/images/chat/ic_sys_notice.png'),
         ),
       ),
     );
@@ -85,7 +91,7 @@ class ConversationNoticeTile extends StatelessWidget {
             model.title.isNotEmpty ? model.title : S.current.systemNotice,
             maxLines: 1,
             style: AppTextStyle.fs16b.copyWith(
-              color: AppColor.blackBlue,
+              color: Colors.white,
               height: 1.0,
             ),
           ),
@@ -95,7 +101,7 @@ class ConversationNoticeTile extends StatelessWidget {
           child: Text(
             time.friendlyTime,
             style: AppTextStyle.fs12m.copyWith(
-              color: AppColor.grayText,
+              color: Colors.white,
               height: 1.1,
             ),
           ),
@@ -106,7 +112,7 @@ class ConversationNoticeTile extends StatelessWidget {
 
   Widget _buildMessageContent() {
     final maxWidth = ConversationNoticeTile._messageContentMaxWidth ??=
-        Get.width - (40 + 32 + 32 + 12).rpx;
+        Get.width - (40 + 32 + 24 + 12).rpx;
     return ConstrainedBox(
       constraints: BoxConstraints(maxWidth: maxWidth),
       child: Text(
@@ -114,7 +120,7 @@ class ConversationNoticeTile extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: AppTextStyle.fs14m.copyWith(
-          color: AppColor.black3,
+          color: Colors.white,
           height: 1.05,
         ),
       ),

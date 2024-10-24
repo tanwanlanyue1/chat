@@ -428,8 +428,7 @@ mixin _ChatCallMixin {
       }
       return ChatAvatar.circle(
         userId: user?.id ?? '',
-        width: size.width,
-        height: size.height,
+        size: size.width,
       );
     };
 

@@ -46,8 +46,7 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
               alignment: Alignment.center,
               child: ChatAvatar.circle(
                 userId: controller.userId.toString(),
-                width: 50.rpx,
-                height: 50.rpx,
+                size: 50.rpx,
               ),
             ),
             ChatUserBuilder(

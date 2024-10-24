@@ -188,8 +188,7 @@ class OrderPaymentDialog extends StatelessWidget {
   Widget buildUserAvatar() {
     return ChatAvatar.circle(
       userId: order.receiveId.toString(),
-      width: 60.rpx,
-      height: 60.rpx,
+      size: 60.rpx,
     );
   }
 

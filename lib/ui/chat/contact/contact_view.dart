@@ -41,6 +41,7 @@ class _ContactViewState extends State<ContactView>
       child: CustomScrollView(
         slivers: [
           SliverAppBar(
+            backgroundColor: Colors.transparent,
             automaticallyImplyLeading: false,
             pinned: true,
             snap: false,

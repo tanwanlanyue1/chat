@@ -96,13 +96,7 @@ class _ConversationListViewState extends State<ConversationListView>
       child: ObxValue((dataRx){
         final data = dataRx();
         if(data != null){
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ConversationNoticeTile(model: data),
-              Divider(height: 0, indent: 75.rpx),
-            ],
-          );
+          return ConversationNoticeTile(model: data);
         }
         return Spacing.blank;
       }, SS.inAppMessage.latestSysNoticeRx),

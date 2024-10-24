@@ -179,8 +179,7 @@ class ChatCallRechargeDialog extends StatelessWidget {
   Widget buildUserAvatar() {
     return ChatAvatar.circle(
       userId: userId.toString(),
-      width: 60.rpx,
-      height: 60.rpx,
+      size: 60.rpx,
     );
   }
 

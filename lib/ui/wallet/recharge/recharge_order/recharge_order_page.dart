@@ -44,7 +44,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
                 color: AppColor.black3,
               ),
             ),
-            buildAmount(order.amount),
+            buildAmount(order.payAmount),
             buildAddress(order.collectionAddress),
             buildQrCode(order),
             buildCountdown(order),
@@ -78,8 +78,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
   }
 
   ///金额
-  Widget buildAmount(num amount) {
-    final amountText = amount.toStringAsTrimZero();
+  Widget buildAmount(String amountText) {
     return Container(
       margin: FEdgeInsets(top: 12.rpx, bottom: 16.rpx),
       alignment: Alignment.center,
@@ -170,7 +169,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
               color: Colors.white,
               padding: FEdgeInsets(all: 4.rpx),
               child: PrettyQrView.data(
-                data: 'TAALiTehrjjAwp8oFXddpmUUwc1t5Jz36z',
+                data: order.collectionAddress,
                 decoration: const PrettyQrDecoration(
                   shape: PrettyQrSmoothSymbol(roundFactor: 0),
                   background: Colors.white,

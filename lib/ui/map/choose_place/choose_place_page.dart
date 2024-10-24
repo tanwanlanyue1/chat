@@ -127,7 +127,7 @@ class ChoosePlacePage extends GetView<ChoosePlaceController> {
   Widget buildMap() {
     return GoogleMap(
       mapType: MapType.normal,
-      initialCameraPosition: state.initPosition,
+      initialCameraPosition: state.cameraPositionRx(),
       myLocationEnabled: true,
       myLocationButtonEnabled: true,
       zoomControlsEnabled: false,

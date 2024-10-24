@@ -151,6 +151,7 @@ class MessageListPage extends GetView<MessageListController> {
             break;
         }
       },
+      onLongPress: (_, event, message, defaultAction) => defaultAction.call(),
     );
   }
 

@@ -23,6 +23,7 @@ import 'package:guanjia/ui/mine/mine_my_team/mine_my_team_page.dart';
 import 'package:guanjia/ui/mine/mine_service_charge/mine_service_charge_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/binding/binding_controller.dart';
 import 'package:guanjia/ui/mine/mine_setting/binding/binding_page.dart';
+import 'package:guanjia/ui/mine/mine_setting/choose_area/choose_area_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/payment_password/payment_password_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/update_password/update_password_controller.dart';
 import 'package:guanjia/ui/mine/mine_team_evaluate/mine_team_evaluate_page.dart';
@@ -56,6 +57,10 @@ class MinePages {
     GetPage(
       name: AppRoutes.accountDataPage,
       page: () => AccountDataPage(),
+    ),
+    GetPage(
+      name: AppRoutes.chooseAreaPage,
+      page: () => ChooseAreaPage(),
     ),
     GetPage(
       name: AppRoutes.updateInfoPage,

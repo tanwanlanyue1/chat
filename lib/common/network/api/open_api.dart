@@ -248,6 +248,8 @@ class OpenApi {
   static Future<ApiResponse<void>> geocode({
     required double latitude,
     required double longitude,
+    String? language,
+    final List<String>? types,
   }) async {
     try{
       final response = await HttpClient.request(
@@ -255,6 +257,8 @@ class OpenApi {
         params: {
           'latlng': '$latitude,$longitude',
           'key': AppConfig.googleMapsApiKey,
+          if(language != null) 'language': language,
+          if(types != null && types.isNotEmpty) 'result_type' : types.join('|'),
         },
         options: Options(
           method: 'GET',

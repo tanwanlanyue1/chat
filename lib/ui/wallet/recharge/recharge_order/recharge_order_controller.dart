@@ -18,7 +18,7 @@ class RechargeOrderController extends GetxController {
 
    Timer? _timer;
    ///轮询时隔
-   static const kPollingDuration = Duration(seconds: 3);
+   static const kPollingDuration = Duration(seconds: 5);
 
   RechargeOrderController({required this.orderNo, this.fromRechargePage = false});
 

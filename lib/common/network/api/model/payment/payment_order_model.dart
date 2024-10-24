@@ -6,7 +6,7 @@ class PaymentOrderModel {
     required this.orderNo,
     required this.uid,
     required this.type,
-    required this.amount,
+    required this.payAmount,
     required this.inputAmount,
     required this.orderStatus,
     required this.remark,
@@ -29,7 +29,7 @@ class PaymentOrderModel {
   final int type;
 
   ///订单总金额(用户实际支付金额)
-  final num amount;
+  final String payAmount;
 
   ///用户输入金额
   final num inputAmount;
@@ -58,7 +58,7 @@ class PaymentOrderModel {
       orderNo: json["orderNo"] ?? "",
       uid: json["uid"] ?? 0,
       type: json["type"] ?? 0,
-      amount: json["amount"] ?? json["payAmount"] ?? 0,
+      payAmount: json["payAmount"] ?? "",
       inputAmount: json["inputAmount"] ?? 0,
       orderStatus: json["orderStatus"] ?? 0,
       remark: json["remark"] ?? "",

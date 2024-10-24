@@ -94,8 +94,9 @@ class AccountDataController extends GetxController {
     Loading.showToast(S.current.saveSuccessfully);
   }
 
-  void onTapPosition() {
-    Loading.showToast(S.current.undetermined);
+  ///地区
+  void onTapArea() {
+    Get.toNamed(AppRoutes.chooseAreaPage, arguments: {"currentIndex": 0});
   }
 
   void onTapPhone() {

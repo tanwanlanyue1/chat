@@ -143,6 +143,14 @@ class AppColor {
 
   ///浅蓝色按钮
   static const babyBlueButton = Color(0xFF3699FF);
+  static const blue65 = Color(0xFF65D4FF);
+  static const blue65E = Color(0xFF65FFE9);
+  static const blueC1 = Color(0xFFC1F4FC);
+  static const blueE2 = Color(0xFFE2FCFE);
+
+  ///粉色
+  static const pinkBD = Color(0xFFFBDEFA);
+  static const pinkFD = Color(0xFFFDF3FB);
 
   ///约会按钮
   static const dateButton = Color(0xFFC644FC);
@@ -155,9 +163,13 @@ class AppColor {
 
   ///黄色
   static const yellow = Color(0xFFF7BF4B);
+  static const yellowFE = Color(0xFFFEFEE5);
+  static const yellowFB = Color(0xFFFBF8C5);
 
   ///绿色
   static const green = Color(0xFF3CB236);
+  static const greenE7 = Color(0xFFE7FFED);
+  static const greenCD = Color(0xFFCDFFDC);
 
   ///转账红包
   static const redPacket = Color(0xFFFA9D3B);

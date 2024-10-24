@@ -20,11 +20,10 @@ class DiscoverPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(S.current.discover),
-        elevation: 4,
-        shadowColor: Colors.black.withOpacity(0.2),
-        bottom: TabBar(
+        backgroundColor: Colors.transparent,
+        title: TabBar(
           controller: controller.tabController,
           labelStyle: AppTextStyle.fs14b,
           labelColor: AppColor.primaryBlue,
@@ -33,26 +32,27 @@ class DiscoverPage extends StatelessWidget {
           indicatorWeight: 2.rpx,
           onTap: (val) {},
           tabs: [
-            Tab(text: S.current.hotActivity, height: 40.rpx),
             Tab(text: S.current.dating, height: 40.rpx),
+            Tab(text: S.current.hotActivity, height: 40.rpx),
           ],
         ),
       ),
       body: Container(
         decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AppAssetImage(
-              'assets/images/discover/activity_back.png',
-            ),
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter,
-          ),
+            gradient: LinearGradient(
+                colors: [
+                  Color(0xffF6E5FF),
+                  Colors.white
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.center
+            )
         ),
         child: TabBarView(
           controller: controller.tabController,
           children: [
-            ActivityPage(),
             FriendDatePage(),
+            ActivityPage(),
           ],
         ),
       ),

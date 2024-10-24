@@ -37,8 +37,8 @@ class NearbyHallView extends StatelessWidget {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 8.rpx,
-                  mainAxisSpacing: 8.rpx,
-                  mainAxisExtent: 220.rpx
+                  mainAxisSpacing: 12.rpx,
+                  mainAxisExtent: 230.rpx
               ),
               padding: EdgeInsets.symmetric(horizontal: 16.rpx,vertical: 8.rpx),
               builderDelegate: DefaultPagedChildBuilderDelegate<RecommendModel>(
@@ -60,90 +60,127 @@ class NearbyHallView extends StatelessWidget {
   //附近列表
   Widget nearbyItem(RecommendModel item){
     return GestureDetector(
-      child: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(item.avatar ?? ''),
-              fit: BoxFit.fitHeight
-            ),
-            borderRadius: BorderRadius.circular(8.rpx),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              color: AppColor.gray33,
-              height: 20.rpx,
-              padding: EdgeInsets.symmetric(horizontal: 4.rpx),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AppImage.asset("assets/images/plaza/location.png",width: 16.rpx,height: 16.rpx,),
-                  Text(" ${item.distance ?? ''}km",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
-                ],
-              ),
-            ),
-            Container(
-              height: 50.rpx,
-              decoration: BoxDecoration(
-                color: Color(0x1AC644FC),
-                // color: AppColor.textPurple.withOpacity(0.1),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(8.rpx),
-                  bottomRight: Radius.circular(8.rpx),
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: NetworkImage(item.avatar ?? ''),
+                      fit: BoxFit.fitHeight
+                  ),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8.rpx),
+                    topRight: Radius.circular(8.rpx),
+                  ),
+                ),
+                height: 180.rpx,
+                alignment: Alignment.bottomLeft,
+                child: Container(
+                  height: 20.rpx,
+                  padding: EdgeInsets.symmetric(horizontal: 4.rpx),
+                  decoration: BoxDecoration(
+                    color: AppColor.gray33,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(8.rpx),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      AppImage.asset("assets/images/plaza/location.png",width: 12.rpx,height: 12.rpx,),
+                      Text(" ${item.distance ?? ''}km",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+                    ],
+                  ),
                 ),
               ),
-              padding: EdgeInsets.only(left: 8.rpx,right: 4.rpx),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(item.nickname ?? '',style: AppTextStyle.fs12m.copyWith(color: Colors.white),overflow: TextOverflow.ellipsis,),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(8.rpx),
+                    bottomRight: Radius.circular(8.rpx),
                   ),
-                  if(item.gender != 0 || item.age != null)
-                    Container(
-                      decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [
-                              AppColor.gradientBackgroundBegin,
-                              AppColor.gradientBackgroundEnd,
-                            ],
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                          ),
-                          borderRadius: BorderRadius.circular(12.rpx)
-                      ),
-                      width: 33.rpx,
-                      height: 16.rpx,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                ),
+                height: 50.rpx,
+                child: Container(
+                  height: 50.rpx,
+                  decoration: BoxDecoration(
+                    color: item.gender == 1 ? AppColor.primaryBlue.withOpacity(0.1):AppColor.textPurple.withOpacity(0.1),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8.rpx),
+                      bottomRight: Radius.circular(8.rpx),
+                    ),
+                  ),
+                  padding: EdgeInsets.only(left: 4.rpx,right: 4.rpx,top: 8.rpx),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Visibility(
-                            visible: item.gender != 0,
-                            child: AppImage.asset(item.gender == 1 ? "assets/images/plaza/boy.png" : "assets/images/plaza/girl.png",width: 12.rpx,height: 12.rpx,),
-                          ),
-                          Text("${item.age ?? ''}",style: AppTextStyle.fs10m.copyWith(color: Colors.white),),
+                          Text(item.nickname ?? '',style: AppTextStyle.fs12b.copyWith(color: AppColor.black3,height: 1.0),overflow: TextOverflow.ellipsis,),
+                          // Expanded(
+                          //   child: GestureDetector(
+                          //     onTap: (){
+                          //       ChatManager().startChat(userId: item.uid!);
+                          //     },
+                          //     child: Row(
+                          //       children: [
+                          //         AppImage.asset("assets/images/plaza/relation.png",width: 14.rpx,height: 14.rpx,),
+                          //         Text("  ${S.current.contactBeauty}",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
-                    ),
-                  // Expanded(
-                  //   child: GestureDetector(
-                  //     onTap: (){
-                  //       ChatManager().startChat(userId: item.uid!);
-                  //     },
-                  //     child: Row(
-                  //       children: [
-                  //         AppImage.asset("assets/images/plaza/relation.png",width: 14.rpx,height: 14.rpx,),
-                  //         Text("  ${S.current.contactBeauty}",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                ],
+                      if(item.gender != 0 || item.age != null)
+                        Container(
+                          decoration: BoxDecoration(
+                            color: item.gender == 1 ? AppColor.primaryBlue.withOpacity(0.15):AppColor.textPurple.withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(12.rpx)
+                          ),
+                          width: 33.rpx,
+                          height: 16.rpx,
+                          margin: EdgeInsets.only(top: 6.rpx),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Visibility(
+                                visible: item.gender != 0,
+                                child: AppImage.asset(item.gender == 1 ? "assets/images/plaza/boy.png" : "assets/images/plaza/girl.png",width: 12.rpx,height: 12.rpx,color: item.gender == 1 ? AppColor.primaryBlue:AppColor.textPurple),
+                              ),
+                              Text("${item.age ?? ''}",style: AppTextStyle.fs10m.copyWith(color: item.gender == 1 ? AppColor.primaryBlue:AppColor.textPurple),),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
               ),
-            )
-          ],
-        ),
+            ],
+          ),
+          Positioned(
+            right: 8.rpx,
+            bottom: 24.rpx,
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [AppColor.gradientEnd, AppColor.gradientBegin],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                shape: BoxShape.circle,
+              ),
+              width: 46.rpx,
+              height: 46.rpx,
+              alignment: Alignment.bottomCenter,
+              child: AppImage.asset("assets/images/plaza/phone_relation.png",width: 40.rpx,height: 40.rpx),
+            ),
+          )
+        ],
       ),
       onTap: (){
         Get.toNamed(AppRoutes.userCenterPage, arguments: {'userId': item.uid,});

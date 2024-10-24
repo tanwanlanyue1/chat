@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 
@@ -11,6 +12,9 @@ class FriendDateState {
 
   //约会类型
   List<Map<String, dynamic>> typeList = [
+    {
+      "title": "全部",
+    },
     {
       "title": S.current.playEat,
       "type": 1,
@@ -39,8 +43,25 @@ class FriendDateState {
       "title": S.current.dinnerBanquet,
       "type": 7,
     },
+  ];
+
+  //约会背景色
+  List backColor = [
     {
-      "title": S.current.releaseInvitation,
+      "begin": AppColor.blueC1,
+      "end": AppColor.blueE2,
+    },
+    {
+      "begin": AppColor.pinkBD,
+      "end": AppColor.pinkFD,
+    },
+    {
+      "begin": AppColor.greenE7,
+      "end": AppColor.greenCD,
+    },
+    {
+      "begin": AppColor.yellowFE,
+      "end": AppColor.yellowFB,
     },
   ];
 

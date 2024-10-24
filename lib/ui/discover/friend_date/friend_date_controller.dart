@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
@@ -16,8 +15,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../common/network/api/api.dart';
 import 'friend_date_state.dart';
 
-class FriendDateController extends GetxController with GetAutoDisposeMixin{
+class FriendDateController extends GetxController with GetAutoDisposeMixin,GetSingleTickerProviderStateMixin{
   final FriendDateState state = FriendDateState();
+  late TabController tabController;
 
   //分页控制器
   final pagingController = DefaultPagingController<AppointmentModel>(
@@ -34,12 +34,13 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin{
   //类型名称
   String typeTitle(int index){
     String title = state.typeList.firstWhere((type) => type['type'] == index)['title'];
-    if(title.length > 3){
-      return "${title.substring(0, 2)}\n${title.substring(2)}";
-    }else{
+    // if(title.length > 3){
+    //   return "${title.substring(0, 2)}\n${title.substring(2)}";
+    // }else{
       return title;
-    }
+    // }
   }
+
   //标签分割
   String labelSplit(String text) {
     if(text.isEmpty){
@@ -58,6 +59,7 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin{
         fetchPage(1);
       })
     );
+    tabController = TabController(length: state.typeList.length, vsync: this);
     pagingController.addPageRequestListener(fetchPage);
     super.onInit();
   }

@@ -70,9 +70,9 @@ class _PlazaPageState extends State<PlazaPage>
             unselectedLabelColor: Colors.white.withOpacity(0.6),
             unselectedLabelStyle: AppTextStyle.fs16m,
             isScrollable: true,
-            indicator:  BoxDecoration(
+            indicator: BoxDecoration(
                 color: Colors.white,
-                  borderRadius: BorderRadius.circular(4.rpx)
+                borderRadius: BorderRadius.circular(4.rpx)
             ),
             indicatorPadding: EdgeInsets.only(top: 22.rpx,right: 38.rpx,left: 4.rpx),
             labelPadding: EdgeInsets.only(bottom: 5.rpx),

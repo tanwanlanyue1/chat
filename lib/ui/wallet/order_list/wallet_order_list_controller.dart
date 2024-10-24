@@ -3,6 +3,7 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/api/model/user/message_model.dart';
 import 'package:guanjia/common/network/api/payment_api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/widgets/web/web_page.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../common/routes/app_pages.dart';
@@ -63,6 +64,7 @@ class WalletOrderListController extends GetxController {
       Get.toNamed(AppRoutes.rechargeOrderPage, arguments: {
         'orderNo': item.data.orderNo,
       });
+      // WebPage.go(url: 'http://192.168.2.103:5500/gj_recharge_order.html?orderNo=${item.data.orderNo}&t=${DateTime.now().millisecondsSinceEpoch}', title: '充值');
     }
   }
 

@@ -25,14 +25,13 @@ class ChatAvatar extends StatefulWidget {
   factory ChatAvatar.circle({
     Key? key,
     required String userId,
-    required double width,
-    required double height,
+    required double size,
   }) {
     return ChatAvatar(
       key: key,
       userId: userId,
-      width: width,
-      height: height,
+      width: size,
+      height: size,
       shape: BoxShape.circle,
     );
   }

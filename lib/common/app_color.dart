@@ -137,6 +137,13 @@ class AppColor {
     end: Alignment.bottomCenter,
   );
 
+  ///浅色背景渐变色(垂直渐变)
+  static const verticalGradientBaby = LinearGradient(
+    colors: [Color(0xFFF6E5FF), Colors.white],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+  );
+
 
   ///主色蓝色(社区蓝色)
   static const primaryBlue = Color(0xFF0F73ED);

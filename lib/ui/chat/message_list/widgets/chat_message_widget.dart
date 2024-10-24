@@ -178,8 +178,7 @@ class ChatMessageWidget extends StatelessWidget {
   Widget buildAvatar(BuildContext context) {
     final Widget defaultAvatarWidget = ChatAvatar.circle(
       userId: message.info.senderUserID,
-      width: 40.rpx,
-      height: 40.rpx,
+      size: 40.rpx,
     );
 
     return avatarBuilder?.call(

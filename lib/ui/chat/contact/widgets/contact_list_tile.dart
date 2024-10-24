@@ -66,7 +66,7 @@ class ContactListTile extends StatelessWidget {
                     Spacing.h8,
                     Row(
                       children: [
-                        if(userModel.gender.icon != null)
+                        if (userModel.gender.icon != null)
                           Padding(
                             padding: FEdgeInsets(right: 8.rpx),
                             child: AppImage.asset(
@@ -74,8 +74,7 @@ class ContactListTile extends StatelessWidget {
                               width: 16.rpx,
                               height: 16.rpx,
                             ),
-                          )
-                        ,
+                          ),
                         if (age > 0) ...[
                           Text(
                             age.toString(),
@@ -104,18 +103,7 @@ class ContactListTile extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
-                Button.stadium(
-                  onPressed: toChatPage,
-                  width: 80.rpx,
-                  height: 28.rpx,
-                  backgroundColor: userModel.gender == UserGender.male
-                      ? AppColor.primaryBlue
-                      : AppColor.dateButton,
-                  child: Text(
-                    S.current.initiateChat,
-                    style: AppTextStyle.fs12m.copyWith(color: Colors.white),
-                  ),
-                )
+                buildChatButton(),
               ],
             ),
             Padding(
@@ -128,8 +116,51 @@ class ContactListTile extends StatelessWidget {
     );
   }
 
-  void toChatPage() {
-    ChatManager().startChat(userId: userModel.uid);
+  Widget buildChatButton() {
+    return GestureDetector(
+      onTap: () {
+        ChatManager().startChat(userId: userModel.uid);
+      },
+      behavior: HitTestBehavior.translucent,
+      child: Container(
+        decoration: const ShapeDecoration(
+          shape: StadiumBorder(),
+          gradient: LinearGradient(
+            colors: [AppColor.purple4, AppColor.purple8],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        height: 32.rpx,
+        child: Container(
+          margin: const EdgeInsets.all(1),
+          padding: FEdgeInsets(horizontal: 10.rpx),
+          decoration: const ShapeDecoration(
+            color: Colors.white,
+            shape: StadiumBorder(),
+          ),
+          child: Row(
+            children: [
+              AppImage.asset(
+                'assets/images/plaza/accost.png',
+                width: 20.rpx,
+                height: 20.rpx,
+              ),
+              Padding(
+                padding: FEdgeInsets(left: 4.rpx),
+                child: Text(
+                  S.current.accost,
+                  style: AppTextStyle.fs14m.copyWith(
+                    color: AppColor.blackBlue,
+                    height: 1,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void toUserPage() {

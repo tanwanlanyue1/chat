@@ -15,7 +15,7 @@ class WalletOrderListState {
 class WalletRechargeOrderItem extends WalletOrderItem<PaymentOrderModel>{
   WalletRechargeOrderItem(super.data);
   @override
-  String get amount => data.amount.toCurrencyString();
+  String get amount => data.payAmount;
   @override
   String get createTime => data.createTime.dateTime.format;
   @override

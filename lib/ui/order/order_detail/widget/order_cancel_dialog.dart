@@ -113,8 +113,7 @@ class OrderCancelDialog extends StatelessWidget {
   Widget buildUserAvatar() {
     return ChatAvatar.circle(
       userId: id.toString(),
-      width: 60.rpx,
-      height: 60.rpx,
+      size: 60.rpx,
     );
   }
 

@@ -5,6 +5,7 @@ import 'package:guanjia/common/network/api/model/user/contract_model.dart';
 import 'package:guanjia/common/network/httpclient/http_client.dart';
 import 'package:guanjia/common/network/api/api.dart';
 
+import 'model/user/area_model.dart';
 import 'model/user/message_unread_model.dart';
 
 /// 用户API
@@ -826,6 +827,28 @@ class UserApi {
         "idToken": idToken,
       },
       dataConverter: (json) => json,
+    );
+  }
+
+  /// 获取地区数据
+  ///- code 父级编码
+  ///- level 级别
+  static Future<ApiResponse<List<AreaModel>>> getAreaList({
+    String? code,
+    String? level,
+  }) {
+    return HttpClient.get(
+      '/api/user/getMapInfo',
+      params: {
+        "code": code,
+        "level": level,
+      },
+      dataConverter: (json){
+        if(json is List){
+          return json.map((e) => AreaModel.fromJson(e)).toList();
+        }
+        return [];
+      },
     );
   }
 }

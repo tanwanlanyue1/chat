@@ -34,6 +34,9 @@ abstract class AppRoutes {
   ///个人信息
   static const accountDataPage = '$auth/accountDataPage';
 
+  ///选择地区
+  static const chooseAreaPage = '$auth/chooseAreaPage';
+
   ///更改信息页
   static const updateInfoPage = '$auth/updateInfoPage';
 

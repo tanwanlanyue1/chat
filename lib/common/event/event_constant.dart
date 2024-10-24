@@ -23,3 +23,6 @@ const kEventUserInfo = 'kEventUserInfo';
 
 ///开通VIP成功
 const kEventOpenVip = 'kEventOpenVip';
+
+///选择地区 List<AreaModel>
+const kEventChooseArea = 'kEventChooseArea';

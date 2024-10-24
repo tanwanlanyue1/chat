@@ -309,7 +309,7 @@ class PFTextStyle extends TextStyle {
       color: color,
       backgroundColor: backgroundColor,
       fontSize: fontSize,
-      // fontWeight: fontWeight,
+      fontWeight: fontWeight,
       fontStyle: fontStyle,
       letterSpacing: letterSpacing,
       wordSpacing: wordSpacing,

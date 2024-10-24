@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
@@ -32,7 +33,8 @@ class ChatTextMessage extends StatelessWidget {
           details,
           message,
           () {
-            Clipboard.setData(ClipboardData(text: message.textContent!.text));
+            print('=====${message.textContent?.text}');
+            message.textContent?.text.copy();
           },
         ),
         child: Bubble(

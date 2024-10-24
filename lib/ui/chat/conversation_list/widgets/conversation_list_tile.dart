@@ -107,15 +107,13 @@ class _ConversationListTileState extends State<ConversationListTile>
     return Padding(
       padding: FEdgeInsets(right: 16.rpx),
       child: Badge(
-        backgroundColor: AppColor.primaryBlue,
+        backgroundColor: AppColor.red,
         smallSize: 8.rpx,
         isLabelVisible: conversation.unreadMessageCount > 0,
         alignment: const Alignment(-1.1, -1.1),
-        child: ChatAvatar(
-          width: 40.rpx,
-          height: 40.rpx,
+        child: ChatAvatar.circle(
+          size: 40.rpx,
           userId: conversation.id,
-          borderRadius: BorderRadius.circular(8.rpx),
         ),
       ),
     );

@@ -118,10 +118,10 @@ class AccountDataPage extends StatelessWidget {
                   _padding(),
                   // position
                   AccountDataItem(
-                    onTap: controller.onTapPosition,
-                    title: S.current.userPosition,
+                    onTap: controller.onTapArea,
+                    title: '地区',
                     detail: info.position,
-                    detailHintText: S.current.clickToEnter,
+                    detailHintText: '未设置',
                   ),
                   _padding(),
                   // phone

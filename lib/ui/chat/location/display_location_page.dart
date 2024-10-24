@@ -71,7 +71,7 @@ class DisplayLocationPage extends StatelessWidget {
             mapType: MapType.normal,
             initialCameraPosition: CameraPosition(
               target: position,
-              zoom: 14.4746,
+              zoom: 16,
             ),
             markers: {
               if (data.hasData)

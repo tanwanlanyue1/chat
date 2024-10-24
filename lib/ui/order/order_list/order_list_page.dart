@@ -21,6 +21,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'order_list_controller.dart';
+import 'widget/order_list_tile.dart';
 
 class OrderListPage extends StatefulWidget {
   const OrderListPage({super.key, required this.type});
@@ -54,14 +55,14 @@ class _OrderListPageState extends State<OrderListPage>
         slivers: [
           _buildTop(),
           SliverPadding(
-            padding: EdgeInsets.symmetric(vertical: 8.rpx),
+            padding: EdgeInsets.symmetric(vertical: 12.rpx, horizontal: 16.rpx),
             sliver: PagedSliverList.separated(
               pagingController: controller.pagingController,
               builderDelegate: DefaultPagedChildBuilderDelegate(
                 pagingController: controller.pagingController,
                 itemBuilder: (_, item, index) {
                   if (item is OrderListItem) {
-                    return OrderListItemWidget(
+                    return OrderListTile(
                         onTap: () => controller.toOrderDetail(item.id),
                         widget: widget,
                         item: item,
@@ -303,7 +304,7 @@ class _OrderListPageState extends State<OrderListPage>
               padding: EdgeInsets.symmetric(vertical: 8.rpx),
               itemBuilder: (_, index) {
                 final subItem = item.list[index];
-                return OrderListItemWidget(
+                return OrderListTile(
                     onTap: () => controller.toOrderDetail(subItem.id),
                     widget: widget,
                     item: subItem,
@@ -323,163 +324,3 @@ class _OrderListPageState extends State<OrderListPage>
   bool get wantKeepAlive => true;
 }
 
-class OrderListItemWidget extends StatefulWidget {
-  OrderListItemWidget({
-    super.key,
-    required this.onTap,
-    required this.widget,
-    required this.item,
-    required this.index,
-  });
-
-  final VoidCallback? onTap;
-  final OrderListPage widget;
-  final OrderListItem item;
-  final int index;
-
-  Timer? timer;
-
-  @override
-  State<OrderListItemWidget> createState() => _OrderListItemWidgetState();
-}
-
-class _OrderListItemWidgetState extends State<OrderListItemWidget> {
-  @override
-  void initState() {
-    if (widget.item.countDown > 0) {
-      if(mounted){
-        widget.timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-          widget.item.countDown = widget.item.countDown - 1;
-          setState(() {});
-        });
-      }
-    } else {
-      widget.timer?.cancel();
-    }
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final item = widget.item;
-
-    Widget operationWidget =
-        OrderOperationButtons(type: widget.widget.type, item: widget.item);
-
-    return GestureDetector(
-      onTap: widget.onTap,
-      child: Container(
-        height: 186.rpx,
-        padding: EdgeInsets.all(16.rpx).copyWith(bottom: 0),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    AppImage.asset(
-                      "assets/images/order/time.png",
-                      size: 16.rpx,
-                    ),
-                    SizedBox(width: 8.rpx),
-                    Text(
-                      item.time,
-                      style: AppTextStyle.st
-                          .size(12.rpx)
-                          .textColor(AppColor.black9),
-                    ),
-                    SizedBox(width: 8.rpx),
-                  ],
-                ),
-                if (item.countDown > 0)
-                  Flexible(
-                    child: Text(
-                      "${S.current.residualWait} ${CommonUtils.convertCountdownToHMS(item.countDown, hasHours: false)}",
-                      style: AppTextStyle.st
-                          .size(12.rpx)
-                          .textColor(AppColor.primaryBlue),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-              ],
-            ),
-            Divider(
-              height: 25.rpx,
-              thickness: 1.rpx,
-              color: AppColor.scaffoldBackground,
-            ),
-            Row(
-              children: [
-                AppImage.network(
-                  item.avatar,
-                  length: 60.rpx,
-                  shape: BoxShape.circle,
-                ),
-                SizedBox(width: 8.rpx),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.number,
-                        style: AppTextStyle.st
-                            .size(14.rpx)
-                            .textColor(AppColor.black6),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        item.nick,
-                        style: AppTextStyle.st
-                            .size(14.rpx)
-                            .textColor(AppColor.black6),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      if (item.nickWithAgent != null)
-                        Text(
-                          item.nickWithAgent ?? "",
-                          style: AppTextStyle.st
-                              .size(14.rpx)
-                              .textColor(AppColor.black6),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 12.rpx),
-            Divider(
-              height: 1.rpx,
-              thickness: 1.rpx,
-              color: AppColor.scaffoldBackground,
-            ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    item.stateText,
-                    style: AppTextStyle.st
-                        .size(14.rpx)
-                        .textColor(item.stateTextColor),
-                  ),
-                  SizedBox(width: 8.rpx),
-                  Flexible(
-                    child: operationWidget,
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}

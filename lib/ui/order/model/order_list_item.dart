@@ -13,6 +13,7 @@ class OrderListItemWrapper {
   final String? nickWithAgent; // 经纪人下拓展昵称
   final String stateText; // 订单状态文本
   final Color stateTextColor; // 订单状态文本颜色
+  final List<Color>? stateTextGradient; // 订单状态文本背景渐变
   final OrderOperationType operation; // 订单操作类型
 
   OrderListItemWrapper({
@@ -21,6 +22,7 @@ class OrderListItemWrapper {
     this.nickWithAgent,
     required this.stateText,
     required this.stateTextColor,
+    this.stateTextGradient,
     this.operation = OrderOperationType.none,
   });
 }
@@ -233,7 +235,7 @@ class OrderListItem {
           avatar: model.requestAvatar,
           nick: "$requestNamePrefix${model.requestName}",
           stateText: S.current.waitingForYourOrder,
-          stateTextColor: AppColor.textBlue,
+          stateTextColor: AppColor.babyBlueButton,
           operation: OrderOperationType.accept,
         ),
         UserType.agent: OrderListItemWrapper(

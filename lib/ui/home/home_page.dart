@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           children: [
             const ChatPage(),
-            OrderPage(),
+            const OrderPage(),
             const PlazaPage(),
             DiscoverPage(),
             const MinePage(),

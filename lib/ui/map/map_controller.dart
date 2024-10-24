@@ -37,15 +37,13 @@ class MapController extends GetxController {
 
   Future<void> addMarker() async {
     final uiImage = await UiImage.loadImage(SS.login.avatar);//30
-    String nick = "asdasdqweaszxczxc";
+    String nick = "张三吃饭";
     double textWidth = UiImage.getTextWidth(context: Get.context!,text: nick,style: TextStyle(fontSize: 14.rpx));
     double nameWidth = textWidth > 80 ? 110 : 34+textWidth;
     String name = UiImage.nickName(nick, textWidth > 80);
     final painter = CircleAvatarPainter(image: uiImage, displayName: name,size: Size(nameWidth.px, 36.px));
     final imageBytes = await painter.toImage(Size(110.px, 44.px));
 
-
-    print("res===$textWidth");
     markers.add(
       Marker(
         markerId: MarkerId('1'),

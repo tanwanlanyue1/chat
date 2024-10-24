@@ -27,46 +27,42 @@ class FortuneSquareView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      backgroundColor: Colors.transparent,
+      body: Column(
         children: [
-          Column(
-            children: [
-              SizedBox(height: 40.rpx,),
-              Expanded(
-                child: SmartRefresher(
-                  controller: controller.pagingController.refreshController,
-                  onRefresh: controller.pagingController.onRefresh,
-                  child: CustomScrollView(
-                    slivers: [
-                      PagedSliverList(
-                        pagingController: controller.pagingController,
-                        builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
-                            pagingController: controller.pagingController,
-                            itemBuilder: (_,item,index){
-                              return PlazaCard(
-                                item: item,
-                                plazaIndex: controller.tabController.index,
-                                margin: index == 0 ? EdgeInsets.only(top: 8.rpx) : EdgeInsets.only(top: 4.rpx),
-                                more: () {
-                                  controller.selectMore(item);
-                                },
-                                isLike: (like){
-                                  controller.getCommentLike(like, index);
-                                },
-                                callBack: (val){
-                                  controller.setComment(val ?? '',index);
-                                },
-                              );
-                            }
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
           discoverClassify(),
+          Expanded(
+            child: SmartRefresher(
+              controller: controller.pagingController.refreshController,
+              onRefresh: controller.pagingController.onRefresh,
+              child: CustomScrollView(
+                slivers: [
+                  PagedSliverList(
+                    pagingController: controller.pagingController,
+                    builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
+                        pagingController: controller.pagingController,
+                        itemBuilder: (_,item,index){
+                          return PlazaCard(
+                            item: item,
+                            plazaIndex: controller.tabController.index,
+                            margin: index == 0 ? EdgeInsets.only(bottom: 8.rpx) : EdgeInsets.only(bottom: 4.rpx),
+                            more: () {
+                              controller.selectMore(item);
+                            },
+                            isLike: (like){
+                              controller.getCommentLike(like, index);
+                            },
+                            callBack: (val){
+                              controller.setComment(val ?? '',index);
+                            },
+                          );
+                        }
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
         ],
       ),
       floatingActionButton: floatingAction(),
@@ -75,13 +71,19 @@ class FortuneSquareView extends StatelessWidget {
 
   ///发现
   Widget discoverClassify(){
-    return Material(
-      color: Colors.white,
-      elevation: 4,
-      shadowColor: Colors.black.withOpacity(0.2),
+    return Container(
+      height: 40.rpx,
+      margin: EdgeInsets.only(top: 8.rpx),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.rpx),
+          topRight: Radius.circular(16.rpx),
+        )
+      ),
       child: TabBar(
         controller: controller.tabController,
-        labelStyle: AppTextStyle.fs14b,
+        labelStyle: AppTextStyle.fs14m,
         labelColor: AppColor.primaryBlue,
         unselectedLabelColor: AppColor.grayText,
         indicatorColor: AppColor.primaryBlue,

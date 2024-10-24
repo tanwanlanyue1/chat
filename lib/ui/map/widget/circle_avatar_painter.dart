@@ -49,6 +49,9 @@ class UiImage{
           return nick;
         }return nick.substring(0,9);
       }else{
+        if(nick.length < 5){
+          return nick;
+        }
         return nick.substring(0,5);
       }
     }

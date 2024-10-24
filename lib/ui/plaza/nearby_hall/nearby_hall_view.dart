@@ -26,7 +26,7 @@ class NearbyHallView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.white8,
+      backgroundColor: Colors.transparent,
       body: Stack(
         children: [
           SmartRefresher(
@@ -70,50 +70,25 @@ class NearbyHallView extends StatelessWidget {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               color: AppColor.gray33,
-              height: 30.rpx,
-              padding: EdgeInsets.symmetric(horizontal: 8.rpx),
+              height: 20.rpx,
+              padding: EdgeInsets.symmetric(horizontal: 4.rpx),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
-                    child: Text(item.nickname ?? '',style: AppTextStyle.fs12m.copyWith(color: Colors.white),overflow: TextOverflow.ellipsis,),
-                  ),
-                  if(item.gender != 0 || item.age != null)
-                  Container(
-                    decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            AppColor.gradientBackgroundBegin,
-                            AppColor.gradientBackgroundEnd,
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
-                        borderRadius: BorderRadius.circular(12.rpx)
-                    ),
-                    width: 33.rpx,
-                    height: 16.rpx,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Visibility(
-                          visible: item.gender != 0,
-                          child: AppImage.asset(item.gender == 1 ? "assets/images/plaza/boy.png" : "assets/images/plaza/girl.png",width: 12.rpx,height: 12.rpx,),
-                        ),
-                        Text("${item.age ?? ''}",style: AppTextStyle.fs10m.copyWith(color: Colors.white),),
-                      ],
-                    ),
-                  ),
+                  AppImage.asset("assets/images/plaza/location.png",width: 16.rpx,height: 16.rpx,),
+                  Text(" ${item.distance ?? ''}km",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
                 ],
               ),
             ),
             Container(
-              height: 30.rpx,
+              height: 50.rpx,
               decoration: BoxDecoration(
-                color: AppColor.gradientBegin,
+                color: Color(0x1AC644FC),
+                // color: AppColor.textPurple.withOpacity(0.1),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(8.rpx),
                   bottomRight: Radius.circular(8.rpx),
@@ -123,26 +98,47 @@ class NearbyHallView extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: Row(
-                      children: [
-                        AppImage.asset("assets/images/plaza/location.png",width: 16.rpx,height: 16.rpx,),
-                        Text(" ${item.distance ?? ''}km",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
-                      ],
-                    ),
+                    child: Text(item.nickname ?? '',style: AppTextStyle.fs12m.copyWith(color: Colors.white),overflow: TextOverflow.ellipsis,),
                   ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: (){
-                        ChatManager().startChat(userId: item.uid!);
-                      },
+                  if(item.gender != 0 || item.age != null)
+                    Container(
+                      decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [
+                              AppColor.gradientBackgroundBegin,
+                              AppColor.gradientBackgroundEnd,
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ),
+                          borderRadius: BorderRadius.circular(12.rpx)
+                      ),
+                      width: 33.rpx,
+                      height: 16.rpx,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          AppImage.asset("assets/images/plaza/relation.png",width: 14.rpx,height: 14.rpx,),
-                          Text("  ${S.current.contactBeauty}",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+                          Visibility(
+                            visible: item.gender != 0,
+                            child: AppImage.asset(item.gender == 1 ? "assets/images/plaza/boy.png" : "assets/images/plaza/girl.png",width: 12.rpx,height: 12.rpx,),
+                          ),
+                          Text("${item.age ?? ''}",style: AppTextStyle.fs10m.copyWith(color: Colors.white),),
                         ],
                       ),
                     ),
-                  ),
+                  // Expanded(
+                  //   child: GestureDetector(
+                  //     onTap: (){
+                  //       ChatManager().startChat(userId: item.uid!);
+                  //     },
+                  //     child: Row(
+                  //       children: [
+                  //         AppImage.asset("assets/images/plaza/relation.png",width: 14.rpx,height: 14.rpx,),
+                  //         Text("  ${S.current.contactBeauty}",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             )

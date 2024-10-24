@@ -49,28 +49,69 @@ class DatingHallView extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image:
-                                  AppAssetImage(state.speedDating[i]['image']),
-                              fit: BoxFit.fitWidth),
-                          borderRadius: BorderRadius.circular(8.rpx)),
+                              image: AppAssetImage(state.speedDating[i]['image']),
+                              fit: BoxFit.fitWidth)),
                       height: 70.rpx,
                       alignment: Alignment.centerLeft,
                       margin: EdgeInsets.only(right: 15.rpx),
-                      padding: EdgeInsets.only(left: 12.rpx),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            state.speedDating[i]['name'],
-                            style: AppTextStyle.fs20b
-                                .copyWith(color: Colors.white),
+                          Container(
+                            margin: EdgeInsets.only(top: 8.rpx),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Text(
+                                  state.speedDating[i]['name'],
+                                  style: TextStyle(
+                                      fontSize: 20.rpx,
+                                      fontWeight: FontWeight.w900,
+                                      fontStyle: FontStyle.italic,
+                                      letterSpacing: 3.rpx,
+                                      foreground: Paint()
+                                        ..style = PaintingStyle.stroke
+                                        ..strokeWidth = 5.rpx
+                                        ..shader = LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: <Color>[
+                                            Color(state.speedDating[i]['color'][0]),
+                                            Color(state.speedDating[i]['color'][1]),
+                                          ],
+                                        ).createShader(const Rect.fromLTWH(0, 10, 80, 50))
+                                  ),
+                                ),
+                                Text(
+                                  state.speedDating[i]['name'],
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.rpx,
+                                    fontStyle: FontStyle.italic,
+                                    letterSpacing: 3.rpx,
+                                    fontWeight: FontWeight.w900,),
+                                ),
+                              ],
+                            ),
                           ),
-                          Text(
-                            state.speedDating[i]['subtitle'],
-                            style: AppTextStyle.fs10m
-                                .copyWith(color: AppColor.white5),
-                                // .copyWith(color: Colors.white),
+                          Container(
+                            margin: EdgeInsets.only(left: 4.rpx,top: 3.rpx),
+                            padding: EdgeInsets.only(left: 4.rpx,top: 3.rpx,bottom: 3.rpx),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.white.withOpacity(0.16),
+                                  Colors.white.withOpacity(0),
+                                ]
+                              ),
+                              borderRadius: BorderRadius.circular(4.rpx)
+                            ),
+                            child: Text(
+                              state.speedDating[i]['subtitle'],
+                              style: AppTextStyle.fs10m
+                                  .copyWith(color: AppColor.white5,height: 1.0),
+                              // .copyWith(color: Colors.white),
+                            ),
                           ),
                         ],
                       ),

@@ -1,5 +1,5 @@
+import 'package:get/get.dart';
+
 class DiscoverState {
-  DiscoverState() {
-    ///Initialize variables
-  }
+  final titleIndex = 0.obs;
 }

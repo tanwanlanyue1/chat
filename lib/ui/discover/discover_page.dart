@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/discover/friend_date/friend_date_page.dart';
@@ -47,6 +49,9 @@ class DiscoverPage extends StatelessWidget {
             ),
             borderSide: BorderSide(width: 4.rpx),
           ),
+          onTap: (val){
+            state.titleIndex.value = val;
+          },
           tabs: [
             Container(
               margin: EdgeInsets.only(right: 20.rpx),
@@ -55,6 +60,22 @@ class DiscoverPage extends StatelessWidget {
             Tab(text: S.current.hotActivity, height: 40.rpx),
           ],
         ),
+        actions: [
+          Obx(() => Visibility(
+            visible: state.titleIndex.value == 0 && SS.login.userType.isUser,
+            child: Container(
+              width: 80.rpx,
+              alignment: Alignment.center,
+              child: CommonGradientButton(
+                text: S.current.releaseInvitation,
+                height: 32.rpx,
+                textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
+                onTap: controller.onTapInvitation,
+                borderRadius: BorderRadius.circular(16.rpx),
+              ),
+            ),
+          ))
+        ],
       ),
       body: Container(
         decoration: const BoxDecoration(

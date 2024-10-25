@@ -26,7 +26,7 @@ class DiscoverPage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFFF6E5FF),
         centerTitle: false,
         title: TabBar(
           splashFactory: NoSplash.splashFactory,
@@ -66,6 +66,7 @@ class DiscoverPage extends StatelessWidget {
             child: Container(
               width: 80.rpx,
               alignment: Alignment.center,
+              margin: EdgeInsets.only(right: 16.rpx),
               child: CommonGradientButton(
                 text: S.current.releaseInvitation,
                 height: 32.rpx,

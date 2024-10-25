@@ -38,14 +38,17 @@ class _PlazaPageState extends State<PlazaPage>
           children: [
             appBar(),
             Expanded(
-              child: TabBarView(
-                  controller: controller.tabController,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: <Widget>[
-                    DatingHallView(),
-                    NearbyHallView(),
-                    FortuneSquareView(),
-                  ]),
+              child: Container(
+                color: Colors.white,
+                child: TabBarView(
+                    controller: controller.tabController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: <Widget>[
+                      DatingHallView(),
+                      NearbyHallView(),
+                      FortuneSquareView(),
+                    ]),
+              ),
             )
           ],
         ),

@@ -152,8 +152,9 @@ class ReleaseInvitationPage extends StatelessWidget {
           DiscoverItem(
             title: S.current.datingSite,
             location: true,
+            callBack: controller.datingSite,
             trailing: Text(
-              S.current.required,
+              state.location.value.isEmpty ? S.current.required : state.location.value,
               style: AppTextStyle.fs14b.copyWith(color: AppColor.black92),
             ),
           ),

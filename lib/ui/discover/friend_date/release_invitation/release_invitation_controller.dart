@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
+import 'package:guanjia/common/network/api/model/open/google_places_model.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/map/choose_place/choose_place_page.dart';
 import 'package:guanjia/widgets/loading.dart';
 
 import '../../../../common/network/api/api.dart';
@@ -42,6 +44,16 @@ class ReleaseInvitationController extends GetxController {
       update();
     }else{
       response.showErrorMessage();
+    }
+  }
+
+  //约会地点
+  void datingSite() async{
+    PlaceModel? data = await ChoosePlacePage.go(title:'选择地点');
+    if(data!= null){
+      state.coordinate = '${data.geometry?.location?.lng},${data.geometry?.location?.lat}';
+      state.location.value = data.name;
+      update(['dateFrom']);
     }
   }
 
@@ -94,6 +106,8 @@ class ReleaseInvitationController extends GetxController {
       Loading.showToast(S.current.appointmentNoEmpty);
     }else if(comparison < 0){
       Loading.showToast(S.current.theMustLonger);
+    }else if(!state.serve.value && serviceController.text.isEmpty){
+      Loading.showToast(S.current.pleaseServiceAmount);
     }else{
       Loading.show();
       String tag = "";
@@ -103,8 +117,8 @@ class ReleaseInvitationController extends GetxController {
       final response = await DiscoverApi.appointmentAdd(
           type: state.typeList[state.typeIndex.value]['type'],
           content: contentController.text,
-          coordinate: '113.17,23.8',
-          location: '广州',
+          coordinate: state.coordinate,
+          location: state.location.value,
           startTimeStamp: (DateTime.now().add(Duration(days: state.startTime)).copyWith(hour: state.startHour)).millisecondsSinceEpoch,
           endTimeStamp: (DateTime.now().add(Duration(days: state.endTime)).copyWith(hour: state.endHour)).millisecondsSinceEpoch,
           tag: tag,

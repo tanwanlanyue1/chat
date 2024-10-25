@@ -26,11 +26,6 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin,GetSi
     refreshController: RefreshController(),
   );
 
-  //发布邀约
-  void onTapInvitation() {
-    Get.toNamed(AppRoutes.releaseInvitation);
-  }
-
   //类型名称
   String typeTitle(int index){
     String title = state.typeList.firstWhere((type) => type['type'] == index)['title'];

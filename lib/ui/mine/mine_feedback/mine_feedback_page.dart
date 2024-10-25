@@ -31,28 +31,22 @@ class MineFeedbackPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         body: GetBuilder<MineFeedbackController>(
           builder: (controller) {
-            return Column(
+            return ListView(
               children: [
-                Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.only(bottom: 20.rpx),
-                    children: [
-                      feedbackType(),
-                      problemOpinion(),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: FEdgeInsets(horizontal: 36.rpx, vertical: 24.rpx + Get.padding.bottom),
-                  child: Button(
-                    onPressed: controller.submit,
-                    borderRadius: BorderRadius.circular(8.rpx),
-                    child: Text(S.current.submit),
-                  ),
-                ),
+                feedbackType(),
+                suggest(),
+                problemOpinion(),
               ],
             );
           },
+        ),
+        bottomNavigationBar: Padding(
+          padding: FEdgeInsets(horizontal: 36.rpx, vertical: 24.rpx + Get.padding.bottom),
+          child: Button(
+            onPressed: controller.submit,
+            borderRadius: BorderRadius.circular(8.rpx),
+            child: Text(S.current.submit),
+          ),
         ),
       )
     );
@@ -113,11 +107,11 @@ class MineFeedbackPage extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 22.rpx),
             decoration:  const BoxDecoration(
-              image: DecorationImage(
-                image: AppAssetImage(
-                  "assets/images/mine/feedback_title.png",
-                ),
-              )
+                image: DecorationImage(
+                  image: AppAssetImage(
+                    "assets/images/mine/feedback_title.png",
+                  ),
+                )
             ),
             width: 100.rpx,
             height: 32.rpx,
@@ -128,22 +122,43 @@ class MineFeedbackPage extends StatelessWidget {
               style: TextStyle(color: AppColor.black3, fontSize: 16.rpx),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  //建议内容
+  Widget suggest(){
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.rpx).copyWith(top: 15.rpx),
+      margin: EdgeInsets.symmetric(horizontal: 16.rpx),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(8.rpx),
+          bottomRight: Radius.circular(8.rpx),
+          topRight: Radius.circular(8.rpx),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Stack(
             children: [
               Container(
                 padding: EdgeInsets.only(bottom: 16.rpx),
                 color: AppColor.white8,
                 child: InputWidget(
-                    hintText: S.current.pleaseEnterASuggestion,
-                    maxLength: 200,
-                    lines: 4,
-                    fillColor: AppColor.white8,
-                    counterText: '',
-                    inputController: controller.contentController,
-                    onChanged: (val){
-                      controller.update();
-                    },
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12.rpx,vertical: 16.rpx),
+                  hintText: S.current.pleaseEnterASuggestion,
+                  maxLength: 200,
+                  lines: 4,
+                  fillColor: AppColor.white8,
+                  counterText: '',
+                  inputController: controller.contentController,
+                  onChanged: (val){
+                    controller.update();
+                  },
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12.rpx,vertical: 12.rpx),
                 ),
               ),
               Positioned(
@@ -157,30 +172,11 @@ class MineFeedbackPage extends StatelessWidget {
             ],
           ),
           Container(
-            margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-            child: Row(
-              children: [
-                Container(
-                  width: 4.rpx,
-                  height: 20.rpx,
-                  margin: EdgeInsets.only(right: 8.rpx),
-                  decoration: BoxDecoration(
-                    color: AppColor.primaryBlue,
-                    borderRadius: BorderRadius.circular(4.rpx),
-                  ),
-                ),
-                Text(
-                  S.current.uploadPictures,
-                  style: TextStyle(color: AppColor.black666, fontSize: 16.rpx),
-                ),
-              ],
-            ),
-          ),
-          Container(
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8.rpx),
             ),
+            margin: EdgeInsets.only(top: 16.rpx),
             padding: EdgeInsets.only(bottom: 24.rpx),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,33 +199,29 @@ class MineFeedbackPage extends StatelessWidget {
     );
   }
 
+
   //联系方式
   Widget problemOpinion() {
     return Container(
       color: Colors.white,
-      margin: EdgeInsets.symmetric(vertical: 8.rpx),
-      padding: EdgeInsets.symmetric(horizontal: 16.rpx,vertical: 8.rpx),
-      child: Row(
+      margin: EdgeInsets.symmetric(horizontal: 16.rpx,vertical: 12.rpx),
+      padding: EdgeInsets.symmetric(horizontal: 12.rpx,vertical: 16.rpx),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 50.rpx,
-            alignment: Alignment.center,
-            margin: EdgeInsets.only(right: 12.rpx),
-            child: Text(
-              S.current.contactNumber,
-              style: TextStyle(color: AppColor.black666, fontSize: 16.rpx),
-            ),
+          Text(
+            S.current.contactNumber,
+            style: TextStyle(color: AppColor.black3, fontSize: 16.rpx),
           ),
-          Expanded(
-            child: InputWidget(
-              hintText: S.current.pleaseEmailPhone,
-              fillColor: AppColor.white8,
-              inputController: controller.contactController,
-              textStyle: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
-              border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.all(Radius.circular(8.rpx))),
-            ),
+          SizedBox(height: 4.rpx,),
+          InputWidget(
+            hintText: S.current.pleaseEmailPhone,
+            fillColor: AppColor.white8,
+            inputController: controller.contactController,
+            textStyle: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
+            border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.all(Radius.circular(8.rpx))),
           ),
         ],
       ),

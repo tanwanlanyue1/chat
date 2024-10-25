@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -28,8 +30,6 @@ class OrderListTile extends StatefulWidget {
   final OrderListItem item;
   final int index;
 
-  Timer? timer;
-
   @override
   State<OrderListTile> createState() => _OrderListTileState();
 }
@@ -37,17 +37,6 @@ class OrderListTile extends StatefulWidget {
 class _OrderListTileState extends State<OrderListTile> {
   @override
   void initState() {
-    if (widget.item.countDown > 0) {
-      if (mounted) {
-        widget.timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-          widget.item.countDown = widget.item.countDown - 1;
-          setState(() {});
-        });
-      }
-    } else {
-      widget.timer?.cancel();
-    }
-
     super.initState();
   }
 
@@ -55,14 +44,10 @@ class _OrderListTileState extends State<OrderListTile> {
 
   @override
   Widget build(BuildContext context) {
-    Widget operationWidget =
-        OrderOperationButtons(type: widget.widget.type, item: widget.item);
-
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
-        height: 186.rpx,
-        padding: EdgeInsets.all(16.rpx).copyWith(bottom: 0),
+        height: 166.rpx,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4.rpx),
           color: Colors.white,
@@ -70,85 +55,82 @@ class _OrderListTileState extends State<OrderListTile> {
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 buildStateText(),
+                const Spacer(),
                 if (item.countDown > 0)
-                  Flexible(
-                    child: Text(
-                      "${S.current.residualWait} ${CommonUtils.convertCountdownToHMS(item.countDown, hasHours: false)}",
-                      style: AppTextStyle.st
-                          .size(12.rpx)
-                          .textColor(AppColor.primaryBlue),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                  Text(
+                    '剩余等待',
+                    style: AppTextStyle.fs12m.copyWith(
+                      color: AppColor.blackBlue,
+                      height: 1,
                     ),
                   ),
+                if (item.countDown > 0) buildCountdown(),
               ],
             ),
-            Divider(
-              height: 25.rpx,
-              thickness: 1.rpx,
-              color: AppColor.scaffoldBackground,
-            ),
-            Row(
-              children: [
-                AppImage.network(
-                  item.avatar,
-                  length: 60.rpx,
-                  shape: BoxShape.circle,
-                ),
-                SizedBox(width: 8.rpx),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.number,
-                        style: AppTextStyle.st
-                            .size(14.rpx)
-                            .textColor(AppColor.black6),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        item.nick,
-                        style: AppTextStyle.st
-                            .size(14.rpx)
-                            .textColor(AppColor.black6),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      if (item.nickWithAgent != null)
+            Padding(
+              padding: FEdgeInsets(all: 12.rpx),
+              child: Row(
+                children: [
+                  AppImage.network(
+                    item.avatar,
+                    length: 60.rpx,
+                    shape: BoxShape.circle,
+                  ),
+                  SizedBox(width: 8.rpx),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text(
-                          item.nickWithAgent ?? "",
+                          item.number,
                           style: AppTextStyle.st
                               .size(14.rpx)
                               .textColor(AppColor.black6),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 12.rpx),
-            Divider(
-              height: 1.rpx,
-              thickness: 1.rpx,
-              color: AppColor.scaffoldBackground,
-            ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  buildDate(),
-                  SizedBox(width: 8.rpx),
-                  Flexible(
-                    child: operationWidget,
+                        Text(
+                          item.nick,
+                          style: AppTextStyle.st
+                              .size(14.rpx)
+                              .textColor(AppColor.black6),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        if (item.nickWithAgent != null)
+                          Text(
+                            item.nickWithAgent ?? "",
+                            style: AppTextStyle.st
+                                .size(14.rpx)
+                                .textColor(AppColor.black6),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                      ],
+                    ),
                   ),
                 ],
+              ),
+            ),
+            Divider(
+              indent: 8.rpx,
+              endIndent: 8.rpx,
+              height: 1,
+            ),
+            Expanded(
+              child: Padding(
+                padding: FEdgeInsets(horizontal: 12.rpx),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    buildDate(),
+                    OrderOperationButtons(
+                      type: widget.widget.type, item: widget.item,
+                    ),
+                  ],
+                ),
               ),
             )
           ],
@@ -157,29 +139,100 @@ class _OrderListTileState extends State<OrderListTile> {
     );
   }
 
-  Widget buildDate(){
+  Widget buildDate() {
     return Row(
       children: [
         AppImage.asset(
           "assets/images/order/time.png",
           size: 16.rpx,
         ),
-        SizedBox(width: 8.rpx),
+        SizedBox(width: 4.rpx),
         Text(
           item.time,
-          style: AppTextStyle.st
-              .size(12.rpx)
-              .textColor(AppColor.black9),
+          style: AppTextStyle.st.size(12.rpx).textColor(AppColor.black9),
         ),
-        SizedBox(width: 8.rpx),
       ],
     );
   }
 
-  Widget buildStateText(){
+  Widget buildCountdown() {
+    if (item.countDown <= 0) {
+      return Spacing.h(20);
+    }
+
+    buildItem(String text) {
+      return Container(
+        width: 24.rpx,
+        height: 20.rpx,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4.rpx),
+          color: AppColor.red,
+        ),
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: AppTextStyle.fs12m.copyWith(
+            color: Colors.white,
+            height: 1.0,
+          ),
+        ),
+      );
+    }
+
     return Container(
-      padding: FEdgeInsets(horizontal: 12.rpx, vertical: 10.rpx),
+      alignment: Alignment.center,
+      margin: FEdgeInsets(left: 4.rpx, top: 0.rpx, right: 12.rpx),
+      child: CountdownBuilder(
+        endTime: DateTime.now().add(Duration(seconds: item.countDown)),
+        onFinish: () {
+          if (mounted) {
+            setState(() {
+              item.countDown = 0;
+            });
+          }
+        },
+        builder: (duration, text) {
+          final hours = duration.inHours.toString().padLeft(2, '0');
+          final minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
+          final seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              if (duration.inHours > 0) buildItem(hours),
+              buildItem(minutes),
+              buildItem(seconds),
+            ]
+                .separated(
+                  Container(
+                    width: 8.rpx,
+                    height: 20.rpx,
+                    alignment: Alignment.center,
+                    padding: FEdgeInsets(bottom: 1.rpx),
+                    child: Text(
+                      ':',
+                      style: AppTextStyle.fs12b.copyWith(
+                        color: AppColor.red,
+                        height: 1.0,
+                      ),
+                    ),
+                  ),
+                )
+                .toList(growable: false),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget buildStateText() {
+    return Container(
+      padding: FEdgeInsets(left: 12.rpx, right: 24.rpx),
+      height: 36.rpx,
+      alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(4.rpx)),
         gradient: LinearGradient(
           colors: [
             item.stateTextColor.withOpacity(0.1),
@@ -196,5 +249,4 @@ class _OrderListTileState extends State<OrderListTile> {
       ),
     );
   }
-
 }

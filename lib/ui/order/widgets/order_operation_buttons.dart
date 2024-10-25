@@ -124,14 +124,12 @@ class OrderOperationButtons extends StatelessWidget {
         height: 26.rpx,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4.rpx),
-          border: Border.all(
-            color: AppColor.black9,
-          ),
+          color: AppColor.black9,
         ),
         alignment: Alignment.center,
         child: Text(
           text ?? S.current.cancellationOrder,
-          style: AppTextStyle.st.size(12.rpx).textColor(AppColor.black6),
+          style: AppTextStyle.st.size(12.rpx).textColor(Colors.white),
         ),
       ),
     );

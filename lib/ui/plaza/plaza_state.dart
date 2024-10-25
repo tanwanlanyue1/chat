@@ -7,5 +7,5 @@ class PlazaState {
     {"name": S.current.nearby},
     {"name": S.current.community},
   ];
-  final tabIndex = 0.obs;
+  final tabIndex = 2.obs;
 }

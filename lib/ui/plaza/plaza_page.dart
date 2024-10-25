@@ -56,48 +56,31 @@ class _PlazaPageState extends State<PlazaPage>
   @override
   bool get wantKeepAlive => true;
   Widget appBar() {
-    return GetBuilder<PlazaController>(
-      id: "appBar",
-      builder: (_) {
-        return Container(
-          height: Get.mediaQuery.padding.top+44.rpx,
-          padding: EdgeInsets.only(top: Get.mediaQuery.padding.top,left: 16.rpx),
-          alignment: Alignment.centerLeft,
-          child: TabBar(
-            controller: controller.tabController,
-            labelStyle: AppTextStyle.fs18b,
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.white.withOpacity(0.6),
-            unselectedLabelStyle: AppTextStyle.fs16m,
-            isScrollable: true,
-            indicator: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(4.rpx)
+    return Container(
+      height: Get.mediaQuery.padding.top+44.rpx,
+      padding: EdgeInsets.only(top: Get.mediaQuery.padding.top,left: 16.rpx),
+      alignment: Alignment.centerLeft,
+      child: TabBar(
+        controller: controller.tabController,
+        labelStyle: AppTextStyle.fs18b,
+        labelColor: Colors.white,
+        unselectedLabelColor: Colors.white.withOpacity(0.6),
+        unselectedLabelStyle: AppTextStyle.fs16m,
+        isScrollable: true,
+        indicator: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(4.rpx)
+        ),
+        indicatorPadding: EdgeInsets.only(top: 24.rpx,right: 38.rpx,left: 4.rpx),
+        labelPadding: EdgeInsets.only(bottom: 0.rpx),
+        tabs: List.generate(state.tabBarList.length, (index) {
+          return Container(
+            margin: EdgeInsets.only(right: 32.rpx),
+            child: Text(state.tabBarList[index]['name']
             ),
-            indicatorPadding: EdgeInsets.only(top: 22.rpx,right: 38.rpx,left: 4.rpx),
-            labelPadding: EdgeInsets.only(bottom: 5.rpx),
-            onTap: (val){
-              state.tabIndex.value = val;
-            },
-            tabs: List.generate(state.tabBarList.length, (index) {
-              return  GestureDetector(
-                onTap: (){
-                  controller.tabController.index = index;
-                  controller.update(['appBar']);
-                },
-                behavior: HitTestBehavior.translucent,
-                child: Container(
-                  margin: EdgeInsets.only(right: 32.rpx),
-                  child: Text(
-                    state.tabBarList[index]['name'],
-                    style: controller.tabController.index == index ? AppTextStyle.fs18b.copyWith(height: 1,color: Colors.white):
-                    AppTextStyle.fs16m.copyWith(height: 1,color: Colors.white.withOpacity(0.6)),
-                  ),
-                ),
-              );
-            }),
-          ),
-        );
-      },);
+          );
+        }),
+      ),
+    );
   }
 }

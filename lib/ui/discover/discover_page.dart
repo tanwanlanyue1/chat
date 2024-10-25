@@ -26,7 +26,7 @@ class DiscoverPage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF6E5FF),
+        backgroundColor: Colors.transparent,
         centerTitle: false,
         title: TabBar(
           splashFactory: NoSplash.splashFactory,

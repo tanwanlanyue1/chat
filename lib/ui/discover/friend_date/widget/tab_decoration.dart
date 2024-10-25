@@ -26,7 +26,7 @@ class _TabPainter extends BoxPainter {
         .createPainter(onChanged!);
 
     offset = offset.translate(0.rpx, 0.rpx);
-    final rect = Rect.fromLTWH(length == 0 ? 20.rpx : offset.dx+34.rpx, offset.dy+28.rpx, 17.rpx, 6.rpx);
+    final rect = Rect.fromLTWH(length == 0 ? 6.rpx : offset.dx+20.rpx, offset.dy+22.rpx, 17.rpx, 6.rpx);
     _imagePainter!.paint(canvas, rect, null, configuration);
   }
 }

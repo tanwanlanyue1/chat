@@ -26,133 +26,83 @@ class IdentityProgressionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<IdentityProgressionController>(
       builder: (_){
-        return Scaffold(
-          backgroundColor: Colors.white,
-          body: Stack(
-            children: [
-              Visibility(
-                visible: state.audit == 2,
-                child: AppImage.asset("assets/images/mine/lose_back.png",height: 346.rpx,),
-              ),
-              Column(
-                children: [
-                  AppBar(
-                    title: Text(
-                      state.audit == 0 ?
-                      S.current.underReview:
-                      state.audit == 1 ? S.current.successfulAudit :
-                      S.current.auditFailure,
-                      style: TextStyle(
-                        color: state.audit == 2 ? Colors.white : const Color(0xff333333),
-                        fontSize: 18.rpx,
-                      ),
-                    ),
-                    elevation: 5.rpx,
-                    shadowColor: AppColor.gray11,
-                    systemOverlayStyle: SystemUI.lightStyle,
-                    leading: AppBackButton(brightness:state.audit == 2 ? Brightness.light : Brightness.dark),
-                    backgroundColor: state.audit == 2 ? Colors.transparent : Colors.white,
-                  ),
-                  Expanded(
-                    child: state.audit == 0 ?
-                    jiaAudit():
+        return wrapGradientBackground(
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: Stack(
+              children: [
+                Positioned(
+                  top: Get.mediaQuery.padding.top + 42.rpx,
+                  right: 16.rpx,
+                  child: AppImage.asset(
+                    state.audit == 0 ?
+                    "assets/images/mine/under_review.png":
                     state.audit == 1 ?
-                    auditSucceed():
-                    auditLose(),
-                  )
-                ],
-              ),
-            ],
-          ),
+                    "assets/images/mine/successful_audit.png":
+                    "assets/images/mine/audit_failure.png",
+                    width: 133.rpx,height: 144.rpx,),
+                ),
+                Column(
+                  children: [
+                    AppBar(
+                      systemOverlayStyle: SystemUI.lightStyle,
+                      leading: const AppBackButton(brightness:Brightness.light),
+                      backgroundColor: Colors.transparent,
+                    ),
+                    Expanded(
+                      child: copyWriting(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )
         );
       },
     );
   }
 
-  //审核中
-  Widget jiaAudit(){
+  //审核文案
+  Widget copyWriting(){
     return Container(
-      margin: EdgeInsets.only(top: 36.rpx),
+      padding: EdgeInsets.only(top: 20.rpx),
+      alignment: Alignment.centerLeft,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppImage.asset('assets/images/mine/wait.png',width: 70.rpx,height: 70.rpx,),
-          SizedBox(height: 24.rpx,),
-          Text(S.current.dataSubmitted,style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
-          RichText(
-            text: TextSpan(
-              text: S.current.patient,
-              style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),
-              children: <TextSpan>[
-                TextSpan(
-                  text: S.current.customerService,
-                  style: AppTextStyle.fs14m.copyWith(color: AppColor.primary),
-                  recognizer: TapGestureRecognizer()..onTap=(){
-                    Get.toNamed(AppRoutes.mineFeedbackPage);
-                  }
-                ),
-                TextSpan(
-                  text: S.current.monitorProgress,
-                  style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),
-                ),
-              ],
-            ),
+          Padding(
+            padding: EdgeInsets.only(left: 24.rpx,bottom: 12.rpx),
+            child: Text(state.audit == 0 ?
+            S.current.underReview:
+            state.audit == 1 ?
+            S.current.successfulAudit:S.current.auditFailure,style: AppTextStyle.fs24b.copyWith(color: Colors.white),),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: AppColor.scaffoldBackground,
-              borderRadius: BorderRadius.circular(8.rpx),
-            ),
-            height: 50.rpx,
-            margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 60.rpx),
-            padding: EdgeInsets.symmetric(horizontal: 16.rpx),
-            child: Row(
-              children: [
-                AppImage.asset('assets/images/mine/prosperity.png',width: 16.rpx,height: 16.rpx,),
-                SizedBox(width: 8.rpx),
-                Text(S.current.submitted,style: AppTextStyle.fs14m.copyWith(color: AppColor.black666)),
-                const Spacer(),
-                Text(CommonUtils.timestamp(state.advanced.createTime,unit: "yyyy.MM.dd hh:mm"),style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  //审核成功
-  Widget auditSucceed(){
-    return Container(
-      padding: EdgeInsets.only(top: 36.rpx,bottom: 100.rpx),
-      child: Column(
-        children: [
-          AppImage.asset('assets/images/mine/succeed.png',width: 70.rpx,height: 70.rpx,),
-          Container(
-            margin: EdgeInsets.only(top: 24.rpx,bottom: 74.rpx),
-            child: Text("${S.current.congratulations}${state.current == 0 ? S.current.customer : state.current == 1 ? S.current.goodGirl:S.current.brokerP}",style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
-          ),
-          ...List.generate(state.interests.length, (index) {
-            var item = state.interests[index];
-            return Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(bottom: 24.rpx),
-              child: Row(
-                children: [
-                  AppImage.asset(item['image'],width: 28.rpx,height: 28.rpx,),
-                  SizedBox(width: 12.rpx,),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(item['title'],style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
-                      Text(item['remake'],style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          }),
-          const Spacer(),
           Visibility(
-            visible: state.current != 2,
+            visible: state.audit == 1,
+            replacement: Visibility(
+              visible: state.audit == 0,
+              replacement: Padding(
+                padding: EdgeInsets.only(left: 24.rpx,bottom: 36.rpx),
+                child: Text(S.current.auditTurnDown,style: AppTextStyle.fs16m.copyWith(color: Colors.white.withOpacity(0.9)),),
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(left: 24.rpx,bottom: 36.rpx),
+                child: Text(S.current.dataSubmitted,style: AppTextStyle.fs16m.copyWith(color: Colors.white.withOpacity(0.9)),),
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(left: 24.rpx,bottom: 36.rpx),
+              child: Text("${S.current.congratulations}${state.current == 0 ? S.current.customer : state.current == 1 ? S.current.goodGirl:S.current.brokerP}",style: AppTextStyle.fs16m.copyWith(color: Colors.white.withOpacity(0.9)),),
+            ),
+          ),
+          state.audit == 0 ?
+          jiaAudit():
+          state.audit == 1 ?
+          auditSucceed():
+          auditLose(),
+          SizedBox(height: 40.rpx,),
+          Visibility(
+            visible: state.current != 2 && state.audit != 0,
             child: Button(
               height: 50.rpx,
               onPressed: (){
@@ -174,21 +124,116 @@ class IdentityProgressionPage extends StatelessWidget {
     );
   }
 
+  //审核中
+  Widget jiaAudit(){
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16.rpx),
+      padding: EdgeInsets.symmetric(vertical: 36.rpx,horizontal: 16.rpx),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.rpx)
+      ),
+      child: Column(
+        children: [
+          Text(S.current.underReview,style: AppTextStyle.fs20m.copyWith(color: AppColor.black20),),
+          SizedBox(height: 12.rpx,),
+          RichText(
+            text: TextSpan(
+              text: S.current.patient,
+              style: AppTextStyle.fs14b.copyWith(color: AppColor.gray9),
+              children: <TextSpan>[
+                TextSpan(
+                  text: S.current.customerService,
+                  style: AppTextStyle.fs14b.copyWith(color: AppColor.primary),
+                  recognizer: TapGestureRecognizer()..onTap=(){
+                    Get.toNamed(AppRoutes.mineFeedbackPage);
+                  }
+                ),
+                TextSpan(
+                  text: S.current.monitorProgress,
+                  style: AppTextStyle.fs14b.copyWith(color: AppColor.gray9),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: AppColor.scaffoldBackground,
+              borderRadius: BorderRadius.circular(8.rpx),
+            ),
+            height: 50.rpx,
+            margin: EdgeInsets.only(top: 36.rpx),
+            padding: EdgeInsets.symmetric(horizontal: 16.rpx),
+            child: Row(
+              children: [
+                AppImage.asset('assets/images/mine/prosperity.png',width: 16.rpx,height: 16.rpx,),
+                SizedBox(width: 8.rpx),
+                Text(S.current.submitted,style: AppTextStyle.fs14m.copyWith(color: AppColor.black666)),
+                const Spacer(),
+                Text(CommonUtils.timestamp(state.advanced.createTime,unit: "yyyy.MM.dd hh:mm"),style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  //审核成功
+  Widget auditSucceed(){
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16.rpx),
+      padding: EdgeInsets.symmetric(vertical: 36.rpx,horizontal: 16.rpx),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.rpx)
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ...List.generate(state.interests.length, (index) {
+            var item = state.interests[index];
+            return Container(
+              padding: EdgeInsets.only(bottom: index == state.interests.length-1 ? 0: 32.rpx),
+              child: Row(
+                children: [
+                  AppImage.asset(item['image'],width: 28.rpx,height: 28.rpx,),
+                  SizedBox(width: 12.rpx,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(item['title'],style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
+                      Text(item['remake'],style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
   //审核失败
   Widget auditLose(){
     return Container(
-      padding: EdgeInsets.only(top: 36.rpx,bottom: 100.rpx,left: 32.rpx,right: 32.rpx),
+      margin: EdgeInsets.symmetric(horizontal: 16.rpx),
+      padding: EdgeInsets.symmetric(vertical: 36.rpx,horizontal: 16.rpx),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.rpx)
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            alignment: Alignment.center,
-            child: AppImage.asset('assets/images/mine/be_defeated.png',width: 70.rpx,height: 70.rpx,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(S.current.auditTurnDown,style: AppTextStyle.fs20m.copyWith(color: AppColor.textRed),)
+            ],
           ),
-          Container(
-            margin: EdgeInsets.only(top: 150.rpx,bottom: 12.rpx),
-            child: Text(S.current.reviewReject,style: AppTextStyle.fs20m.copyWith(color: AppColor.red53),),
-          ),
+          SizedBox(height: 12.rpx,),
           RichText(
             text: TextSpan(
               text: '${state.advanced.remark ?? ''}\n',
@@ -201,24 +246,31 @@ class IdentityProgressionPage extends StatelessWidget {
               ],
             ),
           ),
-          const Spacer(),
-          Button(
-            height: 50.rpx,
-            onPressed: (){
-              controller.updateAudit();
-            },
-            margin: EdgeInsets.symmetric(horizontal: 38.rpx),
-            child: Text(
-              state.current == 0 ?
-              S.current.generalBroker:
-              state.current == 1 ?
-              S.current.generalUser:
-              S.current.generalGood,
-              style: TextStyle(color: Colors.white, fontSize: 16.rpx),
-            ),
-          )
         ],
       ),
+    );
+  }
+
+
+  ///渐变背景
+  Widget wrapGradientBackground({required Widget child}) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Container(
+          color: AppColor.scaffoldBackground,
+          alignment: Alignment.topCenter,
+          child: Container(
+            height: 260.rpx,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AppAssetImage("assets/images/mine/audit_back.png")
+              )
+            ),
+          ),
+        ),
+        child,
+      ],
     );
   }
 }

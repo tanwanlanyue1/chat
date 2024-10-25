@@ -15,6 +15,9 @@ class ReleaseInvitationState {
   //剩余次数
   final surplus = {}.obs;
 
+  String coordinate = '';
+  final location = ''.obs;
+
   //时间选择
   int time = 0;
   int hour = 0;

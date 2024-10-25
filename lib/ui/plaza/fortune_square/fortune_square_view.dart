@@ -32,34 +32,37 @@ class FortuneSquareView extends StatelessWidget {
         children: [
           discoverClassify(),
           Expanded(
-            child: SmartRefresher(
-              controller: controller.pagingController.refreshController,
-              onRefresh: controller.pagingController.onRefresh,
-              child: CustomScrollView(
-                slivers: [
-                  PagedSliverList(
-                    pagingController: controller.pagingController,
-                    builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
-                        pagingController: controller.pagingController,
-                        itemBuilder: (_,item,index){
-                          return PlazaCard(
-                            item: item,
-                            plazaIndex: controller.tabController.index,
-                            margin: index == 0 ? EdgeInsets.only(bottom: 8.rpx) : EdgeInsets.only(bottom: 4.rpx),
-                            more: () {
-                              controller.selectMore(item);
-                            },
-                            isLike: (like){
-                              controller.getCommentLike(like, index);
-                            },
-                            callBack: (val){
-                              controller.setComment(val ?? '',index);
-                            },
-                          );
-                        }
-                    ),
-                  )
-                ],
+            child: Container(
+              color: Colors.white,
+              child: SmartRefresher(
+                controller: controller.pagingController.refreshController,
+                onRefresh: controller.pagingController.onRefresh,
+                child: CustomScrollView(
+                  slivers: [
+                    PagedSliverList(
+                      pagingController: controller.pagingController,
+                      builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
+                          pagingController: controller.pagingController,
+                          itemBuilder: (_,item,index){
+                            return PlazaCard(
+                              item: item,
+                              plazaIndex: controller.tabController.index,
+                              margin: index == 0 ? EdgeInsets.only(bottom: 8.rpx) : EdgeInsets.only(bottom: 4.rpx),
+                              more: () {
+                                controller.selectMore(item);
+                              },
+                              isLike: (like){
+                                controller.getCommentLike(like, index);
+                              },
+                              callBack: (val){
+                                controller.setComment(val ?? '',index);
+                              },
+                            );
+                          }
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           )

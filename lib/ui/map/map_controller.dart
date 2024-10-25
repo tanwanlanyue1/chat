@@ -12,9 +12,11 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'map_state.dart';
 import 'widget/circle_avatar_painter.dart';
 
 class MapController extends GetxController {
+  final MapState state = MapState();
 
   GoogleMapController? mapController;
   final LatLng _center = const LatLng(-33.86, 151.20);

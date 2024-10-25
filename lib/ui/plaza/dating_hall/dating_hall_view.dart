@@ -188,7 +188,7 @@ class DatingHallView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(bottom: 1.rpx),
+          margin: EdgeInsets.symmetric(horizontal: 16.rpx),
           child: AppImage.asset(
             "assets/images/plaza/friend_item.png",
             width: 270.rpx,
@@ -200,13 +200,16 @@ class DatingHallView extends StatelessWidget {
           children: [
             Container(
               margin: EdgeInsets.only(left: 13.rpx,right: 21.rpx,bottom: 8.rpx),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AppAssetImage('assets/images/plaza/friend_item_back.png'),
+                      image: AppAssetImage((item.images != null && jsonDecode(item.images).length != 0) ?
+                      'assets/images/plaza/friend_item_back.png':
+                      'assets/images/plaza/friend_item_bac_no.png'
+                      ),
                      fit: BoxFit.fill
                   )
               ),
-              height: (item.images != null && jsonDecode(item.images).length != 0) ? 151.rpx : 76.rpx,
+              height: (item.images != null && jsonDecode(item.images).length != 0) ? 162.rpx : 70.rpx,
             ),
             GestureDetector(
               behavior: HitTestBehavior.translucent,

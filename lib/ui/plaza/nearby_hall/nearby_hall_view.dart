@@ -68,7 +68,8 @@ class NearbyHallView extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                       image: NetworkImage(item.avatar ?? ''),
-                      fit: BoxFit.fitHeight
+                      fit: BoxFit.cover,
+                    alignment: Alignment.topCenter
                   ),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8.rpx),

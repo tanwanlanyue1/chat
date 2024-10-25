@@ -38,17 +38,14 @@ class _PlazaPageState extends State<PlazaPage>
           children: [
             appBar(),
             Expanded(
-              child: Obx(() => Container(
-                color: state.tabIndex.value == 2 ? Colors.white:Colors.transparent,
-                child: TabBarView(
-                    controller: controller.tabController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: <Widget>[
-                      DatingHallView(),
-                      NearbyHallView(),
-                      FortuneSquareView(),
-                    ]),
-              )),
+              child: TabBarView(
+                  controller: controller.tabController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: <Widget>[
+                    DatingHallView(),
+                    NearbyHallView(),
+                    FortuneSquareView(),
+                  ]),
             )
           ],
         ),
@@ -79,9 +76,6 @@ class _PlazaPageState extends State<PlazaPage>
             ),
             indicatorPadding: EdgeInsets.only(top: 22.rpx,right: 38.rpx,left: 4.rpx),
             labelPadding: EdgeInsets.only(bottom: 5.rpx),
-            onTap: (val){
-              state.tabIndex.value = val;
-            },
             tabs: List.generate(state.tabBarList.length, (index) {
               return  GestureDetector(
                 onTap: (){

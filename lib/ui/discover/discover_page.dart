@@ -53,11 +53,11 @@ class DiscoverPage extends StatelessWidget {
             state.titleIndex.value = val;
           },
           tabs: [
+            Tab(text: S.current.dating, height: 40.rpx),
             Container(
-              margin: EdgeInsets.only(right: 20.rpx),
-              child: Tab(text: S.current.dating, height: 40.rpx),
+              margin: EdgeInsets.only(right: 20.rpx,left: 20.rpx),
+              child: Tab(text: S.current.hotActivity, height: 40.rpx),
             ),
-            Tab(text: S.current.hotActivity, height: 40.rpx),
           ],
         ),
         actions: [

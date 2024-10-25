@@ -49,7 +49,7 @@ class ReleaseInvitationController extends GetxController {
 
   //约会地点
   void datingSite() async{
-    PlaceModel? data = await ChoosePlacePage.go(title:'选择地点');
+    PlaceModel? data = await ChoosePlacePage.go(title: S.current.selectLocation);
     if(data!= null){
       state.coordinate = '${data.geometry?.location?.lng},${data.geometry?.location?.lat}';
       state.location.value = data.name;
@@ -104,6 +104,8 @@ class ReleaseInvitationController extends GetxController {
     int comparison = timeDate(time: state.endTime, hour: state.endHour).compareTo( timeDate(time: state.startTime, hour: state.startHour+1));
     if(contentController.text.isEmpty){
       Loading.showToast(S.current.appointmentNoEmpty);
+    }else if(state.coordinate.isEmpty){
+      Loading.showToast(S.current.pleaseSelectLocation);
     }else if(comparison < 0){
       Loading.showToast(S.current.theMustLonger);
     }else if(!state.serve.value && serviceController.text.isEmpty){

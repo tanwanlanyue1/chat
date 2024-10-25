@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
+import 'package:guanjia/common/network/api/model/open/google_places_model.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/map/map_page.dart';
 import 'package:guanjia/ui/plaza/widgets/filtrate_bottom_sheet.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -33,6 +36,7 @@ class NearbyHallController extends GetxController {
       tag += "${controller.state.styleList[controller.state.labelList[i]].id},";
     }
     final response = await UserApi.nearbyUserList(
+      location: state.location,
       gender: controller.state.filtrateIndex,
       minAge: controller.state.info?.value.likeAgeMin,
       maxAge: controller.state.info?.value.likeAgeMax,
@@ -59,5 +63,14 @@ class NearbyHallController extends GetxController {
           },
         )
     );
+  }
+
+  ///设置地址
+  void setLocation() async {
+    PlaceModel? data = await MapPage.go(title: S.current.selectLocation);
+    if(data != null){
+      state.location = '${data.geometry?.location?.lng},${data.geometry?.location?.lat}';
+      pagingController.onRefresh();
+    }
   }
 }

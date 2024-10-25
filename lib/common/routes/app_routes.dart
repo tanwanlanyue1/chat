@@ -145,6 +145,9 @@ abstract class AppRoutes {
   /// 选择位置
   static const choosePlacePage = '$auth/ChoosePlacePage';
 
+  /// 大厅-选择位置
+  static const mapPage = '$auth/MapPage';
+
   /// 显示位置消息
   static const displayLocationPage = '$auth/displayLocationPage';
 

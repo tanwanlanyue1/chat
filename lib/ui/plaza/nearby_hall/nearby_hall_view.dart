@@ -219,9 +219,7 @@ class NearbyHallView extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
-                onTap: (){
-                  Get.to(() => MapPage());
-                },
+                onTap: controller.setLocation,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

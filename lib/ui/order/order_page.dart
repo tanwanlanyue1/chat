@@ -43,6 +43,7 @@ class _OrderPageState extends State<OrderPage>
             controller: controller.tabController,
             labelStyle: AppTextStyle.fs14b,
             labelColor: AppColor.primaryBlue,
+            unselectedLabelStyle: AppTextStyle.fs14m,
             unselectedLabelColor: AppColor.grayText,
             indicatorPadding: FEdgeInsets(bottom: 8.rpx),
             indicator: TabUnderlineIndicator(

@@ -55,7 +55,7 @@ class ClientCard extends StatelessWidget {
                             ),
                             child: Text(item!.nickname,style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),maxLines: 1,overflow: TextOverflow.ellipsis,),
                           ),
-                          AppImage.asset("assets/images/mine/safety.png",width: 16.rpx,height: 16.rpx,),
+                          // AppImage.asset("assets/images/mine/safety.png",width: 16.rpx,height: 16.rpx,),
                         ],
                       ),
                       Row(

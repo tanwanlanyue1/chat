@@ -168,14 +168,14 @@ class MessageListPage extends GetView<MessageListController> {
               constraints: BoxConstraints(maxWidth: Get.width - 150.rpx),
               child: Text(conversation?.name ?? '', maxLines: 1),
             ),
-            Padding(
-              padding: FEdgeInsets(left: 4.rpx),
-              child: AppImage.asset(
-                "assets/images/mine/safety.png",
-                width: 16.rpx,
-                height: 16.rpx,
-              ),
-            ),
+            // Padding(
+            //   padding: FEdgeInsets(left: 4.rpx),
+            //   child: AppImage.asset(
+            //     "assets/images/mine/safety.png",
+            //     width: 16.rpx,
+            //     height: 16.rpx,
+            //   ),
+            // ),
           ],
         );
       }),

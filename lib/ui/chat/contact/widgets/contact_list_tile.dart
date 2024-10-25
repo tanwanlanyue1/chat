@@ -56,11 +56,11 @@ class ContactListTile extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        AppImage.asset(
-                          "assets/images/mine/safety.png",
-                          width: 16.rpx,
-                          height: 16.rpx,
-                        ),
+                        // AppImage.asset(
+                        //   "assets/images/mine/safety.png",
+                        //   width: 16.rpx,
+                        //   height: 16.rpx,
+                        // ),
                       ],
                     ),
                     Spacing.h8,
@@ -118,9 +118,7 @@ class ContactListTile extends StatelessWidget {
 
   Widget buildChatButton() {
     return GestureDetector(
-      onTap: () {
-        ChatManager().startChat(userId: userModel.uid);
-      },
+      onTap: toChatPage,
       behavior: HitTestBehavior.translucent,
       child: Container(
         decoration: const ShapeDecoration(
@@ -167,6 +165,10 @@ class ContactListTile extends StatelessWidget {
     Get.toNamed(AppRoutes.userCenterPage, arguments: {
       'userId': userModel.uid,
     });
+  }
+
+  void toChatPage() {
+    ChatManager().startChat(userId: userModel.uid);
   }
 }
 

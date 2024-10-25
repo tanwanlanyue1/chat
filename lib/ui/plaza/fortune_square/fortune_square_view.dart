@@ -86,8 +86,9 @@ class FortuneSquareView extends StatelessWidget {
       ),
       child: TabBar(
         controller: controller.tabController,
-        labelStyle: AppTextStyle.fs14m,
+        labelStyle: AppTextStyle.fs14b,
         labelColor: AppColor.primaryBlue,
+        unselectedLabelStyle: AppTextStyle.fs14m,
         unselectedLabelColor: AppColor.grayText,
         indicatorColor: AppColor.primaryBlue,
         indicatorWeight: 2.rpx,

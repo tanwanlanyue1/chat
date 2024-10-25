@@ -1,15 +1,10 @@
-import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
-import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
-import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
 import 'package:guanjia/ui/order/order_list/order_list_page.dart';
 import 'package:guanjia/ui/order/widgets/order_operation_buttons.dart';
@@ -42,12 +37,16 @@ class _OrderListTileState extends State<OrderListTile> {
 
   OrderListItem get item => widget.item;
 
+  bool get hasContactButton{
+    return item.operationType == OrderOperationType.connect;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
-        height: 166.rpx,
+        // height: 166.rpx,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4.rpx),
           color: Colors.white,
@@ -91,6 +90,7 @@ class _OrderListTileState extends State<OrderListTile> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
+                        if((item.nickWithAgent ?? '').isEmpty) Spacing.h8,
                         Text(
                           item.nick,
                           style: AppTextStyle.st
@@ -114,23 +114,22 @@ class _OrderListTileState extends State<OrderListTile> {
                 ],
               ),
             ),
-            Divider(
+            if(!hasContactButton) Divider(
               indent: 8.rpx,
               endIndent: 8.rpx,
               height: 1,
             ),
-            Expanded(
-              child: Padding(
-                padding: FEdgeInsets(horizontal: 12.rpx),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    buildDate(),
-                    OrderOperationButtons(
-                      type: widget.widget.type, item: widget.item,
-                    ),
-                  ],
-                ),
+            Padding(
+              padding: FEdgeInsets(horizontal: 12.rpx, top: hasContactButton ? 0 : 16.rpx, bottom: 16.rpx),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: hasContactButton ? CrossAxisAlignment.end : CrossAxisAlignment.center,
+                children: [
+                  buildDate(),
+                  OrderOperationButtons(
+                    type: widget.widget.type, item: widget.item,
+                  ),
+                ],
               ),
             )
           ],

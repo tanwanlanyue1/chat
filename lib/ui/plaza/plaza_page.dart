@@ -26,7 +26,7 @@ class _PlazaPageState extends State<PlazaPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SystemUI.dark(
+    return SystemUI.light(
       child: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -76,6 +76,9 @@ class _PlazaPageState extends State<PlazaPage>
             ),
             indicatorPadding: EdgeInsets.only(top: 22.rpx,right: 38.rpx,left: 4.rpx),
             labelPadding: EdgeInsets.only(bottom: 5.rpx),
+            onTap: (val){
+              state.tabIndex.value = val;
+            },
             tabs: List.generate(state.tabBarList.length, (index) {
               return  GestureDetector(
                 onTap: (){

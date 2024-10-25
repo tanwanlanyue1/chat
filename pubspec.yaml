@@ -113,16 +113,16 @@ flutter:
     - assets/images/order/
     - assets/js/
     #   - images/a_dot_ham.jpeg
-  fonts:
-    - family: PingFang-Regular
-      fonts:
-        - asset: assets/fonts/PingFang-Regular.ttf
-    - family: PingFang-Bold
-      fonts:
-        - asset: assets/fonts/PingFang-Bold.ttf
-    - family: PingFang-Medium
-      fonts:
-        - asset: assets/fonts/PingFang-Medium.ttf
+#  fonts:
+#    - family: PingFang-Regular
+#      fonts:
+#        - asset: assets/fonts/PingFang-Regular.ttf
+#    - family: PingFang-Bold
+#      fonts:
+#        - asset: assets/fonts/PingFang-Bold.ttf
+#    - family: PingFang-Medium
+#      fonts:
+#        - asset: assets/fonts/PingFang-Medium.ttf
 
 flutter_intl:
   enabled: true

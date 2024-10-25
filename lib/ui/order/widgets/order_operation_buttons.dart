@@ -12,6 +12,8 @@ import 'package:guanjia/ui/order/order_detail/widget/order_cancel_dialog.dart';
 import 'package:guanjia/ui/order/order_list/order_list_controller.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
+import 'package:guanjia/widgets/edge_insets.dart';
+import 'package:guanjia/widgets/foreground_gradient_mask.dart';
 
 class OrderOperationButtons extends StatelessWidget {
   OrderOperationButtons({
@@ -34,12 +36,13 @@ class OrderOperationButtons extends StatelessWidget {
       case OrderOperationType.accept:
         children.addAll([
           _buildLeft(
-            onTap: () async{
+            onTap: () async {
               final receiveId = item.itemModel.receiveId;
               final requestId = item.itemModel.requestId;
-              final userId = SS.login.info?.uid == receiveId ? requestId : receiveId;
+              final userId =
+                  SS.login.info?.uid == receiveId ? requestId : receiveId;
               final cancel = await OrderCancelDialog.show(userId);
-              if(cancel == true){
+              if (cancel == true) {
                 controller.onTapOrderAcceptOrReject(false, item.id);
               }
             },
@@ -118,7 +121,9 @@ class OrderOperationButtons extends StatelessWidget {
     String? text,
   }) {
     return GestureDetector(
-      onTap: onTap ?? () => controller.onTapOrderCancel(item.id,item.itemModel.receiveId,item.itemModel.requestId),
+      onTap: onTap ??
+          () => controller.onTapOrderCancel(
+              item.id, item.itemModel.receiveId, item.itemModel.requestId),
       child: Container(
         width: 60.rpx,
         height: 26.rpx,
@@ -153,24 +158,28 @@ class OrderOperationButtons extends StatelessWidget {
     return GestureDetector(
       onTap: () => controller.toOrderConnect(item.itemModel.receiveId),
       behavior: HitTestBehavior.opaque,
-      child: SizedBox(
-        width: 48.rpx,
-        height: 40.rpx,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            AppImage.asset(
-              "assets/images/common/contact.png",
-              size: 20.rpx,
+      child: Column(
+        children: [
+          AppImage.asset(
+            "assets/images/common/contact.png",
+            size: 24.rpx,
+          ),
+          Padding(
+            padding: FEdgeInsets(top: 4.rpx),
+            child: ForegroundGradientMask(
+              gradient: LinearGradient(
+                colors: AppColor.horizontalGradient.colors,
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              child: Text(
+                S.current.contactToBeauty,
+                style:
+                    AppTextStyle.st.bold.size(12.rpx).textColor(Colors.white).textHeight(1),
+              ),
             ),
-            Text(
-              S.current.contactToBeauty,
-              style: AppTextStyle.st.medium
-                  .size(12.rpx)
-                  .textColor(AppColor.textPurple),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

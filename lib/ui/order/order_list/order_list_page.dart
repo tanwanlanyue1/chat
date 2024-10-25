@@ -99,18 +99,21 @@ class _OrderListPageState extends State<OrderListPage>
               child: OrderOperationNumberWidget(
                 number: state.waitTimeCount.value,
                 title: S.current.waitTimeout,
+                icon: 'assets/images/order/ic_order_timeout.png',
               ),
             ),
             Expanded(
               child: OrderOperationNumberWidget(
                 number: state.otherCancelCount.value,
                 title: S.current.counterpartyCancel,
+                icon: 'assets/images/order/ic_order_cancel_other.png',
               ),
             ),
             Expanded(
               child: OrderOperationNumberWidget(
                 number: state.selfCancelCount.value,
                 title: S.current.activeCancellation,
+                icon: 'assets/images/order/ic_order_cancel.png',
               ),
             ),
           ],
@@ -119,26 +122,21 @@ class _OrderListPageState extends State<OrderListPage>
     } else if (widget.type == OrderListType.finish && userType.isBeauty) {
       content = Obx(() {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const Expanded(flex: 1, child: SizedBox()),
             Expanded(
-              flex: 2,
               child: OrderOperationNumberWidget(
                 number: state.evaluateCount.value,
                 title: S.current.remainBeEvaluated,
-                numberColor: AppColor.textGreen,
+                icon: 'assets/images/order/ic_order_wait_comment.png',
               ),
             ),
             Expanded(
-              flex: 2,
               child: OrderOperationNumberWidget(
                 number: state.completeCount.value,
                 title: S.current.completed,
-                numberColor: AppColor.textGreen,
+                icon: 'assets/images/order/ic_order_completed.png',
               ),
             ),
-            const Expanded(flex: 1, child: SizedBox()),
           ],
         );
       });
@@ -153,13 +151,14 @@ class _OrderListPageState extends State<OrderListPage>
       floating: false,
       expandedHeight: 64.rpx,
       toolbarHeight: 64.rpx,
+      backgroundColor: AppColor.scaffoldBackground,
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
         expandedTitleScale: 1.0,
         titlePadding: EdgeInsets.zero,
         title: Container(
-          margin: EdgeInsets.only(top: 1.rpx),
           // height: 64.rpx,
+          margin: const EdgeInsets.only(top: 1),
           color: Colors.white,
           child: content,
         ),

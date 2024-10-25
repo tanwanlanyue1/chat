@@ -230,12 +230,12 @@ class PFTextStyle extends TextStyle {
     return null;
   }
 
-  PFTextStyle({
-    super.inherit = true,
+  const PFTextStyle({
+    super.inherit,
     super.color,
     super.backgroundColor,
     super.fontSize,
-    FontWeight? fontWeight,
+    super.fontWeight,
     super.fontStyle,
     super.letterSpacing,
     super.wordSpacing,
@@ -255,7 +255,10 @@ class PFTextStyle extends TextStyle {
     super.debugLabel,
     super.package,
     super.overflow,
-  }): super(fontFamily: _getFontFamily(fontWeight));
+    super.fontFamilyFallback,
+    super.fontFamily,
+  });
+  //: super(fontFamily: _getFontFamily(fontWeight))
 
   factory PFTextStyle.regular() {
     return PFTextStyle(
@@ -274,63 +277,63 @@ class PFTextStyle extends TextStyle {
       fontWeight: FontWeight.bold,
     );
   }
-
-  @override
-  TextStyle copyWith({
-    bool? inherit,
-    Color? color,
-    Color? backgroundColor,
-    double? fontSize,
-    FontWeight? fontWeight,
-    FontStyle? fontStyle,
-    double? letterSpacing,
-    double? wordSpacing,
-    TextBaseline? textBaseline,
-    double? height,
-    TextLeadingDistribution? leadingDistribution,
-    Locale? locale,
-    Paint? foreground,
-    Paint? background,
-    List<Shadow>? shadows,
-    List<FontFeature>? fontFeatures,
-    List<FontVariation>? fontVariations,
-    TextDecoration? decoration,
-    Color? decorationColor,
-    TextDecorationStyle? decorationStyle,
-    double? decorationThickness,
-    String? debugLabel,
-    String? fontFamily,
-    List<String>? fontFamilyFallback,
-    String? package,
-    TextOverflow? overflow,
-  }) {
-    return super.copyWith(
-      inherit: inherit,
-      color: color,
-      backgroundColor: backgroundColor,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      fontStyle: fontStyle,
-      letterSpacing: letterSpacing,
-      wordSpacing: wordSpacing,
-      textBaseline: textBaseline,
-      height: height,
-      leadingDistribution: leadingDistribution,
-      locale: locale,
-      foreground: foreground,
-      background: background,
-      shadows: shadows,
-      fontFeatures: fontFeatures,
-      fontVariations: fontVariations,
-      decoration: decoration,
-      decorationColor: decorationColor,
-      decorationStyle: decorationStyle,
-      decorationThickness: decorationThickness,
-      debugLabel: debugLabel,
-      fontFamily: _getFontFamily(fontWeight),
-      fontFamilyFallback: fontFamilyFallback,
-      package: package,
-      overflow: overflow,
-    );
-  }
+  //
+  // @override
+  // TextStyle copyWith({
+  //   bool? inherit,
+  //   Color? color,
+  //   Color? backgroundColor,
+  //   double? fontSize,
+  //   FontWeight? fontWeight,
+  //   FontStyle? fontStyle,
+  //   double? letterSpacing,
+  //   double? wordSpacing,
+  //   TextBaseline? textBaseline,
+  //   double? height,
+  //   TextLeadingDistribution? leadingDistribution,
+  //   Locale? locale,
+  //   Paint? foreground,
+  //   Paint? background,
+  //   List<Shadow>? shadows,
+  //   List<FontFeature>? fontFeatures,
+  //   List<FontVariation>? fontVariations,
+  //   TextDecoration? decoration,
+  //   Color? decorationColor,
+  //   TextDecorationStyle? decorationStyle,
+  //   double? decorationThickness,
+  //   String? debugLabel,
+  //   String? fontFamily,
+  //   List<String>? fontFamilyFallback,
+  //   String? package,
+  //   TextOverflow? overflow,
+  // }) {
+  //   return super.copyWith(
+  //     inherit: inherit,
+  //     color: color,
+  //     backgroundColor: backgroundColor,
+  //     fontSize: fontSize,
+  //     fontWeight: fontWeight,
+  //     fontStyle: fontStyle,
+  //     letterSpacing: letterSpacing,
+  //     wordSpacing: wordSpacing,
+  //     textBaseline: textBaseline,
+  //     height: height,
+  //     leadingDistribution: leadingDistribution,
+  //     locale: locale,
+  //     foreground: foreground,
+  //     background: background,
+  //     shadows: shadows,
+  //     fontFeatures: fontFeatures,
+  //     fontVariations: fontVariations,
+  //     decoration: decoration,
+  //     decorationColor: decorationColor,
+  //     decorationStyle: decorationStyle,
+  //     decorationThickness: decorationThickness,
+  //     debugLabel: debugLabel,
+  //     fontFamily: _getFontFamily(fontWeight),
+  //     fontFamilyFallback: fontFamilyFallback,
+  //     package: package,
+  //     overflow: overflow,
+  //   );
+  // }
 }

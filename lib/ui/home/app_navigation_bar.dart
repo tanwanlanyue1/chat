@@ -241,7 +241,7 @@ class _Tile extends StatelessWidget {
                 isMask: selected,
                 child: Text(
                   item.title,
-                  style: AppTextStyle.fs12m.copyWith(
+                  style: AppTextStyle.fs11m.copyWith(
                     height: 1.0,
                     color: animation == null
                         ? Colors.transparent

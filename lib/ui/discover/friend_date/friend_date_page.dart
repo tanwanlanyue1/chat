@@ -30,28 +30,26 @@ class FriendDatePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(16.rpx).copyWith(left: 0),
-      child: SmartRefresher(
-        controller: controller.pagingController.refreshController,
-        onRefresh: controller.pagingController.onRefresh,
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-                child: dateType()
-            ),
-            SliverToBoxAdapter(
-                child: classifyTab()
-            ),
-            PagedSliverList(
-              pagingController: controller.pagingController,
-              builderDelegate: DefaultPagedChildBuilderDelegate<AppointmentModel>(
+      child: Column(
+        children: [
+          dateType(),
+          classifyTab(),
+          Expanded(
+            child: SmartRefresher(
+              controller: controller.pagingController.refreshController,
+              onRefresh: controller.pagingController.onRefresh,
+              child:  PagedListView(
                 pagingController: controller.pagingController,
-                itemBuilder: (_, item, index) {
-                  return dateCard(item,index);
-                },
+                builderDelegate: DefaultPagedChildBuilderDelegate<AppointmentModel>(
+                  pagingController: controller.pagingController,
+                  itemBuilder: (_, item, index) {
+                    return dateCard(item,index);
+                  },
+                ),
               ),
             ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
@@ -59,9 +57,9 @@ class FriendDatePage extends StatelessWidget {
   //约会类型
   Widget dateType(){
     return Container(
-      height: 40.rpx,
-      margin: EdgeInsets.only(top: Get.mediaQuery.padding.top+24.rpx),
+      margin: EdgeInsets.only(top: Get.mediaQuery.padding.top+24.rpx,left: 16.rpx),
       alignment: Alignment.centerLeft,
+      height: 30.rpx,
       child: Obx(() => TabBar(
         isScrollable: true,
         controller: controller.tabController,
@@ -73,9 +71,10 @@ class FriendDatePage extends StatelessWidget {
           state.typeIndex.value = val;
           controller.pagingController.onRefresh();
         },
+        labelPadding: EdgeInsets.only(right: 12.rpx),
         tabs: [
           ... List<Widget>.generate(state.typeList.length, (i) {
-            return  Tab(text: state.typeList[i]['title'], height: 40.rpx);
+            return Tab(text: state.typeList[i]['title']);
           })
         ],
       )),
@@ -188,6 +187,9 @@ class FriendDatePage extends StatelessWidget {
                   ),
                   Container(
                     padding: FEdgeInsets(right: 8.rpx,),
+                    constraints: BoxConstraints(
+                      maxWidth: (item.userInfo?.gender.index != 0 && item.userInfo?.age != null) ? 200.rpx:240.rpx
+                    ),
                     child: Text((item.userInfo?.nickname ?? ''),style: AppTextStyle.fs14b.copyWith(color: AppColor.black20, height: 1),maxLines: 1,overflow: TextOverflow.ellipsis,),
                   ),
                   Row(
@@ -198,15 +200,23 @@ class FriendDatePage extends StatelessWidget {
                           replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
                           child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
                         ),
-                      SizedBox(width: 8.rpx),
-                      Text('${item.userInfo?.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.black6),),
-                      Container(
-                        width: 4.rpx,
-                        height: 4.rpx,
-                        margin: EdgeInsets.symmetric(horizontal: 8.rpx),
-                        decoration: const BoxDecoration(
-                          color: AppColor.grayText,
-                          shape: BoxShape.circle,
+                      Visibility(
+                        visible: item.userInfo?.age != null,
+                        child: Container(
+                          margin: EdgeInsets.only(left: 8.rpx),
+                          child: Text('${item.userInfo?.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.black6),),
+                        ),
+                      ),
+                      Visibility(
+                        visible: item.userInfo?.age != null,
+                        child: Container(
+                          width: 4.rpx,
+                          height: 4.rpx,
+                          margin: EdgeInsets.symmetric(horizontal: 8.rpx),
+                          decoration: const BoxDecoration(
+                            color: AppColor.grayText,
+                            shape: BoxShape.circle,
+                          ),
                         ),
                       ),
                       Text(S.current.personage,style: AppTextStyle.fs12m.copyWith(color: AppColor.black6),),

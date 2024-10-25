@@ -5,6 +5,7 @@ import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/discover/friend_date/widget/draft_dialog.dart';
@@ -121,7 +122,10 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin,GetSi
   }
 
   //点击参与
-  onTapParticipation(AppointmentModel item){
+  void onTapParticipation(AppointmentModel item){
+    if(SS.login.userId == item.uid){
+      return;
+    }
     if(state.userInfo?.type.index != 2){
       DraftDialog.show(item: item);
     }else{

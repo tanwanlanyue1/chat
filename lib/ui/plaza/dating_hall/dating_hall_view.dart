@@ -318,7 +318,7 @@ class DatingHallView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    item.images != null
+                    item.images != null && jsonDecode(item.images).length != 0
                         ? Container(
                             margin: EdgeInsets.only(top: 12.rpx,left: 48.rpx),
                             child: Row(

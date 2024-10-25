@@ -187,29 +187,20 @@ class PlazaApi{
   }
 
   /// 获取指定位置附近的帖子发布用户列表
-  static Future<ApiResponse> getNearbyPostUserList({
+  static Future<ApiResponse<List<NearbyPostUserModel>>> getNearbyPostUserList({
     String? location,
-    int? distance,
-    int? gender,
-    int? minAge,
-    int? maxAge,
-    String? style,
-    int page = 1,
-    int size = 10,
   }) {
     return HttpClient.get(
       '/api/community/getNearbyPostUserList',
       params: {
         "location": location,
-        "distance": distance,
-        "gender": gender,
-        "minAge": minAge,
-        "maxAge": maxAge,
-        "style": style,
-        "page": page,
-        "size": size,
       },
-      dataConverter: (data) => data,
+      dataConverter: (data) {
+        if (data is List) {
+          return data.map((e) => NearbyPostUserModel.fromJson(e)).toList();
+        }
+        return [];
+      },
     );
   }
 }

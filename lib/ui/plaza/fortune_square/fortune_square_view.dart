@@ -167,6 +167,7 @@ class FortuneSquareView extends StatelessWidget {
           children: [
             Expanded(
               child: InkWell(
+                onTap: controller.setLocation,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

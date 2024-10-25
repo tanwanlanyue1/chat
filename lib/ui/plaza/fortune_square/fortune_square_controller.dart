@@ -6,6 +6,7 @@ import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/common/network/api/model/open/google_places_model.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -13,6 +14,7 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/common/utils/show_dialog.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
+import 'package:guanjia/ui/map/map_page.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:guanjia/ui/plaza/widgets/filtrate_bottom_sheet.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
@@ -102,6 +104,7 @@ class FortuneSquareController extends GetxController
       tag += "${controller.state.styleList[controller.state.labelList[i]].id},";
     }
     final response = await PlazaApi.getCommunityList(
+      location: state.location,
       gender: controller.state.filtrateIndex,
       minAge: controller.state.info?.value.likeAgeMin,
       maxAge: controller.state.info?.value.likeAgeMax,
@@ -218,5 +221,14 @@ class FortuneSquareController extends GetxController
           },
         )
     );
+  }
+
+  ///设置地址
+  void setLocation() async {
+    PlaceModel? data = await MapPage.go(title: S.current.selectLocation);
+    if(data != null){
+      state.location = '${data.geometry?.location?.lng},${data.geometry?.location?.lat}';
+      pagingController.onRefresh();
+    }
   }
 }

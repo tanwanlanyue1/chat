@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/chat_page.dart';
 import 'package:guanjia/ui/discover/discover_page.dart';
 import 'package:guanjia/ui/mine/mine_page.dart';
 import 'package:guanjia/ui/order/order_page.dart';
 import 'package:guanjia/ui/plaza/plaza_page.dart';
+import 'package:guanjia/widgets/unread_badge.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 import 'app_navigation_bar.dart';
@@ -40,16 +42,15 @@ class HomePage extends StatelessWidget {
     return Obx(() {
       final currentPage = state.currentPageRx();
       final chatUnread = state.messageUnreadRx();
-      final chatUnreadText = chatUnread > 100 ? '+99' : chatUnread.toString();
       return AppNavigationBar(
         onTap: controller.setCurrentPage,
         currentIndex: currentPage,
         items: state.allBottomNavItems,
         iconBuilder: (item, child){
-          return Badge(
-            label: Text(chatUnreadText),
-            backgroundColor: AppColor.red6,
-            isLabelVisible: item == state.allBottomNavItems.first  && chatUnread > 0,
+          return TabUnreadBadge(
+            unread: chatUnread,
+            offset: Offset(18.rpx, -2.rpx),
+            isUnreadVisible: item == state.allBottomNavItems.first  && chatUnread > 0,
             child: child,
           );
         },

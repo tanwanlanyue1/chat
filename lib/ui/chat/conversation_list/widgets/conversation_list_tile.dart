@@ -130,7 +130,7 @@ class _ConversationListTileState extends State<ConversationListTile>
           child: Text(
             name,
             maxLines: 1,
-            style: AppTextStyle.fs16b.copyWith(
+            style: AppTextStyle.fs16m.copyWith(
               color: AppColor.blackBlue,
               height: 1.0,
             ),
@@ -141,7 +141,7 @@ class _ConversationListTileState extends State<ConversationListTile>
             padding: FEdgeInsets(left: 8.rpx),
             child: Text(
               time.friendlyTime,
-              style: AppTextStyle.fs12m.copyWith(
+              style: AppTextStyle.fs12r.copyWith(
                 color: AppColor.grayText,
                 height: 1.1,
               ),
@@ -175,7 +175,7 @@ class _ConversationListTileState extends State<ConversationListTile>
         text,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: AppTextStyle.fs14m.copyWith(
+        style: AppTextStyle.fs14r.copyWith(
           color: textColor,
           height: 1.05,
         ),
@@ -227,8 +227,6 @@ class _ConversationListTileState extends State<ConversationListTile>
       return null;
     }
 
-    print('${conversation.name}====>${order.introducerId}');
-
     //已指派订单不显示倒计时
     if(order.introducerId.toString() == conversation.id){
       return null;
@@ -252,7 +250,7 @@ class _ConversationListTileState extends State<ConversationListTile>
         children: [
           Text(
             '[${uiState.button}]',
-            style: AppTextStyle.fs14b.copyWith(
+            style: AppTextStyle.fs14m.copyWith(
               color: AppColor.blackBlue,
               height: 1.0,
             ),
@@ -283,7 +281,7 @@ class _ConversationListTileState extends State<ConversationListTile>
 
     children.add(Text(
       uiState.desc,
-      style: AppTextStyle.fs14m.copyWith(
+      style: AppTextStyle.fs14r.copyWith(
         color: AppColor.blackBlue,
         height: 1.0,
       ),

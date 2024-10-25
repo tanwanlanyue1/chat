@@ -35,8 +35,6 @@ class DecimalTextInputFormatter extends TextInputFormatter {
       }
     }
 
-    print('==>${ignores}  $text');
-
     if(ignores.contains(text)){
       return TextEditingValue(text: text);
     }
@@ -63,8 +61,10 @@ class DecimalTextInputFormatter extends TextInputFormatter {
     }
 
 
-    if(maxValue != null && value > maxValue! && maxValueHint != null){
-      Loading.showToast(maxValueHint ?? '');
+    if(maxValue != null && value > maxValue!){
+      if(maxValueHint?.isNotEmpty == true){
+        Loading.showToast(maxValueHint ?? '');
+      }
       return oldValue;
     }
 

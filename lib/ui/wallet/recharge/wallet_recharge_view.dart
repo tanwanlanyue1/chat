@@ -76,6 +76,8 @@ class _WalletRechargeViewState extends State<WalletRechargeView>
               inputFormatters: [
                 DecimalTextInputFormatter(
                   decimalDigits: SS.appConfig.decimalDigits,
+                  maxValue: 9999999,
+                  maxValueHint: '金额超过最大值'
                 )
               ],
               textAlignVertical: TextAlignVertical.center,

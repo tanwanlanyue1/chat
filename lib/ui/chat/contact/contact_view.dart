@@ -119,7 +119,7 @@ class _ContactViewState extends State<ContactView>
                   child: Text(
                     maxLines: 2,
                     userInfo?.nickname ?? '',
-                    style: AppTextStyle.fs16b.copyWith(
+                    style: AppTextStyle.fs16m.copyWith(
                       color: AppColor.blackBlue,
                       height: 1.0,
                     ),
@@ -130,7 +130,7 @@ class _ContactViewState extends State<ContactView>
                     padding: FEdgeInsets(top: 8.rpx),
                     child: Text(
                       userInfo?.position ?? '',
-                      style: AppTextStyle.fs12m.copyWith(
+                      style: AppTextStyle.fs12r.copyWith(
                         color: AppColor.grayText,
                         height: 1.0,
                       ),
@@ -147,7 +147,7 @@ class _ContactViewState extends State<ContactView>
                         children: [
                           Text(
                             'ID:${userInfo?.chatNo}',
-                            style: AppTextStyle.fs12m.copyWith(
+                            style: AppTextStyle.fs12r.copyWith(
                               color: AppColor.grayText,
                               height: 1.0,
                             ),
@@ -192,7 +192,7 @@ class _ContactViewState extends State<ContactView>
                   FilteringTextInputFormatter.allow(RegExp('[0-9]')),
                   LengthLimitingTextInputFormatter(16),
                 ],
-                style: AppTextStyle.fs14b.copyWith(
+                style: AppTextStyle.fs14m.copyWith(
                   color: AppColor.blackBlue,
                 ),
                 decoration: InputDecoration(
@@ -203,7 +203,7 @@ class _ContactViewState extends State<ContactView>
                     borderRadius: BorderRadius.circular(20.rpx),
                     gapPadding: 0,
                   ),
-                  hintStyle: AppTextStyle.fs14b.copyWith(
+                  hintStyle: AppTextStyle.fs14r.copyWith(
                     color: AppColor.grayText,
                   ),
                   hintText: S.current.contactSearchHint,

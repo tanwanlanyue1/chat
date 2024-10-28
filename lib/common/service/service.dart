@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/service/location_service.dart';
+import 'ad_service.dart';
 import 'app_config_service.dart';
 import 'inapp_message_service.dart';
 import 'login_service.dart';
@@ -12,6 +13,7 @@ class SS {
     Get.put(AppConfigService());
     Get.put(InAppMessageService());
     Get.put(LocationService());
+    Get.put(ADService());
   }
 
   static LoginService get login => Get.find<LoginService>();
@@ -24,5 +26,8 @@ class SS {
 
   ///位置服务
   static LocationService get location => Get.find<LocationService>();
+
+  ///广告服务
+  static ADService get ad => Get.find<ADService>();
 
 }

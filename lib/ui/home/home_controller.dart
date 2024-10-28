@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
+import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/notification/notification_manager.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';

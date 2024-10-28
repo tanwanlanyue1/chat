@@ -13,6 +13,7 @@ import 'package:zego_uikit/src/components/audio_video/defines.dart';
 import 'package:zego_uikit/src/components/defines.dart';
 import 'package:zego_uikit/src/components/internal/internal.dart';
 import 'package:zego_uikit/src/components/screen_util/screen_util.dart';
+import 'package:zego_uikit/src/plugins/signaling/impl/core/core.dart';
 import 'package:zego_uikit/src/services/services.dart';
 
 /// display user audio and video information,
@@ -260,6 +261,11 @@ class _ZegoAudioVideoViewState extends State<ZegoAudioVideoView> {
 
   //add nickname by jelly
   Widget nickname(double maxWidth, double maxHeight) {
+    final currentUserID = ZegoSignalingPluginCore.shared.coreData.currentUserID;
+    if(widget.user?.id == currentUserID){
+      return const SizedBox.shrink();
+    }
+
     final screenSize = MediaQuery.of(context).size;
     final isSmallView = maxHeight < screenSize.height / 2;
     final avatarSize =
@@ -282,7 +288,7 @@ class _ZegoAudioVideoViewState extends State<ZegoAudioVideoView> {
         widget.user?.name ?? '',
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: 18,
+          fontSize: 20,
           color: Colors.white,
           fontWeight: FontWeight.w500,
           height: 1.0,
@@ -296,7 +302,7 @@ class _ZegoAudioVideoViewState extends State<ZegoAudioVideoView> {
     switch (
         widget.avatarConfig?.verticalAlignment ?? ZegoAvatarAlignment.center) {
       case ZegoAvatarAlignment.center:
-        return (maxHeight - avatarHeight) / 2;
+        return (maxHeight - avatarHeight) / 2 - 36;
       case ZegoAvatarAlignment.start:
         return 15.zR; //  sound level height
       case ZegoAvatarAlignment.end:

@@ -1,13 +1,16 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/string_extension.dart';
+import 'package:guanjia/common/network/api/open_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/app_link.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
@@ -41,7 +44,7 @@ class _MinePageState extends State<MinePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final padding = FEdgeInsets(top: 178.rpx + Get.mediaQuery.padding.top);
+    final padding = FEdgeInsets(top: 182.rpx + Get.mediaQuery.padding.top);
     return SystemUI.light(
       child: Column(
         children: [
@@ -232,14 +235,45 @@ class _MinePageState extends State<MinePage>
 
   ///广告
   Widget buildBanner() {
-    return Padding(
-      padding: FEdgeInsets(top: 8.rpx, bottom: 8.rpx),
-      child: AppImage.asset(
-        width: double.infinity,
-        fit: BoxFit.fitWidth,
-        'assets/images/mine/banner.png',
-      ),
-    );
+    return Obx((){
+      final list = SS.ad.bannerMapRx()[1] ?? [];
+      if(list.isEmpty){
+        return Spacing.blank;
+      }
+      return Padding(
+        padding: FEdgeInsets(top: 8.rpx, bottom: 8.rpx),
+        child: AspectRatio(
+          aspectRatio: 1029/240,
+          child: Swiper(
+            autoplay: list.length > 1,
+            loop: list.length > 1,
+            duration: 500,
+            autoplayDelay: 5000,
+            physics: list.length > 1 ? null : const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              final item = list.tryGet(index);
+              return AppImage.network(
+                item?.image ?? '',
+                align: Alignment.topCenter,
+                borderRadius: BorderRadius.circular(8.rpx),
+              );
+            },
+            itemCount: list.length,
+            onTap: (index){
+              final item = list.tryGet(index);
+              final url = item?.gotoUrl;
+              if(item != null && url != null){
+                AppLink.jump(
+                  url,
+                  title: item.title,
+                  args: item.gotoParam?.toJson(),
+                );
+              }
+            },
+          ),
+        ),
+      );
+    });
   }
 
   ///阴影框
@@ -292,16 +326,13 @@ class _MinePageState extends State<MinePage>
     return Obx(() {
       final userType = userTypeRx;
       return buildSection(
-        margin: FEdgeInsets(top: 8.rpx),
+        margin: FEdgeInsets(top: 4.rpx),
         children: [
           //个人信息
           MineListTile(
             title: S.current.personalInformation,
             icon: "assets/images/mine/personal_info.png",
             pagePath: AppRoutes.accountDataPage,
-            // onTap: (){
-            //   Get.to(() => MapPage());
-            // },
           ),
           //我的钱包
           MineListTile(

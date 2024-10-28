@@ -25,7 +25,7 @@ class UnreadBadge extends StatelessWidget {
       ),
       child: Text(
         unread.toUnreadBadge(),
-        style: AppTextStyle.fs10r.copyWith(
+        style: AppTextStyle.fs10.copyWith(
           color: Colors.white,
           height: 1.0,
         ),

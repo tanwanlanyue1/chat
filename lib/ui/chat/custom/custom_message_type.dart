@@ -26,7 +26,10 @@ enum CustomMessageType {
   callReject(7),
 
   ///位置消息 8
-  location(8);
+  location(8),
+
+  ///征友约会 9
+  dating(9);
 
   final int value;
 

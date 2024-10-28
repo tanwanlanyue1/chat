@@ -18,6 +18,7 @@ import 'package:zego_zimkit/src/services/services.dart';
 import 'chat_call_invite_message.dart';
 import 'chat_call_match_message.dart';
 import 'chat_call_reject_message.dart';
+import 'chat_dating_message.dart';
 import 'chat_image_message.dart';
 import 'chat_location_message.dart';
 import 'chat_order_message.dart';
@@ -140,6 +141,13 @@ class ChatMessageWidget extends StatelessWidget {
             break;
           case CustomMessageType.location:
             defaultMessageContent = ChatLocationMessage(
+              onLongPress: onLongPress,
+              onPressed: onPressed,
+              message: message,
+            );
+            break;
+          case CustomMessageType.dating:
+            defaultMessageContent = ChatDatingMessage(
               onLongPress: onLongPress,
               onPressed: onPressed,
               message: message,

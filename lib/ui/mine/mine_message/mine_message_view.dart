@@ -36,7 +36,7 @@ class _MineMessageViewState extends State<MineMessageView> with AutomaticKeepAli
           controller: controller.pagingController.refreshController,
           onRefresh: controller.pagingController.onRefresh,
           child: PagedListView.separated(
-            padding: FEdgeInsets(horizontal: 16.rpx, vertical: 8.rpx),
+            padding: FEdgeInsets(horizontal: 16.rpx, vertical: 6.rpx),
             pagingController: controller.pagingController,
             builderDelegate: DefaultPagedChildBuilderDelegate<MessageModel>(
               pagingController: controller.pagingController,

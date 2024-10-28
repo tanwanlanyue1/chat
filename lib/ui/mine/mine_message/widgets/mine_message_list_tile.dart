@@ -20,7 +20,7 @@ class MineMessageListTile extends StatelessWidget {
       onTap: onTap,
       child: Container(
         color: Colors.white,
-        padding: FEdgeInsets(vertical: 16.rpx, horizontal: 12.rpx),
+        padding: FEdgeInsets(vertical: 12.rpx, horizontal: 12.rpx),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -47,11 +47,11 @@ class MineMessageListTile extends StatelessWidget {
                 ),
                 Text(
                   item.systemMessage?.createTime?.dateTime.format2 ?? '',
-                  style: AppTextStyle.fs12.copyWith(color: AppColor.gray9),
+                  style: AppTextStyle.fs10.copyWith(color: AppColor.gray9),
                 ),
               ],
             ),
-            Divider(height: 32.rpx),
+            SizedBox(height: 8.rpx,),
             if (item.systemMessage?.image?.isNotEmpty == true)
               Padding(
                 padding: FEdgeInsets(bottom: 12.rpx),
@@ -78,7 +78,7 @@ class MineMessageListTile extends StatelessWidget {
     if (highlightText.isEmpty || index == -1) {
       return Text(
         item.systemMessage?.content ?? '',
-        style: AppTextStyle.fs14.copyWith(
+        style: AppTextStyle.fs12.copyWith(
           color: AppColor.blackText,
           height: 1.5,
         ),
@@ -92,7 +92,7 @@ class MineMessageListTile extends StatelessWidget {
     ];
 
     return Text.rich(TextSpan(
-        style: AppTextStyle.fs14.copyWith(
+        style: AppTextStyle.fs12.copyWith(
           color: AppColor.blackText,
           height: 1.5,
         ),
@@ -100,8 +100,11 @@ class MineMessageListTile extends StatelessWidget {
           if (items[0].isNotEmpty) TextSpan(text: items[0]),
           if (items[1].isNotEmpty)
             TextSpan(
-              text: items[1],
-              style: const TextStyle(color: AppColor.primaryBlue),
+              text: "\n${items[1]}",
+              style: AppTextStyle.fs14.copyWith(
+                color: AppColor.primaryBlue,
+                height: 1.5,
+              ),
             ),
           if (items[2].isNotEmpty) TextSpan(text: items[2]),
         ]));

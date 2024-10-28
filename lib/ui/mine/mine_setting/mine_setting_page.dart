@@ -93,7 +93,7 @@ class MineSettingPage extends StatelessWidget {
                           child: Text(
                             S.current.pleaseBindPhone,
                             style:
-                            AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
+                            AppTextStyle.fs12.copyWith(color: AppColor.gray9),
                           ),
                         ),
                       ),
@@ -107,8 +107,8 @@ class MineSettingPage extends StatelessWidget {
                             visible: !SS.login.userBind,
                             child: Text(
                               S.current.pleaseBindPhone,
-                              style: AppTextStyle.fs14m
-                                  .copyWith(color: AppColor.gray5),
+                              style: AppTextStyle.fs12
+                                  .copyWith(color: AppColor.gray9),
                             ),
                           ),
                         ),
@@ -132,7 +132,7 @@ class MineSettingPage extends StatelessWidget {
                       bottom: 0,
                       trailing: Text(
                         controller.cacheSize.value,
-                        style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
+                        style: AppTextStyle.fs12.copyWith(color: AppColor.gray9),
                       ),
                       borderRadius: BorderRadius.zero,
                       callBack: () => controller.onTapClearCache(),
@@ -142,7 +142,7 @@ class MineSettingPage extends StatelessWidget {
                       bottom: 0,
                       trailing: Text(
                         controller.version.value,
-                        style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
+                        style: AppTextStyle.fs12.copyWith(color: AppColor.gray9),
                       ),
                       callBack: () {
                         AppUpdateManager.instance
@@ -166,8 +166,8 @@ class MineSettingPage extends StatelessWidget {
                             visible: !SS.login.userBind,
                             child: Text(
                               S.current.pleaseBindPhone,
-                              style: AppTextStyle.fs14m
-                                  .copyWith(color: AppColor.gray5),
+                              style: AppTextStyle.fs12
+                                  .copyWith(color: AppColor.gray9),
                             ),
                           ),
                           callBack: controller.removeAccount,

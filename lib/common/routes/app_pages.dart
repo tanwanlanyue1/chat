@@ -47,18 +47,17 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.userCenterPage,
-      page: () => UserCenterPage(),
-      binding: BindingsBuilder.put(() => UserCenterController(
-            userId: Get.tryGetArgs('userId'),
-          )),
+      page: () => UserCenterPage(
+        userId: Get.tryGetArgs('userId'),
+      ),
     ),
     GetPage(
       name: AppRoutes.allCommentsPage,
-      page: () => AllCommentsPage(),
-      binding: BindingsBuilder.put(() => AllCommentsController(
-            postId: Get.tryGetArgs('postId'),
-            userId: Get.tryGetArgs('userId'),
-          )),
+      page: () => AllCommentsPage(
+        postId: Get.tryGetArgs('postId'),
+        userId: Get.tryGetArgs('userId'),
+      ),
+      preventDuplicates: false,
     ),
     GetPage(
       name: AppRoutes.webPage,

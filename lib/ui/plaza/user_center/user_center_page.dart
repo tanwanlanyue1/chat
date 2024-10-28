@@ -25,367 +25,367 @@ import 'widget/swiper_pagination.dart';
 
 ///广场-用户中心
 class UserCenterPage extends StatelessWidget {
-  UserCenterPage({Key? key}) : super(key: key);
-
-  final controller = Get.find<UserCenterController>();
-  final state = Get.find<UserCenterController>().state;
+  int? userId;
+  UserCenterPage({super.key,this.userId});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SmartRefresher(
-        controller: controller.pagingController.refreshController,
-        onRefresh: controller.pagingController.onRefresh,
-        child: Stack(
-          children: [
-            CustomScrollView(
-              controller: controller.scrollController,
-              slivers: <Widget>[
-                Obx(() => SliverAppBar(
-                  pinned: true,
-                  leadingWidth: 0,
-                  systemOverlayStyle: SystemUI.lightStyle,
-                  leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
-                  expandedHeight: 220.rpx,
-                  flexibleSpace: Stack(
-                    children: [
-                      FlexibleSpaceBar(
-                        titlePadding: EdgeInsets.zero,
-                        expandedTitleScale: 1.0,
-                        collapseMode: CollapseMode.parallax,
-                        background: backImage(),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Transform.translate(
-                          offset: const Offset(0,1),
-                          child: Container(
-                            height: 16.rpx,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(24.rpx),
-                                topRight: Radius.circular(24.rpx),
+    return GetBuilder<UserCenterController>(
+      init: UserCenterController(
+        userId: userId
+      ),
+      global: false,
+      builder: (controller){
+        final state = controller.state;
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: SmartRefresher(
+            controller: controller.pagingController.refreshController,
+            onRefresh: controller.pagingController.onRefresh,
+            child: Stack(
+              children: [
+                CustomScrollView(
+                  controller: controller.scrollController,
+                  slivers: <Widget>[
+                    Obx(() => SliverAppBar(
+                      pinned: true,
+                      leadingWidth: 0,
+                      systemOverlayStyle: SystemUI.lightStyle,
+                      leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
+                      expandedHeight: 220.rpx,
+                      flexibleSpace: Stack(
+                        children: [
+                          FlexibleSpaceBar(
+                            titlePadding: EdgeInsets.zero,
+                            expandedTitleScale: 1.0,
+                            collapseMode: CollapseMode.parallax,
+                            background: backImage(controller),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Transform.translate(
+                              offset: const Offset(0,1),
+                              child: Container(
+                                height: 16.rpx,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(24.rpx),
+                                    topRight: Radius.circular(24.rpx),
+                                  ),
+                                ),
                               ),
                             ),
+                          )
+                        ],
+                      ),
+                    )),
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          userInfo(context,controller),
+                          creativeDynamics(),
+                        ],
+                      ),
+                    ),
+                    PagedSliverList(
+                      pagingController: controller.pagingController,
+                      builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
+                        pagingController: controller.pagingController,
+                        itemBuilder: (_, item, index) {
+                          return Container(
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                PlazaCard(
+                                  user: true,
+                                  item: item,
+                                  margin: EdgeInsets.zero,
+                                  isLike: (like){
+                                    controller.getCommentLike(like, index);
+                                  },
+                                  callBack: (val){
+                                    controller.setComment(val ?? '',index);
+                                  },
+                                ),
+                                Container(
+                                  height: 2.rpx,
+                                  margin: EdgeInsets.only(left: 24.rpx,right: 16.rpx),
+                                  color: AppColor.scaffoldBackground,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        noItemsFoundIndicatorBuilder:(_){
+                          return NoItemsFoundIndicator(
+                            title: S.current.noData,
+                            backgroundColor: Colors.white,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                Obx(() => Container(
+                  height: 44.rpx+Get.mediaQuery.padding.top,
+                  decoration: BoxDecoration(
+                      color: state.isAppBarExpanded.value ? Colors.white : Colors.transparent
+                  ),
+                  child: AppBar(
+                    backgroundColor: Colors.transparent,
+                    leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
+                    systemOverlayStyle: SystemUI.lightStyle,
+                    actions: [
+                      Visibility(
+                        visible: state.isAppBarExpanded.value,
+                        child: Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(left: 52.rpx,right: 12.rpx),
+                          child: AppImage.network(
+                            state.authorInfo.avatar ?? '',
+                            width: 32.rpx,
+                            height: 32.rpx,
+                            fit: BoxFit.cover,
+                            shape: BoxShape.circle,
                           ),
                         ),
-                      )
+                      ),
+                      Visibility(
+                        visible: state.isAppBarExpanded.value,
+                        child: Center(
+                          child: Text(state.authorInfo.nickname,style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue,height: 1),),
+                        ),
+                      ),
+                      const Spacer(),
+                      Visibility(
+                        visible: SS.login.userId == state.authorId,
+                        child: InkWell(
+                          onTap: controller.upload,
+                          child: Container(
+                            padding: EdgeInsets.only(right: 16.rpx,left: 12.rpx),
+                            child: AppImage.asset("assets/images/plaza/uploading.png",width: 24.rpx,height: 24.rpx,color: state.isAppBarExpanded.value ? Colors.black :Colors.white,),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 )),
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      userInfo(context),
-                      creativeDynamics(),
-                    ],
-                  ),
-                ),
-                PagedSliverList(
-                  pagingController: controller.pagingController,
-                  builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
-                    pagingController: controller.pagingController,
-                    itemBuilder: (_, item, index) {
-                      return Container(
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            PlazaCard(
-                              user: true,
-                              item: item,
-                              margin: EdgeInsets.zero,
-                              isLike: (like){
-                                controller.getCommentLike(like, index);
-                              },
-                              callBack: (val){
-                                controller.setComment(val ?? '',index);
-                              },
-                            ),
-                            Container(
-                              height: 2.rpx,
-                              margin: EdgeInsets.only(left: 24.rpx,right: 16.rpx),
-                              color: AppColor.scaffoldBackground,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    noItemsFoundIndicatorBuilder:(_){
-                      return NoItemsFoundIndicator(
-                        title: S.current.noData,
-                        backgroundColor: Colors.white,
-                      );
-                    },
-                  ),
-                ),
               ],
             ),
-            Obx(() => Container(
-              height: 44.rpx+Get.mediaQuery.padding.top,
-              decoration: BoxDecoration(
-                color: state.isAppBarExpanded.value ? Colors.white : Colors.transparent
-              ),
-              child: AppBar(
-                backgroundColor: Colors.transparent,
-                leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
-                systemOverlayStyle: SystemUI.lightStyle,
-                actions: [
-                  Visibility(
-                    visible: state.isAppBarExpanded.value,
-                    child: Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(left: 52.rpx,right: 12.rpx),
-                      child: AppImage.network(
-                        state.authorInfo.avatar ?? '',
-                        width: 32.rpx,
-                        height: 32.rpx,
-                        fit: BoxFit.cover,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: state.isAppBarExpanded.value,
-                    child: Center(
-                      child: Text(state.authorInfo.nickname,style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue,height: 1),),
-                    ),
-                  ),
-                  const Spacer(),
-                  Visibility(
-                    visible: SS.login.userId == state.authorId,
-                    child: InkWell(
-                      onTap: controller.upload,
-                      child: Container(
-                        padding: EdgeInsets.only(right: 16.rpx,left: 12.rpx),
-                        child: AppImage.asset("assets/images/plaza/uploading.png",width: 24.rpx,height: 24.rpx,color: state.isAppBarExpanded.value ? Colors.black :Colors.white,),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )),
-          ],
-        ),
-      ),
-      bottomNavigationBar: voiceContainer(),
-    );
-  }
-
-  ///背景
-  Widget backImage(){
-    return GetBuilder<UserCenterController>(
-      id: 'userInfo',
-      builder: (_){
-        return SizedBox(
-          height: 220.rpx,
-          child: state.authorInfo.images != null && jsonDecode(state.authorInfo.images!).isNotEmpty?
-          Swiper(
-            autoplay: jsonDecode(state.authorInfo.images!).length > 1 ? true : false,
-            controller: controller.swiper,
-            index: state.swiperIndex,
-            itemBuilder: (BuildContext context, int index) {
-              return AppImage.network(
-                jsonDecode(state.authorInfo.images!)[index],
-                width: Get.width,
-                height: 220.rpx,
-                fit: BoxFit.cover,
-              );
-            },
-            itemCount: jsonDecode(state.authorInfo.images!).length,
-            pagination: jsonDecode(state.authorInfo.images!).length > 1 ?
-            SwiperPagination(
-                alignment:  Alignment.bottomRight,
-                margin: EdgeInsets.only(bottom: 30.rpx,right: 16.rpx),
-                builder: UserSwiperPagination(
-                  color: const Color(0xffD1D8E6),
-                  size: 8.rpx,
-                  activeSize:8.rpx,
-                  space: 8.rpx,
-                  activeColor: AppColor.primary,
-                )
-            ):null,
-            onTap: (i){
-              PhotoViewGalleryPage.show(
-                  Get.context!,
-                  PhotoViewGalleryPage(
-                    images: jsonDecode(state.authorInfo.images!),
-                    index: i,
-                    heroTag: '',
-                  ));
-            },
-          ):
-          GestureDetector(
-            onTap: controller.upload,
-            child: Container(
-              height: 220.rpx,
-              color: AppColor.black6,
-              alignment: Alignment.center,
-              child: Text(SS.login.userId == state.authorId ? S.current.tapUploadThemeBackground : '',style: AppTextStyle.fs14.copyWith(color: AppColor.gray9),),
-            ),
           ),
+          bottomNavigationBar: voiceContainer(controller),
         );
       },
     );
   }
 
+  ///背景
+  Widget backImage(UserCenterController controller){
+    final state = controller.state;
+    return SizedBox(
+      height: 220.rpx,
+      child: state.authorInfo.images != null && jsonDecode(state.authorInfo.images!).isNotEmpty?
+      Swiper(
+        autoplay: jsonDecode(state.authorInfo.images!).length > 1 ? true : false,
+        controller: controller.swiper,
+        index: state.swiperIndex,
+        itemBuilder: (BuildContext context, int index) {
+          return AppImage.network(
+            jsonDecode(state.authorInfo.images!)[index],
+            width: Get.width,
+            height: 220.rpx,
+            fit: BoxFit.cover,
+          );
+        },
+        itemCount: jsonDecode(state.authorInfo.images!).length,
+        pagination: jsonDecode(state.authorInfo.images!).length > 1 ?
+        SwiperPagination(
+            alignment:  Alignment.bottomRight,
+            margin: EdgeInsets.only(bottom: 30.rpx,right: 16.rpx),
+            builder: UserSwiperPagination(
+              color: const Color(0xffD1D8E6),
+              size: 8.rpx,
+              activeSize:8.rpx,
+              space: 8.rpx,
+              activeColor: AppColor.primary,
+            )
+        ):null,
+        onTap: (i){
+          PhotoViewGalleryPage.show(
+              Get.context!,
+              PhotoViewGalleryPage(
+                images: jsonDecode(state.authorInfo.images!),
+                index: i,
+                heroTag: '',
+              ));
+        },
+      ):
+      GestureDetector(
+        onTap: controller.upload,
+        child: Container(
+          height: 220.rpx,
+          color: AppColor.black6,
+          alignment: Alignment.center,
+          child: Text(SS.login.userId == state.authorId ? S.current.tapUploadThemeBackground : '',style: AppTextStyle.fs14.copyWith(color: AppColor.gray9),),
+        ),
+      ),
+    );
+  }
+
   ///用户信息
-  Widget userInfo(BuildContext context){
-    return GetBuilder<UserCenterController>(
-      id: 'userInfo',
-      builder: (_) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(right: 10.rpx),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 16.rpx),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(top: 8.rpx,left: SS.login.userId != state.authorId ? (80.rpx) : 0),
-                      child: AppImage.network(
-                        state.authorInfo.avatar ?? '',
-                        width: 80.rpx,
-                        height: 80.rpx,
-                        fit: BoxFit.fitWidth,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: SS.login.userId != state.authorId,
-                    child: SizedBox(
-                      width: 74.rpx,
-                      child: GestureDetector(
-                        onTap: (){
-                          controller.toggleAttention(state.authorId);
-                        },
-                        child: ObxValue((isAttentionRx){
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Visibility(
-                                visible: isAttentionRx(),
-                                replacement: AppImage.asset("assets/images/plaza/attention_no.png",width: 24.rpx,height: 24.rpx,),
-                                child: AppImage.asset("assets/images/plaza/attention.png",width: 24.rpx,height: 24.rpx,),
-                              ),
-                              Container(
-                                width: 44.rpx,
-                                margin: EdgeInsets.only(left: 4.rpx),
-                                alignment: Alignment.center,
-                                child: Text(isAttentionRx() ? S.current.followed : S.current.attention,style: AppTextStyle.fs14m.copyWith(color: AppColor.black666),),
-                              )
-                            ],
-                          );
-                        },controller.isAttentionRx),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(bottom: 12.rpx),
-              child: Text(state.authorInfo.nickname,style: AppTextStyle.fs20m.copyWith(color: AppColor.blackBlue,height: 1),textAlign: TextAlign.center,),
-            ),
-            Visibility(
-              visible: state.authorInfo.type.index != 0,
-              child: Text("${controller.label()}   ${state.authorInfo.position ?? ''}",style: AppTextStyle.fs14.copyWith(color: AppColor.black92,height: 1),),
-            ),
-            SizedBox(height: 8.rpx,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(state.userBasics.length, (i) {
-                return SizedBox(
-                  height: 85.rpx,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text("${state.userBasics[i]['name']}",style: AppTextStyle.fs16.copyWith(color: AppColor.black92),),
-                      controller.basicsInfo(index: i),
-                    ],
-                  ),
-                );
-              }),
-            ),
-            Container(
-              height: 1.rpx,
-              color: AppColor.scaffoldBackground,
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-              child: Text(S.current.userSignature,style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue),),
-            ),
-            Obx(() => Stack(
+  Widget userInfo(BuildContext context,UserCenterController controller){
+    final state = controller.state;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(right: 10.rpx),
+      color: Colors.white,
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(bottom: 16.rpx),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  constraints: BoxConstraints(
-                      minHeight: 63.rpx
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(top: 8.rpx,left: SS.login.userId != state.authorId ? (80.rpx) : 0),
+                    child: AppImage.network(
+                      state.authorInfo.avatar ?? '',
+                      width: 80.rpx,
+                      height: 80.rpx,
+                      fit: BoxFit.fitWidth,
+                      shape: BoxShape.circle,
+                    ),
                   ),
-                  alignment: Alignment.topLeft,
-                  child: Text(state.authorInfo.signature?.fixAutoLines() ?? '',style: AppTextStyle.fs14.copyWith(color: AppColor.blackBlue,),maxLines: state.isShow.value ? 3 :  null,),
                 ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Visibility(
-                    visible: calculateTextWidth(context,state.authorInfo.signature ?? '') && state.isShow.value,
+                Visibility(
+                  visible: SS.login.userId != state.authorId,
+                  child: SizedBox(
+                    width: 74.rpx,
                     child: GestureDetector(
                       onTap: (){
-                        state.isShow.value = false;
+                        controller.toggleAttention(state.authorId);
                       },
-                      behavior: HitTestBehavior.translucent,
-                      child: Container(
-                        height: 21.rpx,
-                        padding: EdgeInsets.only(left: 50.rpx,right: 14.rpx),
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: const Alignment(-0.2, 0),
-                              colors: [
-                                Colors.white.withOpacity(0),
-                                Colors.white,
-                              ],
+                      child: ObxValue((isAttentionRx){
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Visibility(
+                              visible: isAttentionRx(),
+                              replacement: AppImage.asset("assets/images/plaza/attention_no.png",width: 24.rpx,height: 24.rpx,),
+                              child: AppImage.asset("assets/images/plaza/attention.png",width: 24.rpx,height: 24.rpx,),
+                            ),
+                            Container(
+                              width: 44.rpx,
+                              margin: EdgeInsets.only(left: 4.rpx),
+                              alignment: Alignment.center,
+                              child: Text(isAttentionRx() ? S.current.followed : S.current.attention,style: AppTextStyle.fs14m.copyWith(color: AppColor.black666),),
                             )
-                        ),
-                        child: RichText(
-                          text: TextSpan(
-                            text: "... ",
-                            style: AppTextStyle.fs14.copyWith(color: AppColor.black20),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: S.current.readMore,
-                                style: AppTextStyle.fs14.copyWith(color: AppColor.primaryBlue,height: 1.5),
-                              ),
+                          ],
+                        );
+                      },controller.isAttentionRx),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(bottom: 12.rpx),
+            child: Text(state.authorInfo.nickname,style: AppTextStyle.fs20m.copyWith(color: AppColor.blackBlue,height: 1),textAlign: TextAlign.center,),
+          ),
+          Visibility(
+            visible: state.authorInfo.type.index != 0,
+            child: Text("${controller.label()}   ${state.authorInfo.position ?? ''}",style: AppTextStyle.fs14.copyWith(color: AppColor.black92,height: 1),),
+          ),
+          SizedBox(height: 8.rpx,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: List.generate(state.userBasics.length, (i) {
+              return SizedBox(
+                height: 85.rpx,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text("${state.userBasics[i]['name']}",style: AppTextStyle.fs16.copyWith(color: AppColor.black92),),
+                    controller.basicsInfo(index: i),
+                  ],
+                ),
+              );
+            }),
+          ),
+          Container(
+            height: 1.rpx,
+            color: AppColor.scaffoldBackground,
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
+            child: Text(S.current.userSignature,style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue),),
+          ),
+          Obx(() => Stack(
+            children: [
+              Container(
+                constraints: BoxConstraints(
+                    minHeight: 63.rpx
+                ),
+                alignment: Alignment.topLeft,
+                child: Text(state.authorInfo.signature?.fixAutoLines() ?? '',style: AppTextStyle.fs14.copyWith(color: AppColor.blackBlue,),maxLines: state.isShow.value ? 3 :  null,),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: Visibility(
+                  visible: calculateTextWidth(context,state.authorInfo.signature ?? '') && state.isShow.value,
+                  child: GestureDetector(
+                    onTap: (){
+                      state.isShow.value = false;
+                    },
+                    behavior: HitTestBehavior.translucent,
+                    child: Container(
+                      height: 21.rpx,
+                      padding: EdgeInsets.only(left: 50.rpx,right: 14.rpx),
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: const Alignment(-0.2, 0),
+                            colors: [
+                              Colors.white.withOpacity(0),
+                              Colors.white,
                             ],
-                          ),
+                          )
+                      ),
+                      child: RichText(
+                        text: TextSpan(
+                          text: "... ",
+                          style: AppTextStyle.fs14.copyWith(color: AppColor.black20),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: S.current.readMore,
+                              style: AppTextStyle.fs14.copyWith(color: AppColor.primaryBlue,height: 1.5),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                )
-              ],
-            )),
-            Container(
-              height: 1.rpx,
-              margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-              color: AppColor.scaffoldBackground,
-            ),
-          ],
-        ),
-      );
-    },);
+                ),
+              )
+            ],
+          )),
+          Container(
+            height: 1.rpx,
+            margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
+            color: AppColor.scaffoldBackground,
+          ),
+        ],
+      ),
+    );
   }
 
   ///个人帖子
@@ -402,7 +402,8 @@ class UserCenterPage extends StatelessWidget {
   }
 
   ///语音
-  Widget voiceContainer(){
+  Widget voiceContainer(UserCenterController controller){
+    final state = controller.state;
     return Visibility(
       visible: SS.login.userId != state.authorId,
       child: Container(

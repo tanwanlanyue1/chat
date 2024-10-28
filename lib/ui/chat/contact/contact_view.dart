@@ -178,7 +178,7 @@ class _ContactViewState extends State<ContactView>
   Widget buildSearch() {
     return Container(
       width: double.infinity,
-      height: 80.rpx,
+      height: 62.rpx,
       padding: FEdgeInsets(left: 16.rpx, right: 8.rpx),
       child: Row(
         children: [

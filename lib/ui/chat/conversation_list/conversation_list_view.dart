@@ -82,6 +82,12 @@ class _ConversationListViewState extends State<ConversationListView>
                       return Divider(height: 0, indent: 75.rpx);
                     },
                   ),
+                  SliverToBoxAdapter(
+                    child: Visibility(
+                      visible: list.isNotEmpty,
+                      child: Divider(height: 1, endIndent: 0, indent: 64.rpx),
+                    ),
+                  )
                 ],
               );
             },

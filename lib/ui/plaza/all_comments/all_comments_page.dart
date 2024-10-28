@@ -18,127 +18,133 @@ import 'all_comments_controller.dart';
 
 ///全部评论
 class AllCommentsPage extends StatelessWidget {
-  AllCommentsPage({Key? key}) : super(key: key);
+  int? postId;
+  int? userId;
+  AllCommentsPage({super.key,this.userId,this.postId});
 
-  final controller = Get.find<AllCommentsController>();
-  final state = Get.find<AllCommentsController>().state;
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(canPop: false,
-      onPopInvoked: (bool canPop) {
-      if(canPop){
-      } else {
-        Navigator.of(context).pop(state.comments);
-      }
-    },child: Scaffold(
-      backgroundColor: AppColor.scaffoldBackground,
-      body: Column(
-        children: [
-          appBar(),
-          Expanded(
-            child: SmartRefresher(
-              controller: controller.pagingController.refreshController,
-              onRefresh: controller.pagingController.onRefresh,
-              child: PagedListView.separated(
-                pagingController: controller.pagingController,
-                padding: EdgeInsets.only(bottom: 8.rpx),
-                builderDelegate: DefaultPagedChildBuilderDelegate<CommentListModel>(
-                    pagingController: controller.pagingController,
-                    itemBuilder: (_,item,index){
-                      return commentItem(item);
-                    }
-                ),
-                separatorBuilder: (BuildContext context, int index) {
-                  return Container(
-                    height: 1.rpx,
-                  );
-                },
-              ),
-            ),
-          ),
-          //commentItem()
-        ],
-      ),
-      bottomNavigationBar: bottomComment(),
-    ),);
-  }
-
-  Widget appBar(){
     return GetBuilder<AllCommentsController>(
-      id: 'userInfo',
-      builder: (_) {
-        return Container(
-          padding: EdgeInsets.only(top: Get.mediaQuery.padding.top),
-          color: Colors.white,
-          height: 44.rpx+Get.mediaQuery.padding.top,
-          margin: EdgeInsets.only(bottom: 8.rpx),
-          child: Row(
-            children: [
-              GestureDetector(
-                onTap: (){
-                  Get.back(result: state.comments);
-                },
-                child: AppImage.asset(
-                  width: 64,
-                  height: 24,
-                  'assets/images/common/back_black.png',
-                ),
-              ),
-              GestureDetector(
-                onTap: (){
-                  Get.toNamed(AppRoutes.userCenterPage, arguments: {
-                    'userId': state.userId,
-                  });
-                },
-                child: Container(
-                  margin: EdgeInsets.only(right: 8.rpx),
-                  child: AppImage.network(state.authorInfo.avatar ?? '',width: 36.rpx,height: 36.rpx,shape: BoxShape.circle,),
-                ),
-              ),
-              Expanded(
-                child: Row(
-                  children: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: 140.rpx),
-                      child: Text(state.authorInfo.nickname,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
-                    ),
-                    SizedBox(width: 4.rpx),
-                    Visibility(
-                      visible: state.authorInfo.gender.index != 0,
-                      child: Visibility(
-                        visible: state.authorInfo.gender.isFemale,
-                        replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
-                        child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
+      init: AllCommentsController(
+          postId: postId,
+          userId: userId
+      ),
+      global: false,
+      builder: (controller){
+        late final state = controller.state;
+        return PopScope(canPop: false,
+          onPopInvoked: (bool canPop) {
+            if(canPop){
+            } else {
+              Navigator.of(context).pop(state.comments);
+            }
+          },child: Scaffold(
+            backgroundColor: AppColor.scaffoldBackground,
+            body: Column(
+              children: [
+                appBar(controller),
+                Expanded(
+                  child: SmartRefresher(
+                    controller: controller.pagingController.refreshController,
+                    onRefresh: controller.pagingController.onRefresh,
+                    child: PagedListView.separated(
+                      pagingController: controller.pagingController,
+                      padding: EdgeInsets.only(bottom: 8.rpx),
+                      builderDelegate: DefaultPagedChildBuilderDelegate<CommentListModel>(
+                          pagingController: controller.pagingController,
+                          itemBuilder: (_,item,index){
+                            return commentItem(item);
+                          }
                       ),
+                      separatorBuilder: (BuildContext context, int index) {
+                        return Container(
+                          height: 1.rpx,
+                        );
+                      },
                     ),
-                    SizedBox(width: 2.rpx),
-                    Text("${state.authorInfo.age ?? ''}",style: AppTextStyle.fs12.copyWith(color: AppColor.black666),),
-                  ],
-                ),
-              ),
-              Obx(() => Visibility(
-                visible: SS.login.userId != state.userId,
-                child: GestureDetector(
-                  onTap: ()=> controller.toggleAttention(state.userId),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: controller.isAttentionRx.value ? AppColor.gray39 : AppColor.textPurple,
-                        borderRadius: BorderRadius.circular(20.rpx)
-                    ),
-                    width: 60.rpx,
-                    height: 32.rpx,
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(right: 16.rpx),
-                    child: Text(controller.isAttentionRx.value ? S.current.followed:S.current.attention,style: AppTextStyle.fs14r.copyWith(
-                        color: controller.isAttentionRx.value ? AppColor.grayText : Colors.white),),
                   ),
                 ),
-              ))
-            ],
+              ],
+            ),
+            bottomNavigationBar: bottomComment(controller),
+          ),);
+      },
+    );
+  }
+
+  Widget appBar(AllCommentsController controller){
+    late final state = controller.state;
+    return Container(
+      padding: EdgeInsets.only(top: Get.mediaQuery.padding.top),
+      color: Colors.white,
+      height: 44.rpx+Get.mediaQuery.padding.top,
+      margin: EdgeInsets.only(bottom: 8.rpx),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: (){
+              Get.back(result: state.comments);
+            },
+            child: AppImage.asset(
+              width: 64,
+              height: 24,
+              'assets/images/common/back_black.png',
+            ),
           ),
-        );
-      },);
+          GestureDetector(
+            onTap: (){
+              Get.toNamed(AppRoutes.userCenterPage, arguments: {
+                'userId': state.userId,
+              });
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 8.rpx),
+              child: AppImage.network(state.authorInfo.avatar ?? '',width: 36.rpx,height: 36.rpx,shape: BoxShape.circle,),
+            ),
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 140.rpx),
+                  child: Text(state.authorInfo.nickname,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
+                ),
+                SizedBox(width: 4.rpx),
+                Visibility(
+                  visible: state.authorInfo.gender.index != 0,
+                  child: Visibility(
+                    visible: state.authorInfo.gender.isFemale,
+                    replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
+                    child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
+                  ),
+                ),
+                SizedBox(width: 2.rpx),
+                Text("${state.authorInfo.age ?? ''}",style: AppTextStyle.fs12.copyWith(color: AppColor.black666),),
+              ],
+            ),
+          ),
+          Obx(() => Visibility(
+            visible: SS.login.userId != state.userId,
+            child: GestureDetector(
+              onTap: ()=> controller.toggleAttention(state.userId),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: controller.isAttentionRx.value ? AppColor.gray39 : AppColor.textPurple,
+                    borderRadius: BorderRadius.circular(20.rpx)
+                ),
+                width: 60.rpx,
+                height: 32.rpx,
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(right: 16.rpx),
+                child: Text(controller.isAttentionRx.value ? S.current.followed:S.current.attention,style: AppTextStyle.fs14r.copyWith(
+                    color: controller.isAttentionRx.value ? AppColor.grayText : Colors.white),),
+              ),
+            ),
+          ))
+        ],
+      ),
+    );
   }
 
   //评论项
@@ -203,7 +209,8 @@ class AllCommentsPage extends StatelessWidget {
   }
 
   //底部评论
-  Widget bottomComment(){
+  Widget bottomComment(AllCommentsController controller){
+    late final state = controller.state;
     return Container(
       height: 68.rpx,
       padding: EdgeInsets.only(right: 16.rpx,left: 16.rpx),

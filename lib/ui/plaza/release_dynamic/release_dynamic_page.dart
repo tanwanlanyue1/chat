@@ -25,6 +25,25 @@ class ReleaseDynamicPage extends StatelessWidget {
       ),
       backgroundColor: AppColor.scaffoldBackground,
       body: buildDynamic(),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.only(bottom: Get.mediaQuery.padding.bottom+14.rpx,left: 38.rpx,right: 38.rpx,top: 14.rpx),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey,
+                offset: Offset(0.0, 12.0),
+                blurRadius: 15.0,
+                spreadRadius: 4.0
+            ),
+          ],
+        ),
+        child: CommonGradientButton(
+          onTap: controller.addCommunity,
+          height: 50.rpx,
+          text: S.current.publishNow,
+        ),
+      ),
     );
   }
 
@@ -104,25 +123,6 @@ class ReleaseDynamicPage extends StatelessWidget {
                 controller.update(['upload']);
               },
             ),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.only(bottom: Get.mediaQuery.padding.bottom+14.rpx,left: 38.rpx,right: 38.rpx,top: 14.rpx),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0.0, 12.0),
-                  blurRadius: 15.0,
-                  spreadRadius: 4.0
-              ),
-            ],
-          ),
-          child: CommonGradientButton(
-            onTap: controller.addCommunity,
-            height: 50.rpx,
-            text: S.current.publishNow,
           ),
         ),
       ],

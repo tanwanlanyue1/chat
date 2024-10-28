@@ -24,7 +24,7 @@ class ClientCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.only(left: 16.rpx,right: 14.rpx,top: 24.rpx),
+      padding: EdgeInsets.only(left: 16.rpx,right: 14.rpx,top: 16.rpx),
       child: Column(
         children: [
           Row(
@@ -101,7 +101,7 @@ class ClientCard extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(height: 24.rpx,),
+          SizedBox(height: 16.rpx,),
           Visibility(
             visible: show,
             child: Container(

@@ -96,7 +96,7 @@ class PlazaCard extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item.uid});
+              Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item.uid},preventDuplicates: false);
             },
             child: AppImage.network(
               item.avatar ?? "",
@@ -424,10 +424,10 @@ class PlazaCard extends StatelessWidget {
             );
           }),
           Visibility(
-            visible: item.commentList!.length > 1,
+            visible: item.commentList!.length > 2,
             child: GestureDetector(
               onTap: () async {
-                var res = await Get.toNamed(AppRoutes.allCommentsPage,arguments: {"postId": item.postId, "userId": item.uid});
+                var res = await Get.toNamed(AppRoutes.allCommentsPage,arguments: {"postId": item.postId, "userId": item.uid},preventDuplicates: false);
                 if(res != null && res.isNotEmpty){
                   callBack?.call(res);
                 }

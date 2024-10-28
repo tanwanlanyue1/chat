@@ -97,7 +97,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
           "data":"position",
         },
       ] : state.userBasics;
-      update(['userInfo']);
+      update();
       ChatUserInfoCache().updateWithUserModel(state.authorInfo);
     }
   }
@@ -195,7 +195,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
         WidgetsBinding.instance.addPostFrameCallback((_) {
           swiper.move(0);
         });
-        update(['userInfo']);
+        update();
         SS.login.fetchMyInfo();
         Get.back();
       }else{

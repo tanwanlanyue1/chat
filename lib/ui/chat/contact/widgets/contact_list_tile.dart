@@ -21,7 +21,7 @@ class ContactListTile extends StatelessWidget {
     return InkWell(
       onTap: toUserPage,
       child: Container(
-        padding: FEdgeInsets(horizontal: 16.rpx, top: 24.rpx),
+        padding: FEdgeInsets(horizontal: 16.rpx, top: 16.rpx),
         child: Column(
           children: [
             Row(
@@ -106,8 +106,8 @@ class ContactListTile extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: EdgeInsets.only(top: 24.rpx),
-              child: Divider(height: 1, endIndent: 16.rpx, indent: 16.rpx),
+              padding: EdgeInsets.only(top: 16.rpx),
+              child: const Divider(height: 1, endIndent: 0, indent: 0),
             ),
           ],
         ),

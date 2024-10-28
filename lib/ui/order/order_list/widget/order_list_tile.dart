@@ -4,6 +4,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/ui/order/model/order_list_item.dart';
 import 'package:guanjia/ui/order/order_list/order_list_page.dart';
@@ -43,10 +44,10 @@ class _OrderListTileState extends State<OrderListTile> {
 
   @override
   Widget build(BuildContext context) {
+    int index = (!item.nick.contains('：')) ? 0 : item.nick.indexOf('：');
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
-        // height: 166.rpx,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4.rpx),
           color: Colors.white,
@@ -58,11 +59,15 @@ class _OrderListTileState extends State<OrderListTile> {
                 buildStateText(),
                 const Spacer(),
                 if (item.countDown > 0)
-                  Text(
-                    '剩余等待',
-                    style: AppTextStyle.fs12.copyWith(
-                      color: AppColor.blackBlue,
-                      height: 1,
+                  Container(
+                    height: 20.rpx,
+                    alignment: Alignment.bottomCenter,
+                    child: Text(
+                      '剩余等待',
+                      style: AppTextStyle.fs10.copyWith(
+                        color: AppColor.blackBlue,
+                        height: 1,
+                      ),
                     ),
                   ),
                 if (item.countDown > 0) buildCountdown(),
@@ -82,22 +87,38 @@ class _OrderListTileState extends State<OrderListTile> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          item.number,
-                          style: AppTextStyle.st
-                              .size(14.rpx)
-                              .textColor(AppColor.black6),
+                        RichText(
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
+                          text: TextSpan(
+                            text: S.current.orderReference,
+                            style: AppTextStyle.st
+                                .size(14.rpx)
+                                .textColor(AppColor.black9),
+                                children: [
+                                      TextSpan(
+                                      text: item.itemModel.number,
+                                          style: TextStyle(color: AppColor.black6),
+                                      )
+                                ]
+                          ),
                         ),
                         if((item.nickWithAgent ?? '').isEmpty) Spacing.h8,
-                        Text(
-                          item.nick,
-                          style: AppTextStyle.st
-                              .size(14.rpx)
-                              .textColor(AppColor.black6),
+                        RichText(
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
+                          text: TextSpan(
+                              text: index != 0 ? "${item.nick.substring(0,index)}：" : '',
+                              style: AppTextStyle.st
+                                  .size(14.rpx)
+                                  .textColor(AppColor.black9),
+                              children: [
+                                TextSpan(
+                                  text: item.nick.substring(index != 0 ? index+1 : 0),
+                                  style: const TextStyle(color: AppColor.black6),
+                                )
+                              ]
+                          ),
                         ),
                         if (item.nickWithAgent != null)
                           Text(
@@ -120,7 +141,7 @@ class _OrderListTileState extends State<OrderListTile> {
               height: 1,
             ),
             Padding(
-              padding: FEdgeInsets(horizontal: 12.rpx, top: hasContactButton ? 0 : 16.rpx, bottom: 16.rpx),
+              padding: FEdgeInsets(horizontal: 12.rpx, top: hasContactButton ? 0 : 12.rpx, bottom: 12.rpx),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: hasContactButton ? CrossAxisAlignment.end : CrossAxisAlignment.center,

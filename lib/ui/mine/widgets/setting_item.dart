@@ -32,7 +32,7 @@ class SettingItem extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: borderRadius ?? BorderRadius.circular(8.rpx)),
-      height: autoHeight ? null : 56.rpx,
+      height: autoHeight ? null : 48.rpx,
       padding: EdgeInsets.all(12.rpx),
       margin: EdgeInsets.only(bottom: bottom ?? 12.rpx),
       child: InkWell(

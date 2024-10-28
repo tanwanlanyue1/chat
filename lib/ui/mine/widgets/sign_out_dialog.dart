@@ -39,7 +39,7 @@ class SignOutDialog extends StatelessWidget {
                     buildAvatar(),
                     Text(
                       S.current.areYouSure,
-                      style: AppTextStyle.fs18b.copyWith(
+                      style: AppTextStyle.fs18m.copyWith(
                         color: AppColor.blackBlue,
                       ),
                     ),
@@ -47,7 +47,7 @@ class SignOutDialog extends StatelessWidget {
                       padding: FEdgeInsets(top: 12.rpx, bottom: 24.rpx),
                       child: Text(
                        S.current.afterLoggingOut,
-                        style: AppTextStyle.fs12b.copyWith(
+                        style: AppTextStyle.fs12m.copyWith(
                           color: AppColor.blackText,
                           height: 1.5,
                         ),
@@ -61,7 +61,7 @@ class SignOutDialog extends StatelessWidget {
                           width: 120.rpx,
                           text: S.current.cancel,
                           onTap: Get.back,
-                          textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
+                          textStyle: AppTextStyle.fs16.copyWith(color: Colors.white),
                         ),
                         Button(
                           onPressed: () => Get.back(result: true),
@@ -70,7 +70,7 @@ class SignOutDialog extends StatelessWidget {
                           backgroundColor: AppColor.gray9,
                           child: Text(
                             S.current.sureLogOut,
-                            style: AppTextStyle.fs16m
+                            style: AppTextStyle.fs16
                           ),
                         ),
                       ],

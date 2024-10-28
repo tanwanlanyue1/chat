@@ -43,7 +43,7 @@ class FiltrateBottomSheet extends StatelessWidget {
                   child: AppImage.asset('assets/images/common/close.png',width: 24.rpx,height: 24.rpx,),
                 ),
               ),
-              Text(S.current.wantToSee,style: AppTextStyle.fs18m.copyWith(color: AppColor.blackBlue,fontWeight: FontWeight.w700),),
+              Text(S.current.wantToSee,style: AppTextStyle.fs18.copyWith(color: AppColor.blackBlue,fontWeight: FontWeight.w700),),
               SizedBox(height: 16.rpx),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -62,7 +62,7 @@ class FiltrateBottomSheet extends StatelessWidget {
                       state.filtrateType[index]['activeImage']:state.filtrateType[index]['image'],width: 60.rpx,height: 60.rpx,),
                       Padding(
                         padding: EdgeInsets.only(top: 8.rpx),
-                        child: Text(state.filtrateType[index]['name'],style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5, height: 1),),
+                        child: Text(state.filtrateType[index]['name'],style: AppTextStyle.fs14.copyWith(color: AppColor.gray5, height: 1),),
                       ),
                     ],
                   ),
@@ -73,11 +73,11 @@ class FiltrateBottomSheet extends StatelessWidget {
                 children: [
                   Container(
                     margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-                    child: Text(S.current.userAge,style: AppTextStyle.fs18m.copyWith(color: AppColor.blackBlue,fontWeight: FontWeight.w700),),
+                    child: Text(S.current.userAge,style: AppTextStyle.fs18.copyWith(color: AppColor.blackBlue,fontWeight: FontWeight.w700),),
                   ),
                   Obx(() => Container(
                     margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-                    child: Text("${state.info?.value.likeAgeMin}-${state.info?.value.likeAgeMax}",style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w700),),
+                    child: Text("${state.info?.value.likeAgeMin}-${state.info?.value.likeAgeMax}",style: AppTextStyle.fs16.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w700),),
                   )),
                 ],
               ),
@@ -107,17 +107,17 @@ class FiltrateBottomSheet extends StatelessWidget {
                 children: [
                   Text(
                     state.ageMin.toString(),
-                    style: AppTextStyle.fs14m.copyWith(color: AppColor.black9),
+                    style: AppTextStyle.fs14.copyWith(color: AppColor.black9),
                   ),
                   Text(
                       state.ageMax.toString(),
-                      style: AppTextStyle.fs14m.copyWith(color: AppColor.black9)
+                      style: AppTextStyle.fs14.copyWith(color: AppColor.black9)
                   ),
                 ],
               ),
               Container(
                 margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-                child: Text(S.current.preferredStyle,style: AppTextStyle.fs18m.copyWith(color: AppColor.blackBlue,fontWeight: FontWeight.w700),),
+                child: Text(S.current.preferredStyle,style: AppTextStyle.fs18.copyWith(color: AppColor.blackBlue,fontWeight: FontWeight.w700),),
               ),
               GridView.builder(
                 shrinkWrap: true,
@@ -140,7 +140,7 @@ class FiltrateBottomSheet extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(4.rpx))
                       ),
                       alignment: Alignment.center,
-                      child: Text(item.tag,style: AppTextStyle.fs14b.copyWith(color: state.labelList.contains(index) ? Colors.white : AppColor.gradientBegin),),
+                      child: Text(item.tag,style: AppTextStyle.fs14m.copyWith(color: state.labelList.contains(index) ? Colors.white : AppColor.gradientBegin),),
                     ),
                   );
                 },

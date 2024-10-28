@@ -53,7 +53,7 @@ class PlaceListTile extends StatelessWidget {
             padding: FEdgeInsets(horizontal: 4.rpx),
             child: Text(
               item.name,
-              style: AppTextStyle.fs14m.copyWith(
+              style: AppTextStyle.fs14.copyWith(
                 color: AppColor.black3,
                 height: 1,
               ),
@@ -62,7 +62,7 @@ class PlaceListTile extends StatelessWidget {
         ),
         if(item.distance != null) Text(
           item.distance?.toDistance() ?? '',
-          style: AppTextStyle.fs14m.copyWith(
+          style: AppTextStyle.fs14.copyWith(
             color: AppColor.black9,
             height: 1,
           ),
@@ -79,7 +79,7 @@ class PlaceListTile extends StatelessWidget {
             padding: FEdgeInsets(right: 4.rpx),
             child: Text(
               item.vicinity,
-              style: AppTextStyle.fs12m.copyWith(
+              style: AppTextStyle.fs12.copyWith(
                 color: AppColor.black9,
                 height: 1,
               ),

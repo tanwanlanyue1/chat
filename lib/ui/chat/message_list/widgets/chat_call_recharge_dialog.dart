@@ -86,7 +86,7 @@ class ChatCallRechargeDialog extends StatelessWidget {
                   children: [
                     Text(
                       S.current.chatCallBalanceHint,
-                      style: AppTextStyle.fs14b.copyWith(
+                      style: AppTextStyle.fs14m.copyWith(
                         color: AppColor.blackBlue,
                       ),
                     ),
@@ -96,12 +96,12 @@ class ChatCallRechargeDialog extends StatelessWidget {
                         children: [
                           Text(
                             isVideoCall ? S.current.realTimeVideo : S.current.realTimeVoice,
-                            style: AppTextStyle.fs14b
+                            style: AppTextStyle.fs14m
                                 .copyWith(color: AppColor.grayText),
                           ),
                           Text(
                             priceHintText,
-                            style: AppTextStyle.fs14b
+                            style: AppTextStyle.fs14m
                                 .copyWith(color: AppColor.primaryBlue),
                           ),
                         ],
@@ -110,14 +110,14 @@ class ChatCallRechargeDialog extends StatelessWidget {
                       children: [
                         Text(
                           S.current.treasuryBalance,
-                          style: AppTextStyle.fs14b
+                          style: AppTextStyle.fs14m
                               .copyWith(color: AppColor.grayText),
                         ),
                         const Spacer(),
                         Obx(() {
                           return Text(
                             SS.login.info?.balance.toCurrencyString() ?? '',
-                            style: AppTextStyle.fs14b
+                            style: AppTextStyle.fs14m
                                 .copyWith(color: AppColor.primaryBlue),
                           );
                         }),
@@ -125,7 +125,7 @@ class ChatCallRechargeDialog extends StatelessWidget {
                           padding: FEdgeInsets(left: 8.rpx),
                           child: Text(
                             S.current.insufficientBalance,
-                            style: AppTextStyle.fs12m.copyWith(
+                            style: AppTextStyle.fs12.copyWith(
                               color: AppColor.red,
                             ),
                           ),
@@ -146,13 +146,13 @@ class ChatCallRechargeDialog extends StatelessWidget {
                     height: 50.rpx,
                     backgroundColor: AppColor.black999,
                     onPressed: () => Get.back(result: false),
-                    child: Text(S.current.leaveAside, style: AppTextStyle.fs16b),
+                    child: Text(S.current.leaveAside, style: AppTextStyle.fs16m),
                   ),
                   CommonGradientButton(
                     width: 120.rpx,
                     height: 50.rpx,
                     text: S.current.rechargeNow,
-                    textStyle: AppTextStyle.fs16b.copyWith(color: Colors.white),
+                    textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
                     onTap: () {
                       Get.back(result: true);
                     },
@@ -198,7 +198,7 @@ class ChatCallRechargeDialog extends StatelessWidget {
         builder: (info) {
           return Text(
             S.current.chatWith(info?.baseInfo.userName ?? ''),
-            style: AppTextStyle.fs16b.copyWith(
+            style: AppTextStyle.fs16m.copyWith(
               color: AppColor.blackBlue,
               height: 1.0,
             ),

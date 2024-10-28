@@ -48,7 +48,7 @@ class GroundGlass extends StatelessWidget {
                   //   ),
                   // ),
                   child: Text(S.current.openVipTips,
-                    style: AppTextStyle.fs16m.copyWith(color: Colors.black,height: 1.5,
+                    style: AppTextStyle.fs16.copyWith(color: Colors.black,height: 1.5,
                         shadows: [Shadow(color: Colors.white.withOpacity(0.9), offset: const Offset(0,0), blurRadius: 2)]
                     ),
                     textAlign: TextAlign.center,
@@ -61,7 +61,7 @@ class GroundGlass extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(S.current.openVipNow,
-                          style: AppTextStyle.fs16m.copyWith(color: Colors.white),
+                          style: AppTextStyle.fs16.copyWith(color: Colors.white),
                         ),
                         SizedBox(width: 8.rpx,),
                         AppImage.asset("assets/images/mine/ic_vip.png",width: 24.rpx,height: 24.rpx,),

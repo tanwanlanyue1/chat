@@ -63,7 +63,7 @@ class FriendDatePage extends StatelessWidget {
       child: Obx(() => TabBar(
         isScrollable: true,
         controller: controller.tabController,
-        labelStyle: AppTextStyle.fs14b,
+        labelStyle: AppTextStyle.fs14m,
         labelColor: AppColor.black20,
         unselectedLabelColor: AppColor.grayText,
         indicator: TabDecoration(state.typeIndex.value == -1 ? 0 : state.typeIndex.value),
@@ -103,7 +103,7 @@ class FriendDatePage extends StatelessWidget {
                       ),
                     ),
                     child: Text("${state.sortList[i]['name']}",
-                      style: AppTextStyle.fs12m.copyWith(color: state.sortIndex.contains(state.sortList[i]['type'])
+                      style: AppTextStyle.fs12.copyWith(color: state.sortIndex.contains(state.sortList[i]['type'])
                           ? AppColor.primaryBlue
                           : AppColor.black92,
                       ),),
@@ -159,7 +159,7 @@ class FriendDatePage extends StatelessWidget {
                     children: [
                       Lottie.asset('assets/images/plaza/friend_date.json',width: 12.rpx,height: 12.rpx),
                       SizedBox(width: 4.rpx,),
-                      Text(controller.typeTitle(item.type ?? 1),style:AppTextStyle.fs12m.copyWith(color: AppColor.black20, height: 1)),
+                      Text(controller.typeTitle(item.type ?? 1),style:AppTextStyle.fs12.copyWith(color: AppColor.black20, height: 1)),
                     ],
                   ),
                 ),
@@ -190,7 +190,7 @@ class FriendDatePage extends StatelessWidget {
                     constraints: BoxConstraints(
                       maxWidth: (item.userInfo?.gender.index != 0 && item.userInfo?.age != null) ? 200.rpx:240.rpx
                     ),
-                    child: Text((item.userInfo?.nickname ?? ''),style: AppTextStyle.fs14b.copyWith(color: AppColor.black20, height: 1),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                    child: Text((item.userInfo?.nickname ?? ''),style: AppTextStyle.fs14m.copyWith(color: AppColor.black20, height: 1),maxLines: 1,overflow: TextOverflow.ellipsis,),
                   ),
                   Row(
                     children: [
@@ -204,7 +204,7 @@ class FriendDatePage extends StatelessWidget {
                         visible: item.userInfo?.age != null,
                         child: Container(
                           margin: EdgeInsets.only(left: 8.rpx),
-                          child: Text('${item.userInfo?.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.black6),),
+                          child: Text('${item.userInfo?.age ?? ''}',style: AppTextStyle.fs12.copyWith(color: AppColor.black6),),
                         ),
                       ),
                       Visibility(
@@ -219,7 +219,7 @@ class FriendDatePage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Text(S.current.personage,style: AppTextStyle.fs12m.copyWith(color: AppColor.black6),),
+                      Text(S.current.personage,style: AppTextStyle.fs12.copyWith(color: AppColor.black6),),
                     ],
                   ),
                 ],
@@ -227,11 +227,11 @@ class FriendDatePage extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.only(top: 12.rpx,left: 12.rpx,right: 12.rpx),
-              child: Text(item.content ?? '',style:AppTextStyle.fs16b.copyWith(color: AppColor.black20, height: 1.2), maxLines: 2, overflow: TextOverflow.ellipsis,),
+              child: Text(item.content ?? '',style:AppTextStyle.fs16m.copyWith(color: AppColor.black20, height: 1.2), maxLines: 2, overflow: TextOverflow.ellipsis,),
             ),
             Padding(
               padding: FEdgeInsets(top: 12.rpx,left: 12.rpx),
-              child: Text(controller.labelSplit(item.tag ?? ''),style: AppTextStyle.fs12m.copyWith(color: AppColor.primaryBlue, height: 1)),
+              child: Text(controller.labelSplit(item.tag ?? ''),style: AppTextStyle.fs12.copyWith(color: AppColor.primaryBlue, height: 1)),
             ),
             Padding(
               padding: FEdgeInsets(top: 12.rpx,left: 12.rpx),
@@ -241,7 +241,7 @@ class FriendDatePage extends StatelessWidget {
                   Expanded(
                     child: Container(
                       margin: EdgeInsets.only(left: 2.rpx),
-                      child: Text("${item.location} ${item.distance ?? 0}km",style: AppTextStyle.fs12m.copyWith(color: AppColor.blackBlue),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                      child: Text("${item.location} ${item.distance ?? 0}km",style: AppTextStyle.fs12.copyWith(color: AppColor.blackBlue),maxLines: 1,overflow: TextOverflow.ellipsis,),
                     ),
                   ),
                   Container(
@@ -254,7 +254,7 @@ class FriendDatePage extends StatelessWidget {
                     margin: EdgeInsets.only(right: 12.rpx),
                     alignment: Alignment.center,
                     child: Text("${CommonUtils.timestamp(item.startTime, unit: 'MM/dd HH:00')} - ${CommonUtils.timestamp(item.endTime, unit: 'MM/dd HH:00')}",
-                        style: AppTextStyle.fs10b.copyWith(color: AppColor.black20)),
+                        style: AppTextStyle.fs10m.copyWith(color: AppColor.black20)),
                   ),
                 ],
               ),

@@ -76,7 +76,7 @@ class ChatCallRejectMessage extends StatelessWidget {
                 padding: FEdgeInsets(left: 8.rpx),
                 child: Text(
                   content.message,
-                  style: AppTextStyle.fs14m.copyWith(
+                  style: AppTextStyle.fs14.copyWith(
                     color: message.isMine ? Colors.white : AppColor.blackBlue,
                     height: 1.5,
                   ),

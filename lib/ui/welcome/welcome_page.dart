@@ -79,7 +79,7 @@ class WelcomePage extends StatelessWidget {
                         top: Get.height - 340.rpx - Get.padding.bottom),
                     child: Text(
                       item.title,
-                      style: AppTextStyle.fs24b.copyWith(
+                      style: AppTextStyle.fs24m.copyWith(
                         color: Colors.white,
                         height: 1.0,
                       ),
@@ -90,7 +90,7 @@ class WelcomePage extends StatelessWidget {
                     child: Text(
                       item.desc,
                       textAlign: TextAlign.center,
-                      style: AppTextStyle.fs14m.copyWith(
+                      style: AppTextStyle.fs14.copyWith(
                         height: 1.5,
                         color: Colors.white,
                       ),
@@ -144,7 +144,7 @@ class WelcomePage extends StatelessWidget {
                   width: 327.rpx,
                   height: 50.rpx,
                   text: S.current.questionBegin,
-                  textStyle: AppTextStyle.fs16b.copyWith(
+                  textStyle: AppTextStyle.fs16m.copyWith(
                     color: Colors.white,
                   ),
                 ),
@@ -160,7 +160,7 @@ class WelcomePage extends StatelessWidget {
             onPressed: onStartNow,
             child: Text(
               S.current.loginToAccount,
-              style: AppTextStyle.fs14m.copyWith(
+              style: AppTextStyle.fs14.copyWith(
                 color: Colors.white,
                 height: 1.0,
               ),

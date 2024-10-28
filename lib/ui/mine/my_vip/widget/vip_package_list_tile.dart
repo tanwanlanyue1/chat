@@ -49,7 +49,7 @@ class VipPackageListTile extends StatelessWidget {
                   children: [
                     Text(
                       item.durationText,
-                      style: AppTextStyle.fs14m.copyWith(
+                      style: AppTextStyle.fs14.copyWith(
                         color: AppColor.blackBlue,
                       ),
                     ),
@@ -61,7 +61,7 @@ class VipPackageListTile extends StatelessWidget {
                           children: [
                             Text(
                               SS.appConfig.currencyUnit,
-                              style: AppTextStyle.fs18m.copyWith(
+                              style: AppTextStyle.fs18.copyWith(
                                 color: isSelected
                                     ? AppColor.primaryBlue
                                     : AppColor.blackBlue,
@@ -81,7 +81,7 @@ class VipPackageListTile extends StatelessWidget {
                                       AppColor.blackBlue,
                                       AppColor.blackBlue,
                                     ],
-                              style: AppTextStyle.fs24m.copyWith(
+                              style: AppTextStyle.fs24.copyWith(
                                 color: isSelected
                                     ? AppColor.primaryBlue
                                     : AppColor.blackBlue,
@@ -95,7 +95,7 @@ class VipPackageListTile extends StatelessWidget {
                             padding: FEdgeInsets(top: 4.rpx),
                             child: Text(
                               item.price.toCurrencyString(),
-                              style: AppTextStyle.fs16m.copyWith(
+                              style: AppTextStyle.fs16.copyWith(
                                 color: AppColor.grayText,
                                 height: 1,
                                 decoration: TextDecoration.lineThrough,

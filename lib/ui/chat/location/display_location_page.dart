@@ -103,14 +103,14 @@ class DisplayLocationPage extends StatelessWidget {
           if (content.poi.isNotEmpty)
             Text(
               content.poi,
-              style: AppTextStyle.fs18b.copyWith(
+              style: AppTextStyle.fs18m.copyWith(
                 color: AppColor.blackBlue,
               ),
             ),
           if (content.address.isNotEmpty)
             Text(
               content.address,
-              style: AppTextStyle.fs14m.copyWith(
+              style: AppTextStyle.fs14.copyWith(
                 color: AppColor.black3,
               ),
             ),

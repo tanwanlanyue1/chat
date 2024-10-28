@@ -227,7 +227,7 @@ class ChatVideoMessage extends StatelessWidget {
       right: 8.rpx,
       child: Text(
         durationText,
-        style: AppTextStyle.fs12m.copyWith(
+        style: AppTextStyle.fs12.copyWith(
           color: Colors.white,
         ),
       ),

@@ -101,7 +101,7 @@ class AllCommentsPage extends StatelessWidget {
                   children: [
                     ConstrainedBox(
                       constraints: BoxConstraints(maxWidth: 140.rpx),
-                      child: Text(state.authorInfo.nickname,style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),),
+                      child: Text(state.authorInfo.nickname,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),),
                     ),
                     SizedBox(width: 4.rpx),
                     Visibility(
@@ -113,7 +113,7 @@ class AllCommentsPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 2.rpx),
-                    Text("${state.authorInfo.age ?? ''}",style: AppTextStyle.fs12m.copyWith(color: AppColor.black666),),
+                    Text("${state.authorInfo.age ?? ''}",style: AppTextStyle.fs12.copyWith(color: AppColor.black666),),
                   ],
                 ),
               ),
@@ -171,7 +171,7 @@ class AllCommentsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('${item.nickname}',style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                      Text('${item.nickname}',style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),maxLines: 1,overflow: TextOverflow.ellipsis,),
                       Row(
                         children: [
                           Visibility(
@@ -185,18 +185,18 @@ class AllCommentsPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Text("${item.age ?? ''}",style: AppTextStyle.fs12m.copyWith(color: AppColor.black92),),
+                          Text("${item.age ?? ''}",style: AppTextStyle.fs12.copyWith(color: AppColor.black92),),
                         ],
                       ),
                     ],
                   ),
                 ),
               ),
-              Text(CommonUtils.getPostTime(time: item.createTime),style: AppTextStyle.fs12m.copyWith(color: AppColor.black666))
+              Text(CommonUtils.getPostTime(time: item.createTime),style: AppTextStyle.fs12.copyWith(color: AppColor.black666))
             ],
           ),
           SizedBox(height: 12.rpx,),
-          Text(item.content ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.black20,height: 1.5),),
+          Text(item.content ?? '',style: AppTextStyle.fs14.copyWith(color: AppColor.black20,height: 1.5),),
         ],
       ),
     );
@@ -244,7 +244,7 @@ class AllCommentsPage extends StatelessWidget {
                   margin: EdgeInsets.only(right: 3.rpx),
                   child: AppImage.asset("assets/images/plaza/write.png",width: 20.rpx,height: 20.rpx,),
                 ),
-                Text(S.current.writeYourComments,style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+                Text(S.current.writeYourComments,style: AppTextStyle.fs14.copyWith(color: AppColor.gray9),),
               ],
             ),
           ),

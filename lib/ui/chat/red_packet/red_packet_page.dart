@@ -44,7 +44,7 @@ class RedPacketPage extends GetView<RedPacketController> {
 
   Widget buildBody() {
     return DefaultTextStyle(
-      style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),
+      style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue),
       child: ListView(
         padding: FEdgeInsets(all: 24.rpx),
         children: [
@@ -70,7 +70,7 @@ class RedPacketPage extends GetView<RedPacketController> {
         signed: false,
         decimal: true,
       ),
-      style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue),
+      style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue),
       inputFormatters: [
         DecimalTextInputFormatter(
           maxValue: SS.appConfig.redPacketMaxAmount,
@@ -122,7 +122,7 @@ class RedPacketPage extends GetView<RedPacketController> {
         inputFormatters: [
           LengthLimitingTextInputFormatter(SS.appConfig.redPacketDescLimit)
         ],
-        style: AppTextStyle.fs14b.copyWith(color: AppColor.blackBlue),
+        style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue),
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
@@ -130,7 +130,7 @@ class RedPacketPage extends GetView<RedPacketController> {
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(8.rpx),
           ),
-          hintStyle: AppTextStyle.fs14m.copyWith(color: AppColor.black999),
+          hintStyle: AppTextStyle.fs14.copyWith(color: AppColor.black999),
           hintText: '${controller.defaultDesc}（${S.current.redEnvelopeTextEntered}）',
           prefixIcon: SizedBox(width: 16.rpx),
           prefixIconConstraints: BoxConstraints(minHeight: 54.rpx),
@@ -153,7 +153,7 @@ class RedPacketPage extends GetView<RedPacketController> {
           textAlign: TextAlign.center,
           TextSpan(
               text: SS.appConfig.currencyUnit,
-              style: AppTextStyle.fs20b.copyWith(color: AppColor.gray5),
+              style: AppTextStyle.fs20m.copyWith(color: AppColor.gray5),
               children: [
                 TextSpan(
                   text: amount,

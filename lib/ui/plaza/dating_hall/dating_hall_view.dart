@@ -109,7 +109,7 @@ class DatingHallView extends StatelessWidget {
                             ),
                             child: Text(
                               state.speedDating[i]['subtitle'],
-                              style: AppTextStyle.fs10m
+                              style: AppTextStyle.fs10
                                   .copyWith(color: AppColor.white5,height: 1.0),
                               // .copyWith(color: Colors.white),
                             ),
@@ -139,7 +139,7 @@ class DatingHallView extends StatelessWidget {
             children: [
               Text(
                 S.current.datingHall,
-                style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),
+                style: AppTextStyle.fs16m.copyWith(color: AppColor.black20),
               ),
               const Spacer(),
               GestureDetector(
@@ -150,7 +150,7 @@ class DatingHallView extends StatelessWidget {
                     Text(
                       S.current.filtrate,
                       style:
-                      AppTextStyle.fs12m.copyWith(color: AppColor.gray5),
+                      AppTextStyle.fs12.copyWith(color: AppColor.gray5),
                     ),
                     SizedBox(width: 4.rpx,),
                     AppImage.asset(
@@ -256,7 +256,7 @@ class DatingHallView extends StatelessWidget {
                                         padding: EdgeInsets.only(right: item.gender == 1 ? 2.rpx : 0),
                                         child: Text(
                                           item.nickname ?? '',
-                                          style: AppTextStyle.fs16b.copyWith(color: AppColor.black20,height: 1,),
+                                          style: AppTextStyle.fs16m.copyWith(color: AppColor.black20,height: 1,),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
@@ -283,7 +283,7 @@ class DatingHallView extends StatelessWidget {
                                               ),
                                               Text(
                                                 "${item.age ?? ''}",
-                                                style: AppTextStyle.fs10m.copyWith(color: item.gender == 1 ? AppColor.primaryBlue:AppColor.textPurple,height: 1.2),
+                                                style: AppTextStyle.fs10.copyWith(color: item.gender == 1 ? AppColor.primaryBlue:AppColor.textPurple,height: 1.2),
                                               ),
                                             ],
                                           ),
@@ -296,7 +296,7 @@ class DatingHallView extends StatelessWidget {
                                   Text(
                                     item.style?.replaceAll(',', '｜') ?? '',
                                     style:
-                                    AppTextStyle.fs12b.copyWith(color: AppColor.black92,height: 1),
+                                    AppTextStyle.fs12m.copyWith(color: AppColor.black92,height: 1),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ):
@@ -309,7 +309,7 @@ class DatingHallView extends StatelessWidget {
                           width: 67.rpx,
                           child: CommonGradientButton(
                             text: S.current.getTouchWith,
-                            textStyle: AppTextStyle.fs12m.copyWith(color: Colors.white),
+                            textStyle: AppTextStyle.fs12.copyWith(color: Colors.white),
                             borderRadius: BorderRadius.circular(16.rpx),
                             onTap: (){
                               ChatManager().startChat(userId: item.uid!);

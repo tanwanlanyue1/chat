@@ -47,7 +47,7 @@ class ShowDialog extends StatelessWidget {
                           width: 120.rpx,
                           text: S.current.cancel,
                           onTap: Get.back,
-                          textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
+                          textStyle: AppTextStyle.fs16.copyWith(color: Colors.white),
                         ),
                         Button(
                           onPressed: ()=>callBack?.call(),
@@ -56,7 +56,7 @@ class ShowDialog extends StatelessWidget {
                           backgroundColor: AppColor.gray9,
                           child: Text(
                               S.current.confirm,
-                              style: AppTextStyle.fs16m
+                              style: AppTextStyle.fs16
                           ),
                         ),
                       ],

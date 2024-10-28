@@ -61,7 +61,7 @@ class MineMyTeamPage extends StatelessWidget {
                   child: Container(
                     margin: EdgeInsets.only(top: 24.rpx,bottom: 24.rpx),
                     alignment: Alignment.center,
-                    child: Text(S.current.totalArtist(state.total),style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
+                    child: Text(S.current.totalArtist(state.total),style: AppTextStyle.fs12.copyWith(color: AppColor.black999),),
                   ),
                 )),
               ),
@@ -104,7 +104,7 @@ class MineMyTeamPage extends StatelessWidget {
                             constraints: BoxConstraints(
                                 maxWidth: Get.width-240.rpx
                             ),
-                            child: Text(item.nickname ?? '',style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),maxLines: 1,overflow: TextOverflow.ellipsis),
+                            child: Text(item.nickname ?? '',style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),maxLines: 1,overflow: TextOverflow.ellipsis),
                           ),
                           // AppImage.asset("assets/images/mine/safety.png",width: 16.rpx,height: 16.rpx,),
                         ],
@@ -120,7 +120,7 @@ class MineMyTeamPage extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 8.rpx),
-                          Text('${item.age ?? ''}',style: AppTextStyle.fs12b.copyWith(color: AppColor.blue56),),
+                          Text('${item.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.blue56),),
                           Container(
                             width: 4.rpx,
                             height: 4.rpx,
@@ -130,7 +130,7 @@ class MineMyTeamPage extends StatelessWidget {
                               shape: BoxShape.circle,
                             ),
                           ),
-                          Text(S.current.goodGirl,style: AppTextStyle.fs12b.copyWith(color: AppColor.blue56),),
+                          Text(S.current.goodGirl,style: AppTextStyle.fs12m.copyWith(color: AppColor.blue56),),
                         ],
                       ),
                     ],
@@ -152,7 +152,7 @@ class MineMyTeamPage extends StatelessWidget {
                       children: [
                         AppImage.asset("assets/images/mine/cancelAContract.png",width: 20.rpx,height: 20.rpx,),
                         SizedBox(height: 2.rpx,),
-                        Text(S.current.cancelContract,style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
+                        Text(S.current.cancelContract,style: AppTextStyle.fs12.copyWith(color: AppColor.black999),),
                       ],
                     ),
                   ),
@@ -169,7 +169,7 @@ class MineMyTeamPage extends StatelessWidget {
                     children: [
                       AppImage.asset("assets/images/mine/look_contract_detail.png",width: 20.rpx,height: 20.rpx,),
                       SizedBox(height: 2.rpx,),
-                      Text(S.current.contract,style: AppTextStyle.fs12m.copyWith(color: AppColor.primary),),
+                      Text(S.current.contract,style: AppTextStyle.fs12.copyWith(color: AppColor.primary),),
                     ],
                   ),
                 ),
@@ -182,7 +182,7 @@ class MineMyTeamPage extends StatelessWidget {
                   children: [
                     AppImage.asset("assets/images/mine/relation.png",width: 20.rpx,height: 20.rpx,),
                     SizedBox(height: 2.rpx,),
-                    Text(S.current.contactBeauty,style: AppTextStyle.fs12m.copyWith(color: AppColor.purple6)),
+                    Text(S.current.contactBeauty,style: AppTextStyle.fs12.copyWith(color: AppColor.purple6)),
                   ],
                 ),
               ),

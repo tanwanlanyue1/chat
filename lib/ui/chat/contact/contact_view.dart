@@ -119,7 +119,7 @@ class _ContactViewState extends State<ContactView>
                   child: Text(
                     maxLines: 2,
                     userInfo?.nickname ?? '',
-                    style: AppTextStyle.fs16m.copyWith(
+                    style: AppTextStyle.fs16.copyWith(
                       color: AppColor.blackBlue,
                       height: 1.0,
                     ),
@@ -192,7 +192,7 @@ class _ContactViewState extends State<ContactView>
                   FilteringTextInputFormatter.allow(RegExp('[0-9]')),
                   LengthLimitingTextInputFormatter(16),
                 ],
-                style: AppTextStyle.fs14m.copyWith(
+                style: AppTextStyle.fs14.copyWith(
                   color: AppColor.blackBlue,
                 ),
                 decoration: InputDecoration(

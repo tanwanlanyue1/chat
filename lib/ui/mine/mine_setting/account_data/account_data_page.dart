@@ -71,7 +71,7 @@ class AccountDataPage extends StatelessWidget {
                       fillColor: Colors.transparent,
                       contentPadding: EdgeInsets.zero,
                       textStyle:
-                          AppTextStyle.fs16b.textColor(AppColor.blackBlue),
+                          AppTextStyle.fs16m.textColor(AppColor.blackBlue),
                     ),
                   ),
                   _padding(),
@@ -93,14 +93,14 @@ class AccountDataPage extends StatelessWidget {
                             padding: FEdgeInsets(horizontal: 16.rpx),
                             child: Text(
                               S.current.cancel,
-                              style: AppTextStyle.fs14b.copyWith(color: AppColor.black999),
+                              style: AppTextStyle.fs14m.copyWith(color: AppColor.black999),
                             ),
                           ),
                           commitButton: Padding(
                             padding: FEdgeInsets(horizontal: 16.rpx),
                             child: Text(
                               S.current.confirm,
-                              style: AppTextStyle.fs14b,
+                              style: AppTextStyle.fs14m,
                             ),
                           ),
                         ),
@@ -266,7 +266,7 @@ class AccountDataPage extends StatelessWidget {
                         textAction: TextInputAction.newline,
                         inputController: controller.signatureController,
                         contentPadding: EdgeInsets.zero,
-                        counterStyle: AppTextStyle.fs12m.copyWith(color: AppColor.black999),
+                        counterStyle: AppTextStyle.fs12.copyWith(color: AppColor.black999),
                       ),
                     ),
                   ),
@@ -314,12 +314,12 @@ class AccountDataPage extends StatelessWidget {
           children: [
             Text(
               title,
-              style: AppTextStyle.fs18b.textColor(AppColor.blackBlue),
+              style: AppTextStyle.fs18m.textColor(AppColor.blackBlue),
             ),
             if (detail != null)
               Text(
                 detail,
-                style: AppTextStyle.fs14b.textColor(AppColor.blackBlue),
+                style: AppTextStyle.fs14m.textColor(AppColor.blackBlue),
               ),
           ],
         ),
@@ -349,7 +349,7 @@ class AccountDataPage extends StatelessWidget {
           ),
           SizedBox(width: 4.rpx),
           Text(title,
-              style: AppTextStyle.fs14b
+              style: AppTextStyle.fs14m
                   .textColor(AppColor.blackBlue)),
         ],
       ),
@@ -393,7 +393,7 @@ class AccountDataPage extends StatelessWidget {
           SizedBox(height: 8.rpx),
           Text(
             title,
-            style: AppTextStyle.fs12b
+            style: AppTextStyle.fs12m
                 .textColor(AppColor.blackBlue)
                 .copyWith(height: 1),
           ),

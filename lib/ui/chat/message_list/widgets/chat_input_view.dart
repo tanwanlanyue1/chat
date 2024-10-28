@@ -125,7 +125,7 @@ class ChatInputViewState extends State<ChatInputView>
           keyboardType: TextInputType.multiline,
           textInputAction: TextInputAction.newline,
           maxLines: null,
-          style: AppTextStyle.fs14m.copyWith(
+          style: AppTextStyle.fs14.copyWith(
             height: 1.5,
             color: AppColor.blackBlue,
           ),
@@ -134,7 +134,7 @@ class ChatInputViewState extends State<ChatInputView>
             enabledBorder: InputBorder.none,
             contentPadding: FEdgeInsets(horizontal: 8.rpx, vertical: 8.rpx),
             hintText: S.current.enterText,
-            hintStyle: AppTextStyle.fs14m.copyWith(
+            hintStyle: AppTextStyle.fs14.copyWith(
               color: AppColor.grayText,
             )
           ),

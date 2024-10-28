@@ -100,7 +100,7 @@ class ConversationNoticeTile extends StatelessWidget {
           padding: FEdgeInsets(left: 8.rpx),
           child: Text(
             time.friendlyTime,
-            style: AppTextStyle.fs12r.copyWith(
+            style: AppTextStyle.fs12.copyWith(
               color: Colors.white,
               height: 1.1,
             ),
@@ -119,7 +119,7 @@ class ConversationNoticeTile extends StatelessWidget {
         model.content,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: AppTextStyle.fs14r.copyWith(
+        style: AppTextStyle.fs14.copyWith(
           color: Colors.white,
           height: 1.05,
         ),

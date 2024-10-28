@@ -141,7 +141,7 @@ class _ConversationListTileState extends State<ConversationListTile>
             padding: FEdgeInsets(left: 8.rpx),
             child: Text(
               time.friendlyTime,
-              style: AppTextStyle.fs12r.copyWith(
+              style: AppTextStyle.fs12.copyWith(
                 color: AppColor.grayText,
                 height: 1.1,
               ),
@@ -175,7 +175,7 @@ class _ConversationListTileState extends State<ConversationListTile>
         text,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: AppTextStyle.fs14r.copyWith(
+        style: AppTextStyle.fs14.copyWith(
           color: textColor,
           height: 1.05,
         ),
@@ -250,7 +250,7 @@ class _ConversationListTileState extends State<ConversationListTile>
         children: [
           Text(
             '[${uiState.button}]',
-            style: AppTextStyle.fs14m.copyWith(
+            style: AppTextStyle.fs14.copyWith(
               color: AppColor.blackBlue,
               height: 1.0,
             ),
@@ -262,7 +262,7 @@ class _ConversationListTileState extends State<ConversationListTile>
               builder: (dur, text) {
                 return Text(
                   S.current.remaining(text),
-                  style: AppTextStyle.fs14m.copyWith(
+                  style: AppTextStyle.fs14.copyWith(
                     color: AppColor.red,
                     height: 1.0,
                   ),
@@ -281,7 +281,7 @@ class _ConversationListTileState extends State<ConversationListTile>
 
     children.add(Text(
       uiState.desc,
-      style: AppTextStyle.fs14r.copyWith(
+      style: AppTextStyle.fs14.copyWith(
         color: AppColor.blackBlue,
         height: 1.0,
       ),

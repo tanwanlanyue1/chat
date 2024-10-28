@@ -76,13 +76,13 @@ class DraftDialog extends StatelessWidget {
                 SizedBox(height: 12.rpx),
                 Text(
                   "${S.current.agreedSum}${item.userInfo?.nickname ?? ''}${S.current.appointment}？",
-                  style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),
+                  style: AppTextStyle.fs16m.copyWith(color: AppColor.black20),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 12.rpx),
                   child: Text(
                     S.current.inOrderToProtect,
-                    style: AppTextStyle.fs12m.copyWith(color: AppColor.black92),
+                    style: AppTextStyle.fs12.copyWith(color: AppColor.black92),
                   ),
                 ),
                 Container(
@@ -98,7 +98,7 @@ class DraftDialog extends StatelessWidget {
                       Text(
                         S.current.beWillingPay,
                         style:
-                        AppTextStyle.fs14b.copyWith(color: AppColor.black20),
+                        AppTextStyle.fs14m.copyWith(color: AppColor.black20),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 16.rpx),
@@ -107,12 +107,12 @@ class DraftDialog extends StatelessWidget {
                           children: [
                             Text(
                               S.current.serviceCharge,
-                              style: AppTextStyle.fs14m
+                              style: AppTextStyle.fs14
                                   .copyWith(color: AppColor.black6),
                             ),
                             Text(
                               (item.serviceCharge != null && item.serviceCharge! > 0) ? "\$${item.serviceCharge}":S.current.freeCharge,
-                              style: AppTextStyle.fs14b
+                              style: AppTextStyle.fs14m
                                   .copyWith(color: AppColor.black20),
                             ),
                           ],
@@ -123,12 +123,12 @@ class DraftDialog extends StatelessWidget {
                         children: [
                           Text(
                             S.current.earnestMoney,
-                            style: AppTextStyle.fs14m
+                            style: AppTextStyle.fs14
                                 .copyWith(color: AppColor.black6),
                           ),
                           Text(
                             "\$${SS.appConfig.configRx()?.deposit ?? 0}",
-                            style: AppTextStyle.fs14b
+                            style: AppTextStyle.fs14m
                                 .copyWith(color: AppColor.gradientBegin),
                           ),
                         ],
@@ -141,7 +141,7 @@ class DraftDialog extends StatelessWidget {
                       Text(
                         S.current.youHavePay,
                         style:
-                        AppTextStyle.fs14b.copyWith(color: AppColor.black20),
+                        AppTextStyle.fs14m.copyWith(color: AppColor.black20),
                       ),
                       SizedBox(height: 16.rpx),
                       Row(
@@ -149,12 +149,12 @@ class DraftDialog extends StatelessWidget {
                         children: [
                           Text(
                             S.current.earnestMoney,
-                            style: AppTextStyle.fs14m
+                            style: AppTextStyle.fs14
                                 .copyWith(color: AppColor.black6),
                           ),
                           Text(
                             "\$${SS.appConfig.configRx()?.deposit ?? 0}",
-                            style: AppTextStyle.fs14b
+                            style: AppTextStyle.fs14m
                                 .copyWith(color: AppColor.gradientBegin),
                           ),
                         ],

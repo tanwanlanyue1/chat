@@ -96,11 +96,11 @@ class OrderPaymentDialog extends StatelessWidget {
                 children: [
                   Text(
                     S.current.serviceCharge,
-                    style: AppTextStyle.fs14m.copyWith(color: AppColor.black6),
+                    style: AppTextStyle.fs14.copyWith(color: AppColor.black6),
                   ),
                   Text(
                     order.serviceCharge.toCurrencyString(),
-                    style: AppTextStyle.fs14b.copyWith(color: AppColor.blackBlue),
+                    style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue),
                   ),
                 ],
               ),
@@ -112,12 +112,12 @@ class OrderPaymentDialog extends StatelessWidget {
                     Text(
                       S.current.earnestMoney,
                       style:
-                          AppTextStyle.fs14m.copyWith(color: AppColor.black6),
+                          AppTextStyle.fs14.copyWith(color: AppColor.black6),
                     ),
                     Text(
                       order.deposit.toCurrencyString(),
                       style:
-                          AppTextStyle.fs14b.copyWith(color: AppColor.primaryBlue),
+                          AppTextStyle.fs14m.copyWith(color: AppColor.primaryBlue),
                     ),
                   ],
                 ),
@@ -131,11 +131,11 @@ class OrderPaymentDialog extends StatelessWidget {
                     Text(
                       S.current.totalCost,
                       style:
-                          AppTextStyle.fs14m.copyWith(color: AppColor.black6),
+                          AppTextStyle.fs14.copyWith(color: AppColor.black6),
                     ),
                     Text(
                       (order.deposit + order.serviceCharge).toCurrencyString(),
-                      style: AppTextStyle.fs14b.copyWith(color: AppColor.blackBlue),
+                      style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue),
                     ),
                   ],
                 ),
@@ -158,7 +158,7 @@ class OrderPaymentDialog extends StatelessWidget {
           child: Text(
             S.current.securityDepositHint(order.deposit.toCurrencyString()),
             textAlign: TextAlign.center,
-            style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue, height: 1.5),
+            style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue, height: 1.5),
           ),
         ),
         Padding(
@@ -166,7 +166,7 @@ class OrderPaymentDialog extends StatelessWidget {
           child: Text(
             S.current.noteDepositWillBeRefunded,
             textAlign: TextAlign.start,
-            style: AppTextStyle.fs12m.copyWith(
+            style: AppTextStyle.fs12.copyWith(
               color: AppColor.gray9,
               height: 1.0,
             ),
@@ -205,7 +205,7 @@ class OrderPaymentDialog extends StatelessWidget {
           return Text(
             text,
             textAlign: TextAlign.center,
-            style: AppTextStyle.fs16b.copyWith(
+            style: AppTextStyle.fs16m.copyWith(
               color: AppColor.blackBlue,
               height: 1.5,
             ),

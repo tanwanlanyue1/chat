@@ -61,7 +61,7 @@ class OrderAcceptDialog extends StatelessWidget {
               padding: FEdgeInsets(top: 12.rpx, horizontal: 16.rpx),
               child: Text(
                 S.current.inOrderToProtect,
-                style: AppTextStyle.fs12m.copyWith(
+                style: AppTextStyle.fs12.copyWith(
                   color: AppColor.grayText,
                   height: 1.5,
                 ),
@@ -81,7 +81,7 @@ class OrderAcceptDialog extends StatelessWidget {
                     height: 50.rpx,
                     child: Text(
                       S.current.refuse,
-                      style: AppTextStyle.fs16m,
+                      style: AppTextStyle.fs16,
                     ),
                   ),
                   CommonGradientButton(
@@ -122,7 +122,7 @@ class OrderAcceptDialog extends StatelessWidget {
       return Text(
         '${S.current.agreedSum} ${info?.baseInfo.userName} ${S.current.appointment}？',
         textAlign: TextAlign.center,
-        style: AppTextStyle.fs14b.copyWith(
+        style: AppTextStyle.fs14m.copyWith(
           color: AppColor.blackBlue,
           height: 1.5,
         ),

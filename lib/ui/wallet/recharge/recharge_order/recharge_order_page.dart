@@ -40,7 +40,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
             Text(
               '请使用支持波场网络(tron)的钱包或交易软件进行转账',
               textAlign: TextAlign.center,
-              style: AppTextStyle.fs14m.copyWith(
+              style: AppTextStyle.fs14.copyWith(
                 color: AppColor.black3,
               ),
             ),
@@ -59,7 +59,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
               borderColor: AppColor.black999,
               child: Text(
                 '查看订单',
-                style: AppTextStyle.fs14m.copyWith(color: AppColor.black6),
+                style: AppTextStyle.fs14.copyWith(color: AppColor.black6),
               ),
             ),
             if(orderStatus?.isPending == true) Button.stadium(
@@ -68,7 +68,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
               height: 46.rpx,
               child: Text(
                 '已完成转账',
-                style: AppTextStyle.fs14m,
+                style: AppTextStyle.fs14,
               ),
             ),
           ],
@@ -91,7 +91,8 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
           children: [
             Text(
               amountText,
-              style: AppTextStyle.fs26b.copyWith(
+              style: AppTextStyle.bold.copyWith(
+                fontSize: 26.rpx,
                 color: AppColor.black3,
                 height: 1.0,
               ),
@@ -100,7 +101,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
               padding: FEdgeInsets(left: 4.rpx),
               child: Text(
                 'USDT',
-                style: AppTextStyle.fs16m.copyWith(
+                style: AppTextStyle.fs16.copyWith(
                   color: AppColor.black3,
                   height: 1.2,
                 ),
@@ -137,7 +138,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
               alignment: Alignment.center,
               child: Text(
                 address,
-                style: AppTextStyle.fs14m.copyWith(
+                style: AppTextStyle.fs14.copyWith(
                   color: AppColor.black3,
                 ),
               ),
@@ -190,7 +191,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
                   child: Text(
                     '转账超时\n二维码已过期',
                     textAlign: TextAlign.center,
-                    style: AppTextStyle.fs14b.copyWith(
+                    style: AppTextStyle.fs14m.copyWith(
                       color: AppColor.red,
                       height: 1.3,
                     ),
@@ -211,7 +212,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
                   child: Text(
                     '交易已完成',
                     textAlign: TextAlign.center,
-                    style: AppTextStyle.fs14b.copyWith(
+                    style: AppTextStyle.fs14m.copyWith(
                       color: Colors.white
                     ),
                   ),
@@ -243,7 +244,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
             child: Text(
               value,
               textAlign: TextAlign.center,
-              style: AppTextStyle.fs18b.copyWith(
+              style: AppTextStyle.fs18m.copyWith(
                 color: color ?? AppColor.black3,
                 height: 1.0,
               ),
@@ -300,7 +301,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
                     padding: FEdgeInsets(bottom: 2.rpx),
                     child: Text(
                       ':',
-                      style: AppTextStyle.fs18b.copyWith(
+                      style: AppTextStyle.fs18m.copyWith(
                         color: textColor ?? AppColor.black3,
                         height: 1.0,
                       ),
@@ -317,11 +318,11 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
   Widget buildDesc(String text) {
     return HighlightText(
       text,
-      style: AppTextStyle.fs14m.copyWith(
+      style: AppTextStyle.fs14.copyWith(
         color: AppColor.black6,
         height: 1.5,
       ),
-      highlightStyle: AppTextStyle.fs14m.copyWith(
+      highlightStyle: AppTextStyle.fs14.copyWith(
         color: AppColor.primaryBlue,
         height: 1.5,
       ),

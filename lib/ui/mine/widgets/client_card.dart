@@ -53,7 +53,7 @@ class ClientCard extends StatelessWidget {
                             constraints: BoxConstraints(
                                 maxWidth: Get.width-200.rpx
                             ),
-                            child: Text(item!.nickname,style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                            child: Text(item!.nickname,style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),maxLines: 1,overflow: TextOverflow.ellipsis,),
                           ),
                           // AppImage.asset("assets/images/mine/safety.png",width: 16.rpx,height: 16.rpx,),
                         ],
@@ -69,7 +69,7 @@ class ClientCard extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 8.rpx),
-                          Text('${item?.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.blue56),),
+                          Text('${item?.age ?? ''}',style: AppTextStyle.fs12.copyWith(color: AppColor.blue56),),
                           Container(
                             width: 4.rpx,
                             height: 4.rpx,
@@ -82,10 +82,10 @@ class ClientCard extends StatelessWidget {
                           visitTime == null ?
                           Text(
                             item!.type.label,
-                            style: AppTextStyle.fs12m
+                            style: AppTextStyle.fs12
                                 .copyWith(color: AppColor.black666),
                           ) :
-                          Text("${CommonUtils.getPostTime(time: visitTime,)}",style: AppTextStyle.fs12m.copyWith(color: AppColor.blue56),),
+                          Text("${CommonUtils.getPostTime(time: visitTime,)}",style: AppTextStyle.fs12.copyWith(color: AppColor.blue56),),
                         ],
                       ),
                     ],
@@ -97,7 +97,7 @@ class ClientCard extends StatelessWidget {
                 width: 82.rpx,
                 height: 28.rpx,
                 backgroundColor: item!.gender.isFemale ? AppColor.purple6 : AppColor.textBlue,
-                child: Text(S.current.getTouchWith,style: AppTextStyle.fs12b.copyWith(color: Colors.white),),
+                child: Text(S.current.getTouchWith,style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
               )
             ],
           ),

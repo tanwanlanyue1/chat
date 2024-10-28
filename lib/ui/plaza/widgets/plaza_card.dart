@@ -119,7 +119,7 @@ class PlazaCard extends StatelessWidget {
                     },
                     child: Text(
                       "${item.nickname}",
-                      style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),
+                      style: AppTextStyle.fs16m.copyWith(color: AppColor.black20),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -137,7 +137,7 @@ class PlazaCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Text('${item.age ?? ''}',style: AppTextStyle.fs12m.copyWith(color: AppColor.black22),),
+                      Text('${item.age ?? ''}',style: AppTextStyle.fs12.copyWith(color: AppColor.black22),),
                       Visibility(
                         visible: item.age != null,
                         child: Container(
@@ -150,7 +150,7 @@ class PlazaCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Text("${labelString()}",style: AppTextStyle.fs12m.copyWith(color: AppColor.black22),),
+                      Text("${labelString()}",style: AppTextStyle.fs12.copyWith(color: AppColor.black22),),
                     ],
                   ),
                 ],
@@ -180,7 +180,7 @@ class PlazaCard extends StatelessWidget {
         margin: EdgeInsets.only(top: user ? 0 : 10.rpx,bottom: 4.rpx),
         alignment: Alignment.centerLeft,
         child: Text(
-          item.content!.fixAutoLines(),style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),maxLines: 6,overflow: TextOverflow.ellipsis,
+          item.content!.fixAutoLines(),style: AppTextStyle.fs14.copyWith(color: AppColor.black20),maxLines: 6,overflow: TextOverflow.ellipsis,
         )
     ) :
     Container();
@@ -370,7 +370,7 @@ class PlazaCard extends StatelessWidget {
               onTap: (){
                 ChatManager().startChat(userId: item.uid!);
               },
-              textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
+              textStyle: AppTextStyle.fs14.copyWith(color: Colors.white),
             ),
           ),
         ),
@@ -400,11 +400,11 @@ class PlazaCard extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                       text: "${commentList.nickname}：",
-                      style: AppTextStyle.fs12b.copyWith(color: AppColor.black20,height: 1.5),
+                      style: AppTextStyle.fs12m.copyWith(color: AppColor.black20,height: 1.5),
                       children: [
                         TextSpan(
                             text: '${commentList.content}',
-                            style: AppTextStyle.fs12m.copyWith(color: AppColor.black666,height: 1.5)
+                            style: AppTextStyle.fs12.copyWith(color: AppColor.black666,height: 1.5)
                         ),
                       ],
                     ),
@@ -434,7 +434,7 @@ class PlazaCard extends StatelessWidget {
               },
               child: Container(
                 margin: EdgeInsets.only(top: 12.rpx),
-                child: Text(S.current.seeAllReviews,style: AppTextStyle.fs12m.copyWith(color: AppColor.gradientBegin),),
+                child: Text(S.current.seeAllReviews,style: AppTextStyle.fs12.copyWith(color: AppColor.gradientBegin),),
               ),
             ),
           ),

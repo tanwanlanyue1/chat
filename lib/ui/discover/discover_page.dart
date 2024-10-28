@@ -31,10 +31,10 @@ class DiscoverPage extends StatelessWidget {
         title: TabBar(
           splashFactory: NoSplash.splashFactory,
           controller: controller.tabController,
-          labelStyle: AppTextStyle.fs20b.copyWith(fontWeight: FontWeight.w900),
+          labelStyle: AppTextStyle.fs20m.copyWith(fontWeight: FontWeight.w900),
           labelColor: AppColor.blackBlue,
           unselectedLabelStyle:
-          AppTextStyle.fs16m.copyWith(fontWeight: FontWeight.w500),
+          AppTextStyle.fs16.copyWith(fontWeight: FontWeight.w500),
           unselectedLabelColor: AppColor.grayText,
           isScrollable: true,
           labelPadding: FEdgeInsets.zero,
@@ -70,7 +70,7 @@ class DiscoverPage extends StatelessWidget {
               child: CommonGradientButton(
                 text: S.current.releaseInvitation,
                 height: 32.rpx,
-                textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
+                textStyle: AppTextStyle.fs14.copyWith(color: Colors.white),
                 onTap: controller.onTapInvitation,
                 borderRadius: BorderRadius.circular(16.rpx),
               ),

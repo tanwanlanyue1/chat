@@ -50,7 +50,7 @@ class MapPage extends GetView<MapController> {
               height: 32.rpx,
               text: '确定',
               borderRadius: BorderRadius.circular(4.rpx),
-              textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
+              textStyle: AppTextStyle.fs14.copyWith(color: Colors.white),
               onTap: controller.onTapConfirm,
             ),
           ),
@@ -94,11 +94,11 @@ class MapPage extends GetView<MapController> {
       child: TextField(
         focusNode: controller.focusNode,
         controller: controller.keywordEditingController,
-        style: AppTextStyle.fs14m.copyWith(color: AppColor.black3),
+        style: AppTextStyle.fs14.copyWith(color: AppColor.black3),
         maxLines: 1,
         decoration: InputDecoration(
             hintText: '输入地点（含附近门店/小区/楼宇寻找位置）',
-            hintStyle: AppTextStyle.fs14m.copyWith(color: AppColor.black9),
+            hintStyle: AppTextStyle.fs14.copyWith(color: AppColor.black9),
             fillColor: AppColor.background,
             filled: true,
             border: inputBorder,

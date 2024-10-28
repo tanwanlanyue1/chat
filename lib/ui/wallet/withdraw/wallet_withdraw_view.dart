@@ -107,7 +107,7 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
                   children: [
                     Text(
                       '我已成功提现，刷新余额',
-                      style: AppTextStyle.fs12m.copyWith(
+                      style: AppTextStyle.fs12.copyWith(
                         color: AppColor.black9,
                         height: 1.0,
                       ),
@@ -138,21 +138,21 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
         borderRadius: BorderRadius.circular(8.rpx),
       ),
       child: DefaultTextStyle(
-        style: AppTextStyle.fs14m.copyWith(
+        style: AppTextStyle.fs14.copyWith(
           color: AppColor.black3,
         ),
         child: Row(
           children: [
             Text(
               '提现金额：',
-              style: AppTextStyle.fs14m.copyWith(
+              style: AppTextStyle.fs14.copyWith(
                 color: AppColor.black6,
               ),
             ),
             Expanded(
               child: TextField(
                 controller: controller.amountEditingController,
-                style: AppTextStyle.fs14b.copyWith(
+                style: AppTextStyle.fs14m.copyWith(
                   color: AppColor.black3,
                 ),
                 keyboardType: const TextInputType.numberWithOptions(
@@ -196,16 +196,16 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
         text,
         words: {
           '提现须知': HighlightedWord(
-              textStyle: AppTextStyle.fs12m.copyWith(
+              textStyle: AppTextStyle.fs12.copyWith(
             color: AppColor.black666,
             height: 1.5,
           )),
         },
-        style: AppTextStyle.fs12m.copyWith(
+        style: AppTextStyle.fs12.copyWith(
           color: AppColor.black999,
           height: 1.5,
         ),
-        highlightStyle: AppTextStyle.fs12m.copyWith(
+        highlightStyle: AppTextStyle.fs12.copyWith(
           color: AppColor.red,
           height: 1.5,
         ),

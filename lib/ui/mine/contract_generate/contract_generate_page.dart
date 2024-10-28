@@ -79,7 +79,7 @@ class ContractGeneratePage extends GetView<ContractGenerateController> {
             state.selectedBeautyRx(value);
           },
           hintText: S.current.selectFriendBinding,
-          textStyle: AppTextStyle.fs12b.copyWith(color: AppColor.blackBlue),
+          textStyle: AppTextStyle.fs12m.copyWith(color: AppColor.blackBlue),
           menuStyle: MenuStyle(
             elevation: MaterialStateProperty.all(1),
             alignment: const Alignment(-1.0, 1.4),
@@ -103,7 +103,7 @@ class ContractGeneratePage extends GetView<ContractGenerateController> {
               gapPadding: 0,
             ),
             isDense: true,
-            hintStyle: AppTextStyle.fs12b.copyWith(
+            hintStyle: AppTextStyle.fs12m.copyWith(
               color: AppColor.black666,
             ),
             contentPadding: FEdgeInsets(horizontal: 16.rpx),
@@ -115,7 +115,7 @@ class ContractGeneratePage extends GetView<ContractGenerateController> {
                 label: item.nickname,
                 style: TextButton.styleFrom(
                   foregroundColor: AppColor.blackBlue,
-                  textStyle: AppTextStyle.fs14b,
+                  textStyle: AppTextStyle.fs14m,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   minimumSize: Size.zero,
                   fixedSize: Size(double.infinity, 36.rpx),
@@ -160,14 +160,14 @@ class ContractGeneratePage extends GetView<ContractGenerateController> {
               width: 146.rpx,
               height: 36.rpx,
               onPressed: controller.onTapEditContract,
-              child: Text(S.current.contractEdit, style: AppTextStyle.fs14m),
+              child: Text(S.current.contractEdit, style: AppTextStyle.fs14),
             ),
             Button.stadium(
               width: 146.rpx,
               height: 36.rpx,
               margin: FEdgeInsets(vertical: 36.rpx),
               onPressed: controller.pushContract,
-              child: Text(S.current.contractPush, style: AppTextStyle.fs14m),
+              child: Text(S.current.contractPush, style: AppTextStyle.fs14),
             ),
           ],
         ),

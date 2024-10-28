@@ -48,7 +48,7 @@ class ContactListTile extends StatelessWidget {
                               BoxConstraints(maxWidth: Get.width - 200.rpx),
                           child: Text(
                             userModel.nickname,
-                            style: AppTextStyle.fs14m.copyWith(
+                            style: AppTextStyle.fs14.copyWith(
                               color: AppColor.blackBlue,
                               height: 1.0,
                             ),

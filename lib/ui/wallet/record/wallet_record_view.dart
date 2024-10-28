@@ -76,7 +76,7 @@ class _WalletRecordViewState extends State<WalletRecordView>
             Expanded(
               child: Text(
                 '支出${totalIncome.toCurrencyString()}  收益${totalExpenditure.toCurrencyString()}',
-                style: AppTextStyle.fs14m.copyWith(
+                style: AppTextStyle.fs14.copyWith(
                   color: AppColor.blackBlue,
                   height: 1,
                 ),
@@ -118,7 +118,7 @@ class _WalletRecordViewState extends State<WalletRecordView>
       children: [
         Text(
           item.createTime.dateTime.formatYMDHHmm2,
-          style: AppTextStyle.fs12m.copyWith(
+          style: AppTextStyle.fs12.copyWith(
             color: AppColor.black999,
             height: 1.0,
           ),
@@ -139,7 +139,7 @@ class _WalletRecordViewState extends State<WalletRecordView>
               Expanded(
                 child: Text(
                   item.typeName,
-                  style: AppTextStyle.fs14m.copyWith(
+                  style: AppTextStyle.fs14.copyWith(
                     color: AppColor.black999,
                     height: 1.0,
                   ),

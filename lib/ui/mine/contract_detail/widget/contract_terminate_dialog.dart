@@ -45,7 +45,7 @@ class ContractTerminateDialog extends StatelessWidget {
                     Text(
                       isAgent ? S.current.confirmRescissionOrNot(contract.partyBName) : S.current.contractTerminateHint,
                       textAlign: TextAlign.center,
-                      style: AppTextStyle.fs16m.copyWith(
+                      style: AppTextStyle.fs16.copyWith(
                         color: AppColor.gray5,
                         height: 24 / 16,
                       ),

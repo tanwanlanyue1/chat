@@ -85,7 +85,7 @@ class ConfirmDialog extends StatelessWidget {
                 padding: FEdgeInsets(horizontal: 16.rpx),
                 child: DefaultTextStyle(
                   textAlign: TextAlign.center,
-                  style: AppTextStyle.fs16b.copyWith(
+                  style: AppTextStyle.fs16m.copyWith(
                     color: AppColor.blackBlue,
                     height: 1.5,
                   ),
@@ -116,7 +116,7 @@ class ConfirmDialog extends StatelessWidget {
               height: 50.rpx,
               backgroundColor: AppColor.black999,
               child: DefaultTextStyle(
-                style: AppTextStyle.fs16m,
+                style: AppTextStyle.fs16,
                 child: cancelButtonText ?? Text(S.current.cancel),
               ),
               onPressed: () {
@@ -128,7 +128,7 @@ class ConfirmDialog extends StatelessWidget {
             width: 120.rpx,
             height: 50.rpx,
             text: okText ?? S.current.confirm,
-            textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
+            textStyle: AppTextStyle.fs16.copyWith(color: Colors.white),
             onTap: () {
               Get.back(result: true);
             },

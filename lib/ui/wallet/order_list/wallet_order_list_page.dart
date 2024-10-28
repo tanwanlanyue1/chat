@@ -21,7 +21,7 @@ class WalletOrderListPage extends StatelessWidget {
           leading: AppBackButton.light(),
           backgroundColor: AppColor.primaryBlue,
           title: const Text('订单列表'),
-          titleTextStyle: AppTextStyle.fs18b.copyWith(color: Colors.white),
+          titleTextStyle: AppTextStyle.fs18m.copyWith(color: Colors.white),
           systemOverlayStyle: SystemUI.lightStyle,
         ),
         body: Column(
@@ -46,9 +46,9 @@ class WalletOrderListPage extends StatelessWidget {
       color: Colors.white,
       margin: const FEdgeInsets(bottom: 1),
       child: TabBar(
-        labelStyle: AppTextStyle.fs16b,
+        labelStyle: AppTextStyle.fs16m,
         labelColor: AppColor.primaryBlue,
-        unselectedLabelStyle: AppTextStyle.fs16m,
+        unselectedLabelStyle: AppTextStyle.fs16,
         unselectedLabelColor: AppColor.black3,
         indicatorColor: AppColor.primaryBlue,
         indicatorWeight: 3.rpx,

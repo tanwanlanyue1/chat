@@ -41,7 +41,7 @@ class SettingSectionTile extends StatelessWidget {
     assert(!(onChanged != null && onTap != null), '不能同时设置 onChanged和onTap');
 
     Widget widget = DefaultTextStyle(
-      style: AppTextStyle.fs14m.copyWith(
+      style: AppTextStyle.fs14.copyWith(
         height: 21 / 15,
         color: AppColor.gray5,
       ),
@@ -54,7 +54,7 @@ class SettingSectionTile extends StatelessWidget {
         children: [
           widget,
           DefaultTextStyle(
-            style: AppTextStyle.fs12m.copyWith(
+            style: AppTextStyle.fs12.copyWith(
               height: 16 / 11,
               color: AppColor.gray9,
             ),

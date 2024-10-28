@@ -19,16 +19,16 @@ class BeautifulStatusSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget text = Text(status.label, style: AppTextStyle.fs12b);
+    Widget text = Text(status.label, style: AppTextStyle.fs12m);
     if (status == UserStatus.offline) {
       text = Text.rich(
         TextSpan(
-          style: AppTextStyle.fs12b,
+          style: AppTextStyle.fs12m,
           children: [
             TextSpan(text: status.label),
             TextSpan(
               text: '\n（点击切换）',
-              style: AppTextStyle.fs10m,
+              style: AppTextStyle.fs10,
             ),
           ],
         ),

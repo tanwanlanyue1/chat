@@ -30,7 +30,7 @@ class WalletOrderListTile extends StatelessWidget {
             color: Colors.white,
             padding: FEdgeInsets(all: 16.rpx),
             child: DefaultTextStyle(
-              style: AppTextStyle.fs14m.copyWith(
+              style: AppTextStyle.fs14.copyWith(
                 color: AppColor.black6,
               ),
               child: Column(
@@ -78,7 +78,7 @@ class WalletOrderListTile extends StatelessWidget {
       ),
       child: Text(
         isRecharge ? '充值' : '提现',
-        style: AppTextStyle.fs14m.copyWith(
+        style: AppTextStyle.fs14.copyWith(
           color: isRecharge ? AppColor.primaryBlue : AppColor.orange6,
         ),
       ),
@@ -93,7 +93,7 @@ class WalletOrderListTile extends StatelessWidget {
       width: 60.rpx,
       height: 26.rpx,
       borderRadius: BorderRadius.circular(4.rpx),
-      child: Text('联系客服', style: AppTextStyle.fs12m),
+      child: Text('联系客服', style: AppTextStyle.fs12),
     );
   }
 

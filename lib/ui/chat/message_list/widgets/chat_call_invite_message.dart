@@ -47,7 +47,7 @@ class ChatCallInviteMessage extends StatelessWidget {
           child: Text(
             message.callInviteContent?.message ?? '',
             textAlign: TextAlign.left,
-            style: AppTextStyle.fs14m.copyWith(
+            style: AppTextStyle.fs14.copyWith(
               color: message.isMine ? Colors.white : AppColor.blackBlue,
               height: 1.5,
             ),

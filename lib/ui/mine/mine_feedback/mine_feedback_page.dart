@@ -218,7 +218,7 @@ class MineFeedbackPage extends StatelessWidget {
             hintText: S.current.pleaseEmailPhone,
             fillColor: AppColor.white8,
             inputController: controller.contactController,
-            textStyle: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
+            textStyle: AppTextStyle.fs14.copyWith(color: AppColor.gray5),
             border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.all(Radius.circular(8.rpx))),

@@ -46,7 +46,7 @@ class _WalletAddressAddDialogState extends State<WalletAddressAddDialog> {
                   padding: FEdgeInsets(vertical: 16.rpx),
                   child: Text(
                     '新增钱包地址',
-                    style: AppTextStyle.fs18b.copyWith(
+                    style: AppTextStyle.fs18m.copyWith(
                       color: AppColor.blackBlue,
                       height: 1.0,
                     ),
@@ -95,7 +95,7 @@ class _WalletAddressAddDialogState extends State<WalletAddressAddDialog> {
       padding: FEdgeInsets(horizontal: 16.rpx, top: 24.rpx),
       child: TextField(
         controller: addressEditingController,
-        style: AppTextStyle.fs12m.copyWith(
+        style: AppTextStyle.fs12.copyWith(
           color: AppColor.black3,
         ),
         decoration: InputDecoration(
@@ -105,7 +105,7 @@ class _WalletAddressAddDialogState extends State<WalletAddressAddDialog> {
           enabledBorder: border,
           focusedBorder: border,
           hintText: '请输入钱包地址',
-          hintStyle: AppTextStyle.fs12m.copyWith(
+          hintStyle: AppTextStyle.fs12.copyWith(
             color: AppColor.black9,
           ),
           contentPadding: FEdgeInsets(horizontal: 12.rpx, vertical: 14.rpx),

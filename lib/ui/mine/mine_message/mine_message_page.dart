@@ -33,7 +33,7 @@ class MineMessagePage extends StatelessWidget {
             shadowColor: Colors.black.withOpacity(0.2),
             bottom: TabBar(
               controller: controller.tabController,
-              labelStyle: AppTextStyle.fs14b,
+              labelStyle: AppTextStyle.fs14m,
               labelColor: AppColor.primaryBlue,
               unselectedLabelColor: AppColor.grayText,
               indicatorColor: AppColor.primaryBlue,

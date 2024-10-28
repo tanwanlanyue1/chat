@@ -68,7 +68,7 @@ class MineClientPage extends StatelessWidget {
                     child: Container(
                       margin: EdgeInsets.only(top: 24.rpx,bottom: 24.rpx),
                       alignment: Alignment.center,
-                      child: Text(S.current.totalClients(controller.pagingController.length),style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
+                      child: Text(S.current.totalClients(controller.pagingController.length),style: AppTextStyle.fs12.copyWith(color: AppColor.black999),),
                     ),
                   );
                 },

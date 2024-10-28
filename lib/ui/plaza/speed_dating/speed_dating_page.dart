@@ -78,7 +78,7 @@ class SpeedDatingPage extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Text(
                         S.current.matchChat,
-                        style: AppTextStyle.fs14m.textColor(Colors.white),
+                        style: AppTextStyle.fs14.textColor(Colors.white),
                       ),
                     ),
                     SizedBox(height: isVideo ? 51.rpx : 72.5.rpx),
@@ -208,7 +208,7 @@ class SpeedDatingPage extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: AppTextStyle.fs12m.copyWith(
+        style: AppTextStyle.fs12.copyWith(
           color: Colors.white,
           height: 1,
         ),
@@ -233,7 +233,7 @@ class SpeedDatingPage extends StatelessWidget {
 
       return Text(text,
           textAlign: TextAlign.center,
-          style: AppTextStyle.fs14b.copyWith(
+          style: AppTextStyle.fs14m.copyWith(
             color: Colors.white,
           ));
     });

@@ -88,7 +88,7 @@ class AppUpdateDialog extends StatelessWidget {
           children: [
             Text(
               S.current.discoverNewVersion,
-              style: AppTextStyle.fs18b.copyWith(
+              style: AppTextStyle.fs18m.copyWith(
                 color: AppColor.blackBlue,
                 height: 1,
               ),
@@ -103,7 +103,7 @@ class AppUpdateDialog extends StatelessWidget {
               ),
               child: Text(
                 info.content,
-                style: AppTextStyle.fs14m.copyWith(
+                style: AppTextStyle.fs14.copyWith(
                   color: AppColor.blackBlue,
                 ),
               ),
@@ -121,7 +121,7 @@ class AppUpdateDialog extends StatelessWidget {
                       height: 50.rpx,
                       width: 120.rpx,
                       backgroundColor: AppColor.gray9,
-                      child: Text(S.current.ignoreForNow, style: AppTextStyle.fs16m),
+                      child: Text(S.current.ignoreForNow, style: AppTextStyle.fs16),
                     ),
                   CommonGradientButton(
                     height: 50.rpx,
@@ -140,7 +140,7 @@ class AppUpdateDialog extends StatelessWidget {
                         _jumpToAppMarket();
                       }
                     },
-                    textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
+                    textStyle: AppTextStyle.fs16.copyWith(color: Colors.white),
                   ),
                 ],
               ),
@@ -181,7 +181,7 @@ class AppUpdateDialog extends StatelessWidget {
               Text(
                 '${S.current.downloadingProgress} ${(progress * 100).toStringAsFixed(0)}%',
                 textAlign: TextAlign.center,
-                style: AppTextStyle.fs14m.copyWith(
+                style: AppTextStyle.fs14.copyWith(
                   color: Colors.white,
                 ),
               ),

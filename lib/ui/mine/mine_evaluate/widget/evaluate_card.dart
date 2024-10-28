@@ -52,9 +52,9 @@ class EvaluateCard extends StatelessWidget {
                       Row(
                         children: [
                           Expanded(
-                            child: Text(team ? item.toName : item.fromName,style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                            child: Text(team ? item.toName : item.fromName,style: AppTextStyle.fs16m.copyWith(color: AppColor.black20),maxLines: 2,overflow: TextOverflow.ellipsis,),
                           ),
-                          Text(CommonUtils.timestamp(item.createTime,unit: 'yyyy年MM月dd日'),style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
+                          Text(CommonUtils.timestamp(item.createTime,unit: 'yyyy年MM月dd日'),style: AppTextStyle.fs12.copyWith(color: AppColor.gray9),),
                         ],
                       ),
                       Row(
@@ -63,7 +63,7 @@ class EvaluateCard extends StatelessWidget {
                             visible: goodGirl,
                             child: Padding(
                               padding: EdgeInsets.only(right: 4.rpx),
-                              child: Text(S.current.synthesize,style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
+                              child: Text(S.current.synthesize,style: AppTextStyle.fs12.copyWith(color: AppColor.gray9),),
                             ),
                           ),
                           ...List.generate(5, (i) => AppImage.asset(
@@ -85,7 +85,7 @@ class EvaluateCard extends StatelessWidget {
             visible: item.content.isNotEmpty,
             child: Container(
                 margin: EdgeInsets.only(top: 8.rpx,left: 48.rpx),
-                child: Text(item.content,style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),)
+                child: Text(item.content,style: AppTextStyle.fs12.copyWith(color: AppColor.gray9),)
             ),
           ),
           team ?
@@ -102,7 +102,7 @@ class EvaluateCard extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: "【${item.fromName}】",
-                      style: AppTextStyle.fs14b.copyWith(color: AppColor.black666),
+                      style: AppTextStyle.fs14m.copyWith(color: AppColor.black666),
                     ),
                   ],
                 ),

@@ -31,7 +31,7 @@ class MineSettingPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           S.current.setting,
-          style: AppTextStyle.fs18b.copyWith(color: AppColor.black20),
+          style: AppTextStyle.fs18m.copyWith(color: AppColor.black20),
         ),
       ),
       backgroundColor: AppColor.grayF7,
@@ -93,7 +93,7 @@ class MineSettingPage extends StatelessWidget {
                           child: Text(
                             S.current.pleaseBindPhone,
                             style:
-                            AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
+                            AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
                           ),
                         ),
                       ),
@@ -107,7 +107,7 @@ class MineSettingPage extends StatelessWidget {
                             visible: !SS.login.userBind,
                             child: Text(
                               S.current.pleaseBindPhone,
-                              style: AppTextStyle.fs14b
+                              style: AppTextStyle.fs14m
                                   .copyWith(color: AppColor.gray5),
                             ),
                           ),
@@ -132,7 +132,7 @@ class MineSettingPage extends StatelessWidget {
                       bottom: 0,
                       trailing: Text(
                         controller.cacheSize.value,
-                        style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
+                        style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
                       ),
                       borderRadius: BorderRadius.zero,
                       callBack: () => controller.onTapClearCache(),
@@ -142,7 +142,7 @@ class MineSettingPage extends StatelessWidget {
                       bottom: 0,
                       trailing: Text(
                         controller.version.value,
-                        style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
+                        style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
                       ),
                       callBack: () {
                         AppUpdateManager.instance
@@ -166,7 +166,7 @@ class MineSettingPage extends StatelessWidget {
                             visible: !SS.login.userBind,
                             child: Text(
                               S.current.pleaseBindPhone,
-                              style: AppTextStyle.fs14b
+                              style: AppTextStyle.fs14m
                                   .copyWith(color: AppColor.gray5),
                             ),
                           ),

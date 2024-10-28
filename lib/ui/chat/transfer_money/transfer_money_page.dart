@@ -57,7 +57,7 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
                   child: Text(
                     user?.baseInfo.userName ?? '',
                     textAlign: TextAlign.center,
-                    style: AppTextStyle.fs16b.copyWith(
+                    style: AppTextStyle.fs16m.copyWith(
                       color: AppColor.blackBlue,
                       height: 1.0001,
                     ),
@@ -78,7 +78,7 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
                   children: [
                     Text(
                       S.current.transferAmount,
-                      style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),
+                      style: AppTextStyle.fs14.copyWith(color: AppColor.gray9),
                     ),
                     buildAmountInput(),
                   ],

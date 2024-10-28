@@ -106,7 +106,7 @@ class ChatCallEndMessage extends StatelessWidget {
           padding: FEdgeInsets(left: 8.rpx),
           child: Text(
             title,
-            style: AppTextStyle.fs14m.copyWith(
+            style: AppTextStyle.fs14.copyWith(
               color: message.isMine ? Colors.white : AppColor.blackBlue,
             ),
           ),
@@ -186,7 +186,7 @@ class ChatCallEndMessage extends StatelessWidget {
     return Padding(
       padding: FEdgeInsets(top: 12.rpx, bottom: 4.rpx),
       child: DefaultTextStyle(
-        style: AppTextStyle.fs12m.copyWith(
+        style: AppTextStyle.fs12.copyWith(
           color: message.isMine ? Colors.white : AppColor.black666,
           height: 1.00001,
         ),

@@ -31,7 +31,7 @@ class MineEvaluatePage extends StatelessWidget {
       appBar: AppBar(
         leading: AppBackButton.light(),
         systemOverlayStyle: SystemUI.lightStyle,
-        title: Text(S.current.myAssessment,style: AppTextStyle.fs18b.copyWith(color: Colors.white),),
+        title: Text(S.current.myAssessment,style: AppTextStyle.fs18m.copyWith(color: Colors.white),),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -149,13 +149,13 @@ class MineEvaluatePage extends StatelessWidget {
                             minFontSize: 10,
                             maxLines: 2,
                             item.toName,
-                            style: AppTextStyle.fs16b.copyWith(
+                            style: AppTextStyle.fs16m.copyWith(
                               color: AppColor.gray5,
                             ),
                           ),
                         ),
                         SizedBox(width: 4.rpx,),
-                        Text(CommonUtils.timestamp(item.createTime,unit: "yyyy年MM月dd日"),style: AppTextStyle.fs10m.copyWith(color: AppColor.gray9),),
+                        Text(CommonUtils.timestamp(item.createTime,unit: "yyyy年MM月dd日"),style: AppTextStyle.fs10.copyWith(color: AppColor.gray9),),
                       ],
                     ),
                     SizedBox(height: 8.rpx),
@@ -177,7 +177,7 @@ class MineEvaluatePage extends StatelessWidget {
                 ),
                 Container(
                     margin: EdgeInsets.only(top: 8.rpx),
-                    child: Text(item.content,style: AppTextStyle.fs12m.copyWith(color: AppColor.black4E),)
+                    child: Text(item.content,style: AppTextStyle.fs12.copyWith(color: AppColor.black4E),)
                 ),
               ],
             ),

@@ -167,7 +167,7 @@ class _MinePageState extends State<MinePage>
                           minFontSize: 10,
                           maxLines: 1,
                           userInfo?.nickname ?? '',
-                          style: AppTextStyle.fs18b.copyWith(
+                          style: AppTextStyle.fs18m.copyWith(
                             color: AppColor.blackBlue,
                             height: 1.0,
                           ),
@@ -183,7 +183,7 @@ class _MinePageState extends State<MinePage>
                                   children: [
                                     Text(
                                       position,
-                                      style: AppTextStyle.fs14m.copyWith(
+                                      style: AppTextStyle.fs14.copyWith(
                                         color: AppColor.black999,
                                         height: 1.0,
                                       ),
@@ -197,7 +197,7 @@ class _MinePageState extends State<MinePage>
                                           padding: FEdgeInsets(top: 12.rpx),
                                           child: Text(
                                             'ID:${userInfo?.chatNo}',
-                                            style: AppTextStyle.fs12m.copyWith(
+                                            style: AppTextStyle.fs12.copyWith(
                                               color: AppColor.black999,
                                               height: 1.0,
                                             ),
@@ -431,7 +431,7 @@ class _MinePageState extends State<MinePage>
         width: 200.rpx,
         height: 46.rpx,
         onPressed: controller.onTapSignOut,
-        child: Text(S.current.signOut, style: AppTextStyle.fs16m),
+        child: Text(S.current.signOut, style: AppTextStyle.fs16),
       ),
     );
   }

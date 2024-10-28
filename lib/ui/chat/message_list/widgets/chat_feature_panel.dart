@@ -58,7 +58,7 @@ class ChatFeaturePanel extends StatelessWidget {
             padding: FEdgeInsets(top: 6.rpx),
             child: Text(
               item.label,
-              style: AppTextStyle.fs12m.copyWith(
+              style: AppTextStyle.fs12.copyWith(
                 color: AppColor.gray9,
                 height: 1.00001,
               ),

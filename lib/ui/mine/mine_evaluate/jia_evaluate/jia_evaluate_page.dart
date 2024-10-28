@@ -29,7 +29,7 @@ class JiaEvaluatePage extends StatelessWidget {
       appBar: AppBar(
         leading: AppBackButton.light(),
         systemOverlayStyle: SystemUI.lightStyle,
-        title: Text(S.current.appraiseMe,style: AppTextStyle.fs18b.copyWith(color: Colors.white),),
+        title: Text(S.current.appraiseMe,style: AppTextStyle.fs18m.copyWith(color: Colors.white),),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -163,14 +163,14 @@ class JiaEvaluatePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(state.loginService?.nickname ?? '',style: AppTextStyle.fs18b.copyWith(color: AppColor.black20),maxLines: 1,
+                      Text(state.loginService?.nickname ?? '',style: AppTextStyle.fs18m.copyWith(color: AppColor.black20),maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Row(
                         children: [
                           Padding(
                             padding: EdgeInsets.only(right: 4.rpx),
-                            child: Text(S.current.synthesize,style: AppTextStyle.fs12b.copyWith(color: AppColor.black4E),),
+                            child: Text(S.current.synthesize,style: AppTextStyle.fs12m.copyWith(color: AppColor.black4E),),
                           ),
                           ...List.generate(5, (i) => AppImage.asset(
                             width: 16.rpx,
@@ -193,9 +193,9 @@ class JiaEvaluatePage extends StatelessWidget {
                     children: [
                       FittedBox(
                         fit: BoxFit.fitWidth,
-                        child: Text("${state.evaluation?.totalAppointment ?? 0}",style: AppTextStyle.fs18b.copyWith(color: AppColor.gradientBegin,fontWeight: FontWeight.w500),),
+                        child: Text("${state.evaluation?.totalAppointment ?? 0}",style: AppTextStyle.fs18m.copyWith(color: AppColor.gradientBegin,fontWeight: FontWeight.w500),),
                       ),
-                      Text(S.current.cumulativeNumber,style: AppTextStyle.fs12b.copyWith(color: AppColor.black20,fontWeight: FontWeight.w500),),
+                      Text(S.current.cumulativeNumber,style: AppTextStyle.fs12m.copyWith(color: AppColor.black20,fontWeight: FontWeight.w500),),
                     ],
                   ),
                 ),
@@ -221,7 +221,7 @@ class JiaEvaluatePage extends StatelessWidget {
           Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(bottom: 16.rpx),
-            child: Text(S.current.myTag,style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),),
+            child: Text(S.current.myTag,style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),),
           ),
           Container(
             alignment: Alignment.centerLeft,
@@ -238,7 +238,7 @@ class JiaEvaluatePage extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(2.rpx))
                     ),
                     padding: EdgeInsets.symmetric(horizontal: 10.rpx,vertical: 2.rpx),
-                    child: Text("$item",style: AppTextStyle.fs12b.copyWith(color: AppColor.black4E,)),
+                    child: Text("$item",style: AppTextStyle.fs12m.copyWith(color: AppColor.black4E,)),
                   ),
                 );
               }),
@@ -263,7 +263,7 @@ class JiaEvaluatePage extends StatelessWidget {
           topRight: Radius.circular(8.rpx),
         )
       ),
-      child: Text(S.current.clientEvaluation,style: AppTextStyle.fs14b.copyWith(color: AppColor.black20),),
+      child: Text(S.current.clientEvaluation,style: AppTextStyle.fs14m.copyWith(color: AppColor.black20),),
     );
   }
 }

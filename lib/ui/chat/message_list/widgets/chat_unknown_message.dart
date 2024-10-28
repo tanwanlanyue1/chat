@@ -29,7 +29,7 @@ class ChatUnknownMessage extends StatelessWidget {
         child: Text(
           '[未知消息]',
           textAlign: TextAlign.left,
-          style: AppTextStyle.fs14m.copyWith(
+          style: AppTextStyle.fs14.copyWith(
             color: AppColor.blackBlue,
             height: 1.5,
           ),

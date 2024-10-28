@@ -52,7 +52,7 @@ class MineListTile extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: AppTextStyle.fs14b.copyWith(
+              style: AppTextStyle.fs14m.copyWith(
                 color: AppColor.blackText,
               ),
             ),
@@ -60,7 +60,7 @@ class MineListTile extends StatelessWidget {
           if (trailing != null)
             Text(
               trailing!,
-              style: AppTextStyle.fs12b.copyWith(
+              style: AppTextStyle.fs12m.copyWith(
                 color: AppColor.black999,
               ),
             ),

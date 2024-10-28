@@ -62,10 +62,10 @@ class _PlazaPageState extends State<PlazaPage>
       alignment: Alignment.centerLeft,
       child: TabBar(
         controller: controller.tabController,
-        labelStyle: AppTextStyle.fs18b,
+        labelStyle: AppTextStyle.fs18m,
         labelColor: Colors.white,
         unselectedLabelColor: Colors.white.withOpacity(0.6),
-        unselectedLabelStyle: AppTextStyle.fs16m,
+        unselectedLabelStyle: AppTextStyle.fs16,
         isScrollable: true,
         indicator: BoxDecoration(
             color: Colors.white,

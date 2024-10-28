@@ -45,7 +45,7 @@ class _WalletRechargeViewState extends State<WalletRechargeView>
             ),
             child: Text(
               'USDT',
-              style: AppTextStyle.fs18b.copyWith(
+              style: AppTextStyle.fs18m.copyWith(
                 color: AppColor.black3,
               ),
             ),
@@ -66,7 +66,7 @@ class _WalletRechargeViewState extends State<WalletRechargeView>
               controller: controller.amountEditingController,
               expands: true,
               maxLines: null,
-              style: AppTextStyle.fs14b.copyWith(
+              style: AppTextStyle.fs14m.copyWith(
                 color: AppColor.black3,
               ),
               keyboardType: const TextInputType.numberWithOptions(
@@ -83,7 +83,7 @@ class _WalletRechargeViewState extends State<WalletRechargeView>
               textAlignVertical: TextAlignVertical.center,
               decoration: InputDecoration(
                 hintText: '请输入充值金额',
-                hintStyle: AppTextStyle.fs14m.copyWith(color: AppColor.black9),
+                hintStyle: AppTextStyle.fs14.copyWith(color: AppColor.black9),
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 contentPadding: FEdgeInsets(horizontal: 12.rpx),

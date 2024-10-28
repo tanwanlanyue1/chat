@@ -94,7 +94,7 @@ class BindingPage extends StatelessWidget {
         children: [
           Text(
             S.current.phone,
-            style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5),
+            style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5),
           ),
           Expanded(
             child: IntlPhoneField(

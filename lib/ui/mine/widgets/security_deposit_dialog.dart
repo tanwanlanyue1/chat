@@ -40,7 +40,7 @@ class SecurityDepositDialog extends StatelessWidget {
                   children: [
                     Text(
                       S.current.securityDepositHint((SS.appConfig.configRx()?.deposit ?? 0).toCurrencyString()),
-                      style: AppTextStyle.fs16m.copyWith(
+                      style: AppTextStyle.fs16.copyWith(
                         color: AppColor.gray5,
                         height: 24 / 16,
                       ),
@@ -61,7 +61,7 @@ class SecurityDepositDialog extends StatelessWidget {
                     Text(
                       S.current.securityDepositTips,
                       textAlign: TextAlign.start,
-                      style: AppTextStyle.fs14m.copyWith(
+                      style: AppTextStyle.fs14.copyWith(
                         color: AppColor.gray9,
                       ),
                     ),

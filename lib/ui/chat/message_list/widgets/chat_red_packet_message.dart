@@ -137,7 +137,7 @@ class RedPacketTipsView extends StatelessWidget {
               child: Text(
                 text,
                 textAlign: TextAlign.center,
-                style: AppTextStyle.fs14m.copyWith(
+                style: AppTextStyle.fs14.copyWith(
                   color: AppColor.black3,
                 ),
               ),
@@ -170,7 +170,7 @@ class RedPacketTipsView extends StatelessWidget {
                 padding: FEdgeInsets(left: 4.rpx),
                 child: Text.rich(
                   TextSpan(
-                    style: AppTextStyle.fs14m.copyWith(
+                    style: AppTextStyle.fs14.copyWith(
                       color: AppColor.black3,
                     ),
                     text: S.current.youSentRedEnvelope,
@@ -194,7 +194,7 @@ class RedPacketTipsView extends StatelessWidget {
             padding: FEdgeInsets(horizontal: 12.rpx, vertical: 4.rpx),
             child: Text(
               S.current.withdraw,
-              style: AppTextStyle.fs14m.copyWith(
+              style: AppTextStyle.fs14.copyWith(
                 color: AppColor.primaryBlue,
                 decoration: TextDecoration.underline,
               ),
@@ -256,7 +256,7 @@ class RedPacketDetailsView extends StatelessWidget {
             padding: FEdgeInsets(left: 8.rpx),
             child: Text(
               title,
-              style: AppTextStyle.fs14m.copyWith(
+              style: AppTextStyle.fs14.copyWith(
                 color: message.isMine ? Colors.white : AppColor.gray5,
               ),
             ),
@@ -311,7 +311,7 @@ class RedPacketDetailsView extends StatelessWidget {
     return Padding(
       padding: FEdgeInsets(top: 12.rpx, bottom: 4.rpx),
       child: DefaultTextStyle(
-        style: AppTextStyle.fs12m.copyWith(
+        style: AppTextStyle.fs12.copyWith(
           color: message.isMine ? Colors.white : AppColor.black666,
           height: 1.00001,
         ),
@@ -380,7 +380,7 @@ class RedPacketBubbleView extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     content?.desc ?? '',
-                    style: AppTextStyle.fs16m.copyWith(color: Colors.white),
+                    style: AppTextStyle.fs16.copyWith(color: Colors.white),
                   ),
                 ),
               ],
@@ -391,7 +391,7 @@ class RedPacketBubbleView extends StatelessWidget {
                 padding: FEdgeInsets(top: 8.rpx),
                 child: Text(
                   '${S.current.amountOfRedEnvelope}${content?.amount.toCurrencyString()}  $statusText',
-                  style: AppTextStyle.fs12m.copyWith(color: Colors.white),
+                  style: AppTextStyle.fs12.copyWith(color: Colors.white),
                 ),
               )
           ],

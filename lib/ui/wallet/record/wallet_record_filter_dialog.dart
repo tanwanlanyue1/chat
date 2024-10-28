@@ -72,7 +72,7 @@ class _WalletRecordFilterDialogState extends State<WalletRecordFilterDialog> {
           padding: FEdgeInsets(all: 16.rpx),
           child: Text(
             '快捷筛选',
-            style: AppTextStyle.fs16b.copyWith(
+            style: AppTextStyle.fs16m.copyWith(
               color: AppColor.blackBlue,
               height: 1.0,
             ),
@@ -111,7 +111,7 @@ class _WalletRecordFilterDialogState extends State<WalletRecordFilterDialog> {
           alignment: Alignment.center,
           child: Text(
             dateText ?? hintText,
-            style: AppTextStyle.fs14m.copyWith(
+            style: AppTextStyle.fs14.copyWith(
               color: isSelected ? AppColor.primaryBlue : AppColor.grayText,
             ),
           ),
@@ -209,7 +209,7 @@ class _WalletRecordFilterDialogState extends State<WalletRecordFilterDialog> {
             alignment: Alignment.center,
             child: Text(
               item.label,
-              style: AppTextStyle.fs12m.copyWith(
+              style: AppTextStyle.fs12.copyWith(
                 color: isSelected ? Colors.white : AppColor.black3,
               ),
             ),
@@ -230,13 +230,13 @@ class _WalletRecordFilterDialogState extends State<WalletRecordFilterDialog> {
             height: 48.rpx,
             backgroundColor: AppColor.black9,
             onPressed: Get.back,
-            child: Text('取消', style: AppTextStyle.fs14m.copyWith(),),
+            child: Text('取消', style: AppTextStyle.fs14.copyWith(),),
           ),
           CommonGradientButton(
             width: 120.rpx,
             height: 48.rpx,
             text: '确定',
-            textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
+            textStyle: AppTextStyle.fs14.copyWith(color: Colors.white),
             onTap: (){
               final beginTime = filterData.beginTime;
               final endTime = filterData.endTime;
@@ -266,14 +266,14 @@ class _WalletRecordFilterDialogState extends State<WalletRecordFilterDialog> {
             padding: FEdgeInsets(horizontal: 12.rpx, top: 8.rpx),
             child: Text(
               '取消',
-              style: AppTextStyle.fs14b.copyWith(color: AppColor.black9),
+              style: AppTextStyle.fs14m.copyWith(color: AppColor.black9),
             ),
           ),
           commitButton: Padding(
             padding: FEdgeInsets(horizontal: 12.rpx, top: 8.rpx),
             child: Text(
               '确定',
-              style: AppTextStyle.fs14b.copyWith(color: AppColor.blackBlue),
+              style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue),
             ),
           ),
         ), onConfirm: (value) {

@@ -41,9 +41,9 @@ class _OrderPageState extends State<OrderPage>
           bottom: TabBar(
             splashFactory: NoSplash.splashFactory,
             controller: controller.tabController,
-            labelStyle: AppTextStyle.fs14b,
+            labelStyle: AppTextStyle.fs14m,
             labelColor: AppColor.primaryBlue,
-            unselectedLabelStyle: AppTextStyle.fs14m,
+            unselectedLabelStyle: AppTextStyle.fs14,
             unselectedLabelColor: AppColor.grayText,
             indicatorPadding: FEdgeInsets(bottom: 8.rpx),
             indicator: TabUnderlineIndicator(

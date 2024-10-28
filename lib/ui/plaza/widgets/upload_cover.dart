@@ -46,8 +46,8 @@ class UploadCoverDialog extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text(S.current.uploadCoverImage,style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),),
-                          Text(S.current.upTo6photos,style: AppTextStyle.fs12m.copyWith(color: AppColor.textRed),),
+                          Text(S.current.uploadCoverImage,style: AppTextStyle.fs16m.copyWith(color: AppColor.black20),),
+                          Text(S.current.upTo6photos,style: AppTextStyle.fs12.copyWith(color: AppColor.textRed),),
                           const Spacer(),
                           GestureDetector(
                             onTap: (){

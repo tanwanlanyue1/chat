@@ -91,7 +91,7 @@ class NearbyHallView extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       AppImage.asset("assets/images/plaza/location.png",width: 12.rpx,height: 12.rpx,),
-                      Text(" ${item.distance ?? ''}km",style: AppTextStyle.fs12m.copyWith(color: Colors.white),),
+                      Text(" ${item.distance ?? ''}km",style: AppTextStyle.fs12.copyWith(color: Colors.white),),
                     ],
                   ),
                 ),
@@ -121,7 +121,7 @@ class NearbyHallView extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(item.nickname ?? '',style: AppTextStyle.fs12b.copyWith(color: AppColor.black3,height: 1.0),overflow: TextOverflow.ellipsis,),
+                          Text(item.nickname ?? '',style: AppTextStyle.fs12m.copyWith(color: AppColor.black3,height: 1.0),overflow: TextOverflow.ellipsis,),
                           // Expanded(
                           //   child: GestureDetector(
                           //     onTap: (){
@@ -153,7 +153,7 @@ class NearbyHallView extends StatelessWidget {
                                 visible: item.gender != 0,
                                 child: AppImage.asset(item.gender == 1 ? "assets/images/plaza/boy.png" : "assets/images/plaza/girl.png",width: 12.rpx,height: 12.rpx,color: item.gender == 1 ? AppColor.primaryBlue:AppColor.textPurple),
                               ),
-                              Text("${item.age ?? ''}",style: AppTextStyle.fs10m.copyWith(color: item.gender == 1 ? AppColor.primaryBlue:AppColor.textPurple),),
+                              Text("${item.age ?? ''}",style: AppTextStyle.fs10.copyWith(color: item.gender == 1 ? AppColor.primaryBlue:AppColor.textPurple),),
                             ],
                           ),
                         ),
@@ -236,7 +236,7 @@ class NearbyHallView extends StatelessWidget {
                           margin: EdgeInsets.only(right: 8.rpx),
                           child: Text(
                             S.current.map,
-                            style:AppTextStyle.fs12m,
+                            style:AppTextStyle.fs12,
                           ),
                         )
                     ),
@@ -270,7 +270,7 @@ class NearbyHallView extends StatelessWidget {
                           margin: EdgeInsets.only(right: 8.rpx),
                           child: Text(
                             S.current.filtrate,
-                            style:AppTextStyle.fs12m,
+                            style:AppTextStyle.fs12,
                           ),
                         )
                     ),

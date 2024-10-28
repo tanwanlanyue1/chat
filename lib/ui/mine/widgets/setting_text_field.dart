@@ -75,7 +75,7 @@ class SettingTextField extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(labelText??'', style: AppTextStyle.fs14b.copyWith(color: AppColor.gray5))
+                      Text(labelText??'', style: AppTextStyle.fs14m.copyWith(color: AppColor.gray5))
                     ],
                   ),
                 ) : null,

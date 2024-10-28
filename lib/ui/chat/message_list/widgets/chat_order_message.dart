@@ -52,7 +52,7 @@ class ChatOrderMessage extends StatelessWidget {
           child: Text(
             message.orderContent?.message ?? '',
             textAlign: TextAlign.left,
-            style: AppTextStyle.fs14m.copyWith(
+            style: AppTextStyle.fs14.copyWith(
               color: message.isMine ? Colors.white : AppColor.blackBlue,
               height: 1.5,
             ),

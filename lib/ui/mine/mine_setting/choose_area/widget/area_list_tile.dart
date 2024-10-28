@@ -25,7 +25,7 @@ class AreaListTile extends StatelessWidget {
             Expanded(
               child: Text(
                 item.name,
-                style: AppTextStyle.fs16m.copyWith(
+                style: AppTextStyle.fs16.copyWith(
                   color: AppColor.black3,
                 ),
               ),

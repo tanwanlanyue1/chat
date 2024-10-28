@@ -117,7 +117,7 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
                   textAlign: uiState.button != null
                       ? TextAlign.left
                       : TextAlign.center,
-                  style: AppTextStyle.fs14m.copyWith(
+                  style: AppTextStyle.fs14.copyWith(
                     color: AppColor.blackBlue,
                     height: 1.2,
                   ),
@@ -136,7 +136,7 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
                     borderRadius: BorderRadius.zero,
                     text: uiState.button,
                     backgroundColor: uiState.buttonColor,
-                    textStyle: AppTextStyle.fs14b.copyWith(color: Colors.white),
+                    textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
                   ),
                 ),
             ],

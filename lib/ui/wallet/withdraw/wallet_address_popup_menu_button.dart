@@ -38,7 +38,7 @@ class WalletAddressPopupMenuButton extends StatelessWidget {
             Expanded(
               child: Text(
                 address ?? '选择钱包地址',
-                style: AppTextStyle.fs14m.copyWith(
+                style: AppTextStyle.fs14.copyWith(
                   color: address == null ? AppColor.black9 : AppColor.black3,
                 ),
               ),
@@ -165,7 +165,7 @@ class _PopupMenuItemState extends State<_PopupMenuItem> {
             Expanded(
               child: Text(
                 widget.text,
-                style: AppTextStyle.fs12m.copyWith(color: AppColor.blackText),
+                style: AppTextStyle.fs12.copyWith(color: AppColor.blackText),
               ),
             ),
             if (widget.onTapDelete != null)

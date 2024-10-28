@@ -51,7 +51,7 @@ class OrderCancelDialog extends StatelessWidget {
                       padding: FEdgeInsets(top: 12.rpx, bottom: 24.rpx),
                       child: Text(
                         S.current.cancelOrderTips,
-                        style: AppTextStyle.fs12m.copyWith(
+                        style: AppTextStyle.fs12.copyWith(
                           color: AppColor.black92,
                           height: 1.5,
                         ),
@@ -65,7 +65,7 @@ class OrderCancelDialog extends StatelessWidget {
                           width: 120.rpx,
                           text: S.current.thinkItOver,
                           onTap: Get.back,
-                          textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
+                          textStyle: AppTextStyle.fs16.copyWith(color: Colors.white),
                         ),
                         Button(
                           onPressed: () => Get.back(result: true),
@@ -74,7 +74,7 @@ class OrderCancelDialog extends StatelessWidget {
                           backgroundColor: AppColor.gray9,
                           child: Text(
                               S.current.firmCancellation,
-                              style: AppTextStyle.fs16m
+                              style: AppTextStyle.fs16
                           ),
                         ),
                       ],
@@ -122,7 +122,7 @@ class OrderCancelDialog extends StatelessWidget {
       return Text(
         S.current.cancelOrderTitle(info?.baseInfo.userName ?? ''),
         textAlign: TextAlign.center,
-        style: AppTextStyle.fs14b.copyWith(
+        style: AppTextStyle.fs14m.copyWith(
           color: AppColor.blackBlue,
           height: 1.5,
         ),

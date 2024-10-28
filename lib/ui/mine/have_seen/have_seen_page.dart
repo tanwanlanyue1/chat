@@ -60,13 +60,13 @@ class HaveSeenPage extends StatelessWidget {
           margin: EdgeInsets.symmetric(vertical: 36.rpx),
           child: AppImage.asset("assets/images/mine/warning.png",width: 120.rpx,height: 120.rpx,),
         ),
-        Text(S.current.seenVip,style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5,height: 1.4),textAlign: TextAlign.center,),
+        Text(S.current.seenVip,style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5,height: 1.4),textAlign: TextAlign.center,),
         Button(
           onPressed: (){
             state.vip.value = true;
           },
           margin: EdgeInsets.all(37.rpx),
-          child: Text(S.current.goNowToVIP,style: AppTextStyle.fs16m.copyWith(color: Colors.white),),
+          child: Text(S.current.goNowToVIP,style: AppTextStyle.fs16.copyWith(color: Colors.white),),
         )
       ],
     );
@@ -104,7 +104,7 @@ class HaveSeenPage extends StatelessWidget {
                     child: Container(
                       margin: EdgeInsets.only(top: 24.rpx,bottom: 24.rpx),
                       alignment: Alignment.center,
-                      child: Text(S.current.haveTotalChecked(controller.pagingController.length),style: AppTextStyle.fs12m.copyWith(color: AppColor.black999),),
+                      child: Text(S.current.haveTotalChecked(controller.pagingController.length),style: AppTextStyle.fs12.copyWith(color: AppColor.black999),),
                     ),
                   );
                 },

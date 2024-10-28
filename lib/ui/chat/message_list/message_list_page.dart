@@ -166,7 +166,7 @@ class MessageListPage extends GetView<MessageListController> {
           children: [
             ConstrainedBox(
               constraints: BoxConstraints(maxWidth: Get.width - 150.rpx),
-              child: Text(conversation?.name ?? '', maxLines: 1),
+              child: Text((conversation?.name ?? ''), maxLines: 1),
             ),
             // Padding(
             //   padding: FEdgeInsets(left: 4.rpx),
@@ -205,7 +205,7 @@ class MessageListPage extends GetView<MessageListController> {
             child: Text(
               DateTime.fromMillisecondsSinceEpoch(message.info.timestamp)
                   .friendlyTime,
-              style: AppTextStyle.fs12m.copyWith(
+              style: AppTextStyle.fs12.copyWith(
                 color: AppColor.black92,
                 height: 1.0001,
               ),

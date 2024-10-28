@@ -88,13 +88,13 @@ class ActivationProgression extends StatelessWidget {
                           width: 24.rpx,height: 24.rpx,),
                       ),
                     ),
-                    Text(S.current.identityProgression,style: AppTextStyle.fs18b.copyWith(color: AppColor.gray5),),
+                    Text(S.current.identityProgression,style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
                     Container(
                       height: 1.rpx,
                       margin: EdgeInsets.all(16.rpx),
                       color: AppColor.scaffoldBackground,
                     ),
-                    Text(S.current.pleaseSelectId,style: AppTextStyle.fs18b.copyWith(color: AppColor.gray5),),
+                    Text(S.current.pleaseSelectId,style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),),
                     Obx(() => Container(
                       padding: EdgeInsets.all(24.rpx),
                       margin: EdgeInsets.symmetric(horizontal: 16.rpx,vertical: 24.rpx),
@@ -116,7 +116,7 @@ class ActivationProgression extends StatelessWidget {
                                 border: Border.all(color: AppColor.gradientBegin, width: 1),
                                 borderRadius: BorderRadius.circular(24.rpx),
                               ),
-                              child: Text(idList[i]['name'],style: AppTextStyle.fs14m.copyWith(color: index.value == i ? Colors.white : AppColor.gradientBegin),),
+                              child: Text(idList[i]['name'],style: AppTextStyle.fs14.copyWith(color: index.value == i ? Colors.white : AppColor.gradientBegin),),
                             ),
                           ))
                         ],

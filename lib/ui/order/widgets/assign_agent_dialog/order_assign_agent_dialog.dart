@@ -56,7 +56,7 @@ class OrderAssignAgentDialog extends GetView<OrderAssignAgentController> {
               child: Text(
                 S.current.assignmentOrder,
                 textAlign: TextAlign.center,
-                style: AppTextStyle.fs18b.copyWith(color: AppColor.black3),
+                style: AppTextStyle.fs18m.copyWith(color: AppColor.black3),
               ),
             ),
             Container(

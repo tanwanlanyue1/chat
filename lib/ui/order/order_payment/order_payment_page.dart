@@ -117,7 +117,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                                                           4.rpx)),
                                               child: Text(
                                                 S.current.topUp,
-                                                style: AppTextStyle.fs12m
+                                                style: AppTextStyle.fs12
                                                     .copyWith(
                                                         color: AppColor
                                                             .primaryBlue),
@@ -137,7 +137,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                                     S.current.balanceLabel(
                                         (SS.login.info?.balance ?? 0)
                                             .toCurrencyString()),
-                                    style: AppTextStyle.fs14m
+                                    style: AppTextStyle.fs14
                                         .copyWith(color: AppColor.gray9),
                                     maxLines: 1,
                                     minFontSize: 8,

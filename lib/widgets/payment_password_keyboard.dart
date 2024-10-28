@@ -80,7 +80,7 @@ class _PaymentPasswordKeyboardState extends State<PaymentPasswordKeyboard> {
           child: Text(
             widget.titleStr ?? S.current.enterPaymentPassword,
             textAlign: TextAlign.center,
-            style: AppTextStyle.fs18b.copyWith(color: AppColor.gray5),
+            style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),
           ),
         ),
         IconButton(
@@ -112,7 +112,7 @@ class _PaymentPasswordKeyboardState extends State<PaymentPasswordKeyboard> {
                 width: size,
                 child: Text(
                   value.isNotEmpty ? '*' : '',
-                  style: AppTextStyle.fs18b.copyWith(color: AppColor.gray5),
+                  style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),
                 ),
               );
             })
@@ -190,7 +190,7 @@ class _PaymentPasswordKeyboardState extends State<PaymentPasswordKeyboard> {
           child: Text(
             item,
             textAlign: TextAlign.center,
-            style: AppTextStyle.fs18b.copyWith(color: AppColor.gray5),
+            style: AppTextStyle.fs18m.copyWith(color: AppColor.gray5),
           ),
         ),
       ),

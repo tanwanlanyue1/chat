@@ -75,7 +75,7 @@ class IdentityProgressionPage extends StatelessWidget {
             child: Text(state.audit == 0 ?
             S.current.underReview:
             state.audit == 1 ?
-            S.current.successfulAudit:S.current.auditFailure,style: AppTextStyle.fs24b.copyWith(color: Colors.white),),
+            S.current.successfulAudit:S.current.auditFailure,style: AppTextStyle.fs24m.copyWith(color: Colors.white),),
           ),
           Visibility(
             visible: state.audit == 1,
@@ -83,16 +83,16 @@ class IdentityProgressionPage extends StatelessWidget {
               visible: state.audit == 0,
               replacement: Padding(
                 padding: EdgeInsets.only(left: 24.rpx,bottom: 36.rpx),
-                child: Text(S.current.auditTurnDown,style: AppTextStyle.fs16m.copyWith(color: Colors.white.withOpacity(0.9)),),
+                child: Text(S.current.auditTurnDown,style: AppTextStyle.fs16.copyWith(color: Colors.white.withOpacity(0.9)),),
               ),
               child: Padding(
                 padding: EdgeInsets.only(left: 24.rpx,bottom: 36.rpx),
-                child: Text(S.current.dataSubmitted,style: AppTextStyle.fs16m.copyWith(color: Colors.white.withOpacity(0.9)),),
+                child: Text(S.current.dataSubmitted,style: AppTextStyle.fs16.copyWith(color: Colors.white.withOpacity(0.9)),),
               ),
             ),
             child: Padding(
               padding: EdgeInsets.only(left: 24.rpx,bottom: 36.rpx),
-              child: Text("${S.current.congratulations}${state.current == 0 ? S.current.customer : state.current == 1 ? S.current.goodGirl:S.current.brokerP}",style: AppTextStyle.fs16m.copyWith(color: Colors.white.withOpacity(0.9)),),
+              child: Text("${S.current.congratulations}${state.current == 0 ? S.current.customer : state.current == 1 ? S.current.goodGirl:S.current.brokerP}",style: AppTextStyle.fs16.copyWith(color: Colors.white.withOpacity(0.9)),),
             ),
           ),
           state.audit == 0 ?
@@ -135,23 +135,23 @@ class IdentityProgressionPage extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(S.current.underReview,style: AppTextStyle.fs20m.copyWith(color: AppColor.black20),),
+          Text(S.current.underReview,style: AppTextStyle.fs20.copyWith(color: AppColor.black20),),
           SizedBox(height: 12.rpx,),
           RichText(
             text: TextSpan(
               text: S.current.patient,
-              style: AppTextStyle.fs14b.copyWith(color: AppColor.gray9),
+              style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),
               children: <TextSpan>[
                 TextSpan(
                   text: S.current.customerService,
-                  style: AppTextStyle.fs14b.copyWith(color: AppColor.primary),
+                  style: AppTextStyle.fs14m.copyWith(color: AppColor.primary),
                   recognizer: TapGestureRecognizer()..onTap=(){
                     Get.toNamed(AppRoutes.mineFeedbackPage);
                   }
                 ),
                 TextSpan(
                   text: S.current.monitorProgress,
-                  style: AppTextStyle.fs14b.copyWith(color: AppColor.gray9),
+                  style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),
                 ),
               ],
             ),
@@ -168,9 +168,9 @@ class IdentityProgressionPage extends StatelessWidget {
               children: [
                 AppImage.asset('assets/images/mine/prosperity.png',width: 16.rpx,height: 16.rpx,),
                 SizedBox(width: 8.rpx),
-                Text(S.current.submitted,style: AppTextStyle.fs14m.copyWith(color: AppColor.black666)),
+                Text(S.current.submitted,style: AppTextStyle.fs14.copyWith(color: AppColor.black666)),
                 const Spacer(),
-                Text(CommonUtils.timestamp(state.advanced.createTime,unit: "yyyy.MM.dd hh:mm"),style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+                Text(CommonUtils.timestamp(state.advanced.createTime,unit: "yyyy.MM.dd hh:mm"),style: AppTextStyle.fs14.copyWith(color: AppColor.gray9),),
               ],
             ),
           )
@@ -202,8 +202,8 @@ class IdentityProgressionPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(item['title'],style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
-                      Text(item['remake'],style: AppTextStyle.fs14m.copyWith(color: AppColor.gray9),),
+                      Text(item['title'],style: AppTextStyle.fs16.copyWith(color: AppColor.gray5),),
+                      Text(item['remake'],style: AppTextStyle.fs14.copyWith(color: AppColor.gray9),),
                     ],
                   ),
                 ],
@@ -230,18 +230,18 @@ class IdentityProgressionPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(S.current.auditTurnDown,style: AppTextStyle.fs20m.copyWith(color: AppColor.textRed),)
+              Text(S.current.auditTurnDown,style: AppTextStyle.fs20.copyWith(color: AppColor.textRed),)
             ],
           ),
           SizedBox(height: 12.rpx,),
           RichText(
             text: TextSpan(
               text: '${state.advanced.remark ?? ''}\n',
-              style: AppTextStyle.fs14m.copyWith(color: AppColor.black666,height: 1.4),
+              style: AppTextStyle.fs14.copyWith(color: AppColor.black666,height: 1.4),
               children: <TextSpan>[
                 TextSpan(
                   text: CommonUtils.timestamp(state.advanced.createTime,unit: "yyyy年MM月dd日 hh:mm"),
-                  style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9,height: 1.4),
+                  style: AppTextStyle.fs12.copyWith(color: AppColor.gray9,height: 1.4),
                 ),
               ],
             ),

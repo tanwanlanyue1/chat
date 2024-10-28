@@ -152,7 +152,7 @@ class _ChatPageState extends State<ChatPage>
                   ? S.current.theUserVideo
                   : S.current.theUserVoice,
               textAlign: TextAlign.center,
-              style: AppTextStyle.fs16b
+              style: AppTextStyle.fs16m
                   .textHeight(1)
                   .copyWith(color: AppColor.blackBlue),
               maxLines: 1,
@@ -164,7 +164,7 @@ class _ChatPageState extends State<ChatPage>
               child: Text(
                 S.current.longerConversationMoreMoney,
                 textAlign: TextAlign.start,
-                style: AppTextStyle.fs12m
+                style: AppTextStyle.fs12
                     .textHeight(1)
                     .copyWith(color: AppColor.black92),
                 maxLines: 1,
@@ -194,10 +194,10 @@ class _ChatPageState extends State<ChatPage>
       title: TabBar(
         splashFactory: NoSplash.splashFactory,
         controller: controller.tabController,
-        labelStyle: AppTextStyle.fs20b.copyWith(fontWeight: FontWeight.w900),
+        labelStyle: AppTextStyle.fs20m.copyWith(fontWeight: FontWeight.w900),
         labelColor: AppColor.blackBlue,
         unselectedLabelStyle:
-            AppTextStyle.fs16m.copyWith(fontWeight: FontWeight.w500),
+            AppTextStyle.fs16.copyWith(fontWeight: FontWeight.w500),
         unselectedLabelColor: AppColor.grayText,
         isScrollable: true,
         labelPadding: FEdgeInsets.zero,
@@ -220,7 +220,7 @@ class _ChatPageState extends State<ChatPage>
               child = Text.rich(TextSpan(
                 children: [
                   TextSpan(text: S.current.message),
-                  TextSpan(text: '(${dataRx()})', style: AppTextStyle.fs12b),
+                  TextSpan(text: '(${dataRx()})', style: AppTextStyle.fs12m),
                 ]
               ));
             }

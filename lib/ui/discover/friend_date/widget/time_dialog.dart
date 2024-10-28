@@ -81,11 +81,11 @@ class TimeDialog extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("${controller.state.timeList[index]['day']}",style: AppTextStyle.fs12b.copyWith(
+                                Text("${controller.state.timeList[index]['day']}",style: AppTextStyle.fs12m.copyWith(
                                   color: controller.state.time == index ? Colors.white : AppColor.grayText,height: 1
                                 ),),
                                 SizedBox(height: 10.rpx,),
-                                Text("${controller.state.timeList[index]['time']}",style: AppTextStyle.fs14b.copyWith(
+                                Text("${controller.state.timeList[index]['time']}",style: AppTextStyle.fs14m.copyWith(
                                   color: controller.state.time == index ? Colors.white : AppColor.blackBlue,height: 1
                                 ),),
                               ],
@@ -99,8 +99,8 @@ class TimeDialog extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(S.current.timeSelect,style: AppTextStyle.fs14b.copyWith(color: AppColor.black92),),
-                          Text("${controller.state.hour}:00",style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),),
+                          Text(S.current.timeSelect,style: AppTextStyle.fs14m.copyWith(color: AppColor.black92),),
+                          Text("${controller.state.hour}:00",style: AppTextStyle.fs16m.copyWith(color: AppColor.black20),),
                         ],
                       ),
                     ),
@@ -115,7 +115,7 @@ class TimeDialog extends StatelessWidget {
                     CommonGradientButton(
                       height: 50.rpx,
                       text: S.current.confirm,
-                      textStyle: AppTextStyle.fs16b.copyWith(color: Colors.white),
+                      textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
                       onTap: (){
                         if(star){
                           controller.state.startTime = controller.state.time;

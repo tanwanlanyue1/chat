@@ -86,9 +86,9 @@ class FortuneSquareView extends StatelessWidget {
       ),
       child: TabBar(
         controller: controller.tabController,
-        labelStyle: AppTextStyle.fs14b,
+        labelStyle: AppTextStyle.fs14m,
         labelColor: AppColor.primaryBlue,
-        unselectedLabelStyle: AppTextStyle.fs14m,
+        unselectedLabelStyle: AppTextStyle.fs14,
         unselectedLabelColor: AppColor.grayText,
         indicatorColor: AppColor.primaryBlue,
         indicatorWeight: 2.rpx,
@@ -131,7 +131,7 @@ class FortuneSquareView extends StatelessWidget {
                   AppImage.asset("assets/images/plaza/compile.png",width: 24.rpx,height: 24.rpx,),
                   Padding(
                     padding: FEdgeInsets(left: 4.rpx),
-                    child: Text(S.current.postMessage,style: AppTextStyle.fs14m.copyWith(color: Colors.white),),
+                    child: Text(S.current.postMessage,style: AppTextStyle.fs14.copyWith(color: Colors.white),),
                   )
                 ],
               ),
@@ -185,7 +185,7 @@ class FortuneSquareView extends StatelessWidget {
                           margin: EdgeInsets.only(right: 8.rpx),
                           child: Text(
                             S.current.map,
-                            style:AppTextStyle.fs12m,
+                            style:AppTextStyle.fs12,
                           ),
                         )
                     ),
@@ -218,7 +218,7 @@ class FortuneSquareView extends StatelessWidget {
                           margin: EdgeInsets.only(right: 8.rpx),
                           child: Text(
                             S.current.filtrate,
-                            style:AppTextStyle.fs12m,
+                            style:AppTextStyle.fs12,
                           ),
                         )
                     ),

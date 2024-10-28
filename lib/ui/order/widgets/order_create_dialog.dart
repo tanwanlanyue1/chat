@@ -95,7 +95,7 @@ class OrderCreateDialog extends StatelessWidget {
       return Text(
         S.current.sureToInitiateDateWith(info?.baseInfo.userName ?? ''),
         textAlign: TextAlign.center,
-        style: AppTextStyle.fs14b.copyWith(
+        style: AppTextStyle.fs14m.copyWith(
           color: AppColor.blackBlue,
           height: 1.5,
         ),

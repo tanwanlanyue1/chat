@@ -100,7 +100,7 @@ class _TransferMoneyKeyboardState extends State<TransferMoneyKeyboard> {
                 : Text(
                     item,
                     textAlign: TextAlign.center,
-                    style: AppTextStyle.fs20b
+                    style: AppTextStyle.fs20m
                         .copyWith(color: AppColor.blackBlue),
                   ),
           ),
@@ -124,7 +124,7 @@ class _TransferMoneyKeyboardState extends State<TransferMoneyKeyboard> {
             child: Text(
               S.current.transferAccounts,
               textAlign: TextAlign.center,
-              style: AppTextStyle.fs16b.copyWith(color: Colors.white),
+              style: AppTextStyle.fs16m.copyWith(color: Colors.white),
             ),
           ),
         ),

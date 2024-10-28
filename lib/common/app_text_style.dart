@@ -2,18 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 
 ///统一文本样式
-class AppTextStyle{
-
-  static const normal = TextStyle(leadingDistribution: TextLeadingDistribution.even);
-  static final regular = normal.copyWith(fontWeight: FontWeight.w100);
+class AppTextStyle {
+  static const normal = TextStyle(
+    leadingDistribution: TextLeadingDistribution.even,
+    fontWeight: FontWeight.w400,
+  );
+  static final regular = normal.copyWith(fontWeight: FontWeight.w300);
   static final medium = normal.copyWith(fontWeight: FontWeight.w500);
   static final bold = normal.copyWith(fontWeight: FontWeight.bold);
 
   /// 默认实现 可以配合 TextStyleExtension 拓展 链式调用
   static const st = normal;
 
-  ///10号字体，字重500
   static final fs10r = regular.copyWith(
+    fontSize: 10.rpx,
+  );
+
+  ///10号字体，字重400
+  static final fs10 = normal.copyWith(
     fontSize: 10.rpx,
   );
 
@@ -22,29 +28,13 @@ class AppTextStyle{
     fontSize: 10.rpx,
   );
 
-  ///10号字体，字重bold
-  static final fs10b = bold.copyWith(
-    fontSize: 10.rpx,
-  );
-
-  ///11号字体
-  static final fs11r = regular.copyWith(
-    fontSize: 11.rpx,
-  );
-
-  ///11号字体，字重500
-  static final fs11m = medium.copyWith(
-    fontSize: 11.rpx,
-    fontWeight: FontWeight.w500,
-  );
-
-  ///11号字体，字重bold
-  static final fs11b = bold.copyWith(
-    fontSize: 11.rpx,
-  );
-
-  ///12号字体
+  ///12号字体，字重300
   static final fs12r = regular.copyWith(
+    fontSize: 12.rpx,
+  );
+
+  ///12号字体，字重400
+  static final fs12 = normal.copyWith(
     fontSize: 12.rpx,
   );
 
@@ -58,23 +48,13 @@ class AppTextStyle{
     fontSize: 12.rpx,
   );
 
-  ///13号字体
-  static final fs13r = regular.copyWith(
-    fontSize: 13.rpx,
-  );
-
-  ///13号字体，字重500
-  static final fs13m = medium.copyWith(
-    fontSize: 13.rpx,
-  );
-
-  ///13号字体，字重bold
-  static final fs13b = bold.copyWith(
-    fontSize: 13.rpx,
-  );
-
-  ///14号字体
+  ///14号字体,字重300
   static final fs14r = regular.copyWith(
+    fontSize: 14.rpx,
+  );
+
+  ///14号字体,字重400
+  static final fs14 = normal.copyWith(
     fontSize: 14.rpx,
   );
 
@@ -88,23 +68,13 @@ class AppTextStyle{
     fontSize: 14.rpx,
   );
 
-  ///15号字体
-  static final fs15r = regular.copyWith(
-    fontSize: 15.rpx,
-  );
-
-  ///15号字体，字重500
-  static final fs15m = medium.copyWith(
-    fontSize: 15.rpx,
-  );
-
-  ///15号字体，字重bold
-  static final fs15b = bold.copyWith(
-    fontSize: 15.rpx,
-  );
-
-  ///16号字体
+  ///16号字体，字重300
   static final fs16r = regular.copyWith(
+    fontSize: 16.rpx,
+  );
+
+  ///16号字体，字重400
+  static final fs16 = normal.copyWith(
     fontSize: 16.rpx,
   );
 
@@ -118,8 +88,13 @@ class AppTextStyle{
     fontSize: 16.rpx,
   );
 
-  ///18号字体
+  ///18号字体，字重300
   static final fs18r = regular.copyWith(
+    fontSize: 18.rpx,
+  );
+
+  ///18号字体，字重400
+  static final fs18 = normal.copyWith(
     fontSize: 18.rpx,
   );
 
@@ -133,23 +108,13 @@ class AppTextStyle{
     fontSize: 18.rpx,
   );
 
-  ///19号字体
-  static final fs19r = regular.copyWith(
-    fontSize: 19.rpx,
-  );
-
-  ///19号字体，字重500
-  static final fs19m = medium.copyWith(
-    fontSize: 19.rpx,
-  );
-
-  ///19号字体，字重bold
-  static final fs19b = bold.copyWith(
-    fontSize: 19.rpx,
-  );
-
   ///20号字体
   static final fs20r = regular.copyWith(
+    fontSize: 20.rpx,
+  );
+
+  ///20号字体，字重400
+  static final fs20 = normal.copyWith(
     fontSize: 20.rpx,
   );
 
@@ -163,18 +128,13 @@ class AppTextStyle{
     fontSize: 20.rpx,
   );
 
-  ///22号字体
-  static final fs22r = regular.copyWith(
-    fontSize: 22.rpx,
-  );
-
-  ///22号字体，字重bold
-  static final fs22b = bold.copyWith(
-    fontSize: 22.rpx,
-  );
-
   ///24号字体
   static final fs24r = regular.copyWith(
+    fontSize: 24.rpx,
+  );
+
+  ///24号字体，字重400
+  static final fs24 = normal.copyWith(
     fontSize: 24.rpx,
   );
 
@@ -186,26 +146,6 @@ class AppTextStyle{
   ///24号字体，字重bold
   static final fs24b = bold.copyWith(
     fontSize: 24.rpx,
-  );
-
-  ///26号字体
-  static final fs26r = regular.copyWith(
-    fontSize: 26.rpx,
-  );
-
-  ///26号字体，字重bold
-  static final fs26b = bold.copyWith(
-    fontSize: 26.rpx,
-  );
-
-  ///30号字体，字重bold
-  static final fs30b = bold.copyWith(
-    fontSize: 30.rpx,
-  );
-
-  ///32号字体，字重500
-  static final fs32m = medium.copyWith(
-    fontSize: 32.rpx,
   );
 }
 

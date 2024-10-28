@@ -140,7 +140,7 @@ class FortuneSquareController extends GetxController
               ShowDialog.show(
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 38.rpx).copyWith(bottom: 24.rpx),
-                  child: Text(S.current.confirmDelete,style: AppTextStyle.fs18m.copyWith(color: AppColor.black20),textAlign: TextAlign.center,),
+                  child: Text(S.current.confirmDelete,style: AppTextStyle.fs18.copyWith(color: AppColor.black20),textAlign: TextAlign.center,),
                 ),
                 callBack: (){
                   Get.back();

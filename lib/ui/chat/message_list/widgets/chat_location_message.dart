@@ -75,14 +75,14 @@ class ChatLocationMessage extends StatelessWidget {
                   children: <Widget>[
                     if(content.poi.isNotEmpty) Text(
                       content.poi,
-                      style: AppTextStyle.fs16m.copyWith(
+                      style: AppTextStyle.fs16.copyWith(
                         color: AppColor.blackBlue,
                         height: 1.4,
                       ),
                     ),
                     if(content.address.isNotEmpty) Text(
                       content.address,
-                      style: AppTextStyle.fs12m.copyWith(
+                      style: AppTextStyle.fs12.copyWith(
                         color: AppColor.grayText,
                         height: 1.4,
                       ),

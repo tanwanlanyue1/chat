@@ -79,7 +79,7 @@ class ChatCallDialog extends StatelessWidget {
                       Text(
                         freeChatHintText,
                         style:
-                            AppTextStyle.fs14b.copyWith(color: AppColor.blackBlue),
+                            AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue),
                       ),
                     if (priceHintText.isNotEmpty)
                       Row(
@@ -87,12 +87,12 @@ class ChatCallDialog extends StatelessWidget {
                         children: [
                           Text(
                             isVideoCall ? S.current.realTimeVideo : S.current.realTimeVoice,
-                            style: AppTextStyle.fs14b
+                            style: AppTextStyle.fs14m
                                 .copyWith(color: AppColor.grayText),
                           ),
                           Text(
                             priceHintText,
-                            style: AppTextStyle.fs14b
+                            style: AppTextStyle.fs14m
                                 .copyWith(color: AppColor.primaryBlue),
                           ),
                         ],
@@ -102,20 +102,20 @@ class ChatCallDialog extends StatelessWidget {
                         children: [
                           Text(
                             S.current.treasuryBalance,
-                            style: AppTextStyle.fs14b
+                            style: AppTextStyle.fs14m
                                 .copyWith(color: AppColor.grayText),
                           ),
                           const Spacer(),
                           Text(
                             balanceHintText,
-                            style: AppTextStyle.fs14b
+                            style: AppTextStyle.fs14m
                                 .copyWith(color: AppColor.primaryBlue),
                           ),
                           Padding(
                             padding: FEdgeInsets(left: 8.rpx),
                             child: Text(
                               isCallable ? S.current.conclude : S.current.notReach,
-                              style: AppTextStyle.fs12m.copyWith(
+                              style: AppTextStyle.fs12.copyWith(
                                 color: isCallable ? AppColor.green : AppColor.red,
                               ),
                             ),
@@ -209,7 +209,7 @@ class ChatCallDialog extends StatelessWidget {
             isVideoCall
                 ? S.current.initiateAVideo(info?.baseInfo.userName ?? '')
                 : S.current.initiateAVoice(info?.baseInfo.userName ?? ''),
-            style: AppTextStyle.fs16b.copyWith(
+            style: AppTextStyle.fs16m.copyWith(
               color: AppColor.blackBlue,
               height: 1.5,
             ),

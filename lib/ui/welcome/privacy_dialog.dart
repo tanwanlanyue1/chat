@@ -53,13 +53,13 @@ class PrivacyDialog extends StatelessWidget {
               children: [
                 Text(
                   S.current.serviceAndPrivacy,
-                  style: AppTextStyle.fs16b.copyWith(color: Colors.black),
+                  style: AppTextStyle.fs16m.copyWith(color: Colors.black),
                 ),
                 Padding(
                   padding: FEdgeInsets(all: 16.rpx),
                   child: RichText(
                     text: TextSpan(
-                        style: AppTextStyle.fs14m.copyWith(
+                        style: AppTextStyle.fs14.copyWith(
                           height: 1.5,
                           color: AppColor.black3,
                         ),
@@ -68,7 +68,7 @@ class PrivacyDialog extends StatelessWidget {
                               text: S.current.pleaseSureCarefullyReadFully),
                           TextSpan(
                             text: '《${S.current.serviceAgreement}》',
-                            style: AppTextStyle.fs14m.copyWith(
+                            style: AppTextStyle.fs14.copyWith(
                               color: AppColor.primaryBlue,
                             ),
                             recognizer: TapGestureRecognizer()
@@ -79,7 +79,7 @@ class PrivacyDialog extends StatelessWidget {
                           TextSpan(text: S.current.and),
                           TextSpan(
                             text: S.current.privacyPolicy,
-                            style: AppTextStyle.fs14m.copyWith(
+                            style: AppTextStyle.fs14.copyWith(
                               color: AppColor.primaryBlue,
                             ),
                             recognizer: TapGestureRecognizer()
@@ -102,7 +102,7 @@ class PrivacyDialog extends StatelessWidget {
                       backgroundColor: AppColor.gray9,
                       child: Text(
                           S.current.disagreeTemporarily,
-                          style: AppTextStyle.fs16m
+                          style: AppTextStyle.fs16
                       ),
                     ),
                     CommonGradientButton(
@@ -110,7 +110,7 @@ class PrivacyDialog extends StatelessWidget {
                       width: 120.rpx,
                       text: S.current.agreeAndAccept,
                       onTap: () => Get.back(result: true),
-                      textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white),
+                      textStyle: AppTextStyle.fs16.copyWith(color: Colors.white),
                     ),
                   ],
                 ),

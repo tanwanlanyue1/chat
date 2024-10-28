@@ -46,7 +46,7 @@ class TeamContractTerminateDialog extends StatelessWidget {
                       child: Text(
                         S.current.rescissionOrNot(contract.partyBName),
                         textAlign: TextAlign.center,
-                        style: AppTextStyle.fs16m.copyWith(
+                        style: AppTextStyle.fs16.copyWith(
                           color: AppColor.gray5,
                           height: 24 / 16,
                         ),
@@ -65,7 +65,7 @@ class TeamContractTerminateDialog extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8.rpx),
                             ),
                             alignment: Alignment.center,
-                            child: Text(S.current.refuse,style: AppTextStyle.fs16m.copyWith(color: Colors.white),),
+                            child: Text(S.current.refuse,style: AppTextStyle.fs16.copyWith(color: Colors.white),),
                           ),
                         ),
                         SizedBox(

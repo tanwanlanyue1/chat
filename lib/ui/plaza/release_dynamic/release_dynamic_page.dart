@@ -61,11 +61,11 @@ class ReleaseDynamicPage extends StatelessWidget {
               child: RichText(
                 text: TextSpan(
                   text: '${controller.contentController.text.length}',
-                  style: AppTextStyle.fs14m.copyWith(color: AppColor.red),
+                  style: AppTextStyle.fs14.copyWith(color: AppColor.red),
                   children: <TextSpan>[
                     TextSpan(
                       text: "/100",
-                      style: AppTextStyle.fs14m.copyWith(color: AppColor.black999,),
+                      style: AppTextStyle.fs14.copyWith(color: AppColor.black999,),
                     ),
                   ],
                 ),
@@ -81,11 +81,11 @@ class ReleaseDynamicPage extends StatelessWidget {
           child: RichText(
             text: TextSpan(
               text: S.current.uploadPictures,
-              style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),
+              style: AppTextStyle.fs16.copyWith(color: AppColor.gray5),
               children: <TextSpan>[
                 TextSpan(
                   text: S.current.upTo9photos,
-                  style: AppTextStyle.fs14m.copyWith(color: AppColor.red,),
+                  style: AppTextStyle.fs14.copyWith(color: AppColor.red,),
                 ),
               ],
             ),

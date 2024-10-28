@@ -122,7 +122,7 @@ class _ContractEditDialogState extends State<ContractEditDialog> {
             padding: FEdgeInsets(vertical: 24.rpx),
             child: Text(
               S.current.contractEdit,
-              style: AppTextStyle.fs18m.copyWith(
+              style: AppTextStyle.fs18.copyWith(
                 color: AppColor.gray5,
               ),
             ),
@@ -147,7 +147,7 @@ class _ContractEditDialogState extends State<ContractEditDialog> {
       child: TextField(
         controller: controller,
         maxLines: 8,
-        style: AppTextStyle.fs14b.copyWith(
+        style: AppTextStyle.fs14m.copyWith(
           color: AppColor.gray5,
           height: 21 / 14,
         ),
@@ -216,7 +216,7 @@ class _ContractEditDialogState extends State<ContractEditDialog> {
     }
 
     return Text.rich(
-      style: AppTextStyle.fs12m.copyWith(
+      style: AppTextStyle.fs12.copyWith(
         height: 18 / 12,
         color: AppColor.gray5,
       ),
@@ -231,7 +231,7 @@ class _ContractEditDialogState extends State<ContractEditDialog> {
         controller: textController,
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
-        style: AppTextStyle.fs14m.copyWith(
+        style: AppTextStyle.fs14.copyWith(
           color: AppColor.gray5,
         ),
         maxLines: 1,
@@ -275,7 +275,7 @@ class _ContractEditDialogState extends State<ContractEditDialog> {
               ),
               child: Text(
                 item.toPercent(scale: 1),
-                style: AppTextStyle.fs12m.copyWith(
+                style: AppTextStyle.fs12.copyWith(
                   color: AppColor.gray5,
                 ),
               ),

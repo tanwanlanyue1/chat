@@ -31,7 +31,7 @@ class MineServiceChargePage extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(left: 16.rpx,top: 24.rpx,bottom: 16.rpx),
             alignment: Alignment.centerLeft,
-            child: Text(S.current.chargeService,style: AppTextStyle.fs16b.copyWith(color: AppColor.black20),),
+            child: Text(S.current.chargeService,style: AppTextStyle.fs16m.copyWith(color: AppColor.black20),),
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 16.rpx),
@@ -55,7 +55,7 @@ class MineServiceChargePage extends StatelessWidget {
           Container(
             alignment: Alignment.centerRight,
             margin: EdgeInsets.only(right: 16.rpx,top: 12.rpx),
-            child: Text("${S.current.figure}1-999999",style: AppTextStyle.fs12m.copyWith(color: AppColor.gray9),),
+            child: Text("${S.current.figure}1-999999",style: AppTextStyle.fs12.copyWith(color: AppColor.gray9),),
           ),
           Button(
             height: 50.rpx,

@@ -60,7 +60,7 @@ class _OrderListTileState extends State<OrderListTile> {
                 if (item.countDown > 0)
                   Text(
                     '剩余等待',
-                    style: AppTextStyle.fs12m.copyWith(
+                    style: AppTextStyle.fs12.copyWith(
                       color: AppColor.blackBlue,
                       height: 1,
                     ),
@@ -171,7 +171,7 @@ class _OrderListTileState extends State<OrderListTile> {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: AppTextStyle.fs12m.copyWith(
+          style: AppTextStyle.fs12.copyWith(
             color: Colors.white,
             height: 1.0,
           ),
@@ -211,7 +211,7 @@ class _OrderListTileState extends State<OrderListTile> {
                     padding: FEdgeInsets(bottom: 1.rpx),
                     child: Text(
                       ':',
-                      style: AppTextStyle.fs12b.copyWith(
+                      style: AppTextStyle.fs12m.copyWith(
                         color: AppColor.red,
                         height: 1.0,
                       ),

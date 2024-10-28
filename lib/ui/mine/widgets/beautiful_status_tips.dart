@@ -41,7 +41,7 @@ class BeautifulStatusTips extends StatelessWidget {
           ),
           Text(
             status.text,
-            style: AppTextStyle.fs12m.copyWith(color: AppColor.blackText),
+            style: AppTextStyle.fs12.copyWith(color: AppColor.blackText),
           ),
         ],
       ),

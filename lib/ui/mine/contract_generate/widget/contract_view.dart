@@ -33,7 +33,7 @@ class ContractView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: AppTextStyle.fs12b.copyWith(
+      style: AppTextStyle.fs12m.copyWith(
         color: AppColor.blackText,
         height: 1.5,
       ),
@@ -65,7 +65,7 @@ class ContractView extends StatelessWidget {
         TextSpan(text: text1),
         TextSpan(
             text: text2,
-            style: AppTextStyle.fs12b.copyWith(
+            style: AppTextStyle.fs12m.copyWith(
               color: AppColor.black666,
             )),
       ],

@@ -101,11 +101,11 @@ class ChatTransferMessage extends StatelessWidget {
                 children: [
                   Text(
                     '\$${content.amount.toStringAsTrimZero() ?? ''}',
-                    style: AppTextStyle.fs16b.copyWith(color: Colors.white),
+                    style: AppTextStyle.fs16m.copyWith(color: Colors.white),
                   ),
                   Text(
                     isReceiveMoney ? S.current.TaSuccessfulCollection : S.current.transferMoneyToYou,
-                    style: AppTextStyle.fs12m.copyWith(color: Colors.white),
+                    style: AppTextStyle.fs12.copyWith(color: Colors.white),
                   )
                 ],
               ),
@@ -156,7 +156,7 @@ class ChatTransferMessage extends StatelessWidget {
             padding: FEdgeInsets(left: 8.rpx),
             child: Text(
               title,
-              style: AppTextStyle.fs14m.copyWith(
+              style: AppTextStyle.fs14.copyWith(
                 color: message.isMine ? Colors.white : AppColor.blackBlue,
               ),
             ),
@@ -204,7 +204,7 @@ class ChatTransferMessage extends StatelessWidget {
     return Padding(
       padding: FEdgeInsets(top: 12.rpx, bottom: 4.rpx),
       child: DefaultTextStyle(
-        style: AppTextStyle.fs12m.copyWith(
+        style: AppTextStyle.fs12.copyWith(
           color: message.isMine ? Colors.white : AppColor.black666,
           height: 1.00001,
         ),

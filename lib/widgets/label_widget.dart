@@ -68,7 +68,7 @@ class LabelWidget extends StatelessWidget {
           children: [
             Text(
               item.title,
-              style: AppTextStyle.fs14b
+              style: AppTextStyle.fs14m
                   .textColor(item.selected
                       ? selectedTextColor ?? AppColor.blackBlue
                       : textColor ?? Colors.white)

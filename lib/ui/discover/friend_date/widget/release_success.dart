@@ -62,9 +62,9 @@ class ReleaseSuccess extends StatelessWidget {
                   height: 270.rpx,
                   alignment: Alignment.bottomCenter,
                   padding: EdgeInsets.only(bottom: 16.rpx,left: 24.rpx),
-                  child: Text("${S.current.releaseSuccess}！",style: AppTextStyle.fs24m.copyWith(color: Colors.white,fontWeight: FontWeight.w700),),
+                  child: Text("${S.current.releaseSuccess}！",style: AppTextStyle.fs24.copyWith(color: Colors.white,fontWeight: FontWeight.w700),),
                 ),
-                Text(S.current.ifUserAttends,style: AppTextStyle.fs14b.copyWith(color: Colors.white),),
+                Text(S.current.ifUserAttends,style: AppTextStyle.fs14m.copyWith(color: Colors.white),),
                 const Spacer(),
                 GestureDetector(
                   onTap: (){
@@ -78,7 +78,7 @@ class ReleaseSuccess extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(8.rpx)),
                     ),
                     alignment: Alignment.center,
-                    child: Text(S.current.backToView,style: AppTextStyle.fs16b.copyWith(color: AppColor.gray5),),
+                    child: Text(S.current.backToView,style: AppTextStyle.fs16m.copyWith(color: AppColor.gray5),),
                   ),
                 ),
               ],

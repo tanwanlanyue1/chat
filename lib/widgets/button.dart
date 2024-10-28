@@ -317,7 +317,7 @@ class Button extends StatelessWidget {
     }
     var backgroundColor = this.backgroundColor;
     var borderColor = this.borderColor;
-    var textStyle = AppTextStyle.fs16m.copyWith(
+    var textStyle = AppTextStyle.fs16.copyWith(
       color: isOutline ? borderColor : Colors.white,
     );
     BoxBorder? border;

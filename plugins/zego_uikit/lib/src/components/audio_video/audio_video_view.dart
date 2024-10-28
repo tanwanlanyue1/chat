@@ -165,6 +165,7 @@ class _ZegoAudioVideoViewState extends State<ZegoAudioVideoView> {
               },
             ),
             avatar(constraints.maxWidth, constraints.maxHeight),
+            nickname(constraints.maxWidth, constraints.maxHeight),
           ],
         );
       },
@@ -252,6 +253,40 @@ class _ZegoAudioVideoViewState extends State<ZegoAudioVideoView> {
           avatarBuilder: widget.avatarConfig?.builder,
           soundLevelSize: widget.avatarConfig?.size,
           soundLevelColor: widget.avatarConfig?.soundWaveColor,
+        ),
+      ),
+    );
+  }
+
+  //add nickname by jelly
+  Widget nickname(double maxWidth, double maxHeight) {
+    final screenSize = MediaQuery.of(context).size;
+    final isSmallView = maxHeight < screenSize.height / 2;
+    final avatarSize =
+        isSmallView ? Size(110.zR, 110.zR) : Size(258.zR, 258.zR);
+
+    var sizedWidth = widget.avatarConfig?.size?.width ?? avatarSize.width;
+    var sizedHeight = widget.avatarConfig?.size?.height ?? avatarSize.width;
+    if (sizedWidth > maxWidth) {
+      sizedWidth = maxWidth;
+    }
+    if (sizedHeight > maxHeight) {
+      sizedHeight = maxHeight;
+    }
+
+    return Positioned(
+      top: getAvatarTop(maxWidth, maxHeight, sizedHeight) + sizedHeight + 16,
+      left: 0,
+      right: 0,
+      child: Text(
+        widget.user?.name ?? '',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 18,
+          color: Colors.white,
+          fontWeight: FontWeight.w500,
+          height: 1.0,
+          leadingDistribution: TextLeadingDistribution.even,
         ),
       ),
     );

@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
-import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/network/api/model/user/user_model.dart';
@@ -119,7 +117,7 @@ class WalletPage extends StatelessWidget {
                 ),
                 Text(
                   S.current.guanJiaWallet,
-                  style: AppTextStyle.st.bold
+                  style: AppTextStyle.st.medium
                       .size(16.rpx)
                       .textColor(AppColor.primaryBlue)
                       .copyWith(height: 1),

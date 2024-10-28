@@ -306,63 +306,57 @@ mixin _ChatCallMixin {
         },
       ),
       //事件说明 https://www.zegocloud.com/docs/uikit/zh/callkit-android/api-reference/event#invitationevents
-      invitationEvents: ZegoUIKitPrebuiltCallInvitationEvents(
-        onOutgoingCallAccepted: (
-          String callID,
-          ZegoCallUser callee,
-        ) {
-          AppLogger.d(
-              'ZegoUIKitPrebuiltCallInvitationEvents>onOutgoingCallAccepted: callID=${callID}');
-          final isVideoCall = _isVideoCall;
-          _clearCallState();
-          _callId = callID;
-          _isVideoCall = isVideoCall;
-          _callInvitee = callee.id;
-          _callInviter = ZegoUIKit().getLocalUser().id;
-          _isWaitCallEndDialog = true;
-        },
-        onIncomingCallReceived: (
-          String callID,
-          ZegoCallUser caller,
-          ZegoCallInvitationType callType,
-          List<ZegoCallUser> callees,
-          String customData,
-        ) async {
-          _callId = callID;
-          _isVideoCall = callType == ZegoCallInvitationType.videoCall;
-          _callInvitee = ZegoUIKit().getLocalUser().id;
-          _callInviter = caller.id;
-          _isWaitCallEndDialog = true;
-          print('onIncomingCallReceived');
+      invitationEvents:
+          ZegoUIKitPrebuiltCallInvitationEvents(onOutgoingCallAccepted: (
+        String callID,
+        ZegoCallUser callee,
+      ) {
+        AppLogger.d(
+            'ZegoUIKitPrebuiltCallInvitationEvents>onOutgoingCallAccepted: callID=${callID}');
+        final isVideoCall = _isVideoCall;
+        _clearCallState();
+        _callId = callID;
+        _isVideoCall = isVideoCall;
+        _callInvitee = callee.id;
+        _callInviter = ZegoUIKit().getLocalUser().id;
+        _isWaitCallEndDialog = true;
+      }, onIncomingCallReceived: (
+        String callID,
+        ZegoCallUser caller,
+        ZegoCallInvitationType callType,
+        List<ZegoCallUser> callees,
+        String customData,
+      ) async {
+        _callId = callID;
+        _isVideoCall = callType == ZegoCallInvitationType.videoCall;
+        _callInvitee = ZegoUIKit().getLocalUser().id;
+        _callInviter = caller.id;
+        _isWaitCallEndDialog = true;
+        print('onIncomingCallReceived');
 
-          //申请权限
-          await checkPermission(callType == ZegoCallInvitationType.videoCall);
+        //申请权限
+        await checkPermission(callType == ZegoCallInvitationType.videoCall);
 
-          //自动接听
-          if (CallCustomData.fromJsonString(customData)?.autoAccept == true) {
-            acceptCall(customData: customData);
-          }
-        },
-        onOutgoingCallRejectedCauseBusy: (
-          String callID,
-          ZegoCallUser callee,
-          String customData,
-        ) {
-          Loading.showToast(S.current.thePartyEngagedCall);
-        },
-        onIncomingCallDeclineButtonPressed: () {
-          _sendCallRejectMessage(_callInviter);
-          _clearCallState();
-        },
-        onOutgoingCallCancelButtonPressed: () {
-          _sendCallRejectMessage(_callInvitee);
-          _clearCallState();
-        },
-        onOutgoingCallTimeout: (callId, callees, isVideoCall){
-          _sendCallRejectMessage(callees.first.id);
-          _clearCallState();
+        //自动接听
+        if (CallCustomData.fromJsonString(customData)?.autoAccept == true) {
+          acceptCall(customData: customData);
         }
-      ),
+      }, onOutgoingCallRejectedCauseBusy: (
+        String callID,
+        ZegoCallUser callee,
+        String customData,
+      ) {
+        Loading.showToast(S.current.thePartyEngagedCall);
+      }, onIncomingCallDeclineButtonPressed: () {
+        _sendCallRejectMessage(_callInviter);
+        _clearCallState();
+      }, onOutgoingCallCancelButtonPressed: () {
+        _sendCallRejectMessage(_callInvitee);
+        _clearCallState();
+      }, onOutgoingCallTimeout: (callId, callees, isVideoCall) {
+        _sendCallRejectMessage(callees.first.id);
+        _clearCallState();
+      }),
     );
   }
 
@@ -423,9 +417,35 @@ mixin _ChatCallMixin {
       Map extraInfo,
     ) {
       //不显示自己的头像
-      if(user?.id == SS.login.userId?.toString()){
+      if (user?.id == SS.login.userId?.toString()) {
         return SizedBox.fromSize(size: size);
       }
+
+      print('extraInfo==:${extraInfo}');
+
+      //通话页面的头像
+      if (extraInfo.getBool('calling')) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ChatAvatar.circle(
+              userId: user?.id ?? '',
+              size: size.width - 24.rpx,
+            ),
+            Padding(
+              padding: FEdgeInsets(top: 8.rpx),
+              child: Text(
+                user?.name ?? '',
+                style: AppTextStyle.fs16m.copyWith(
+                  color: Colors.white,
+                  height: 1.0,
+                ),
+              ),
+            ),
+          ],
+        );
+      }
+
       return ChatAvatar.circle(
         userId: user?.id ?? '',
         size: size.width,

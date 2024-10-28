@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 import 'package:get/get.dart';
@@ -37,7 +35,7 @@ class AccountDataPage extends StatelessWidget {
       ),
       body: Obx(() {
         final info = state.info?.value;
-        final userInfoRx = controller.loginService.info;
+        final userInfo = controller.loginService.info;
         if (info == null) return const SizedBox();
 
         return Column(
@@ -54,7 +52,7 @@ class AccountDataPage extends StatelessWidget {
                     title: S.current.userAvatar,
                     height: 100.rpx,
                     trailing: AppImage.network(
-                      controller.avatarController.avatar.value,
+                      userInfo?.avatar ?? '',
                       borderRadius: BorderRadius.circular(4.rpx),
                       width: 66.rpx,
                       height: 66.rpx,
@@ -128,7 +126,7 @@ class AccountDataPage extends StatelessWidget {
                   AccountDataItem(
                     onTap: controller.onTapPhone,
                     title: S.current.userPhone,
-                    detail: userInfoRx?.phone,
+                    detail: userInfo?.phone,
                     detailHintText: S.current.clickBindCellPhone,
                   ),
                   _padding(),
@@ -136,7 +134,7 @@ class AccountDataPage extends StatelessWidget {
                   AccountDataItem(
                     onTap: controller.onTapEmail,
                     title: S.current.userEmail,
-                    detail: userInfoRx?.email,
+                    detail: userInfo?.email,
                     detailHintText: S.current.clickBindEmail,
                   ),
                   // likeSex

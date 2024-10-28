@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
@@ -19,6 +20,7 @@ class PaymentPasswordKeyboard extends StatefulWidget {
   static Future<String?> show({String? titleStr,bool setPay = false}) async {
     if(SS.login.info?.payPwd != true && !setPay){
       Loading.showToast(S.current.pleasePaymentPassword);
+      Get.toNamed(AppRoutes.paymentPasswordPage);
       return null;
     }
     return Get.bottomSheet<String>(

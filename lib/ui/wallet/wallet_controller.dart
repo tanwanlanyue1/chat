@@ -13,6 +13,7 @@ class WalletController extends GetxController
     length: WalletOperationType.values.length,
     vsync: this,
     animationDuration: Duration.zero,
+    initialIndex: WalletOperationType.record.index,
   );
 
   @override

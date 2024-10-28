@@ -26,11 +26,12 @@ class MineSettingController extends GetxController {
 
   //选择语言
   Future<void> selectLanguage() async {
+    final locales = AppLocalization.instance.supportedLocales;
     Get.bottomSheet(
       CommonBottomSheet(
         titles: [S.current.chinese, S.current.english],
         onTap: (index) async {
-          AppLocalization.instance.updateLocale(Locale.fromSubtags(languageCode: state.languageCodeList[index]));
+          AppLocalization.instance.updateLocale(locales[index]);
         },
       ),
     );

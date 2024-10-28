@@ -41,6 +41,8 @@ class App extends StatelessWidget {
               initialRoute: AppPages.initial,
               builder: Loading.init(),
               getPages: AppPages.routes,
+              defaultTransition: Transition.cupertino,
+              transitionDuration: const Duration(milliseconds: 350),
               navigatorObservers: [AppPages.routeObserver],
               localizationsDelegates: const [
                 S.delegate,

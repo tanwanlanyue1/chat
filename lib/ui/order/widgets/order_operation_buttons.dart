@@ -175,7 +175,7 @@ class OrderOperationButtons extends StatelessWidget {
               child: Text(
                 S.current.contactToBeauty,
                 style:
-                    AppTextStyle.st.bold.size(12.rpx).textColor(Colors.white).textHeight(1),
+                    AppTextStyle.st.medium.size(12.rpx).textColor(Colors.white).textHeight(1),
               ),
             ),
           ),

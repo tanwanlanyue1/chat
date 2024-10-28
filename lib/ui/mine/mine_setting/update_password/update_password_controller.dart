@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/user_api.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/firebase_util.dart';
 import 'package:guanjia/generated/l10n.dart';
@@ -15,12 +16,16 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
     bool? login,
     bool? type,
     String? text,
+    String? countryCode,
   }){// true：修改登录密码，false：修改支付密码，
     state.isLogin.value = login ?? true;
     if(type != null){
       state.type = true;
       state.isPhone.value = !type;
       state.phone = text!;
+    }
+    if(countryCode != null){
+      state.countryCode = countryCode;
     }
   }
 
@@ -63,6 +68,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
   void submit() async {
     final isPhone = state.isPhone();
     final phoneOrEmail = state.phone;
+    final countryCode = state.countryCode;
     final verificationCode = verificationInputController.text.trim();
     final newPassword = newPasswordInputController.text;
     final confirmPassword = confirmPasswordInputController.text;
@@ -81,7 +87,7 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
     Loading.show();
     final res = await state.loginService.forgotOrResetPassword(
       type: isPhone ? 1 : 2,
-      phone: isPhone ? phoneOrEmail : null,
+      phone: isPhone ? countryCode+phoneOrEmail : null,
       email: isPhone ? null : phoneOrEmail,
       verifyCode: isPhone ? null : verificationCode,
       idToken: isPhone ? idToken : null,
@@ -92,7 +98,11 @@ class UpdatePasswordController extends GetxController with GetAutoDisposeMixin {
 
     res.when(success: (_) {
       Loading.showToast(S.current.modifySuccessfully);
-      Get.back();
+      if(SS.login.isLogin){
+        Get.back();
+      }else{
+        Get.until((route) => Get.currentRoute == AppRoutes.loginPage);
+      }
     }, failure: (errorMessage) {
       Loading.showToast(errorMessage);
     });

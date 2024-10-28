@@ -31,6 +31,9 @@ class AppConfig{
   ///APP下载页
   static String get urlAppDownload => '$urlServer/static/gj_app_download.html';
 
+  ///APP 官网
+  static String get urlAppWebSite => '$urlServer/static/index.html';
+
   ///账号注销
   static String get urlAccountCancellation => '$urlServer/static/gj_account_cancellation.html';
 

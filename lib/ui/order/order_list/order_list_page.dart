@@ -209,7 +209,7 @@ class _OrderListPageState extends State<OrderListPage>
                         children: [
                           TextSpan(
                             text: "${item.amountCount}",
-                            style: AppTextStyle.st.bold
+                            style: AppTextStyle.st.medium
                                 .size(18.rpx)
                                 .textColor(AppColor.textGreen),
                           ),
@@ -236,7 +236,7 @@ class _OrderListPageState extends State<OrderListPage>
                     children: [
                       Text(
                         "${item.waitingEvaluateCount}",
-                        style: AppTextStyle.st.bold
+                        style: AppTextStyle.st.medium
                             .size(18.rpx)
                             .textColor(AppColor.textGreen),
                         maxLines: 1,
@@ -267,7 +267,7 @@ class _OrderListPageState extends State<OrderListPage>
                     children: [
                       Text(
                         "${item.finishCount}",
-                        style: AppTextStyle.st.bold
+                        style: AppTextStyle.st.medium
                             .size(18.rpx)
                             .textColor(AppColor.textGreen),
                         maxLines: 1,

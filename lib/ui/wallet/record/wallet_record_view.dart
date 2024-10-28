@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -40,8 +39,7 @@ class _WalletRecordViewState extends State<WalletRecordView>
             controller: controller.pagingController.refreshController,
             onRefresh: controller.pagingController.onRefresh,
             child: PagedListView.separated(
-              padding:
-                  FEdgeInsets(horizontal: 16.rpx, bottom: 24.rpx),
+              padding: FEdgeInsets(horizontal: 16.rpx, bottom: 24.rpx),
               pagingController: controller.pagingController,
               builderDelegate: DefaultPagedChildBuilderDelegate(
                 pagingController: controller.pagingController,
@@ -64,24 +62,43 @@ class _WalletRecordViewState extends State<WalletRecordView>
     );
   }
 
-  Widget buildFilterBar(){
-    return Obx((){
+  Widget buildFilterBar() {
+    return Obx(() {
       final filterData = controller.filterDataRx();
       final totalIncome = controller.totalIncomeRx();
       final totalExpenditure = controller.totalExpenditureRx();
+      final diff = totalIncome - totalExpenditure;
+      var diffText = '(${diff.toCurrencyString()})'.replaceAll('-', '');
+      var diffColor = AppColor.blackBlue;
+      if(diff < 0){
+        diffText = '-$diffText';
+        diffColor = AppColor.red;
+      }else{
+        diffText = '+$diffText';
+        diffColor = AppColor.green;
+      }
+
+
+
       return Padding(
         padding: FEdgeInsets(horizontal: 16.rpx, vertical: 12.rpx),
         child: Row(
           children: [
-            Expanded(
-              child: Text(
-                '支出${totalIncome.toCurrencyString()}  收益${totalExpenditure.toCurrencyString()}',
-                style: AppTextStyle.fs14.copyWith(
-                  color: AppColor.blackBlue,
-                  height: 1,
-                ),
+            Text(
+              '支出${totalExpenditure.toCurrencyString()}  收益${totalIncome.toCurrencyString()}',
+              style: AppTextStyle.fs14.copyWith(
+                color: AppColor.blackBlue,
+                height: 1,
               ),
             ),
+            Text(
+              '  $diffText',
+              style: AppTextStyle.fs14.copyWith(
+                color: diffColor,
+                height: 1,
+              ),
+            ),
+            const Spacer(),
             Button.stadium(
               onPressed: controller.onTapFilter,
               height: 24.rpx,
@@ -91,9 +108,8 @@ class _WalletRecordViewState extends State<WalletRecordView>
                 children: [
                   Text(
                     '筛选',
-                    style: AppTextStyle.st
-                        .size(12.rpx)
-                        .textColor(AppColor.black3),
+                    style:
+                        AppTextStyle.st.size(12.rpx).textColor(AppColor.black3),
                   ),
                   Icon(
                     Icons.arrow_drop_down,
@@ -147,7 +163,7 @@ class _WalletRecordViewState extends State<WalletRecordView>
               ),
               Text(
                 "$opt${item.amount.toCurrencyString()}",
-                style: AppTextStyle.st.bold
+                style: AppTextStyle.st.medium
                     .size(18.rpx)
                     .textColor(AppColor.black3),
               ),

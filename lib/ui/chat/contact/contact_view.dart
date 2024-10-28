@@ -40,23 +40,25 @@ class _ContactViewState extends State<ContactView>
       onRefresh: controller.pagingController.onRefresh,
       child: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            backgroundColor: Colors.transparent,
-            automaticallyImplyLeading: false,
-            pinned: true,
-            snap: false,
-            floating: false,
-            expandedHeight: 184.rpx,
-            toolbarHeight: 80.rpx,
-            flexibleSpace: FlexibleSpaceBar(
-              collapseMode: CollapseMode.pin,
-              stretchModes: const [StretchMode.blurBackground],
-              expandedTitleScale: 1.0,
-              background: buildUserInfo(),
-              title: buildSearch(),
-              titlePadding: EdgeInsets.zero,
-            ),
-          ),
+          // SliverAppBar(
+          //   backgroundColor: Colors.transparent,
+          //   automaticallyImplyLeading: false,
+          //   pinned: true,
+          //   snap: false,
+          //   floating: false,
+          //   expandedHeight: 184.rpx,
+          //   toolbarHeight: 80.rpx,
+          //   flexibleSpace: FlexibleSpaceBar(
+          //     collapseMode: CollapseMode.pin,
+          //     stretchModes: const [StretchMode.blurBackground],
+          //     expandedTitleScale: 1.0,
+          //     background: buildUserInfo(),
+          //     title: buildSearch(),
+          //     titlePadding: EdgeInsets.zero,
+          //   ),
+          // ),
+          SliverToBoxAdapter(child: buildUserInfo()),
+          SliverToBoxAdapter(child: buildSearch()),
           SliverToBoxAdapter(
             child: Divider(height: 1, endIndent: 16.rpx, indent: 16.rpx),
           ),
@@ -119,7 +121,7 @@ class _ContactViewState extends State<ContactView>
                   child: Text(
                     maxLines: 2,
                     userInfo?.nickname ?? '',
-                    style: AppTextStyle.fs16.copyWith(
+                    style: AppTextStyle.fs16m.copyWith(
                       color: AppColor.blackBlue,
                       height: 1.0,
                     ),
@@ -130,7 +132,7 @@ class _ContactViewState extends State<ContactView>
                     padding: FEdgeInsets(top: 8.rpx),
                     child: Text(
                       userInfo?.position ?? '',
-                      style: AppTextStyle.fs12r.copyWith(
+                      style: AppTextStyle.fs12.copyWith(
                         color: AppColor.grayText,
                         height: 1.0,
                       ),
@@ -147,7 +149,7 @@ class _ContactViewState extends State<ContactView>
                         children: [
                           Text(
                             'ID:${userInfo?.chatNo}',
-                            style: AppTextStyle.fs12r.copyWith(
+                            style: AppTextStyle.fs12.copyWith(
                               color: AppColor.grayText,
                               height: 1.0,
                             ),
@@ -192,7 +194,7 @@ class _ContactViewState extends State<ContactView>
                   FilteringTextInputFormatter.allow(RegExp('[0-9]')),
                   LengthLimitingTextInputFormatter(16),
                 ],
-                style: AppTextStyle.fs14.copyWith(
+                style: AppTextStyle.fs14m.copyWith(
                   color: AppColor.blackBlue,
                 ),
                 decoration: InputDecoration(
@@ -203,7 +205,7 @@ class _ContactViewState extends State<ContactView>
                     borderRadius: BorderRadius.circular(20.rpx),
                     gapPadding: 0,
                   ),
-                  hintStyle: AppTextStyle.fs14r.copyWith(
+                  hintStyle: AppTextStyle.fs14.copyWith(
                     color: AppColor.grayText,
                   ),
                   hintText: S.current.contactSearchHint,

@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/wallet/order_list/wallet_order_list_state.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -93,7 +94,7 @@ class WalletOrderListTile extends StatelessWidget {
       width: 60.rpx,
       height: 26.rpx,
       borderRadius: BorderRadius.circular(4.rpx),
-      child: Text('联系客服', style: AppTextStyle.fs12),
+      child: Text(S.current.contactCustomerService, style: AppTextStyle.fs12),
     );
   }
 

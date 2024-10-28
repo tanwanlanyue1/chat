@@ -19,7 +19,7 @@ class DefaultFirebaseOptions {
     if (kIsWeb) {
       throw UnsupportedError(
         'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
+            'you can reconfigure this by running the FlutterFire CLI again.',
       );
     }
     switch (defaultTargetPlatform) {
@@ -30,17 +30,17 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
+              'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
+              'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
+              'you can reconfigure this by running the FlutterFire CLI again.',
         );
       default:
         throw UnsupportedError(
@@ -50,20 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBC3hUzhkwp-VewNurOhFVr4QXLy9CtLGA',
-    appId: '1:935099426738:android:635a6feef2bc2e9b04e6ab',
-    messagingSenderId: '935099426738',
-    projectId: 'guanjia-33491',
-    storageBucket: 'guanjia-33491.appspot.com',
+    apiKey: 'AIzaSyCFOnAnVt3-D5hfbSYbVrvbugDst8xsGCo',
+    appId: '1:835052330079:android:e1e27dc76058dfad780fea',
+    messagingSenderId: '835052330079',
+    projectId: 'guanjia-a0017',
+    storageBucket: 'guanjia-a0017.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAwEIrO5vXLjz4m9N7ZsaaWy2W2vDYMpp4',
-    appId: '1:935099426738:ios:7839d2a6082fd4f404e6ab',
-    messagingSenderId: '935099426738',
-    projectId: 'guanjia-33491',
-    storageBucket: 'guanjia-33491.appspot.com',
-    iosBundleId: 'com.aimiyou.jingxiu',
+    apiKey: 'AIzaSyAsxF2A9zSe0vTi2VBS-ynRUP62J7SlU2o',
+    appId: '1:835052330079:ios:2fdb878a487679d0780fea',
+    messagingSenderId: '835052330079',
+    projectId: 'guanjia-a0017',
+    storageBucket: 'guanjia-a0017.appspot.com',
+    iosBundleId: 'com.social.guanjia',
   );
-
 }

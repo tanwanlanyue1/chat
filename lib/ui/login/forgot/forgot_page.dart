@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/app_constant.dart';
+import 'package:guanjia/common/app_localization.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
@@ -10,6 +13,7 @@ import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
+import 'package:guanjia/widgets/web/web_page.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'forgot_controller.dart';
@@ -62,6 +66,7 @@ class ForgotPage extends StatelessWidget {
   Widget _forgotWidget() {
     return Obx(() {
       final isEmailValid = state.isEmailValid.value;
+      final locale = AppLocalization.instance.locale;
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -130,7 +135,6 @@ class ForgotPage extends StatelessWidget {
                   SizedBox(width: 16.rpx),
                   Expanded(
                     child: IntlPhoneField(
-                      controller: controller.phoneController,
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -144,8 +148,8 @@ class ForgotPage extends StatelessWidget {
                       dropdownTextStyle: AppTextStyle.st.medium
                           .size(14.rpx)
                           .textColor(AppColor.black92),
-                      initialCountryCode: 'CN',
-                      languageCode: "ZH",
+                      initialCountryCode: locale?.countryCode,
+                      languageCode: locale?.languageCode ?? 'en',
                       disableLengthCheck: true,
                       dropdownIconPosition: IconPosition.trailing,
                       dropdownIcon: const Icon(
@@ -156,14 +160,15 @@ class ForgotPage extends StatelessWidget {
                           backgroundColor: Colors.white,
                           searchFieldInputDecoration:
                               InputDecoration(labelText: S.current.search)),
-                      // onCountryChanged: (val) {
-                      //   print("val==$val");
-                      // },
-                      // onChanged: (phone) {
-                      //   print(phone);
-                      //   // controller.phoneNumberInputController.text = phone.number;
-                      //   // controller.phoneNumberInputController.text = phone.countryCode.substring(1)+phone.number;
-                      // },
+                      onCountryChanged: (country) {
+                        state.countryCode = country.code;
+                      },
+                      onChanged: (phone) {
+                        state.countryCode = phone.countryCode;
+                        state.phone = phone.number;
+                        // controller.phoneNumberInputController.text = phone.number;
+                        // controller.phoneNumberInputController.text = phone.countryCode.substring(1)+phone.number;
+                      },
                     ),
                   ),
                 ],
@@ -186,7 +191,9 @@ class ForgotPage extends StatelessWidget {
             padding: EdgeInsets.only(top: 30.rpx),
             alignment: Alignment.centerRight,
             child: GestureDetector(
-              onTap: null,
+              onTap: (){
+                WebPage.go(url: AppConfig.urlAppWebSite);
+              },
               behavior: HitTestBehavior.opaque,
               child: Builder(
                 builder: (context) {

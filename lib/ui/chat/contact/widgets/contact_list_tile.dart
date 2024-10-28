@@ -18,10 +18,9 @@ class ContactListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final age = userModel.age ?? 0;
-    return GestureDetector(
+    return InkWell(
       onTap: toUserPage,
       child: Container(
-        color: Colors.white,
         padding: FEdgeInsets(horizontal: 16.rpx, top: 24.rpx),
         child: Column(
           children: [
@@ -48,7 +47,7 @@ class ContactListTile extends StatelessWidget {
                               BoxConstraints(maxWidth: Get.width - 200.rpx),
                           child: Text(
                             userModel.nickname,
-                            style: AppTextStyle.fs14.copyWith(
+                            style: AppTextStyle.fs14m.copyWith(
                               color: AppColor.blackBlue,
                               height: 1.0,
                             ),
@@ -78,7 +77,7 @@ class ContactListTile extends StatelessWidget {
                         if (age > 0) ...[
                           Text(
                             age.toString(),
-                            style: AppTextStyle.fs12r.copyWith(
+                            style: AppTextStyle.fs12.copyWith(
                               color: AppColor.blackBlue.withOpacity(0.7),
                             ),
                           ),
@@ -94,7 +93,7 @@ class ContactListTile extends StatelessWidget {
                         ],
                         Text(
                           userModel.type.label,
-                          style: AppTextStyle.fs12r.copyWith(
+                          style: AppTextStyle.fs12.copyWith(
                             color: AppColor.blackBlue.withOpacity(0.7),
                           ),
                         ),
@@ -148,7 +147,7 @@ class ContactListTile extends StatelessWidget {
                 padding: FEdgeInsets(left: 4.rpx),
                 child: Text(
                   S.current.accost,
-                  style: AppTextStyle.fs14r.copyWith(
+                  style: AppTextStyle.fs14.copyWith(
                     color: AppColor.blackBlue,
                     height: 1,
                   ),

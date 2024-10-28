@@ -23,8 +23,6 @@ class AccountDataController extends GetxController with GetAutoDisposeMixin {
 
   final userType = SS.login.info?.type ?? UserType.user;
 
-  final avatarController = Get.put(AvatarController());
-
   late final TextEditingController nicknameController;
   late final TextEditingController signatureController;
 
@@ -62,8 +60,6 @@ class AccountDataController extends GetxController with GetAutoDisposeMixin {
     final info = state.info?.value.copyWith();
     if (info == null) return;
 
-    info.avatar = avatarController.avatar.value;
-
     // 昵称
     info.nickname = nicknameController.text;
 
@@ -89,6 +85,9 @@ class AccountDataController extends GetxController with GetAutoDisposeMixin {
     // 下面两个属性需要进行绑定操作，保存不需要进行修改
     info.phone = null;
     info.email = null;
+
+    // 头像在头像上传也已经保存，这里的保存不需要进行修改
+    info.avatar = null;
 
     final data = info.toJson();
     Loading.show();

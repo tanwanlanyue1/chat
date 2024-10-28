@@ -94,7 +94,7 @@ class ChoosePlaceController extends GetxController with GetAutoDisposeMixin {
     final response = await OpenApi.searchNearPlaces(
       latitude: target.latitude,
       longitude: target.longitude,
-      radius: 1000,
+      radius: 5000,
       language: AppLocalization.instance.locale?.languageCode ?? 'en',
       keyword: state.keywordRx.isNotEmpty ? state.keywordRx() : null,
     );
@@ -147,8 +147,9 @@ class ChoosePlaceController extends GetxController with GetAutoDisposeMixin {
         _userActionTimer?.cancel();
         _isUserAction = true;
         mapController?.animateCamera(cameraUpdate);
+        // mapController?.moveCamera(cameraUpdate);
         _userActionTimer =
-            Timer(const Duration(seconds: 1), () => _isUserAction = false);
+            Timer(const Duration(seconds: 3), () => _isUserAction = false);
       }
     }
   }

@@ -43,7 +43,7 @@ class SettingItem extends StatelessWidget {
           children: [
             Text(
               title,
-              style: AppTextStyle.fs16.copyWith(color: AppColor.black3),
+              style: AppTextStyle.fs14m.copyWith(color: AppColor.black3),
             ),
             SizedBox(width: 8.rpx),
             Expanded(

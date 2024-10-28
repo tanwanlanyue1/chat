@@ -85,6 +85,7 @@ class BindingPage extends StatelessWidget {
 
   //绑定手机号
   Widget _buildPhoneField() {
+    final locale = AppLocalization.instance.locale;
     return Container(
       height: 50.rpx,
       color: Colors.white,
@@ -106,8 +107,8 @@ class BindingPage extends StatelessWidget {
                   color: AppColor.gray9,
                 ),
               ),
-              initialCountryCode: Get.locale?.countryCode,
-              languageCode: Get.locale?.languageCode ?? 'en',
+              initialCountryCode: locale?.countryCode,
+              languageCode: locale?.languageCode ?? 'en',
               disableLengthCheck: true,
               dropdownIconPosition: IconPosition.trailing,
               dropdownIcon: const Icon(

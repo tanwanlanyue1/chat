@@ -81,6 +81,7 @@ class MinePages {
             login: Get.tryGetArgs('login'),
             type: Get.tryGetArgs('type'),
             text: Get.tryGetArgs('text'),
+            countryCode: Get.tryGetArgs('countryCode'),
           )),
     ),
     GetPage(

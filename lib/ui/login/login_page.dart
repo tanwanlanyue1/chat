@@ -81,7 +81,7 @@ class LoginPage extends StatelessWidget {
                         children: [
                           Text(
                             S.current.loginWelcome,
-                            style: AppTextStyle.st.bold
+                            style: AppTextStyle.st.medium
                                 .size(30.rpx)
                                 .textColor(Colors.white),
                           ),

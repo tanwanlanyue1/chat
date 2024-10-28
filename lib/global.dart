@@ -64,9 +64,6 @@ class Global with WidgetsBindingObserver{
         ),
       );
 
-      //初始化firebase
-      FirebaseUtil().init();
-
       await WelcomeStorage.initialize();
       WelcomeStorage.saveAdFirstOpen([]);
       if(WelcomeStorage.isPrivacyAgree){
@@ -97,6 +94,9 @@ class Global with WidgetsBindingObserver{
 
     //初始化服务
     await SS.initServices();
+
+    //初始化firebase
+    FirebaseUtil().init();
 
     //广告
     await ADManager.instance.initialize();

@@ -11,7 +11,7 @@ import 'avatar_controller.dart';
 class AvatarPage extends StatelessWidget {
   AvatarPage({super.key});
 
-  final controller = Get.find<AvatarController>();
+  final controller = Get.put(AvatarController());
 
   @override
   Widget build(BuildContext context) {

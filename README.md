@@ -33,3 +33,6 @@ flutter build ipa --export-method ad-hoc --dart-define=APP_CHANNEL=appstore
 将app/build.gradle的ndk abiFilters 配置打开
 flutter build apk --dart-define=APP_RELEASE=release --dart-define=APP_CHANNEL=official
 flutter build ipa --dart-define=APP_RELEASE=release --dart-define=APP_CHANNEL=appstore
+
+## 查看Android证书SHA
+keytool -list -v -keystore guanjia.jks

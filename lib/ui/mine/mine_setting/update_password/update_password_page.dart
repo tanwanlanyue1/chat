@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/login_verification_code_button.dart';
 import 'package:guanjia/ui/mine/widgets/setting_text_field.dart';
@@ -50,21 +52,27 @@ class UpdatePasswordPage extends StatelessWidget {
   }
 
   Widget _buildPhoneNumberTips() {
-    return Obx(() => Container(
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(bottom: 16.rpx, left: 6.rpx, right: 6.rpx),
-          child: Text(
-            state.isPhone.value
-                ? '${S.current.phoneVerificationCode}${controller.phoneNumberInputController.text}${S.current.cellPhone}'
-                : S.current.emailVerificationCode +
-                    controller.phoneNumberInputController.text +
-                    S.current.cellEmail,
-            style: TextStyle(
-              fontSize: 12.rpx,
-              color: AppColor.gray80,
-            ),
+    return Obx((){
+      var phone = controller.phoneNumberInputController.text;
+      if(state.countryCode.isNotEmpty){
+        phone = '${state.countryCode} $phone';
+      }
+      return Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(bottom: 16.rpx, left: 6.rpx, right: 6.rpx),
+        child: Text(
+          state.isPhone.value
+              ? '${S.current.phoneVerificationCode}$phone${S.current.cellPhone}'
+              : S.current.emailVerificationCode +
+              controller.phoneNumberInputController.text +
+              S.current.cellEmail,
+          style: TextStyle(
+            fontSize: 12.rpx,
+            color: AppColor.gray80,
           ),
-        ));
+        ),
+      );
+    });
   }
 
   //验证方式

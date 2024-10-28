@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyAwEIrO5vXLjz4m9N7ZsaaWy2W2vDYMpp4</string>
+	<string>AIzaSyAsxF2A9zSe0vTi2VBS-ynRUP62J7SlU2o</string>
 	<key>GCM_SENDER_ID</key>
-	<string>935099426738</string>
+	<string>835052330079</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.aimiyou.jingxiu</string>
+	<string>com.social.guanjia</string>
 	<key>PROJECT_ID</key>
-	<string>guanjia-33491</string>
+	<string>guanjia-a0017</string>
 	<key>STORAGE_BUCKET</key>
-	<string>guanjia-33491.appspot.com</string>
+	<string>guanjia-a0017.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:935099426738:ios:7839d2a6082fd4f404e6ab</string>
+	<string>1:835052330079:ios:2fdb878a487679d0780fea</string>
 </dict>
 </plist>

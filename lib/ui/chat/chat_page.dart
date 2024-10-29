@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -16,7 +14,6 @@ import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:guanjia/widgets/tab_underline_indicator.dart';
-import 'package:guanjia/widgets/web/web_page.dart';
 
 import 'chat_controller.dart';
 
@@ -36,27 +33,25 @@ class _ChatPageState extends State<ChatPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return wrapGradientBackground(
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: buildAppBar(),
-        body: Obx(() {
-          final callContent = state.callContent.value;
-          return Stack(
-            fit: StackFit.expand,
-            children: [
-              TabBarView(
-                controller: controller.tabController,
-                children: const [
-                  ConversationListView(),
-                  ContactView(),
-                ],
-              ),
-              if (callContent != null) buildSpeedMatch(callContent),
-            ],
-          );
-        }),
-      ),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: buildAppBar(),
+      body: Obx(() {
+        final callContent = state.callContent.value;
+        return Stack(
+          fit: StackFit.expand,
+          children: [
+            TabBarView(
+              controller: controller.tabController,
+              children: const [
+                ConversationListView(),
+                ContactView(),
+              ],
+            ),
+            if (callContent != null) buildSpeedMatch(callContent),
+          ],
+        );
+      }),
     );
   }
 
@@ -192,6 +187,7 @@ class _ChatPageState extends State<ChatPage>
     return AppBar(
       centerTitle: false,
       title: TabBar(
+        overlayColor: MaterialStateProperty.all(Colors.transparent),
         splashFactory: NoSplash.splashFactory,
         controller: controller.tabController,
         labelStyle: AppTextStyle.fs20m.copyWith(fontWeight: FontWeight.w900),

@@ -14,6 +14,7 @@ import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
 import 'package:guanjia/widgets/recaptcha_dialog.dart';
 import 'package:guanjia/widgets/widgets.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 import '../event/login_event.dart';
 import 'service.dart';
@@ -329,6 +330,10 @@ class LoginService extends GetxService {
   Future<Result<UserModel, String>> fetchMyInfo({
     bool autoSave = true,
   }) async {
+
+    // final info = await ZIMKit().queryUser(userId.toString());
+    // print('userinfo: ${info.extendedData}');
+
     final res = await fetchInfo(userId: userId ?? 0);
     await res.whenAsync(
         success: (user) async {

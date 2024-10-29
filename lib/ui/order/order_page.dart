@@ -40,6 +40,7 @@ class _OrderPageState extends State<OrderPage>
           backgroundColor: Colors.transparent,
           bottom: TabBar(
             splashFactory: NoSplash.splashFactory,
+            overlayColor: MaterialStateProperty.all(Colors.transparent),
             controller: controller.tabController,
             labelStyle: AppTextStyle.fs14m,
             labelColor: AppColor.primaryBlue,

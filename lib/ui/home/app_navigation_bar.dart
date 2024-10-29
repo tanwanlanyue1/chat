@@ -17,7 +17,7 @@ typedef AppNavigationIconBuilder = Widget Function(
   Widget icon,
 );
 
-const _kAppNavigationBarHeight = 56.0;
+const _kAppNavigationBarHeight = 49.0;
 
 class AppNavigationBar extends StatefulWidget {
   final List<AppBarItem> items;
@@ -58,6 +58,8 @@ class _AppNavigationBarState extends State<AppNavigationBar>
     super.dispose();
   }
 
+  double get horizontalPadding => 10.rpx;
+
   void _resetState() {
     const duration = 300;
     if (_indicatorController != null) {
@@ -66,8 +68,9 @@ class _AppNavigationBarState extends State<AppNavigationBar>
     _indicatorController = _IndicatorAnimationController(
       vsync: this,
       currentIndex: widget.currentIndex,
-      itemWidth: Get.width / widget.items.length,
+      itemWidth: (Get.width - horizontalPadding * 2) / widget.items.length,
       duration: const Duration(milliseconds: duration),
+      txBegin: horizontalPadding,
     );
     _indicatorController?.value = 1;
 
@@ -129,7 +132,10 @@ class _AppNavigationBarState extends State<AppNavigationBar>
           ),
         ),
         _buildHighlightIndicator(),
-        _buildNavigationForeground(),
+        Padding(
+          padding: FEdgeInsets(horizontal: horizontalPadding),
+          child: _buildNavigationForeground(),
+        ),
       ],
     );
   }
@@ -165,8 +171,8 @@ class _AppNavigationBarState extends State<AppNavigationBar>
     if (controller == null) {
       return const SizedBox.shrink();
     }
-    final size = 50.rpx;
-    final dx = (controller.itemWidth - size) * 0.5;
+    final size = 48.rpx;
+    final dx = (controller.itemWidth - size) * 0.5 + horizontalPadding;
     return ValueListenableBuilder(
       valueListenable: controller,
       builder: (ctx, _, child) {
@@ -250,7 +256,7 @@ class _Tile extends StatelessWidget {
                   item.title,
                   style: AppTextStyle.normal.copyWith(
                     height: 1.0,
-                    fontSize: 11.rpx,
+                    fontSize: 10.rpx,
                     color: animation == null
                         ? Colors.transparent
                         : (selected ? Colors.white : AppColor.tab),
@@ -281,8 +287,8 @@ class _TileIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final animation = this.animation;
     return SizedBox(
-      width: 32.rpx,
-      height: 32.rpx,
+      width: 28.rpx,
+      height: 28.rpx,
       child: animation == null
           ? AppImage.asset(
               item.icon,
@@ -295,20 +301,11 @@ class _TileIcon extends StatelessWidget {
                     const v = 0.8;
                     if (animation.value >= v) {
                       final anim = (animation.value - v) / (1 - v);
-
-                      //1-value/diff
-                      //0.6
-                      //0.5-1.0  0-1
-                      //0 - -8
                       return Transform.translate(
-                          offset: Offset(0, (-8 * anim).rpx),
+                          offset: Offset(0, (-6 * anim).rpx),
                           child: Lottie.asset(item.activeIcon, repeat: false));
-                      // return AnimatedSlide(offset: Offset(0, 6.rpx), child: Lottie.asset(item.activeIcon, repeat: false), duration: kTabScrollDuration,);
                     } else {
                       return const SizedBox.shrink();
-                      // return AppImage.asset(
-                      //   item.icon,
-                      // );
                     }
                   },
                 )
@@ -333,12 +330,13 @@ class _IndicatorAnimationController extends AnimationController {
   final double itemWidth;
   int currentIndex;
   late Tween<double> txTween;
-  double txBegin = 0;
+  double txBegin;
 
   _IndicatorAnimationController({
     required super.vsync,
     required this.itemWidth,
     required this.currentIndex,
+    this.txBegin = 0,
     super.duration,
   }) {
     txAnimation = CurvedAnimation(

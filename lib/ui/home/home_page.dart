@@ -46,13 +46,27 @@ class HomePage extends StatelessWidget {
         onTap: controller.setCurrentPage,
         currentIndex: currentPage,
         items: state.allBottomNavItems,
-        iconBuilder: (item, child){
-          return TabUnreadBadge(
-            unread: chatUnread,
-            offset: Offset(18.rpx, -2.rpx),
-            isUnreadVisible: item == state.allBottomNavItems.first  && chatUnread > 0,
-            child: child,
-          );
+        iconBuilder: (item, index, child) {
+          if (item == state.allBottomNavItems.first && chatUnread > 0) {
+            final begin = Offset(18.rpx, -2.rpx);
+            final end = Offset(18.rpx, -10.rpx);
+            final tween = currentPage == index
+                ? Tween(begin: begin, end: end)
+                : Tween(begin: end, end: begin);
+            return TweenAnimationBuilder<Offset>(
+              tween: tween,
+              duration: const Duration(milliseconds: 300),
+              child: child,
+              builder: (_, offset, child) {
+                return TabUnreadBadge(
+                  unread: chatUnread,
+                  offset: offset,
+                  child: child ?? Spacing.blank,
+                );
+              },
+            );
+          }
+          return child;
         },
       );
     });

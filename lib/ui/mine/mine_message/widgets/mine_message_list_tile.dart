@@ -31,7 +31,7 @@ class MineMessageListTile extends StatelessWidget {
                   height: 10.rpx,
                   margin: EdgeInsets.only(right: 8.rpx),
                   decoration: BoxDecoration(
-                    color: item.systemMessage?.color ?? AppColor.primaryBlue,
+                    color: item.read == 1 ? AppColor.black999: (item.systemMessage?.color ?? AppColor.primaryBlue),
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -39,7 +39,7 @@ class MineMessageListTile extends StatelessWidget {
                   child: Text(
                     item.systemMessage?.title ?? '',
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.fs16m.copyWith(
+                    style: AppTextStyle.fs14m.copyWith(
                       color: AppColor.blackText,
                       height: 1.0,
                     ),
@@ -101,7 +101,7 @@ class MineMessageListTile extends StatelessWidget {
           if (items[1].isNotEmpty)
             TextSpan(
               text: "\n${items[1]}",
-              style: AppTextStyle.fs14.copyWith(
+              style: AppTextStyle.fs12.copyWith(
                 color: AppColor.primaryBlue,
                 height: 1.5,
               ),

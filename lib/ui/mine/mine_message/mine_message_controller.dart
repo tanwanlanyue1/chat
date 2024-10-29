@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
@@ -29,6 +30,15 @@ class MineMessageController extends GetxController with GetSingleTickerProviderS
     );
     if (response.isSuccess) {
       final list = response.data ?? [];
+
+      //系统公告设置未读
+      final systemCount = SS.inAppMessage.latestSysNoticeRx()?.systemCount ?? 0;
+      if(type == 6){
+        list.forEachIndexed((index, element) {
+          element.read = index < systemCount ? 0 : 1;
+        });
+      }
+
       pagingController.appendPageData(list);
       if(page == 1){
         _markRead(list.firstOrNull);

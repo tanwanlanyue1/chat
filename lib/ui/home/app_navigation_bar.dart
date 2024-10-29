@@ -12,7 +12,10 @@ import 'package:guanjia/widgets/foreground_gradient_mask.dart';
 import 'package:lottie/lottie.dart';
 
 typedef AppNavigationIconBuilder = Widget Function(
-    AppBarItem item, Widget icon);
+  AppBarItem item,
+  int index,
+  Widget icon,
+);
 
 const _kAppNavigationBarHeight = 56.0;
 
@@ -22,12 +25,13 @@ class AppNavigationBar extends StatefulWidget {
   final int currentIndex;
   final AppNavigationIconBuilder? iconBuilder;
 
-  const AppNavigationBar(
-      {super.key,
-      required this.items,
-      this.onTap,
-      this.currentIndex = 0,
-      this.iconBuilder});
+  const AppNavigationBar({
+    super.key,
+    required this.items,
+    this.onTap,
+    this.currentIndex = 0,
+    this.iconBuilder,
+  });
 
   @override
   State<AppNavigationBar> createState() => _AppNavigationBarState();
@@ -135,6 +139,7 @@ class _AppNavigationBarState extends State<AppNavigationBar>
       children: widget.items.mapIndexed((index, item) {
         return Expanded(
           child: _Tile(
+            index: index,
             item: item,
             selected: widget.currentIndex == index,
             animation: _animations[index],
@@ -200,6 +205,7 @@ class _AppNavigationBarState extends State<AppNavigationBar>
 }
 
 class _Tile extends StatelessWidget {
+  final int index;
   final AppBarItem item;
   final bool selected;
   final Animation<double>? animation;
@@ -208,6 +214,7 @@ class _Tile extends StatelessWidget {
 
   const _Tile({
     super.key,
+    required this.index,
     required this.item,
     this.selected = false,
     this.onTap,
@@ -233,7 +240,7 @@ class _Tile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            iconBuilder?.call(item, icon) ?? icon,
+            iconBuilder?.call(item, index, icon) ?? icon,
             Padding(
               padding: FEdgeInsets(top: 2.rpx),
               child: ForegroundGradientMask(

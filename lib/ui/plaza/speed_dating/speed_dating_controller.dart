@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
+import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/network/api/im_api.dart';
 import 'package:guanjia/common/network/api/user_api.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -17,27 +18,37 @@ class SpeedDatingController extends GetxController
     with GetAutoDisposeMixin, GetTickerProviderStateMixin {
   final SpeedDatingState state = SpeedDatingState();
 
+  final _duration = const Duration(seconds: 3);
+
   Timer? _timer;
   Timer? _endTimer;
+  final bool isVideo;
 
   late AnimationController animationController;
-  late Animation<double> animation;
+  final animations = <Animation<double>>[];
+
+  SpeedDatingController({required this.isVideo});
 
   @override
   Future<void> onInit() async {
+    state.roundCount = isVideo ? 5 : 1;
     animationController = AnimationController(
-      duration: const Duration(seconds: 2),
+      duration: _duration,
       vsync: this,
     );
+    List.generate(5, (index) {
+      final animation = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(
+          parent: animationController,
+          curve: Interval(index * 0.2, index * 0.2 + 0.2),
+        ),
+      );
+      animations.add(animation);
+    });
 
-    animation = CurvedAnimation(
-      parent: animationController,
-      curve: Curves.linear,
-    );
-
-    autoCancel(SS.inAppMessage.listen((p0) {
-      if (p0.type != InAppMessageType.callMatchSuccess) return;
-      final content = p0.callMatchContent;
+    autoCancel(SS.inAppMessage.listen((event) {
+      if (event.type != InAppMessageType.callMatchSuccess) return;
+      final content = event.callMatchContent;
       if (content == null) return;
 
       state.isAnimation.value = false;
@@ -52,16 +63,19 @@ class SpeedDatingController extends GetxController
       );
     }));
 
-    autoCancel(state.isAnimation.listen((p0) {
-      if (p0) {
+    autoCancel(state.isAnimation.listen((value) {
+      if (value) {
         animationController.repeat();
-        _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
-          final index = state.avatarIndex.value;
-
-          if (index + state.roundCount > state.avatars.length - 1) {
-            state.avatarIndex.value = 0;
-          } else {
-            state.avatarIndex.value = index + state.roundCount;
+        _timer = Timer.periodic(_duration, (timer) {
+          if(isVideo){
+            _refreshAvatars();
+          }else{
+            final index = state.avatarIndex.value;
+            if (index + state.roundCount > state.allAvatars.length - 1) {
+              state.avatarIndex.value = 0;
+            } else {
+              state.avatarIndex.value = index + state.roundCount;
+            }
           }
         });
 
@@ -82,28 +96,48 @@ class SpeedDatingController extends GetxController
     if (res.isSuccess && res.data != null) {
       final list = res.data!.map((e) => e.avatar ?? "").toList();
       List<String> newList = [];
-
-      final count = state.roundCount;
-
-      if (list.length % count == 0) {
+      final roundCount = state.roundCount;
+      final mod = list.length % roundCount;
+      if (mod == 0) {
         if (list.isEmpty) {
-          for (int i = 0; i < count; i++) {
+          for (int i = 0; i < roundCount; i++) {
             newList.add("");
           }
         } else {
           newList.addAll(list);
         }
       } else {
-        for (String element in list) {
-          for (int i = 0; i < count; i++) {
-            newList.add(element);
-          }
-        }
+        newList.addAll(list);
+        newList.addAll(list.take(mod));
       }
-      state.avatars = newList;
+      state.allAvatars = newList;
+      _refreshAvatars();
     }
 
     super.onInit();
+  }
+
+  void _refreshAvatars(){
+    final allAvatars = state.allAvatars;
+    if(allAvatars.isEmpty){
+      return;
+    }
+    if(allAvatars.length <= state.roundCount){
+      if(state.avatarsRx.isEmpty){
+        state.avatarsRx.addAll(allAvatars);
+      }
+      return;
+    }
+
+    var skip = state.avatarIndex() * state.roundCount;
+    var items = allAvatars.skip(skip).take(state.roundCount);
+    if(items.isEmpty){
+      items = allAvatars.take(state.roundCount);
+      state.avatarIndex.value = 0;
+    }else{
+      state.avatarIndex.value++;
+    }
+    state.avatarsRx..clear()..addAll(items);
   }
 
   @override
@@ -114,9 +148,7 @@ class SpeedDatingController extends GetxController
   }
 
   // 点击开启速配
-  void onTapStart(bool isVideo) async {
-    state.roundCount = isVideo ? 5 : 1;
-
+  void onTapStart() async {
     // 在动画中证明要进行取消操作
     if (state.isAnimation.value) {
       Loading.show();

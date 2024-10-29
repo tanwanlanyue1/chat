@@ -17,12 +17,14 @@ class SVGAView extends StatefulWidget {
   final Size? preferredSize;
   final ValueChanged<SVGAAnimationController>? onAnimationControllerUpdate;
   final ValueChanged<AnimationStatus>? onStatusUpdate;
+  final bool animation;
 
   ///SVAG动画
   ///- resUrl
   ///- assetsName
   ///- repeat
   ///- preferredSize
+  ///- animation 是否自动开始动画
   const SVGAView({
     super.key,
     this.resUrl,
@@ -35,6 +37,7 @@ class SVGAView extends StatefulWidget {
     this.preferredSize,
     this.onAnimationControllerUpdate,
     this.onStatusUpdate,
+    this.animation = true,
   });
 
   @override
@@ -65,6 +68,17 @@ class _SVGAViewState extends State<SVGAView>
     if (oldWidget.resUrl != widget.resUrl ||
         oldWidget.assetsName != widget.assetsName) {
       _tryDecodeSvga();
+    }
+    if(oldWidget.animation != widget.animation && mounted && animationController.videoItem != null){
+      if(widget.animation){
+        if (widget.repeat) {
+          animationController.repeat();
+        } else {
+          animationController.forward();
+        }
+      }else{
+        animationController.stop();
+      }
     }
   }
 
@@ -99,10 +113,12 @@ class _SVGAViewState extends State<SVGAView>
       }
       if (mounted && videoItem != null) {
         animationController.videoItem = videoItem;
-        if (widget.repeat) {
-          animationController.repeat();
-        } else {
-          animationController.forward();
+        if(widget.animation){
+          if (widget.repeat) {
+            animationController.repeat();
+          } else {
+            animationController.forward();
+          }
         }
       } else {
         videoItem?.dispose();

@@ -60,10 +60,10 @@ class _OrderListTileState extends State<OrderListTile> {
                 const Spacer(),
                 if (item.countDown > 0)
                   Container(
-                    height: 20.rpx,
-                    alignment: Alignment.bottomCenter,
+                    // height: 20.rpx,
+                    // alignment: Alignment.bottomCenter,
                     child: Text(
-                      '剩余等待',
+                      S.current.residualWait,
                       style: AppTextStyle.fs10.copyWith(
                         color: AppColor.blackBlue,
                         height: 1,

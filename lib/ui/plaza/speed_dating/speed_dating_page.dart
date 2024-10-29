@@ -3,18 +3,18 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 import 'speed_dating_controller.dart';
 
-class SpeedDatingPage extends StatelessWidget {
+class SpeedDatingPage extends GetView<SpeedDatingController> {
   SpeedDatingPage({
     super.key,
     required this.isVideo,
@@ -22,162 +22,171 @@ class SpeedDatingPage extends StatelessWidget {
 
   final bool isVideo;
 
-  final controller = Get.put(SpeedDatingController());
-  final state = Get.find<SpeedDatingController>().state;
+  late final state = Get.find<SpeedDatingController>().state;
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      Widget content() {
-        return Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            title: Text(
-              isVideo ? S.current.videoDating : S.current.voiceDating,
-              style: AppTextStyle.st.textColor(Colors.white),
-            ),
-            backgroundColor: Colors.transparent,
-            systemOverlayStyle: SystemUI.lightStyle,
-            leading: state.isAnimation.value
-                ? const SizedBox()
-                : AppBackButton.light(),
-          ),
-          body: Stack(
-            fit: StackFit.expand,
-            children: [
-              Container(
-                foregroundDecoration: const BoxDecoration(
-                    image: DecorationImage(
-                  image: AppAssetImage('assets/images/plaza/match_call_bg.png'),
-                  fit: BoxFit.cover,
-                )),
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF5738E4),
-                      Color(0xFF8534F1),
-                      Color(0xFFF07CDF),
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+    return GetBuilder(
+        init: SpeedDatingController(isVideo: isVideo),
+        builder: (controller) {
+          return Obx(() {
+            Widget content() {
+              return Scaffold(
+                extendBodyBehindAppBar: true,
+                appBar: AppBar(
+                  title: Text(
+                    isVideo ? S.current.videoDating : S.current.voiceDating,
+                    style: AppTextStyle.st.textColor(Colors.white),
                   ),
+                  backgroundColor: Colors.transparent,
+                  systemOverlayStyle: SystemUI.lightStyle,
+                  leading: state.isAnimation.value
+                      ? const SizedBox()
+                      : AppBackButton.light(),
                 ),
-              ),
-              AppImage.svga("assets/images/plaza/shooting_star.svga"),
-              SafeArea(
-                child: Column(
+                body: Stack(
+                  fit: StackFit.expand,
                   children: [
                     Container(
-                      width: 260.rpx,
-                      height: 30.rpx,
-                      margin: EdgeInsets.only(top: 16.rpx),
-                      decoration: ShapeDecoration(
-                        color: Colors.white.withOpacity(0.3),
-                        shape: const StadiumBorder(),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        S.current.matchChat,
-                        style: AppTextStyle.fs14.textColor(Colors.white),
+                      foregroundDecoration: const BoxDecoration(
+                          image: DecorationImage(
+                        image: AppAssetImage(
+                            'assets/images/plaza/match_call_bg.png'),
+                        fit: BoxFit.cover,
+                      )),
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFF5738E4),
+                            Color(0xFF8534F1),
+                            Color(0xFFF07CDF),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
                       ),
                     ),
-                    SizedBox(height: isVideo ? 51.rpx : 72.5.rpx),
-                    isVideo ? _videoSpecialEffects() : _voiceSpecialEffects(),
-                    const Spacer(),
-                    if (state.isAnimation.value)
-                      Text(
-                        S.current.pleaseHoldOn,
-                        style: AppTextStyle.st.medium
-                            .size(16.rpx)
-                            .textColor(Colors.white),
-                      ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 70.rpx,
-                      child: Stack(
+                    AppImage.svga("assets/images/plaza/shooting_star.svga"),
+                    SafeArea(
+                      child: Column(
                         children: [
-                          if (!state.isAnimation.value)
-                            Positioned(
-                              top: 0,
-                              right: 24.rpx,
-                              child: buildFreeChatHintText(),
+                          Container(
+                            width: 260.rpx,
+                            height: 30.rpx,
+                            margin: EdgeInsets.only(top: 16.rpx),
+                            decoration: ShapeDecoration(
+                              color: Colors.white.withOpacity(0.3),
+                              shape: const StadiumBorder(),
                             ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: GestureDetector(
-                              onTap: () => controller.onTapStart(isVideo),
-                              child: Container(
-                                height: 50.rpx,
-                                margin:
-                                    EdgeInsets.symmetric(horizontal: 24.rpx),
-                                decoration: BoxDecoration(
-                                  color: state.isAnimation.value
-                                      ? Colors.white.withOpacity(0.3)
-                                      : Colors.white,
-                                  borderRadius: BorderRadius.circular(8.rpx),
-                                ),
-                                alignment: Alignment.center,
-                                child: state.isAnimation.value
-                                    ? Text(
-                                        S.current.unmatch,
-                                        style: AppTextStyle.st
-                                            .size(16.rpx)
-                                            .textColor(AppColor.blackText),
-                                      )
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          AppImage.asset(
-                                            isVideo
-                                                ? "assets/images/plaza/video.png"
-                                                : "assets/images/plaza/voice.png",
-                                            size: 24.rpx,
-                                          ),
-                                          SizedBox(width: 16.rpx),
-                                          Text(
-                                            isVideo
-                                                ? S.current.videoDating
-                                                : S.current.voiceDating,
-                                            style: AppTextStyle.st
-                                                .size(16.rpx)
-                                                .textColor(AppColor.black3),
-                                          ),
-                                        ],
-                                      ),
-                              ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              S.current.matchChat,
+                              style: AppTextStyle.fs14.textColor(Colors.white),
                             ),
                           ),
+                          SizedBox(height: isVideo ? 51.rpx : 72.5.rpx),
+                          isVideo
+                              ? _videoSpecialEffects()
+                              : _voiceSpecialEffects(),
+                          const Spacer(),
+                          if (state.isAnimation.value)
+                            Text(
+                              S.current.pleaseHoldOn,
+                              style: AppTextStyle.st.medium
+                                  .size(16.rpx)
+                                  .textColor(Colors.white),
+                            ),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 70.rpx,
+                            child: Stack(
+                              children: [
+                                if (!state.isAnimation.value)
+                                  Positioned(
+                                    top: 0,
+                                    right: 24.rpx,
+                                    child: buildFreeChatHintText(),
+                                  ),
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: GestureDetector(
+                                    onTap: () => controller.onTapStart(),
+                                    child: Container(
+                                      height: 50.rpx,
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 24.rpx),
+                                      decoration: BoxDecoration(
+                                        color: state.isAnimation.value
+                                            ? Colors.white.withOpacity(0.3)
+                                            : Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(8.rpx),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: state.isAnimation.value
+                                          ? Text(
+                                              S.current.unmatch,
+                                              style: AppTextStyle.st
+                                                  .size(16.rpx)
+                                                  .textColor(
+                                                      AppColor.blackText),
+                                            )
+                                          : Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                AppImage.asset(
+                                                  isVideo
+                                                      ? "assets/images/plaza/video.png"
+                                                      : "assets/images/plaza/voice.png",
+                                                  size: 24.rpx,
+                                                ),
+                                                SizedBox(width: 16.rpx),
+                                                Text(
+                                                  isVideo
+                                                      ? S.current.videoDating
+                                                      : S.current.voiceDating,
+                                                  style: AppTextStyle.st
+                                                      .size(16.rpx)
+                                                      .textColor(
+                                                          AppColor.black3),
+                                                ),
+                                              ],
+                                            ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            height: 38.rpx,
+                            alignment: Alignment.center,
+                            child: !state.isAnimation.value
+                                ? buildPriceHintText()
+                                : null,
+                          ),
+                          SizedBox(height: 42.rpx),
                         ],
                       ),
                     ),
-                    Container(
-                      width: double.infinity,
-                      height: 38.rpx,
-                      alignment: Alignment.center,
-                      child: !state.isAnimation.value
-                          ? buildPriceHintText()
-                          : null,
-                    ),
-                    SizedBox(height: 42.rpx),
+                    if (isVideo && state.isAnimation.value) _camera(),
                   ],
                 ),
-              ),
-              if (isVideo && state.isAnimation.value) _camera(),
-            ],
-          ),
-        );
-      }
+              );
+            }
 
-      return state.isAnimation.value
-          ? WillPopScope(
-              onWillPop: () async {
-                return false;
-              },
-              child: content(),
-            )
-          : content();
-    });
+            return state.isAnimation.value
+                ? WillPopScope(
+                    onWillPop: () async {
+                      return false;
+                    },
+                    child: content(),
+                  )
+                : content();
+          });
+        });
   }
 
   ///免费聊天提示文本
@@ -202,7 +211,7 @@ class SpeedDatingPage extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(12.rpx)),
         gradient: const LinearGradient(
           colors: [Color(0xFF0F73ED), Color(0xFFC538FF)],
-          begin: Alignment(-3.5,-1.5),
+          begin: Alignment(-3.5, -1.5),
           end: Alignment.bottomRight,
         ),
       ),
@@ -228,7 +237,8 @@ class SpeedDatingPage extends StatelessWidget {
 
       final minBalance = config?.chatMinBalance ?? 0;
       if (minBalance > 0) {
-        text += '  ${S.current.treasuryToBalance}>${minBalance.toCurrencyString()}';
+        text +=
+            '  ${S.current.treasuryToBalance}>${minBalance.toCurrencyString()}';
       }
 
       return Text(text,
@@ -297,90 +307,110 @@ class SpeedDatingPage extends StatelessWidget {
       );
     }
 
-    List<Widget> avatarList() {
+    List<Widget> avatarList(List<String> avatars) {
       final list = [
         (top: 42, left: 209, length: 36),
-        (top: 178, left: 209, length: 36),
         (top: 60, left: 74, length: 36),
         (top: 122, left: 22, length: 24),
-        (top: 228, left: 107, length: 24)
+        (top: 228, left: 107, length: 24),
+        (top: 178, left: 209, length: 36),
       ];
 
-      return List.generate(
-          list.length,
-          (index) => Positioned(
-                top: list[index].top.rpx,
-                left: list[index].left.rpx,
-                child: Container(
-                  width: list[index].length.rpx,
-                  height: list[index].length.rpx,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.3),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.white,
-                        blurRadius: 4.rpx,
-                      ),
-                    ],
-                  ),
-                  child: AppImage.network(
-                    state.avatars[index + state.avatarIndex.value],
-                    length: list[index].length.rpx,
-                    shape: BoxShape.circle,
-                  ),
+      return List.generate(list.length, (index) {
+        final animation = controller.animations[index];
+        return Positioned(
+          top: list[index].top.rpx,
+          left: list[index].left.rpx,
+          child: AnimatedBuilder(
+            animation: animation,
+            builder: (BuildContext context, Widget? child) {
+              if (state.isAnimation.isFalse) {
+                return child!;
+              }
+              return Opacity(
+                opacity: animation.value,
+                child: Transform.scale(
+                  scale: animation.value,
+                  child: child,
                 ),
-              ));
+              );
+            },
+            child: Container(
+              width: list[index].length.rpx,
+              height: list[index].length.rpx,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.3),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.white,
+                    blurRadius: 4.rpx,
+                  ),
+                ],
+              ),
+              child: AppImage.network(
+                avatars.tryGet(index) ?? '',
+                length: list[index].length.rpx,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+        );
+      });
     }
 
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        buildRound(
-            length: 300.rpx,
-            backgroundColorOpacity: 0.03,
-            borderColorOpacity: 0.14),
-        buildRound(
-            length: 230.rpx,
-            backgroundColorOpacity: 0.02,
-            borderColorOpacity: 0.12),
-        buildRound(
-            length: 162.rpx,
-            backgroundColorOpacity: 0.01,
-            borderColorOpacity: 0.10),
-        if (state.isAnimation.value)
-          AppImage.svga(
-            "assets/images/plaza/search_rotation.svga",
-            width: 300.rpx,
-            height: 300.rpx,
+    return Obx(() {
+      final avatars = state.avatarsRx();
+      return Stack(
+        alignment: Alignment.center,
+        children: [
+          buildRound(
+              length: 300.rpx,
+              backgroundColorOpacity: 0.03,
+              borderColorOpacity: 0.14),
+          buildRound(
+              length: 230.rpx,
+              backgroundColorOpacity: 0.02,
+              borderColorOpacity: 0.12),
+          buildRound(
+              length: 162.rpx,
+              backgroundColorOpacity: 0.01,
+              borderColorOpacity: 0.10),
+          if (state.isAnimation.value)
+            AppImage.svga(
+              "assets/images/plaza/search_rotation.svga",
+              width: 300.rpx,
+              height: 300.rpx,
+            ),
+          Container(
+            width: 80.rpx,
+            height: 80.rpx,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white.withOpacity(0.5),
+                  blurRadius: 8.rpx,
+                ),
+              ],
+            ),
+            child: AppImage.network(
+              SS.login.avatar,
+              length: 80.rpx,
+              shape: BoxShape.circle,
+            ),
           ),
-        Container(
-          width: 80.rpx,
-          height: 80.rpx,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white.withOpacity(0.5),
-                blurRadius: 8.rpx,
-              ),
-            ],
+          AppImage.asset(
+            "assets/images/plaza/speed_head_default.png",
+            size: 80.rpx,
           ),
-          child: AppImage.network(
-            SS.login.avatar,
-            length: 80.rpx,
-            shape: BoxShape.circle,
-          ),
-        ),
-        AppImage.asset(
-          "assets/images/plaza/speed_head_default.png",
-          size: 80.rpx,
-        ),
-        if (state.isAnimation.value) ...avatarList(),
-      ],
-    );
+          // if (state.isAnimation.value) ...avatarList(),
+          if (avatars.isNotEmpty) ...avatarList(avatars),
+        ],
+      );
+    });
   }
 
   Widget _voiceSpecialEffects() {
@@ -435,7 +465,7 @@ class SpeedDatingPage extends StatelessWidget {
               children: [
                 avatarWidget(
                     avatar: state.isAnimation.value
-                        ? state.avatars[state.avatarIndex.value]
+                        ? state.allAvatars.tryGet(state.avatarIndex.value)
                         : null),
                 AppImage.svga(
                   "assets/images/plaza/speed_head_circle_ripple.svga",
@@ -446,12 +476,12 @@ class SpeedDatingPage extends StatelessWidget {
             ),
           ],
         ),
-        if (state.isAnimation.value)
-          AppImage.svga(
-            "assets/images/plaza/electrocardiogram.svga",
-            width: 50.rpx,
-            height: 50.rpx,
-          ),
+        AppImage.svga(
+          "assets/images/plaza/electrocardiogram.svga",
+          width: 50.rpx,
+          height: 50.rpx,
+          animation: state.isAnimation.value,
+        ),
       ],
     );
   }

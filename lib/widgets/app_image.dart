@@ -137,11 +137,14 @@ class AppImage extends StatelessWidget {
         );
 
   ///SVGA动效
+  ///- repeat 是否重复执行
+  ///- animation 是否自动开始动画
   AppImage.svga(
     String assetsName, {
     double? width,
     double? height,
     bool repeat = true,
+    bool animation = true,
     ValueChanged<SVGAAnimationController>? onAnimationControllerUpdate,
     ValueChanged<AnimationStatus>? onStatusUpdate,
     super.key,
@@ -153,6 +156,7 @@ class AppImage extends StatelessWidget {
           clearsAfterStop: repeat,
           onAnimationControllerUpdate: onAnimationControllerUpdate,
           onStatusUpdate: onStatusUpdate,
+          animation: animation,
         );
 
   ///SVGA动效

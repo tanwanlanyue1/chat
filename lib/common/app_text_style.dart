@@ -14,6 +14,20 @@ class AppTextStyle {
   /// 默认实现 可以配合 TextStyleExtension 拓展 链式调用
   static const st = normal;
 
+  static final fs8r = regular.copyWith(
+    fontSize: 8.rpx,
+  );
+
+  ///8号字体，字重400
+  static final fs8 = normal.copyWith(
+    fontSize: 8.rpx,
+  );
+
+  ///8号字体，字重500
+  static final fs8m = medium.copyWith(
+    fontSize: 8.rpx,
+  );
+
   static final fs10r = regular.copyWith(
     fontSize: 10.rpx,
   );
@@ -128,6 +142,25 @@ class AppTextStyle {
     fontSize: 20.rpx,
   );
 
+  ///20号字体
+  static final fs22r = regular.copyWith(
+    fontSize: 22.rpx,
+  );
+
+  ///20号字体，字重400
+  static final fs22 = normal.copyWith(
+    fontSize: 22.rpx,
+  );
+
+  ///20号字体，字重500
+  static final fs22m = medium.copyWith(
+    fontSize: 22.rpx,
+  );
+
+  ///20号字体，字重bold
+  static final fs22b = bold.copyWith(
+    fontSize: 22.rpx,
+  );
   ///24号字体
   static final fs24r = regular.copyWith(
     fontSize: 24.rpx,

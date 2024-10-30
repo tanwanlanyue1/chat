@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_constant.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
@@ -16,81 +18,72 @@ import 'discover_controller.dart';
 
 ///发现-首页
 class DiscoverPage extends StatelessWidget {
-  DiscoverPage({Key? key}) : super(key: key);
+  DiscoverPage({super.key});
 
   final controller = Get.put(DiscoverController());
   final state = Get.find<DiscoverController>().state;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
+    return Container(
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AppAssetImage(
+                "assets/images/common/back_color_img.png",
+              ),
+              fit: BoxFit.fitWidth,
+              alignment: Alignment.topCenter
+          )
+      ),
+      child: Scaffold(
         backgroundColor: Colors.transparent,
-        centerTitle: false,
-        title: TabBar(
-          splashFactory: NoSplash.splashFactory,
-          controller: controller.tabController,
-          labelStyle: AppTextStyle.fs20m.copyWith(fontWeight: FontWeight.w900),
-          labelColor: AppColor.blackBlue,
-          unselectedLabelStyle:
-          AppTextStyle.fs16.copyWith(fontWeight: FontWeight.w500),
-          unselectedLabelColor: AppColor.grayText,
-          isScrollable: true,
-          labelPadding: FEdgeInsets.zero,
-          indicatorPadding: FEdgeInsets(bottom: 4.rpx),
-          indicator: TabUnderlineIndicator(
-            width: 20.rpx,
-            widthEqualTitle: false,
-            gradient: LinearGradient(
-              colors: AppColor.horizontalGradient.colors,
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderSide: BorderSide(width: 4.rpx),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          centerTitle: false,
+          title: TabBar(
+            splashFactory: NoSplash.splashFactory,
+            controller: controller.tabController,
+            labelStyle: AppTextStyle.fs22.copyWith(fontWeight: FontWeight.w600),
+            labelColor: Colors.white,
+            unselectedLabelStyle: AppTextStyle.fs16m,
+            unselectedLabelColor: Colors.white.withOpacity(0.6),
+            isScrollable: true,
+            labelPadding: FEdgeInsets.zero,
+            indicator: const BoxDecoration(),
+            overlayColor: MaterialStateProperty.resolveWith((states) {
+              return Colors.transparent;
+            }),
+            onTap: (val){
+              state.titleIndex.value = val;
+            },
+            tabs: [
+              Tab(text: S.current.dating, height: 44.rpx),
+              Container(
+                margin: EdgeInsets.only(right: 20.rpx,left: 20.rpx),
+                child: Tab(text: S.current.hotActivity, height: 44.rpx),
+              ),
+            ],
           ),
-          onTap: (val){
-            state.titleIndex.value = val;
-          },
-          tabs: [
-            Tab(text: S.current.dating, height: 40.rpx),
-            Container(
-              margin: EdgeInsets.only(right: 20.rpx,left: 20.rpx),
-              child: Tab(text: S.current.hotActivity, height: 40.rpx),
-            ),
+          actions: [
+            Obx(() => Visibility(
+              visible: state.titleIndex.value == 0 && SS.login.userType.isUser,
+              child: GestureDetector(
+                onTap: controller.onTapInvitation,
+                child: Container(
+                  margin: EdgeInsets.only(right: 16.rpx),
+                  child: AppImage.asset(
+                    "assets/images/discover/publish.png",
+                    width: 80.rpx,
+                    height: 32.rpx,
+                  ),
+                ),
+              ),
+            ))
           ],
         ),
-        actions: [
-          Obx(() => Visibility(
-            visible: state.titleIndex.value == 0 && SS.login.userType.isUser,
-            child: Container(
-              width: 80.rpx,
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(right: 16.rpx),
-              child: CommonGradientButton(
-                text: S.current.releaseInvitation,
-                height: 32.rpx,
-                textStyle: AppTextStyle.fs14.copyWith(color: Colors.white),
-                onTap: controller.onTapInvitation,
-                borderRadius: BorderRadius.circular(16.rpx),
-              ),
-            ),
-          ))
-        ],
-      ),
-      body: Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                colors: [
-                  Color(0xffF6E5FF),
-                  Colors.white
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.center
-            )
-        ),
-        child: TabBarView(
+        body: TabBarView(
           controller: controller.tabController,
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             FriendDatePage(),
             ActivityPage(),

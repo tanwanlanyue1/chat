@@ -22,11 +22,11 @@ class _TabPainter extends BoxPainter {
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
     assert(configuration.size != null);
     _imagePainter ??= const DecorationImage(
-        image: AppAssetImage('assets/images/plaza/friend_tab.png'))
+        image: AppAssetImage('assets/images/plaza/friend_tab.png'),colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn))
         .createPainter(onChanged!);
 
     offset = offset.translate(0.rpx, 0.rpx);
-    final rect = Rect.fromLTWH(length == 0 ? 6.rpx : offset.dx+20.rpx, offset.dy+22.rpx, 17.rpx, 6.rpx);
+    final rect = Rect.fromLTWH(length == 0 ? 6.rpx : offset.dx+20.rpx, offset.dy+24.rpx, 17.rpx, 6.rpx);
     _imagePainter!.paint(canvas, rect, null, configuration);
   }
 }

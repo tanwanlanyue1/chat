@@ -120,7 +120,9 @@ class AppColor {
 
   static const purple6 = Color(0xffC644FC);
   static const purple4 = Color(0x4D226EF0);
+  static const purple8D = Color(0xff8BD8FF);
   static const purple8 = Color(0x4DBD3CFF);
+  static const purpleE1 = Color(0xFFE19AFF);
   static const orange6 = Color(0xFFFA9D3B);
 
   ///主色渐变色(水平渐变)
@@ -175,6 +177,7 @@ class AppColor {
 
   ///绿色
   static const green = Color(0xFF3CB236);
+  static const green1D = Color(0xFF1DBF64);
   static const greenE7 = Color(0xFFE7FFED);
   static const greenCD = Color(0xFFCDFFDC);
 

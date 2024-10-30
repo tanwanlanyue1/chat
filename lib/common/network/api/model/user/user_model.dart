@@ -1,4 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:guanjia/common/app_color.dart';
 
 /// 用户性别类型
 enum UserGender {
@@ -26,6 +28,17 @@ enum UserGender {
     }
   }
 
+  ///彩色图标-背景色
+  Color get iconColor {
+    switch (this) {
+      case male:
+        return AppColor.primaryBlue;
+      case female:
+        return AppColor.purple6;
+      default:
+        return AppColor.black92;
+    }
+  }
   ///白色图标
   String? get iconWhite {
     switch (this) {

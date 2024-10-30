@@ -23,14 +23,14 @@ class ActivityPage extends StatelessWidget {
       onRefresh: controller.pagingController.onRefresh,
       child: PagedListView(
         pagingController: controller.pagingController,
-        padding: EdgeInsets.all(16.rpx).copyWith(top: Get.mediaQuery.padding.top+56.rpx),
+        padding: EdgeInsets.all(16.rpx).copyWith(top: 8.rpx),
         builderDelegate: DefaultPagedChildBuilderDelegate<AdvertisingStartupModel>(
           pagingController: controller.pagingController,
           itemBuilder: (_, item, index) {
             return GestureDetector(
               onTap: ()=> controller.onTapAdvertising(item),
               child: Padding(
-                padding: EdgeInsets.only(bottom: 16.rpx),
+                padding: EdgeInsets.only(bottom: 12.rpx),
                 child: AppImage.network(
                   item.image ?? "",
                   height: 170.rpx,

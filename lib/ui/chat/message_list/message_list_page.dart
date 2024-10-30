@@ -50,63 +50,54 @@ class MessageListPage extends GetView<MessageListController> {
       ),
       tag: tag,
       builder: (controller) {
-        return Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AppAssetImage('assets/images/chat/chat_bg.png'),
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
-            ),
-          ),
-          child: Scaffold(
-            appBar: buildAppBar(context),
-            resizeToAvoidBottomInset: true,
-            backgroundColor: Colors.transparent,
-            body: Stack(
-              children: [
-                Positioned.fill(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            controller.chatInputViewKey.currentState
-                                ?.closePanel();
-                          },
-                          child: buildMessageListView(),
-                        ),
+        return Scaffold(
+          appBar: buildAppBar(context),
+          resizeToAvoidBottomInset: true,
+          backgroundColor: const Color(0xFFF6F7F9),
+          body: Stack(
+            children: [
+              Positioned.fill(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          controller.chatInputViewKey.currentState
+                              ?.closePanel();
+                        },
+                        child: buildMessageListView(),
                       ),
-                      ObxValue((dataRx) {
-                        return ChatInputView(
-                          key: controller.chatInputViewKey,
-                          onSend: controller.sendTextMessage,
-                          onTapFeatureAction: controller.onTapFeatureAction,
-                          featureActions: dataRx(),
-                          featureItemBuilder: buildFeatureItem,
-                        );
-                      }, state.featureActionsRx),
-                      // messageInput(),
-                    ],
-                  ),
+                    ),
+                    ObxValue((dataRx) {
+                      return ChatInputView(
+                        key: controller.chatInputViewKey,
+                        onSend: controller.sendTextMessage,
+                        onTapFeatureAction: controller.onTapFeatureAction,
+                        featureActions: dataRx(),
+                        featureItemBuilder: buildFeatureItem,
+                      );
+                    }, state.featureActionsRx),
+                    // messageInput(),
+                  ],
                 ),
-                Positioned.fill(
-                  bottom: null,
-                  child: Obx(() {
-                    final user = state.userInfoRx();
-                    var order = state.orderRx();
-                    if (user == null) {
-                      return Spacing.blank;
-                    }
-                    return ChatDateView(
-                      user: user,
-                      order: order,
-                      onTapOrderAction: controller.onTapOrderAction,
-                      onTapOrder: (order) => controller.toOrderDetail(order.id),
-                    );
-                  }),
-                ),
-              ],
-            ),
+              ),
+              Positioned.fill(
+                bottom: null,
+                child: Obx(() {
+                  final user = state.userInfoRx();
+                  var order = state.orderRx();
+                  if (user == null) {
+                    return Spacing.blank;
+                  }
+                  return ChatDateView(
+                    user: user,
+                    order: order,
+                    onTapOrderAction: controller.onTapOrderAction,
+                    onTapOrder: (order) => controller.toOrderDetail(order.id),
+                  );
+                }),
+              ),
+            ],
           ),
         );
       },
@@ -139,7 +130,6 @@ class MessageListPage extends GetView<MessageListController> {
       scrollController: controller.scrollController,
       conversationID: conversationId,
       conversationType: conversationType,
-      itemBuilder: buildMessageItem,
       avatarBuilder: buildAvatar,
       // backgroundBuilder: buildBackground,
       listViewPadding: FEdgeInsets(top: ChatDateView.height),
@@ -161,6 +151,7 @@ class MessageListPage extends GetView<MessageListController> {
   AppBar? buildAppBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
+      backgroundColor: Colors.transparent,
       title: Obx(() {
         final conversation = state.conversationRx();
         if (conversation == null) {
@@ -197,7 +188,7 @@ class MessageListPage extends GetView<MessageListController> {
                 children: [
                   ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: Get.width - 140.rpx),
-                    child: Text(name, maxLines: 1),
+                    child: Text(name, maxLines: 1, style: AppTextStyle.fs16m),
                   ),
                   // Padding(
                   //   padding: FEdgeInsets(left: 4.rpx),
@@ -218,30 +209,6 @@ class MessageListPage extends GetView<MessageListController> {
             'assets/images/mine/more.png',
             width: 24.rpx,
             height: 24.rpx,
-          ),
-        ),
-      ],
-    );
-  }
-
-  ///消息列表项
-  Widget buildMessageItem(_, ZIMKitMessage message, Widget defaultChild) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        defaultChild,
-        Container(
-          margin: FEdgeInsets(top: 4.rpx, bottom: 8.rpx),
-          child: Align(
-            alignment: Alignment.center,
-            child: Text(
-              DateTime.fromMillisecondsSinceEpoch(message.info.timestamp)
-                  .friendlyTime,
-              style: AppTextStyle.fs12.copyWith(
-                color: AppColor.black92,
-                height: 1.0001,
-              ),
-            ),
           ),
         ),
       ],

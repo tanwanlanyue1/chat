@@ -347,14 +347,16 @@ class _MessageListViewState extends State<MessageListView> with AutoDisposeMixin
     return Container(
       margin: EdgeInsets.only(bottom: 16.rpx),
       padding: EdgeInsets.symmetric(vertical: 4.rpx, horizontal: 8.rpx),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4.rpx),
-        color: Colors.white.withOpacity(0.4),
+      decoration: const ShapeDecoration(
+        shape: StadiumBorder(),
+        color: Colors.white,
       ),
       child: Text(
         dateTimeStr,
-        style: AppTextStyle.fs12.copyWith(
-          color: AppColor.black3,
+        style: AppTextStyle.normal.copyWith(
+          color: AppColor.black9,
+          fontSize: 11.rpx,
+          height: 1,
         ),
       ),
     );

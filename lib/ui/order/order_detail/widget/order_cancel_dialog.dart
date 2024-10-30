@@ -120,7 +120,7 @@ class OrderCancelDialog extends StatelessWidget {
   Widget buildDesc() {
     return ChatUserBuilder(userId: id.toString(), builder: (info){
       return Text(
-        S.current.cancelOrderTitle(info?.baseInfo.userName ?? ''),
+        S.current.cancelOrderTitle(info?.name ?? ''),
         textAlign: TextAlign.center,
         style: AppTextStyle.fs14m.copyWith(
           color: AppColor.blackBlue,

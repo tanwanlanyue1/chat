@@ -1,7 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -9,7 +7,6 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
-import 'package:guanjia/common/network/api/model/order/order_list_model.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
@@ -44,8 +41,6 @@ class _ConversationListTileState extends State<ConversationListTile>
     with UIOrderStateMixin {
   ZIMKitConversation get conversation => widget.conversation;
 
-  var extendedData = ZIMUserExtendDataModel.fromJson({});
-
   void onDelete(BuildContext context) async {
     final result = await ConfirmDialog.show(
       message: Text(S.current.deleteConversationHint),
@@ -69,11 +64,11 @@ class _ConversationListTileState extends State<ConversationListTile>
 
   @override
   Widget build(BuildContext context) {
-    final defaultInfo = ZIMUserFullInfo();
-    defaultInfo.baseInfo = ZIMUserInfo()
-      ..userID = conversation.id
-      ..userName = conversation.name;
-
+    final defaultInfo = ChatUserInfo(
+      id: conversation.id,
+      name: conversation.name,
+      avatar: conversation.avatarUrl,
+    );
     final orderInfoView = isOrderMsg ? _buildOrderInfo() : null;
     return Slidable(
       key: ValueKey(conversation.id),
@@ -97,20 +92,19 @@ class _ConversationListTileState extends State<ConversationListTile>
           child: ChatUserBuilder(
             userId: conversation.id,
             defaultInfo: defaultInfo,
-            builder: (ZIMUserFullInfo? userInfo) {
-              userInfo?.extendedDataModel?.let((it) => extendedData = it);
+            builder: (userInfo) {
               return Row(
                 crossAxisAlignment: conversation.lastMessage == null
                     ? CrossAxisAlignment.center
                     : CrossAxisAlignment.start,
                 children: [
-                  _buildAvatar(userInfo),
+                  _buildAvatar(userInfo ?? defaultInfo),
                   Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildNameAndTime(userInfo),
+                        _buildNameAndTime(userInfo ?? defaultInfo),
                         if (conversation.lastMessage != null)
                           _buildMessageContent(),
                         if (orderInfoView != null) orderInfoView,
@@ -126,13 +120,21 @@ class _ConversationListTileState extends State<ConversationListTile>
     );
   }
 
-  Widget _buildAvatar(ZIMUserFullInfo? userInfo) {
+  Widget _buildAvatar(ChatUserInfo info) {
+    final timestamp = conversation.lastMessage?.info.timestamp ?? 0;
+    var avatar = timestamp > info.updatedAt ? conversation.avatarUrl : info.avatar;
+    if(avatar.isEmpty){
+      avatar = conversation.avatarUrl;
+    }
+    if(avatar.isEmpty){
+      avatar = info.avatar;
+    }
     Widget child = UserAvatar.circle(
-      userInfo?.userAvatarUrl ?? '',
+      avatar,
       size: 40.rpx,
     );
     //在线
-    if (extendedData.onlineStatus == 0) {
+    if (info.onlineStatus == 0) {
       child = Stack(
         children: [
           child,
@@ -160,10 +162,18 @@ class _ConversationListTileState extends State<ConversationListTile>
     );
   }
 
-  Widget _buildNameAndTime(ZIMUserFullInfo? fullInfo) {
-    final name = conversation.name.isNotEmpty
-        ? conversation.name
-        : fullInfo?.baseInfo.userName ?? conversation.id;
+  Widget _buildNameAndTime(ChatUserInfo info) {
+    final timestamp = conversation.lastMessage?.info.timestamp ?? 0;
+    var name = timestamp > info.updatedAt ? conversation.name : info.name;
+    if (name.isEmpty) {
+      name = conversation.name;
+    }
+    if (name.isEmpty) {
+      name = info.name;
+    }
+    if (name.isEmpty) {
+      name = info.id;
+    }
 
     var time = conversation.lastMessage?.info.timestamp
         .let(DateTime.fromMillisecondsSinceEpoch);
@@ -175,14 +185,13 @@ class _ConversationListTileState extends State<ConversationListTile>
       nameMaxWidth = 190.rpx;
     }
 
-    print(
-        'id: ${fullInfo?.baseInfo.userID} fullInfo: ${fullInfo?.baseInfo.userName}  extendedData:${fullInfo?.extendedData}');
+    print('$info');
 
     final extendedChildren = <Widget>[
       Padding(
         padding: FEdgeInsets(left: 4.rpx),
         child: AppImage.asset(
-          extendedData.gender.icon,
+          info.gender.icon,
           size: 12.rpx,
         ),
       ),
@@ -190,23 +199,23 @@ class _ConversationListTileState extends State<ConversationListTile>
     nameMaxWidth -= 16.rpx;
 
     //用户风格
-    if (extendedData.occupation != UserOccupation.unknown) {
+    if (info.occupation != UserOccupation.unknown) {
       extendedChildren.add(
         Padding(
           padding: FEdgeInsets(left: 4.rpx),
-          child: const OccupationWidget(occupation: UserOccupation.employees),
+          child: OccupationWidget(occupation: info.occupation),
         ),
       );
       nameMaxWidth -= 34.rpx;
     }
 
     //VIP图标
-    if (extendedData.vip?.startsWith('http') == true) {
+    if (info.vip?.startsWith('http') == true) {
       extendedChildren.add(
         Padding(
           padding: FEdgeInsets(left: 4.rpx),
           child: CachedNetworkImage(
-            imageUrl: extendedData.vip ?? '',
+            imageUrl: info.vip ?? '',
             height: 12.rpx,
           ),
         ),

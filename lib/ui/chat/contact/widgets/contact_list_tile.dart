@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -17,97 +19,44 @@ class ContactListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final age = userModel.age ?? 0;
     return InkWell(
-      onTap: toUserPage,
+      onTap: toChatPage,
       child: Container(
-        padding: FEdgeInsets(horizontal: 16.rpx, top: 16.rpx),
+        padding: FEdgeInsets(horizontal: 16.rpx, top: 12.rpx),
         child: Column(
           children: [
             Row(
               children: [
-                Container(
-                  margin: EdgeInsets.only(right: 8.rpx),
-                  child: AppImage.network(
-                    userModel.avatar ?? '',
-                    shape: BoxShape.circle,
-                    width: 40.rpx,
-                    height: 40.rpx,
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 8.rpx),
-                          constraints:
-                              BoxConstraints(maxWidth: Get.width - 200.rpx),
+                buildAvatar(),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      buildName(),
+                      if (userModel.signature?.isNotEmpty == true)
+                        Padding(
+                          padding: FEdgeInsets(top: 8.rpx),
                           child: Text(
-                            userModel.nickname,
-                            style: AppTextStyle.fs14m.copyWith(
-                              color: AppColor.blackBlue,
-                              height: 1.0,
-                            ),
+                            userModel.signature ?? '',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        // AppImage.asset(
-                        //   "assets/images/mine/safety.png",
-                        //   width: 16.rpx,
-                        //   height: 16.rpx,
-                        // ),
-                      ],
-                    ),
-                    Spacing.h8,
-                    Row(
-                      children: [
-                        if (userModel.gender.icon != null)
-                          Padding(
-                            padding: FEdgeInsets(right: 8.rpx),
-                            child: AppImage.asset(
-                              userModel.gender.icon ?? '',
-                              width: 16.rpx,
-                              height: 16.rpx,
-                            ),
-                          ),
-                        if (age > 0) ...[
-                          Text(
-                            age.toString(),
-                            style: AppTextStyle.fs12.copyWith(
-                              color: AppColor.blackBlue.withOpacity(0.7),
-                            ),
-                          ),
-                          Container(
-                            width: 4.rpx,
-                            height: 4.rpx,
-                            margin: EdgeInsets.symmetric(horizontal: 8.rpx),
-                            decoration: const BoxDecoration(
+                            style: AppTextStyle.fs10.copyWith(
                               color: AppColor.grayText,
-                              shape: BoxShape.circle,
+                              height: 1,
                             ),
-                          )
-                        ],
-                        Text(
-                          userModel.type.label,
-                          style: AppTextStyle.fs12.copyWith(
-                            color: AppColor.blackBlue.withOpacity(0.7),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                const Spacer(),
                 buildChatButton(),
               ],
             ),
             Padding(
-              padding: EdgeInsets.only(top: 16.rpx,bottom: 1),
-              child: const Divider(height: 1, thickness: 1, color: AppColor.background),
+              padding: EdgeInsets.only(top: 12.rpx),
+              child: const Divider(
+                  height: 1, thickness: 1, color: AppColor.background),
             ),
           ],
         ),
@@ -115,47 +64,109 @@ class ContactListTile extends StatelessWidget {
     );
   }
 
+  Widget buildAvatar() {
+    Widget child = UserAvatar.circle(
+      userModel.avatar ?? '',
+      size: 40.rpx,
+    );
+    //在线
+    if (userModel.onlineStatus == 0) {
+      child = Stack(
+        children: [
+          child,
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Container(
+              width: 10.rpx,
+              height: 10.rpx,
+              decoration: ShapeDecoration(
+                shape: CircleBorder(
+                  side: BorderSide(width: 1.5.rpx, color: Colors.white),
+                ),
+                color: AppColor.green1D,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(right: 8.rpx),
+      child: GestureDetector(
+        onTap: toUserPage,
+        child: child,
+      ),
+    );
+  }
+
+  Widget buildName() {
+    var nameMaxWidth = 224.rpx;
+
+    final extendedChildren = <Widget>[
+      Padding(
+        padding: FEdgeInsets(left: 4.rpx),
+        child: AppImage.asset(
+          userModel.gender.icon,
+          size: 12.rpx,
+        ),
+      ),
+    ];
+    nameMaxWidth -= 16.rpx;
+
+    //用户风格
+    if (userModel.occupation != UserOccupation.unknown) {
+      extendedChildren.add(
+        Padding(
+          padding: FEdgeInsets(left: 4.rpx),
+          child: OccupationWidget(occupation: userModel.occupation),
+        ),
+      );
+      nameMaxWidth -= 34.rpx;
+    }
+
+    //VIP图标
+    if (userModel.nameplate.startsWith('http')) {
+      extendedChildren.add(
+        Padding(
+          padding: FEdgeInsets(left: 4.rpx),
+          child: CachedNetworkImage(
+            imageUrl: userModel.nameplate,
+            height: 12.rpx,
+          ),
+        ),
+      );
+      nameMaxWidth -= 49.rpx;
+    }
+
+    return Row(
+      children: [
+        Container(
+          constraints: BoxConstraints(maxWidth: nameMaxWidth),
+          child: Text(
+            userModel.nickname,
+            style: AppTextStyle.fs14m.copyWith(
+              color: AppColor.blackBlue,
+              height: 1.0,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        ...extendedChildren,
+      ],
+    );
+  }
+
   Widget buildChatButton() {
     return GestureDetector(
       onTap: toChatPage,
       behavior: HitTestBehavior.translucent,
-      child: Container(
-        decoration: const ShapeDecoration(
-          shape: StadiumBorder(),
-          gradient: LinearGradient(
-            colors: [AppColor.purple4, AppColor.purple8],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        height: 32.rpx,
-        child: Container(
-          margin: const EdgeInsets.all(1),
-          padding: FEdgeInsets(horizontal: 10.rpx),
-          decoration: const ShapeDecoration(
-            color: Colors.white,
-            shape: StadiumBorder(),
-          ),
-          child: Row(
-            children: [
-              AppImage.asset(
-                'assets/images/plaza/accost.png',
-                width: 20.rpx,
-                height: 20.rpx,
-              ),
-              Padding(
-                padding: FEdgeInsets(left: 4.rpx),
-                child: Text(
-                  S.current.accost,
-                  style: AppTextStyle.fs14.copyWith(
-                    color: AppColor.blackBlue,
-                    height: 1,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+      child: AppImage.asset(
+        'assets/images/chat/ic_hi_btn.png',
+        width: 62.rpx,
+        height: 24.rpx,
       ),
     );
   }

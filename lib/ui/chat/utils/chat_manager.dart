@@ -181,17 +181,18 @@ class ChatManager
   }
 
   ///同步用户信息到IM服务
+  @Deprecated('服务端已同步，不需要客户端调用这个接口')
   Future<void> syncUserInfo() async {
-    AppLogger.d('同步用户信息到IM服务syncUserInfo');
-    final userInfo = SS.login.info;
-    if (userInfo != null) {
-      await ZIMKit().updateUserInfo(
-        name: userInfo.nickname,
-        avatarUrl: userInfo.avatar ?? '',
-      );
-    } else {
-      AppLogger.w('syncUserInfo: 用户信息为空');
-    }
+    // AppLogger.d('同步用户信息到IM服务syncUserInfo');
+    // final userInfo = SS.login.info;
+    // if (userInfo != null) {
+    //   await ZIMKit().updateUserInfo(
+    //     name: userInfo.nickname,
+    //     avatarUrl: userInfo.avatar ?? '',
+    //   );
+    // } else {
+    //   AppLogger.w('syncUserInfo: 用户信息为空');
+    // }
   }
 
   ///开始聊天(跳转聊天页面)

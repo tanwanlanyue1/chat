@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:guanjia/common/utils/auto_dispose_mixin.dart';
 import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
 import 'package:guanjia/widgets/spacing.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
 
 ///聊天用户信息builder
 
@@ -12,9 +11,9 @@ class ChatUserBuilder extends StatefulWidget {
   final String userId;
 
   ///默认用户信息(加载中或者失败时显示)
-  final ZIMUserFullInfo? defaultInfo;
+  final ChatUserInfo? defaultInfo;
 
-  final Widget Function(ZIMUserFullInfo? userInfo) builder;
+  final Widget Function(ChatUserInfo? userInfo) builder;
 
   const ChatUserBuilder({
     super.key,
@@ -29,7 +28,7 @@ class ChatUserBuilder extends StatefulWidget {
 
 class _ChatUserBuilderState extends State<ChatUserBuilder> with AutoDisposeMixin {
 
-  ZIMUserFullInfo? info;
+  ChatUserInfo? info;
   @override
   void initState() {
     super.initState();
@@ -41,10 +40,10 @@ class _ChatUserBuilderState extends State<ChatUserBuilder> with AutoDisposeMixin
         });
       });
     }
-    autoCancel(ChatUserInfoCache().userInfoStream.listen((event) {
-      if(event.baseInfo.userID == widget.userId){
+    autoCancel(ChatUserInfoCache().userInfoStream.listen((userInfo) {
+      if(userInfo.id == widget.userId){
         setState(() {
-          info = event;
+          info = userInfo;
         });
       }
     }));

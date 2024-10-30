@@ -122,7 +122,7 @@ class ChatCallEndDialog extends GetView<ChatCallEndDialogController> {
   Widget buildNickName() {
     return ChatUserBuilder(userId: message.info.conversationID, builder: (info){
       return Text(
-        info?.baseInfo.userName ?? '',
+        info?.name ?? '',
         style: AppTextStyle.fs14m.copyWith(
           color: AppColor.blackBlue,
           height: 1.00001,

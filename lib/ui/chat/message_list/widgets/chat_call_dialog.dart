@@ -207,8 +207,8 @@ class ChatCallDialog extends StatelessWidget {
         builder: (info) {
           return Text(
             isVideoCall
-                ? S.current.initiateAVideo(info?.baseInfo.userName ?? '')
-                : S.current.initiateAVoice(info?.baseInfo.userName ?? ''),
+                ? S.current.initiateAVideo(info?.name ?? '')
+                : S.current.initiateAVoice(info?.name ?? ''),
             style: AppTextStyle.fs16m.copyWith(
               color: AppColor.blackBlue,
               height: 1.5,

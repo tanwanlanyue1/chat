@@ -14,6 +14,8 @@ import 'package:guanjia/ui/chat/message_list/message_sender_part.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_feature_panel.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_red_packet_builder.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
+import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
@@ -142,7 +144,7 @@ class MessageListPage extends GetView<MessageListController> {
       // backgroundBuilder: buildBackground,
       listViewPadding: FEdgeInsets(top: ChatDateView.height),
       onPressed: (_, message, defaultAction) {
-        switch(message.customType){
+        switch (message.customType) {
           case CustomMessageType.redPacket:
             controller.onTapRedPacket(message);
             break;
@@ -161,23 +163,53 @@ class MessageListPage extends GetView<MessageListController> {
       centerTitle: true,
       title: Obx(() {
         final conversation = state.conversationRx();
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: Get.width - 150.rpx),
-              child: Text((conversation?.name ?? ''), maxLines: 1),
-            ),
-            // Padding(
-            //   padding: FEdgeInsets(left: 4.rpx),
-            //   child: AppImage.asset(
-            //     "assets/images/mine/safety.png",
-            //     width: 16.rpx,
-            //     height: 16.rpx,
-            //   ),
-            // ),
-          ],
+        if (conversation == null) {
+          return Spacing.blank;
+        }
+
+        final defaultInfo = ChatUserInfo(
+          id: conversation.id,
+          name: conversation.name,
+          avatar: conversation.avatarUrl,
         );
+
+        return ChatUserBuilder(
+            defaultInfo: defaultInfo,
+            userId: state.conversationId,
+            builder: (info) {
+              final userInfo = info ?? defaultInfo;
+              final timestamp = conversation.lastMessage?.info.timestamp ?? 0;
+              var name = timestamp > userInfo.updatedAt
+                  ? conversation.name
+                  : userInfo.name;
+              if (name.isEmpty) {
+                name = conversation.name;
+              }
+              if (name.isEmpty) {
+                name = userInfo.name;
+              }
+              if (name.isEmpty) {
+                name = userInfo.id;
+              }
+
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: Get.width - 140.rpx),
+                    child: Text(name, maxLines: 1),
+                  ),
+                  // Padding(
+                  //   padding: FEdgeInsets(left: 4.rpx),
+                  //   child: AppImage.asset(
+                  //     "assets/images/mine/safety.png",
+                  //     width: 16.rpx,
+                  //     height: 16.rpx,
+                  //   ),
+                  // ),
+                ],
+              );
+            });
       }),
       actions: [
         IconButton(

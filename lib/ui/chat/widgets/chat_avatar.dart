@@ -42,7 +42,7 @@ class ChatAvatar extends StatefulWidget {
 
 class _ChatAvatarState extends State<ChatAvatar> with AutoDisposeMixin {
 
-  ZIMUserFullInfo? info;
+  ChatUserInfo? info;
   @override
   void initState() {
     super.initState();
@@ -55,7 +55,7 @@ class _ChatAvatarState extends State<ChatAvatar> with AutoDisposeMixin {
       });
     }
     autoCancel(ChatUserInfoCache().userInfoStream.listen((event) {
-      if(event.baseInfo.userID == widget.userId){
+      if(event.id == widget.userId){
         setState(() {
           info = event;
         });
@@ -83,7 +83,7 @@ class _ChatAvatarState extends State<ChatAvatar> with AutoDisposeMixin {
     final info = this.info;
     if(info != null){
       child = AppImage.network(
-        info.userAvatarUrl,
+        info.avatar,
         width: widget.width,
         height: widget.height,
         fit: BoxFit.cover,

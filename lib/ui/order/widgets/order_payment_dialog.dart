@@ -198,9 +198,9 @@ class OrderPaymentDialog extends StatelessWidget {
         builder: (info) {
           var text = '';
           if (order.type.isNormal) {
-            text = S.current.haveAgreedYourInvitation(info?.baseInfo.userName ?? '');
+            text = S.current.haveAgreedYourInvitation(info?.name ?? '');
           } else {
-            text = S.current.haveAgreedYourDate(info?.baseInfo.userName ?? '');
+            text = S.current.haveAgreedYourDate(info?.name ?? '');
           }
           return Text(
             text,

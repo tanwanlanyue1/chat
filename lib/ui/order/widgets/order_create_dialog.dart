@@ -93,7 +93,7 @@ class OrderCreateDialog extends StatelessWidget {
   Widget buildDesc() {
     return ChatUserBuilder(userId: userId.toString(), builder: (info){
       return Text(
-        S.current.sureToInitiateDateWith(info?.baseInfo.userName ?? ''),
+        S.current.sureToInitiateDateWith(info?.name ?? ''),
         textAlign: TextAlign.center,
         style: AppTextStyle.fs14m.copyWith(
           color: AppColor.blackBlue,

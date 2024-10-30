@@ -55,13 +55,13 @@ mixin _ChatNotificationMixin {
     AndroidBitmap<Object>? largeIcon;
     final user =
     await ChatUserInfoCache().getOrQuery(message.zim.senderUserID);
-    title = user.baseInfo.userName;
+    title = user.name;
     if (title.isEmpty) {
-      title = user.baseInfo.userID;
+      title = user.id;
     }
     content = message.toPlainText() ?? '';
     try {
-      final fileResp = DefaultCacheManager().getImageFile(user.userAvatarUrl);
+      final fileResp = DefaultCacheManager().getImageFile(user.avatar);
       final resp = await fileResp.first.timeout(2.seconds);
       if (resp is FileInfo) {
         largeIcon = FilePathAndroidBitmap(resp.file.path);

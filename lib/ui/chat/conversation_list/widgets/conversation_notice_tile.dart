@@ -9,6 +9,7 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/unread_badge.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 ///聊天会话列表-系统通知
@@ -33,17 +34,8 @@ class ConversationNoticeTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        margin: FEdgeInsets(horizontal: 16.rpx, vertical: 8.rpx),
-        padding: FEdgeInsets(horizontal: 12.rpx,vertical: 16.rpx),
+        padding: FEdgeInsets(horizontal: 16.rpx, vertical: 12.rpx),
         alignment: Alignment.centerLeft,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.rpx),
-          gradient: LinearGradient(
-            colors: AppColor.horizontalGradient.colors,
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -55,7 +47,7 @@ class ConversationNoticeTile extends StatelessWidget {
                 children: [
                   _buildNameAndTime(),
                   _buildMessageContent(),
-                ].separated(Spacing.h(10)).toList(growable: false),
+                ].separated(Spacing.h(6)).toList(growable: false),
               ),
             )
           ],
@@ -67,16 +59,10 @@ class ConversationNoticeTile extends StatelessWidget {
   Widget _buildAvatar() {
     return Padding(
       padding: FEdgeInsets(right: 12.rpx),
-      child: Badge(
-        backgroundColor: AppColor.red,
-        smallSize: 8.rpx,
-        isLabelVisible: model.total > 0,
-        alignment: const Alignment(-1.1, -1.1),
-        child: SizedBox(
-          width: 40.rpx,
-          height: 40.rpx,
-          child: AppImage.asset('assets/images/chat/ic_sys_notice.png'),
-        ),
+      child: SizedBox(
+        width: 40.rpx,
+        height: 40.rpx,
+        child: AppImage.asset('assets/images/chat/ic_sys_notice.png'),
       ),
     );
   }
@@ -91,7 +77,7 @@ class ConversationNoticeTile extends StatelessWidget {
             model.title.isNotEmpty ? model.title : S.current.systemNotice,
             maxLines: 1,
             style: AppTextStyle.fs16m.copyWith(
-              color: Colors.white,
+              color: AppColor.blackBlue,
               height: 1.0,
             ),
           ),
@@ -100,8 +86,9 @@ class ConversationNoticeTile extends StatelessWidget {
           padding: FEdgeInsets(left: 8.rpx),
           child: Text(
             time.friendlyTime,
-            style: AppTextStyle.fs12.copyWith(
-              color: Colors.white,
+            style: AppTextStyle.normal.copyWith(
+              fontSize: 11.rpx,
+              color: AppColor.grayText,
               height: 1.1,
             ),
           ),
@@ -113,17 +100,33 @@ class ConversationNoticeTile extends StatelessWidget {
   Widget _buildMessageContent() {
     final maxWidth = ConversationNoticeTile._messageContentMaxWidth ??=
         Get.width - (40 + 32 + 24 + 12).rpx;
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: maxWidth),
-      child: Text(
-        model.content,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: AppTextStyle.fs14.copyWith(
-          color: Colors.white,
-          height: 1.05,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: maxWidth),
+          child: Text(
+            model.content,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyle.normal.copyWith(
+              fontSize: 13.rpx,
+              color: AppColor.grayText,
+              height: 1.1,
+            ),
+          ),
         ),
-      ),
+        const Spacer(),
+        SizedBox.square(
+          dimension: 16.rpx,
+          child: model.total > 0 ? UnreadBadge(
+            unread: model.total,
+            size: 16.rpx,
+          ) : null,
+        )
+      ],
     );
+
   }
 }

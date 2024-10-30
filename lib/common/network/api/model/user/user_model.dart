@@ -14,16 +14,30 @@ enum UserGender {
 
   bool get isFemale => this == UserGender.female;
 
-  String? get icon {
+  ///彩色图标
+  String get icon {
     switch (this) {
       case male:
-        return 'assets/images/mine/man.png';
+        return 'assets/images/mine/ic_gender_male.png';
       case female:
-        return 'assets/images/mine/woman.png';
+        return 'assets/images/mine/ic_gender_female.png';
       default:
-        return null;
+        return 'assets/images/mine/ic_gender_unknown.png';
     }
   }
+
+  ///白色图标
+  String? get iconWhite {
+    switch (this) {
+      case male:
+        return 'assets/images/mine/ic_gender_male_white.png';
+      case female:
+        return 'assets/images/mine/ic_gender_female_white.png';
+      default:
+        return 'assets/images/mine/ic_gender_unknown_white.png';
+    }
+  }
+
 }
 
 /// 用户类型
@@ -63,7 +77,9 @@ enum UserStatus {
 /// 用户职业
 enum UserOccupation {
   unknown,
+  ///1 在职人员
   employees,
+  ///2 学生
   student;
 
   static UserOccupation valueForIndex(int index) {

@@ -65,7 +65,7 @@ class _ConversationListViewState extends State<ConversationListView>
                 cacheExtent: constraints.maxHeight * 3,
                 slivers: [
                   buildSysNotice(),
-                  SliverList.separated(
+                  SliverList.builder(
                     itemCount: list.length,
                     itemBuilder: (_, index) {
                       final conversation = list[index];
@@ -78,16 +78,7 @@ class _ConversationListViewState extends State<ConversationListView>
                         },
                       );
                     },
-                    separatorBuilder: (_, index) {
-                      return Divider(height: 0, indent: 75.rpx);
-                    },
                   ),
-                  SliverToBoxAdapter(
-                    child: Visibility(
-                      visible: list.isNotEmpty,
-                      child: Divider(height: 1, endIndent: 0, indent: 64.rpx),
-                    ),
-                  )
                 ],
               );
             },

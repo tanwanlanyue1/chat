@@ -313,10 +313,9 @@ class _TileIcon extends StatelessWidget {
                   animation: animation,
                   builder: (ctx, child) {
                     return Transform.translate(
-                      offset: Offset(0, (-8 * animation.value).rpx),
+                      offset: Offset(0, (-6 * animation.value).rpx),
                       child: AppImage.asset(
                         item.icon,
-                        // color: ColorTween(begin: Color(0xFF4B5672), end: Colors.white).animate(animation).value,
                       ),
                     );
                   },

@@ -190,24 +190,14 @@ class _ChatPageState extends State<ChatPage>
         overlayColor: MaterialStateProperty.all(Colors.transparent),
         splashFactory: NoSplash.splashFactory,
         controller: controller.tabController,
-        labelStyle: AppTextStyle.fs20m.copyWith(fontWeight: FontWeight.w900),
+        labelStyle: AppTextStyle.bold.copyWith(fontSize: 22.rpx),
         labelColor: AppColor.blackBlue,
-        unselectedLabelStyle:
-            AppTextStyle.fs16.copyWith(fontWeight: FontWeight.w500),
+        unselectedLabelStyle: AppTextStyle.fs16,
         unselectedLabelColor: AppColor.grayText,
         isScrollable: true,
         labelPadding: FEdgeInsets.zero,
-        indicatorPadding: FEdgeInsets(bottom: 4.rpx),
-        indicator: TabUnderlineIndicator(
-          width: 20.rpx,
-          widthEqualTitle: false,
-          gradient: LinearGradient(
-            colors: AppColor.horizontalGradient.colors,
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderSide: BorderSide(width: 4.rpx),
-        ),
+        indicatorWeight: 0.1,
+        indicatorColor: Colors.transparent,
         tabs: [
           ObxValue((dataRx) {
             Widget child = Text(S.current.message);

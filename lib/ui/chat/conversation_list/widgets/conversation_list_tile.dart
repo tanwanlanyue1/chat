@@ -14,6 +14,7 @@ import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
+import 'package:guanjia/widgets/unread_badge.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
@@ -79,7 +80,7 @@ class _ConversationListTileState extends State<ConversationListTile>
       child: InkWell(
         onTap: onTap,
         child: Container(
-          padding: FEdgeInsets(all: 16.rpx),
+          padding: FEdgeInsets(horizontal: 16.rpx, vertical: 12.rpx),
           alignment: Alignment.centerLeft,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +94,7 @@ class _ConversationListTileState extends State<ConversationListTile>
                     _buildNameAndTime(),
                     _buildMessageContent(),
                     if (orderInfoView != null) orderInfoView,
-                  ].separated(Spacing.h(10)).toList(growable: false),
+                  ].separated(Spacing.h(6)).toList(growable: false),
                 ),
               )
             ],
@@ -105,16 +106,10 @@ class _ConversationListTileState extends State<ConversationListTile>
 
   Widget _buildAvatar() {
     return Padding(
-      padding: FEdgeInsets(right: 16.rpx),
-      child: Badge(
-        backgroundColor: AppColor.red,
-        smallSize: 8.rpx,
-        isLabelVisible: conversation.unreadMessageCount > 0,
-        alignment: const Alignment(-1.1, -1.1),
-        child: ChatAvatar.circle(
-          size: 40.rpx,
-          userId: conversation.id,
-        ),
+      padding: FEdgeInsets(right: 12.rpx),
+      child: ChatAvatar.circle(
+        size: 40.rpx,
+        userId: conversation.id,
       ),
     );
   }
@@ -141,7 +136,8 @@ class _ConversationListTileState extends State<ConversationListTile>
             padding: FEdgeInsets(left: 8.rpx),
             child: Text(
               time.friendlyTime,
-              style: AppTextStyle.fs12.copyWith(
+              style: AppTextStyle.normal.copyWith(
+                fontSize: 11.rpx,
                 color: AppColor.grayText,
                 height: 1.1,
               ),
@@ -156,28 +152,18 @@ class _ConversationListTileState extends State<ConversationListTile>
     if (message == null) {
       return Spacing.blank;
     }
-    var text = message.toPlainText() ?? '';
-    if (conversation.lastMessage?.isMine == false) {
-      text = '— $text';
-    }
-    var textColor = AppColor.black3;
-    if(!message.isMine){
-      textColor = conversation.unreadMessageCount > 0
-          ? AppColor.primaryBlue
-          : AppColor.grayText;
-    }
-
     final maxWidth = ConversationListTile._messageContentMaxWidth ??=
         Get.width - (40 + 32 + 32 + 12).rpx;
     Widget child = ConstrainedBox(
       constraints: BoxConstraints(maxWidth: maxWidth),
       child: Text(
-        text,
+        message.toPlainText() ?? '',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: AppTextStyle.fs14.copyWith(
-          color: textColor,
-          height: 1.05,
+        style: AppTextStyle.normal.copyWith(
+          fontSize: 13.rpx,
+          color: AppColor.grayText,
+          height: 1.1,
         ),
       ),
     );
@@ -206,17 +192,22 @@ class _ConversationListTileState extends State<ConversationListTile>
       statusIcon?.let(trailingWidgets.add);
     }
 
-    if (trailingWidgets.isNotEmpty) {
-      child = Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          child,
-          ...trailingWidgets,
-        ],
-      );
-    }
-    return child;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        child,
+        ...trailingWidgets,
+        const Spacer(),
+        SizedBox.square(
+          dimension: 16.rpx,
+          child: conversation.unreadMessageCount > 0 ? UnreadBadge(
+            unread: conversation.unreadMessageCount,
+            size: 16.rpx,
+          ) : null,
+        )
+      ],
+    );
   }
 
   ///订单信息

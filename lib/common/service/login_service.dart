@@ -331,8 +331,16 @@ class LoginService extends GetxService {
     bool autoSave = true,
   }) async {
 
-    // final info = await ZIMKit().queryUser(userId.toString());
-    // print('userinfo: ${info.extendedData}');
+    final config = ZIMUserInfoQueryConfig()
+      ..isQueryFromServer = true;
+    ZIM.getInstance()!.queryUsersInfo(
+      [userId.toString()],
+      config,
+    ).then((value){
+      print('userinfo: ${value.userList.firstOrNull?.extendedData}');
+    }).catchError((ex){
+      print('userinfo ex: ${ex}');
+    });
 
     final res = await fetchInfo(userId: userId ?? 0);
     await res.whenAsync(

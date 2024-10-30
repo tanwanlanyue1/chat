@@ -9,14 +9,15 @@ import 'edge_insets.dart';
 ///未读数
 class UnreadBadge extends StatelessWidget {
   final int unread;
+  final double? size;
 
-  const UnreadBadge({super.key, required this.unread});
+  const UnreadBadge({super.key, required this.unread, this.size});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 16.rpx,
-      constraints: BoxConstraints(minWidth: 16.rpx),
+      height: size ?? 16.rpx,
+      constraints: BoxConstraints(minWidth: size ?? 16.rpx),
       padding: FEdgeInsets(horizontal: 4.rpx),
       alignment: Alignment.center,
       decoration: const ShapeDecoration(
@@ -39,6 +40,7 @@ class TabUnreadBadge extends StatelessWidget {
   final bool isUnreadVisible;
   final Widget child;
   final Offset offset;
+  final double? size;
 
   const TabUnreadBadge({
     super.key,
@@ -46,6 +48,7 @@ class TabUnreadBadge extends StatelessWidget {
     required this.unread,
     this.isUnreadVisible = true,
     this.offset = Offset.zero,
+    this.size,
   });
 
   @override

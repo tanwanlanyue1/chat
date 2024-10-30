@@ -169,6 +169,7 @@ class AppColor {
 
   ///红色
   static const red = Color(0xFFE5393C);
+  static const redF5 = Color(0xFFFF5B1A);
 
   ///黄色
   static const yellow = Color(0xFFF7BF4B);

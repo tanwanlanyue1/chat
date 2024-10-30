@@ -280,17 +280,20 @@ class LabelModel {
     required this.id,
     required this.type,
     required this.tag,
+    required this.icon,
   });
 
   final int id;
   final int type; // 类型 0通用 1男 2女
   final String tag; // 风格类型
+  final String icon; // 风格图片
 
   factory LabelModel.fromJson(Map<String, dynamic> json) {
     return LabelModel(
       id: json["id"] ?? 0,
       type: json["type"] ?? 0,
       tag: json["tag"] ?? "",
+      icon: json["icon"] ?? "",
     );
   }
 
@@ -298,5 +301,6 @@ class LabelModel {
         "id": id,
         "type": type,
         "tag": tag,
+        "icon": icon,
       };
 }

@@ -42,6 +42,11 @@ class AppTextStyle {
     fontSize: 10.rpx,
   );
 
+  ///10号字体，字重bold
+  static final fs10b = bold.copyWith(
+    fontSize: 10.rpx,
+  );
+
   ///12号字体，字重300
   static final fs12r = regular.copyWith(
     fontSize: 12.rpx,

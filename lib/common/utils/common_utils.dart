@@ -137,6 +137,16 @@ class CommonUtils {
     return formattedDate;
   }
 
+  ///时间戳相差的小时
+  static int difference(int? timestamp1,int? timestamp2,){
+    if (timestamp1 == null || timestamp2 == null) return 0;
+    DateTime dateTime1 = DateTime.fromMillisecondsSinceEpoch(timestamp1);
+    DateTime dateTime2 = DateTime.fromMillisecondsSinceEpoch(timestamp2);
+    Duration difference = dateTime2.difference(dateTime1);
+    double hours = difference.inHours.toDouble();
+    return hours.toInt();
+  }
+
   /// 时间戳转字符串
   static String convertTimestampToString(int timestamp, {String? newPattern}) {
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);

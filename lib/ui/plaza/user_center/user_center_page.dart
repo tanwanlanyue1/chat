@@ -244,71 +244,88 @@ class UserCenterPage extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(bottom: 16.rpx),
+            padding: EdgeInsets.only(bottom: 10.rpx),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(top: 8.rpx,left: SS.login.userId != state.authorId ? (80.rpx) : 0),
-                    child: AppImage.network(
-                      state.authorInfo.avatar ?? '',
-                      width: 80.rpx,
-                      height: 80.rpx,
-                      fit: BoxFit.fitWidth,
-                      shape: BoxShape.circle,
-                    ),
+                Container(
+                  margin: EdgeInsets.only(right: 8.rpx,),
+                  child: AppImage.network(
+                    state.authorInfo.avatar ?? '',
+                    width: 50.rpx,
+                    height: 50.rpx,
+                    fit: BoxFit.cover,
+                    shape: BoxShape.circle,
                   ),
                 ),
-                Visibility(
-                  visible: SS.login.userId != state.authorId,
-                  child: SizedBox(
-                    width: 74.rpx,
-                    child: GestureDetector(
-                      onTap: (){
-                        controller.toggleAttention(state.authorId);
-                      },
-                      child: ObxValue((isAttentionRx){
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Visibility(
-                              visible: isAttentionRx(),
-                              replacement: AppImage.asset("assets/images/plaza/attention_no.png",width: 24.rpx,height: 24.rpx,),
-                              child: AppImage.asset("assets/images/plaza/attention.png",width: 24.rpx,height: 24.rpx,),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            constraints: BoxConstraints(
+                              maxWidth: state.authorInfo.occupation == UserOccupation.unknown ? 200.rpx : 150.rpx
                             ),
-                            Container(
-                              width: 44.rpx,
-                              margin: EdgeInsets.only(left: 4.rpx),
-                              alignment: Alignment.center,
-                              child: Text(isAttentionRx() ? S.current.followed : S.current.attention,style: AppTextStyle.fs14m.copyWith(color: AppColor.black666),),
-                            )
-                          ],
-                        );
-                      },controller.isAttentionRx),
-                    ),
+                            child: Text(state.authorInfo.nickname*10,style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue,height: 1),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                          ),
+                          Container(
+                            height: 12.rpx,
+                            padding: EdgeInsets.symmetric(horizontal: 4.rpx),
+                            decoration: BoxDecoration(
+                                color: state.authorInfo.gender.iconColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(14.rpx)
+                            ),
+                            margin: EdgeInsets.only(left: 4.rpx,right: 4.rpx),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AppImage.asset(state.authorInfo.gender.icon ?? '',width: 8.rpx,height: 8.rpx),
+                                SizedBox(width: 2.rpx,),
+                                Text(
+                                  "${state.authorInfo.age ?? ''}",
+                                  style: AppTextStyle.fs10.copyWith(color: state.authorInfo.gender.index == 1 ? AppColor.primaryBlue:AppColor.textPurple,height: 1),
+                                ),
+                              ],
+                            ),
+                          ),
+                          OccupationWidget(occupation: state.authorInfo.occupation),
+                          const Spacer(),
+                          Visibility(
+                            visible: SS.login.userId != state.authorId,
+                            child: ObxValue((isAttentionRx) => GestureDetector(
+                              onTap: ()=> controller.toggleAttention(state.authorId),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: controller.isAttentionRx.value ? AppColor.gray39 : AppColor.textPurple,
+                                    borderRadius: BorderRadius.circular(26.rpx)
+                                ),
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(top: 2.rpx),
+                                padding: EdgeInsets.symmetric(horizontal: 12.rpx,vertical: 6.rpx),
+                                child: Text(controller.isAttentionRx.value ? S.current.followed:S.current.attention,style: AppTextStyle.fs14r.copyWith(
+                                    color: controller.isAttentionRx.value ? AppColor.grayText : Colors.white),),
+                              ),
+                            ),controller.isAttentionRx),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-          Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.only(bottom: 12.rpx),
-            child: Text(state.authorInfo.nickname,style: AppTextStyle.fs20m.copyWith(color: AppColor.blackBlue,height: 1),textAlign: TextAlign.center,),
-          ),
-          Visibility(
-            visible: state.authorInfo.type.index != 0,
-            child: Text("${controller.label()}   ${state.authorInfo.position ?? ''}",style: AppTextStyle.fs14.copyWith(color: AppColor.black92,height: 1),),
-          ),
-          SizedBox(height: 8.rpx,),
+          // Visibility(
+          //   visible: state.authorInfo.type.index != 0,
+          //   child: Text("${controller.label()}   ${state.authorInfo.position ?? ''}",style: AppTextStyle.fs14.copyWith(color: AppColor.black92,height: 1),),
+          // ),
+          // SizedBox(height: 8.rpx,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(state.userBasics.length, (i) {
               return SizedBox(
-                height: 85.rpx,
+                height: 70.rpx,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

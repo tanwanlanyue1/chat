@@ -3,14 +3,11 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
-import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
-import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
-import 'package:guanjia/widgets/occupation_widget.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lottie/lottie.dart';
@@ -269,7 +266,6 @@ class FriendDatePage extends StatelessWidget {
           Positioned(
             bottom: 9.rpx,
             child: Container(
-              // width: 70.rpx,
               height: 28.rpx,
               padding: EdgeInsets.symmetric(horizontal: 8.rpx),
               decoration: BoxDecoration(

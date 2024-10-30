@@ -27,29 +27,31 @@ class _PlazaPageState extends State<PlazaPage>
   Widget build(BuildContext context) {
     super.build(context);
     return SystemUI.light(
-      child: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AppAssetImage("assets/images/plaza/recommend_back.png"),
-              fit: BoxFit.fill
+      child: ObxValue((tabIndexRx) {
+        return Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AppAssetImage(state.tabBarList[tabIndexRx.value]['img']),
+                fit: BoxFit.fill,alignment: Alignment.topCenter
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            appBar(),
-            Expanded(
-              child: TabBarView(
-                  controller: controller.tabController,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: <Widget>[
-                    DatingHallView(),
-                    NearbyHallView(),
-                    FortuneSquareView(),
-                  ]),
-            )
-          ],
-        ),
-      ),
+          child: Column(
+            children: [
+              appBar(),
+              Expanded(
+                child: TabBarView(
+                    controller: controller.tabController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: <Widget>[
+                      DatingHallView(),
+                      NearbyHallView(),
+                      FortuneSquareView(),
+                    ]),
+              )
+            ],
+          ),
+        );
+      },state.tabIndex),
     );
   }
 
@@ -62,17 +64,17 @@ class _PlazaPageState extends State<PlazaPage>
       alignment: Alignment.centerLeft,
       child: TabBar(
         controller: controller.tabController,
-        labelStyle: AppTextStyle.fs18m,
+        labelStyle: AppTextStyle.fs24,
         labelColor: Colors.white,
         unselectedLabelColor: Colors.white.withOpacity(0.6),
         unselectedLabelStyle: AppTextStyle.fs16,
         isScrollable: true,
-        indicator: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(4.rpx)
-        ),
+        indicator: const BoxDecoration(),
         indicatorPadding: EdgeInsets.only(top: 24.rpx,right: 38.rpx,left: 4.rpx),
         labelPadding: EdgeInsets.only(bottom: 0.rpx),
+        onTap: (val){
+          state.tabIndex.value = val;
+        },
         tabs: List.generate(state.tabBarList.length, (index) {
           return Container(
             margin: EdgeInsets.only(right: 32.rpx),

@@ -1,5 +1,7 @@
 //交友大厅-推荐列表
 
+import 'package:guanjia/common/network/api/model/open/app_config_model.dart';
+
 class RecommendModel {
   RecommendModel({
     this.uid,
@@ -21,6 +23,10 @@ class RecommendModel {
     this.distance,
     //	坐标 经纬度用英文逗号隔开
     this.location,
+    //vip图标
+    this.nameplate,
+    //风格图标
+    this.styleList,
   });
 
   RecommendModel.fromJson(dynamic json) {
@@ -34,6 +40,13 @@ class RecommendModel {
     style = json['style'];
     distance = json['distance'];
     location = json['location'];
+    nameplate = json['nameplate'];
+    if (json['styleList'] != null) {
+      styleList = [];
+      json['styleList'].forEach((v) {
+        styleList?.add(LabelModel.fromJson(v));
+      });
+    }
   }
   int? uid;
   int? type;
@@ -45,6 +58,8 @@ class RecommendModel {
   String? style;
   String? distance;
   String? location;
+  String? nameplate;
+  List<LabelModel>? styleList;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -58,6 +73,13 @@ class RecommendModel {
     map['style'] = style;
     map['distance'] = distance;
     map['location'] = location;
+    map['nameplate'] = nameplate;
+    if (map['styleList'] != null) {
+      styleList = [];
+      map['styleList'].forEach((v) {
+        styleList?.add(LabelModel.fromJson(v));
+      });
+    }
     return map;
   }
 

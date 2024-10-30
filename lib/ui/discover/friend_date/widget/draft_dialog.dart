@@ -1,16 +1,21 @@
-import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/loading.dart';
+import 'package:lottie/lottie.dart';
+import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
 import '../../../../common/network/api/api.dart';
+import '../friend_date_controller.dart';
 
 //征友约会-弹窗
 class DraftDialog extends StatelessWidget {
@@ -19,161 +24,301 @@ class DraftDialog extends StatelessWidget {
   DraftDialog({super.key, required this.item});
 
   static Future<bool?> show({required AppointmentModel item}) {
-    return Get.dialog(
+    return Get.bottomSheet(
+      isScrollControlled:true,
       DraftDialog(item: item),
     );
   }
+  final controller = Get.find<FriendDateController>();
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Get.back();
-      },
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Center(
-          child: Container(
-            width: 331.rpx,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.rpx),
+          topRight: Radius.circular(16.rpx),
+        )
+      ),
+      padding: EdgeInsets.all(16.rpx).copyWith(right: 12.rpx),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              AppImage.network(
+                item.userInfo?.avatar ?? '',
+                width: 30.rpx,
+                height: 30.rpx,
+                shape: BoxShape.circle,
+              ),
+              SizedBox(width: 8.rpx,),
+              Text(
+                item.userInfo?.nickname ?? '',
+                style: AppTextStyle.fs16m.copyWith(color: AppColor.black20),
+              ),
+              Text(
+                "的征友约会",
+                style: AppTextStyle.fs12.copyWith(color: AppColor.black6),
+              ),
+              const Spacer(),
+              AppImage.asset(
+                'assets/images/discover/hi_call.png',
+                width: 62.rpx,
+                height: 24.rpx,
+              ),
+            ],
+          ),
+          Container(
+            height: 20.rpx,
+            margin: EdgeInsets.only(top:8.rpx,bottom: 8.rpx),
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                Container(
+                  height: 28.rpx,
+                  padding: EdgeInsets.symmetric(horizontal: 8.rpx),
+                  margin: EdgeInsets.only(right: 4.rpx),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        AppColor.gradientBegin,
+                        AppColor.gradientEnd,
+                      ],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                          color: AppColor.purple8D.withOpacity(0.8),
+                          blurRadius: 4.rpx,
+                          offset: Offset(1.rpx, 0),
+                          inset: true
+                      ),
+                      BoxShadow(
+                          color: AppColor.purpleE1.withOpacity(0.8),
+                          blurRadius: 4.rpx,
+                          offset: Offset(-1.rpx, 0),
+                          inset: true
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(5.rpx),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset('assets/images/plaza/friend_date.json',width: 12.rpx,height: 12.rpx),
+                      SizedBox(width: 2.rpx,),
+                      Text(controller.typeTitle(item.type ?? 1),style: AppTextStyle.fs10m.copyWith(color: Colors.white),)
+                    ],
+                  ),
+                ),
+                ...List.generate(controller.labelSplit(item.tag ?? '').length, (index) =>
+                    Padding(
+                      padding: EdgeInsets.only(right: 4.rpx),
+                      child: CachedNetworkImage(
+                        imageUrl: controller.labelSplit(item.tag ?? '')[index],
+                      ),
+                    )
+                ),
+              ],
+            ),
+          ),
+          Text(
+            "约会时间：${CommonUtils.timestamp(item.startTime, unit: 'MM/dd HH:00')} - ${CommonUtils.timestamp(item.endTime, unit: 'MM/dd HH:00')} 共${CommonUtils.difference(item.startTime,item.endTime)}小时",
+            style: AppTextStyle.fs12.copyWith(color: AppColor.black92),
+          ),
+          Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColor.white8,
+              borderRadius: BorderRadius.circular(8.rpx)
+            ),
+            padding: EdgeInsets.all(8.rpx),
+            margin: EdgeInsets.symmetric(vertical: 8.rpx),
+            child: Text(item.content ?? '',style:AppTextStyle.fs10.copyWith(
+                fontSize: 11.rpx,
+                color: AppColor.black6, height: 1.3),),
+          ),
+          Row(
+            children: [
+              Visibility(
+                visible: item.serviceCharge != null && item.serviceCharge != 0,
+                replacement: Container(
+                  decoration: BoxDecoration(
+                      color: const Color(0xff808080),
+                      borderRadius: BorderRadius.circular(2.rpx)
+                  ),
+                  width: 20.rpx,
+                  height: 20.rpx,
+                  alignment: Alignment.center,
+                  child: Text("注",style: AppTextStyle.fs12b.copyWith(color: Colors.white),),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: AppColor.redF5,
+                      borderRadius: BorderRadius.circular(2.rpx)
+                  ),
+                  width: 20.rpx,
+                  height: 20.rpx,
+                  alignment: Alignment.center,
+                  child: AppImage.asset("assets/images/discover/offer.png",width: 12.rpx,),
+                ),
+              ),
+              Visibility(
+                visible: item.serviceCharge != null && item.serviceCharge != 0,
+                replacement: Container(
+                  decoration: const BoxDecoration(
+                      color: AppColor.black9
+                  ),
+                  padding: EdgeInsets.all(4.rpx),
+                  child: Text("暂无服务费",style: AppTextStyle.fs10.copyWith(color: Colors.white,height: 1),),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: AppColor.yellow.withOpacity(0.25)
+                  ),
+                  padding: EdgeInsets.all(4.rpx),
+                  child: Text("提供服务费",style: AppTextStyle.fs10.copyWith(color: AppColor.textRed,height: 1),),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(right: 2.rpx,left: 2.rpx),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      AppImage.asset("assets/images/discover/location.png",width: 16.rpx,height: 16.rpx,),
+                      Text("${item.location} ${item.distance ?? 0}km",style: AppTextStyle.fs10.copyWith(color: AppColor.black92),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: AppColor.scaffoldBackground,
               borderRadius: BorderRadius.all(Radius.circular(8.rpx)),
             ),
-            padding: EdgeInsets.all(16.rpx).copyWith(bottom: 24.rpx),
+            padding: EdgeInsets.all(12.rpx),
+            margin: EdgeInsets.only(top: 8.rpx),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    child: AppImage.asset(
-                      'assets/images/common/close.png',
-                      width: 24.rpx,
-                      height: 24.rpx,
-                    ),
-                  ),
-                ),
-                Wrap(
-                  spacing: -13.rpx,
-                  children: [
-                    AppImage.network(
-                      item.userInfo?.avatar ?? '',
-                      width: 60.rpx,
-                      height: 60.rpx,
-                      shape: BoxShape.circle,
-                    ),
-                    AppImage.network(
-                      SS.login.info?.avatar ?? '',
-                      width: 60.rpx,
-                      height: 60.rpx,
-                      shape: BoxShape.circle,
-                    )
-                  ],
-                ),
-                SizedBox(height: 12.rpx),
                 Text(
-                  "${S.current.agreedSum}${item.userInfo?.nickname ?? ''}${S.current.appointment}？",
-                  style: AppTextStyle.fs16m.copyWith(color: AppColor.black20),
+                  S.current.beWillingPay,
+                  style:
+                  AppTextStyle.fs12b.copyWith(color: AppColor.black20),
                 ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 12.rpx),
-                  child: Text(
-                    S.current.inOrderToProtect,
-                    style: AppTextStyle.fs12.copyWith(color: AppColor.black92),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColor.scaffoldBackground,
-                    borderRadius: BorderRadius.all(Radius.circular(8.rpx)),
-                  ),
-                  padding: EdgeInsets.all(24.rpx),
-                  margin: EdgeInsets.only(bottom: 24.rpx),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12.rpx),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        S.current.beWillingPay,
-                        style:
-                        AppTextStyle.fs14m.copyWith(color: AppColor.black20),
+                        S.current.serviceCharge,
+                        style: AppTextStyle.fs12
+                            .copyWith(color: AppColor.black6),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16.rpx),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              S.current.serviceCharge,
-                              style: AppTextStyle.fs14
-                                  .copyWith(color: AppColor.black6),
-                            ),
-                            Text(
-                              (item.serviceCharge != null && item.serviceCharge! > 0) ? "\$${item.serviceCharge}":S.current.freeCharge,
-                              style: AppTextStyle.fs14m
-                                  .copyWith(color: AppColor.black20),
-                            ),
-                          ],
+                      Visibility(
+                        visible: item.serviceCharge != null && item.serviceCharge! > 0,
+                        replacement: Text(
+                          S.current.freeCharge,
+                          style: AppTextStyle.fs12
+                              .copyWith(color: AppColor.black20),
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            S.current.earnestMoney,
-                            style: AppTextStyle.fs14
-                                .copyWith(color: AppColor.black6),
+                        child: RichText(
+                          text: TextSpan(
+                            text: '\$',
+                            style: AppTextStyle.fs10b.copyWith(color: AppColor.black20),
+                            children: [
+                              TextSpan(
+                                text: "${item.serviceCharge}",
+                                style: AppTextStyle.fs10b.copyWith(color: AppColor.black20,fontSize: 13.rpx),
+                              )
+                            ]
                           ),
-                          Text(
-                            "\$${SS.appConfig.configRx()?.deposit ?? 0}",
-                            style: AppTextStyle.fs14m
-                                .copyWith(color: AppColor.gradientBegin),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 16.rpx),
-                        color: AppColor.black1A,
-                        height: 2.rpx,
-                      ),
-                      Text(
-                        S.current.youHavePay,
-                        style:
-                        AppTextStyle.fs14m.copyWith(color: AppColor.black20),
-                      ),
-                      SizedBox(height: 16.rpx),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            S.current.earnestMoney,
-                            style: AppTextStyle.fs14
-                                .copyWith(color: AppColor.black6),
-                          ),
-                          Text(
-                            "\$${SS.appConfig.configRx()?.deposit ?? 0}",
-                            style: AppTextStyle.fs14m
-                                .copyWith(color: AppColor.gradientBegin),
-                          ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
                 ),
-                CommonGradientButton(
-                  height: 50.rpx,
-                  text: S.current.agreeDate,
-                  onTap: () {
-                    Get.back();
-                    participate();
-                  },
-                )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      S.current.earnestMoney,
+                      style: AppTextStyle.fs12
+                          .copyWith(color: AppColor.black6),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                          text: '\$',
+                          style: AppTextStyle.fs10b.copyWith(color: AppColor.gradientBegin),
+                          children: [
+                            TextSpan(
+                              text: "${SS.appConfig.configRx()?.deposit ?? 0}",
+                              style: AppTextStyle.fs10b.copyWith(color: AppColor.gradientBegin,fontSize: 13.rpx),
+                            )
+                          ]
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 8.rpx),
+                  color: AppColor.black1A,
+                  height: 2.rpx,
+                ),
+                Text(
+                  S.current.youHavePay,
+                  style:
+                  AppTextStyle.fs12b.copyWith(color: AppColor.black20),
+                ),
+                SizedBox(height: 12.rpx),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      S.current.earnestMoney,
+                      style: AppTextStyle.fs12
+                          .copyWith(color: AppColor.black6),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                          text: '\$',
+                          style: AppTextStyle.fs10b.copyWith(color: AppColor.gradientBegin),
+                          children: [
+                            TextSpan(
+                              text: "${SS.appConfig.configRx()?.deposit ?? 0}",
+                              style: AppTextStyle.fs10b.copyWith(color: AppColor.gradientBegin,fontSize: 13.rpx),
+                            )
+                          ]
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-        ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 8.rpx),
+            child: Text(
+              S.current.inOrderToProtect,
+              style: AppTextStyle.fs10.copyWith(color: AppColor.black92),
+            ),
+          ),
+          CommonGradientButton(
+            height: 50.rpx,
+            text: S.current.agreeDate,
+            onTap: () {
+              Get.back();
+              participate();
+            },
+          )
+        ],
       ),
     );
   }

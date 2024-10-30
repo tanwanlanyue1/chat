@@ -30,11 +30,7 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin,GetSi
   //类型名称
   String typeTitle(int index){
     String title = state.typeList.firstWhere((type) => type['type'] == index)['title'];
-    // if(title.length > 3){
-    //   return "${title.substring(0, 2)}\n${title.substring(2)}";
-    // }else{
       return title;
-    // }
   }
 
   //标签分割

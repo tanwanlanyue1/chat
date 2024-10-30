@@ -34,7 +34,7 @@ class _ChatPageState extends State<ChatPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       appBar: buildAppBar(),
       body: Obx(() {
         final callContent = state.callContent.value;
@@ -222,7 +222,6 @@ class _ChatPageState extends State<ChatPage>
           ),
         ],
       ),
-      backgroundColor: Colors.transparent,
     );
   }
 

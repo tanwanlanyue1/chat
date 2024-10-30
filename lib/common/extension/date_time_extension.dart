@@ -56,9 +56,6 @@ extension DateTimeExtension on DateTime {
 
   ///友好显示时间
   String get friendlyTime {
-    String fmtNumber(int value) {
-      return value.toString().padLeft(2, '0');
-    }
     final now = DateTime.now();
     final duration = now.difference(this);
     var timeStr = '';
@@ -69,9 +66,9 @@ extension DateTimeExtension on DateTime {
     } else if (duration.inDays < 1) {
       timeStr = S.current.aHoursAgo(duration.inHours);
     } else if (now.year == year) {
-      timeStr = S.current.mdFormat(month, day, fmtNumber(hour), fmtNumber(minute));
+      timeStr = S.current.mdFormat(month, day);
     } else {
-      timeStr = S.current.ymdFormat(year, month, day, fmtNumber(hour), fmtNumber(minute));
+      timeStr = S.current.ymdFormat(year, month, day);
     }
     return timeStr;
   }

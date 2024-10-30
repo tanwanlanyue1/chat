@@ -40,28 +40,8 @@ class _ContactViewState extends State<ContactView>
       onRefresh: controller.pagingController.onRefresh,
       child: CustomScrollView(
         slivers: [
-          // SliverAppBar(
-          //   backgroundColor: Colors.transparent,
-          //   automaticallyImplyLeading: false,
-          //   pinned: true,
-          //   snap: false,
-          //   floating: false,
-          //   expandedHeight: 184.rpx,
-          //   toolbarHeight: 80.rpx,
-          //   flexibleSpace: FlexibleSpaceBar(
-          //     collapseMode: CollapseMode.pin,
-          //     stretchModes: const [StretchMode.blurBackground],
-          //     expandedTitleScale: 1.0,
-          //     background: buildUserInfo(),
-          //     title: buildSearch(),
-          //     titlePadding: EdgeInsets.zero,
-          //   ),
-          // ),
           SliverToBoxAdapter(child: buildUserInfo()),
           SliverToBoxAdapter(child: buildSearch()),
-          SliverToBoxAdapter(
-            child: Divider(height: 1, endIndent: 16.rpx, indent: 16.rpx),
-          ),
           PagedSliverList(
             pagingController: controller.pagingController,
             builderDelegate: DefaultPagedChildBuilderDelegate<UserModel>(
@@ -103,11 +83,11 @@ class _ContactViewState extends State<ContactView>
                     height: 80.rpx,
                     shape: BoxShape.circle,
                   ),
-                  if(isVip) AppImage.asset(
-                    'assets/images/mine/ic_vip.png',
-                    width: 24.rpx,
-                    height: 24.rpx,
-                  ),
+                  // if(isVip) AppImage.asset(
+                  //   'assets/images/mine/ic_vip.png',
+                  //   width: 24.rpx,
+                  //   height: 24.rpx,
+                  // ),
                 ],
               ),
             ),
@@ -121,7 +101,7 @@ class _ContactViewState extends State<ContactView>
                   child: Text(
                     maxLines: 2,
                     userInfo?.nickname ?? '',
-                    style: AppTextStyle.fs16m.copyWith(
+                    style: AppTextStyle.fs16b.copyWith(
                       color: AppColor.blackBlue,
                       height: 1.0,
                     ),
@@ -194,7 +174,7 @@ class _ContactViewState extends State<ContactView>
                   FilteringTextInputFormatter.allow(RegExp('[0-9]')),
                   LengthLimitingTextInputFormatter(16),
                 ],
-                style: AppTextStyle.fs14m.copyWith(
+                style: AppTextStyle.fs14.copyWith(
                   color: AppColor.blackBlue,
                 ),
                 decoration: InputDecoration(
@@ -205,7 +185,7 @@ class _ContactViewState extends State<ContactView>
                     borderRadius: BorderRadius.circular(20.rpx),
                     gapPadding: 0,
                   ),
-                  hintStyle: AppTextStyle.fs14.copyWith(
+                  hintStyle: AppTextStyle.fs12.copyWith(
                     color: AppColor.grayText,
                   ),
                   hintText: S.current.contactSearchHint,

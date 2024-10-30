@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -42,6 +43,8 @@ class ConversationListTile extends StatefulWidget {
 class _ConversationListTileState extends State<ConversationListTile>
     with UIOrderStateMixin {
   ZIMKitConversation get conversation => widget.conversation;
+
+  var extendedData = ZIMUserExtendDataModel.fromJson({});
 
   void onDelete(BuildContext context) async {
     final result = await ConfirmDialog.show(
@@ -95,12 +98,13 @@ class _ConversationListTileState extends State<ConversationListTile>
             userId: conversation.id,
             defaultInfo: defaultInfo,
             builder: (ZIMUserFullInfo? userInfo) {
+              userInfo?.extendedDataModel?.let((it) => extendedData = it);
               return Row(
                 crossAxisAlignment: conversation.lastMessage == null
                     ? CrossAxisAlignment.center
                     : CrossAxisAlignment.start,
                 children: [
-                  _buildAvatar(userInfo?.userAvatarUrl ?? ''),
+                  _buildAvatar(userInfo),
                   Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -122,33 +126,58 @@ class _ConversationListTileState extends State<ConversationListTile>
     );
   }
 
-  Widget _buildAvatar(String url) {
+  Widget _buildAvatar(ZIMUserFullInfo? userInfo) {
+    Widget child = UserAvatar.circle(
+      userInfo?.userAvatarUrl ?? '',
+      size: 40.rpx,
+    );
+    //在线
+    if (extendedData.onlineStatus == 0) {
+      child = Stack(
+        children: [
+          child,
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Container(
+              width: 10.rpx,
+              height: 10.rpx,
+              decoration: ShapeDecoration(
+                shape: CircleBorder(
+                  side: BorderSide(width: 1.5.rpx, color: Colors.white),
+                ),
+                color: AppColor.green1D,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
     return Padding(
       padding: FEdgeInsets(right: 16.rpx),
-      child: UserAvatar.circle(
-        url,
-        size: 40.rpx,
-      ),
+      child: child,
     );
   }
 
   Widget _buildNameAndTime(ZIMUserFullInfo? fullInfo) {
-    final time = conversation.lastMessage?.info.timestamp
+    final name = conversation.name.isNotEmpty
+        ? conversation.name
+        : fullInfo?.baseInfo.userName ?? conversation.id;
+
+    var time = conversation.lastMessage?.info.timestamp
         .let(DateTime.fromMillisecondsSinceEpoch);
     final friendlyTime = time?.friendlyTime ?? '';
-    var maxWidth = 0.0;
-    if (friendlyTime.contains('年')) {
-      maxWidth = 80.rpx;
-    } else if (friendlyTime.contains('月')) {
-      maxWidth = 118.rpx;
-    } else if (friendlyTime.contains('小时前') || friendlyTime.contains('分钟前')) {
-      maxWidth = 150.rpx;
-    } else {
-      maxWidth = 180.rpx;
+
+    var nameMaxWidth = 224.rpx;
+    //不同年的时候，文字比较长，会话名称可用空间变小
+    if (time != null && time.year != DateTime.now().year) {
+      nameMaxWidth = 190.rpx;
     }
 
-    final extendedData =
-        fullInfo?.extendedDataModel ?? ZIMUserExtendDataModel.fromJson({});
+    print(
+        'id: ${fullInfo?.baseInfo.userID} fullInfo: ${fullInfo?.baseInfo.userName}  extendedData:${fullInfo?.extendedData}');
+
     final extendedChildren = <Widget>[
       Padding(
         padding: FEdgeInsets(left: 4.rpx),
@@ -158,28 +187,38 @@ class _ConversationListTileState extends State<ConversationListTile>
         ),
       ),
     ];
-    extendedChildren.add(
-      Padding(
-        padding: FEdgeInsets(left: 4.rpx),
-        child: OccupationWidget(occupation: UserOccupation.employees),
-      ),
-    );
+    nameMaxWidth -= 16.rpx;
 
-    // //系统用户
-    // if (!isSystemUser) {
-    //   maxWidth += 68.rpx;
-    // }
+    //用户风格
+    if (extendedData.occupation != UserOccupation.unknown) {
+      extendedChildren.add(
+        Padding(
+          padding: FEdgeInsets(left: 4.rpx),
+          child: const OccupationWidget(occupation: UserOccupation.employees),
+        ),
+      );
+      nameMaxWidth -= 34.rpx;
+    }
 
-    final name = conversation.name.isNotEmpty
-        ? conversation.name
-        : fullInfo?.baseInfo.userName ?? conversation.id;
+    //VIP图标
+    if (extendedData.vip?.startsWith('http') == true) {
+      extendedChildren.add(
+        Padding(
+          padding: FEdgeInsets(left: 4.rpx),
+          child: CachedNetworkImage(
+            imageUrl: extendedData.vip ?? '',
+            height: 12.rpx,
+          ),
+        ),
+      );
+      nameMaxWidth -= 49.rpx;
+    }
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          constraints: BoxConstraints(maxWidth: maxWidth),
-          // color: Colors.red,
+          constraints: BoxConstraints(maxWidth: nameMaxWidth),
           child: Text(
             name,
             maxLines: 1,
@@ -192,11 +231,11 @@ class _ConversationListTileState extends State<ConversationListTile>
         ),
         ...extendedChildren,
         const Spacer(),
-        if (time != null)
+        if (friendlyTime.isNotEmpty)
           Padding(
             padding: FEdgeInsets(left: 8.rpx, bottom: 4.rpx),
             child: Text(
-              time.friendlyTime,
+              friendlyTime,
               style: AppTextStyle.normal.copyWith(
                 fontSize: 11.rpx,
                 color: AppColor.grayText,

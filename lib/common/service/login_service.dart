@@ -330,18 +330,6 @@ class LoginService extends GetxService {
   Future<Result<UserModel, String>> fetchMyInfo({
     bool autoSave = true,
   }) async {
-
-    final config = ZIMUserInfoQueryConfig()
-      ..isQueryFromServer = true;
-    ZIM.getInstance()!.queryUsersInfo(
-      [userId.toString()],
-      config,
-    ).then((value){
-      print('userinfo: ${value.userList.firstOrNull?.extendedData}');
-    }).catchError((ex){
-      print('userinfo ex: ${ex}');
-    });
-
     final res = await fetchInfo(userId: userId ?? 0);
     await res.whenAsync(
         success: (user) async {

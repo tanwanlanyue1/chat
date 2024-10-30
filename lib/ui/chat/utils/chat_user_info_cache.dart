@@ -16,11 +16,13 @@ class ChatUserInfoCache {
 
   factory ChatUserInfoCache() => instance;
 
-  Future<ZIMUserFullInfo> getOrQuery(String userId,
-      {bool isQueryFromServer = false}) async {
+  Future<ZIMUserFullInfo> getOrQuery(
+    String userId, {
+    bool isQueryFromServer = false,
+  }) async {
     var info = get(userId);
-    if (info != null) {
-      AppLogger.d('hit cache: ${userId}');
+    if (info != null && !isQueryFromServer) {
+      AppLogger.d('ChatUserInfoCache: hit cache: ${userId}');
       return info;
     }
 
@@ -94,41 +96,50 @@ class ChatUserInfoCache {
 }
 
 extension ZIMUserFullInfoExt on ZIMUserFullInfo {
-
   ///扩展数据Model
-  ZIMUserExtendDataModel? get extendedDataModel{
-    if(extendedData.isNotEmpty){
-      try{
+  ZIMUserExtendDataModel? get extendedDataModel {
+    if (extendedData.isNotEmpty) {
+      try {
         final json = jsonDecode(extendedData);
-        if(json != null){
+        if (json != null) {
           return ZIMUserExtendDataModel.fromJson(json);
         }
-      }catch(ex){
+      } catch (ex) {
         AppLogger.w('解析ZIMUserFullInfo扩展数据失败');
       }
     }
+
     return null;
   }
 }
 
 ///ZIM用户扩展数据
 class ZIMUserExtendDataModel {
-
   ///职业
   final UserOccupation occupation;
 
   ///性别
   final UserGender gender;
 
+  ///VIP图标
   final String? vip;
 
-  ZIMUserExtendDataModel({required this.occupation, required this.gender, this.vip});
+  /// 在线状态 0在线 1登出 2离线
+  final int? onlineStatus;
+
+  ZIMUserExtendDataModel({
+    required this.occupation,
+    required this.gender,
+    this.vip,
+    this.onlineStatus,
+  });
 
   factory ZIMUserExtendDataModel.fromJson(Map<String, dynamic> json) {
     return ZIMUserExtendDataModel(
       occupation: UserOccupation.valueForIndex(json.getInt('occupation')),
       gender: UserGender.valueForIndex(json.getInt('gender')),
       vip: json.getStringOrNull('vip'),
+      onlineStatus: json.getIntOrNull('onlineStatus'),
     );
   }
 }

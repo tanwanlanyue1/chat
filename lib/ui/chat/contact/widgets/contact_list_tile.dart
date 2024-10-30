@@ -106,8 +106,8 @@ class ContactListTile extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: EdgeInsets.only(top: 16.rpx),
-              child: const Divider(height: 1, endIndent: 0, indent: 0),
+              padding: EdgeInsets.only(top: 16.rpx,bottom: 1),
+              child: const Divider(height: 1, thickness: 1, color: AppColor.background),
             ),
           ],
         ),

@@ -19,3 +19,5 @@ export 'common_gradient_button.dart';
 export 'countdown_builder.dart';
 export 'foreground_gradient_mask.dart';
 export 'highlight_text.dart';
+export 'user_avatar.dart';
+export 'occupation_widget.dart';

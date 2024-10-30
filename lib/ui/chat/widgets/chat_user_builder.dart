@@ -7,12 +7,19 @@ import 'package:zego_zimkit/zego_zimkit.dart';
 ///聊天用户信息builder
 
 class ChatUserBuilder extends StatefulWidget {
+
+  ///用户ID
   final String userId;
+
+  ///默认用户信息(加载中或者失败时显示)
+  final ZIMUserFullInfo? defaultInfo;
+
   final Widget Function(ZIMUserFullInfo? userInfo) builder;
 
   const ChatUserBuilder({
     super.key,
     required this.userId,
+    this.defaultInfo,
     required this.builder,
   });
 
@@ -54,7 +61,7 @@ class _ChatUserBuilderState extends State<ChatUserBuilder> with AutoDisposeMixin
 
   @override
   Widget build(BuildContext context) {
-    final info = this.info;
+    final info = this.info ?? widget.defaultInfo;
     if(info != null){
       return widget.builder.call(info);
     }else{

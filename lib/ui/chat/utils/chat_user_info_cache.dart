@@ -96,7 +96,7 @@ class ChatUserInfoCache {
 extension ZIMUserFullInfoExt on ZIMUserFullInfo {
 
   ///扩展数据Model
-  ZIMUserExtendDataModel? get extendDataModel{
+  ZIMUserExtendDataModel? get extendedDataModel{
     if(extendedData.isNotEmpty){
       try{
         final json = jsonDecode(extendedData);

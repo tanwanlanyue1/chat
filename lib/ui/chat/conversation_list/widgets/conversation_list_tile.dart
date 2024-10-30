@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -13,12 +15,14 @@ import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
-import 'package:guanjia/ui/chat/widgets/chat_avatar.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
+import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
+import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/unread_badge.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
-import '../../../../common/network/api/model/talk_model.dart';
+import '../../../../common/network/api/api.dart';
 
 ///聊天会话列表项
 class ConversationListTile extends StatefulWidget {
@@ -62,6 +66,11 @@ class _ConversationListTileState extends State<ConversationListTile>
 
   @override
   Widget build(BuildContext context) {
+    final defaultInfo = ZIMUserFullInfo();
+    defaultInfo.baseInfo = ZIMUserInfo()
+      ..userID = conversation.id
+      ..userName = conversation.name;
+
     final orderInfoView = isOrderMsg ? _buildOrderInfo() : null;
     return Slidable(
       key: ValueKey(conversation.id),
@@ -82,64 +91,116 @@ class _ConversationListTileState extends State<ConversationListTile>
         child: Container(
           padding: FEdgeInsets(horizontal: 16.rpx, vertical: 12.rpx),
           alignment: Alignment.centerLeft,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildAvatar(),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildNameAndTime(),
-                    _buildMessageContent(),
-                    if (orderInfoView != null) orderInfoView,
-                  ].separated(Spacing.h(6)).toList(growable: false),
-                ),
-              )
-            ],
+          child: ChatUserBuilder(
+            userId: conversation.id,
+            defaultInfo: defaultInfo,
+            builder: (ZIMUserFullInfo? userInfo) {
+              return Row(
+                crossAxisAlignment: conversation.lastMessage == null
+                    ? CrossAxisAlignment.center
+                    : CrossAxisAlignment.start,
+                children: [
+                  _buildAvatar(userInfo?.userAvatarUrl ?? ''),
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildNameAndTime(userInfo),
+                        if (conversation.lastMessage != null)
+                          _buildMessageContent(),
+                        if (orderInfoView != null) orderInfoView,
+                      ].separated(Spacing.h(6)).toList(growable: false),
+                    ),
+                  )
+                ],
+              );
+            },
           ),
         ),
       ),
     );
   }
 
-  Widget _buildAvatar() {
+  Widget _buildAvatar(String url) {
     return Padding(
-      padding: FEdgeInsets(right: 12.rpx),
-      child: ChatAvatar.circle(
+      padding: FEdgeInsets(right: 16.rpx),
+      child: UserAvatar.circle(
+        url,
         size: 40.rpx,
-        userId: conversation.id,
       ),
     );
   }
 
-  Widget _buildNameAndTime() {
+  Widget _buildNameAndTime(ZIMUserFullInfo? fullInfo) {
     final time = conversation.lastMessage?.info.timestamp
         .let(DateTime.fromMillisecondsSinceEpoch);
-    final name = conversation.name.isNotEmpty ? conversation.name : conversation.id;
+    final friendlyTime = time?.friendlyTime ?? '';
+    var maxWidth = 0.0;
+    if (friendlyTime.contains('年')) {
+      maxWidth = 80.rpx;
+    } else if (friendlyTime.contains('月')) {
+      maxWidth = 118.rpx;
+    } else if (friendlyTime.contains('小时前') || friendlyTime.contains('分钟前')) {
+      maxWidth = 150.rpx;
+    } else {
+      maxWidth = 180.rpx;
+    }
+
+    final extendedData =
+        fullInfo?.extendedDataModel ?? ZIMUserExtendDataModel.fromJson({});
+    final extendedChildren = <Widget>[
+      Padding(
+        padding: FEdgeInsets(left: 4.rpx),
+        child: AppImage.asset(
+          extendedData.gender.icon,
+          size: 12.rpx,
+        ),
+      ),
+    ];
+    extendedChildren.add(
+      Padding(
+        padding: FEdgeInsets(left: 4.rpx),
+        child: OccupationWidget(occupation: UserOccupation.employees),
+      ),
+    );
+
+    // //系统用户
+    // if (!isSystemUser) {
+    //   maxWidth += 68.rpx;
+    // }
+
+    final name = conversation.name.isNotEmpty
+        ? conversation.name
+        : fullInfo?.baseInfo.userName ?? conversation.id;
+
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(
+        Container(
+          constraints: BoxConstraints(maxWidth: maxWidth),
+          // color: Colors.red,
           child: Text(
             name,
             maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: AppTextStyle.fs16m.copyWith(
               color: AppColor.blackBlue,
               height: 1.0,
             ),
           ),
         ),
+        ...extendedChildren,
+        const Spacer(),
         if (time != null)
           Padding(
-            padding: FEdgeInsets(left: 8.rpx),
+            padding: FEdgeInsets(left: 8.rpx, bottom: 4.rpx),
             child: Text(
               time.friendlyTime,
               style: AppTextStyle.normal.copyWith(
                 fontSize: 11.rpx,
                 color: AppColor.grayText,
-                height: 1.1,
+                height: 1,
               ),
             ),
           ),
@@ -201,10 +262,12 @@ class _ConversationListTileState extends State<ConversationListTile>
         const Spacer(),
         SizedBox.square(
           dimension: 16.rpx,
-          child: conversation.unreadMessageCount > 0 ? UnreadBadge(
-            unread: conversation.unreadMessageCount,
-            size: 16.rpx,
-          ) : null,
+          child: conversation.unreadMessageCount > 0
+              ? UnreadBadge(
+                  unread: conversation.unreadMessageCount,
+                  size: 16.rpx,
+                )
+              : null,
         )
       ],
     );
@@ -219,7 +282,7 @@ class _ConversationListTileState extends State<ConversationListTile>
     }
 
     //已指派订单不显示倒计时
-    if(order.introducerId.toString() == conversation.id){
+    if (order.introducerId.toString() == conversation.id) {
       return null;
     }
 
@@ -241,7 +304,8 @@ class _ConversationListTileState extends State<ConversationListTile>
         children: [
           Text(
             '[${uiState.button}]',
-            style: AppTextStyle.fs14.copyWith(
+            style: AppTextStyle.normal.copyWith(
+              fontSize: 13.rpx,
               color: AppColor.blackBlue,
               height: 1.0,
             ),
@@ -253,8 +317,9 @@ class _ConversationListTileState extends State<ConversationListTile>
               builder: (dur, text) {
                 return Text(
                   S.current.remaining(text),
-                  style: AppTextStyle.fs14.copyWith(
+                  style: AppTextStyle.normal.copyWith(
                     color: AppColor.red,
+                    fontSize: 13.rpx,
                     height: 1.0,
                   ),
                 );
@@ -272,9 +337,10 @@ class _ConversationListTileState extends State<ConversationListTile>
 
     children.add(Text(
       uiState.desc,
-      style: AppTextStyle.fs14.copyWith(
-        color: AppColor.blackBlue,
+      style: AppTextStyle.normal.copyWith(
+        color: AppColor.grayText,
         height: 1.0,
+        fontSize: 13.rpx,
       ),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
@@ -283,7 +349,7 @@ class _ConversationListTileState extends State<ConversationListTile>
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: children.separated(Spacing.h(10)).toList(growable: false),
+      children: children.separated(Spacing.h8).toList(growable: false),
     );
   }
 }

@@ -136,6 +136,7 @@ class UserModel {
     required this.vip,
     required this.expirationTime,
     required this.nameplate,
+    this.onlineStatus,
   });
 
   final int uid; // 用户id
@@ -175,6 +176,9 @@ class UserModel {
   ///	钱包可提现金额
   num withdrawalsAble = 0;
 
+  ///在线状态 0在线 1登出 2离线
+  int? onlineStatus;
+
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       uid: json["uid"] ?? 0,
@@ -210,6 +214,7 @@ class UserModel {
       vip: json["vip"] ?? false,
       expirationTime: json["expirationTime"] ?? 0,
       nameplate: json["nameplate"] ?? '',
+      onlineStatus: json["onlineStatus"],
     );
   }
 
@@ -247,6 +252,7 @@ class UserModel {
         "balance": balance,
         "withdrawalsAble": withdrawalsAble,
         "withdrawals": withdrawals,
+        "onlineStatus": onlineStatus,
       };
 
   UserModel copyWith({
@@ -283,6 +289,7 @@ class UserModel {
     bool? vip,
     int? expirationTime,
     String? nameplate,
+    int? onlineStatus,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -318,6 +325,7 @@ class UserModel {
       vip: vip ?? this.vip,
       expirationTime: expirationTime ?? this.expirationTime,
       nameplate: nameplate ?? this.nameplate,
+      onlineStatus: onlineStatus ?? this.onlineStatus,
     );
   }
 }

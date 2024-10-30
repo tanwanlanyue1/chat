@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -120,211 +121,198 @@ class FriendDatePage extends StatelessWidget {
   Widget dateCard(AppointmentModel item,int index){
     return GestureDetector(
       onTap: ()=> controller.onTapParticipation(item),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12.rpx),
-            border: Border.all(
-              width: 0.5.rpx,
-              color: AppColor.grayText.withOpacity(0.2),
-            )
-        ),
-        height: 120.rpx,
-        margin: EdgeInsets.only(bottom: 8.rpx),
-        child: Row(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  width: 110.rpx,
-                  height: 120.rpx,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12.rpx),
-                      bottomLeft: Radius.circular(12.rpx),
-                    ),
-                  ),
-                  alignment: Alignment.bottomCenter,
-                  child: AppImage.network(
-                    item.userInfo?.avatar ?? '',
-                    fit: BoxFit.cover,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12.rpx),
-                      bottomLeft: Radius.circular(12.rpx),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    width: 70.rpx,
-                    height: 28.rpx,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          AppColor.gradientBegin,
-                          AppColor.gradientEnd,
-                        ],
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                            color: AppColor.purple8D.withOpacity(0.8),
-                            blurRadius: 4.rpx,
-                            offset: Offset(1.rpx, 0),
-                            inset: true
-                        ),
-                          BoxShadow(
-                            // color: Colors.red,
-                            color: AppColor.purpleE1.withOpacity(0.8),
-                            blurRadius: 4.rpx,
-                            offset: Offset(-1.rpx, 0),
-                              inset: true
-                          ),
-                        ],
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(12.rpx),
-                        bottomLeft: Radius.circular(12.rpx),
-                        topRight: Radius.circular(14.rpx),
-                        bottomRight: Radius.circular(14.rpx),
-                      ),
-                    ),
-                    // child: CommonGradientButton(
-                    //   text: "边玩边吃",
-                    //   borderRadius: BorderRadius.circular(14.rpx),
-                    //   textStyle: AppTextStyle.fs10m.copyWith(color: Colors.white),
-                    // ),
-                  ),
-                ),
-              ],
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.rpx),
+                border: Border.all(
+                  width: 0.5.rpx,
+                  color: AppColor.grayText.withOpacity(0.2),
+                )
             ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(8.rpx),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                    //   children: [
-                    //     Container(
-                    //       decoration: BoxDecoration(
-                    //         gradient: const LinearGradient(
-                    //           colors: [
-                    //             AppColor.blue65,
-                    //             AppColor.blue65E,
-                    //           ],
-                    //         ),
-                    //         borderRadius: BorderRadius.only(
-                    //           topLeft: Radius.circular(12.rpx),
-                    //           bottomRight: Radius.circular(12.rpx),
-                    //         ),
-                    //       ),
-                    //       height: 22.rpx,
-                    //       padding: EdgeInsets.symmetric(horizontal: 8.rpx),
-                    //       child: Row(
-                    //         mainAxisSize: MainAxisSize.min,
-                    //         children: [
-                    //           Lottie.asset('assets/images/plaza/friend_date.json',width: 12.rpx,height: 12.rpx),
-                    //           SizedBox(width: 4.rpx,),
-                    //           Text(controller.typeTitle(item.type ?? 1),style:AppTextStyle.fs12.copyWith(color: AppColor.black20, height: 1)),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     Container(
-                    //       margin: EdgeInsets.only(right: 12.rpx,top: 8.rpx),
-                    //       child: GestureDetector(
-                    //         onTap: ()=> controller.selectMore(item.uid,item.id!),
-                    //         child: AppImage.asset("assets/images/discover/more.png",width: 24.rpx,height: 24.rpx,),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    Row(
+            height: 120.rpx,
+            margin: EdgeInsets.only(bottom: 8.rpx),
+            child: Row(
+              children: [
+                SizedBox(width: 110.rpx),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.rpx),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // GestureDetector(
-                        //   onTap: (){
-                        //     Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item.uid});
-                        //   },
-                        //   child: Container(
-                        //     margin: EdgeInsets.only(right: 8.rpx),
-                        //     child: AppImage.network(item.userInfo?.avatar ?? '',width: 24.rpx,height: 24.rpx,shape: BoxShape.circle,),
-                        //   ),
-                        // ),
+                        Row(
+                          children: [
+                            Container(
+                              constraints: BoxConstraints(
+                                  maxWidth: (item.userInfo?.nameplate != null && item.userInfo!.nameplate.isNotEmpty) ? 130.rpx : 170.rpx,
+                              ),
+                              child: Text('${item.userInfo?.nickname}'*5,style: AppTextStyle.fs16b.copyWith(color: AppColor.black20, height: 1),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                            ),
+                            Container(
+                              height: 12.rpx,
+                              padding: EdgeInsets.symmetric(horizontal: 4.rpx),
+                              decoration: BoxDecoration(
+                                  color: item.userInfo?.gender.iconColor.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(14.rpx)
+                              ),
+                              margin: EdgeInsets.only(left: 4.rpx,right: 4.rpx),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  AppImage.asset(item.userInfo?.gender.icon ?? '',width: 8.rpx,height: 8.rpx),
+                                  SizedBox(width: 2.rpx,),
+                                  Text(
+                                    "${item.userInfo?.age ?? ''}",
+                                    style: AppTextStyle.fs10.copyWith(color: item.userInfo?.gender.index == 1 ? AppColor.primaryBlue:AppColor.textPurple,height: 1),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Visibility(
+                              visible: item.userInfo?.nameplate != null && item.userInfo!.nameplate.isNotEmpty,
+                              child: AppImage.network(item.userInfo?.nameplate ?? '',width: 45.rpx,height: 12.rpx,fit: BoxFit.fitHeight,),
+                            )
+                          ],
+                        ),
                         Container(
-                          constraints: BoxConstraints(
-                              maxWidth: (item.userInfo?.gender.index != 0 && item.userInfo?.age != null) ? 200.rpx:240.rpx
-                          ),
-                          child: Text((item.userInfo?.nickname ?? ''),style: AppTextStyle.fs16b.copyWith(color: AppColor.black20, height: 1),maxLines: 1,overflow: TextOverflow.ellipsis,),
-                        ),
-                        Visibility(
-                          visible: (item.userInfo?.gender != null || item.userInfo?.gender.index != 0) && item.userInfo?.age != null,
-                          child: Container(
-                            height: 12.rpx,
-                            padding: EdgeInsets.symmetric(horizontal: 4.rpx),
-                            decoration: BoxDecoration(
-                                color: item.userInfo?.gender.iconColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(14.rpx)
-                            ),
-                            margin: EdgeInsets.only(left: 6.rpx),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                AppImage.asset(item.userInfo?.gender.icon ?? '',width: 8.rpx,height: 8.rpx),
-                                SizedBox(width: 2.rpx,),
-                                Text(
-                                  "${item.userInfo?.age ?? ''}",
-                                  style: AppTextStyle.fs10.copyWith(color: item.userInfo?.gender.index == 1 ? AppColor.primaryBlue:AppColor.textPurple,height: 1),
-                                ),
-                              ],
+                          height: 20.rpx,
+                          margin: EdgeInsets.only(top:8.rpx),
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: List.generate(controller.labelSplit(item.tag ?? '').length, (index) =>
+                                Padding(
+                                  padding: EdgeInsets.only(right: 4.rpx),
+                                  child: CachedNetworkImage(
+                                    imageUrl: controller.labelSplit(item.tag ?? '')[index],
+                                  ),
+                                )
                             ),
                           ),
                         ),
-                        OccupationWidget(occupation: item.userInfo?.occupation ?? UserOccupation.unknown,),
+                        Container(
+                          margin: EdgeInsets.only(top: 8.rpx),
+                          child: Text(item.content ?? '',style:AppTextStyle.fs10.copyWith(
+                              fontSize: 11.rpx,fontWeight: FontWeight.w300,
+                              color: AppColor.black6, height: 1.3), maxLines: 2, overflow: TextOverflow.ellipsis,),
+                        ),
+                        const Spacer(),
+                        Row(
+                          children: [
+                            AppImage.asset("assets/images/discover/location.png",width: 16.rpx,height: 16.rpx,),
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.only(right: 2.rpx,left: 2.rpx),
+                                child: Text("${item.location} ${item.distance ?? 0}km",style: AppTextStyle.fs10.copyWith(color: AppColor.black92),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.rpx),
+                                color: Colors.white.withOpacity(0.3),
+                              ),
+                              height: 20.rpx,
+                              alignment: Alignment.center,
+                              child: Text("${CommonUtils.timestamp(item.startTime, unit: 'MM/dd HH:00')} - ${CommonUtils.timestamp(item.endTime, unit: 'MM/dd HH:00')}",
+                                  style: AppTextStyle.fs10r.copyWith(color: AppColor.black92)),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 12.rpx,left: 12.rpx,right: 12.rpx),
-                      child: Text(item.content ?? '',style:AppTextStyle.fs16m.copyWith(color: AppColor.black20, height: 1.2), maxLines: 2, overflow: TextOverflow.ellipsis,),
-                    ),
-                    Padding(
-                      padding: FEdgeInsets(top: 12.rpx,left: 12.rpx),
-                      child: Text(controller.labelSplit(item.tag ?? ''),style: AppTextStyle.fs12.copyWith(color: AppColor.primaryBlue, height: 1)),
-                    ),
-                    // Padding(
-                    //   padding: FEdgeInsets(top: 12.rpx,left: 12.rpx),
-                    //   child: Row(
-                    //     children: [
-                    //       AppImage.asset("assets/images/discover/location.png",width: 16.rpx,height: 16.rpx,),
-                    //       Expanded(
-                    //         child: Container(
-                    //           margin: EdgeInsets.only(left: 2.rpx),
-                    //           child: Text("${item.location} ${item.distance ?? 0}km",style: AppTextStyle.fs12.copyWith(color: AppColor.blackBlue),maxLines: 1,overflow: TextOverflow.ellipsis,),
-                    //         ),
-                    //       ),
-                    //       Container(
-                    //         decoration: BoxDecoration(
-                    //           borderRadius: BorderRadius.circular(12.rpx),
-                    //           color: Colors.white.withOpacity(0.3),
-                    //         ),
-                    //         height: 20.rpx,
-                    //         padding: EdgeInsets.symmetric(horizontal: 8.rpx),
-                    //         margin: EdgeInsets.only(right: 12.rpx),
-                    //         alignment: Alignment.center,
-                    //         child: Text("${CommonUtils.timestamp(item.startTime, unit: 'MM/dd HH:00')} - ${CommonUtils.timestamp(item.endTime, unit: 'MM/dd HH:00')}",
-                    //             style: AppTextStyle.fs10m.copyWith(color: AppColor.black20)),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                  ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          Positioned(
+            top: 0.rpx,
+            child: Container(
+              width: 110.rpx,
+              height: 119.rpx,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12.rpx),
+                  bottomLeft: Radius.circular(12.rpx),
                 ),
               ),
-            )
-          ],
-        ),
+              alignment: Alignment.bottomCenter,
+              child: AppImage.network(
+                item.userInfo?.avatar ?? '',
+                fit: BoxFit.cover,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12.rpx),
+                  bottomLeft: Radius.circular(12.rpx),
+                  topRight: Radius.circular(12.rpx),
+                  bottomRight: Radius.circular(24.rpx),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 1.rpx,
+            child: InkWell(
+              onTap: (){
+                Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item.uid});
+              },
+              child: AppImage.asset(
+                width: 110.rpx,
+                height: 119.rpx,
+                'assets/images/discover/head_back.png',
+                fit: BoxFit.fitWidth,
+                // fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 9.rpx,
+            child: Container(
+              // width: 70.rpx,
+              height: 28.rpx,
+              padding: EdgeInsets.symmetric(horizontal: 8.rpx),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColor.gradientBegin,
+                    AppColor.gradientEnd,
+                  ],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                      color: AppColor.purple8D.withOpacity(0.8),
+                      blurRadius: 4.rpx,
+                      offset: Offset(1.rpx, 0),
+                      inset: true
+                  ),
+                  BoxShadow(
+                      color: AppColor.purpleE1.withOpacity(0.8),
+                      blurRadius: 4.rpx,
+                      offset: Offset(-1.rpx, 0),
+                      inset: true
+                  ),
+                ],
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12.rpx),
+                  bottomLeft: Radius.circular(12.rpx),
+                  topRight: Radius.circular(14.rpx),
+                  bottomRight: Radius.circular(14.rpx),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset('assets/images/plaza/friend_date.json',width: 12.rpx,height: 12.rpx),
+                  SizedBox(width: 2.rpx,),
+                  Text(controller.typeTitle(item.type ?? 1),style: AppTextStyle.fs10m.copyWith(color: Colors.white),)
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

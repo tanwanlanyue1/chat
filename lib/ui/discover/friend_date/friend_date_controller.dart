@@ -38,13 +38,13 @@ class FriendDateController extends GetxController with GetAutoDisposeMixin,GetSi
   }
 
   //标签分割
-  String labelSplit(String text) {
+  List<String> labelSplit(String text) {
     if(text.isEmpty){
-      return '';
+      return [];
     }
     List<String> parts = text.split(',');
-    List<String> hashtagParts = parts.map((part) => '#${part.trim()}').toList();
-    return hashtagParts.join(' ');
+    List<String> hashtagParts = parts.map((part) => part.trim()).toList();
+    return hashtagParts;
   }
 
   @override

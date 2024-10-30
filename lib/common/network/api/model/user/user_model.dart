@@ -135,6 +135,7 @@ class UserModel {
     required this.withdrawalsAble,
     required this.vip,
     required this.expirationTime,
+    required this.nameplate,
   });
 
   final int uid; // 用户id
@@ -167,6 +168,7 @@ class UserModel {
   num balance = 0; //余额
   bool vip; // 是否为VIP
   int expirationTime; // VIP到期时间
+  String nameplate; // VIP图标
   ///钱包历史提现金额
   num withdrawals = 0;
 
@@ -207,6 +209,7 @@ class UserModel {
       withdrawals: json["withdrawals"] ?? 0,
       vip: json["vip"] ?? false,
       expirationTime: json["expirationTime"] ?? 0,
+      nameplate: json["nameplate"] ?? '',
     );
   }
 
@@ -240,6 +243,7 @@ class UserModel {
         "payPwd": payPwd,
         "vip": vip,
         "expirationTime": expirationTime,
+        "nameplate": nameplate,
         "balance": balance,
         "withdrawalsAble": withdrawalsAble,
         "withdrawals": withdrawals,
@@ -278,6 +282,7 @@ class UserModel {
     num? withdrawalsAble,
     bool? vip,
     int? expirationTime,
+    String? nameplate,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -312,6 +317,7 @@ class UserModel {
       withdrawalsAble: withdrawalsAble ?? this.withdrawalsAble,
       vip: vip ?? this.vip,
       expirationTime: expirationTime ?? this.expirationTime,
+      nameplate: nameplate ?? this.nameplate,
     );
   }
 }

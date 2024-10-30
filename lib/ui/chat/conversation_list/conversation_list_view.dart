@@ -52,12 +52,12 @@ class _ConversationListViewState extends State<ConversationListView>
         valueListenable: state.conversationListNotifier,
         builder: (_, list, __) {
           //系统消息置顶
-          list = list.sorted((a, b){
-            if(b.value.id == AppConfig.sysUserId){
-              return 1;
-            }
-            return 0;
-          });
+          // list = list.sorted((a, b) {
+          //   if (b.value.id == AppConfig.sysUserId) {
+          //     return 1;
+          //   }
+          //   return 0;
+          // });
           return LayoutBuilder(
             builder: (context, BoxConstraints constraints) {
               return CustomScrollView(
@@ -73,8 +73,7 @@ class _ConversationListViewState extends State<ConversationListView>
                         valueListenable: conversation,
                         builder: (_, conversation, __) {
                           return ConversationListTile(
-                            conversation: conversation,
-                          );
+                              conversation: conversation);
                         },
                       );
                     },
@@ -88,11 +87,11 @@ class _ConversationListViewState extends State<ConversationListView>
     }, state.loadStatusRx);
   }
 
-  Widget buildSysNotice(){
+  Widget buildSysNotice() {
     return SliverToBoxAdapter(
-      child: ObxValue((dataRx){
+      child: ObxValue((dataRx) {
         final data = dataRx();
-        if(data != null){
+        if (data != null) {
           return ConversationNoticeTile(model: data);
         }
         return Spacing.blank;

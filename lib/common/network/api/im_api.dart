@@ -1,6 +1,7 @@
 import 'package:guanjia/common/network/httpclient/http_client.dart';
 
 import 'model/im/chat_call_pay_model.dart';
+import 'model/im/chat_user_model.dart';
 import 'model/im/red_packet_model.dart';
 
 /// IM API
@@ -191,6 +192,23 @@ class IMApi {
       data: {
         "id": orderId,
       },
+    );
+  }
+
+  /// 通话-抢单接口
+  ///- orderId 速配订单id
+  static Future<ApiResponse<List<ChatUserModel>>> getChatUserList(List<String> userIds) {
+    return HttpClient.get(
+      '/api/im/getImUserList',
+      params: {
+        "userIds": userIds,
+      },
+      dataConverter: (data){
+        if(data is List){
+          return data.map((json) => ChatUserModel.fromJson(json)).toList();
+        }
+        return [];
+      }
     );
   }
 }

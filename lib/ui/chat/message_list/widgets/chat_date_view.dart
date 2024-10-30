@@ -97,7 +97,10 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
         },
         child: Container(
           height: ChatDateView.height,
-          color: AppColor.background,
+          decoration: const ShapeDecoration(
+            shape: StadiumBorder(),
+            color: Colors.white,
+          ),
           padding: FEdgeInsets(horizontal: 16.rpx),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -227,8 +230,10 @@ mixin UIOrderStateMixin {
       },
       OrderItemState.waitingEvaluation: {
         UserType.user: UIOrderState(desc: S.current.dateOrderCompletedHint),
-        UserType.beauty: UIOrderState(desc: S.current.dateOrderCompletedHintForUser),
-        UserType.agent: UIOrderState(desc: S.current.dateOrderCompletedHintForUser),
+        UserType.beauty:
+            UIOrderState(desc: S.current.dateOrderCompletedHintForUser),
+        UserType.agent:
+            UIOrderState(desc: S.current.dateOrderCompletedHintForUser),
       },
       OrderItemState.finish: {
         UserType.user: UIOrderState(desc: S.current.youHaveRated),
@@ -282,20 +287,28 @@ mixin UIOrderStateMixin {
         OrderItemUserType.receive: UIOrderState(desc: S.current.dateBegin),
       },
       OrderItemState.cancelForRequest: {
-        OrderItemUserType.request: UIOrderState(desc: S.current.dateOrderCanceled),
-        OrderItemUserType.receive: UIOrderState(desc: S.current.dateOrderCanceled),
+        OrderItemUserType.request:
+            UIOrderState(desc: S.current.dateOrderCanceled),
+        OrderItemUserType.receive:
+            UIOrderState(desc: S.current.dateOrderCanceled),
       },
       OrderItemState.cancelForReceive: {
-        OrderItemUserType.request: UIOrderState(desc: S.current.dateOrderCanceled),
-        OrderItemUserType.receive: UIOrderState(desc: S.current.dateOrderCanceled),
+        OrderItemUserType.request:
+            UIOrderState(desc: S.current.dateOrderCanceled),
+        OrderItemUserType.receive:
+            UIOrderState(desc: S.current.dateOrderCanceled),
       },
       OrderItemState.timeOut: {
-        OrderItemUserType.request: UIOrderState(desc: S.current.dateOrderTimeout),
-        OrderItemUserType.receive: UIOrderState(desc: S.current.dateOrderTimeout),
+        OrderItemUserType.request:
+            UIOrderState(desc: S.current.dateOrderTimeout),
+        OrderItemUserType.receive:
+            UIOrderState(desc: S.current.dateOrderTimeout),
       },
       OrderItemState.finish: {
-        OrderItemUserType.request: UIOrderState(desc: S.current.dateOrderCompleted),
-        OrderItemUserType.receive: UIOrderState(desc: S.current.dateOrderCompleted),
+        OrderItemUserType.request:
+            UIOrderState(desc: S.current.dateOrderCompleted),
+        OrderItemUserType.receive:
+            UIOrderState(desc: S.current.dateOrderCompleted),
       },
     };
   }

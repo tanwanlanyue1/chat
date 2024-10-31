@@ -113,7 +113,7 @@ class HttpClient {
   static Future<ApiResponse<T>> post<T>(
     String url, {
     final Map<String, dynamic>? params,
-    final Map<String, dynamic>? data,
+    final Object? data,
     final Map<String, dynamic>? headers,
     final DataConverter<T>? dataConverter,
   }) async {

@@ -4,12 +4,12 @@ import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/common/network/api/model/im/chat_user_model.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
-import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/ui/chat/utils/chat_manager.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -20,7 +20,7 @@ class ContactController extends GetxController with GetAutoDisposeMixin {
   final editingController = TextEditingController();
 
   //分页控制器
-  late final pagingController = DefaultPagingController<UserModel>(
+  late final pagingController = DefaultPagingController<ChatUserModel>(
     pageSize: 20,
     refreshController: RefreshController(),
   )..addPageRequestListener(fetchPage);
@@ -40,7 +40,9 @@ class ContactController extends GetxController with GetAutoDisposeMixin {
       size: pagingController.pageSize,
     );
     if (response.isSuccess) {
-      pagingController.appendPageData(response.data ?? []);
+      final list = (response.data ?? []).map((it) => it.toChatUserModel()).toList();
+      ChatUserManager().batchUpdate(list);
+      pagingController.appendPageData(list);
     } else {
       pagingController.error = response.errorMessage;
     }

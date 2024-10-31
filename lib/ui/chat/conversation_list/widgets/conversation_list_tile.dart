@@ -20,7 +20,6 @@ import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/unread_badge.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
-
 import '../../../../common/network/api/api.dart';
 
 ///聊天会话列表项
@@ -182,7 +181,7 @@ class _ConversationListTileState extends State<ConversationListTile>
       nameMaxWidth = 190.rpx;
     }
 
-    print('$info');
+    // print('$info');
 
     final extendedChildren = <Widget>[
       if(info.gender != null) Padding(

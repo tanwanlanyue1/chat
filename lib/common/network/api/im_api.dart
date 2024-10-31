@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:guanjia/common/network/httpclient/http_client.dart';
 
 import 'model/im/chat_call_pay_model.dart';
@@ -198,11 +200,9 @@ class IMApi {
   /// 通话-抢单接口
   ///- orderId 速配订单id
   static Future<ApiResponse<List<ChatUserModel>>> getChatUserList(List<String> userIds) {
-    return HttpClient.get(
+    return HttpClient.post(
       '/api/im/getImUserList',
-      params: {
-        "userIds": userIds,
-      },
+      data: jsonEncode(userIds),
       dataConverter: (data){
         if(data is List){
           return data.map((json) => ChatUserModel.fromJson(json)).toList();

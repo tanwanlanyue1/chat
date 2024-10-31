@@ -1,21 +1,56 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/network/api/model/im/chat_user_model.dart';
 import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/utils/auto_dispose_mixin.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
-class ContactListTile extends StatelessWidget {
-  final UserModel userModel;
+class ContactListTile extends StatefulWidget {
+  final ChatUserModel userModel;
 
   const ContactListTile({super.key, required this.userModel});
+
+  @override
+  State<ContactListTile> createState() => _ContactListTileState();
+}
+
+class _ContactListTileState extends State<ContactListTile> with AutoDisposeMixin {
+
+  late ChatUserModel userModel;
+
+  @override
+  void initState() {
+    super.initState();
+    userModel = widget.userModel;
+    autoCancel(ChatUserManager().stream.listen((event) {
+      final user = event[userModel.uid];
+      if(user != null && user.createdAt > userModel.createdAt && user != userModel){
+        setState(() {
+          userModel = user.copyWith(signature: userModel.signature);
+        });
+      }
+    }));
+  }
+
+  @override
+  void didUpdateWidget(covariant ContactListTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if(oldWidget.userModel != widget.userModel){
+      setState(() {
+        userModel = widget.userModel;
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,10 +140,10 @@ class ContactListTile extends StatelessWidget {
     var nameMaxWidth = 224.rpx;
 
     final extendedChildren = <Widget>[
-      Padding(
+      if(userModel.gender!= null) Padding(
         padding: FEdgeInsets(left: 4.rpx),
         child: AppImage.asset(
-          userModel.gender.icon,
+          userModel.gender!.icon,
           size: 12.rpx,
         ),
       ),
@@ -127,12 +162,12 @@ class ContactListTile extends StatelessWidget {
     }
 
     //VIP图标
-    if (userModel.nameplate.startsWith('http')) {
+    if (userModel.nameplate?.startsWith('http') == true) {
       extendedChildren.add(
         Padding(
           padding: FEdgeInsets(left: 4.rpx),
           child: CachedNetworkImage(
-            imageUrl: userModel.nameplate,
+            imageUrl: userModel.nameplate ?? '',
             height: 12.rpx,
           ),
         ),
@@ -173,12 +208,12 @@ class ContactListTile extends StatelessWidget {
 
   void toUserPage() {
     Get.toNamed(AppRoutes.userCenterPage, arguments: {
-      'userId': userModel.uid,
+      'userId': int.parse(userModel.uid),
     });
   }
 
   void toChatPage() {
-    ChatManager().startChat(userId: userModel.uid);
+    ChatManager().startChat(userId: int.parse(userModel.uid));
   }
 }
 

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
+import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/network/api/im_api.dart';
@@ -15,40 +15,76 @@ import '../../../common/network/api/api.dart';
 ///聊天用户信息数据
 class ChatUserManager {
   ChatUserManager._();
+
   factory ChatUserManager() => instance;
   static final instance = ChatUserManager._();
-  static const _kSyncDelay = Duration(seconds: 5);
+
+  ///定时器时隔
+  static const _kSyncDelay = Duration(minutes: 3);
+
+  ///缓存有效期
+  static const _kCacheTTL = 1000 * 1;
+
+  ///分页大小
+  static const _kPageSize = 50;
+
   final _cache = <String, ChatUserModel>{};
   final _streamController =
       StreamController<Map<String, ChatUserModel>>.broadcast();
   var _start = false;
+  var _updatedAt = 0;
   Timer? _timer;
-  final _debounce = Debouncer(delay: 500.milliseconds);
 
+  ///监听用户信息变更
   Stream<Map<String, ChatUserModel>> get stream => _streamController.stream;
 
   ///开始同步数据
   void startSync() {
-    _debounce(() {
-      _start = true;
-      _timer?.cancel();
+    _start = true;
+    _timer?.cancel();
+    final delayStart = _kSyncDelay.inMilliseconds + _updatedAt - DateTime.now().millisecondsSinceEpoch;
+    if(delayStart <= 0){
+      AppLogger.d('ChatUserManager: startSync');
       _sync();
-    });
+    }else{
+      AppLogger.d('ChatUserManager: startSync 等待${delayStart}ms');
+      _timer = Timer(delayStart.milliseconds, _sync);
+    }
   }
 
   ///同步数据
   Future<void> _sync() async {
+    AppLogger.d('ChatUserManager: _sync ${DateTime.now().format}');
+    _updatedAt = DateTime.now().millisecondsSinceEpoch;
     final userIds = Get.tryFind<ConversationListController>()
         ?.state
         .conversationListNotifier
         .value
         .map((e) => e.value.id)
-        .toList();
+        .where((element) {
+      //不刷新缓存未超过有效期的用户信息
+      final item = _cache[element];
+      if (item != null && _updatedAt - item.createdAt < _kCacheTTL) {
+        return false;
+      }
+      return true;
+    }).toList();
 
-    if (userIds != null && userIds.isNotEmpty) {
-      final response = await IMApi.getChatUserList(userIds);
-      final users = response.data ?? [];
+    if (userIds == null || userIds.isEmpty) {
+      return;
+    }
+
+    //分页查询数据
+    final pageCount = (userIds.length / _kPageSize).ceil();
+    for (var page = 0; page < pageCount; page++) {
+      if (!_start) {
+        return;
+      }
       final updateMap = <String, ChatUserModel>{};
+      final ids = userIds.skip(page * _kPageSize).take(_kPageSize).toList();
+      final response = await IMApi.getChatUserList(ids);
+      final users = response.data ?? [];
+
       for (var user in users) {
         if (_cache[user.uid] != user) {
           updateMap[user.uid] = user;
@@ -68,6 +104,7 @@ class ChatUserManager {
 
   ///停止同步数据
   void stopSync() {
+    AppLogger.d('ChatUserManager: stopSync');
     _start = false;
     _timer?.cancel();
     _timer = null;
@@ -107,16 +144,28 @@ class ChatUserManager {
   }
 
   ///通过用户Model更新IM用户信息
-  void updateWithUserModel(UserModel userModel) {
-    final userId = userModel.uid.toString();
-    var oldUserInfo = get(userId);
-    if (userModel.onlineStatus == null) {
-      userModel.onlineStatus == oldUserInfo?.onlineStatus;
+  void updateWithUserModels(List<UserModel> list) {
+    batchUpdate(list.map((e) => e.toChatUserModel()).toList());
+  }
+
+  ///批量更新缓存
+  void batchUpdate(List<ChatUserModel> list) {
+    if(list.isEmpty){
+      return;
     }
-    final newUserInfo = userModel.toChatUserModel();
-    if (newUserInfo != oldUserInfo) {
-      _cache[userId] = newUserInfo;
-      _streamController.add({userId: newUserInfo});
+    final updateMap = <String, ChatUserModel>{};
+    for (var item in list) {
+      final oldUser = get(item.uid);
+      if (item.onlineStatus == null) {
+        item.onlineStatus == oldUser?.onlineStatus;
+      }
+      if (item != oldUser) {
+        updateMap[item.uid] = item;
+      }
+    }
+    if(updateMap.isNotEmpty){
+      _cache.addAll(updateMap);
+      _streamController.add(updateMap);
     }
   }
 
@@ -155,7 +204,7 @@ extension on ZIMUserFullInfo {
   }
 }
 
-extension on UserModel {
+extension UserModelX on UserModel {
   ChatUserModel toChatUserModel() {
     return ChatUserModel(
       uid: uid.toString(),
@@ -165,11 +214,12 @@ extension on UserModel {
       gender: gender,
       nameplate: nameplate,
       onlineStatus: onlineStatus,
+      signature: signature,
     );
   }
 }
 
-extension ZIMKitConversationX on ZIMKitConversation{
+extension ZIMKitConversationX on ZIMKitConversation {
   ChatUserModel toChatUserModel() {
     return ChatUserModel(
       uid: id,

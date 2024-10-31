@@ -12,6 +12,7 @@ class ChatUserModel extends Equatable {
     required this.occupation,
     required this.onlineStatus,
     int? createdAt,
+    this.signature,
   }): createdAt = DateTime.now().millisecondsSinceEpoch;
 
   ///	用户ID
@@ -35,8 +36,11 @@ class ChatUserModel extends Equatable {
   ///在线状态 0在线 1登出 2离线
   final int? onlineStatus;
 
-  ///数据创建时间
+  ///数据创建时间（非接口字段）
   final int createdAt;
+
+  ///签名（非接口字段）
+  final String? signature;
 
   ChatUserModel copyWith({
     String? uid,
@@ -47,6 +51,7 @@ class ChatUserModel extends Equatable {
     UserOccupation? occupation,
     int? onlineStatus,
     int? createdAt,
+    String? signature,
   }) {
     return ChatUserModel(
       uid: uid ?? this.uid,
@@ -57,6 +62,7 @@ class ChatUserModel extends Equatable {
       occupation: occupation ?? this.occupation,
       onlineStatus: onlineStatus ?? this.onlineStatus,
       createdAt: createdAt ?? this.createdAt,
+      signature: signature ?? this.signature,
     );
   }
 

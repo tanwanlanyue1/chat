@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/chat_page.dart';
 import 'package:guanjia/ui/discover/discover_page.dart';
 import 'package:guanjia/ui/mine/mine_page.dart';
@@ -46,7 +47,7 @@ class HomePage extends StatelessWidget {
         currentIndex: currentPage,
         items: state.allBottomNavItems,
         iconBuilder: (item, index, child) {
-          if (item == state.allBottomNavItems.first && chatUnread > 0) {
+          if (item.title == S.current.chat && chatUnread > 0) {
             final begin = Offset(16.rpx, -2.rpx);
             final end = Offset(16.rpx, -10.rpx);
             final tween = currentPage == index

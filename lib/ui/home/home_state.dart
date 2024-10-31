@@ -26,7 +26,7 @@ class HomeState {
     AppBarItem(
         icon: 'assets/images/home/tab_mine.png',
         activeIcon: 'assets/images/home/tab_mine.json',
-        title: S.current.mini,
+        title: S.current.mine,
     ),
   ];
 

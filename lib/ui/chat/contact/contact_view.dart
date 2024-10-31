@@ -4,12 +4,14 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/string_extension.dart';
+import 'package:guanjia/common/network/api/model/im/chat_user_model.dart';
 import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -44,9 +46,16 @@ class _ContactViewState extends State<ContactView>
           SliverToBoxAdapter(child: buildSearch()),
           PagedSliverList(
             pagingController: controller.pagingController,
-            builderDelegate: DefaultPagedChildBuilderDelegate<UserModel>(
+            builderDelegate: DefaultPagedChildBuilderDelegate<ChatUserModel>(
               pagingController: controller.pagingController,
               itemBuilder: (_, item, index) {
+                //缓存数据比较新的话用缓存数据
+                final cacheUser = ChatUserManager().get(item.uid);
+                if (cacheUser != null &&
+                    cacheUser.createdAt > item.createdAt &&
+                    cacheUser != item) {
+                  item = cacheUser.copyWith(signature: item.signature);
+                }
                 return ContactListTile(userModel: item);
               },
             ),
@@ -71,8 +80,9 @@ class _ContactViewState extends State<ContactView>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
-              onTap: (){
-                Get.toNamed(AppRoutes.userCenterPage, arguments: {'userId': userInfo?.uid});
+              onTap: () {
+                Get.toNamed(AppRoutes.userCenterPage,
+                    arguments: {'userId': userInfo?.uid});
               },
               child: Stack(
                 alignment: Alignment.bottomRight,

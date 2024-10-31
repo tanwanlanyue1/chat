@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -15,7 +16,7 @@ import 'package:guanjia/widgets/widgets.dart';
 
 ///约会状态View（显示在消息列表顶部）
 class ChatDateView extends StatelessWidget with UIOrderStateMixin {
-  static double get height => 66.rpx;
+  static double get height => 60.rpx;
 
   final UserModel user;
   final OrderItemModel? order;
@@ -82,71 +83,75 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      final uiState = _getUIState(order, SS.login.info);
-      if (uiState == null) {
-        return Spacing.blank;
-      }
-      return GestureDetector(
-        onTap: () {
-          if (order != null &&
-              ![OrderStatus.cancel, OrderStatus.finish, OrderStatus.timeOut]
-                  .contains(order?.state)) {
-            onTapOrder?.call(order!);
-          }
-        },
-        child: Container(
-          height: ChatDateView.height,
-          decoration: const ShapeDecoration(
-            shape: StadiumBorder(),
-            color: Colors.white,
+    return Container(
+      color: const Color(0xFFF6F7F9),
+      padding: FEdgeInsets(horizontal: 16.rpx),
+      child: Obx(() {
+        final uiState = _getUIState(order, SS.login.info);
+        if (uiState == null) {
+          return Spacing.blank;
+        }
+        return GestureDetector(
+          onTap: () {
+            if (order != null &&
+                ![OrderStatus.cancel, OrderStatus.finish, OrderStatus.timeOut]
+                    .contains(order?.state)) {
+              onTapOrder?.call(order!);
+            }
+          },
+          child: Container(
+            height: ChatDateView.height,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.rpx),
+              color: Colors.white,
+            ),
+            padding: FEdgeInsets(horizontal: 12.rpx),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (uiState.icon != null)
+                  Padding(
+                    padding: FEdgeInsets(right: 4.rpx, bottom: 12.rpx),
+                    child: AppImage.asset(
+                      uiState.icon ?? '',
+                      width: 16.rpx,
+                      height: 16.rpx,
+                    ),
+                  ),
+                Expanded(
+                  child: Text(
+                    uiState.desc,
+                    textAlign: uiState.button != null
+                        ? TextAlign.left
+                        : TextAlign.center,
+                    style: AppTextStyle.fs14.copyWith(
+                      color: AppColor.blackBlue,
+                      height: 1.2,
+                    ),
+                  ),
+                ),
+                if (uiState.button != null)
+                  Padding(
+                    padding: FEdgeInsets(left: 12.rpx),
+                    child: CommonGradientButton(
+                      onTap: () {
+                        onTapOrderAction?.call(uiState.operation, order);
+                        uiState.onTap?.call();
+                      },
+                      height: 30.rpx,
+                      padding: FEdgeInsets(horizontal: 10.rpx),
+                      borderRadius: BorderRadius.circular(15.rpx),
+                      text: uiState.button,
+                      backgroundColor: uiState.buttonColor,
+                      textStyle: AppTextStyle.fs14.copyWith(color: Colors.white),
+                    ),
+                  ),
+              ],
+            ),
           ),
-          padding: FEdgeInsets(horizontal: 16.rpx),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (uiState.icon != null)
-                Padding(
-                  padding: FEdgeInsets(right: 4.rpx, bottom: 12.rpx),
-                  child: AppImage.asset(
-                    uiState.icon ?? '',
-                    width: 16.rpx,
-                    height: 16.rpx,
-                  ),
-                ),
-              Expanded(
-                child: Text(
-                  uiState.desc,
-                  textAlign: uiState.button != null
-                      ? TextAlign.left
-                      : TextAlign.center,
-                  style: AppTextStyle.fs14.copyWith(
-                    color: AppColor.blackBlue,
-                    height: 1.2,
-                  ),
-                ),
-              ),
-              if (uiState.button != null)
-                Padding(
-                  padding: FEdgeInsets(left: 16.rpx),
-                  child: CommonGradientButton(
-                    onTap: () {
-                      onTapOrderAction?.call(uiState.operation, order);
-                      uiState.onTap?.call();
-                    },
-                    height: 37.rpx,
-                    padding: FEdgeInsets(horizontal: 16.rpx),
-                    borderRadius: BorderRadius.zero,
-                    text: uiState.button,
-                    backgroundColor: uiState.buttonColor,
-                    textStyle: AppTextStyle.fs14m.copyWith(color: Colors.white),
-                  ),
-                ),
-            ],
-          ),
-        ),
-      );
-    });
+        );
+      }),
+    );
   }
 }
 

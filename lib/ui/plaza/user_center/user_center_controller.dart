@@ -98,7 +98,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
         },
       ] : state.userBasics;
       update();
-      ChatUserManager().updateWithUserModel(state.authorInfo);
+      ChatUserManager().updateWithUserModels([state.authorInfo]);
     }
   }
 

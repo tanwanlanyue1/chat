@@ -5,11 +5,12 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
-import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/notification/notification_manager.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/global.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/ui/mine/mine_setting/app_update/app_update_manager.dart';
 import 'package:guanjia/ui/mine/mine_setting/push_setting/notification_permission_util.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -73,11 +74,14 @@ class HomeController extends GetxController with GetAutoDisposeMixin {
   }
 
   void setCurrentPage(int index) {
-    if (index == 4) {
-      EventBus().emit(kEventUserInfo);
+    if(index != state.currentPageRx()){
+      final title = state.allBottomNavItems[index].title;
+      if (title == S.current.mine) {
+        EventBus().emit(kEventUserInfo);
+      }
+      state.currentPageRx.value = index;
+      pageController.jumpToPage(index);
     }
-    state.currentPageRx.value = index;
-    pageController.jumpToPage(index);
   }
 
   void updateInfoList() {

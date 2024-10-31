@@ -120,7 +120,7 @@ class OrderAcceptDialog extends StatelessWidget {
   Widget buildDesc() {
     return ChatUserBuilder(userId: userId.toString(), builder: (info){
       return Text(
-        '${S.current.agreedSum} ${info?.name} ${S.current.appointment}？',
+        '${S.current.agreedSum} ${info?.nickname} ${S.current.appointment}？',
         textAlign: TextAlign.center,
         style: AppTextStyle.fs14m.copyWith(
           color: AppColor.blackBlue,

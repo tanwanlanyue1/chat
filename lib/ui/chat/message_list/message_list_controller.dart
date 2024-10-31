@@ -10,7 +10,7 @@ import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/custom/message_red_packet_content.dart';
 import 'package:guanjia/ui/chat/message_list/message_order_part.dart';
-import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/ui/order/mixin/order_operation_mixin.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
@@ -94,7 +94,7 @@ class MessageListController extends GetxController
     final userResponse = responses[1] as ApiResponse<UserModel>;
     if (userResponse.isSuccess) {
       state.userInfoRx.value = userResponse.data;
-      userResponse.data?.let(ChatUserInfoCache().updateWithUserModel);
+      userResponse.data?.let(ChatUserManager().updateWithUserModel);
     }
   }
 

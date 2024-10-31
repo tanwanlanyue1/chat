@@ -7,13 +7,14 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/network/api/model/im/chat_user_model.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
-import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/unread_badge.dart';
@@ -64,11 +65,7 @@ class _ConversationListTileState extends State<ConversationListTile>
 
   @override
   Widget build(BuildContext context) {
-    final defaultInfo = ChatUserInfo(
-      id: conversation.id,
-      name: conversation.name,
-      avatar: conversation.avatarUrl,
-    );
+    final defaultInfo = conversation.toChatUserModel();
     final orderInfoView = isOrderMsg ? _buildOrderInfo() : null;
     return Slidable(
       key: ValueKey(conversation.id),
@@ -120,9 +117,9 @@ class _ConversationListTileState extends State<ConversationListTile>
     );
   }
 
-  Widget _buildAvatar(ChatUserInfo info) {
+  Widget _buildAvatar(ChatUserModel info) {
     final timestamp = conversation.lastMessage?.info.timestamp ?? 0;
-    var avatar = timestamp > info.updatedAt ? conversation.avatarUrl : info.avatar;
+    var avatar = timestamp > info.createdAt ? conversation.avatarUrl : info.avatar;
     if(avatar.isEmpty){
       avatar = conversation.avatarUrl;
     }
@@ -162,17 +159,17 @@ class _ConversationListTileState extends State<ConversationListTile>
     );
   }
 
-  Widget _buildNameAndTime(ChatUserInfo info) {
+  Widget _buildNameAndTime(ChatUserModel info) {
     final timestamp = conversation.lastMessage?.info.timestamp ?? 0;
-    var name = timestamp > info.updatedAt ? conversation.name : info.name;
+    var name = timestamp > info.createdAt ? conversation.name : info.nickname;
     if (name.isEmpty) {
       name = conversation.name;
     }
     if (name.isEmpty) {
-      name = info.name;
+      name = info.nickname;
     }
     if (name.isEmpty) {
-      name = info.id;
+      name = info.uid;
     }
 
     var time = conversation.lastMessage?.info.timestamp
@@ -188,10 +185,10 @@ class _ConversationListTileState extends State<ConversationListTile>
     print('$info');
 
     final extendedChildren = <Widget>[
-      Padding(
+      if(info.gender != null) Padding(
         padding: FEdgeInsets(left: 4.rpx),
         child: AppImage.asset(
-          info.gender.icon,
+          info.gender!.icon,
           size: 12.rpx,
         ),
       ),
@@ -210,12 +207,12 @@ class _ConversationListTileState extends State<ConversationListTile>
     }
 
     //VIP图标
-    if (info.vip?.startsWith('http') == true) {
+    if (info.nameplate?.startsWith('http') == true) {
       extendedChildren.add(
         Padding(
           padding: FEdgeInsets(left: 4.rpx),
           child: CachedNetworkImage(
-            imageUrl: info.vip ?? '',
+            imageUrl: info.nameplate ?? '',
             height: 12.rpx,
           ),
         ),

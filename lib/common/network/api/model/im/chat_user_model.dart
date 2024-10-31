@@ -3,7 +3,7 @@ import 'package:guanjia/common/network/api/api.dart';
 
 ///聊天用户信息
 class ChatUserModel extends Equatable {
-  const ChatUserModel({
+  ChatUserModel({
     required this.uid,
     required this.nickname,
     required this.avatar,
@@ -11,7 +11,8 @@ class ChatUserModel extends Equatable {
     required this.nameplate,
     required this.occupation,
     required this.onlineStatus,
-  });
+    int? createdAt,
+  }): createdAt = DateTime.now().millisecondsSinceEpoch;
 
   ///	用户ID
   final String uid;
@@ -23,16 +24,19 @@ class ChatUserModel extends Equatable {
   final String avatar;
 
   ///用户性别 0：保密 1：男 2：女
-  final UserGender gender;
+  final UserGender? gender;
 
   ///	会员铭牌
-  final String nameplate;
+  final String? nameplate;
 
   ///	职业 1在职人员 2学生
   final UserOccupation occupation;
 
   ///在线状态 0在线 1登出 2离线
-  final int onlineStatus;
+  final int? onlineStatus;
+
+  ///数据创建时间
+  final int createdAt;
 
   ChatUserModel copyWith({
     String? uid,
@@ -42,6 +46,7 @@ class ChatUserModel extends Equatable {
     String? nameplate,
     UserOccupation? occupation,
     int? onlineStatus,
+    int? createdAt,
   }) {
     return ChatUserModel(
       uid: uid ?? this.uid,
@@ -51,6 +56,7 @@ class ChatUserModel extends Equatable {
       nameplate: nameplate ?? this.nameplate,
       occupation: occupation ?? this.occupation,
       onlineStatus: onlineStatus ?? this.onlineStatus,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
@@ -60,9 +66,9 @@ class ChatUserModel extends Equatable {
       nickname: json["nickname"] ?? "",
       avatar: json["avatar"] ?? "",
       gender: UserGender.valueForIndex(json["gender"] ?? 0),
-      nameplate: json["nameplate"] ?? "",
+      nameplate: json["nameplate"],
       occupation: UserOccupation.valueForIndex(json["occupation"] ?? 0),
-      onlineStatus: json["onlineStatus"] ?? 0,
+      onlineStatus: json["onlineStatus"],
     );
   }
 

@@ -197,7 +197,7 @@ class ChatCallRechargeDialog extends StatelessWidget {
         userId: userId.toString(),
         builder: (info) {
           return Text(
-            S.current.chatWith(info?.name ?? ''),
+            S.current.chatWith(info?.nickname ?? ''),
             style: AppTextStyle.fs16m.copyWith(
               color: AppColor.blackBlue,
               height: 1.0,

@@ -11,7 +11,7 @@ import 'package:guanjia/common/utils/local_storage.dart';
 import 'package:guanjia/common/utils/result.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
-import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/widgets/recaptcha_dialog.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
@@ -457,7 +457,7 @@ class LoginService extends GetxService {
     _info.value = null;
 
     _isLogin.value = false;
-    ChatUserInfoCache().clear();
+    ChatUserManager().dispose();
   }
 
   ///用户未登录，接口401回调

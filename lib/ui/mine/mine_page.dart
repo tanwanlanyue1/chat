@@ -11,7 +11,7 @@ import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_link.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/ui/mine/widgets/beautiful_status_tips.dart';
 import 'package:guanjia/ui/mine/widgets/mine_list_tile.dart';
 import 'package:guanjia/widgets/app_image.dart';
@@ -328,11 +328,10 @@ class _MinePageState extends State<MinePage>
             title: S.current.personalInformation,
             icon: "assets/images/mine/personal_info.png",
             pagePath: AppRoutes.accountDataPage,
-            // onTap: (){
-            //   ChatUserInfoCache().getOrQuery('19', isQueryFromServer: true).then((value){
-            //     print("extendedData: ${value.extendedData}");
-            //   });
-            // },
+            onTap: (){
+              ChatUserManager().getOrQuery('19', isQueryFromServer: true).then((value){
+              });
+            },
           ),
           //我的钱包
           MineListTile(

@@ -14,7 +14,7 @@ import 'package:guanjia/ui/chat/message_list/message_sender_part.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_feature_panel.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_red_packet_builder.dart';
-import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -158,11 +158,7 @@ class MessageListPage extends GetView<MessageListController> {
           return Spacing.blank;
         }
 
-        final defaultInfo = ChatUserInfo(
-          id: conversation.id,
-          name: conversation.name,
-          avatar: conversation.avatarUrl,
-        );
+        final defaultInfo = conversation.toChatUserModel();
 
         return ChatUserBuilder(
             defaultInfo: defaultInfo,
@@ -170,17 +166,17 @@ class MessageListPage extends GetView<MessageListController> {
             builder: (info) {
               final userInfo = info ?? defaultInfo;
               final timestamp = conversation.lastMessage?.info.timestamp ?? 0;
-              var name = timestamp > userInfo.updatedAt
+              var name = timestamp > userInfo.createdAt
                   ? conversation.name
-                  : userInfo.name;
+                  : userInfo.nickname;
               if (name.isEmpty) {
                 name = conversation.name;
               }
               if (name.isEmpty) {
-                name = userInfo.name;
+                name = userInfo.nickname;
               }
               if (name.isEmpty) {
-                name = userInfo.id;
+                name = userInfo.uid;
               }
 
               return Row(

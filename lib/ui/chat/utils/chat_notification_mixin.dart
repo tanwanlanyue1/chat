@@ -54,10 +54,10 @@ mixin _ChatNotificationMixin {
     String content;
     AndroidBitmap<Object>? largeIcon;
     final user =
-    await ChatUserInfoCache().getOrQuery(message.zim.senderUserID);
-    title = user.name;
+    await ChatUserManager().getOrQuery(message.zim.senderUserID);
+    title = user.nickname;
     if (title.isEmpty) {
-      title = user.id;
+      title = user.uid;
     }
     content = message.toPlainText() ?? '';
     try {

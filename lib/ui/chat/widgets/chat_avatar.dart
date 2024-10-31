@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:guanjia/common/network/api/model/im/chat_user_model.dart';
 import 'package:guanjia/common/utils/auto_dispose_mixin.dart';
-import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
@@ -42,22 +43,22 @@ class ChatAvatar extends StatefulWidget {
 
 class _ChatAvatarState extends State<ChatAvatar> with AutoDisposeMixin {
 
-  ChatUserInfo? info;
+  ChatUserModel? info;
   @override
   void initState() {
     super.initState();
-    info = ChatUserInfoCache().get(widget.userId);
+    info = ChatUserManager().get(widget.userId);
     if(info == null){
-      ChatUserInfoCache().getOrQuery(widget.userId).then((value){
+      ChatUserManager().getOrQuery(widget.userId).then((value){
         setState(() {
           info = value;
         });
       });
     }
-    autoCancel(ChatUserInfoCache().userInfoStream.listen((event) {
-      if(event.id == widget.userId){
+    autoCancel(ChatUserManager().stream.listen((event) {
+      if(event.containsKey(widget.userId)){
         setState(() {
-          info = event;
+          info = event[widget.userId];
         });
       }
     }));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:guanjia/common/network/api/model/im/chat_user_model.dart';
 import 'package:guanjia/common/utils/auto_dispose_mixin.dart';
-import 'package:guanjia/ui/chat/utils/chat_user_info_cache.dart';
+import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/widgets/spacing.dart';
 
 ///聊天用户信息builder
@@ -11,9 +12,9 @@ class ChatUserBuilder extends StatefulWidget {
   final String userId;
 
   ///默认用户信息(加载中或者失败时显示)
-  final ChatUserInfo? defaultInfo;
+  final ChatUserModel? defaultInfo;
 
-  final Widget Function(ChatUserInfo? userInfo) builder;
+  final Widget Function(ChatUserModel? userInfo) builder;
 
   const ChatUserBuilder({
     super.key,
@@ -28,22 +29,22 @@ class ChatUserBuilder extends StatefulWidget {
 
 class _ChatUserBuilderState extends State<ChatUserBuilder> with AutoDisposeMixin {
 
-  ChatUserInfo? info;
+  ChatUserModel? info;
   @override
   void initState() {
     super.initState();
-    info = ChatUserInfoCache().get(widget.userId);
+    info = ChatUserManager().get(widget.userId);
     if(info == null){
-      ChatUserInfoCache().getOrQuery(widget.userId).then((value){
+      ChatUserManager().getOrQuery(widget.userId).then((value){
         setState(() {
           info = value;
         });
       });
     }
-    autoCancel(ChatUserInfoCache().userInfoStream.listen((userInfo) {
-      if(userInfo.id == widget.userId){
+    autoCancel(ChatUserManager().stream.listen((data) {
+      if(data.containsKey(widget.userId)){
         setState(() {
-          info = userInfo;
+          info = data[widget.userId];
         });
       }
     }));

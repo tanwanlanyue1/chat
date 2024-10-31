@@ -55,7 +55,7 @@ class TransferMoneyPage extends GetView<TransferMoneyController> {
                 return Padding(
                   padding: FEdgeInsets(top: 8.rpx, bottom: 32.rpx),
                   child: Text(
-                    user?.name ?? '',
+                    user?.nickname ?? '',
                     textAlign: TextAlign.center,
                     style: AppTextStyle.fs16m.copyWith(
                       color: AppColor.blackBlue,

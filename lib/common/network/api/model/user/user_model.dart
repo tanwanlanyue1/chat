@@ -2,6 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 
+import '../open/app_config_model.dart';
+
 /// 用户性别类型
 enum UserGender {
   unknown,
@@ -136,7 +138,9 @@ class UserModel {
     required this.vip,
     required this.expirationTime,
     required this.nameplate,
+    required this.fansNum,
     this.onlineStatus,
+    this.styleList,
   });
 
   final int uid; // 用户id
@@ -169,7 +173,9 @@ class UserModel {
   num balance = 0; //余额
   bool vip; // 是否为VIP
   int expirationTime; // VIP到期时间
+  int fansNum; // 粉丝数量
   String nameplate; // VIP图标
+  List<LabelModel>? styleList;//风格列表
   ///钱包历史提现金额
   num withdrawals = 0;
 
@@ -180,6 +186,12 @@ class UserModel {
   int? onlineStatus;
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    List<LabelModel>? styleRes = [];
+    if(json['styleList'] != null){
+      json['styleList'].forEach((v) {
+        styleRes.add(LabelModel.fromJson(v));
+      });
+    }
     return UserModel(
       uid: json["uid"] ?? 0,
       chatNo: json["chatNo"] ?? 0,
@@ -213,8 +225,10 @@ class UserModel {
       withdrawals: json["withdrawals"] ?? 0,
       vip: json["vip"] ?? false,
       expirationTime: json["expirationTime"] ?? 0,
+      fansNum: json["fansNum"] ?? 0,
       nameplate: json["nameplate"] ?? '',
       onlineStatus: json["onlineStatus"],
+      styleList: styleRes,
     );
   }
 
@@ -248,11 +262,13 @@ class UserModel {
         "payPwd": payPwd,
         "vip": vip,
         "expirationTime": expirationTime,
+        "fansNum": fansNum,
         "nameplate": nameplate,
         "balance": balance,
         "withdrawalsAble": withdrawalsAble,
         "withdrawals": withdrawals,
         "onlineStatus": onlineStatus,
+        "styleList": styleList,
       };
 
   UserModel copyWith({
@@ -288,8 +304,10 @@ class UserModel {
     num? withdrawalsAble,
     bool? vip,
     int? expirationTime,
+    int? fansNum,
     String? nameplate,
     int? onlineStatus,
+    List<LabelModel>? styleList,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -324,8 +342,10 @@ class UserModel {
       withdrawalsAble: withdrawalsAble ?? this.withdrawalsAble,
       vip: vip ?? this.vip,
       expirationTime: expirationTime ?? this.expirationTime,
+      fansNum: fansNum ?? this.fansNum,
       nameplate: nameplate ?? this.nameplate,
       onlineStatus: onlineStatus ?? this.onlineStatus,
+      styleList: styleList ?? this.styleList
     );
   }
 }

@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
+import 'package:guanjia/widgets/spacing.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -30,39 +32,35 @@ class FortuneSquareView extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: Column(
         children: [
-          discoverClassify(),
+          classifyTab(),
           Expanded(
-            child: Container(
-              color: Colors.white,
-              child: SmartRefresher(
-                controller: controller.pagingController.refreshController,
-                onRefresh: controller.pagingController.onRefresh,
-                child: CustomScrollView(
-                  slivers: [
-                    PagedSliverList(
-                      pagingController: controller.pagingController,
-                      builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
-                          pagingController: controller.pagingController,
-                          itemBuilder: (_,item,index){
-                            return PlazaCard(
-                              item: item,
-                              plazaIndex: controller.tabController.index,
-                              margin: index == 0 ? EdgeInsets.only(bottom: 8.rpx) : EdgeInsets.only(bottom: 4.rpx),
-                              more: () {
-                                controller.selectMore(item);
-                              },
-                              isLike: (like){
-                                controller.getCommentLike(like, index);
-                              },
-                              callBack: (val){
-                                controller.setComment(val ?? '',index);
-                              },
-                            );
-                          }
-                      ),
-                    )
-                  ],
-                ),
+            child: SmartRefresher(
+              controller: controller.pagingController.refreshController,
+              onRefresh: controller.pagingController.onRefresh,
+              child: CustomScrollView(
+                slivers: [
+                  PagedSliverList(
+                    pagingController: controller.pagingController,
+                    builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
+                        pagingController: controller.pagingController,
+                        itemBuilder: (_,item,index){
+                          return PlazaCard(
+                            item: item,
+                            plazaIndex: state.communityIndex.value,
+                            more: () {
+                              controller.selectMore(item);
+                            },
+                            isLike: (like){
+                              controller.getCommentLike(like, index);
+                            },
+                            callBack: (val){
+                              controller.setComment(val ?? '',index);
+                            },
+                          );
+                        }
+                    ),
+                  )
+                ],
               ),
             ),
           )
@@ -72,35 +70,50 @@ class FortuneSquareView extends StatelessWidget {
     );
   }
 
-  ///发现
-  Widget discoverClassify(){
-    return Container(
-      height: 40.rpx,
-      margin: EdgeInsets.only(top: 8.rpx),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16.rpx),
-          topRight: Radius.circular(16.rpx),
-        )
-      ),
-      child: TabBar(
-        controller: controller.tabController,
-        labelStyle: AppTextStyle.fs14m,
-        labelColor: AppColor.primaryBlue,
-        unselectedLabelStyle: AppTextStyle.fs14,
-        unselectedLabelColor: AppColor.grayText,
-        indicatorColor: AppColor.primaryBlue,
-        indicatorWeight: 2.rpx,
-        onTap: (val){
-          controller.pagingController.onRefresh();
-          controller.update(['floating']);
-        },
-        tabs: List.generate(
-          state.communityTitle.length,
-              (index) => Tab(text: state.communityTitle[index], height: 40.rpx),
-        ),
-      ),
+  //分类
+  Widget classifyTab() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 20.rpx,left: 16.rpx,top: 4.rpx),
+      child: Obx(() =>
+          Row(
+            children: List<Widget>.generate(state.communityTitle.length, (i) =>
+                GestureDetector(
+                  onTap: (){
+                    state.communityIndex.value = i;
+                    controller.pagingController.onRefresh();
+                    controller.update(['floating']);
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 24.rpx,
+                    padding: EdgeInsets.symmetric(horizontal: 10.rpx),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.rpx),
+                      gradient: LinearGradient(
+                        colors: state.communityIndex.value == i ? [
+                          AppColor.gradientBegin.withOpacity(0.1),
+                          AppColor.gradientBackgroundEnd.withOpacity(0.1),
+                        ]:[AppColor.black9.withOpacity(0.1),AppColor.black9.withOpacity(0.1)]
+                      ),
+                    ),
+                    child:
+                    ShaderMask(
+                      shaderCallback: (Rect bounds) {
+                        return LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: state.communityIndex.value == i? [AppColor.gradientBegin, AppColor.gradientEnd]:[AppColor.black6,AppColor.black6],
+                        ).createShader(bounds);
+                      },
+                      blendMode: BlendMode.srcATop,
+                      child: Text(
+                        '${state.communityTitle[i]}',
+                        style: AppTextStyle.fs14.copyWith(height: 1.0),
+                      ),
+                    ),
+                  ),
+                ),).separated(Spacing.w8).toList(growable: false),
+          )),
     );
   }
 
@@ -110,31 +123,18 @@ class FortuneSquareView extends StatelessWidget {
       id: 'floating',
       builder: (_) {
       return Visibility(
-        visible: controller.tabController.index == 0,
+        visible: state.communityIndex.value == 0,
         replacement: Visibility(
-          visible: controller.tabController.index == 2,
+          visible: state.communityIndex.value == 2,
           child: GestureDetector(
             onTap: (){
               Get.toNamed(AppRoutes.releaseDynamicPage);
             },
             child: Container(
-              width: 80.rpx,
-              height: 40.rpx,
+              width: 50.rpx,
+              height: 50.rpx,
               margin: EdgeInsets.only(bottom: 24.rpx),
-              decoration: const ShapeDecoration(
-                color: AppColor.purple6,
-                shape: StadiumBorder()
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AppImage.asset("assets/images/plaza/compile.png",width: 24.rpx,height: 24.rpx,),
-                  Padding(
-                    padding: FEdgeInsets(left: 4.rpx),
-                    child: Text(S.current.postMessage,style: AppTextStyle.fs14.copyWith(color: Colors.white),),
-                  )
-                ],
-              ),
+              child: AppImage.asset("assets/images/plaza/compile.png",width: 24.rpx,height: 24.rpx,),
             ),
           ),
         ),

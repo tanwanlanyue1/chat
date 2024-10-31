@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -188,49 +190,54 @@ class DatingHallView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.rpx,right: 3.rpx,bottom: 3.rpx),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          constraints: BoxConstraints(
-                              maxWidth: item.nameplate != null && item.nameplate!.isNotEmpty ? (Get.width-254.rpx):(Get.width-210.rpx)
-                          ),
-                          padding: EdgeInsets.only(right: item.gender == 1 ? 2.rpx : 0),
-                          child: Text(
-                            item.nickname ?? '',
-                            style: AppTextStyle.fs14.copyWith(color: AppColor.black3,height: 1,),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                  Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 8.rpx,right: 3.rpx,bottom: 10.rpx),
+                        child: Row(
+                          children: [
+                            Container(
+                              constraints: BoxConstraints(
+                                  maxWidth: item.nameplate != null && item.nameplate!.isNotEmpty ? (Get.width-254.rpx):(Get.width-210.rpx)
+                              ),
+                              child: Text(
+                                item.nickname ?? '',
+                                style: AppTextStyle.fs14m.copyWith(color: AppColor.black3,height: 1.0,),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 4.rpx,right: 4.rpx),
+                              child: AppImage.asset(UserGender.valueForIndex(item.gender ?? 0).icon,width: 12.rpx,height: 12.rpx),
+                            ),
+                            Visibility(
+                              visible: item.nameplate != null && item.nameplate!.isNotEmpty,
+                              child: AppImage.network(item.nameplate ?? '',width: 45.rpx,height: 12.rpx,fit: BoxFit.fitHeight,),
+                            ),
+                          ],
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 4.rpx,right: 4.rpx),
-                          child: AppImage.asset(UserGender.valueForIndex(item.gender ?? 0).icon,width: 12.rpx,height: 12.rpx),
-                        ),
-                        Visibility(
-                          visible: item.nameplate != null && item.nameplate!.isNotEmpty,
-                          child: AppImage.network(item.nameplate ?? '',width: 45.rpx,height: 12.rpx,fit: BoxFit.fitHeight,),
-                        ),
-                        const Spacer(),
-                        GestureDetector(
+                      ),
+                      Positioned(
+                        top: 5.rpx,
+                        right: 3.rpx,
+                        child: GestureDetector(
                           onTap: (){
                             ChatManager().startChat(userId: item.uid!);
                           },
                           child: AppImage.asset('assets/images/plaza/hi_like.png',width: 52.rpx,height: 24.rpx,),
                         ),
-                      ],
-                    ),
+                      )
+                    ],
                   ),
-                  SizedBox(
+                  Container(
                     height: 20.rpx,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: List.generate(item.styleList?.length ?? 0, (i) => UserStyle(styleList: item.styleList![i],)),
-                    ),
+                    margin: EdgeInsets.only(bottom: 10.rpx,right: 15.rpx),
+                    child: UserStyle(styleList: item.styleList,),
                   ),
-                  const Spacer(),
-                  Text("承认自己普通，又不等于放弃自己何必停止向前奔...",style: AppTextStyle.fs10.copyWith(color: AppColor.grayText,overflow: TextOverflow.ellipsis,),maxLines: 1,)
+                  Container(
+                    margin: EdgeInsets.only(right: 15.rpx),
+                    child: Text(item.signature ?? '',style: AppTextStyle.fs10.copyWith(color: AppColor.grayText,overflow: TextOverflow.ellipsis,height: 1.0),maxLines: 1,),
+                  ),
                 ],
               ),
             ),

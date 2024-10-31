@@ -1,3 +1,4 @@
+import '../open/app_config_model.dart';
 import 'comment_list_model.dart';
 
 class PlazaListModel {
@@ -38,6 +39,12 @@ class PlazaListModel {
     this.age,
     //用户类型 0普通用户 1佳丽 2经纪人
     this.type,
+    //vip图标
+    this.nameplate,
+    //风格列表
+    this.styleList,
+    // 职业 1在职人员 2学生
+    this.occupation,
     //广场-帖子列表（根评论）
     this.commentList,});
 
@@ -62,6 +69,14 @@ class PlazaListModel {
     gender = json['gender'];
     age = json['age'];
     type = json['type'];
+    nameplate = json['nameplate'];
+    occupation = json['occupation'];
+    if (json['styleList'] != null) {
+      styleList = [];
+      json['styleList'].forEach((v) {
+        styleList?.add(LabelModel.fromJson(v));
+      });
+    }
     if (json['commentList'] != null) {
       commentList = [];
       json['commentList'].forEach((v) {
@@ -89,6 +104,9 @@ class PlazaListModel {
   int? gender;
   int? age;
   int? type;
+  int? occupation;
+  String? nameplate;
+  List<LabelModel>? styleList;
   List<CommentListModel>? commentList;
   PlazaListModel copyWith({  int? postId,
     String? title,
@@ -110,6 +128,9 @@ class PlazaListModel {
     int? gender,
     int? age,
     int? type,
+    int? occupation,
+    String? nameplate,
+    List<LabelModel>? styleList,
     List<CommentListModel>? commentList,
   }) => PlazaListModel(  postId: postId ?? this.postId,
     title: title ?? this.title,
@@ -131,6 +152,9 @@ class PlazaListModel {
     gender: gender ?? this.gender,
     age: age ?? this.age,
     type: type ?? this.type,
+    occupation: occupation ?? this.occupation,
+    nameplate: nameplate ?? this.nameplate,
+    styleList: styleList ?? this.styleList,
     commentList: commentList ?? this.commentList,
   );
   Map<String, dynamic> toJson() {
@@ -155,6 +179,11 @@ class PlazaListModel {
     map['gender'] = gender;
     map['age'] = age;
     map['type'] = type;
+    map['occupation'] = occupation;
+    map['nameplate'] = nameplate;
+    if (map['styleList'] != null) {
+      map['styleList'] = styleList?.map((v) => v.toJson()).toList();
+    }
     if (commentList != null) {
       map['commentList'] = commentList?.map((v) => v.toJson()).toList();
     }

@@ -45,26 +45,6 @@ class FriendDateState {
     },
   ];
 
-  //约会背景色
-  List backColor = [
-    {
-      "begin": AppColor.blueC1,
-      "end": AppColor.blueE2,
-    },
-    {
-      "begin": AppColor.pinkBD,
-      "end": AppColor.pinkFD,
-    },
-    {
-      "begin": AppColor.greenE7,
-      "end": AppColor.greenCD,
-    },
-    {
-      "begin": AppColor.yellowFE,
-      "end": AppColor.yellowFB,
-    },
-  ];
-
   //排序类型
   List sortList = [
     {

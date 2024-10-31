@@ -27,6 +27,10 @@ class RecommendModel {
     this.nameplate,
     //风格图标
     this.styleList,
+    //个性签名
+    this.signature,
+    //在线状态 0在线 1登出 2离线
+    this.onlineStatus,
   });
 
   RecommendModel.fromJson(dynamic json) {
@@ -41,6 +45,8 @@ class RecommendModel {
     distance = json['distance'];
     location = json['location'];
     nameplate = json['nameplate'];
+    signature = json['signature'];
+    onlineStatus = json['onlineStatus'];
     if (json['styleList'] != null) {
       styleList = [];
       json['styleList'].forEach((v) {
@@ -59,6 +65,8 @@ class RecommendModel {
   String? distance;
   String? location;
   String? nameplate;
+  String? signature;
+  int? onlineStatus;
   List<LabelModel>? styleList;
 
   Map<String, dynamic> toJson() {
@@ -74,6 +82,8 @@ class RecommendModel {
     map['distance'] = distance;
     map['location'] = location;
     map['nameplate'] = nameplate;
+    map['signature'] = signature;
+    map['onlineStatus'] = onlineStatus;
     if (map['styleList'] != null) {
       styleList = [];
       map['styleList'].forEach((v) {

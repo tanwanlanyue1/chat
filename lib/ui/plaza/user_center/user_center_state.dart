@@ -12,18 +12,20 @@ class UserCenterState {
   //作者信息
   UserModel authorInfo = UserModel.fromJson({});
   int swiperIndex = 0;
+  ///粉丝数
+  final fansNum = 0.obs;
   //上传封面图
   List<String> imgList = [];
 
   //用户基础信息
   List userBasics = [
     {
-      "name": S.current.userAge,
-      "data":"age",
+      "name": S.current.aboutTa,
+      "data":"type",
     },
     {
-      "name": S.current.userGender,
-      "data":"gender",
+      "name": S.current.followTa,
+      "data":"fansNum",
     },
     {
       "name": S.current.favorableRate,

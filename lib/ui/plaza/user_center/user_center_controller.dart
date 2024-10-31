@@ -52,6 +52,13 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
       double appBarHeight = 220.rpx;
       state.isAppBarExpanded.value = (appBarHeight - kToolbarHeight) < offset;
     });
+    autoDisposeWorker(EventBus().listen(kEventIsAttention, (data) {
+      if(data){
+        state.fansNum.value++;
+      }else{
+        state.fansNum.value--;
+      }
+    }));
     getUserInfo();
     getIsAttention(state.authorId);
     pagingController.addPageRequestListener(fetchPage);
@@ -79,22 +86,23 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
     if (response.isSuccess) {
       state.authorInfo = response.data ?? UserModel.fromJson({});
       state.imgList = response.data?.images != null ? List<String>.from(jsonDecode(response.data?.images ?? '')) : [];
-      state.userBasics = response.data?.type.index == 0 ? [
+      state.fansNum.value = response.data?.fansNum ?? 0;
+      state.userBasics = response.data?.type.index == 2 ? [
         {
-          "name": S.current.userAge,
-          "data":"age",
+          "name": S.current.aboutTa,
+          "data":"type",
         },
         {
-          "name": S.current.userGender,
-          "data":"gender",
+          "name": S.current.followTa,
+          "data":"fansNum",
         },
         {
-          "name": S.current.identity,
-          "data": S.current.user,
+          "name": S.current.teamPraise,
+          "data": "praiseRate",
         },
         {
-          "name": S.current.site,
-          "data":"position",
+          "name": S.current.teamOrder,
+          "data":"dealNum",
         },
       ] : state.userBasics;
       update();
@@ -116,13 +124,14 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
   //简介信息
   Widget basicsInfo({required int index}){
     var info = jsonDecode(jsonEncode(state.authorInfo))[state.userBasics[index]['data']] ?? '-';
-    if(index == 1){
-      info = (info == 0) ? "-" : ((info == 1) ? S.current.male:S.current.female);
-    }else if(info == '0.00' || info == '0'|| info == 0){
-      info = '-';
+    if(index == 0 ){
+      info = (info == 1) ? S.current.beautifulUser:S.current.brokerUser;
     }
-    if(state.authorInfo.type.isUser && index == 2){
-      info = S.current.user;
+    if(index == 1){
+      info = state.fansNum.value;
+    }
+    if(info == '0.00' || info == '0'|| info == 0){
+      info = '-';
     }
     if(!state.authorInfo.type.isUser && index == 2 && info != '-'){
       NumberFormat format = NumberFormat('0.#####');
@@ -143,6 +152,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
         ),
       );
     }
+
     return Text('$info',style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue),);
   }
 

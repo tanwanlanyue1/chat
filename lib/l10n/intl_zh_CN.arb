@@ -770,5 +770,9 @@
   "chooseImageLimit": "最多选择{limit}张图片",
   "logoutSuccessful": "注销成功",
   "pressAgainExit": "再按一次退出",
-  "loadVCodeFail": "加载验证码失败"
+  "loadVCodeFail": "加载验证码失败",
+  "findChat": "找TA聊天",
+  "aboutTa": "关于Ta",
+  "followTa": "关注Ta",
+  "teamPraise": "团队好评"
 }

@@ -10,7 +10,9 @@ import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_button.dart';
+import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/widgets/photo_view_gallery_page.dart';
+import 'package:guanjia/widgets/user_style.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -68,12 +70,12 @@ class UserCenterPage extends StatelessWidget {
                             child: Transform.translate(
                               offset: const Offset(0,1),
                               child: Container(
-                                height: 16.rpx,
+                                height: 10.rpx,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(24.rpx),
-                                    topRight: Radius.circular(24.rpx),
+                                    topLeft: Radius.circular(16.rpx),
+                                    topRight: Radius.circular(16.rpx),
                                   ),
                                 ),
                               ),
@@ -111,8 +113,8 @@ class UserCenterPage extends StatelessWidget {
                                   },
                                 ),
                                 Container(
-                                  height: 2.rpx,
-                                  margin: EdgeInsets.only(left: 24.rpx,right: 16.rpx),
+                                  height: 1.rpx,
+                                  margin: EdgeInsets.only(left: 24.rpx,right: 16.rpx,bottom: 12.rpx),
                                   color: AppColor.scaffoldBackground,
                                 ),
                               ],
@@ -204,12 +206,12 @@ class UserCenterPage extends StatelessWidget {
         pagination: jsonDecode(state.authorInfo.images!).length > 1 ?
         SwiperPagination(
             alignment:  Alignment.bottomRight,
-            margin: EdgeInsets.only(bottom: 30.rpx,right: 16.rpx),
+            margin: EdgeInsets.only(bottom: 16.rpx,right: 16.rpx),
             builder: UserSwiperPagination(
               color: const Color(0xffD1D8E6),
-              size: 8.rpx,
-              activeSize:8.rpx,
-              space: 8.rpx,
+              size: 6.rpx,
+              activeSize:6.rpx,
+              space: 6.rpx,
               activeColor: AppColor.primary,
             )
         ):null,
@@ -238,170 +240,227 @@ class UserCenterPage extends StatelessWidget {
   ///用户信息
   Widget userInfo(BuildContext context,UserCenterController controller){
     final state = controller.state;
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(right: 10.rpx),
-      color: Colors.white,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: 10.rpx),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(right: 8.rpx,),
-                  child: AppImage.network(
-                    state.authorInfo.avatar ?? '',
-                    width: 50.rpx,
-                    height: 50.rpx,
-                    fit: BoxFit.cover,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            constraints: BoxConstraints(
-                              maxWidth: state.authorInfo.occupation == UserOccupation.unknown ? 200.rpx : 150.rpx
-                            ),
-                            child: Text(state.authorInfo.nickname*10,style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue,height: 1),maxLines: 1,overflow: TextOverflow.ellipsis,),
-                          ),
-                          Container(
-                            height: 12.rpx,
-                            padding: EdgeInsets.symmetric(horizontal: 4.rpx),
-                            decoration: BoxDecoration(
-                                color: state.authorInfo.gender.iconColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(14.rpx)
-                            ),
-                            margin: EdgeInsets.only(left: 4.rpx,right: 4.rpx),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                AppImage.asset(state.authorInfo.gender.icon ?? '',width: 8.rpx,height: 8.rpx),
-                                SizedBox(width: 2.rpx,),
-                                Text(
-                                  "${state.authorInfo.age ?? ''}",
-                                  style: AppTextStyle.fs10.copyWith(color: state.authorInfo.gender.index == 1 ? AppColor.primaryBlue:AppColor.textPurple,height: 1),
-                                ),
-                              ],
-                            ),
-                          ),
-                          OccupationWidget(occupation: state.authorInfo.occupation),
-                          const Spacer(),
-                          Visibility(
-                            visible: SS.login.userId != state.authorId,
-                            child: ObxValue((isAttentionRx) => GestureDetector(
-                              onTap: ()=> controller.toggleAttention(state.authorId),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: controller.isAttentionRx.value ? AppColor.gray39 : AppColor.textPurple,
-                                    borderRadius: BorderRadius.circular(26.rpx)
-                                ),
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.only(top: 2.rpx),
-                                padding: EdgeInsets.symmetric(horizontal: 12.rpx,vertical: 6.rpx),
-                                child: Text(controller.isAttentionRx.value ? S.current.followed:S.current.attention,style: AppTextStyle.fs14r.copyWith(
-                                    color: controller.isAttentionRx.value ? AppColor.grayText : Colors.white),),
-                              ),
-                            ),controller.isAttentionRx),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Visibility(
-          //   visible: state.authorInfo.type.index != 0,
-          //   child: Text("${controller.label()}   ${state.authorInfo.position ?? ''}",style: AppTextStyle.fs14.copyWith(color: AppColor.black92,height: 1),),
-          // ),
-          // SizedBox(height: 8.rpx,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(state.userBasics.length, (i) {
-              return SizedBox(
-                height: 70.rpx,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text("${state.userBasics[i]['name']}",style: AppTextStyle.fs16.copyWith(color: AppColor.black92),),
-                    controller.basicsInfo(index: i),
-                  ],
-                ),
-              );
-            }),
-          ),
-          Container(
-            height: 1.rpx,
-            color: AppColor.scaffoldBackground,
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-            child: Text(S.current.userSignature,style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue),),
-          ),
-          Obx(() => Stack(
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 2.rpx),
+          color: Colors.white,
+          child: Column(
             children: [
               Container(
-                constraints: BoxConstraints(
-                    minHeight: 63.rpx
-                ),
-                alignment: Alignment.topLeft,
-                child: Text(state.authorInfo.signature?.fixAutoLines() ?? '',style: AppTextStyle.fs14.copyWith(color: AppColor.blackBlue,),maxLines: state.isShow.value ? 3 :  null,),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Visibility(
-                  visible: calculateTextWidth(context,state.authorInfo.signature ?? '') && state.isShow.value,
-                  child: GestureDetector(
-                    onTap: (){
-                      state.isShow.value = false;
-                    },
-                    behavior: HitTestBehavior.translucent,
-                    child: Container(
-                      height: 21.rpx,
-                      padding: EdgeInsets.only(left: 50.rpx,right: 14.rpx),
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: const Alignment(-0.2, 0),
-                            colors: [
-                              Colors.white.withOpacity(0),
-                              Colors.white,
-                            ],
-                          )
+                padding: EdgeInsets.only(bottom: 8.rpx),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(right: 8.rpx,),
+                      alignment: Alignment.center,
+                      child: AppImage.network(
+                        state.authorInfo.avatar ?? '',
+                        width: 50.rpx,
+                        height: 50.rpx,
+                        shape: BoxShape.circle,
                       ),
-                      child: RichText(
-                        text: TextSpan(
-                          text: "... ",
-                          style: AppTextStyle.fs14.copyWith(color: AppColor.black20),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: S.current.readMore,
-                              style: AppTextStyle.fs14.copyWith(color: AppColor.primaryBlue,height: 1.5),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        height: 50.rpx,
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 16.rpx,
+                              margin: EdgeInsets.only(top: 2.rpx,bottom: 10.rpx),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    constraints: BoxConstraints(
+                                        maxWidth: state.authorInfo.position != null ? 140.rpx:160.rpx
+                                    ),
+                                    child: Text(state.authorInfo.nickname,style: AppTextStyle.fs16b.copyWith(color: AppColor.blackBlue,height: 1.0),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                                  ),
+                                  Container(
+                                    height: 12.rpx,
+                                    padding: EdgeInsets.symmetric(horizontal: 4.rpx),
+                                    decoration: BoxDecoration(
+                                        color: state.authorInfo.gender.iconColor.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(14.rpx)
+                                    ),
+                                    margin: EdgeInsets.only(left: 4.rpx,right: 4.rpx),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        AppImage.asset(state.authorInfo.gender.icon ?? '',width: 8.rpx,height: 8.rpx),
+                                        SizedBox(width: 2.rpx,),
+                                        Text(
+                                          "${state.authorInfo.age ?? ''}",
+                                          style: AppTextStyle.fs10.copyWith(color: state.authorInfo.gender.index == 1 ? AppColor.primaryBlue:AppColor.textPurple,height: 1),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: state.authorInfo.position != null,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 4.rpx,vertical: 2.rpx),
+                                      decoration: BoxDecoration(
+                                          color: AppColor.primaryBlue.withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(14.rpx)
+                                      ),
+                                      child: Text("${(state.authorInfo.position?.length ?? 0) < 5 ?
+                                      state.authorInfo.position: state.authorInfo.position?.substring(0,5)}",
+                                        style: AppTextStyle.fs8m.copyWith(color: AppColor.primaryBlue),),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Visibility(
+                                  visible: state.authorInfo.nameplate.isNotEmpty,
+                                  child: AppImage.network(state.authorInfo.nameplate,width: 45.rpx,height: 12.rpx,fit: BoxFit.fitHeight,),
+                                ),
+                                SizedBox(width: 4.rpx,),
+                                Expanded(
+                                  child: SizedBox(
+                                    height: 20.rpx,
+                                    child: UserStyle(styleList: state.authorInfo.styleList,all: true,),
+                                  )),
+                              ],
                             ),
                           ],
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              )
+              ),
+              Visibility(
+                visible: 0 != state.authorInfo.type.value,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(state.userBasics.length, (i) {
+                    return SizedBox(
+                      height: 70.rpx,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text("${state.userBasics[i]['name']}",style: AppTextStyle.fs12.copyWith(color: AppColor.black92),),
+                          Row(
+                            children: [
+                              Obx(() {
+                                var fansNum = state.fansNum.value;
+                                return controller.basicsInfo(index: i);
+                              }),
+                              Visibility(
+                                visible: i==0,
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 4.rpx,top: 2.rpx),
+                                  child: OccupationWidget(occupation: UserOccupation.valueForIndex(state.authorInfo.occupation.index)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                ),
+              ),
+              Visibility(
+                visible: 0 != state.authorInfo.type.value,
+                child: Container(
+                  height: 1.rpx,
+                  margin: EdgeInsets.only(top: 8.rpx,bottom: 12.rpx),
+                  color: AppColor.scaffoldBackground,
+                ),
+              ),
+              Container(
+                alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(bottom: 12.rpx),
+                child: Text(S.current.userSignature,style: AppTextStyle.fs14b.copyWith(color: AppColor.blackBlue),),
+              ),
+              Obx(() => Stack(
+                children: [
+                  Container(
+                    constraints: BoxConstraints(
+                        minHeight: 54.rpx
+                    ),
+                    alignment: Alignment.topLeft,
+                    child: Text(state.authorInfo.signature?.fixAutoLines() ?? '',style: AppTextStyle.fs12.copyWith(color: AppColor.blackBlue,),maxLines: state.isShow.value ? 3 :  null,),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Visibility(
+                      visible: calculateTextWidth(context,state.authorInfo.signature ?? '') && state.isShow.value,
+                      child: GestureDetector(
+                        onTap: (){
+                          state.isShow.value = false;
+                        },
+                        behavior: HitTestBehavior.translucent,
+                        child: Container(
+                          height: 21.rpx,
+                          padding: EdgeInsets.only(left: 50.rpx,right: 14.rpx),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: const Alignment(-0.2, 0),
+                                colors: [
+                                  Colors.white.withOpacity(0),
+                                  Colors.white,
+                                ],
+                              )
+                          ),
+                          child: RichText(
+                            text: TextSpan(
+                              text: "... ",
+                              style: AppTextStyle.fs12.copyWith(color: AppColor.black20),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: S.current.readMore,
+                                  style: AppTextStyle.fs12.copyWith(color: AppColor.primaryBlue,height: 1.5),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              )),
+              Container(
+                height: 1.rpx,
+                margin: EdgeInsets.only(top: 12.rpx,bottom: 12.rpx),
+                color: AppColor.scaffoldBackground,
+              ),
             ],
-          )),
-          Container(
-            height: 1.rpx,
-            margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-            color: AppColor.scaffoldBackground,
           ),
-        ],
-      ),
+        ),
+        Positioned(
+          top: -2.rpx,
+          right: 16.rpx,
+          child: Visibility(
+            visible: SS.login.userId != state.authorId,
+            child: ObxValue((isAttentionRx) => GestureDetector(
+              onTap: ()=> controller.toggleAttention(state.authorId),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: controller.isAttentionRx.value ? AppColor.gray39 : AppColor.textPurple,
+                    borderRadius: BorderRadius.circular(26.rpx)
+                ),
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(top: 2.rpx),
+                padding: EdgeInsets.symmetric(horizontal: controller.isAttentionRx.value ? 8.rpx: 14.rpx,vertical: controller.isAttentionRx.value ? 3.rpx: 4.rpx),
+                child: Text(controller.isAttentionRx.value ? S.current.followed:S.current.attention,style: AppTextStyle.fs14r.copyWith(
+                    color: controller.isAttentionRx.value ? AppColor.grayText : Colors.white),),
+              ),
+            ),controller.isAttentionRx),
+          ),
+        )
+      ],
     );
   }
 
@@ -412,8 +471,8 @@ class UserCenterPage extends StatelessWidget {
       child: Container(
         color: Colors.white,
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.only(left: 16.rpx,bottom: 4.rpx),
-        child: Text(S.current.personalPost,style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue),),
+        padding: EdgeInsets.only(left: 16.rpx,bottom: 8.rpx),
+        child: Text(S.current.personalPost,style: AppTextStyle.fs14b.copyWith(color: AppColor.blackBlue),),
       ),
     );
   }
@@ -440,43 +499,16 @@ class UserCenterPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(S.current.talkToMe1v1,style: AppTextStyle.fs14.copyWith(color: AppColor.black666),),
+            Text(S.current.talkToMe1v1,style: AppTextStyle.fs12.copyWith(color: AppColor.black92),),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8.rpx),
-              child: Row(
-                children: [
-                  ChatCallButton(
-                    width: 60.rpx,
-                    height: 50.rpx,
-                    userId: state.authorId,
-                    isVideoCall: false,
-                    nickname: state.authorInfo.nickname,
-                    jumpToChatPage: true,
-                    child: Container(
-                      width: 60.rpx,
-                      margin: EdgeInsets.only(right: 8.rpx),
-                      child: CommonGradientButton(
-                        height: 50.rpx,
-                        text: "${S.current.realTime}\n${S.current.voice}",
-                        textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white,height: 1.18,),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ChatCallButton(
-                      height: 50.rpx,
-                      userId: state.authorId,
-                      isVideoCall: true,
-                      nickname: state.authorInfo.nickname,
-                      jumpToChatPage: true,
-                      child: CommonGradientButton(
-                        height: 50.rpx,
-                        text: S.current.video1V1Chat,
-                        textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white,),
-                      ),
-                    ),
-                  )
-                ],
+              child: CommonGradientButton(
+                height: 50.rpx,
+                text: S.current.findChat,
+                onTap: (){
+                  ChatManager().startChat(userId: state.authorId);
+                },
+                textStyle: AppTextStyle.fs16m.copyWith(color: Colors.white,),
               ),
             )
           ],

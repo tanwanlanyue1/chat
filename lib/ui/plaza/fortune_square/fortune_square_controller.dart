@@ -24,9 +24,8 @@ import '../dating_hall/dating_hall_controller.dart';
 import 'fortune_square_state.dart';
 
 class FortuneSquareController extends GetxController
-    with GetSingleTickerProviderStateMixin,GetAutoDisposeMixin, UserAttentionMixin{
+    with GetAutoDisposeMixin, UserAttentionMixin{
   final FortuneSquareState state = FortuneSquareState();
-  late TabController tabController;
   final controller = Get.find<RectifyTheWorkplaceController>();
 
   final pagingController = DefaultPagingController<PlazaListModel>(
@@ -38,7 +37,6 @@ class FortuneSquareController extends GetxController
 
   @override
   void onInit() {
-    tabController = TabController(length: state.communityTitle.length, vsync: this,);
     pagingController.addPageRequestListener(_fetchPage);
     autoDisposeWorker(
         EventBus().listen(kEventInvitationSuccess,(val){
@@ -54,9 +52,9 @@ class FortuneSquareController extends GetxController
     if(page == 1){
       pagingController.itemList?.clear();
     }
-    if(tabController.index == 1){
+    if(state.communityIndex.value == 1){
       myFollowListPage(page);
-    }else if(tabController.index == 2){
+    }else if(state.communityIndex.value == 2){
       myFetchPage(page);
     }else{
       getCommunityList(page: page);
@@ -127,7 +125,7 @@ class FortuneSquareController extends GetxController
       CommonBottomSheet(
         titles: more,
         onTap: (index) async {
-          if(tabController.index == 1){
+          if(state.communityIndex.value == 1){
             if(index == 0) {
               toggleAttention(item.uid!).then((value) => {
                 pagingController.onRefresh()
@@ -176,13 +174,7 @@ class FortuneSquareController extends GetxController
   ///评论信息
   void setComment(String str, int index) async {
     final itemList = List.of(pagingController.itemList!);
-    List<CommentListModel> comment = itemList[index].commentList ?? [];
-    comment.insert(0, CommentListModel.fromJson({
-          "content":str,
-          "nickname":SS.login.info?.nickname,
-    }));
     itemList[index] = itemList[index].copyWith(
-        commentList: comment,
         commentNum: (itemList[index].commentNum ?? 0) + 1
     );
     pagingController.itemList = itemList;

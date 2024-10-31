@@ -146,7 +146,7 @@ class FriendDatePage extends StatelessWidget {
                               constraints: BoxConstraints(
                                   maxWidth: (item.userInfo?.nameplate != null && item.userInfo!.nameplate.isNotEmpty) ? 130.rpx : 170.rpx,
                               ),
-                              child: Text('${item.userInfo?.nickname}'*5,style: AppTextStyle.fs16b.copyWith(color: AppColor.black20, height: 1),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              child: Text(item.userInfo?.nickname ?? '',style: AppTextStyle.fs16m.copyWith(color: AppColor.black20, height: 1),maxLines: 1,overflow: TextOverflow.ellipsis,),
                             ),
                             Container(
                               height: 12.rpx,

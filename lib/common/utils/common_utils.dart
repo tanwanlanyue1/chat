@@ -81,7 +81,7 @@ class CommonUtils {
       if (recordTime == null) {
         return '';
       }
-      var formate = DateFormats.full; //y_mo_d_h_m;
+      var formate = DateFormats.y_mo_d_h_m; //y_mo_d_h_m;
       if (hideYears) {
         formate = DateFormats.mo_d_h_m;
       }

@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/generated/l10n.dart';
 
@@ -11,4 +12,5 @@ class FortuneSquareState {
     S.current.myFocus,
     S.current.myPost,
   ];
+  final communityIndex = 0.obs;
 }

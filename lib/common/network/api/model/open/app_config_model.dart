@@ -14,6 +14,7 @@ class AppConfigModel {
     this.desc,
     this.matchingCountDown,
     this.styleList,
+    this.defaultStyle,
   });
 
   int? serverTime;
@@ -99,6 +100,8 @@ class AppConfigModel {
 
   List<LabelModel>? styleList;
 
+  LabelModel? defaultStyle;
+
 
   List<LabelModel> get commonStyleList {
     if (styleList == null) return [];
@@ -165,6 +168,9 @@ class AppConfigModel {
           styleList?.add(LabelModel.fromJson(v));
         }
       });
+    }
+    if (json['defaultStyle'] is Map) {
+      defaultStyle = LabelModel.fromJson(json['defaultStyle']);
     }
     desc = json['desc'];
     brokerageServiceTemplate = json['brokerageServiceTemplate'];

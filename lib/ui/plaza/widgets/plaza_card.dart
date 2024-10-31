@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -14,8 +15,10 @@ import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
+import 'package:guanjia/widgets/occupation_widget.dart';
 import 'package:guanjia/widgets/photo_view_gallery_page.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/widgets/user_style.dart';
 
 import '../../../common/network/api/model/talk_model.dart';
 import 'review_dialog.dart';
@@ -51,37 +54,30 @@ class PlazaCard extends StatelessWidget {
     }
   }
 
-  String? labelString(){
-    switch(item.type){
-      case 0:
-        return S.current.personage;
-      case 1:
-        return S.current.goodGirl;
-      case 2:
-        return S.current.brokerP;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(12.rpx),
-      color: Colors.white,
-      margin: margin ?? EdgeInsets.only(bottom: 4.rpx),
+      padding: EdgeInsets.symmetric(horizontal: 16.rpx),
+      margin: margin ?? EdgeInsets.only(bottom: 12.rpx),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _header(),
-          if(plazaIndex == 1)...[
-            _backImage(),
-            _buildBody(),
-          ],
-          if(!(plazaIndex == 1))...[
-            _buildBody(),
-            _imageViews(),
-          ],
-          _createBottom(),
-          _comment(),
+          Container(
+            margin: EdgeInsets.only(left: user ? 0 : 58.rpx),
+            child: Column(
+              children: [
+                _buildBody(),
+                _imageViews(),
+                _createBottom(),
+              ],
+            ),
+          ),
+          Container(
+            color: const Color(0xff999999).withOpacity(0.2),
+            height: 1.rpx,
+            margin: EdgeInsets.only(top: 12.rpx),
+          ),
         ],
       ),
     );
@@ -96,76 +92,80 @@ class PlazaCard extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item.uid},preventDuplicates: false);
+              Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item.uid});
             },
             child: AppImage.network(
               item.avatar ?? "",
-              width: 40.rpx,
-              height: 40.rpx,
+              width: 46.rpx,
+              height: 46.rpx,
               shape: BoxShape.circle,
             ),
           ),
-          SizedBox(width: 8.rpx),
+          SizedBox(width: 2.rpx),
           Expanded(
             child: SizedBox(
-              height: 42.rpx,
+              height: 46.rpx,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item.uid});
-                    },
-                    child: Text(
-                      "${item.nickname}",
-                      style: AppTextStyle.fs16m.copyWith(color: AppColor.black20),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                  Row(
+                    children: [
+                      Container(
+                        constraints: BoxConstraints(
+                          maxWidth: (item.nameplate != null && item.nameplate!.isNotEmpty) ? 130.rpx : 170.rpx,
+                        ),
+                        child: Text(item.nickname ?? '',style: AppTextStyle.fs16m.copyWith(color: AppColor.black20, height: 1.0),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                      ),
+                      Container(
+                        height: 12.rpx,
+                        padding: EdgeInsets.symmetric(horizontal: 4.rpx),
+                        decoration: BoxDecoration(
+                            color: UserGender.valueForIndex(item.gender ?? 0).iconColor.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(14.rpx)
+                        ),
+                        margin: EdgeInsets.only(left: 4.rpx,right: 4.rpx),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AppImage.asset(UserGender.valueForIndex(item.gender ?? 0).icon,width: 8.rpx,height: 8.rpx),
+                            SizedBox(width: 2.rpx,),
+                            Text(
+                              "${item.age ?? ''}",
+                              style: AppTextStyle.fs10.copyWith(color: UserGender.valueForIndex(item.gender ?? 0).index == 1 ? AppColor.primaryBlue:AppColor.textPurple,height: 1.0),
+                            ),
+                          ],
+                        ),
+                      ),
+                      OccupationWidget(occupation: UserOccupation.valueForIndex(item.occupation ?? 0)),
+                      Visibility(
+                        visible: item.nameplate != null && item.nameplate!.isNotEmpty,
+                        child: AppImage.network(item.nameplate ?? '',width: 45.rpx,height: 12.rpx,fit: BoxFit.fitHeight,),
+                      )
+                    ],
                   ),
                   Row(
                     children: [
-                      Visibility(
-                        visible: item.gender != 0,
+                      Expanded(
                         child: Container(
-                          margin: EdgeInsets.only(right: 8.rpx),
-                          child: Visibility(
-                            visible: item.gender == 2,
-                            replacement: AppImage.asset("assets/images/mine/man.png",width: 16.rpx,height: 16.rpx,),
-                            child: AppImage.asset("assets/images/mine/woman.png",width: 16.rpx,height: 16.rpx,),
-                          ),
+                            height: 20.rpx,
+                            margin: EdgeInsets.only(right: 8.rpx,top: 8.rpx),
+                            child: UserStyle(styleList: item.styleList,)
                         ),
                       ),
-                      Text('${item.age ?? ''}',style: AppTextStyle.fs12.copyWith(color: AppColor.black22),),
                       Visibility(
-                        visible: item.age != null,
-                        child: Container(
-                          width: 4.rpx,
-                          height: 4.rpx,
-                          margin: EdgeInsets.symmetric(horizontal: 8.rpx),
-                          decoration: const BoxDecoration(
-                            color: AppColor.black92,
-                            shape: BoxShape.circle,
-                          ),
+                        visible: SS.login.userId != item.uid! && !user,
+                        child: GestureDetector(
+                          onTap: (){
+                            ChatManager().startChat(userId: item.uid!);
+                          },
+                          child: AppImage.asset("assets/images/plaza/plaza_hi.png",width: 40.rpx,height: 28.rpx,),
                         ),
-                      ),
-                      Text("${labelString()}",style: AppTextStyle.fs12.copyWith(color: AppColor.black22),),
+                      )
                     ],
                   ),
                 ],
               ),
-            ),
-          ),
-          Visibility(
-            visible: plazaIndex! > 0,
-            child: GestureDetector(
-              child: AppImage.asset(
-                "assets/images/discover/more.png",
-                width: 20.rpx,
-                height: 20.rpx,
-              ),
-              onTap: () => more?.call(),
             ),
           ),
         ],
@@ -177,75 +177,11 @@ class PlazaCard extends StatelessWidget {
   Widget _buildBody(){
     return item.content != null && item.content!.isNotEmpty ?
     Container(
-        margin: EdgeInsets.only(top: user ? 0 : 10.rpx,bottom: 4.rpx),
+        margin: EdgeInsets.only(top: user ? 0 : 12.rpx,bottom: 12.rpx),
         alignment: Alignment.centerLeft,
         child: Text(
-          item.content!.fixAutoLines(),style: AppTextStyle.fs14.copyWith(color: AppColor.black20),maxLines: 6,overflow: TextOverflow.ellipsis,
+          item.content!.fixAutoLines(),style: AppTextStyle.fs14.copyWith(color: AppColor.black3,height: 1.5),
         )
-    ) :
-    Container();
-  }
-
-  ///关注轮播图
-  Widget _backImage(){
-    return item.images != null && jsonDecode(item.images).isNotEmpty?
-    Container(
-      height: 250.rpx,
-      margin: EdgeInsets.only(top: 12.rpx),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.rpx),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Swiper(
-        autoplay: jsonDecode(item.images).length > 1 ? true :false,
-        loop: true,
-        index: 2,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            foregroundDecoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0x00000000),
-                  Color(0x4D000000),
-                ],
-                begin: Alignment(0.0, 0.6),
-                end: Alignment.bottomCenter,
-              ),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(8.rpx),
-                bottomRight: Radius.circular(8.rpx),
-              ),
-            ),
-            child: AppImage.network(
-              jsonDecode(item.images)?[index],
-              width: Get.width,
-              height: 300.rpx,
-              fit: BoxFit.cover,
-            ),
-          );
-        },
-        itemCount: jsonDecode(item.images).length,
-        pagination: jsonDecode(item.images).length > 1 ?
-        SwiperPagination(
-            alignment:  Alignment.bottomCenter,
-            builder: DotSwiperPaginationBuilder(
-              color: const Color(0x80FFFFFF),
-              size: 8.rpx,
-              activeSize:8.rpx,
-              space: 8.rpx,
-              activeColor: Colors.white,
-            )
-        ):null,
-        onTap: (index) {
-          PhotoViewGalleryPage.show(
-              Get.context!,
-              PhotoViewGalleryPage(
-                images: jsonDecode(item.images ?? ''),
-                index: index,
-                heroTag: '',
-              ));
-        },
-      ),
     ) :
     Container();
   }
@@ -254,24 +190,31 @@ class PlazaCard extends StatelessWidget {
   Widget _imageViews() {
     return item.images != null && jsonDecode(item.images).isNotEmpty ?
     Container(
-      padding: EdgeInsets.only(bottom: 12.rpx,top: 10.rpx),
+      padding: EdgeInsets.only(bottom: 12.rpx),
       alignment: Alignment.centerLeft,
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: jsonDecode(item.images).length,
+        itemCount: jsonDecode(item.images).length > 3 ? 3 : jsonDecode(item.images).length,
         padding: EdgeInsets.zero,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 1,
-            mainAxisSpacing: 8.rpx,
-            mainAxisExtent: 109.rpx,
-            crossAxisSpacing: 8.rpx
+        gridDelegate: SliverQuiltedGridDelegate(
+          crossAxisCount: jsonDecode(item.images).length == 2 ? 2 : 3,
+          mainAxisSpacing: 5.rpx,
+          crossAxisSpacing: 5.rpx,
+          pattern: jsonDecode(item.images).length == 2 ?
+          [
+            const QuiltedGridTile(1, 1),
+            const QuiltedGridTile(1, 1),
+          ]:[
+            const QuiltedGridTile(2, 2),
+            const QuiltedGridTile(1, 1),
+            const QuiltedGridTile(1, 1),
+          ],
         ),
         itemBuilder: (_, int index) {
-          return Padding(
-            padding: EdgeInsets.only(left: 0.rpx),
-            child: GestureDetector(
+          return Stack(
+            children: [
+              GestureDetector(
                 onTap: () {
                   PhotoViewGalleryPage.show(
                       Get.context!,
@@ -285,12 +228,33 @@ class PlazaCard extends StatelessWidget {
                   memCacheHeight: Get.width/3,
                   memCacheWidth: Get.width/3,
                   fit: BoxFit.cover,
-                  borderRadius: BorderRadius.circular(4.rpx),
-                  placeholder:  AppImage.asset("assets/images/plaza/back_image.png",
+                  placeholder: AppImage.asset("assets/images/plaza/back_image.png",
                     fit: BoxFit.cover,
                   ),
-                )
-            ),
+                ),
+              ),
+              Visibility(
+                visible: index == 2,
+                child: Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    width: 35.rpx,
+                    height: 18.rpx,
+                    decoration: const BoxDecoration(
+                        color: Color(0x99000000)
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AppImage.asset("assets/images/plaza/plaza_img.png",width: 12.rpx,height: 12.rpx,),
+                        Text("+${jsonDecode(item.images).length}",style: AppTextStyle.fs12m.copyWith(color: Colors.white),)
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
           );
         },
       ),
@@ -304,14 +268,8 @@ class PlazaCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Visibility(
-          visible: user,
-          child: Text("${CommonUtils.getCommonTime(time: item.createTime,hideYears: true) }",style: TextStyle(color: Color(0xff999999),fontSize: 12.rpx),),
-        ),
-        Visibility(
-          visible: user,
-          child: const Spacer(),
-        ),
+        Text("${CommonUtils.getCommonTime(time: item.createTime,) }",style: TextStyle(color: const Color(0xff999999),fontSize: 12.rpx),),
+        const Spacer(),
         GestureDetector(
           onTap: (){
             getCommentLike();
@@ -319,7 +277,7 @@ class PlazaCard extends StatelessWidget {
           child: Container(
             color: Colors.transparent,
             height: 28.rpx,
-            margin: EdgeInsets.only(right: 24.rpx),
+            margin: EdgeInsets.only(right: 16.rpx),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -331,16 +289,15 @@ class PlazaCard extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: (){
-            ReviewDialog.show(
-                pid: item.postId!,
-                callBack: callBack,
-            );
+          onTap: ()async{
+            var res = await Get.toNamed(AppRoutes.allCommentsPage,arguments: {"postId": item.postId, "userId": item.uid});
+            if(res != null && res.isNotEmpty){
+              callBack?.call(res);
+            }
           },
           child: Container(
             color: Colors.transparent,
             height: 28.rpx,
-            padding: EdgeInsets.only(right: 4.rpx),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -355,94 +312,24 @@ class PlazaCard extends StatelessWidget {
           ),
         ),
         Visibility(
-          visible: !user,
-          child: const Spacer(),
-        ),
-        Visibility(
-          visible: SS.login.userId != item.uid! && !user,
-          child: Padding(
-            padding: EdgeInsets.only(left: 6.rpx),
-            child: CommonGradientButton(
-              width: 80.rpx,
-              height: 30.rpx,
-              text: S.current.initiateChat,
-              borderRadius: BorderRadius.circular(30.rpx),
-              onTap: (){
-                ChatManager().startChat(userId: item.uid!);
-              },
-              textStyle: AppTextStyle.fs14.copyWith(color: Colors.white),
+          visible: plazaIndex! > 0,
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            child: Container(
+              padding: EdgeInsets.only(left: 16.rpx),
+              child: AppImage.asset(
+                "assets/images/discover/more.png",
+                width: 16.rpx,
+                height: 16.rpx,
+              ),
             ),
+            onTap: () => more?.call(),
           ),
         ),
       ],
     );
   }
 
-  ///评论
-  Widget _comment(){
-    return item.commentList != null && item.commentList!.isNotEmpty?
-    Container(
-      decoration: BoxDecoration(
-        color: AppColor.scaffoldBackground,
-        borderRadius: BorderRadius.circular(8.rpx),
-      ),
-      padding: EdgeInsets.all(16.rpx),
-      margin: EdgeInsets.only(top: 8.rpx),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ...List.generate(item.commentList!.length > 2 ? 2 : item.commentList!.length, (index) {
-            CommentListModel commentList = item.commentList![index];
-            return Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: RichText(
-                    text: TextSpan(
-                      text: "${commentList.nickname}：",
-                      style: AppTextStyle.fs12m.copyWith(color: AppColor.black20,height: 1.5),
-                      children: [
-                        TextSpan(
-                            text: '${commentList.content}',
-                            style: AppTextStyle.fs12.copyWith(color: AppColor.black666,height: 1.5)
-                        ),
-                      ],
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Visibility(
-                  visible: index == 0 && (item.commentList?.length ?? 0) > 1,
-                  child: Container(
-                    height: 1.rpx,
-                    color: AppColor.gray99,
-                    margin: EdgeInsets.symmetric(vertical: 16.rpx),
-                  ),
-                )
-              ],
-            );
-          }),
-          Visibility(
-            visible: item.commentList!.length > 2,
-            child: GestureDetector(
-              onTap: () async {
-                var res = await Get.toNamed(AppRoutes.allCommentsPage,arguments: {"postId": item.postId, "userId": item.uid},preventDuplicates: false);
-                if(res != null && res.isNotEmpty){
-                  callBack?.call(res);
-                }
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: 12.rpx),
-                child: Text(S.current.seeAllReviews,style: AppTextStyle.fs12.copyWith(color: AppColor.gradientBegin),),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ):
-    Container();
-  }
 }
 
 

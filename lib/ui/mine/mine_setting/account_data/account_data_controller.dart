@@ -6,7 +6,6 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/model/user/area_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/ui/mine/avatar/avatar_controller.dart';
 import 'package:guanjia/widgets/label_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:guanjia/common/network/api/api.dart';
@@ -229,6 +228,7 @@ class AccountDataController extends GetxController with GetAutoDisposeMixin {
         state.labelItems.add(LabelItem(
           id: element.id,
           title: element.tag,
+          icon: element.icon,
           selected: idsList?.contains(element.id.toString()) ?? false,
         ));
       }

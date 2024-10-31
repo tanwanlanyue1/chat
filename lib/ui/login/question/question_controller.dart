@@ -86,6 +86,7 @@ class QuestionController extends GetxController {
       state.labelItems.add(LabelItem(
         id: element.id,
         title: element.tag,
+        icon: element.icon,
       ));
     }
 

@@ -15,6 +15,8 @@ import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:guanjia/widgets/gradient_range_slider_thumb.dart';
 import 'package:guanjia/widgets/input_widget.dart';
 import 'package:guanjia/widgets/label_widget.dart';
+import 'package:guanjia/widgets/style_tag_widget.dart';
+import 'package:guanjia/widgets/user_avatar.dart';
 
 import 'account_data_controller.dart';
 
@@ -50,12 +52,11 @@ class AccountDataPage extends StatelessWidget {
                   AccountDataItem(
                     onTap: controller.onTapAvatar,
                     title: S.current.userAvatar,
-                    height: 100.rpx,
-                    trailing: AppImage.network(
+                    height: 90.rpx,
+                    trailing: UserAvatar(
                       userInfo?.avatar ?? '',
                       borderRadius: BorderRadius.circular(4.rpx),
-                      width: 66.rpx,
-                      height: 66.rpx,
+                      size: 66.rpx,
                     ),
                   ),
                   _padding(),
@@ -69,7 +70,7 @@ class AccountDataPage extends StatelessWidget {
                       fillColor: Colors.transparent,
                       contentPadding: EdgeInsets.zero,
                       textStyle:
-                          AppTextStyle.fs16m.textColor(AppColor.blackBlue),
+                          AppTextStyle.fs14.textColor(AppColor.blackBlue),
                     ),
                   ),
                   _padding(),
@@ -91,7 +92,8 @@ class AccountDataPage extends StatelessWidget {
                             padding: FEdgeInsets(horizontal: 16.rpx),
                             child: Text(
                               S.current.cancel,
-                              style: AppTextStyle.fs14m.copyWith(color: AppColor.black999),
+                              style: AppTextStyle.fs14m
+                                  .copyWith(color: AppColor.black999),
                             ),
                           ),
                           commitButton: Padding(
@@ -152,13 +154,31 @@ class AccountDataPage extends StatelessWidget {
                   // likeAge
                   _columnWidget(
                     title: state.getLikeAgeTitle(info.type),
-                    detail: "${info.likeAgeMin}-${info.likeAgeMax}",
                     child: SizedBox(
                       height: 46.rpx,
                       child: Stack(
                         children: [
+                          // RangeSlider(
+                          //   min: state.ageMin.toDouble(),
+                          //   max: state.ageMax.toDouble(),
+                          //   divisions: state.ageMax - state.ageMin,
+                          //   values: RangeValues(
+                          //     info.likeAgeMin.toDouble(),
+                          //     info.likeAgeMax.toDouble(),
+                          //   ),
+                          //   labels: RangeLabels(
+                          //     info.likeAgeMin.round().toString(),
+                          //     info.likeAgeMax.round().toString(),
+                          //   ),
+                          //   onChanged: (value) {
+                          //     controller.onChangeLikeAge(
+                          //       value.start.toInt(),
+                          //       value.end.toInt(),
+                          //     );
+                          //   },
+                          // ),
                           SizedBox(
-                            height: 30.rpx,
+                            // height: 30.rpx,
                             child: SliderTheme(
                               data: SliderTheme.of(context).copyWith(
                                 rangeTrackShape: CustomRangeSliderTrackShape(),
@@ -166,6 +186,11 @@ class AccountDataPage extends StatelessWidget {
                                     GradientRangeSliderThumbShape(),
                               ),
                               child: RangeSlider(
+                                overlayColor: MaterialStateProperty.all(Colors.transparent),
+                                // labels: RangeLabels(
+                                //     info.likeAgeMin.toString(),
+                                //   info.likeAgeMax.toString(),
+                                // ),
                                 values: RangeValues(
                                   info.likeAgeMin.toDouble(),
                                   info.likeAgeMax.toDouble(),
@@ -221,26 +246,27 @@ class AccountDataPage extends StatelessWidget {
                     title: state.getStyleTitle(info.type),
                     child: SizedBox(
                       width: double.infinity,
-                      child: Wrap(
-                        spacing: 12.rpx,
-                        runSpacing: 12.rpx,
-                        children:
-                            List.generate(state.labelItems.length, (index) {
-                          return GetBuilder<AccountDataController>(
-                              builder: (controller) {
-                            final item = state.labelItems[index];
-                            return LabelWidget(
-                              onTap: () => controller.onTapLabel(item),
-                              item: item,
-                              selectedBackgroundColor: AppColor.primaryBlue,
-                              selectedTextColor: Colors.white,
-                              borderColor: AppColor.primaryBlue,
-                              textColor: AppColor.primaryBlue,
-                              borderRadius: BorderRadius.circular(4.rpx),
-                              height: 42.rpx,
-                            );
-                          });
-                        }),
+                      child: GetBuilder<AccountDataController>(
+                        builder: (controller) {
+                          return GridView.count(
+                            crossAxisCount: 3,
+                            childAspectRatio: 104 / 40,
+                            mainAxisSpacing: 8.rpx,
+                            crossAxisSpacing: 8.rpx,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            children: state.labelItems.map((item) {
+                              return StyleTagWidget(
+                                icon: item.icon,
+                                title: item.title,
+                                isSelected: item.selected,
+                                onChanged: (value) {
+                                  controller.onTapLabel(item);
+                                },
+                              );
+                            }).toList(),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -248,11 +274,10 @@ class AccountDataPage extends StatelessWidget {
                   _columnWidget(
                     title: S.current.userSignature,
                     child: Container(
-                      height: 150.rpx,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.rpx, vertical: 12.rpx),
+                      height: 130.rpx,
+                      padding: EdgeInsets.all(12.rpx),
                       decoration: BoxDecoration(
-                        color: AppColor.black9.withOpacity(0.1),
+                        color: AppColor.grayText.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8.rpx),
                       ),
                       child: InputWidget(
@@ -264,7 +289,8 @@ class AccountDataPage extends StatelessWidget {
                         textAction: TextInputAction.newline,
                         inputController: controller.signatureController,
                         contentPadding: EdgeInsets.zero,
-                        counterStyle: AppTextStyle.fs12.copyWith(color: AppColor.black999),
+                        counterStyle: AppTextStyle.fs12
+                            .copyWith(color: AppColor.black999),
                       ),
                     ),
                   ),
@@ -273,7 +299,7 @@ class AccountDataPage extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 16 .rpx).copyWith(
+              padding: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(
                   top: 14.rpx, bottom: 14.rpx + Get.mediaQuery.padding.bottom),
               decoration: BoxDecoration(color: Colors.white, boxShadow: [
                 BoxShadow(
@@ -306,13 +332,13 @@ class AccountDataPage extends StatelessWidget {
   }) {
     return Column(
       children: [
-        _padding(height: 36.rpx),
+        _padding(height: 32.rpx),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               title,
-              style: AppTextStyle.fs18m.textColor(AppColor.blackBlue),
+              style: AppTextStyle.fs16m.textColor(AppColor.blackBlue),
             ),
             if (detail != null)
               Text(
@@ -346,9 +372,7 @@ class AccountDataPage extends StatelessWidget {
             height: 20.rpx,
           ),
           SizedBox(width: 4.rpx),
-          Text(title,
-              style: AppTextStyle.fs14m
-                  .textColor(AppColor.blackBlue)),
+          Text(title, style: AppTextStyle.fs14m.textColor(AppColor.blackBlue)),
         ],
       ),
     );
@@ -360,18 +384,15 @@ class AccountDataPage extends StatelessWidget {
         : info.occupation == occupation;
 
     final String title;
-    final String normalPath;
-    final String selectPath;
+    final String icon;
     switch (occupation) {
       case UserOccupation.employees:
         title = S.current.employees;
-        normalPath = "assets/images/mine/job_worker_normal.png";
-        selectPath = "assets/images/mine/job_worker_select.png";
+        icon = "assets/images/mine/job_worker.png";
         break;
       case UserOccupation.student:
         title = S.current.student;
-        normalPath = "assets/images/mine/job_student_normal.png";
-        selectPath = "assets/images/mine/job_student_select.png";
+        icon = "assets/images/mine/job_student.png";
         break;
       default:
         throw Exception("occupation is not exit");
@@ -380,22 +401,35 @@ class AccountDataPage extends StatelessWidget {
     return GestureDetector(
       onTap: () => controller.onTapOccupation(occupation, info),
       behavior: HitTestBehavior.opaque,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          AppImage.asset(
-            isSelect ? selectPath : normalPath,
-            width: 60.rpx,
-            height: 60.rpx,
-          ),
-          SizedBox(height: 8.rpx),
-          Text(
-            title,
-            style: AppTextStyle.fs12m
-                .textColor(AppColor.blackBlue)
-                .copyWith(height: 1),
-          ),
-        ],
+      child: Container(
+        width: 83.rpx,
+        height: 83.rpx,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.rpx),
+          border: Border.all(
+              color: isSelect
+                  ? AppColor.primaryBlue
+                  : AppColor.primaryBlue.withOpacity(0.1),
+              width: 1.5),
+          color: isSelect ? AppColor.primaryBlue.withOpacity(0.04) : null,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AppImage.asset(
+              icon,
+              width: 40.rpx,
+              height: 40.rpx,
+            ),
+            SizedBox(height: 8.rpx),
+            Text(
+              title,
+              style: AppTextStyle.fs14
+                  .textColor(AppColor.blackBlue)
+                  .copyWith(height: 1),
+            ),
+          ],
+        ),
       ),
     );
   }

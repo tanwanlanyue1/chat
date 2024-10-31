@@ -8,11 +8,13 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 class LabelItem {
   final int id;
   final String title;
+  final String icon;
   bool selected;
 
   LabelItem({
     required this.id,
     required this.title,
+    required this.icon,
     this.selected = false,
   });
 }

@@ -27,17 +27,22 @@ class AccountDataItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     detailWidget() {
+      final text = detail ?? detailHintText ?? "";
       return Text(
-        detail ?? detailHintText ?? "",
-        style: AppTextStyle.fs14m
-            .textColor(detail != null ? AppColor.blackBlue : AppColor.black9),
+        text,
+        style: detail == null
+            ? AppTextStyle.fs14.copyWith(color: AppColor.black9)
+            : AppTextStyle.fs14.copyWith(
+                color: AppColor.blackBlue,
+              ),
       );
     }
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.rpx),
-      height: autoHeight ? null : height ?? 60.rpx,
+      padding: EdgeInsets.symmetric(horizontal: 12.rpx),
+      height: autoHeight ? null : height ?? 52.rpx,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8.rpx),
@@ -52,8 +57,7 @@ class AccountDataItem extends StatelessWidget {
           children: [
             Text(
               title ?? "",
-              style: AppTextStyle.fs14m
-                  .textColor(AppColor.tab),
+              style: AppTextStyle.fs14.textColor(AppColor.tab),
             ),
             SizedBox(width: 8.rpx),
             Expanded(

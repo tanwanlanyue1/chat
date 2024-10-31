@@ -68,7 +68,7 @@ class CommonGradientButton extends StatelessWidget {
         child: widget ??
             Text(
               text ?? "",
-              style: textStyle ?? AppTextStyle.fs16m.textColor(Colors.white),
+              style: textStyle ?? AppTextStyle.fs16.textColor(Colors.white),
             ),
       ),
     );

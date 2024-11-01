@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
+import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/generated/l10n.dart';
@@ -14,7 +16,7 @@ import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:guanjia/widgets/gradient_range_slider_thumb.dart';
 import 'package:guanjia/widgets/input_widget.dart';
-import 'package:guanjia/widgets/label_widget.dart';
+import 'package:guanjia/widgets/range_slider_bar.dart';
 import 'package:guanjia/widgets/style_tag_widget.dart';
 import 'package:guanjia/widgets/user_avatar.dart';
 
@@ -154,79 +156,16 @@ class AccountDataPage extends StatelessWidget {
                   // likeAge
                   _columnWidget(
                     title: state.getLikeAgeTitle(info.type),
-                    child: SizedBox(
-                      height: 46.rpx,
-                      child: Stack(
-                        children: [
-                          // RangeSlider(
-                          //   min: state.ageMin.toDouble(),
-                          //   max: state.ageMax.toDouble(),
-                          //   divisions: state.ageMax - state.ageMin,
-                          //   values: RangeValues(
-                          //     info.likeAgeMin.toDouble(),
-                          //     info.likeAgeMax.toDouble(),
-                          //   ),
-                          //   labels: RangeLabels(
-                          //     info.likeAgeMin.round().toString(),
-                          //     info.likeAgeMax.round().toString(),
-                          //   ),
-                          //   onChanged: (value) {
-                          //     controller.onChangeLikeAge(
-                          //       value.start.toInt(),
-                          //       value.end.toInt(),
-                          //     );
-                          //   },
-                          // ),
-                          SizedBox(
-                            // height: 30.rpx,
-                            child: SliderTheme(
-                              data: SliderTheme.of(context).copyWith(
-                                rangeTrackShape: CustomRangeSliderTrackShape(),
-                                rangeThumbShape:
-                                    GradientRangeSliderThumbShape(),
-                              ),
-                              child: RangeSlider(
-                                overlayColor: MaterialStateProperty.all(Colors.transparent),
-                                // labels: RangeLabels(
-                                //     info.likeAgeMin.toString(),
-                                //   info.likeAgeMax.toString(),
-                                // ),
-                                values: RangeValues(
-                                  info.likeAgeMin.toDouble(),
-                                  info.likeAgeMax.toDouble(),
-                                ),
-                                min: state.ageMin.toDouble(),
-                                max: state.ageMax.toDouble(),
-                                onChanged: (value) {
-                                  controller.onChangeLikeAge(
-                                      value.start.toInt(), value.end.toInt());
-                                },
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  state.ageMin.toString(),
-                                  style: AppTextStyle.st.medium
-                                      .size(14.rpx)
-                                      .textColor(AppColor.black9)
-                                      .textHeight(1),
-                                ),
-                                Text(
-                                  state.ageMax.toString(),
-                                  style: AppTextStyle.st.medium
-                                      .size(14.rpx)
-                                      .textColor(AppColor.black9)
-                                      .textHeight(1),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                    child: Padding(
+                      padding: FEdgeInsets(top: 16.rpx),
+                      child: RangeSliderBar(
+                        leftValue: info.likeAgeMin.toDouble(),
+                        rightValue: info.likeAgeMax.toDouble(),
+                        min: state.ageMin.toDouble(),
+                        max: state.ageMax.toDouble(),
+                        onDragging: (lowerValue, upperValue) {
+                          controller.onChangeLikeAge(lowerValue.toInt(), upperValue.toInt());
+                        },
                       ),
                     ),
                   ),

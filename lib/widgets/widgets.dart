@@ -21,3 +21,4 @@ export 'foreground_gradient_mask.dart';
 export 'highlight_text.dart';
 export 'user_avatar.dart';
 export 'occupation_widget.dart';
+export 'range_slider_bar.dart';

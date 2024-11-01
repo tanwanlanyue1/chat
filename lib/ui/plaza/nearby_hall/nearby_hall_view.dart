@@ -27,30 +27,25 @@ class NearbyHallView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Stack(
-        children: [
-          SmartRefresher(
-            controller: controller.pagingController.refreshController,
-            onRefresh: controller.pagingController.onRefresh,
-            child: PagedGridView(
-              pagingController: controller.pagingController,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 9.rpx,
-                  mainAxisSpacing: 9.rpx,
-                  mainAxisExtent: 220.rpx
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 16.rpx),
-              builderDelegate: DefaultPagedChildBuilderDelegate<RecommendModel>(
-                pagingController: controller.pagingController,
-                itemBuilder: (_, item, index) {
-                  return nearbyItem(item);
-                },
-              ),
-            ),
+      body: SmartRefresher(
+        controller: controller.pagingController.refreshController,
+        onRefresh: controller.pagingController.onRefresh,
+        child: PagedGridView(
+          pagingController: controller.pagingController,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 9.rpx,
+              mainAxisSpacing: 9.rpx,
+              mainAxisExtent: 220.rpx
           ),
-          GroundGlass(),
-        ],
+          padding: EdgeInsets.symmetric(horizontal: 16.rpx),
+          builderDelegate: DefaultPagedChildBuilderDelegate<RecommendModel>(
+            pagingController: controller.pagingController,
+            itemBuilder: (_, item, index) {
+              return nearbyItem(item);
+            },
+          ),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: filtrateMap(),

@@ -17,11 +17,13 @@ class VipPackageListTile extends StatelessWidget {
   final VipPackageModel item;
   final VoidCallback? onTap;
   final bool isSelected;
+  final bool showDialog;
 
   const VipPackageListTile({
     super.key,
     required this.item,
     this.isSelected = false,
+    this.showDialog = false,
     this.onTap,
   });
 
@@ -50,7 +52,7 @@ class VipPackageListTile extends StatelessWidget {
                     ),
                     child: Text(
                       item.durationText,
-                      style: AppTextStyle.fs12m.copyWith(
+                      style: AppTextStyle.fs12.copyWith(
                         color: isSelected ? Colors.white : AppColor.grayText,
                         height: 1,
                       ),
@@ -80,7 +82,7 @@ class VipPackageListTile extends StatelessWidget {
                           item.discountPrice != 0
                               ? item.discountPrice.toString()
                               : item.price.toString(),
-                          style: AppTextStyle.fs24m.copyWith(
+                          style: AppTextStyle.fs24.copyWith(
                             color: isSelected ? Colors.white : AppColor.black3,
                             height: 1.0,
                           ),
@@ -104,7 +106,7 @@ class VipPackageListTile extends StatelessWidget {
               ],
             ),
           ),
-          if ((item.discount == 1))
+          if ((item.discount == 1) && !showDialog)
             Positioned(
               top: 0,
               left: 0,
@@ -164,7 +166,7 @@ class VipPackageListTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(radius - 1),
         ),
         child: Container(
-          padding: FEdgeInsets(top: 16.rpx),
+          padding: FEdgeInsets(top: showDialog ? 8.rpx : 16.rpx),
           decoration: isSelected
               ? BoxDecoration(
                   borderRadius: BorderRadius.circular(radius - 1),

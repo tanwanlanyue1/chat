@@ -61,5 +61,12 @@ class AppConfigService extends GetxService {
         }
       }
     }
+
+    final vipRes = await VipApi.getVipIndex();
+    if (vipRes.isSuccess) {
+      configRx.update((val) {
+        val?.vipInfo = vipRes.data;
+      });
+    }
   }
 }

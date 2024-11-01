@@ -40,6 +40,7 @@ class DiscoverPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           centerTitle: false,
+          systemOverlayStyle: SystemUI.lightStyle,
           title: TabBar(
             splashFactory: NoSplash.splashFactory,
             controller: controller.tabController,

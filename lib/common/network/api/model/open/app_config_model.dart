@@ -1,3 +1,5 @@
+import 'package:guanjia/common/network/api/model/user/vip_model.dart';
+
 class AppConfigModel {
   AppConfigModel({
     this.serverTime,
@@ -102,6 +104,9 @@ class AppConfigModel {
 
   LabelModel? defaultStyle;
 
+  ///vip的信息
+  VipModel? vipInfo;
+
 
   List<LabelModel> get commonStyleList {
     if (styleList == null) return [];
@@ -171,6 +176,9 @@ class AppConfigModel {
     }
     if (json['defaultStyle'] is Map) {
       defaultStyle = LabelModel.fromJson(json['defaultStyle']);
+    }
+    if (json['vipInfo'] is Map) {
+      vipInfo = VipModel.fromJson(json['vipInfo']);
     }
     desc = json['desc'];
     brokerageServiceTemplate = json['brokerageServiceTemplate'];

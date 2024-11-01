@@ -68,6 +68,10 @@ class Benefit {
     required this.subTitle,
     required this.icon,
     required this.count,
+    required this.bigIcon,
+    required this.color,
+    required this.bigTitle,
+    required this.bigSubTitle,
   });
 
   final int type; // 权益类型
@@ -75,6 +79,10 @@ class Benefit {
   final String subTitle; // 权益副标题
   final String icon; // 权益图标
   final int count; // 权益次数 0=不限
+  final String bigIcon; // 背景图标
+  final String color; // 背景颜色
+  final String bigTitle; // 权益背景标题
+  final String bigSubTitle; // 权益背景副标题
 
   factory Benefit.fromJson(Map<String, dynamic> json) {
     return Benefit(
@@ -83,6 +91,10 @@ class Benefit {
       subTitle: json["subTitle"] ?? "",
       icon: json["icon"] ?? "",
       count: json["count"] ?? 0,
+      bigIcon: json["bigIcon"] ?? "",
+      color: json["color"] ?? "",
+      bigTitle: json["bigTitle"] ?? "",
+      bigSubTitle: json["bigSubTitle"] ?? "",
     );
   }
 
@@ -92,6 +104,10 @@ class Benefit {
         "subTitle": subTitle,
         "icon": icon,
         "count": count,
+        "bigIcon": bigIcon,
+        "color": color,
+        "bigTitle": bigTitle,
+        "bigSubTitle": bigSubTitle,
       };
 }
 
@@ -112,7 +128,7 @@ class VipPackageModel {
   final int duration; // 开通时长(月)
   final int discount; // 优惠 0无优惠 1限时特惠
   final String title; // 标题
-  final String nameplate; // VIP标志
+  final String nameplate; // vip图标
 
   String get durationText => S.current.entriesMonth(duration);
 

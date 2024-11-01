@@ -74,9 +74,7 @@ class _PlazaPageState extends State<PlazaPage>
           indicator: const BoxDecoration(),
           indicatorPadding: EdgeInsets.only(top: 24.rpx,right: 38.rpx,left: 4.rpx),
           labelPadding: EdgeInsets.only(bottom: 0.rpx),
-          onTap: (val){
-            state.tabIndex.value = val;
-          },
+          onTap: (val)=> controller.onTapTab(val),
           tabs: List.generate(state.tabBarList.length, (index) {
             return Container(
               margin: EdgeInsets.only(right: 32.rpx),

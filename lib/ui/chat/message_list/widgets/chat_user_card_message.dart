@@ -195,9 +195,10 @@ class ChatUserCardMessage extends StatelessWidget {
                   .separated(Spacing.w(6))
                   .toList(),
             ),
-            if(signature.isNotEmpty) Padding(
+            if(signature.isNotEmpty) Container(
               padding: FEdgeInsets(top: urls.isNotEmpty ? 8.rpx : 0),
-              child: Text(signature),
+              constraints: BoxConstraints(maxWidth: 230.rpx),
+              child: Text(signature, style: const TextStyle(height: 1.3)),
             ),
           ],
         )

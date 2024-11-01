@@ -14,12 +14,14 @@ class StyleTagWidget extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.isSelected,
+    this.filtrate = false,
     this.onChanged,
   });
 
   final String icon;
   final String title;
   final bool isSelected;
+  final bool filtrate;//筛选
   final ValueChanged<bool>? onChanged;
 
   @override
@@ -32,9 +34,12 @@ class StyleTagWidget extends StatelessWidget {
         alignment: Alignment.center,
         decoration: ShapeDecoration(
           shape: const StadiumBorder(),
-          color: isSelected
+          color: filtrate ? (isSelected
               ? AppColor.primaryBlue
-              : AppColor.black999.withOpacity(0.1),
+              : Colors.white):
+          (isSelected
+              ? AppColor.primaryBlue
+              : AppColor.black999.withOpacity(0.1)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

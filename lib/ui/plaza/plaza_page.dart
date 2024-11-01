@@ -66,7 +66,7 @@ class _PlazaPageState extends State<PlazaPage>
       child: ObxValue((tabIndexRx){
         return TabBar(
           controller: controller.tabController,
-          labelStyle: AppTextStyle.fs24,
+          labelStyle: AppTextStyle.fs22b,
           labelColor: tabIndexRx.value == 2 ? AppColor.black3:Colors.white,
           unselectedLabelColor: tabIndexRx.value == 2 ? AppColor.black6:Colors.white.withOpacity(0.6),
           unselectedLabelStyle: AppTextStyle.fs16,
@@ -74,7 +74,7 @@ class _PlazaPageState extends State<PlazaPage>
           indicator: const BoxDecoration(),
           indicatorPadding: EdgeInsets.only(top: 24.rpx,right: 38.rpx,left: 4.rpx),
           labelPadding: EdgeInsets.only(bottom: 0.rpx),
-          onTap: (val)=> controller.onTapTab(val),
+          onTap: (val)=> controller.onTapTab(val,),
           tabs: List.generate(state.tabBarList.length, (index) {
             return Container(
               margin: EdgeInsets.only(right: 32.rpx),

@@ -37,13 +37,19 @@ class RectifyTheWorkplaceState {
   List filtrateType = [
     {
       "name": S.current.questionMan,
-      "image":"assets/images/plaza/man_no.png",
       "activeImage":"assets/images/plaza/man.png",
+      "type": 1,
     },
     {
       "name": S.current.questionWoman,
-      "image":"assets/images/plaza/woman_no.png",
       "activeImage":"assets/images/plaza/woman.png",
+      "type": 2,
+    },
+    {
+      "name": S.current.all,
+      "image":"assets/images/plaza/man.png",
+      "activeImage":"assets/images/plaza/woman.png",
+      "type": 0,
     },
   ];
   final int ageMin = 16;

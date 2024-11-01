@@ -33,13 +33,9 @@ class PlazaController extends GetxController with GetSingleTickerProviderStateMi
   }
 
   void onTapTab(int val){
-    if(val == 1 ){
-    // if(val == 1 && !SS.login.isVip){
-      GroundGlass.show(
-        // callBack: (){
-        //   state.tabIndex.value = val;
-        // }
-      );
+     if(val == 1 && !SS.login.isVip){
+      tabController.animateTo(state.tabIndex.value);
+      GroundGlass.show();
     }else{
       state.tabIndex.value = val;
     }

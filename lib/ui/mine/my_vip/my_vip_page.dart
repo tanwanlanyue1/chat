@@ -436,7 +436,7 @@ class MyVipPage extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 120.rpx,
+            height: 128.rpx,
             child: ListView.separated(
               padding: FEdgeInsets.zero,
               scrollDirection: Axis.horizontal,

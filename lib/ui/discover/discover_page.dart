@@ -40,12 +40,13 @@ class DiscoverPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           centerTitle: false,
+          systemOverlayStyle: SystemUI.lightStyle,
           title: TabBar(
             splashFactory: NoSplash.splashFactory,
             controller: controller.tabController,
-            labelStyle: AppTextStyle.fs22.copyWith(fontWeight: FontWeight.w600),
+            labelStyle: AppTextStyle.fs22b,
             labelColor: Colors.white,
-            unselectedLabelStyle: AppTextStyle.fs16m,
+            unselectedLabelStyle: AppTextStyle.fs16,
             unselectedLabelColor: Colors.white.withOpacity(0.6),
             isScrollable: true,
             labelPadding: FEdgeInsets.zero,

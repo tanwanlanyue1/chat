@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/ground_glass.dart';
 import 'plaza_state.dart';
 
 class PlazaController extends GetxController with GetSingleTickerProviderStateMixin {
@@ -29,6 +30,15 @@ class PlazaController extends GetxController with GetSingleTickerProviderStateMi
     SS.location.reportPosition();
     tabController = TabController(length: state.tabBarList.length, vsync: this,initialIndex: state.tabIndex.value);
     super.onInit();
+  }
+
+  void onTapTab(int val){
+     if(val == 1 && !SS.login.isVip){
+      tabController.animateTo(state.tabIndex.value);
+      GroundGlass.show();
+    }else{
+      state.tabIndex.value = val;
+    }
   }
 
 }

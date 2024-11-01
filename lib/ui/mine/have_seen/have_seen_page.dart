@@ -9,7 +9,6 @@ import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/mine/widgets/client_card.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';
-import 'package:guanjia/widgets/ground_glass.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -42,12 +41,7 @@ class HaveSeenPage extends StatelessWidget {
         ),
       ),
       backgroundColor: AppColor.grayF7,
-      body: Stack(
-        children: [
-          buildClient(),
-          GroundGlass(),
-        ],
-      ),
+      body: buildClient(),
     );
   }
 

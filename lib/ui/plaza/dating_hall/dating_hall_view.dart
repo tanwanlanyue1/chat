@@ -103,12 +103,12 @@ class DatingHallView extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 8.rpx,bottom: 12.rpx),
+          margin: EdgeInsets.symmetric(horizontal: 16.rpx).copyWith(top: 4.rpx,bottom: 12.rpx),
           child: Row(
             children: [
               Text(
                 S.current.datingHall,
-                style: AppTextStyle.fs18.copyWith(color: AppColor.black20),
+                style: AppTextStyle.fs18.copyWith(color: AppColor.black20,height: 1.0),
               ),
               const Spacer(),
               GestureDetector(

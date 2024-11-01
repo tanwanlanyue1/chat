@@ -18,6 +18,7 @@ import 'package:guanjia/ui/map/map_page.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:guanjia/ui/plaza/widgets/filtrate_bottom_sheet.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
+import 'package:guanjia/widgets/ground_glass.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../dating_hall/dating_hall_controller.dart';
@@ -217,10 +218,14 @@ class FortuneSquareController extends GetxController
 
   ///设置地址
   void setLocation() async {
-    PlaceModel? data = await MapPage.go(title: S.current.selectLocation);
-    if(data != null){
-      state.location = '${data.geometry?.location?.lng},${data.geometry?.location?.lat}';
-      pagingController.onRefresh();
+    if(SS.login.isVip){
+      PlaceModel? data = await MapPage.go(title: S.current.selectLocation);
+      if(data != null){
+        state.location = '${data.geometry?.location?.lng},${data.geometry?.location?.lat}';
+        pagingController.onRefresh();
+      }
+    }else{
+      GroundGlass.show();
     }
   }
 }

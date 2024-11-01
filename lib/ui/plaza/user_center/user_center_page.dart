@@ -257,19 +257,19 @@ class UserCenterPage extends StatelessWidget {
                       alignment: Alignment.center,
                       child: AppImage.network(
                         state.authorInfo.avatar ?? '',
-                        width: 50.rpx,
-                        height: 50.rpx,
+                        width: 52.rpx,
+                        height: 52.rpx,
                         shape: BoxShape.circle,
                       ),
                     ),
                     Expanded(
                       child: SizedBox(
-                        height: 50.rpx,
+                        height: 52.rpx,
                         child: Column(
                           children: [
                             Container(
                               height: 16.rpx,
-                              margin: EdgeInsets.only(top: 2.rpx,bottom: 10.rpx),
+                              margin: EdgeInsets.only(top: 2.rpx,bottom: 12.rpx),
                               child: Row(
                                 children: [
                                   Container(
@@ -440,7 +440,7 @@ class UserCenterPage extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: -2.rpx,
+          top: 1.rpx,
           right: 16.rpx,
           child: Visibility(
             visible: SS.login.userId != state.authorId,
@@ -452,7 +452,6 @@ class UserCenterPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(26.rpx)
                 ),
                 alignment: Alignment.center,
-                margin: EdgeInsets.only(top: 2.rpx),
                 padding: EdgeInsets.symmetric(horizontal: controller.isAttentionRx.value ? 8.rpx: 14.rpx,vertical: controller.isAttentionRx.value ? 3.rpx: 4.rpx),
                 child: Text(controller.isAttentionRx.value ? S.current.followed:S.current.attention,style: AppTextStyle.fs14r.copyWith(
                     color: controller.isAttentionRx.value ? AppColor.grayText : Colors.white),),

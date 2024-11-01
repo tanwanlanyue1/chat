@@ -15,6 +15,7 @@ import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/ui/mine/widgets/beautiful_status_tips.dart';
 import 'package:guanjia/ui/mine/widgets/mine_list_tile.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/ground_glass.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -413,8 +414,14 @@ class _MinePageState extends State<MinePage>
           MineListTile(
             title: S.current.whoSeenMe,
             icon: "assets/images/mine/examine.png",
-            pagePath: AppRoutes.haveSeenPage,
             badge: SS.appConfig.configRx.value?.lookMessage,
+            onTap: (){
+              if(SS.login.isVip){
+                Get.toNamed(AppRoutes.haveSeenPage);
+              }else{
+                GroundGlass.show();
+              }
+            },
           ),
           //修改服务费
           if (userType.isBeauty)

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -7,6 +8,8 @@ import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/gradient_range_slider_thumb.dart';
+import 'package:guanjia/widgets/range_slider_bar.dart';
+import 'package:guanjia/widgets/style_tag_widget.dart';
 
 import '../dating_hall/dating_hall_controller.dart';
 
@@ -24,10 +27,19 @@ class FiltrateBottomSheet extends StatelessWidget {
         return Container(
           padding: EdgeInsets.all(16.rpx).copyWith(bottom: Get.mediaQuery.padding.bottom+24.rpx),
           decoration: BoxDecoration(
-            color: Colors.white,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(14.rpx),
-              topRight: Radius.circular(14.rpx),
+              topLeft: Radius.circular(12.rpx),
+              topRight: Radius.circular(12.rpx),
+            ),
+            gradient: const LinearGradient(
+              colors: [
+                Color(0xffEEF1FB),
+                Color(0xffEFF0FB),
+                Color(0xffF9F3FA),
+                Color(0xffF9F3FA),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight
             ),
           ),
           child: Column(
@@ -40,31 +52,46 @@ class FiltrateBottomSheet extends StatelessWidget {
                 },
                 child: Container(
                   alignment: Alignment.centerRight,
-                  child: AppImage.asset('assets/images/common/close.png',width: 24.rpx,height: 24.rpx,),
+                  child: AppImage.asset('assets/images/common/close.png',width: 20.rpx,height: 20.rpx,color: AppColor.black92,),
                 ),
               ),
-              Text(S.current.wantToSee,style: AppTextStyle.fs18.copyWith(color: AppColor.blackBlue,fontWeight: FontWeight.w700),),
+              Text("您希望Ta是",style: AppTextStyle.fs20b.copyWith(color: AppColor.blackBlue),),
               SizedBox(height: 16.rpx),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(state.filtrateType.length, (index) => GestureDetector(
                   onTap: (){
                     if(state.filtrateIndex == index+1){
                       state.filtrateIndex = -1;
                     }else{
-                      state.filtrateIndex = index+1;
+                      state.filtrateIndex = state.filtrateType[index]['type'];
                     }
                     controller.additionLabel();
                   },
-                  child: Column(
-                    children: [
-                      AppImage.asset(state.filtrateIndex == index+1 ?
-                      state.filtrateType[index]['activeImage']:state.filtrateType[index]['image'],width: 60.rpx,height: 60.rpx,),
-                      Padding(
-                        padding: EdgeInsets.only(top: 8.rpx),
-                        child: Text(state.filtrateType[index]['name'],style: AppTextStyle.fs14.copyWith(color: AppColor.gray5, height: 1),),
-                      ),
-                    ],
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.rpx),
+                      border: Border.all(width: 1.rpx,color: AppColor.primaryBlue.withOpacity(state.filtrateIndex == state.filtrateType[index]['type'] ? 1 : 0.1))
+                    ),
+                    width: 90.rpx,
+                    height: 90.rpx,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AppImage.asset(state.filtrateType[index]['activeImage'],width: index == 2 ? 36.rpx : 40.rpx,height: index == 2 ? 36.rpx : 40.rpx,),
+                            if(index == 2)
+                            AppImage.asset(state.filtrateType[index]['image'],width: 36.rpx,height: 36.rpx,),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 8.rpx),
+                          child: Text(state.filtrateType[index]['name'],style: AppTextStyle.fs14.copyWith(color: AppColor.black20, height: 1),),
+                        ),
+                      ],
+                    ),
                   ),
                 )),
               ),
@@ -72,52 +99,24 @@ class FiltrateBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-                    child: Text(S.current.userAge,style: AppTextStyle.fs18.copyWith(color: AppColor.blackBlue,fontWeight: FontWeight.w700),),
-                  ),
-                  Obx(() => Container(
-                    margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-                    child: Text("${state.info?.value.likeAgeMin}-${state.info?.value.likeAgeMax}",style: AppTextStyle.fs16.copyWith(color: AppColor.gray5,fontWeight: FontWeight.w700),),
-                  )),
-                ],
-              ),
-              SizedBox(
-                height: 32.rpx,
-                child: SliderTheme(
-                  data: SliderTheme.of(context).copyWith(
-                    rangeTrackShape: CustomRangeSliderTrackShape(),
-                    rangeThumbShape: GradientRangeSliderThumbShape(),
-                  ),
-                  child: Obx(() => RangeSlider(
-                    values: RangeValues(
-                      state.info?.value.likeAgeMin.toDouble() ?? 20.0,
-                      state.info?.value.likeAgeMax.toDouble() ?? 40.0,
-                    ),
-                    min: state.ageMin.toDouble(),
-                    max: state.ageMax.toDouble(),
-                    onChanged: (value) {
-                      controller.onChangeLikeAge(
-                          value.start.toInt(), value.end.toInt());
-                    },
-                  )),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    state.ageMin.toString(),
-                    style: AppTextStyle.fs14.copyWith(color: AppColor.black9),
-                  ),
-                  Text(
-                      state.ageMax.toString(),
-                      style: AppTextStyle.fs14.copyWith(color: AppColor.black9)
+                    margin: EdgeInsets.only(top: 24.rpx,bottom: 24.rpx),
+                    child: Text(S.current.userAge,style: AppTextStyle.fs14.copyWith(color: AppColor.black92),),
                   ),
                 ],
               ),
               Container(
+                height: 32.rpx,
+                margin: EdgeInsets.symmetric(horizontal: 12.rpx),
+                child: RangeSliderBar(
+                  min: state.ageMin.toDouble(),
+                  max: state.ageMax.toDouble(),
+                  leftValue: state.info?.value.likeAgeMin.toDouble() ?? 20.0,
+                  rightValue: state.info?.value.likeAgeMax.toDouble() ?? 40.0,
+                ),
+              ),
+              Container(
                 margin: EdgeInsets.only(top: 24.rpx,bottom: 16.rpx),
-                child: Text(S.current.preferredStyle,style: AppTextStyle.fs18.copyWith(color: AppColor.blackBlue,fontWeight: FontWeight.w700),),
+                child: Text(S.current.preferredStyle,style: AppTextStyle.fs14.copyWith(color: AppColor.black92),),
               ),
               GridView.builder(
                 shrinkWrap: true,
@@ -131,17 +130,12 @@ class FiltrateBottomSheet extends StatelessWidget {
                 itemCount: state.styleList.length,
                 itemBuilder: (_, index) {
                   var item = state.styleList[index];
-                  return GestureDetector(
-                    onTap: () => controller.setLabel(index),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: state.labelList.contains(index) ? AppColor.gradientBegin : Colors.white,
-                          border: Border.all(color: AppColor.gradientBegin),
-                          borderRadius: BorderRadius.all(Radius.circular(4.rpx))
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(item.tag,style: AppTextStyle.fs14m.copyWith(color: state.labelList.contains(index) ? Colors.white : AppColor.gradientBegin),),
-                    ),
+                  return StyleTagWidget(
+                    icon: item.icon,
+                    title: item.tag,
+                    filtrate: true,
+                    isSelected: state.labelList.contains(index),
+                    onChanged: (value) => controller.setLabel(index),
                   );
                 },
               ),

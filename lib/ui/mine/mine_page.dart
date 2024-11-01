@@ -461,7 +461,7 @@ class _MinePageState extends State<MinePage>
         width: 200.rpx,
         height: 46.rpx,
         onPressed: controller.onTapSignOut,
-        child: Text(S.current.signOut, style: AppTextStyle.fs16),
+        child: Text(S.current.signOut),
       ),
     );
   }

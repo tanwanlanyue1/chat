@@ -29,7 +29,10 @@ enum CustomMessageType {
   location(8),
 
   ///征友约会 9
-  dating(9);
+  dating(9),
+
+  ///用户信息卡片 10
+  userCard(10);
 
   final int value;
 

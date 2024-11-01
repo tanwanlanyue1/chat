@@ -486,24 +486,24 @@ class MyVipPage extends StatelessWidget {
             ),
             Row(
               children: [
-                GestureDetector(
-                  onTap: controller.onTapSelectProtocol,
-                  child: AppImage.asset(
-                    state.selectProtocol.value
-                        ? "assets/images/order/choose_select.png"
-                        : "assets/images/order/choose_normal.png",
-                    size: 16.rpx,
-                  ),
-                ),
-                SizedBox(width: 8.rpx),
+                // GestureDetector(
+                //   onTap: controller.onTapSelectProtocol,
+                //   child: AppImage.asset(
+                //     state.selectProtocol.value
+                //         ? "assets/images/order/choose_select.png"
+                //         : "assets/images/order/choose_normal.png",
+                //     size: 16.rpx,
+                //   ),
+                // ),
+                // SizedBox(width: 8.rpx),
                 Expanded(
                   child: Text.rich(
                     TextSpan(
                       children: [
-                        TextSpan(
-                          text: S.current.affirm,
-                          style: AppTextStyle.st.textColor(AppColor.black999),
-                        ),
+                        // TextSpan(
+                        //   text: S.current.affirm,
+                        //   style: AppTextStyle.st.textColor(AppColor.black999),
+                        // ),
                         // TextSpan(
                         //   text: S.current.memberServiceAgreement,
                         //   recognizer: TapGestureRecognizer()
@@ -511,6 +511,10 @@ class MyVipPage extends StatelessWidget {
                         //       WebPage.go(url: AppConfig.urlUserService);
                         //     },
                         // ),
+                        TextSpan(
+                          text: '点击立即开通即表示同意',
+                          style: AppTextStyle.st.textColor(AppColor.black999),
+                        ),
                         TextSpan(
                           text: S.current.privacyPolicy,
                           recognizer: TapGestureRecognizer()

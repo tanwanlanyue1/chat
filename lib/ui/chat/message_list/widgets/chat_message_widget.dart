@@ -25,6 +25,7 @@ import 'chat_order_message.dart';
 import 'chat_text_message.dart';
 import 'chat_transfer_message.dart';
 import 'chat_unknown_message.dart';
+import 'chat_user_card_message.dart';
 import 'chat_video_message.dart';
 
 class ChatMessageWidget extends StatelessWidget {
@@ -58,6 +59,7 @@ class ChatMessageWidget extends StatelessWidget {
       onPressed;
   final void Function(BuildContext context, LongPressStartDetails details,
       ZIMKitMessage message, Function defaultAction)? onLongPress;
+
 
   Widget buildMessageContent(BuildContext context) {
     late Widget defaultMessageContent;
@@ -152,6 +154,12 @@ class ChatMessageWidget extends StatelessWidget {
               onPressed: onPressed,
               message: message,
             );
+          case CustomMessageType.userCard:
+            defaultMessageContent = ChatUserCardMessage(
+              onLongPress: onLongPress,
+              onPressed: onPressed,
+              message: message,
+            );
             break;
           default:
             defaultMessageContent = ChatUnknownMessage(
@@ -217,7 +225,16 @@ class ChatMessageWidget extends StatelessWidget {
     );
   }
 
+  bool get hideAvatar => message.customType == CustomMessageType.userCard;
+
   Widget remoteMessage(BuildContext context) {
+
+    if(hideAvatar){
+      return Row(
+        children: [buildMessageContent(context)],
+      );
+    }
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -95,6 +95,7 @@ class MessageListController extends GetxController
     if (userResponse.isSuccess) {
       state.userInfoRx.value = userResponse.data;
       userResponse.data?.let((it) => ChatUserManager().updateWithUserModels([it]));
+      update();
     }
   }
 

@@ -9,6 +9,8 @@ import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/label_widget.dart';
+import 'package:guanjia/widgets/style_tag_widget.dart';
+import 'package:guanjia/widgets/system_ui.dart';
 
 import 'question_controller.dart';
 
@@ -26,6 +28,7 @@ class QuestionPage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        systemOverlayStyle: SystemUI.lightStyle,
         backgroundColor: Colors.transparent,
         leading: page != 0 ? AppBackButton.light() : null,
         actions: [
@@ -131,7 +134,7 @@ class QuestionPage extends StatelessWidget {
                           return LabelWidget(
                             onTap: () => controller.onTapLabel(item),
                             item: item,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w400,
                           );
                         });
                       }),
@@ -270,11 +273,10 @@ class QuestionPage extends StatelessWidget {
               SizedBox(height: 16.rpx),
               Text(
                 isMan ? S.current.questionMan : S.current.questionWoman,
-                style: AppTextStyle.st.medium
-                    .size(16.rpx)
-                    .textColor(
-                        isSelect ? Colors.white : Colors.white.withOpacity(0.5))
-                    .copyWith(height: 1),
+                style: AppTextStyle.fs16.copyWith(
+                  color: isSelect ? Colors.white : Colors.white.withOpacity(0.5),
+                  height: 1,
+                ),
               ),
             ],
           ),

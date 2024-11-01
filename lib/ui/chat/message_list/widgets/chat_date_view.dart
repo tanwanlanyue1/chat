@@ -36,58 +36,17 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
     this.onTapOrder,
   });
 
-  ///获取订单UI状态
-  UIOrderState? _getUIState(final OrderItemModel? order, UserModel? selfUser) {
-    //对方用户类型
-    final targetType = user.type;
-
-    //当前登录用户类型
-    final selfType = selfUser?.type ?? UserType.user;
-
-    //双方都是佳丽或者经纪人,不显示
-    if (!targetType.isUser && !selfType.isUser) {
-      return null;
-    }
-
-    if (order == null ||
-        [OrderStatus.finish, OrderStatus.cancel, OrderStatus.timeOut]
-            .contains(order.state)) {
-      //订单为空，或者订单已完结 佳丽和经纪人不显示发起约会
-      if (selfType.isUser && !targetType.isUser) {
-        return UIOrderState(
-          desc: S.current.chatDateCreate,
-          button: S.current.initiateAppointment,
-          operation: OrderOperationType.create,
-        );
-      }
-
-      //订单为空，或者订单已完结，佳丽尚未开启接单的情况下，显示接单提示
-      if (selfType.isBeauty &&
-          targetType.isUser &&
-          selfUser?.state == UserStatus.offline) {
-        return UIOrderState(
-          icon: 'assets/images/chat/ic_offline_tips.png',
-          desc: S.current.dateModeOpenHint,
-          button: S.current.onLineEngagement,
-          buttonColor: AppColor.dateButton,
-          onTap: () {
-            Get.tryFind<MineController>()
-                ?.onTapBeautifulStatus(UserStatus.online);
-          },
-        );
-      }
-      return null;
-    }
-    return getUIOrderState(order);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       color: const Color(0xFFF6F7F9),
       padding: FEdgeInsets(horizontal: 16.rpx),
       child: Obx(() {
-        final uiState = _getUIState(order, SS.login.info);
+        final uiState = ChatDateViewHelper().getUIState(
+          order: order,
+          selfUser: SS.login.info,
+          user: user,
+        );
         if (uiState == null) {
           return Spacing.blank;
         }
@@ -143,7 +102,8 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
                       borderRadius: BorderRadius.circular(15.rpx),
                       text: uiState.button,
                       backgroundColor: uiState.buttonColor,
-                      textStyle: AppTextStyle.fs14.copyWith(color: Colors.white),
+                      textStyle:
+                          AppTextStyle.fs14.copyWith(color: Colors.white),
                     ),
                   ),
               ],
@@ -152,6 +112,80 @@ class ChatDateView extends StatelessWidget with UIOrderStateMixin {
         );
       }),
     );
+  }
+}
+
+class ChatDateViewHelper with UIOrderStateMixin {
+  ChatDateViewHelper._();
+
+  static final instance = ChatDateViewHelper._();
+
+  factory ChatDateViewHelper() => instance;
+
+  ///是否需要显示约会view
+  bool isChatDateViewVisible({
+    final OrderItemModel? order,
+    final UserModel? selfUser,
+    final UserModel? user,
+  }) {
+    if(user == null){
+      return false;
+    }
+    final uiState = ChatDateViewHelper().getUIState(
+      order: order,
+      selfUser: SS.login.info,
+      user: user,
+    );
+    return uiState != null;
+  }
+
+  ///获取订单UI状态
+  UIOrderState? getUIState({
+    final OrderItemModel? order,
+    UserModel? selfUser,
+    required UserModel user,
+  }) {
+    //对方用户类型
+    final targetType = user.type;
+
+    //当前登录用户类型
+    final selfType = selfUser?.type ?? UserType.user;
+
+    //双方都是佳丽或者经纪人,不显示
+    if (!targetType.isUser && !selfType.isUser) {
+      return null;
+    }
+
+    if (order == null ||
+        [OrderStatus.finish, OrderStatus.cancel, OrderStatus.timeOut]
+            .contains(order.state)) {
+      //订单为空，或者订单已完结 佳丽和经纪人不显示发起约会
+      if (selfType.isUser && !targetType.isUser) {
+        return UIOrderState(
+          desc: S.current.chatDateCreate,
+          button: S.current.initiateAppointment,
+          operation: OrderOperationType.create,
+        );
+      }
+
+      //订单为空，或者订单已完结，佳丽尚未开启接单的情况下，显示接单提示
+      if (selfType.isBeauty &&
+          targetType.isUser &&
+          selfUser?.state == UserStatus.offline) {
+        return UIOrderState(
+          icon: 'assets/images/chat/ic_offline_tips.png',
+          desc: S.current.dateModeOpenHint,
+          button: S.current.onLineEngagement,
+          buttonColor: AppColor.dateButton,
+          onTap: () {
+            Get.tryFind<MineController>()
+                ?.onTapBeautifulStatus(UserStatus.online);
+          },
+        );
+      }
+      return null;
+    }
+    return getUIOrderState(order);
   }
 }
 

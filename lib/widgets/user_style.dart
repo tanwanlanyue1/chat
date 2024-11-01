@@ -16,7 +16,7 @@ class UserStyle extends StatelessWidget {
   final bool all;
 
   const UserStyle({super.key, required this.styleList,this.all = false});
-  final double skewX = 0.2;
+  final double skewX = 0.1;
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +35,10 @@ class UserStyle extends StatelessWidget {
 
   Widget item(LabelModel styleList){
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 4.rpx,vertical: 2.rpx).copyWith(right: 8.rpx),
+      padding: EdgeInsets.symmetric(horizontal: 2.rpx,vertical: 2.rpx).copyWith(right: 6.rpx),
       transform: Matrix4.skewX(-skewX),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(2.rpx),
+        borderRadius: BorderRadius.circular(4.rpx),
         color: AppColor.orange6.withOpacity(0.1),
       ),
       margin: EdgeInsets.only(right: 4.rpx),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ import 'package:guanjia/ui/mine/inapp_message/models/red_packet_update_content.d
 import 'package:zego_zim/zego_zim.dart';
 import 'package:zego_zimkit/src/services/services.dart';
 
+import '../../../common/network/api/model/user/talk_user.dart';
 import 'widgets/chat_message_widget.dart';
 
 /// 消息列表
@@ -40,6 +42,7 @@ class MessageListView extends StatefulWidget {
     this.scrollController,
     this.theme,
     this.listViewPadding,
+    this.userInfo,
   });
 
   final String conversationID;
@@ -97,6 +100,9 @@ class MessageListView extends StatefulWidget {
   final ThemeData? theme;
 
   final EdgeInsets? listViewPadding;
+
+  ///用户信息
+  final UserModel? userInfo;
 
   @override
   State<MessageListView> createState() => _MessageListViewState();
@@ -204,6 +210,22 @@ class _MessageListViewState extends State<MessageListView> with AutoDisposeMixin
     );
   }
 
+  ///处理用户名片消息
+  void _handleUserCardMessage(
+      List<ValueNotifier<ZIMKitMessage>> list, String selfUserId) {
+    final userInfo = widget.userInfo;
+    if (userInfo != null) {
+
+      final msg = ZIMCustomMessage(
+        message: jsonEncode(userInfo.toJson()),
+        subType: CustomMessageType.userCard.value,
+      )..direction = ZIMMessageDirection.receive
+        ..sentStatus = ZIMMessageSentStatus.success;
+
+      list.add(ValueNotifier(msg.toKIT()));
+    }
+  }
+
   ///处理消息
   List<ValueNotifier<ZIMKitMessage>> handleMessageList(
       List<ValueNotifier<ZIMKitMessage>> messageList) {
@@ -221,6 +243,8 @@ class _MessageListViewState extends State<MessageListView> with AutoDisposeMixin
         }
       }
     });
+
+    _handleUserCardMessage(list, selfUserId);
 
     return list;
   }
@@ -283,49 +307,53 @@ class _MessageListViewState extends State<MessageListView> with AutoDisposeMixin
                     ?.call(context, const SizedBox.shrink()) ??
                 const SizedBox.shrink(),
           ),
-          ListView.builder(
-            cacheExtent: constraints.maxHeight * 3,
-            controller: _scrollController,
-            itemCount: messageList.length,
-            reverse: true,
-            padding: widget.listViewPadding,
-            itemBuilder: (context, index) {
-              final messageNotifier = messageList[index];
-              return ValueListenableBuilder(
-                valueListenable: messageNotifier,
-                builder: (
-                  BuildContext context,
-                  ZIMKitMessage message,
-                  Widget? child,
-                ) {
-                  //两条消息发送时间相隔5分钟，显示时间
-                  final prevMsgTimestamp = messageList
-                          .safeElementAt(index + 1)
-                          ?.value
-                          .info
-                          .timestamp ??
-                      0;
-                  if (message.info.timestamp - prevMsgTimestamp >
-                      5 * 60 * 1000) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        buildTime(message),
-                        defaultMessageWidget(
-                          message: message,
-                          constraints: constraints,
-                        )
-                      ],
-                    );
-                  } else {
-                    return defaultMessageWidget(
-                      message: message,
-                      constraints: constraints,
-                    );
-                  }
-                },
-              );
-            },
+          Align(
+            alignment: Alignment.topCenter,
+            child: ListView.builder(
+              cacheExtent: constraints.maxHeight * 3,
+              controller: _scrollController,
+              itemCount: messageList.length,
+              reverse: true,
+              shrinkWrap: true,
+              padding: widget.listViewPadding,
+              itemBuilder: (context, index) {
+                final messageNotifier = messageList[index];
+                return ValueListenableBuilder(
+                  valueListenable: messageNotifier,
+                  builder: (
+                      BuildContext context,
+                      ZIMKitMessage message,
+                      Widget? child,
+                      ) {
+                    //两条消息发送时间相隔5分钟，显示时间
+                    final prevMsgTimestamp = messageList
+                        .safeElementAt(index + 1)
+                        ?.value
+                        .info
+                        .timestamp ??
+                        0;
+                    if (message.info.timestamp - prevMsgTimestamp >
+                        5 * 60 * 1000) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          buildTime(message),
+                          defaultMessageWidget(
+                            message: message,
+                            constraints: constraints,
+                          )
+                        ],
+                      );
+                    } else {
+                      return defaultMessageWidget(
+                        message: message,
+                        constraints: constraints,
+                      );
+                    }
+                  },
+                );
+              },
+            ),
           ),
         ],
       );

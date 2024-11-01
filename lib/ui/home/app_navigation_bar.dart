@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -255,7 +254,7 @@ class _Tile extends StatelessWidget {
                 child: Text(
                   item.title,
                   style: AppTextStyle.normal.copyWith(
-                    height: 1.0,
+                    height: 1.1,
                     fontSize: 10.rpx,
                     color: animation == null
                         ? Colors.transparent

@@ -4,6 +4,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
@@ -54,51 +55,55 @@ class MessageListPage extends GetView<MessageListController> {
           appBar: buildAppBar(context),
           resizeToAvoidBottomInset: true,
           backgroundColor: const Color(0xFFF6F7F9),
-          body: Stack(
-            children: [
-              Positioned.fill(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          controller.chatInputViewKey.currentState
-                              ?.closePanel();
-                        },
-                        child: buildMessageListView(),
+          body: Obx(() {
+            final user = state.userInfoRx();
+            var order = state.orderRx();
+            final hasDatingView = ChatDateViewHelper().isChatDateViewVisible(
+              order: order,
+              selfUser: SS.login.info,
+              user: user,
+            );
+            return Stack(
+              children: [
+                Positioned.fill(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            controller.chatInputViewKey.currentState
+                                ?.closePanel();
+                          },
+                          child: Obx(() {
+                            return buildMessageListView(hasDatingView: hasDatingView);
+                          }),
+                        ),
                       ),
-                    ),
-                    ObxValue((dataRx) {
-                      return ChatInputView(
-                        key: controller.chatInputViewKey,
-                        onSend: controller.sendTextMessage,
-                        onTapFeatureAction: controller.onTapFeatureAction,
-                        featureActions: dataRx(),
-                        featureItemBuilder: buildFeatureItem,
-                      );
-                    }, state.featureActionsRx),
-                    // messageInput(),
-                  ],
+                      ObxValue((dataRx) {
+                        return ChatInputView(
+                          key: controller.chatInputViewKey,
+                          onSend: controller.sendTextMessage,
+                          onTapFeatureAction: controller.onTapFeatureAction,
+                          featureActions: dataRx(),
+                          featureItemBuilder: buildFeatureItem,
+                        );
+                      }, state.featureActionsRx),
+                      // messageInput(),
+                    ],
+                  ),
                 ),
-              ),
-              Positioned.fill(
-                bottom: null,
-                child: Obx(() {
-                  final user = state.userInfoRx();
-                  var order = state.orderRx();
-                  if (user == null) {
-                    return Spacing.blank;
-                  }
-                  return ChatDateView(
+                if(hasDatingView && user != null) Positioned.fill(
+                  bottom: null,
+                  child: ChatDateView(
                     user: user,
                     order: order,
                     onTapOrderAction: controller.onTapOrderAction,
                     onTapOrder: (order) => controller.toOrderDetail(order.id),
-                  );
-                }),
-              ),
-            ],
-          ),
+                  ),
+                ),
+              ],
+            );
+          }),
         );
       },
     );
@@ -119,7 +124,7 @@ class MessageListPage extends GetView<MessageListController> {
     return defaultWidget;
   }
 
-  Widget buildMessageListView() {
+  Widget buildMessageListView({bool hasDatingView = true}) {
     return MessageListView(
       key: ValueKey(
         'ZIMKitMessageListView:${Object.hash(
@@ -131,8 +136,10 @@ class MessageListPage extends GetView<MessageListController> {
       conversationID: conversationId,
       conversationType: conversationType,
       avatarBuilder: buildAvatar,
+      userInfo: controller.state.userInfoRx(),
       // backgroundBuilder: buildBackground,
-      listViewPadding: FEdgeInsets(top: ChatDateView.height),
+      listViewPadding:
+          FEdgeInsets(top: hasDatingView ? ChatDateView.height : 0),
       onPressed: (_, message, defaultAction) {
         switch (message.customType) {
           case CustomMessageType.redPacket:

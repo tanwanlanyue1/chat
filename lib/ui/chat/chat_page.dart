@@ -13,7 +13,6 @@ import 'package:guanjia/ui/mine/inapp_message/models/call_match_content.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
-import 'package:guanjia/widgets/tab_underline_indicator.dart';
 
 import 'chat_controller.dart';
 
@@ -191,8 +190,8 @@ class _ChatPageState extends State<ChatPage>
         splashFactory: NoSplash.splashFactory,
         controller: controller.tabController,
         labelStyle: AppTextStyle.bold.copyWith(fontSize: 22.rpx),
-        labelColor: AppColor.blackBlue,
         unselectedLabelStyle: AppTextStyle.fs16,
+        labelColor: AppColor.blackBlue,
         unselectedLabelColor: AppColor.grayText,
         isScrollable: true,
         labelPadding: FEdgeInsets.zero,

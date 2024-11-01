@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_transfer_content.dart';
@@ -130,6 +131,14 @@ extension ZIMKitMessageExt on ZIMKitMessage {
     return _getOrParse(
       type: CustomMessageType.dating,
       parse: MessageDatingContent.fromJson,
+    );
+  }
+
+  ///用户名片消息内容
+  UserModel? get userCardContent {
+    return _getOrParse(
+      type: CustomMessageType.userCard,
+      parse: UserModel.fromJson,
     );
   }
 

@@ -104,9 +104,7 @@ class LoginPage extends StatelessWidget {
                               behavior: HitTestBehavior.opaque,
                               child: Text(
                                 S.current.loginForgetPassword,
-                                style: AppTextStyle.st.medium
-                                    .size(14.rpx)
-                                    .textColor(Colors.white.withOpacity(0.5)),
+                                style: AppTextStyle.fs14m.copyWith(color: Colors.white.withOpacity(0.5)),
                               ),
                             ),
                           ),

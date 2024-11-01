@@ -1,16 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/math_extension.dart';
-import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/network/api/model/user/vip_model.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/widgets.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 ///VIP套餐
 class VipPackageListTile extends StatelessWidget {
@@ -69,11 +66,14 @@ class VipPackageListTile extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(
-                          SS.appConfig.currencyUnit,
-                          style: AppTextStyle.fs12.copyWith(
-                            color: isSelected ? Colors.white : AppColor.black3,
-                            height: 1.4,
+                        Padding(
+                          padding: FEdgeInsets(bottom: 2.rpx),
+                          child: Text(
+                            SS.appConfig.currencyUnit,
+                            style: AppTextStyle.fs12.copyWith(
+                              color: AppColor.black3,
+                              height: 1.0,
+                            ),
                           ),
                         ),
                         Text(
@@ -81,7 +81,7 @@ class VipPackageListTile extends StatelessWidget {
                               ? item.discountPrice.toString()
                               : item.price.toString(),
                           style: AppTextStyle.fs24m.copyWith(
-                            color: isSelected ? Colors.white : AppColor.black3,
+                            color: AppColor.black3,
                             height: 1.0,
                           ),
                         )

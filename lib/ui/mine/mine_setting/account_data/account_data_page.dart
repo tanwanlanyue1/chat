@@ -364,7 +364,7 @@ class AccountDataPage extends StatelessWidget {
             Text(
               title,
               style: AppTextStyle.fs14
-                  .textColor(AppColor.blackBlue)
+                  .textColor(isSelect ? AppColor.primaryBlue : AppColor.blackBlue)
                   .copyWith(height: 1),
             ),
           ],

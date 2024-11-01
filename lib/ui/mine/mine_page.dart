@@ -236,7 +236,7 @@ class _MinePageState extends State<MinePage>
         return Spacing.blank;
       }
       return Padding(
-        padding: FEdgeInsets(top: 8.rpx, bottom: 8.rpx),
+        padding: FEdgeInsets(top: 8.rpx, bottom: 4.rpx),
         child: AspectRatio(
           aspectRatio: 1029/240,
           child: Swiper(
@@ -321,7 +321,7 @@ class _MinePageState extends State<MinePage>
     return Obx(() {
       final userType = userTypeRx;
       return buildSection(
-        margin: FEdgeInsets(top: 4.rpx),
+        margin: FEdgeInsets(top: 8.rpx),
         children: [
           //个人信息
           MineListTile(
@@ -407,7 +407,7 @@ class _MinePageState extends State<MinePage>
     return Obx(() {
       final userType = userTypeRx;
       return buildSection(
-        margin: FEdgeInsets(top: 16.rpx),
+        margin: FEdgeInsets(top: 12.rpx),
         children: [
           //谁看过我
           MineListTile(

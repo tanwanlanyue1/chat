@@ -449,7 +449,7 @@
   "haveNotOpened": "未开通",
   "memberInterests": "会员尊享权益",
   "packageSelection": "套餐选择",
-  "entriesMonth": "{duration}个月",
+  "entriesMonth": "开通{duration}个月",
   "flashSales": "限时特惠",
   "confirmAgreement": "立即开通",
   "memberServiceAgreement": "《会员服务协议》",

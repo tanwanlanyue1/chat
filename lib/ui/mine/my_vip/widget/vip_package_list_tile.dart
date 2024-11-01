@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -25,107 +26,119 @@ class VipPackageListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final radius = 8.rpx;
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(1),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(radius + 1),
-          gradient: isSelected ? AppColor.horizontalGradient : null,
-        ),
-        child: Container(
-          height: 76.rpx,
-          decoration: BoxDecoration(
-            color: AppColor.background,
-            borderRadius: BorderRadius.circular(radius),
-          ),
-          child: Stack(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.rpx),
+      child: buildBackground(
+        child: Column(
+          children: [
+            CachedNetworkImage(
+              imageUrl: item.nameplate,
+              height: 20.rpx,
+            ),
+            Padding(
+              padding: FEdgeInsets(top: 16.rpx),
+              child: ForegroundGradientMask(
+                gradient: LinearGradient(
+                  colors: AppColor.horizontalGradient.colors,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                child: Text(
+                  item.durationText,
+                  style: AppTextStyle.fs12m.copyWith(
+                    color:  Colors.white,
+                    height: 1,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: FEdgeInsets(top: 8.rpx),
+              child: ForegroundGradientMask(
+                gradient: LinearGradient(
+                  colors: AppColor.horizontalGradient.colors,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      item.durationText,
-                      style: AppTextStyle.fs14.copyWith(
-                        color: AppColor.blackBlue,
+                      SS.appConfig.currencyUnit,
+                      style: AppTextStyle.fs12.copyWith(
+                        color: Colors.white,
+                        height: 1.4,
                       ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              SS.appConfig.currencyUnit,
-                              style: AppTextStyle.fs18.copyWith(
-                                color: isSelected
-                                    ? AppColor.primaryBlue
-                                    : AppColor.blackBlue,
-                                height: 1.1,
-                              ),
-                            ),
-                            GradientText(
-                              item.discountPrice != 0
-                                  ? item.discountPrice.toString()
-                                  : item.price.toString(),
-                              colors: isSelected
-                                  ? const [
-                                      AppColor.gradientBegin,
-                                      AppColor.gradientEnd,
-                                    ]
-                                  : const [
-                                      AppColor.blackBlue,
-                                      AppColor.blackBlue,
-                                    ],
-                              style: AppTextStyle.fs24.copyWith(
-                                color: isSelected
-                                    ? AppColor.primaryBlue
-                                    : AppColor.blackBlue,
-                                height: 1,
-                              ),
-                            ),
-                          ],
-                        ),
-                        if (item.discountPrice != 0)
-                          Padding(
-                            padding: FEdgeInsets(top: 4.rpx),
-                            child: Text(
-                              item.price.toCurrencyString(),
-                              style: AppTextStyle.fs16.copyWith(
-                                color: AppColor.grayText,
-                                height: 1,
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
+                    Text(
+                      item.discountPrice != 0
+                          ? item.discountPrice.toString()
+                          : item.price.toString(),
+                      style: AppTextStyle.fs24m.copyWith(
+                        color: Colors.white,
+                        height: 1.0,
+                      ),
+                    )
                   ],
                 ),
               ),
-              if (item.discount == 1)
-                Container(
-                  width: 56.rpx,
-                  height: 18.rpx,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(radius),
-                      bottomRight: Radius.circular(radius),
-                    ),
-                    gradient: AppColor.horizontalGradient,
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    S.current.flashSales,
-                    style: AppTextStyle.st.size(12.rpx).textColor(Colors.white),
+            ),
+            if (item.discountPrice != 0)
+              Padding(
+                padding: FEdgeInsets(top: 4.rpx),
+                child: Text(
+                  '原价${item.price.toCurrencyString()}',
+                  style: AppTextStyle.fs10.copyWith(
+                    color: AppColor.grayText,
+                    height: 1,
+                    decoration: TextDecoration.lineThrough,
                   ),
                 ),
-            ],
-          ),
+              ),
+          ],
+        ),
+      ),
+    );
+
+  }
+
+  Widget buildBackground({required Widget child}) {
+    final radius = 8.rpx;
+    final colors = AppColor.horizontalGradient.colors;
+
+    return Container(
+      width: 92.rpx,
+      height: 120.rpx,
+      padding: const FEdgeInsets(all: 1),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(radius),
+        gradient: isSelected
+            ? LinearGradient(
+                colors: colors,
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )
+            : null,
+        color: isSelected ? null : AppColor.black999.withOpacity(0.2),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(radius - 1),
+        ),
+        child: Container(
+          padding: FEdgeInsets(top: 16.rpx),
+          decoration: isSelected
+              ? BoxDecoration(
+                  borderRadius: BorderRadius.circular(radius - 1),
+                  gradient: LinearGradient(
+                    colors: colors.map((e) => e.withOpacity(0.1)).toList(),
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ))
+              : null,
+          child: child,
         ),
       ),
     );

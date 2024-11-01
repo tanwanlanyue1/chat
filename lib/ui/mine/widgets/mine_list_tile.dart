@@ -35,7 +35,7 @@ class MineListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget child = Container(
-      height: 56.rpx,
+      height: 52.rpx,
       padding: FEdgeInsets(left: 16.rpx, right: 12.rpx),
       child: Row(
         children: [

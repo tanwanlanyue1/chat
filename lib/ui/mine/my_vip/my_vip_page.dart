@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_config.dart';
@@ -22,6 +23,7 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import 'my_vip_controller.dart';
 
+///会员中心
 class MyVipPage extends StatelessWidget {
   MyVipPage({super.key});
 
@@ -167,13 +169,11 @@ class MyVipPage extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(height: 6.rpx),
-                            Text(
-                              userTypeString,
-                              style: AppTextStyle.st
-                                  .size(12.rpx)
-                                  .textColor(AppColor.tab)
-                                  .textHeight(1),
-                            ),
+                            Text(userTypeString,
+                                style: AppTextStyle.fs12.copyWith(
+                                  color: AppColor.tab,
+                                  height: 1,
+                                )),
                           ],
                         ),
                       ),
@@ -188,40 +188,53 @@ class MyVipPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              GradientText(
-                                userInfo.vip
-                                    ? S.current.guanJiaVIP
-                                    : S.current.becomeGuanJiaVIP,
-                                style:
-                                    AppTextStyle.st.size(18.rpx).textHeight(1),
-                                colors: userInfo.vip
-                                    ? const [
-                                        AppColor.gradientBegin,
-                                        AppColor.gradientEnd,
-                                      ]
-                                    : const [
-                                        AppColor.tab,
-                                        AppColor.tab,
-                                      ],
+                              ForegroundGradientMask(
+                                gradient: LinearGradient(
+                                  colors: userInfo.vip
+                                      ? AppColor.horizontalGradient.colors
+                                      : const [
+                                          AppColor.tab,
+                                          AppColor.tab,
+                                        ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                child: Text(
+                                  userInfo.vip
+                                      ? S.current.guanJiaVIP
+                                      : S.current.becomeGuanJiaVIP,
+                                  style: AppTextStyle.fs18.copyWith(
+                                    color: Colors.white,
+                                    height: 1,
+                                  ),
+                                ),
                               ),
-                              GradientText(
-                                userInfo.vip
-                                    ? "${CommonUtils.convertTimestampToString(
-                                        userInfo.expirationTime,
-                                        newPattern: 'yyyy.MM.dd',
-                                      )} ${S.current.expire}"
-                                    : S.current.enjoyPremiumBenefits,
-                                style: AppTextStyle.st.size(12.rpx),
-                                gradientDirection: GradientDirection.ttb,
-                                colors: userInfo.vip
-                                    ? const [
-                                        AppColor.gradientBackgroundBegin,
-                                        AppColor.gradientBackgroundEnd,
-                                      ]
-                                    : const [
-                                        AppColor.tab,
-                                        AppColor.tab,
-                                      ],
+                              ForegroundGradientMask(
+                                gradient: LinearGradient(
+                                  colors: userInfo.vip
+                                      ? const [
+                                          AppColor.gradientBackgroundBegin,
+                                          AppColor.gradientBackgroundEnd,
+                                        ]
+                                      : const [
+                                          AppColor.tab,
+                                          AppColor.tab,
+                                        ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                ),
+                                child: Text(
+                                  userInfo.vip
+                                      ? "${CommonUtils.convertTimestampToString(
+                                          userInfo.expirationTime,
+                                          newPattern: 'yyyy.MM.dd',
+                                        )} ${S.current.expire}"
+                                      : S.current.enjoyPremiumBenefits,
+                                  style: AppTextStyle.fs12r.copyWith(
+                                    color: Colors.white,
+                                    height: 1,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -257,41 +270,75 @@ class MyVipPage extends StatelessWidget {
               Align(
                 alignment: Alignment.topRight,
                 child: Container(
-                  width: 160.rpx,
+                  width: 172.rpx,
                   height: 24.rpx,
-                  padding: EdgeInsets.symmetric(horizontal: 12.rpx),
+                  padding: FEdgeInsets(right: 12.rpx),
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.04),
                     borderRadius: BorderRadius.only(
                         topRight: Radius.circular(8.rpx),
                         bottomLeft: Radius.circular(8.rpx)),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      DefaultTextStyle(
-                        style: AppTextStyle.st
-                            .size(10.rpx)
-                            .textColor(AppColor.tab),
-                        overflow: TextOverflow.ellipsis,
-                        child: AnimatedTextKit(
-                          pause: const Duration(milliseconds: 250),
-                          repeatForever: true,
-                          animatedTexts:
-                              List.generate(model.swiperList.length, (index) {
-                            final title = model.swiperList[index];
-
-                            return RotateAnimatedText(
-                              title,
-                              transitionHeight: 24.rpx,
-                              alignment: Alignment.centerLeft,
-                            );
-                          }),
-                        ),
-                      ),
-                    ],
+                  child: Swiper(
+                    autoplay: true,
+                    autoplayDelay: 5000,
+                    loop: true,
+                    fade: 0.1,
+                    scrollDirection: Axis.vertical,
+                    itemCount: model.swiperList.length,
+                    duration: 500,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Row(
+                        children: [
+                          Padding(
+                            padding: FEdgeInsets(horizontal: 4.rpx),
+                            child: AppImage.network(
+                              model.swiperList[index].avatar,
+                              length: 16.rpx,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              model.swiperList[index].text,
+                              style: AppTextStyle.fs10.copyWith(
+                                color: AppColor.tab,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
+                  // child: Column(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   children: [
+                  //     DefaultTextStyle(
+                  //       style: AppTextStyle.st
+                  //           .size(10.rpx)
+                  //           .textColor(AppColor.tab),
+                  //       overflow: TextOverflow.ellipsis,
+                  //       child: AnimatedTextKit(
+                  //         pause: const Duration(milliseconds: 250),
+                  //         repeatForever: true,
+                  //         animatedTexts:
+                  //             List.generate(model.swiperList.length, (index) {
+                  //           final title = model.swiperList[index];
+                  //
+                  //           return RotateAnimatedText(
+                  //             title,
+                  //             transitionHeight: 24.rpx,
+                  //             alignment: Alignment.centerLeft,
+                  //           );
+                  //         }),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                 ),
               ),
           ],
@@ -309,10 +356,10 @@ class MyVipPage extends StatelessWidget {
           padding: FEdgeInsets(bottom: 16.rpx),
           child: Text(
             S.current.memberInterests,
-            style: AppTextStyle.st.medium
-                .size(16.rpx)
-                .textColor(AppColor.blackBlue)
-                .textHeight(1),
+            style: AppTextStyle.fs16.copyWith(
+              color: AppColor.blackBlue,
+              height: 1,
+            ),
           ),
         ),
         GridView.builder(
@@ -335,7 +382,7 @@ class MyVipPage extends StatelessWidget {
                 Spacing.w8,
                 Expanded(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -347,14 +394,17 @@ class MyVipPage extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Text(
-                        item.subTitle,
-                        style: AppTextStyle.st
-                            .size(10.rpx)
-                            .textColor(AppColor.grayText)
-                            .textHeight(1),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      Padding(
+                        padding: FEdgeInsets(top: 5.rpx),
+                        child: Text(
+                          item.subTitle,
+                          style: AppTextStyle.fs10r.copyWith(
+                            color: AppColor.grayText,
+                            height: 1,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),
@@ -379,25 +429,27 @@ class MyVipPage extends StatelessWidget {
             padding: FEdgeInsets(top: 36.rpx, bottom: 16.rpx),
             child: Text(
               S.current.packageSelection,
-              style: AppTextStyle.st.medium
-                  .size(16.rpx)
-                  .textColor(AppColor.blackBlue)
-                  .textHeight(1),
+              style: AppTextStyle.fs16.copyWith(
+                color: AppColor.blackBlue,
+                height: 1,
+              ),
             ),
           ),
-          ListView.separated(
-            shrinkWrap: true,
-            padding: FEdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (_, int index) {
-              return VipPackageListTile(
-                item: model.packages[index],
-                isSelected: selectedIndex == index,
-                onTap: () => controller.onTapPackages(index),
-              );
-            },
-            separatorBuilder: (_, __) => Spacing.h8,
-            itemCount: model.packages.length,
+          SizedBox(
+            height: 120.rpx,
+            child: ListView.separated(
+              padding: FEdgeInsets.zero,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (_, int index) {
+                return VipPackageListTile(
+                  item: model.packages[index],
+                  isSelected: selectedIndex == index,
+                  onTap: () => controller.onTapPackages(index),
+                );
+              },
+              separatorBuilder: (_, __) => Spacing.w(10),
+              itemCount: model.packages.length,
+            ),
           ),
         ],
       );

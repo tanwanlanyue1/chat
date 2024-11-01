@@ -118,8 +118,8 @@ class ConversationNoticeTile extends StatelessWidget {
           ),
         ),
         const Spacer(),
-        SizedBox.square(
-          dimension: 16.rpx,
+        ConstrainedBox(
+          constraints: BoxConstraints(minWidth: 16.rpx, minHeight: 16.rpx),
           child: model.total > 0 ? UnreadBadge(
             unread: model.total,
             size: 16.rpx,

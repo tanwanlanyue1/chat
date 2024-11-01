@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -304,8 +306,8 @@ class _ConversationListTileState extends State<ConversationListTile>
         child,
         ...trailingWidgets,
         const Spacer(),
-        SizedBox.square(
-          dimension: 16.rpx,
+        ConstrainedBox(
+          constraints: BoxConstraints(minWidth: 16.rpx, minHeight: 16.rpx),
           child: conversation.unreadMessageCount > 0
               ? UnreadBadge(
                   unread: conversation.unreadMessageCount,

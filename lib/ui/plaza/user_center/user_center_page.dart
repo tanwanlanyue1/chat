@@ -165,7 +165,7 @@ class UserCenterPage extends StatelessWidget {
                       Visibility(
                         visible: SS.login.userId == state.authorId,
                         child: InkWell(
-                          onTap: controller.upload,
+                          onTap: ()=>controller.upload(controller),
                           child: Container(
                             padding: EdgeInsets.only(right: 16.rpx,left: 12.rpx),
                             child: AppImage.asset("assets/images/plaza/uploading.png",width: 24.rpx,height: 24.rpx,color: state.isAppBarExpanded.value ? Colors.black :Colors.white,),
@@ -200,6 +200,7 @@ class UserCenterPage extends StatelessWidget {
             width: Get.width,
             height: 220.rpx,
             fit: BoxFit.cover,
+            align: Alignment.topCenter,
           );
         },
         itemCount: jsonDecode(state.authorInfo.images!).length,
@@ -226,7 +227,7 @@ class UserCenterPage extends StatelessWidget {
         },
       ):
       GestureDetector(
-        onTap: controller.upload,
+        onTap: ()=>controller.upload(controller),
         child: Container(
           height: 220.rpx,
           color: AppColor.black6,

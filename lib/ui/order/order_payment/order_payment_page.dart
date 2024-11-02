@@ -62,7 +62,7 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                         onTap: () => controller.onTapPaymentType(index),
                         behavior: HitTestBehavior.opaque,
                         child: Container(
-                          height: 72.rpx,
+                          height: 74.rpx,
                           padding:
                               EdgeInsets.all(16.rpx).copyWith(right: 24.rpx),
                           child: Row(

@@ -36,8 +36,8 @@ class GroundGlass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    VipModel? vipInfo = SS.appConfig.configRx.value?.vipInfo;
     return Obx(() {
+      VipModel? vipInfo = SS.appConfig.configRx.value?.vipInfo;
       return GestureDetector(
         onTap: (){
           Get.back();
@@ -99,7 +99,7 @@ class GroundGlass extends StatelessWidget {
                           itemCount: vipInfo?.benefits.length ?? 0,
                           pagination: (vipInfo?.benefits.length ?? 0) > 1 ?
                           SwiperPagination(
-                              margin: EdgeInsets.only(bottom: 12.rpx,right: 16.rpx),
+                              margin: EdgeInsets.only(bottom: 12.rpx),
                               builder: UserSwiperPagination(
                                 color: Colors.white,
                                 size: 4.rpx,

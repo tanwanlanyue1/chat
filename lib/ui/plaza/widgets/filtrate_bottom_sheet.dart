@@ -104,14 +104,17 @@ class FiltrateBottomSheet extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
+              SizedBox(
                 height: 32.rpx,
-                margin: EdgeInsets.symmetric(horizontal: 12.rpx),
                 child: RangeSliderBar(
                   min: state.ageMin.toDouble(),
                   max: state.ageMax.toDouble(),
                   leftValue: state.info?.value.likeAgeMin.toDouble() ?? 20.0,
                   rightValue: state.info?.value.likeAgeMax.toDouble() ?? 40.0,
+                  onDragging: (left,right){
+                    controller.onChangeLikeAge(
+                        left.toInt(), right.toInt());
+                  },
                 ),
               ),
               Container(

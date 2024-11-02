@@ -52,7 +52,7 @@ class UserStyle extends StatelessWidget {
               padding: FEdgeInsets(left: 1.rpx),
               child: Text(
                 styleList.tag,
-                style: AppTextStyle.fs10.copyWith(color: AppColor.black20, height: 1),
+                style: AppTextStyle.fs10m.copyWith(color: AppColor.black20, height: 1,fontSize: 11.rpx),
               ),
             ),
           ],

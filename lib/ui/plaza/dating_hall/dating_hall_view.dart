@@ -174,26 +174,27 @@ class DatingHallView extends StatelessWidget {
         height: 90.rpx,
         padding: EdgeInsets.all(5.rpx),
         margin: EdgeInsets.only(bottom: 8.rpx),
-        child: Row(
+        child: Stack(
           children: [
-            Container(
-              margin: EdgeInsets.only(right: 10.rpx),
-              child: AppImage.network(
-                item.avatar ?? '',
-                width: 80.rpx,
-                height: 80.rpx,
-                shape: BoxShape.circle,
-                // fit: BoxFit.cover,
-              ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
+            Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: 10.rpx),
+                  child: AppImage.network(
+                    item.avatar ?? '',
+                    width: 80.rpx,
+                    height: 80.rpx,
+                    shape: BoxShape.circle,
+                    // fit: BoxFit.cover,
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(top: 8.rpx,right: 3.rpx,bottom: 10.rpx),
+                        margin: EdgeInsets.only(top: 8.rpx,right: 3.rpx),
                         child: Row(
                           children: [
                             Container(
@@ -202,7 +203,7 @@ class DatingHallView extends StatelessWidget {
                               ),
                               child: Text(
                                 item.nickname ?? '',
-                                style: AppTextStyle.fs14m.copyWith(color: AppColor.black3,height: 1.0,),
+                                style: AppTextStyle.fs14b.copyWith(color: AppColor.black20,height: 1.0,),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -217,28 +218,28 @@ class DatingHallView extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Positioned(
-                        top: 5.rpx,
-                        right: 3.rpx,
-                        child: GestureDetector(
-                          onTap: (){
-                            ChatManager().startChat(userId: item.uid!);
-                          },
-                          child: AppImage.asset('assets/images/plaza/hi_like.png',width: 52.rpx,height: 24.rpx,),
-                        ),
-                      )
+                      Container(
+                        height: 20.rpx,
+                        margin: EdgeInsets.only(right: 15.rpx),
+                        child: UserStyle(styleList: item.styleList,),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(right: 15.rpx,bottom: 10.rpx),
+                        child: Text(item.signature ?? '',style: AppTextStyle.fs10.copyWith(color: AppColor.grayText,overflow: TextOverflow.ellipsis,height: 1.01),maxLines: 1,),
+                      ),
                     ],
                   ),
-                  Container(
-                    height: 20.rpx,
-                    margin: EdgeInsets.only(bottom: 10.rpx,right: 15.rpx),
-                    child: UserStyle(styleList: item.styleList,),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(right: 15.rpx),
-                    child: Text(item.signature ?? '',style: AppTextStyle.fs10.copyWith(color: AppColor.grayText,overflow: TextOverflow.ellipsis,height: 1.0),maxLines: 1,),
-                  ),
-                ],
+                ),
+              ],
+            ),
+            Positioned(
+              top: 3.rpx,
+              right: 3.rpx,
+              child: GestureDetector(
+                onTap: (){
+                  ChatManager().startChat(userId: item.uid!);
+                },
+                child: AppImage.asset('assets/images/plaza/hi_like.png',width: 52.rpx,height: 24.rpx,),
               ),
             ),
           ],

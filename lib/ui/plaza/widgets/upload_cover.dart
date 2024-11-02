@@ -12,16 +12,20 @@ import '../user_center/user_center_controller.dart';
 
 //上传封面图-弹窗
 class UploadCoverDialog extends StatelessWidget {
+  UserCenterController controllers;
 
-  static Future<bool?> show() {
+  UploadCoverDialog({super.key,required this.controllers});
+
+  static Future<bool?> show(UserCenterController controllers) {
     return Get.dialog(
-      UploadCoverDialog(),
+      UploadCoverDialog(controllers:controllers),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<UserCenterController>(
+      init: controllers,
       id: 'upload',
       builder: (controller){
         return GestureDetector(

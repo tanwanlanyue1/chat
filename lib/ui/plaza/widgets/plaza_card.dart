@@ -74,9 +74,9 @@ class PlazaCard extends StatelessWidget {
             ),
           ),
           Container(
-            color: const Color(0xff999999).withOpacity(0.2),
+            color: const Color(0xff999999).withOpacity(0.1),
             height: 1.rpx,
-            margin: EdgeInsets.only(top: 12.rpx),
+            margin: EdgeInsets.only(top: 8.rpx),
           ),
         ],
       ),
@@ -101,10 +101,11 @@ class PlazaCard extends StatelessWidget {
               shape: BoxShape.circle,
             ),
           ),
-          SizedBox(width: 2.rpx),
+          SizedBox(width: 8.rpx),
           Expanded(
-            child: SizedBox(
+            child: Container(
               height: 46.rpx,
+              padding: EdgeInsets.only(top: 2.rpx,bottom: 2.rpx),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,7 +116,7 @@ class PlazaCard extends StatelessWidget {
                         constraints: BoxConstraints(
                           maxWidth: (item.nameplate != null && item.nameplate!.isNotEmpty) ? 130.rpx : 170.rpx,
                         ),
-                        child: Text(item.nickname ?? '',style: AppTextStyle.fs16m.copyWith(color: AppColor.black20, height: 1.0),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                        child: Text(item.nickname ?? '',style: AppTextStyle.fs14b.copyWith(color: AppColor.black20, height: 1.0),maxLines: 1,overflow: TextOverflow.ellipsis,),
                       ),
                       Container(
                         height: 12.rpx,
@@ -144,30 +145,24 @@ class PlazaCard extends StatelessWidget {
                       )
                     ],
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                            height: 20.rpx,
-                            margin: EdgeInsets.only(right: 8.rpx,top: 8.rpx),
-                            child: UserStyle(styleList: item.styleList,)
-                        ),
-                      ),
-                      Visibility(
-                        visible: SS.login.userId != item.uid! && !user,
-                        child: GestureDetector(
-                          onTap: (){
-                            ChatManager().startChat(userId: item.uid!);
-                          },
-                          child: AppImage.asset("assets/images/plaza/plaza_hi.png",width: 40.rpx,height: 28.rpx,),
-                        ),
-                      )
-                    ],
+                  Container(
+                      height: 20.rpx,
+                      margin: EdgeInsets.only(right: 8.rpx,),
+                      child: UserStyle(styleList: item.styleList,)
                   ),
                 ],
               ),
             ),
           ),
+          Visibility(
+            visible: SS.login.userId != item.uid! && !user,
+            child: GestureDetector(
+              onTap: (){
+                ChatManager().startChat(userId: item.uid!);
+              },
+              child: AppImage.asset("assets/images/plaza/plaza_hi.png",width: 40.rpx,height: 28.rpx,),
+            ),
+          )
         ],
       ),
     );
@@ -177,7 +172,7 @@ class PlazaCard extends StatelessWidget {
   Widget _buildBody(){
     return item.content != null && item.content!.isNotEmpty ?
     Container(
-        margin: EdgeInsets.only(top: user ? 0 : 12.rpx,bottom: 12.rpx),
+        margin: EdgeInsets.only(top: user ? 0 : 6.rpx,bottom: 8.rpx),
         alignment: Alignment.centerLeft,
         child: Text(
           item.content!.fixAutoLines(),style: AppTextStyle.fs14.copyWith(color: AppColor.black3,height: 1.5),
@@ -190,7 +185,7 @@ class PlazaCard extends StatelessWidget {
   Widget _imageViews() {
     return item.images != null && jsonDecode(item.images).isNotEmpty ?
     Container(
-      padding: EdgeInsets.only(bottom: 12.rpx),
+      padding: EdgeInsets.only(bottom: 6.rpx),
       alignment: Alignment.centerLeft,
       child: GridView.builder(
         shrinkWrap: true,

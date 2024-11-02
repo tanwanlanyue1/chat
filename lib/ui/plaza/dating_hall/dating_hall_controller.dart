@@ -13,7 +13,7 @@ class RectifyTheWorkplaceController extends GetxController {
 
   final pagingController = DefaultPagingController<RecommendModel>(
     firstPage: 1,
-    pageSize: 10,
+    pageSize: 20,
     refreshController: RefreshController(),
   );
 

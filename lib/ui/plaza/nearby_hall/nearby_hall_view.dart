@@ -73,11 +73,12 @@ class NearbyHallView extends StatelessWidget {
               visible: item.onlineStatus == 0,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.7),
+                  color: Colors.black.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(8.rpx),
                 ),
                 margin: EdgeInsets.only(left: 8.rpx),
-                padding: EdgeInsets.symmetric(horizontal: 4.rpx,vertical: 2.rpx),
+                padding: EdgeInsets.symmetric(horizontal: 4.rpx),
+                height: 14.rpx,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

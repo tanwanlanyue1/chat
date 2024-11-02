@@ -39,9 +39,9 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
     refreshController: RefreshController(),
   );
 
-  void upload(){
+  void upload(UserCenterController controllers){
     if(SS.login.userId == state.authorId){
-      UploadCoverDialog.show();
+      UploadCoverDialog.show(controllers);
     }
   }
 

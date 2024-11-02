@@ -24,7 +24,6 @@ class RectifyTheWorkplaceController extends GetxController {
         FiltrateBottomSheet(
           callBack: (){
             Get.back();
-            state.filtrateIndex = (state.filtrateIndex ?? -1);
             pagingController.onRefresh();
           },
         )
@@ -51,16 +50,24 @@ class RectifyTheWorkplaceController extends GetxController {
 
   @override
   void onInit() {
+    state.filtrateIndex = state.info?.value.likeSex.index;
     pagingController.addPageRequestListener(_fetchPage);
-    additionLabel();
     super.onInit();
   }
+
 
   /// 获取列表数据
   /// page: 第几页
   void _fetchPage(int page) async {
-    if(page == 1){
-      pagingController.itemList?.clear();
+    if(state.first){
+      List <int> userLike = (state.info?.value.likeStyle?.split(','))?.map(int.parse).toList() ?? [];
+      await additionLabel();
+      for(var i = 0; i < state.styleList.length;i++){
+        if(userLike.contains(state.styleList[i].id)){
+          state.labelList.add(i);
+        }
+      }
+      state.first = false;
     }
     String tag = "";
     for(var i = 0; i < state.labelList.length; i++){
@@ -83,7 +90,7 @@ class RectifyTheWorkplaceController extends GetxController {
   }
 
   //附加标签
-  void additionLabel() async {
+  Future<bool?> additionLabel() async {
     final response = await OpenApi.getStyleList(
       type: state.filtrateIndex != null ? (state.filtrateIndex == -1 ? 0 : state.filtrateIndex!) : 0,
     );
@@ -91,8 +98,10 @@ class RectifyTheWorkplaceController extends GetxController {
       state.styleList = response.data ?? [];
       state.labelList.clear();
       update(['bottomSheet']);
+      return true;
     }else{
       response.showErrorMessage();
+      return false;
     }
   }
 

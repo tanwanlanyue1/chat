@@ -37,12 +37,13 @@ class GroundGlass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      VipModel? vipInfo = SS.appConfig.configRx.value?.vipInfo;
+      VipModel? vipInfo = SS.appConfig.vipInfo;
       return GestureDetector(
         onTap: (){
           Get.back();
         },
-        child: Container(
+        child: (vipInfo != null)?
+          Container(
           width: double.infinity,
           height: double.infinity,
           color: Colors.black.withOpacity(0.7),
@@ -181,7 +182,8 @@ class GroundGlass extends StatelessWidget {
               ],
             ),
           ),
-        ),
+        ):
+          Container(),
       );
     });
   }

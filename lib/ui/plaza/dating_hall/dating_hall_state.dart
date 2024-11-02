@@ -58,4 +58,6 @@ class RectifyTheWorkplaceState {
   List<LabelModel> styleList = [];
   //风格-标签
   List<int> labelList = [];
+  //第一次
+  bool first = true;
 }

@@ -7,6 +7,7 @@ import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart'
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -308,6 +309,42 @@ class FriendDatePage extends StatelessWidget {
               ),
             ),
           ),
+          Visibility(
+            visible: item.serviceCharge != null && item.serviceCharge?.toInt() != 0,
+            child: Positioned(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(17.rpx)
+                ),
+                height: 20.rpx,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColor.redPacket,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10.rpx),
+                          bottomLeft: Radius.circular(2.rpx),
+                          bottomRight: Radius.circular(2.rpx),
+                          topRight: Radius.circular(2.rpx),
+                        ),
+                      ),
+                      width: 20.rpx,
+                      height: 20.rpx,
+                      alignment: Alignment.center,
+                      child: AppImage.asset("assets/images/discover/offer.png",width: 12.rpx,),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(right: 4.rpx,left: 4.rpx),
+                      child: Text(S.current.provideService,style: AppTextStyle.fs10.copyWith(color: AppColor.redPacket,height: 1.0),),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          )
         ],
       ),
     );

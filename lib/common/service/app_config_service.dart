@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/network/api/api.dart';
+import 'package:guanjia/common/network/api/model/user/vip_model.dart';
+import 'package:guanjia/common/network/httpclient/api_response.dart';
 import 'package:guanjia/common/utils/local_storage.dart';
+import 'package:guanjia/widgets/loading.dart';
 
 ///App全局配置服务
 class AppConfigService extends GetxService {
@@ -16,6 +19,21 @@ class AppConfigService extends GetxService {
   ///使用的货币单位
   String get currencyUnit{
     return '\$';
+  }
+
+  ///vip套餐
+  VipModel? get vipInfo{
+    if(configRx.value?.vipInfo == null){
+      Loading.show();
+      getVip().then((value) => {
+          if (value.isSuccess) {
+              configRx.update((val) {
+            val?.vipInfo = value.data;
+          })
+        },
+      }).whenComplete(() => Loading.dismiss());
+    }
+    return configRx.value?.vipInfo;
   }
 
   ///红包最大金额
@@ -62,11 +80,16 @@ class AppConfigService extends GetxService {
       }
     }
 
-    final vipRes = await VipApi.getVipIndex();
+    final vipRes = await getVip();
     if (vipRes.isSuccess) {
       configRx.update((val) {
         val?.vipInfo = vipRes.data;
       });
     }
   }
+
+  Future<ApiResponse<VipModel>> getVip(){
+    return VipApi.getVipIndex();
+  }
+
 }

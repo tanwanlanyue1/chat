@@ -11,8 +11,16 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:svgaplayer_flutter/player.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
-double defaultSize({double? width, double? height}) {
-  return 50.rpx;
+double getDefaultIconSize({double? width, double? height}) {
+  final defaultSize = 50.rpx;
+  final size = min(width ?? 0, height ?? 0) * 0.2;
+  if (size == 0) {
+    return defaultSize;
+  }
+  if (size > defaultSize) {
+    return defaultSize;
+  }
+  return size;
 }
 
 ///图片显示控件
@@ -126,6 +134,7 @@ class AppImage extends StatelessWidget {
                     width: length ?? width,
                     height: length ?? height,
                     alignment: Alignment.center,
+                    clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                       borderRadius: borderRadius,
                       border: border,
@@ -134,7 +143,10 @@ class AppImage extends StatelessWidget {
                     ),
                     child: AppImage.asset(
                       'assets/images/common/default_img.png',
-                      size: 50.rpx,
+                      size: getDefaultIconSize(
+                        width: length ?? width,
+                        height: length ?? height,
+                      ),
                     ),
                   ),
           errorWidget: placeholder != null
@@ -143,6 +155,7 @@ class AppImage extends StatelessWidget {
                     width: length ?? width,
                     height: length ?? height,
                     alignment: Alignment.center,
+                    clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                       borderRadius: borderRadius,
                       border: border,
@@ -151,7 +164,10 @@ class AppImage extends StatelessWidget {
                     ),
                     child: AppImage.asset(
                       'assets/images/common/default_img.png',
-                      size: 50.rpx,
+                      size: getDefaultIconSize(
+                        width: length ?? width,
+                        height: length ?? height,
+                      ),
                     ),
                   ),
         );

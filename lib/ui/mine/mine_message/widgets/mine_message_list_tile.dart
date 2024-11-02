@@ -83,13 +83,14 @@ class MineMessageListTile extends StatelessWidget {
                       Text(
                         item.systemMessage?.highlightText ?? '',
                         style: AppTextStyle.fs12.copyWith(
-                          color: AppColor.babyBlueButton,
+                          color: AppColor.primaryBlue,
                           height: 1,
                         ),
                       ),
                       AppImage.asset(
                         'assets/images/mine/ic_arrow_right_blue.png',
                         size: 12.rpx,
+                        color: AppColor.primaryBlue,
                       ),
                     ],
                   ),
@@ -112,7 +113,7 @@ class MineMessageListTile extends StatelessWidget {
           'assets/images/chat/ic_sys_notice.png',
           size: 40.rpx,
         ),
-        Positioned(
+        if(item.type == 0)Positioned(
           top: 0,
           left: 0,
           child: AppImage.asset(

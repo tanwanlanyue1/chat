@@ -329,10 +329,6 @@ class _MinePageState extends State<MinePage>
             title: S.current.personalInformation,
             icon: "assets/images/mine/personal_info.png",
             pagePath: AppRoutes.accountDataPage,
-            onTap: (){
-              ChatUserManager().getOrQuery('19', isQueryFromServer: true).then((value){
-              });
-            },
           ),
           //我的钱包
           MineListTile(

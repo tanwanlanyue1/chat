@@ -22,6 +22,9 @@ class MessageDatingContent {
   /// 参与人头像
   final String joinAvatar;
 
+  ///订单ID
+  final int orderId;
+
   MessageDatingContent({
     required this.type,
     required this.subType,
@@ -30,6 +33,7 @@ class MessageDatingContent {
     required this.fromUid,
     required this.joinUid,
     required this.joinAvatar,
+    required this.orderId,
   });
 
   factory MessageDatingContent.fromJson(Map<String, dynamic> json) {
@@ -41,11 +45,12 @@ class MessageDatingContent {
       fromUid: json['fromUid'] ?? 0,
       joinUid: json['joinUid'] ?? 0,
       joinAvatar: json['joinAvatar'] ?? '',
+      orderId: json['orderId'] ?? 0,
     );
   }
 
   @override
   String toString() {
-    return '{type: $type, subType: $subType, startTime: $startTime, endTime: $endTime, fromUid: $fromUid, joinUid: $joinUid, joinAvatar: $joinAvatar}';
+    return '{type: $type, subType: $subType, startTime: $startTime, endTime: $endTime, fromUid: $fromUid, joinUid: $joinUid, joinAvatar: $joinAvatar, orderId: $orderId}';
   }
 }

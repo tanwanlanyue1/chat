@@ -14,18 +14,55 @@ class StyleTagWidget extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.isSelected,
-    this.filtrate = false,
+    this.unselectedTextColor,
+    this.textColor,
+    this.unselectedColor,
+    this.color,
     this.onChanged,
+    this.textStyle,
   });
+
+  ///用于筛选
+  factory StyleTagWidget.filtrate({
+    required String icon,
+    required String title,
+    required bool isSelected,
+    ValueChanged<bool>? onChanged,
+  }) {
+    return StyleTagWidget(
+      icon: icon,
+      title: title,
+      isSelected: isSelected,
+      onChanged: onChanged,
+      color: AppColor.primaryBlue,
+      unselectedColor: Colors.white,
+      textColor: Colors.white,
+      unselectedTextColor: AppColor.blackBlue,
+    );
+  }
 
   final String icon;
   final String title;
   final bool isSelected;
-  final bool filtrate;//筛选
   final ValueChanged<bool>? onChanged;
+
+  final Color? unselectedTextColor;
+  final Color? textColor;
+  final Color? unselectedColor;
+  final Color? color;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
+    var textStyle = AppTextStyle.fs12.copyWith(
+      color: isSelected
+          ? (textColor ?? Colors.white)
+          : (unselectedTextColor ?? AppColor.blackBlue),
+    );
+    if(this.textStyle != null){
+      textStyle = this.textStyle?.merge(textStyle) ?? textStyle;
+    }
+
     return GestureDetector(
       onTap: () {
         onChanged?.call(!isSelected);
@@ -34,12 +71,9 @@ class StyleTagWidget extends StatelessWidget {
         alignment: Alignment.center,
         decoration: ShapeDecoration(
           shape: const StadiumBorder(),
-          color: filtrate ? (isSelected
-              ? AppColor.primaryBlue
-              : Colors.white):
-          (isSelected
-              ? AppColor.primaryBlue
-              : AppColor.black999.withOpacity(0.1)),
+          color: isSelected
+              ? (color ?? AppColor.primaryBlue)
+              : (unselectedColor ?? AppColor.black999.withOpacity(0.1)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -54,9 +88,7 @@ class StyleTagWidget extends StatelessWidget {
               padding: FEdgeInsets(left: 4.rpx),
               child: Text(
                 title,
-                style: AppTextStyle.fs12.copyWith(
-                  color: isSelected ? Colors.white : AppColor.blackBlue,
-                ),
+                style: textStyle,
               ),
             )
           ],

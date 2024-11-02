@@ -3,12 +3,16 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_constant.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/button.dart';
+import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:guanjia/widgets/label_widget.dart';
+import 'package:guanjia/widgets/spacing.dart';
 import 'package:guanjia/widgets/style_tag_widget.dart';
 import 'package:guanjia/widgets/system_ui.dart';
 
@@ -30,7 +34,7 @@ class QuestionPage extends StatelessWidget {
       appBar: AppBar(
         systemOverlayStyle: SystemUI.lightStyle,
         backgroundColor: Colors.transparent,
-        leading: page != 0 ? AppBackButton.light() : null,
+        leading: AppBackButton.light(),
         actions: [
           GestureDetector(
             onTap: () => controller.onTapSkip(),
@@ -102,42 +106,56 @@ class QuestionPage extends StatelessWidget {
                 children: [
                   Text(
                     S.current.questionGenderLike,
-                    style: AppTextStyle.st.medium
-                        .size(18.rpx)
-                        .textColor(Colors.white),
+                    style: AppTextStyle.fs16m.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
-                  SizedBox(height: 32.rpx),
+                  SizedBox(height: 30.rpx),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _likeGenderButton(false),
+                      Spacing.w(35),
                       _likeGenderButton(true),
                     ],
                   ),
                   SizedBox(height: 60.rpx),
                   Text(
                     S.current.questionLabelsLike,
-                    style: AppTextStyle.st.medium
-                        .size(18.rpx)
-                        .textColor(Colors.white),
+                    style: AppTextStyle.fs16m.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
-                  SizedBox(height: 32.rpx),
+                  SizedBox(height: 30.rpx),
                   SizedBox(
                     width: double.infinity,
-                    child: Wrap(
-                      spacing: 12.rpx,
-                      runSpacing: 12.rpx,
-                      children: List.generate(state.labelItems.length, (index) {
-                        return GetBuilder<QuestionController>(
-                            builder: (controller) {
-                          final item = state.labelItems[index];
-                          return LabelWidget(
-                            onTap: () => controller.onTapLabel(item),
-                            item: item,
-                            fontWeight: FontWeight.w400,
-                          );
-                        });
-                      }),
+                    child: GetBuilder<QuestionController>(
+                      builder: (controller) {
+                        return GridView.count(
+                          padding: EdgeInsets.zero,
+                          crossAxisCount: 3,
+                          childAspectRatio: 104 / 40,
+                          mainAxisSpacing: 12.rpx,
+                          crossAxisSpacing: 16.rpx,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: state.labelItems.map((item) {
+                            return StyleTagWidget(
+                              icon: item.icon,
+                              title: item.title,
+                              isSelected: item.selected,
+                              color: Colors.white,
+                              unselectedColor: Colors.white.withOpacity(0.1),
+                              textColor: AppColor.blackBlue,
+                              unselectedTextColor: Colors.white,
+                              textStyle: AppTextStyle.fs12m,
+                              onChanged: (value) {
+                                controller.onTapLabel(item);
+                              },
+                            );
+                          }).toList(),
+                        );
+                      },
                     ),
                   ),
                 ],
@@ -148,18 +166,15 @@ class QuestionPage extends StatelessWidget {
             onTap: () => controller.onTapNext(page),
             child: Container(
               height: 50.rpx,
-              margin:
-                  EdgeInsets.symmetric(horizontal: 24.rpx, vertical: 20.rpx),
+              margin: FEdgeInsets(horizontal: 16.rpx, bottom: 24.rpx + Get.padding.bottom),
               alignment: Alignment.center,
-              decoration: BoxDecoration(
+              decoration: const ShapeDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(8.rpx),
+                shape: StadiumBorder()
               ),
               child: Text(
                 S.current.questionFinish,
-                style: AppTextStyle.st.semiBold
-                    .size(16.rpx)
-                    .textColor(AppColor.black3),
+                style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue),
               ),
             ),
           ),
@@ -248,11 +263,11 @@ class QuestionPage extends StatelessWidget {
       return GestureDetector(
         onTap: () => controller.onTapLikeGender(isMan ? 1 : 2, page),
         child: Container(
-          height: 150.rpx,
-          width: 150.rpx,
+          height: 130.rpx,
+          width: 130.rpx,
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8.rpx),
+            color: Colors.white.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12.rpx),
             border: isSelect
                 ? Border.all(
                     color: Colors.white,
@@ -267,14 +282,14 @@ class QuestionPage extends StatelessWidget {
                 isMan
                     ? "assets/images/login/man.png"
                     : "assets/images/login/woman.png",
-                width: 70.rpx,
-                height: 70.rpx,
+                size: 40.rpx,
               ),
-              SizedBox(height: 16.rpx),
+              SizedBox(height: 8.rpx),
               Text(
                 isMan ? S.current.questionMan : S.current.questionWoman,
-                style: AppTextStyle.fs16.copyWith(
-                  color: isSelect ? Colors.white : Colors.white.withOpacity(0.5),
+                style: AppTextStyle.fs14m.copyWith(
+                  color:
+                      isSelect ? Colors.white : Colors.white.withOpacity(0.5),
                   height: 1,
                 ),
               ),

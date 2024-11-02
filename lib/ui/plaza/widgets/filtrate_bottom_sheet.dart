@@ -133,10 +133,9 @@ class FiltrateBottomSheet extends StatelessWidget {
                 itemCount: state.styleList.length,
                 itemBuilder: (_, index) {
                   var item = state.styleList[index];
-                  return StyleTagWidget(
+                  return StyleTagWidget.filtrate(
                     icon: item.icon,
                     title: item.tag,
-                    filtrate: true,
                     isSelected: state.labelList.contains(index),
                     onChanged: (value) => controller.setLabel(index),
                   );

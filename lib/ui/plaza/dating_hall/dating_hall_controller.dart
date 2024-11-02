@@ -60,7 +60,8 @@ class RectifyTheWorkplaceController extends GetxController {
   /// page: 第几页
   void _fetchPage(int page) async {
     if(state.first){
-      List <int> userLike = (state.info?.value.likeStyle?.split(','))?.map(int.parse).toList() ?? [];
+      List <int> userLike = (state.info?.value.likeStyle != null && state.info?.value.likeStyle?.length != 0) ?
+      ((state.info?.value.likeStyle?.split(','))?.map(int.parse).toList() ?? []):[];
       await additionLabel();
       for(var i = 0; i < state.styleList.length;i++){
         if(userLike.contains(state.styleList[i].id)){

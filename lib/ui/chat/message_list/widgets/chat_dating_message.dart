@@ -204,11 +204,9 @@ class ChatDatingMessage extends StatelessWidget {
         shape: CircleBorder(),
         color: Colors.white,
       ),
-      child: AppImage.network(
+      child: UserAvatar.circle(
         SS.login.info?.avatar ?? '',
-        width: 24.rpx,
-        height: 24.rpx,
-        shape: BoxShape.circle,
+        size: 24.rpx,
       ),
     );
   }

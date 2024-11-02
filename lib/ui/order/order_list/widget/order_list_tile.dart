@@ -77,10 +77,9 @@ class _OrderListTileState extends State<OrderListTile> {
               padding: FEdgeInsets(all: 12.rpx),
               child: Row(
                 children: [
-                  AppImage.network(
+                  UserAvatar.circle(
                     item.avatar,
-                    length: 60.rpx,
-                    shape: BoxShape.circle,
+                    size: 60.rpx,
                   ),
                   SizedBox(width: 8.rpx),
                   Expanded(

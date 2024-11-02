@@ -146,12 +146,9 @@ class UserCenterPage extends StatelessWidget {
                         child: Container(
                           alignment: Alignment.center,
                           margin: EdgeInsets.only(left: 52.rpx,right: 12.rpx),
-                          child: AppImage.network(
+                          child: UserAvatar.circle(
                             state.authorInfo.avatar ?? '',
-                            width: 32.rpx,
-                            height: 32.rpx,
-                            fit: BoxFit.cover,
-                            shape: BoxShape.circle,
+                            size: 32.rpx,
                           ),
                         ),
                       ),
@@ -256,11 +253,9 @@ class UserCenterPage extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(right: 8.rpx,),
                       alignment: Alignment.center,
-                      child: AppImage.network(
+                      child: UserAvatar.circle(
                         state.authorInfo.avatar ?? '',
-                        width: 52.rpx,
-                        height: 52.rpx,
-                        shape: BoxShape.circle,
+                        size: 52.rpx,
                       ),
                     ),
                     Expanded(

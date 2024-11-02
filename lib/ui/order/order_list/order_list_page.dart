@@ -17,6 +17,7 @@ import 'package:guanjia/ui/order/order_list/order_list_state.dart';
 import 'package:guanjia/ui/order/widgets/order_operation_buttons.dart';
 import 'package:guanjia/ui/order/widgets/order_operation_number_widget.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/user_avatar.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -185,10 +186,9 @@ class _OrderListPageState extends State<OrderListPage>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AppImage.network(
+                      UserAvatar.circle(
                         item.avatar,
-                        length: 60.rpx,
-                        shape: BoxShape.circle,
+                        size: 60.rpx,
                       ),
                       SizedBox(height: 4.rpx),
                       Text(

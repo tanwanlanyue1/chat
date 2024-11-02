@@ -99,11 +99,9 @@ class SignOutDialog extends StatelessWidget {
   Widget buildAvatar() {
     return Padding(
       padding: FEdgeInsets(bottom: 16.rpx),
-      child: AppImage.network(
+      child: UserAvatar.circle(
         SS.login.info?.avatar ?? '',
-        width: 60.rpx,
-        height: 60.rpx,
-        shape: BoxShape.circle,
+        size: 60.rpx,
       ),
     );
   }

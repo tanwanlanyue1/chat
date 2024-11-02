@@ -13,6 +13,7 @@ import 'package:guanjia/ui/mine/inapp_message/models/call_match_content.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
+import 'package:guanjia/widgets/user_avatar.dart';
 
 import 'chat_controller.dart';
 
@@ -88,10 +89,9 @@ class _ChatPageState extends State<ChatPage>
                 mainAxisSize: MainAxisSize.min,
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AppImage.network(
+                  UserAvatar.circle(
                     callContent.avatar,
-                    length: 40.rpx,
-                    shape: BoxShape.circle,
+                    size: 40.rpx,
                   ),
                   SizedBox(width: 8.rpx),
                   Flexible(

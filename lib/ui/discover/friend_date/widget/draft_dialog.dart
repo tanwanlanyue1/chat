@@ -10,6 +10,7 @@ import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/loading.dart';
+import 'package:guanjia/widgets/user_avatar.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
@@ -48,11 +49,9 @@ class DraftDialog extends StatelessWidget {
         children: [
           Row(
             children: [
-              AppImage.network(
+              UserAvatar.circle(
                 item.userInfo?.avatar ?? '',
-                width: 30.rpx,
-                height: 30.rpx,
-                shape: BoxShape.circle,
+                size: 30.rpx,
               ),
               SizedBox(width: 8.rpx,),
               Text(

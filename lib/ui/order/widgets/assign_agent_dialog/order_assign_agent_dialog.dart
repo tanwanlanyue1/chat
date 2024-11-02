@@ -105,11 +105,9 @@ class OrderAssignAgentDialog extends GetView<OrderAssignAgentController> {
       padding: FEdgeInsets(all: 16.rpx, left: 10.rpx),
       child: Row(
         children: [
-          AppImage.network(
+          UserAvatar.circle(
             item.avatar ?? "",
-            width: 40.rpx,
-            height: 40.rpx,
-            shape: BoxShape.circle,
+            size: 40.rpx,
           ),
           SizedBox(width: 16.rpx),
           Expanded(

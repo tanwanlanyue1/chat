@@ -9,6 +9,7 @@ import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/user_avatar.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -100,7 +101,7 @@ class AllCommentsPage extends StatelessWidget {
             },
             child: Container(
               margin: EdgeInsets.only(right: 8.rpx),
-              child: AppImage.network(state.authorInfo.avatar ?? '',width: 36.rpx,height: 36.rpx,shape: BoxShape.circle,),
+              child: UserAvatar.circle(state.authorInfo.avatar ?? '',size: 36.rpx),
             ),
           ),
           Expanded(
@@ -167,7 +168,7 @@ class AllCommentsPage extends StatelessWidget {
                 },
                 child: Container(
                   margin: EdgeInsets.only(right: 8.rpx),
-                  child: AppImage.network(item.avatar ?? '',width: 40.rpx,height: 40.rpx,shape: BoxShape.circle,),
+                  child: UserAvatar.circle(item.avatar ?? '',size: 40.rpx),
                 ),
               ),
               Expanded(

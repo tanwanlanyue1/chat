@@ -9,6 +9,7 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/button.dart';
+import 'package:guanjia/widgets/user_avatar.dart';
 
 import '../../../common/network/api/api.dart';
 
@@ -37,7 +38,7 @@ class ClientCard extends StatelessWidget {
                 },
                 child: Container(
                   margin: EdgeInsets.only(right: 8.rpx),
-                  child: AppImage.network(item?.avatar ?? '',width: 40.rpx,height: 40.rpx,shape: BoxShape.circle,),
+                  child: UserAvatar.circle(item?.avatar ?? '',size: 40.rpx),
                 ),
               ),
               Expanded(

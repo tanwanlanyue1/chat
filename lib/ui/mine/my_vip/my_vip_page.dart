@@ -142,10 +142,9 @@ class MyVipPage extends StatelessWidget {
                     children: [
                       Stack(
                         children: [
-                          AppImage.network(
+                          UserAvatar.circle(
                             userInfo.avatar ?? "",
-                            length: 50.rpx,
-                            shape: BoxShape.circle,
+                            size: 50.rpx,
                           ),
                           if (userInfo.vip)
                             AppImage.asset(
@@ -293,10 +292,9 @@ class MyVipPage extends StatelessWidget {
                         children: [
                           Padding(
                             padding: FEdgeInsets(horizontal: 4.rpx),
-                            child: AppImage.network(
+                            child: UserAvatar.circle(
                               model.swiperList[index].avatar,
-                              length: 16.rpx,
-                              shape: BoxShape.circle,
+                              size: 16.rpx,
                             ),
                           ),
                           Expanded(

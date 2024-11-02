@@ -102,11 +102,9 @@ class OrderAcceptDialog extends StatelessWidget {
   }
 
   Widget buildSelfAvatar() {
-    return AppImage.network(
+    return UserAvatar.circle(
       SS.login.info?.avatar ?? '',
-      width: 60.rpx,
-      height: 60.rpx,
-      shape: BoxShape.circle,
+      size: 60.rpx,
     );
   }
 

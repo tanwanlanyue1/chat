@@ -10,6 +10,7 @@ import 'package:guanjia/ui/mine/mine_evaluate/widget/evaluate_card.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/system_ui.dart';
+import 'package:guanjia/widgets/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -148,11 +149,9 @@ class JiaEvaluatePage extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: 16.rpx,vertical: 12.rpx),
           child: Row(
             children: [
-              AppImage.network(
-                width: 60.rpx,
-                height: 60.rpx,
+              UserAvatar.circle(
+                size: 60.rpx,
                 state.loginService?.avatar ?? '',
-                shape: BoxShape.circle,
               ),
               SizedBox(width: 12.rpx,),
               Expanded(

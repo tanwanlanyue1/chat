@@ -9,6 +9,7 @@ import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
+import 'package:guanjia/widgets/user_avatar.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -86,7 +87,7 @@ class MineMyTeamPage extends StatelessWidget {
                 },
                 child: Container(
                   margin: EdgeInsets.only(right: 8.rpx),
-                  child: AppImage.network(item.avatar ?? '',width: 40.rpx,height: 40.rpx,shape: BoxShape.circle,),
+                  child: UserAvatar.circle(item.avatar ?? '',size: 40.rpx),
                 ),
               ),
               Expanded(

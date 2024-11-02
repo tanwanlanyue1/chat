@@ -7,13 +7,13 @@ class AppConfig{
   const AppConfig._();
 
   ///开发环境接口地址
-  // static const urlDevServer = 'http://newchat.happysport-666.cn:8300/app';
-  static const urlDevServer = 'http://103.60.146.71:8300/app';
+  static const urlDevServer = 'http://newchat.happysport-666.cn:8300/app';
+  // static const urlDevServer = 'http://103.60.146.71:8300/app';
   // static const urlDevServer = 'http://192.168.2.79:20000';
   // 外网ip http://112.94.4.229:20000
 
   ///正式环境接口地址
-  static const urlProdServer = 'https://jxapi.amiyosz.com';
+  static const urlProdServer = 'http://103.60.146.71:8300/app';
 
   static String get urlServer => ServerConfig.instance.getDefaultServer().api.toString();
 

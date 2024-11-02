@@ -14,6 +14,7 @@ import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/widgets/button.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
+import 'package:guanjia/widgets/user_avatar.dart';
 import 'package:guanjia/widgets/user_style.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -180,11 +181,9 @@ class DatingHallView extends StatelessWidget {
               children: [
                 Container(
                   margin: EdgeInsets.only(right: 10.rpx),
-                  child: AppImage.network(
+                  child: UserAvatar.circle(
                     item.avatar ?? '',
-                    width: 80.rpx,
-                    height: 80.rpx,
-                    shape: BoxShape.circle,
+                    size: 80.rpx,
                     // fit: BoxFit.cover,
                   ),
                 ),

@@ -7,11 +7,9 @@ class AppConfig{
   const AppConfig._();
 
   ///开发环境接口地址
-  static const urlDevServer = 'http://newchat.happysport-666.cn:8300/app';
-  // static const urlDevServer = 'http://103.60.146.71:8300/app';
-  // static const urlDevServer = 'http://103.60.146.71:8300/app';
+  // static const urlDevServer = 'http://newchat.happysport-666.cn:8300/app';
+  static const urlDevServer = 'http://103.60.146.71:8300/app';
   // static const urlDevServer = 'http://192.168.2.79:20000';
-  // 外网ip http://112.94.4.229:20000
 
   ///正式环境接口地址
   static const urlProdServer = 'http://103.60.146.71:8300/app';
@@ -42,6 +40,8 @@ class AppConfig{
   ///iOS通用链接
   static const iosUniversalLink = 'https://jxapi.amiyosz.com/app/';
 
+  ///亚马逊图片裁剪URL
+  static const amazonawsCloudFront = 'https://d3ls09x25n4qi9.cloudfront.net/';
 
   ///ZEGO即时通讯
   static const zegoAppId = 1161912283;
@@ -73,5 +73,6 @@ class AppConfig{
 
   ///金额小数位精度
   static const decimalDigits = 2;
+
 
 }

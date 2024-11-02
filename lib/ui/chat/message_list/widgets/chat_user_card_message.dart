@@ -58,7 +58,9 @@ class ChatUserCardMessage extends StatelessWidget {
         children: <Widget>[
           buildBaseInfo(userInfo),
           buildTags(userInfo),
-          if(userInfo.images?.isNotEmpty == true || userInfo.signature?.isNotEmpty == true) buildAboutTa(userInfo),
+          if (userInfo.images?.isNotEmpty == true ||
+              userInfo.signature?.isNotEmpty == true)
+            buildAboutTa(userInfo),
         ].separated(Spacing.h12).toList(),
       ),
     );
@@ -176,36 +178,44 @@ class ChatUserCardMessage extends StatelessWidget {
     return buildItem(
       icon: 'assets/images/chat/ic_about_ta.png',
       label: '关于Ta：',
-      crossAxisAlignment: (signature.isNotEmpty && urls.isNotEmpty) ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+      crossAxisAlignment: (signature.isNotEmpty && urls.isNotEmpty)
+          ? CrossAxisAlignment.start
+          : CrossAxisAlignment.center,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if(urls.isNotEmpty) Row(
-              children: urls
-                  .take(3)
-                  .map<Widget>((item) {
-                return AppImage.network(
-                  item,
-                  width: 40.rpx,
-                  height: 40.rpx,
-                  borderRadius: BorderRadius.circular(4.rpx),
-                );
-              })
-                  .separated(Spacing.w(6))
-                  .toList(),
-            ),
-            if(signature.isNotEmpty) Container(
-              padding: FEdgeInsets(top: urls.isNotEmpty ? 8.rpx : 0),
-              constraints: BoxConstraints(maxWidth: 230.rpx),
-              child: Text(signature, style: const TextStyle(height: 1.3)),
-            ),
+            if (urls.isNotEmpty)
+              Row(
+                children: urls
+                    .take(3)
+                    .map<Widget>((item) {
+                      return AppImage.network(
+                        item,
+                        width: 40.rpx,
+                        height: 40.rpx,
+                        borderRadius: BorderRadius.circular(4.rpx),
+                      );
+                    })
+                    .separated(Spacing.w(6))
+                    .toList(),
+              ),
+            if (signature.isNotEmpty)
+              Container(
+                padding: FEdgeInsets(top: urls.isNotEmpty ? 8.rpx : 0),
+                constraints: BoxConstraints(maxWidth: 230.rpx),
+                child: Text(
+                  signature,
+                  style: const TextStyle(height: 1.3),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
           ],
         )
       ],
     );
   }
-
 
   Widget buildItem({
     String? icon,

@@ -1,11 +1,19 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:svgaplayer_flutter/player.dart';
 import 'package:guanjia/widgets/widgets.dart';
+
+double defaultSize({double? width, double? height}) {
+  return 50.rpx;
+}
 
 ///图片显示控件
 class AppImage extends StatelessWidget {
@@ -82,8 +90,10 @@ class AppImage extends StatelessWidget {
     double opacity = 1,
     super.key,
   }) : child = CachedNetworkImage(
-          memCacheWidth: _toInt(memCacheWidth ?? length ?? width, Get.pixelRatio),
-          memCacheHeight: _toInt(memCacheHeight ?? length ?? height, Get.pixelRatio),
+          memCacheWidth:
+              _toInt(memCacheWidth ?? length ?? width, Get.pixelRatio),
+          memCacheHeight:
+              _toInt(memCacheHeight ?? length ?? height, Get.pixelRatio),
           width: length ?? width,
           height: length ?? height,
           imageUrl: resizeImage
@@ -115,11 +125,16 @@ class AppImage extends StatelessWidget {
               : (context, url) => Container(
                     width: length ?? width,
                     height: length ?? height,
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       borderRadius: borderRadius,
                       border: border,
                       shape: shape,
-                      color: AppColor.gray2,
+                      color: AppColor.background,
+                    ),
+                    child: AppImage.asset(
+                      'assets/images/common/default_img.png',
+                      size: 50.rpx,
                     ),
                   ),
           errorWidget: placeholder != null
@@ -127,11 +142,16 @@ class AppImage extends StatelessWidget {
               : (context, url, obj) => Container(
                     width: length ?? width,
                     height: length ?? height,
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       borderRadius: borderRadius,
                       border: border,
                       shape: shape,
-                      color: AppColor.gray2,
+                      color: AppColor.background,
+                    ),
+                    child: AppImage.asset(
+                      'assets/images/common/default_img.png',
+                      size: 50.rpx,
                     ),
                   ),
         );
@@ -202,14 +222,28 @@ class AppAssetImage extends AssetImage {
   const AppAssetImage(super.assetName);
 }
 
-extension on String {
+extension StringImageResize on String {
   ///华为云https://support.huaweicloud.com/usermanual-obs/obs_01_0430.html
   ///OSS云存储裁剪图片
   String getResizeImageUrl({double? width, double? height}) {
+    if (width == null && height == null) {
+      return this;
+    }
     if (width == double.infinity || height == double.infinity) {
       return this;
     }
+    return _resizeForOSS(width: width, height: height);
+    // final d = _resizeForAmazonaws(width: width, height: height)._resizeForOSS(width: width, height: height);
+    // print(this);
+    // print(d);
+    // return d;
+  }
 
+  ///阿里云图片裁剪
+  String _resizeForOSS({double? width, double? height}) {
+    if (width == double.infinity || height == double.infinity) {
+      return this;
+    }
     const resizePrefix = 'x-oss-process=image/resize';
     final dstWidth = ((width ?? 0) * Get.pixelRatio).toInt();
     final dstHeight = ((height ?? 0) * Get.pixelRatio).toInt();
@@ -227,5 +261,52 @@ extension on String {
     }
     process = (contains('?') ? '&' : '?') + process;
     return this + process;
+  }
+
+  ///亚马逊图片裁剪
+  String _resizeForAmazonaws({double? width, double? height}) {
+    if (width == double.infinity ||
+        height == double.infinity ||
+        !contains('amazonaws.com')) {
+      return this;
+    }
+
+    final uri = Uri.tryParse(this);
+    if (uri == null) {
+      return this;
+    }
+    final bucket = uri.authority.split('.').firstOrNull;
+    var key = uri.path;
+    if (key.startsWith('/')) {
+      key = key.substring(1);
+    }
+    final resize = <String, dynamic>{};
+    final dstWidth = ((width ?? 0) * Get.pixelRatio).toInt();
+    final dstHeight = ((height ?? 0) * Get.pixelRatio).toInt();
+    if (dstWidth > 0) {
+      resize['width'] = dstWidth;
+    }
+    if (dstHeight > 0) {
+      resize['height'] = dstHeight;
+    }
+
+    if (resize.isEmpty) {
+      return this;
+    }
+    resize['fit'] = 'cover';
+
+    final options = {
+      "bucket": bucket,
+      "key": key,
+      "edits": {
+        "resize": resize,
+      }
+    };
+    try {
+      final value = base64UrlEncode(utf8.encode(jsonEncode(options)));
+      return AppConfig.amazonawsCloudFront + value;
+    } catch (ex) {
+      return this;
+    }
   }
 }

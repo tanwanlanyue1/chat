@@ -18,6 +18,7 @@ import 'package:guanjia/widgets/common_gradient_button.dart';
 import 'package:guanjia/widgets/occupation_widget.dart';
 import 'package:guanjia/widgets/photo_view_gallery_page.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/widgets/user_avatar.dart';
 import 'package:guanjia/widgets/user_style.dart';
 
 import '../../../common/network/api/model/talk_model.dart';
@@ -94,11 +95,9 @@ class PlazaCard extends StatelessWidget {
             onTap: () {
               Get.toNamed(AppRoutes.userCenterPage,arguments: {"userId":item.uid});
             },
-            child: AppImage.network(
+            child: UserAvatar.circle(
               item.avatar ?? "",
-              width: 46.rpx,
-              height: 46.rpx,
-              shape: BoxShape.circle,
+              size: 46.rpx,
             ),
           ),
           SizedBox(width: 8.rpx),
@@ -223,9 +222,9 @@ class PlazaCard extends StatelessWidget {
                   memCacheHeight: Get.width/3,
                   memCacheWidth: Get.width/3,
                   fit: BoxFit.cover,
-                  placeholder: AppImage.asset("assets/images/plaza/back_image.png",
-                    fit: BoxFit.cover,
-                  ),
+                  // placeholder: AppImage.asset("assets/images/plaza/back_image.png",
+                  //   fit: BoxFit.cover,
+                  // ),
                 ),
               ),
               Visibility(

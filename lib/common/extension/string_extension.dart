@@ -54,9 +54,11 @@ extension StringExtension on String {
 
   Map<String,dynamic>? toJson(){
     try{
-      final json = jsonDecode(this);
-      if(json is Map){
-        return json.map((key, value) => MapEntry(key.toString(), value));
+      if(isNotEmpty){
+        final json = jsonDecode(this);
+        if(json is Map){
+          return json.map((key, value) => MapEntry(key.toString(), value));
+        }
       }
     }catch(ex){
       AppLogger.w('StringExtension > toJson : ex=$ex');

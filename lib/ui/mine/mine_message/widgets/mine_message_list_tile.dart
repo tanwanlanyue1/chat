@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -18,95 +19,123 @@ class MineMessageListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        color: Colors.white,
-        padding: FEdgeInsets(vertical: 12.rpx, horizontal: 12.rpx),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 10.rpx,
-                  height: 10.rpx,
-                  margin: EdgeInsets.only(right: 8.rpx),
-                  decoration: BoxDecoration(
-                    color: item.read == 1 ? AppColor.black999: (item.systemMessage?.color ?? AppColor.primaryBlue),
-                    shape: BoxShape.circle,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: FEdgeInsets(right: 8.rpx),
+            child: buildAvatar(),
+          ),
+          Expanded(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      item.systemMessage?.title ?? '',
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyle.fs16m.copyWith(
+                        color: AppColor.black3,
+                        height: 1.0,
+                      ),
+                    ),
                   ),
-                ),
-                Expanded(
+                  Text(
+                    item.systemMessage?.createTime?.dateTime.friendlyTime ??
+                        '',
+                    style: AppTextStyle.fs12.copyWith(color: AppColor.gray9),
+                  ),
+                ],
+              ),
+              if (item.systemMessage?.content?.isNotEmpty == true)
+                Padding(
+                  padding: FEdgeInsets(top: 8.rpx),
                   child: Text(
-                    item.systemMessage?.title ?? '',
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.fs14m.copyWith(
-                      color: AppColor.blackText,
-                      height: 1.0,
+                    item.systemMessage?.content ?? '',
+                    style: AppTextStyle.fs14.copyWith(
+                      color: AppColor.black3,
+                      height: 1.5,
                     ),
                   ),
                 ),
-                Text(
-                  item.systemMessage?.createTime?.dateTime.format2 ?? '',
-                  style: AppTextStyle.fs10.copyWith(color: AppColor.gray9),
+              if (item.systemMessage?.image?.isNotEmpty == true)
+                Padding(
+                  padding: FEdgeInsets(top: 8.rpx),
+                  child: AspectRatio(
+                    aspectRatio: 295 / 100,
+                    child: AppImage.network(
+                      item.systemMessage?.image ?? '',
+                      memCacheWidth: 295.rpx,
+                      memCacheHeight: 100.rpx,
+                      borderRadius: BorderRadius.circular(8.rpx),
+                    ),
+                  ),
                 ),
-              ],
-            ),
-            SizedBox(height: 8.rpx,),
-            if (item.systemMessage?.image?.isNotEmpty == true)
+              if (item.systemMessage?.highlightText?.isNotEmpty == true)
+                Padding(
+                  padding: FEdgeInsets(top: 8.rpx),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.systemMessage?.highlightText ?? '',
+                        style: AppTextStyle.fs12.copyWith(
+                          color: AppColor.babyBlueButton,
+                          height: 1,
+                        ),
+                      ),
+                      AppImage.asset(
+                        'assets/images/mine/ic_arrow_right_blue.png',
+                        size: 12.rpx,
+                      ),
+                    ],
+                  ),
+                ),
               Padding(
-                padding: FEdgeInsets(bottom: 12.rpx),
-                child: AppImage.network(
-                  item.systemMessage?.image ?? '',
-                  width: 320.rpx,
-                  height: 100.rpx,
-                ),
+                padding: FEdgeInsets(top: 12.rpx),
+                child: const Divider(height: 1),
               ),
-            buildContent(),
-          ],
-        ),
+            ],
+          )),
+        ],
       ),
     );
   }
 
-  Widget buildContent() {
-    final content = item.systemMessage?.content ?? '';
-    final highlightText = item.systemMessage?.highlightText ?? '';
-    if (content.isEmpty) {
-      return Spacing.blank;
-    }
-    final index = content.indexOf(highlightText);
-    if (highlightText.isEmpty || index == -1) {
-      return Text(
-        item.systemMessage?.content ?? '',
-        style: AppTextStyle.fs12.copyWith(
-          color: AppColor.blackText,
-          height: 1.5,
+  Widget buildAvatar() {
+    return Stack(
+      children: [
+        AppImage.asset(
+          'assets/images/chat/ic_sys_notice.png',
+          size: 40.rpx,
         ),
-      );
-    }
-
-    final items = [
-      content.substring(0, index),
-      highlightText,
-      content.substring(index + highlightText.length),
-    ];
-
-    return Text.rich(TextSpan(
-        style: AppTextStyle.fs12.copyWith(
-          color: AppColor.blackText,
-          height: 1.5,
+        Positioned(
+          top: 0,
+          left: 0,
+          child: AppImage.asset(
+            'assets/images/mine/ic_sys_msg.png',
+            size: 16.rpx,
+          ),
         ),
-        children: [
-          if (items[0].isNotEmpty) TextSpan(text: items[0]),
-          if (items[1].isNotEmpty)
-            TextSpan(
-              text: "\n${items[1]}",
-              style: AppTextStyle.fs12.copyWith(
-                color: AppColor.primaryBlue,
-                height: 1.5,
+        if (item.read != 1)
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Container(
+              width: 10.rpx,
+              height: 10.rpx,
+              decoration: ShapeDecoration(
+                shape: CircleBorder(
+                  side: BorderSide(width: 1.5.rpx, color: Colors.white),
+                ),
+                color: AppColor.green1D,
               ),
             ),
-          if (items[2].isNotEmpty) TextSpan(text: items[2]),
-        ]));
+          ),
+      ],
+    );
   }
 }

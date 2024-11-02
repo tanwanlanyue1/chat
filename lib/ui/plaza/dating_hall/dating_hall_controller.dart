@@ -24,7 +24,7 @@ class RectifyTheWorkplaceController extends GetxController {
         FiltrateBottomSheet(
           callBack: (){
             Get.back();
-            pagingController.onRefresh();
+            pagingController.refresh();
           },
         )
     );
@@ -32,10 +32,10 @@ class RectifyTheWorkplaceController extends GetxController {
 
   //设置标签
   void setLabel(int index){
-    if(state.labelList.contains(index)){
-      state.labelList.remove(index);
+    if(state.labelListSelect.contains(index)){
+      state.labelListSelect.remove(index);
     }else{
-      state.labelList.add(index);
+      state.labelListSelect.add(index);
     }
     update(['bottomSheet']);
   }
@@ -63,9 +63,12 @@ class RectifyTheWorkplaceController extends GetxController {
       List <int> userLike = (state.info?.value.likeStyle != null && state.info?.value.likeStyle?.length != 0) ?
       ((state.info?.value.likeStyle?.split(','))?.map(int.parse).toList() ?? []):[];
       await additionLabel();
+
       for(var i = 0; i < state.styleList.length;i++){
         if(userLike.contains(state.styleList[i].id)){
           state.labelList.add(i);
+          state.labelListDefault.add(i);
+          state.labelListSelect.add(i);
         }
       }
       state.first = false;
@@ -91,18 +94,22 @@ class RectifyTheWorkplaceController extends GetxController {
   }
 
   //附加标签
-  Future<bool?> additionLabel() async {
+  Future<List<LabelModel>?> additionLabel({int? index}) async {
     final response = await OpenApi.getStyleList(
-      type: state.filtrateIndex != null ? (state.filtrateIndex == -1 ? 0 : state.filtrateIndex!) : 0,
+      type: index ?? (state.filtrateIndex != null ? (state.filtrateIndex == -1 ? 0 : state.filtrateIndex!) : 0),
     );
     if (response.isSuccess) {
-      state.styleList = response.data ?? [];
-      state.labelList.clear();
+      if(index != null){
+        state.styleListSelect = response.data ?? [];
+      }else{
+        state.styleListDefault = response.data ?? [];
+        state.styleListSelect = response.data ?? [];
+        state.styleList = response.data ?? [];
+      }
+      state.labelListSelect.clear();
       update(['bottomSheet']);
-      return true;
     }else{
       response.showErrorMessage();
-      return false;
     }
   }
 

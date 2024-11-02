@@ -36,23 +36,23 @@ class NoItemsFoundIndicator extends StatelessWidget {
         children: [
           AppImage.asset(
             'assets/images/common/default_empty.png',
-            width: 176.rpx,
-            height: 140.rpx,
+            width: 140.rpx,
+            height: 112.rpx,
           ),
           Padding(
-            padding: EdgeInsets.only(top: 20.rpx),
+            padding: EdgeInsets.only(top: 8.rpx),
             child: Text(
               title,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16.rpx,
+                fontSize: 10.rpx,
                 color: AppColor.gray9,
               ),
             ),
           ),
           if (message != null)
             const SizedBox(
-              height: 16,
+              height: 8,
             ),
           if (message != null)
             Text(

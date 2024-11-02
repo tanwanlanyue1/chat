@@ -141,7 +141,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
         child: RichText(
           text: TextSpan(
             text: formattedValue,
-            style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue),
+            style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue),
             children: <TextSpan>[
               TextSpan(
                 text: "%",
@@ -153,7 +153,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
       );
     }
 
-    return Text('$info',style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue),);
+    return Text('$info',style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue),);
   }
 
   ///点赞或者取消点赞

@@ -7,16 +7,43 @@ import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
-import 'package:guanjia/widgets/gradient_range_slider_thumb.dart';
 import 'package:guanjia/widgets/range_slider_bar.dart';
 import 'package:guanjia/widgets/style_tag_widget.dart';
 
 import '../dating_hall/dating_hall_controller.dart';
+import '../dating_hall/dating_hall_state.dart';
 
 //筛选弹窗
 class FiltrateBottomSheet extends StatelessWidget {
   Function? callBack;
   FiltrateBottomSheet({super.key,this.callBack});
+
+  int? filtrate;
+  late double left;
+  late double right;
+
+  Future<void>? setValuer(RectifyTheWorkplaceState state){
+    if(filtrate == null){
+      filtrate = state.filtrateIndex;
+      left = state.info?.value.likeAgeMin.toDouble() ?? 20.0;
+      right = state.info?.value.likeAgeMax.toDouble() ?? 40.0;
+      state.styleList = state.styleListDefault.toList();
+      state.labelList = state.labelListDefault.toList();
+      state.labelListSelect = state.labelListDefault.toList();
+    }else{
+      state.labelList = state.labelListSelect;
+      state.styleList = state.styleListSelect.isNotEmpty ? state.styleListDefault : state.styleListSelect;
+    }
+  }
+
+  void setSureVal(RectifyTheWorkplaceController controller){
+    controller.state.filtrateIndex = filtrate;
+    controller.onChangeLikeAge(left.toInt(), right.toInt());
+    controller.state.styleListDefault = controller.state.styleListSelect;
+    controller.state.labelListDefault = controller.state.labelListSelect;
+    controller.state.labelList = controller.state.labelListSelect;
+    callBack?.call();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +51,7 @@ class FiltrateBottomSheet extends StatelessWidget {
       id: 'bottomSheet',
       builder: (controller){
         var state = controller.state;
+        setValuer(state);
         return Container(
           padding: EdgeInsets.all(16.rpx).copyWith(bottom: Get.mediaQuery.padding.bottom+24.rpx),
           decoration: BoxDecoration(
@@ -61,17 +89,15 @@ class FiltrateBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(state.filtrateType.length, (index) => GestureDetector(
                   onTap: (){
-                    if(state.filtrateIndex == index+1){
-                      state.filtrateIndex = -1;
-                    }else{
-                      state.filtrateIndex = state.filtrateType[index]['type'];
+                    if(filtrate != index+1){
+                      filtrate = state.filtrateType[index]['type'];
+                      controller.additionLabel(index: filtrate);
                     }
-                    controller.additionLabel();
                   },
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.rpx),
-                      border: Border.all(width: 1.rpx,color: AppColor.primaryBlue.withOpacity(state.filtrateIndex == state.filtrateType[index]['type'] ? 1 : 0.1))
+                      border: Border.all(width: 1.rpx,color: AppColor.primaryBlue.withOpacity(filtrate == state.filtrateType[index]['type'] ? 1 : 0.1))
                     ),
                     width: 90.rpx,
                     height: 90.rpx,
@@ -109,11 +135,11 @@ class FiltrateBottomSheet extends StatelessWidget {
                 child: RangeSliderBar(
                   min: state.ageMin.toDouble(),
                   max: state.ageMax.toDouble(),
-                  leftValue: state.info?.value.likeAgeMin.toDouble() ?? 20.0,
-                  rightValue: state.info?.value.likeAgeMax.toDouble() ?? 40.0,
-                  onDragging: (left,right){
-                    controller.onChangeLikeAge(
-                        left.toInt(), right.toInt());
+                  leftValue: left,
+                  rightValue: right,
+                  onDragging: (leftVal,rightVal){
+                    left = leftVal;
+                    right = rightVal;
                   },
                 ),
               ),
@@ -145,9 +171,7 @@ class FiltrateBottomSheet extends StatelessWidget {
               CommonGradientButton(
                 height: 50.rpx,
                 text: S.current.confirm,
-                onTap: (){
-                  callBack?.call();
-                },
+                onTap: ()=> setSureVal(controller),
               )
             ],
           ),

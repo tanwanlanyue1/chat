@@ -300,7 +300,7 @@ class UserCenterPage extends StatelessWidget {
                                     ),
                                   ),
                                   Visibility(
-                                    visible: state.authorInfo.position != null,
+                                    visible: state.authorInfo.position != null && state.authorInfo.position?.length != 0,
                                     child: Container(
                                       padding: EdgeInsets.symmetric(horizontal: 4.rpx,vertical: 2.rpx),
                                       decoration: BoxDecoration(
@@ -379,17 +379,17 @@ class UserCenterPage extends StatelessWidget {
               ),
               Container(
                 alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(bottom: 12.rpx),
+                margin: EdgeInsets.only(bottom: 8.rpx),
                 child: Text(S.current.userSignature,style: AppTextStyle.fs14b.copyWith(color: AppColor.blackBlue),),
               ),
               Obx(() => Stack(
                 children: [
                   Container(
                     constraints: BoxConstraints(
-                        minHeight: 54.rpx
+                        minHeight: 48.rpx
                     ),
                     alignment: Alignment.topLeft,
-                    child: Text(state.authorInfo.signature?.fixAutoLines() ?? '',style: AppTextStyle.fs12.copyWith(color: AppColor.blackBlue,),maxLines: state.isShow.value ? 3 :  null,),
+                    child: Text(state.authorInfo.signature?.fixAutoLines() ?? '',style: AppTextStyle.fs10.copyWith(color: AppColor.black92,),maxLines: state.isShow.value ? 3 :  null,),
                   ),
                   Positioned(
                     bottom: 0,
@@ -417,11 +417,11 @@ class UserCenterPage extends StatelessWidget {
                           child: RichText(
                             text: TextSpan(
                               text: "... ",
-                              style: AppTextStyle.fs12.copyWith(color: AppColor.black20),
+                              style: AppTextStyle.fs12.copyWith(color: AppColor.black92),
                               children: <TextSpan>[
                                 TextSpan(
                                   text: S.current.readMore,
-                                  style: AppTextStyle.fs12.copyWith(color: AppColor.primaryBlue,height: 1.5),
+                                  style: AppTextStyle.fs10.copyWith(color: AppColor.primaryBlue,height: 1.5),
                                 ),
                               ],
                             ),
@@ -454,7 +454,7 @@ class UserCenterPage extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 padding: EdgeInsets.symmetric(horizontal: controller.isAttentionRx.value ? 8.rpx: 14.rpx,vertical: controller.isAttentionRx.value ? 3.rpx: 4.rpx),
-                child: Text(controller.isAttentionRx.value ? S.current.followed:S.current.attention,style: AppTextStyle.fs14r.copyWith(
+                child: Text(controller.isAttentionRx.value ? S.current.followed:S.current.attention,style: AppTextStyle.fs12r.copyWith(
                     color: controller.isAttentionRx.value ? AppColor.grayText : Colors.white),),
               ),
             ),controller.isAttentionRx),

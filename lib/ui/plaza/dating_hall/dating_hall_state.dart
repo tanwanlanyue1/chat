@@ -56,8 +56,14 @@ class RectifyTheWorkplaceState {
   final int ageMax = 65;
   //风格
   List<LabelModel> styleList = [];
+  //默认
+  List<LabelModel> styleListDefault = [];
+  //选择
+  List<LabelModel> styleListSelect = [];
   //风格-标签
   List<int> labelList = [];
+  List<int> labelListDefault = [];
+  List<int> labelListSelect = [];
   //第一次
   bool first = true;
 }

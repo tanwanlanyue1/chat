@@ -28,9 +28,6 @@ class NearbyHallController extends GetxController {
   /// 获取列表数据
   /// page: 第几页
   void _fetchPage(int page) async {
-    if(page == 1){
-      pagingController.itemList?.clear();
-    }
     String tag = "";
     for(var i = 0; i < controller.state.labelList.length; i++){
       tag += "${controller.state.styleList[controller.state.labelList[i]].id},";
@@ -59,7 +56,7 @@ class NearbyHallController extends GetxController {
           callBack: (){
             Get.back();
             controller.state.filtrateIndex = (controller.state.filtrateIndex ?? -1);
-            pagingController.onRefresh();
+            pagingController.refresh();
           },
         )
     );

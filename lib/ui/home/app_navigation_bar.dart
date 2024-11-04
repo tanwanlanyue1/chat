@@ -115,27 +115,27 @@ class _AppNavigationBarState extends State<AppNavigationBar>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      clipBehavior: Clip.none,
-      children: [
-        Material(
-          elevation: 8,
-          color: Colors.white,
-          child: SafeArea(
-            top: false,
-            left: false,
-            right: false,
-            bottom: true,
-            child: _buildNavigationBackground(),
-          ),
+    return Material(
+      elevation: 8,
+      color: Colors.white,
+      child: SafeArea(
+        top: false,
+        left: false,
+        right: false,
+        bottom: true,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          clipBehavior: Clip.none,
+          children: [
+            _buildNavigationBackground(),
+            _buildHighlightIndicator(),
+            Padding(
+              padding: FEdgeInsets(horizontal: horizontalPadding),
+              child: _buildNavigationForeground(),
+            ),
+          ],
         ),
-        _buildHighlightIndicator(),
-        Padding(
-          padding: FEdgeInsets(horizontal: horizontalPadding),
-          child: _buildNavigationForeground(),
-        ),
-      ],
+      ),
     );
   }
 

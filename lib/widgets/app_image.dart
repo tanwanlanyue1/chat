@@ -7,9 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:svgaplayer_flutter/player.dart';
 import 'package:guanjia/widgets/widgets.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 double getDefaultIconSize({double? width, double? height}) {
   final defaultSize = 50.rpx;
@@ -248,16 +251,12 @@ extension StringImageResize on String {
     if (width == double.infinity || height == double.infinity) {
       return this;
     }
-    return _resizeForOSS(width: width, height: height);
-    // final d = _resizeForAmazonaws(width: width, height: height)._resizeForOSS(width: width, height: height);
-    // print(this);
-    // print(d);
-    // return d;
+    return _resizeForAmazonaws(width: width, height: height)._resizeForOSS(width: width, height: height);
   }
 
   ///阿里云图片裁剪
   String _resizeForOSS({double? width, double? height}) {
-    if (width == double.infinity || height == double.infinity) {
+    if (width == double.infinity || height == double.infinity || contains('amazonaws.com')) {
       return this;
     }
     const resizePrefix = 'x-oss-process=image/resize';
@@ -284,6 +283,11 @@ extension StringImageResize on String {
     if (width == double.infinity ||
         height == double.infinity ||
         !contains('amazonaws.com')) {
+      return this;
+    }
+
+    final amazonawsCloudFront = SS.appConfig.configRx()?.amazonawsCloudFront;
+    if(amazonawsCloudFront == null || !amazonawsCloudFront.startsWith('http')){
       return this;
     }
 
@@ -318,9 +322,13 @@ extension StringImageResize on String {
         "resize": resize,
       }
     };
+    // ///亚马逊图片裁剪URL
+    // static const amazonawsCloudFront = 'https://d3ls09x25n4qi9.cloudfront.net/';
     try {
-      final value = base64UrlEncode(utf8.encode(jsonEncode(options)));
-      return AppConfig.amazonawsCloudFront + value;
+      var value = jsonEncode(options);
+      value = Uri.decodeComponent(value);
+      value = base64Encode(utf8.encode(value));
+      return amazonawsCloudFront + value;
     } catch (ex) {
       return this;
     }

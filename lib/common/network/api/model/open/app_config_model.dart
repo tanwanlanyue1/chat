@@ -107,6 +107,8 @@ class AppConfigModel {
   ///vip的信息
   VipModel? vipInfo;
 
+  ///亚马逊图片裁剪URL
+  String? amazonawsCloudFront;
 
   List<LabelModel> get commonStyleList {
     if (styleList == null) return [];
@@ -199,6 +201,7 @@ class AppConfigModel {
     payTips = json['payTips'];
     withdrawFee = json['withdrawFee'];
     withdrawMinAmount = json['withdrawMinAmount'];
+    amazonawsCloudFront = json['amazonawsCloudFront'];
   }
 }
 

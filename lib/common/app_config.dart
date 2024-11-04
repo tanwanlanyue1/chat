@@ -40,9 +40,6 @@ class AppConfig{
   ///iOS通用链接
   static const iosUniversalLink = 'https://jxapi.amiyosz.com/app/';
 
-  ///亚马逊图片裁剪URL
-  static const amazonawsCloudFront = 'https://d3ls09x25n4qi9.cloudfront.net/';
-
   ///ZEGO即时通讯
   static const zegoAppId = 1161912283;
   static const zegoAppSign = 'bb69e72800b6de21038b9e1a9044e229ee48d79b89c7ef2961e5175c6ccc934d';

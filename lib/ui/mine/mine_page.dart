@@ -11,12 +11,10 @@ import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_link.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/ui/mine/widgets/beautiful_status_tips.dart';
 import 'package:guanjia/ui/mine/widgets/mine_list_tile.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/ground_glass.dart';
-import 'package:guanjia/widgets/user_avatar.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -328,10 +326,6 @@ class _MinePageState extends State<MinePage>
             title: S.current.personalInformation,
             icon: "assets/images/mine/personal_info.png",
             pagePath: AppRoutes.accountDataPage,
-            onTap: (){
-              // final url = 'https://new-bucket-2e2f104e.s3.ap-east-1.amazonaws.com/jxapp/app/cfa4561b104c44d68cc1c3195778c3e1.jpg';
-              // print('uri.key: ${url.getResizeImageUrl(width: 100, height: 100)}');
-            },
           ),
           //我的钱包
           MineListTile(

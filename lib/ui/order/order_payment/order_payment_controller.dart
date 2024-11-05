@@ -30,6 +30,7 @@ class OrderPaymentController extends GetxController with OrderOperationMixin {
 
   @override
   void onInit() {
+    SS.login.fetchMyInfo();
     if (type == OrderPaymentType.dating) {
       _fetchData();
     }

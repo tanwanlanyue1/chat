@@ -97,6 +97,9 @@ class ChatManager
           channelName: S.current.newMessageNotification,
           icon: 'logo',
         ),
+        iosNotificationConfig: ZegoZIMKitIOSNotificationConfig(
+          certificateIndex: ZegoSignalingPluginMultiCertificate.firstCertificate
+        )
       ),
     );
 

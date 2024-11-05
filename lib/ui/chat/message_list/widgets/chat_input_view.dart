@@ -170,7 +170,7 @@ class ChatInputViewState extends State<ChatInputView>
           'assets/images/chat/ic_chat_send.png',
           width: 24.rpx,
           height: 24.rpx,
-          color: disabled ? AppColor.blue6.withOpacity(0.5) : null,
+          color: disabled ? AppColor.primaryBlue.withOpacity(0.5) : null,
         ),
       );
     }, contentRx);

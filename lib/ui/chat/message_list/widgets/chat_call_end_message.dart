@@ -55,7 +55,7 @@ class ChatCallEndMessage extends StatelessWidget {
         child: Container(
           width: 260.rpx,
           decoration: BoxDecoration(
-            color: message.isMine ? AppColor.blue6 : Colors.white,
+            color: message.isMine ? AppColor.primaryBlue : Colors.white,
             borderRadius: BorderRadius.circular(8.rpx),
           ),
           padding: FEdgeInsets(

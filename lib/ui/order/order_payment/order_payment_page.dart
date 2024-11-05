@@ -133,16 +133,18 @@ class OrderPaymentPage extends GetView<OrderPaymentController> {
                                 child: ConstrainedBox(
                                   constraints:
                                       BoxConstraints(maxWidth: 140.rpx),
-                                  child: AutoSizeText(
-                                    S.current.balanceLabel(
-                                        (SS.login.info?.balance ?? 0)
-                                            .toCurrencyString()),
-                                    style: AppTextStyle.fs14
-                                        .copyWith(color: AppColor.gray9),
-                                    maxLines: 1,
-                                    minFontSize: 8,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                                  child: Obx((){
+                                    return AutoSizeText(
+                                      S.current.balanceLabel(
+                                          (SS.login.info?.balance ?? 0)
+                                              .toCurrencyString()),
+                                      style: AppTextStyle.fs14
+                                          .copyWith(color: AppColor.gray9),
+                                      maxLines: 1,
+                                      minFontSize: 8,
+                                      overflow: TextOverflow.ellipsis,
+                                    );
+                                  }),
                                 ),
                               ),
                               SizedBox(width: 8.rpx),

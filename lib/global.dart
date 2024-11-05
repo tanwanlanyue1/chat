@@ -89,7 +89,7 @@ class Global with WidgetsBindingObserver{
     //初始化IM服务
     await ChatManager().init();
 
-    //初始化通知服务
+    // //初始化通知服务
     NotificationManager().initialize();
 
     //初始化服务

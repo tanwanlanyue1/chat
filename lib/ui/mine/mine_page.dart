@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
@@ -9,6 +12,7 @@ import 'package:guanjia/common/extension/string_extension.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_link.dart';
+import 'package:guanjia/common/utils/file_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/mine/widgets/beautiful_status_tips.dart';
@@ -228,21 +232,22 @@ class _MinePageState extends State<MinePage>
 
   ///广告
   Widget buildBanner() {
-    return Obx((){
+    return Obx(() {
       final list = SS.ad.bannerMapRx()[1] ?? [];
-      if(list.isEmpty){
+      if (list.isEmpty) {
         return Spacing.blank;
       }
       return Padding(
         padding: FEdgeInsets(top: 8.rpx, bottom: 4.rpx),
         child: AspectRatio(
-          aspectRatio: 1029/240,
+          aspectRatio: 1029 / 240,
           child: Swiper(
             autoplay: list.length > 1,
             loop: list.length > 1,
             duration: 500,
             autoplayDelay: 5000,
-            physics: list.length > 1 ? null : const NeverScrollableScrollPhysics(),
+            physics:
+                list.length > 1 ? null : const NeverScrollableScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
               final item = list.tryGet(index);
               return AppImage.network(
@@ -252,10 +257,10 @@ class _MinePageState extends State<MinePage>
               );
             },
             itemCount: list.length,
-            onTap: (index){
+            onTap: (index) {
               final item = list.tryGet(index);
               final url = item?.gotoUrl;
-              if(item != null && url != null){
+              if (item != null && url != null) {
                 AppLink.jump(
                   url,
                   title: item.title,
@@ -408,10 +413,10 @@ class _MinePageState extends State<MinePage>
             title: S.current.whoSeenMe,
             icon: "assets/images/mine/examine.png",
             badge: SS.appConfig.configRx.value?.lookMessage,
-            onTap: (){
-              if(SS.login.isVip){
+            onTap: () {
+              if (SS.login.isVip) {
                 Get.toNamed(AppRoutes.haveSeenPage);
-              }else{
+              } else {
                 GroundGlass.show();
               }
             },

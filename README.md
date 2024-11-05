@@ -36,3 +36,11 @@ flutter build ipa --dart-define=APP_RELEASE=release --dart-define=APP_CHANNEL=ap
 
 ## 查看Android证书SHA
 keytool -list -v -keystore guanjia.jks
+
+
+
+## iOS测试打包
+flutter build ipa --export-method ad-hoc
+
+## iOS打正式包
+flutter build ipa --dart-define=APP_CHANNEL=0 --dart-define=APP_RELEASE=release

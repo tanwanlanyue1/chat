@@ -11,6 +11,7 @@ import 'package:guanjia/common/notification/payload/chat_message_payload.dart';
 import 'package:guanjia/common/notification/payload/sys_notice_payload.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/main.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/mine/mine_message/mine_message_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/app_update/app_update_manager.dart';
@@ -44,21 +45,88 @@ class NotificationManager {
 
   var _jumpWithAppLaunchOptions = '';
 
+
+
+  /// A notification action which triggers a url launch event
+  final String urlLaunchActionId = 'id_1';
+
+  /// A notification action which triggers a App navigation event
+  final String navigationActionId = 'id_3';
+
+  /// Defines a iOS/MacOS notification category for text input actions.
+  final String darwinNotificationCategoryText = 'textCategory';
+
+  /// Defines a iOS/MacOS notification category for plain actions.
+  final String darwinNotificationCategoryPlain = 'plainCategory';
+
+  DarwinInitializationSettings init(){
+
+    final List<DarwinNotificationCategory> darwinNotificationCategories =
+    <DarwinNotificationCategory>[
+      DarwinNotificationCategory(
+        darwinNotificationCategoryText,
+        actions: <DarwinNotificationAction>[
+          DarwinNotificationAction.text(
+            'text_1',
+            'Action 1',
+            buttonTitle: 'Send',
+            placeholder: 'Placeholder',
+          ),
+        ],
+      ),
+      DarwinNotificationCategory(
+        darwinNotificationCategoryPlain,
+        actions: <DarwinNotificationAction>[
+          DarwinNotificationAction.plain('id_1', 'Action 1'),
+          DarwinNotificationAction.plain(
+            'id_2',
+            'Action 2 (destructive)',
+            options: <DarwinNotificationActionOption>{
+              DarwinNotificationActionOption.destructive,
+            },
+          ),
+          DarwinNotificationAction.plain(
+            navigationActionId,
+            'Action 3 (foreground)',
+            options: <DarwinNotificationActionOption>{
+              DarwinNotificationActionOption.foreground,
+            },
+          ),
+          DarwinNotificationAction.plain(
+            'id_4',
+            'Action 4 (auth required)',
+            options: <DarwinNotificationActionOption>{
+              DarwinNotificationActionOption.authenticationRequired,
+            },
+          ),
+        ],
+        options: <DarwinNotificationCategoryOption>{
+          DarwinNotificationCategoryOption.hiddenPreviewShowTitle,
+        },
+      )
+    ];
+
+    /// Note: permissions aren't requested here just to demonstrate that can be
+    /// done later
+    return DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+      notificationCategories: darwinNotificationCategories,
+    );
+  }
+
   Future<void> initialize() async {
     if (Platform.isAndroid) {
       await _createNotificationChannel();
     }
     await FlutterLocalNotificationsPlugin().initialize(
-      const InitializationSettings(
+      InitializationSettings(
         android: AndroidInitializationSettings('logo'),
-        iOS: DarwinInitializationSettings(
-            // requestSoundPermission: true,
-            // requestBadgePermission: false,
-            // requestAlertPermission: false,
-            ),
+        iOS: init(),
       ),
       onDidReceiveNotificationResponse: _onTapNotification,
-      onDidReceiveBackgroundNotificationResponse: _onTapNotification,
+      // onDidReceiveBackgroundNotificationResponse: _onTapNotification,
     );
   }
 

@@ -37,7 +37,7 @@ class ChatCallInviteMessage extends StatelessWidget {
         ),
         child: Bubble(
           elevation: 0,
-          color: message.isMine ? AppColor.blue6 : Colors.white,
+          color: message.isMine ? AppColor.primaryBlue : Colors.white,
           nip: message.isMine ? BubbleNip.rightBottom : BubbleNip.leftBottom,
           radius: Radius.circular(8.rpx),
           padding: BubbleEdges.symmetric(

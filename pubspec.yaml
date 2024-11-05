@@ -1,7 +1,7 @@
 name: guanjia
 description: "A new Flutter project."
 publish_to: 'none'
-version: 1.0.2+2
+version: 1.0.0+1
 
 environment:
   sdk: '>=3.3.3 <4.0.0'
@@ -53,7 +53,6 @@ dependencies:
   url_launcher: ^6.3.0
   visibility_detector: ^0.4.0+2
   device_info_plus: ^10.1.0
-  in_app_purchase: ^3.2.0
   uuid: ^4.0.0
   intl_phone_field: ^3.2.0
   extended_image: ^8.2.1
@@ -85,7 +84,6 @@ dependencies:
   highlight_text: ^1.8.0 #高亮文本
   google_maps_flutter: ^2.6.1
   geolocator: ^12.0.0 #获取设备定位
-  flutter_google_places_sdk: ^0.3.9
   flutter_inset_box_shadow: ^1.0.8 #内阴影
   equatable: ^2.0.5
   flutter_xlider: ^3.5.0

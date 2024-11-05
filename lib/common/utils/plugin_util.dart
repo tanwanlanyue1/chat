@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:guanjia/common/utils/file_logger.dart';
@@ -28,12 +30,17 @@ class PluginUtil {
     }
   }
 
-  ///获取APP启动参数 TODO iOS未实现
+  ///获取APP启动参数
   static Future<Map<dynamic, dynamic>> getAppLaunchOptions() async{
     try {
-      final result =
-      await _methodChannel.invokeMethod<Map<dynamic, dynamic>>('getAppLaunchOptions');
-      return result ?? {};
+      final result = await _methodChannel.invokeMethod<Map<dynamic, dynamic>>('getAppLaunchOptions') ?? {};
+      if(Platform.isIOS){
+        final value = result['UIApplicationLaunchOptionsRemoteNotificationKey'];
+        if(value is Map){
+          return value;
+        }
+      }
+      return result;
     } catch (ex) {
       debugPrint('getAppLaunchOptions error: $ex');
     }

@@ -43,6 +43,7 @@ class _ChatPageState extends State<ChatPage>
           children: [
             TabBarView(
               controller: controller.tabController,
+              physics: const NeverScrollableScrollPhysics(),
               children: const [
                 ConversationListView(),
                 ContactView(),

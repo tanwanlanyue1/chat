@@ -1,7 +1,3 @@
 {
-  "language": "Language",
-  "setting": "setting",
-  "chinese": "中文",
-  "english": "English",
-  "readMore": "Read more"
+  "setting": "Settings"
 }

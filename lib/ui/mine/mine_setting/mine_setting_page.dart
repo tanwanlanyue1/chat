@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/app_localization.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/network/network.dart';
@@ -123,6 +124,10 @@ class MineSettingPage extends StatelessWidget {
                     SettingItem(
                       title: S.current.languageSwitch,
                       bottom: 0,
+                      trailing: Text(
+                        controller.locale.value?.languageName ?? '',
+                        style: AppTextStyle.fs12.copyWith(color: AppColor.gray9),
+                      ),
                       callBack: () {
                         controller.selectLanguage();
                       },

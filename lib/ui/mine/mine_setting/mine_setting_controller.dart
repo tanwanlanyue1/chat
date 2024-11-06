@@ -19,6 +19,8 @@ class MineSettingController extends GetxController {
 
   final cacheSize = "".obs;
 
+  final locale = AppLocalization.instance.locale.obs;
+
   void onTapClearCache() {
     ImageCacheUtils.clearAllCacheImage();
     cacheSize.value = ImageCacheUtils.getAllSizeOfCacheImages();
@@ -29,8 +31,9 @@ class MineSettingController extends GetxController {
     final locales = AppLocalization.instance.supportedLocales;
     Get.bottomSheet(
       CommonBottomSheet(
-        titles: [S.current.chinese, S.current.english],
+        titles: locales.map((e) => e.languageName).toList(),
         onTap: (index) async {
+          locale.value = locales[index];
           AppLocalization.instance.updateLocale(locales[index]);
         },
       ),

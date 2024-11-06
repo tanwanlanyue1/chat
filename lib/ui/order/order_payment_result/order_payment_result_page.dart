@@ -22,6 +22,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
     required this.type,
     required this.isSuccess,
     this.vipPackage,
+    this.vipOrderNo = '',
   });
 
   final int orderId;
@@ -29,6 +30,8 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
   final OrderPaymentType type;
   final bool isSuccess;
   final VipPackageModel? vipPackage;
+  ///vip订单编号
+  final String vipOrderNo;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +77,7 @@ class OrderPaymentResultPage extends GetView<OrderPaymentResultController> {
       remark = S.current.beReturnedWithin24Hours;
     } else {
       title = S.current.VIPRechargeSuccess;
-      orderNumber = "";
+      orderNumber = vipOrderNo;
       final vipPackage = this.vipPackage;
       if(vipPackage != null){
         result = vipPackage.discountPrice > 0 ? vipPackage.discountPrice : vipPackage.price;

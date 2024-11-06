@@ -100,6 +100,7 @@ class OrderPaymentController extends GetxController with OrderOperationMixin {
           "vipPackage": vipPackage,
           "isSuccess": true,
           "type": OrderPaymentType.vip,
+          "vipOrderNo": response.data,
         },
       );
     } else {

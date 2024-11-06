@@ -409,6 +409,9 @@ mixin _ChatCallMixin {
             ? ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
             : ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall();
 
+    //默认打开外放
+    config.useSpeakerWhenJoining = true;
+
     //用户头像配置
     config.avatarBuilder = (
       BuildContext context,

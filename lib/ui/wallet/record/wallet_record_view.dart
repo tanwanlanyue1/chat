@@ -78,8 +78,6 @@ class _WalletRecordViewState extends State<WalletRecordView>
         diffColor = AppColor.green;
       }
 
-
-
       return Padding(
         padding: FEdgeInsets(horizontal: 16.rpx, vertical: 12.rpx),
         child: Row(

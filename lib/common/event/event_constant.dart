@@ -24,5 +24,8 @@ const kEventUserInfo = 'kEventUserInfo';
 ///开通VIP成功
 const kEventOpenVip = 'kEventOpenVip';
 
+///充值到账成功 data=orderNo
+const kEventRechargeSuccess = 'kEventRechargeSuccess';
+
 ///选择地区 List<AreaModel>
 const kEventChooseArea = 'kEventChooseArea';

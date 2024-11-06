@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/paging/default_status_indicators/first_page_error_indicator.dart';
@@ -33,9 +34,9 @@ class _ConversationListViewState extends State<ConversationListView>
     return VisibilityDetector(
       key: const Key('ConversationListView'),
       onVisibilityChanged: (info) {
-        if(info.visibleFraction == 1){
+        if (info.visibleFraction == 1) {
           ChatUserManager().startSync();
-        }else{
+        } else {
           ChatUserManager().stopSync();
         }
       },
@@ -68,25 +69,27 @@ class _ConversationListViewState extends State<ConversationListView>
             // });
             return LayoutBuilder(
               builder: (context, BoxConstraints constraints) {
-                return CustomScrollView(
-                  controller: controller.scrollController,
-                  cacheExtent: constraints.maxHeight * 3,
-                  slivers: [
-                    buildSysNotice(),
-                    SliverList.builder(
-                      itemCount: list.length,
-                      itemBuilder: (_, index) {
-                        final conversation = list[index];
-                        return ValueListenableBuilder(
-                          valueListenable: conversation,
-                          builder: (_, conversation, __) {
-                            return ConversationListTile(
-                                conversation: conversation);
-                          },
-                        );
-                      },
-                    ),
-                  ],
+                return SlidableAutoCloseBehavior(
+                  child: CustomScrollView(
+                    controller: controller.scrollController,
+                    cacheExtent: constraints.maxHeight * 3,
+                    slivers: [
+                      buildSysNotice(),
+                      SliverList.builder(
+                        itemCount: list.length,
+                        itemBuilder: (_, index) {
+                          final conversation = list[index];
+                          return ValueListenableBuilder(
+                            valueListenable: conversation,
+                            builder: (_, conversation, __) {
+                              return ConversationListTile(
+                                  conversation: conversation);
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 );
               },
             );

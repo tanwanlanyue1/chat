@@ -57,11 +57,13 @@ class OrderPages {
         final type =
             Get.getArgs<OrderPaymentType>("type", OrderPaymentType.dating);
         final vipPackage = Get.tryGetArgs<VipPackageModel>("vipPackage");
+        final vipOrderNo = Get.getArgs<String>("vipOrderNo", '');
         return OrderPaymentResultPage(
           orderId: orderId,
           type: type,
           isSuccess: isSuccess,
           vipPackage: vipPackage,
+          vipOrderNo: vipOrderNo,
         );
       },
     ),

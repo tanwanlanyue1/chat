@@ -70,6 +70,7 @@ class _ConversationListTileState extends State<ConversationListTile>
     final orderInfoView = isOrderMsg ? _buildOrderInfo() : null;
     return Slidable(
       key: ValueKey(conversation.id),
+      groupTag: 'ConversationList',
       endActionPane: ActionPane(
         extentRatio: 0.3,
         motion: const ScrollMotion(),

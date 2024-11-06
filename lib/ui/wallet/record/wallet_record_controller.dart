@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
+import 'package:guanjia/common/event/event_bus.dart';
+import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
@@ -7,7 +10,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'wallet_record_filter_dialog.dart';
 
-class WalletRecordController extends GetxController {
+class WalletRecordController extends GetxController with GetAutoDisposeMixin {
   // 分页控制器
   final DefaultPagingController pagingController =
       DefaultPagingController<PurseLogModel>(
@@ -26,6 +29,10 @@ class WalletRecordController extends GetxController {
   @override
   void onInit() {
     pagingController.addPageRequestListener(_fetchPage);
+    //充值到账成功时，筛选列表
+    autoDisposeWorker(EventBus().listen(kEventRechargeSuccess, (data) {
+      pagingController.refresh();
+    }));
     super.onInit();
   }
 

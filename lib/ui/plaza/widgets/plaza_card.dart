@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
@@ -140,7 +141,7 @@ class PlazaCard extends StatelessWidget {
                       OccupationWidget(occupation: UserOccupation.valueForIndex(item.occupation ?? 0)),
                       Visibility(
                         visible: item.nameplate != null && item.nameplate!.isNotEmpty,
-                        child: AppImage.network(item.nameplate ?? '',width: 45.rpx,height: 12.rpx,fit: BoxFit.fitHeight,),
+                        child: CachedNetworkImage(imageUrl: item.nameplate ?? '',height: 12.rpx),
                       )
                     ],
                   ),

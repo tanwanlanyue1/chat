@@ -23,6 +23,7 @@ class NearbyHallView extends StatelessWidget {
 
   final controller = Get.put(NearbyHallController());
   final state = Get.find<NearbyHallController>().state;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +37,7 @@ class NearbyHallView extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 9.rpx,
               mainAxisSpacing: 9.rpx,
-              mainAxisExtent: 220.rpx
-          ),
+              mainAxisExtent: 220.rpx),
           padding: EdgeInsets.symmetric(horizontal: 16.rpx),
           builderDelegate: DefaultPagedChildBuilderDelegate<RecommendModel>(
             pagingController: controller.pagingController,
@@ -53,201 +53,237 @@ class NearbyHallView extends StatelessWidget {
   }
 
   //附近列表
-  Widget nearbyItem(RecommendModel item){
+  Widget nearbyItem(RecommendModel item) {
     return GestureDetector(
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: NetworkImage(item.avatar ?? ''),
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter
+      child: Stack(
+        children: [
+          AppImage.network(
+            item.avatar ?? '',
+            height: 220.rpx,
+            borderRadius: BorderRadius.circular(8.rpx),
+            fit: BoxFit.cover,
+            align: Alignment.topCenter,
           ),
-          borderRadius: BorderRadius.circular(8.rpx),
-        ),
-        height: 220.rpx,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Visibility(
-              visible: item.onlineStatus == 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(8.rpx),
-                ),
-                margin: EdgeInsets.only(left: 8.rpx),
-                padding: EdgeInsets.symmetric(horizontal: 4.rpx),
-                height: 14.rpx,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 4.rpx,
-                      height: 4.rpx,
-                      margin: EdgeInsets.only(right: 2.rpx),
-                      decoration: const BoxDecoration(
-                          color: AppColor.green1D,
-                          shape: BoxShape.circle
-                      ),
+          SizedBox(
+            height: 220.rpx,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Visibility(
+                  visible: item.onlineStatus == 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(8.rpx),
                     ),
-                    Text("在线",style: AppTextStyle.fs10.copyWith(height: 1.0,color: AppColor.green1D),)
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              height: 48.rpx,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [
-                      Colors.black.withOpacity(0),
-                      Colors.black.withOpacity(0.5),
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter
-                ),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(8.rpx),
-                  bottomRight: Radius.circular(8.rpx),
-                ),
-              ),
-              padding: EdgeInsets.only(left: 8.rpx,top: 8.rpx,bottom: 10.rpx),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    margin: EdgeInsets.only(left: 8.rpx),
+                    padding: EdgeInsets.symmetric(horizontal: 4.rpx),
+                    height: 14.rpx,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(item.nickname ?? '',style: AppTextStyle.fs14m.copyWith(color: Colors.white,height: 1.0),overflow: TextOverflow.ellipsis,maxLines: 1,),
-                        Row(
-                          children: [
-                            if(item.age != null) Text('${item.age ?? 0}${S.current.yearAge}',style: AppTextStyle.fs10.copyWith(color: Colors.white,height: 1.0)),
-                            SizedBox(width: 4.rpx,),
-                            if(item.distance != null && double.parse(item.distance!) > 0) Expanded(child: Text('${item.distance ?? ''}Km',style: AppTextStyle.fs10.copyWith(color: Colors.white,height: 1.0),maxLines: 1,overflow: TextOverflow.ellipsis,)),
-                          ],
+                        Container(
+                          width: 4.rpx,
+                          height: 4.rpx,
+                          margin: EdgeInsets.only(right: 2.rpx),
+                          decoration: const BoxDecoration(
+                              color: AppColor.green1D, shape: BoxShape.circle),
+                        ),
+                        Text(
+                          "在线",
+                          style: AppTextStyle.fs10
+                              .copyWith(height: 1.0, color: AppColor.green1D),
                         )
                       ],
                     ),
                   ),
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: (){
-                      ChatManager().startChat(userId: item.uid!);
-                    },
-                    child: Container(
-                      width: 24.rpx,
-                      height: 24.rpx,
-                      margin: EdgeInsets.symmetric(horizontal: 8.rpx),
-                      child: AppImage.asset("assets/images/plaza/hi_icon.png"),
+                ),
+                Container(
+                  height: 48.rpx,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                      Colors.black.withOpacity(0),
+                      Colors.black.withOpacity(0.5),
+                    ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8.rpx),
+                      bottomRight: Radius.circular(8.rpx),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                  padding:
+                      EdgeInsets.only(left: 8.rpx, top: 8.rpx, bottom: 10.rpx),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              item.nickname ?? '',
+                              style: AppTextStyle.fs14m
+                                  .copyWith(color: Colors.white, height: 1.0),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                            Row(
+                              children: [
+                                if (item.age != null)
+                                  Text('${item.age ?? 0}${S.current.yearAge}',
+                                      style: AppTextStyle.fs10.copyWith(
+                                          color: Colors.white, height: 1.0)),
+                                SizedBox(
+                                  width: 4.rpx,
+                                ),
+                                if (item.distance != null &&
+                                    double.parse(item.distance!) > 0)
+                                  Expanded(
+                                      child: Text(
+                                    '${item.distance ?? ''}Km',
+                                    style: AppTextStyle.fs10.copyWith(
+                                        color: Colors.white, height: 1.0),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          ChatManager().startChat(userId: item.uid!);
+                        },
+                        child: Container(
+                          width: 24.rpx,
+                          height: 24.rpx,
+                          margin: EdgeInsets.symmetric(horizontal: 8.rpx),
+                          child:
+                              AppImage.asset("assets/images/plaza/hi_icon.png"),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-      onTap: (){
-        Get.toNamed(AppRoutes.userCenterPage, arguments: {'userId': item.uid,});
+      onTap: () {
+        Get.toNamed(AppRoutes.userCenterPage, arguments: {
+          'userId': item.uid,
+        });
       },
     );
   }
 
   //筛选
-  Widget filtrateMap(){
+  Widget filtrateMap() {
     return Obx(() => Visibility(
-      visible: SS.login.isVip,
-      child: Container(
-        height: 46.rpx,
-        width: 180.rpx,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24.rpx),
-          border: Border.all(
-            color: AppColor.gray39,
-            width: 1.rpx,
+          visible: SS.login.isVip,
+          child: Container(
+            height: 46.rpx,
+            width: 180.rpx,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24.rpx),
+              border: Border.all(
+                color: AppColor.gray39,
+                width: 1.rpx,
+              ),
+              boxShadow: [
+                BoxShadow(
+                    color: AppColor.gray26,
+                    offset: const Offset(0, 4),
+                    blurRadius: 4.rpx,
+                    spreadRadius: 0),
+              ],
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 20.rpx),
+            margin: EdgeInsets.only(bottom: 24.rpx),
+            child: Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: controller.setLocation,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ShaderMask(
+                            shaderCallback: (Rect bounds) {
+                              return const LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  AppColor.gradientBegin,
+                                  AppColor.gradientEnd
+                                ],
+                              ).createShader(Offset.zero & bounds.size);
+                            },
+                            blendMode: BlendMode.srcATop,
+                            child: Container(
+                              margin: EdgeInsets.only(right: 8.rpx),
+                              child: Text(
+                                S.current.map,
+                                style: AppTextStyle.fs12,
+                              ),
+                            )),
+                        AppImage.asset(
+                          "assets/images/plaza/map.png",
+                          width: 24.rpx,
+                          height: 24.rpx,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 1.rpx,
+                  height: 30.rpx,
+                  color: AppColor.white8,
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: controller.onTapFiltrate,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ShaderMask(
+                            shaderCallback: (Rect bounds) {
+                              return const LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  AppColor.gradientBegin,
+                                  AppColor.gradientEnd
+                                ],
+                              ).createShader(Offset.zero & bounds.size);
+                            },
+                            blendMode: BlendMode.srcATop,
+                            child: Container(
+                              margin: EdgeInsets.only(right: 8.rpx),
+                              child: Text(
+                                S.current.filtrate,
+                                style: AppTextStyle.fs12,
+                              ),
+                            )),
+                        AppImage.asset(
+                          "assets/images/plaza/filtrate.png",
+                          width: 24.rpx,
+                          height: 24.rpx,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
-          boxShadow: [
-            BoxShadow(
-                color: AppColor.gray26,
-                offset: const Offset(0, 4),
-                blurRadius: 4.rpx,
-                spreadRadius: 0
-            ),
-          ],
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 20.rpx),
-        margin: EdgeInsets.only(bottom: 24.rpx),
-        child: Row(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: controller.setLocation,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ShaderMask(
-                        shaderCallback: (Rect bounds) {
-                          return const LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [AppColor.gradientBegin, AppColor.gradientEnd],
-                          ).createShader(Offset.zero & bounds.size);
-                        },
-                        blendMode: BlendMode.srcATop,
-                        child: Container(
-                          margin: EdgeInsets.only(right: 8.rpx),
-                          child: Text(
-                            S.current.map,
-                            style:AppTextStyle.fs12,
-                          ),
-                        )
-                    ),
-                    AppImage.asset("assets/images/plaza/map.png",width: 24.rpx,height: 24.rpx,),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              width: 1.rpx,
-              height: 30.rpx,
-              color: AppColor.white8,
-            ),
-            Expanded(
-              child: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: controller.onTapFiltrate,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ShaderMask(
-                        shaderCallback: (Rect bounds) {
-                          return const LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [AppColor.gradientBegin, AppColor.gradientEnd],
-                          ).createShader(Offset.zero & bounds.size);
-                        },
-                        blendMode: BlendMode.srcATop,
-                        child: Container(
-                          margin: EdgeInsets.only(right: 8.rpx),
-                          child: Text(
-                            S.current.filtrate,
-                            style:AppTextStyle.fs12,
-                          ),
-                        )
-                    ),
-                    AppImage.asset("assets/images/plaza/filtrate.png",width: 24.rpx,height: 24.rpx,),
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    ));
+        ));
   }
 }

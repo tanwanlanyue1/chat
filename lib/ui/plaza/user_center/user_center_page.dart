@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:get/get.dart';
@@ -315,7 +316,7 @@ class UserCenterPage extends StatelessWidget {
                               children: [
                                 Visibility(
                                   visible: state.authorInfo.nameplate.isNotEmpty,
-                                  child: AppImage.network(state.authorInfo.nameplate,width: 45.rpx,height: 12.rpx,fit: BoxFit.fitHeight,),
+                                  child: CachedNetworkImage(imageUrl: state.authorInfo.nameplate,height: 12.rpx),
                                 ),
                                 SizedBox(width: 4.rpx,),
                                 Expanded(

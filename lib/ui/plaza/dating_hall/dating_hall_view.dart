@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -212,7 +213,7 @@ class DatingHallView extends StatelessWidget {
                             ),
                             Visibility(
                               visible: item.nameplate != null && item.nameplate!.isNotEmpty,
-                              child: AppImage.network(item.nameplate ?? '',width: 45.rpx,height: 12.rpx,fit: BoxFit.fitHeight,),
+                              child: CachedNetworkImage(imageUrl: item.nameplate ?? '',height: 12.rpx),
                             ),
                           ],
                         ),

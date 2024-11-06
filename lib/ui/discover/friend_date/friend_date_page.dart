@@ -171,7 +171,7 @@ class FriendDatePage extends StatelessWidget {
                             ),
                             Visibility(
                               visible: item.userInfo?.nameplate != null && item.userInfo!.nameplate.isNotEmpty,
-                              child: AppImage.network(item.userInfo?.nameplate ?? '',width: 45.rpx,height: 12.rpx,fit: BoxFit.fitHeight,),
+                              child: CachedNetworkImage(imageUrl: item.userInfo?.nameplate ?? '', height: 12.rpx),
                             )
                           ],
                         ),

@@ -13,9 +13,7 @@ import 'nearby_hall_state.dart';
 class NearbyHallController extends GetxController {
   final NearbyHallState state = NearbyHallState();
   final controller = Get.find<RectifyTheWorkplaceController>();
-  final pagingController = DefaultPagingController<RecommendModel>(
-    firstPage: 1,
-    pageSize: 10,
+  final pagingController = DefaultPagingController<RecommendModel>.single(
     refreshController: RefreshController(),
   );
 
@@ -38,11 +36,10 @@ class NearbyHallController extends GetxController {
       minAge: controller.state.info?.value.likeAgeMin,
       maxAge: controller.state.info?.value.likeAgeMax,
       style: tag,
-      page: page,
     );
     if (response.isSuccess) {
       final items = response.data ?? [];
-      pagingController.appendPageData(items);
+      pagingController.setPageData(items);
     } else {
       pagingController.error = response.errorMessage;
     }

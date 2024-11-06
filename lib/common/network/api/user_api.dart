@@ -739,8 +739,6 @@ class UserApi {
     int? minAge,
     int? maxAge,
     String? style,
-    int page = 1,
-    int size = 10,
   }) {
     return HttpClient.get(
       '/api/user/nearbyUserList',
@@ -751,8 +749,6 @@ class UserApi {
         "minAge": minAge,
         "maxAge": maxAge,
         "style": style,
-        "page": page,
-        "size": size,
       },
       dataConverter: (json) {
         if (json is List) {

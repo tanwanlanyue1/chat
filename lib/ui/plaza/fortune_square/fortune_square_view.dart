@@ -28,45 +28,90 @@ class FortuneSquareView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.topCenter,
+      children: [
+        Column(
+          children: [
+            classifyTab(),
+            Expanded(
+              child: SmartRefresher(
+                controller: controller.pagingController.refreshController,
+                onRefresh: controller.pagingController.onRefresh,
+                child: CustomScrollView(
+                  slivers: [
+                    PagedSliverList(
+                      pagingController: controller.pagingController,
+                      builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
+                          pagingController: controller.pagingController,
+                          itemBuilder: (_,item,index){
+                            return PlazaCard(
+                              item: item,
+                              plazaIndex: state.communityIndex.value,
+                              more: () {
+                                controller.selectMore(item);
+                              },
+                              isLike: (like){
+                                controller.getCommentLike(like, index);
+                              },
+                              callBack: (val){
+                                controller.setComment(val ?? '',index);
+                              },
+                            );
+                          }
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+        Positioned(child: floatingAction(), bottom: 0, left: 0, right: 0,),
+      ],
+    );
+
     return Scaffold(
       backgroundColor: Colors.transparent,
+      primary: false,
+      extendBodyBehindAppBar: true,
       body: Column(
         children: [
           classifyTab(),
-          Expanded(
-            child: SmartRefresher(
-              controller: controller.pagingController.refreshController,
-              onRefresh: controller.pagingController.onRefresh,
-              child: CustomScrollView(
-                slivers: [
-                  PagedSliverList(
-                    pagingController: controller.pagingController,
-                    builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
-                        pagingController: controller.pagingController,
-                        itemBuilder: (_,item,index){
-                          return PlazaCard(
-                            item: item,
-                            plazaIndex: state.communityIndex.value,
-                            more: () {
-                              controller.selectMore(item);
-                            },
-                            isLike: (like){
-                              controller.getCommentLike(like, index);
-                            },
-                            callBack: (val){
-                              controller.setComment(val ?? '',index);
-                            },
-                          );
-                        }
-                    ),
-                  )
-                ],
-              ),
-            ),
-          )
+          // Expanded(
+          //   child: SmartRefresher(
+          //     controller: controller.pagingController.refreshController,
+          //     onRefresh: controller.pagingController.onRefresh,
+          //     child: CustomScrollView(
+          //       slivers: [
+          //         PagedSliverList(
+          //           pagingController: controller.pagingController,
+          //           builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
+          //               pagingController: controller.pagingController,
+          //               itemBuilder: (_,item,index){
+          //                 return PlazaCard(
+          //                   item: item,
+          //                   plazaIndex: state.communityIndex.value,
+          //                   more: () {
+          //                     controller.selectMore(item);
+          //                   },
+          //                   isLike: (like){
+          //                     controller.getCommentLike(like, index);
+          //                   },
+          //                   callBack: (val){
+          //                     controller.setComment(val ?? '',index);
+          //                   },
+          //                 );
+          //               }
+          //           ),
+          //         )
+          //       ],
+          //     ),
+          //   ),
+          // )
         ],
       ),
-      floatingActionButton: floatingAction(),
+      // floatingActionButton: floatingAction(),
     );
   }
 
@@ -96,22 +141,23 @@ class FortuneSquareView extends StatelessWidget {
                         ]:[AppColor.black9.withOpacity(0.1),AppColor.black9.withOpacity(0.1)]
                       ),
                     ),
-                    child:
-                    ShaderMask(
-                      shaderCallback: (Rect bounds) {
-                        return LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: state.communityIndex.value == i? [AppColor.gradientBegin, AppColor.gradientEnd]:[AppColor.black6,AppColor.black6],
-                        ).createShader(bounds);
-                      },
-                      blendMode: BlendMode.srcATop,
-                      child: Text(
-                        '${state.communityTitle[i]}',
-                        style: AppTextStyle.fs14.copyWith(height: 1.0),
-                      ),
+                    child: ShaderMask(
+                    shaderCallback: (Rect bounds) {
+                      return LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: state.communityIndex.value == i
+                            ? [AppColor.gradientBegin, AppColor.gradientEnd]
+                            : [AppColor.black6, AppColor.black6],
+                      ).createShader(bounds);
+                    },
+                    blendMode: BlendMode.srcATop,
+                    child: Text(
+                      '${state.communityTitle[i]}',
+                      style: AppTextStyle.fs14.copyWith(height: 1.0),
                     ),
                   ),
+                ),
                 ),).separated(Spacing.w8).toList(growable: false),
           )),
     );
@@ -126,15 +172,19 @@ class FortuneSquareView extends StatelessWidget {
         visible: state.communityIndex.value == 0,
         replacement: Visibility(
           visible: state.communityIndex.value == 2,
-          child: GestureDetector(
-            onTap: (){
-              Get.toNamed(AppRoutes.releaseDynamicPage);
-            },
-            child: Container(
-              width: 50.rpx,
-              height: 50.rpx,
-              margin: EdgeInsets.only(bottom: 24.rpx),
-              child: AppImage.asset("assets/images/plaza/compile.png",width: 24.rpx,height: 24.rpx,),
+          child: Container(
+            alignment: Alignment.centerRight,
+            margin: FEdgeInsets(right: 16.rpx),
+            child: GestureDetector(
+              onTap: (){
+                Get.toNamed(AppRoutes.releaseDynamicPage);
+              },
+              child: Container(
+                width: 50.rpx,
+                height: 50.rpx,
+                margin: EdgeInsets.only(bottom: 24.rpx),
+                child: AppImage.asset("assets/images/plaza/compile.png",width: 24.rpx,height: 24.rpx,),
+              ),
             ),
           ),
         ),
@@ -145,8 +195,9 @@ class FortuneSquareView extends StatelessWidget {
 
   //筛选
   Widget filtrateMap(){
-    return Align(
+    return Container(
       alignment: Alignment.bottomCenter,
+      margin: FEdgeInsets(bottom: 24.rpx),
       child: Container(
         height: 46.rpx,
         width: 180.rpx,
@@ -163,7 +214,6 @@ class FortuneSquareView extends StatelessWidget {
           ],
         ),
         padding: EdgeInsets.symmetric(horizontal: 20.rpx),
-        margin: EdgeInsets.only(left: 36.rpx),
         child: Row(
           children: [
             Expanded(

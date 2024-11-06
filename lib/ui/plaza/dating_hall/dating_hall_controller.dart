@@ -100,7 +100,7 @@ class RectifyTheWorkplaceController extends GetxController {
     );
     if (response.isSuccess) {
       if(index != null){
-        state.styleListSelect = response.data ?? [];
+        state.styleListDefault = response.data ?? [];
       }else{
         state.styleListDefault = response.data ?? [];
         state.styleListSelect = response.data ?? [];

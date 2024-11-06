@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
@@ -17,7 +18,7 @@ class _WalletRechargePageState extends State<WalletRechargePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('充值')),
+      appBar: AppBar(title: Text(S.current.topUp)),
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [

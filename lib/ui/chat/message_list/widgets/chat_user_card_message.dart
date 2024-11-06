@@ -9,6 +9,7 @@ import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/user_style.dart';
@@ -91,7 +92,7 @@ class ChatUserCardMessage extends StatelessWidget {
 
     return buildItem(
       icon: 'assets/images/chat/ic_base_info.png',
-      label: '信息：',
+      label: S.current.info,
       children: [
         //性别年龄
         Container(
@@ -143,7 +144,7 @@ class ChatUserCardMessage extends StatelessWidget {
   Widget buildTags(UserModel userInfo) {
     return buildItem(
       icon: 'assets/images/chat/ic_user_tags.png',
-      label: '标签：',
+      label: S.current.tag,
       children: [
         Container(
           constraints: BoxConstraints(maxWidth: 200.rpx),
@@ -177,7 +178,7 @@ class ChatUserCardMessage extends StatelessWidget {
 
     return buildItem(
       icon: 'assets/images/chat/ic_about_ta.png',
-      label: '关于Ta：',
+      label: S.current.about_ta,
       crossAxisAlignment: (signature.isNotEmpty && urls.isNotEmpty)
           ? CrossAxisAlignment.start
           : CrossAxisAlignment.center,

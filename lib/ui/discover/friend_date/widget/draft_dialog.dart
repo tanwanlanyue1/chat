@@ -59,7 +59,7 @@ class DraftDialog extends StatelessWidget {
                 style: AppTextStyle.fs16m.copyWith(color: AppColor.black20),
               ),
               Text(
-                "的征友约会",
+                S.current.datingFriend,
                 style: AppTextStyle.fs12.copyWith(color: AppColor.black6),
               ),
               const Spacer(),
@@ -126,7 +126,11 @@ class DraftDialog extends StatelessWidget {
             ),
           ),
           Text(
-            "约会时间：${CommonUtils.timestamp(item.startTime, unit: 'MM/dd HH:00')} - ${CommonUtils.timestamp(item.endTime, unit: 'MM/dd HH:00')} 共${CommonUtils.difference(item.startTime,item.endTime)}小时",
+            S.current.datingTime(
+              CommonUtils.timestamp(item.startTime, unit: 'MM/dd HH:00'),
+              CommonUtils.timestamp(item.endTime, unit: 'MM/dd HH:00'),
+              CommonUtils.difference(item.startTime,item.endTime),
+            ),
             style: AppTextStyle.fs12.copyWith(color: AppColor.black92),
           ),
           Container(
@@ -152,7 +156,7 @@ class DraftDialog extends StatelessWidget {
                   width: 20.rpx,
                   height: 20.rpx,
                   alignment: Alignment.center,
-                  child: Text("注",style: AppTextStyle.fs12b.copyWith(color: Colors.white),),
+                  child: Text(S.current.note,style: AppTextStyle.fs12b.copyWith(color: Colors.white),),
                 ),
                 child: Container(
                   decoration: BoxDecoration(
@@ -172,14 +176,14 @@ class DraftDialog extends StatelessWidget {
                       color: AppColor.black9
                   ),
                   padding: EdgeInsets.all(4.rpx),
-                  child: Text("暂无服务费",style: AppTextStyle.fs10.copyWith(color: Colors.white,height: 1),),
+                  child: Text(S.current.noServiceCharge1,style: AppTextStyle.fs10.copyWith(color: Colors.white,height: 1),),
                 ),
                 child: Container(
                   decoration: BoxDecoration(
                       color: AppColor.yellow.withOpacity(0.25)
                   ),
                   padding: EdgeInsets.all(4.rpx),
-                  child: Text("提供服务费",style: AppTextStyle.fs10.copyWith(color: AppColor.textRed,height: 1),),
+                  child: Text(S.current.provideService,style: AppTextStyle.fs10.copyWith(color: AppColor.textRed,height: 1),),
                 ),
               ),
               Expanded(

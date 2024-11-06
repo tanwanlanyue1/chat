@@ -6,6 +6,7 @@ import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/decimal_text_input_formatter.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 import 'wallet_recharge_controller.dart';
@@ -34,7 +35,7 @@ class _WalletRechargeViewState extends State<WalletRechargeView>
       ),
       children: [
         _buildItem(
-          title: '充值币种：',
+          title: S.current.rechargeCoinType,
           child: Container(
             alignment: Alignment.center,
             height: 46.rpx,
@@ -53,7 +54,7 @@ class _WalletRechargeViewState extends State<WalletRechargeView>
         ),
         Spacing.h24,
         _buildItem(
-          title: '充值金额：',
+          title: S.current.rechargeAmount,
           child: Container(
             alignment: Alignment.center,
             height: 46.rpx,
@@ -77,12 +78,12 @@ class _WalletRechargeViewState extends State<WalletRechargeView>
                 DecimalTextInputFormatter(
                   decimalDigits: SS.appConfig.decimalDigits,
                   maxValue: 9999999,
-                  maxValueHint: '金额超过最大值'
+                  maxValueHint: S.current.amountMaxLimitExceed
                 )
               ],
               textAlignVertical: TextAlignVertical.center,
               decoration: InputDecoration(
-                hintText: '请输入充值金额',
+                hintText: S.current.rechargeAmountHint,
                 hintStyle: AppTextStyle.fs14.copyWith(color: AppColor.black9),
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
@@ -96,7 +97,7 @@ class _WalletRechargeViewState extends State<WalletRechargeView>
           child: CommonGradientButton(
             onTap: controller.onSubmit,
             height: 50.rpx,
-            text: '前往充值',
+            text: S.current.gotoRecharge,
           ),
         ),
         if(fromRechargePage) Padding(
@@ -104,7 +105,7 @@ class _WalletRechargeViewState extends State<WalletRechargeView>
           child: Button(
             onPressed: controller.onSubmit,
             height: 50.rpx,
-            child: const Text('提交订单'),
+            child: Text(S.current.submitOrder),
           ),
         ),
       ],

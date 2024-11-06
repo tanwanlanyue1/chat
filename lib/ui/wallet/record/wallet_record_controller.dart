@@ -6,6 +6,7 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'wallet_record_filter_dialog.dart';
@@ -94,18 +95,18 @@ class RecordType {
 
   static List<RecordType> get _all {
     return [
-      RecordType(-1, '全部', UserType.values),
-      RecordType(1, '充值', UserType.values),
+      RecordType(-1, S.current.all, UserType.values),
+      RecordType(1, S.current.topUp, UserType.values),
       // RecordType(2, '系统补偿', UserType.values),
       // RecordType(3, '系统扣除', UserType.values),
-      RecordType(13, '服务费分成', [UserType.agent]),
-      RecordType(12, '通话分成', [UserType.agent]),
-      RecordType(4, '保证金或服务费', [UserType.user, UserType.beauty]),
-      RecordType(5, '通话扣费', UserType.values),
-      RecordType(6, '通话收益', UserType.values),
-      RecordType(7, '转账', UserType.values),
-      RecordType(8, '红包', UserType.values),
-      RecordType(9, '开通会员', UserType.values),
+      RecordType(13, S.current.serviceFeeSharing, [UserType.agent]),
+      RecordType(12, S.current.callFeeSharing, [UserType.agent]),
+      RecordType(4, S.current.depositOrServiceFee, [UserType.user, UserType.beauty]),
+      RecordType(5, S.current.callDeduction, UserType.values),
+      RecordType(6, S.current.callRevenue, UserType.values),
+      RecordType(7, S.current.transferAccounts, UserType.values),
+      RecordType(8, S.current.redPacket, UserType.values),
+      RecordType(9, S.current.openVip, UserType.values),
     ];
   }
 }

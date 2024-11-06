@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
@@ -45,7 +46,7 @@ class _WalletAddressAddDialogState extends State<WalletAddressAddDialog> {
                 Padding(
                   padding: FEdgeInsets(vertical: 16.rpx),
                   child: Text(
-                    '新增钱包地址',
+                    S.current.addWalletAddress,
                     style: AppTextStyle.fs18m.copyWith(
                       color: AppColor.blackBlue,
                       height: 1.0,
@@ -62,7 +63,7 @@ class _WalletAddressAddDialogState extends State<WalletAddressAddDialog> {
                   ),
                   child: CommonGradientButton(
                     height: 50.rpx,
-                    text: '确定提交',
+                    text: S.current.firmCommit,
                     onTap: () => Get.back(result: addressEditingController.text),
                   ),
                 )
@@ -104,7 +105,7 @@ class _WalletAddressAddDialogState extends State<WalletAddressAddDialog> {
           border: border,
           enabledBorder: border,
           focusedBorder: border,
-          hintText: '请输入钱包地址',
+          hintText: S.current.inputWalletAddress,
           hintStyle: AppTextStyle.fs12.copyWith(
             color: AppColor.black9,
           ),

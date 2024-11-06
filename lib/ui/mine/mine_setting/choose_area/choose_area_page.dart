@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/model/user/area_model.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/edge_insets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -27,7 +28,7 @@ class ChooseAreaPage extends StatelessWidget {
       builder: (controller){
         return Scaffold(
           appBar: AppBar(
-            title: Text('选择地区'),
+            title: Text(S.current.chooseArea),
           ),
           body: Padding(
             padding: const FEdgeInsets(top: 1),

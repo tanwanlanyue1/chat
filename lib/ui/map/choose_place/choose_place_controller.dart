@@ -12,6 +12,7 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/api/model/open/google_places_model.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_location_content.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
@@ -111,7 +112,7 @@ class ChoosePlaceController extends GetxController with GetAutoDisposeMixin {
       }
       pagingController.setPageData(places);
     } else {
-      pagingController.error = '获取数据失败';
+      pagingController.error = S.current.fetchDataError;
     }
   }
 
@@ -164,7 +165,7 @@ class ChoosePlaceController extends GetxController with GetAutoDisposeMixin {
   void onTapConfirm() async {
     final place = state.selectedPlaceRx();
     if (place == null) {
-      Loading.showToast('请选择位置');
+      Loading.showToast(S.current.chooseLocation);
       return;
     }
     Get.back(result: place);

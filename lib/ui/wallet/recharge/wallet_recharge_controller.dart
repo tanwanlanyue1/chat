@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/network/api/payment_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 class WalletRechargeController extends GetxController {
@@ -12,7 +13,7 @@ class WalletRechargeController extends GetxController {
   void onSubmit() async{
     final amount = double.tryParse(amountEditingController.text) ?? 0;
     if(amount <= 0){
-      Loading.showToast('金额必须大于0');
+      Loading.showToast(S.current.amountMinLimit(0));
       return;
     }
 

@@ -10,6 +10,7 @@ import 'package:guanjia/common/network/api/model/payment/talk_payment.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
@@ -24,7 +25,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('充值'),
+        title: Text(S.current.topUp),
       ),
       body: Obx((){
         final desc = state.descRx;
@@ -38,7 +39,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
           padding: FEdgeInsets(horizontal: 16.rpx, vertical: 12.rpx),
           children: [
             Text(
-              '请使用支持波场网络(tron)的钱包或交易软件进行转账',
+              S.current.transferHint,
               textAlign: TextAlign.center,
               style: AppTextStyle.fs14.copyWith(
                 color: AppColor.black3,
@@ -58,7 +59,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
               height: 46.rpx,
               borderColor: AppColor.black999,
               child: Text(
-                '查看订单',
+                S.current.checkOrder,
                 style: AppTextStyle.fs14.copyWith(color: AppColor.black6),
               ),
             ),
@@ -67,7 +68,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
               onPressed: controller.onTapComplete,
               height: 46.rpx,
               child: Text(
-                '已完成转账',
+                S.current.transferCompleted,
                 style: AppTextStyle.fs14,
               ),
             ),
@@ -189,7 +190,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
                   color: const Color(0xFFEBEBEB),
                   padding: FEdgeInsets(vertical: 5.rpx),
                   child: Text(
-                    '转账超时\n二维码已过期',
+                    S.current.transferTimeout,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.fs14m.copyWith(
                       color: AppColor.red,
@@ -210,7 +211,7 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
                   color: AppColor.babyBlueButton,
                   alignment: Alignment.center,
                   child: Text(
-                    '交易已完成',
+                    S.current.transactionCompleted,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.fs14m.copyWith(
                       color: Colors.white
@@ -278,17 +279,17 @@ class RechargeOrderPage extends GetView<RechargeOrderController> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               buildItem(
-                label: '时',
+                label: S.current.hour,
                 value: hours,
                 color: textColor,
               ),
               buildItem(
-                label: '分',
+                label: S.current.minute,
                 value: minutes,
                 color: textColor,
               ),
               buildItem(
-                label: '秒',
+                label: S.current.second,
                 value: seconds,
                 color: textColor,
               ),

@@ -11,6 +11,7 @@ import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/wallet/record/wallet_record_controller.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -71,7 +72,7 @@ class _WalletRecordFilterDialogState extends State<WalletRecordFilterDialog> {
         Padding(
           padding: FEdgeInsets(all: 16.rpx),
           child: Text(
-            '快捷筛选',
+            S.current.quickFilter,
             style: AppTextStyle.fs16m.copyWith(
               color: AppColor.blackBlue,
               height: 1.0,
@@ -91,7 +92,7 @@ class _WalletRecordFilterDialogState extends State<WalletRecordFilterDialog> {
       VoidCallback? onTap,
     }) {
       final dateText =
-          dateTime?.let((it) => DateUtil.formatDate(it, format: 'yyyy年M月'));
+          dateTime?.let((it) => DateUtil.formatDate(it, format: S.current.yyyyM));
       final isSelected = dateText != null;
 
       return GestureDetector(
@@ -126,7 +127,7 @@ class _WalletRecordFilterDialogState extends State<WalletRecordFilterDialog> {
           child: Row(
             children: [
               buildItem(
-                  hintText: '起始时间',
+                  hintText: S.current.beginTime,
                   dateTime: filterData.beginTime,
                   onTap: () {
                     showDatePicker(filterData.beginTime, onConfirm: (date) {
@@ -142,7 +143,7 @@ class _WalletRecordFilterDialogState extends State<WalletRecordFilterDialog> {
                 margin: FEdgeInsets(horizontal: 4.rpx),
               ),
               buildItem(
-                  hintText: '终止时间',
+                  hintText: S.current.stopTime,
                   dateTime: filterData.endTime,
                   onTap: () {
                     showDatePicker(filterData.endTime, onConfirm: (date) {
@@ -230,18 +231,18 @@ class _WalletRecordFilterDialogState extends State<WalletRecordFilterDialog> {
             height: 48.rpx,
             backgroundColor: AppColor.black9,
             onPressed: Get.back,
-            child: Text('取消', style: AppTextStyle.fs14.copyWith(),),
+            child: Text(S.current.cancel, style: AppTextStyle.fs14.copyWith(),),
           ),
           CommonGradientButton(
             width: 120.rpx,
             height: 48.rpx,
-            text: '确定',
+            text: S.current.confirm,
             textStyle: AppTextStyle.fs14.copyWith(color: Colors.white),
             onTap: (){
               final beginTime = filterData.beginTime;
               final endTime = filterData.endTime;
               if(beginTime != null && endTime != null && beginTime.isAfter(endTime)){
-                Loading.showToast('起始时间不能大于终止时间');
+                Loading.showToast(S.current.beginTimeHint);
                 return;
               }
               Get.back(result: filterData);
@@ -265,14 +266,14 @@ class _WalletRecordFilterDialogState extends State<WalletRecordFilterDialog> {
           cancelButton: Padding(
             padding: FEdgeInsets(horizontal: 12.rpx, top: 8.rpx),
             child: Text(
-              '取消',
+              S.current.cancel,
               style: AppTextStyle.fs14m.copyWith(color: AppColor.black9),
             ),
           ),
           commitButton: Padding(
             padding: FEdgeInsets(horizontal: 12.rpx, top: 8.rpx),
             child: Text(
-              '确定',
+              S.current.confirm,
               style: AppTextStyle.fs14m.copyWith(color: AppColor.blackBlue),
             ),
           ),

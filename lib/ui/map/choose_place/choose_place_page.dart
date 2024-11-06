@@ -7,6 +7,7 @@ import 'package:guanjia/common/network/api/model/open/google_places_model.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -46,7 +47,7 @@ class ChoosePlacePage extends GetView<ChoosePlaceController> {
             child: CommonGradientButton(
               width: 60.rpx,
               height: 32.rpx,
-              text: '确定',
+              text: S.current.confirm,
               borderRadius: BorderRadius.circular(4.rpx),
               textStyle: AppTextStyle.fs14.copyWith(color: Colors.white),
               onTap: controller.onTapConfirm,
@@ -95,7 +96,7 @@ class ChoosePlacePage extends GetView<ChoosePlaceController> {
         style: AppTextStyle.fs14.copyWith(color: AppColor.black3),
         maxLines: 1,
         decoration: InputDecoration(
-            hintText: '输入地点（含附近门店/小区/楼宇寻找位置）',
+            hintText: S.current.inputPoiHint,
             hintStyle: AppTextStyle.fs14.copyWith(color: AppColor.black9),
             fillColor: AppColor.background,
             filled: true,

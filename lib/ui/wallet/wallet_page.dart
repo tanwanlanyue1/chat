@@ -97,7 +97,7 @@ class WalletPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '当前余额【USDT】',
+                      S.current.currentBalance,
                       style: AppTextStyle.st.medium
                           .size(12.rpx)
                           .textColor(AppColor.blackBlue)

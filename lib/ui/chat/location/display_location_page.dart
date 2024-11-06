@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/message_location_content.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -25,7 +26,7 @@ class DisplayLocationPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('位置'),
+        title: Text(S.current.position),
       ),
       body: hasPlace ? Stack(
         children: [

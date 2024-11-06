@@ -130,7 +130,7 @@ extension MessageSenderPart on MessageListController {
 
   ///发位置消息
   void sendLocationMessage() async{
-    final place = await ChoosePlacePage.go(title: '发送位置');
+    final place = await ChoosePlacePage.go(title: S.current.sendLocation);
     if(place != null){
       final content = MessageLocationContent(
         longitude: place.geometry?.location?.lng ?? 0,

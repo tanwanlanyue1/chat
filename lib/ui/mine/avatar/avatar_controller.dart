@@ -3,6 +3,7 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/api/model/user/user_model.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/image_gallery_utils.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/photo_and_camera_bottom_sheet.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -45,7 +46,7 @@ class AvatarController extends GetxController {
       res.showErrorMessage();
       return;
     }
-    Loading.showToast('修改成功');
+    Loading.showToast(S.current.modifySuccessfully);
     avatar.value = urls.first;
 
     // 更新本地缓存

@@ -137,7 +137,7 @@ class ChatDatingMessage extends StatelessWidget {
     return Padding(
       padding: FEdgeInsets(top: 8.rpx),
       child: Text(
-        '时间：$startTime - $endTime',
+        S.current.timeRange(startTime, endTime),
         style: AppTextStyle.fs10.copyWith(
           color: AppColor.black6,
           height: 1,
@@ -186,7 +186,7 @@ class ChatDatingMessage extends StatelessWidget {
           Padding(
             padding: FEdgeInsets(left: 8.rpx),
             child: Text(
-              isFromSelf ? '对方已同意参与' : '我已同意参与',
+              isFromSelf ? S.current.otherAgreeJoin : S.current.iAgreeJoin,
               style: AppTextStyle.fs12.copyWith(
                 color: AppColor.blackBlue,
               ),

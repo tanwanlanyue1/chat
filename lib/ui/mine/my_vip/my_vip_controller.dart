@@ -7,6 +7,7 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/auto_dispose_mixin.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/payment_password_keyboard.dart';
@@ -34,7 +35,7 @@ class MyVipController extends GetxController with GetAutoDisposeMixin {
     if (package == null) return;
 
     if (state.selectProtocol.isFalse) {
-      Loading.showToast('请先勾选确认会员服务协议');
+      Loading.showToast(S.current.checkVipAgreement);
       return;
     }
 

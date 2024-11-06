@@ -4,6 +4,7 @@ import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/network/api/payment_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/payment_password_keyboard.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
@@ -47,7 +48,7 @@ class WalletWithdrawController extends GetxController {
       return;
     }
     if(addressListRx.contains(address)){
-      Loading.showToast('该地址已存在，无需重复添加');
+      Loading.showToast(S.current.addressAlreadyExists);
       return;
     }
 
@@ -80,16 +81,16 @@ class WalletWithdrawController extends GetxController {
     final amount = double.tryParse(amountEditingController.text) ?? 0;
     final withdrawMinAmount = SS.appConfig.configRx()?.withdrawMinAmount ?? 0;
     if(amount < withdrawMinAmount || amount <= 0){
-      Loading.showToast('提现金额有误');
+      Loading.showToast(S.current.withdrawalAmountIncorrect);
       return;
     }
     final address = addressRx();
     if(address == null || address.isEmpty){
-      Loading.showToast('请选择钱包地址');
+      Loading.showToast(S.current.pleaseChooseWalletAddress);
       return;
     }
     if(amount > (SS.login.info?.balance ?? 0)){
-      Loading.showToast('提现金额超出当前余额');
+      Loading.showToast(S.current.withdrawalAmountLimit);
       return;
     }
     final password = await PaymentPasswordKeyboard.show();
@@ -105,13 +106,13 @@ class WalletWithdrawController extends GetxController {
     );
     Loading.dismiss();
     if(response.isSuccess){
-      Loading.showToast('提交成功');
+      Loading.showToast(S.current.submitSuccessfully);
       SS.login.fetchMyInfo();
       Get.toNamed(AppRoutes.walletOrderListPage, arguments: {
         'tabIndex': 1,
       });
     }else if(response.code == 1103){
-      Loading.showToast(response.errorMessage ?? '提现金额超出当前余额');
+      Loading.showToast(response.errorMessage ?? S.current.withdrawalAmountLimit);
     }else{
       response.showErrorMessage();
     }

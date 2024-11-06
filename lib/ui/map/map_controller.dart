@@ -17,6 +17,7 @@ import 'package:guanjia/common/network/httpclient/http_client.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/loading.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -149,7 +150,7 @@ class MapController extends GetxController {
       }
       pagingController.setPageData(places);
     } else {
-      pagingController.error = '获取数据失败';
+      pagingController.error = S.current.fetchDataError;
     }
   }
 
@@ -195,7 +196,7 @@ class MapController extends GetxController {
   void onTapConfirm() async {
     final place = state.selectedPlaceRx();
     if (place == null) {
-      Loading.showToast('请选择位置');
+      Loading.showToast(S.current.chooseLocation);
       return;
     }
     Get.back(result: place);

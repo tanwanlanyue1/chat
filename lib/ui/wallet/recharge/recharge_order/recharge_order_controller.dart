@@ -5,6 +5,7 @@ import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/network/api/payment_api.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 import 'recharge_order_state.dart';
@@ -95,7 +96,7 @@ class RechargeOrderController extends GetxController {
   void onTapComplete() async {
     await fetchData();
     if (state.orderStatusRx?.isPending == true) {
-      Loading.showToast('转账后需要稍等片刻才能到账，如长时间未到账请联系客服');
+      Loading.showToast(S.current.rechargeHint);
     }
   }
 

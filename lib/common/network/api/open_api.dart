@@ -5,6 +5,7 @@ import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/httpclient/http_client.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
+import 'package:guanjia/generated/l10n.dart';
 
 import 'model/open/google_places_model.dart';
 
@@ -241,37 +242,6 @@ class OpenApi {
     );
   }
 
-  ///通过经纬度获取地理位置
-  ///- 文档：https://developers.google.com/maps/documentation/geocoding/requests-reverse-geocoding?hl=zh-cn#reverse-requests
-  ///- latitude 纬度
-  ///- longitude 经度
-  static Future<ApiResponse<void>> geocode({
-    required double latitude,
-    required double longitude,
-    String? language,
-    final List<String>? types,
-  }) async {
-    try{
-      final response = await HttpClient.request(
-        'https://maps.googleapis.com/maps/api/geocode/json',
-        params: {
-          'latlng': '$latitude,$longitude',
-          'key': AppConfig.googleMapsApiKey,
-          if(language != null) 'language': language,
-          if(types != null && types.isNotEmpty) 'result_type' : types.join('|'),
-        },
-        options: Options(
-          method: 'GET',
-          responseType: ResponseType.plain,
-        )
-      );
-      print('geocode: ${response.data}');
-      return ApiResponse.success(response.data);
-    }catch(ex){
-      return ApiResponse.error(AppException(-1, '请求失败'));
-    }
-  }
-
   ///搜索附近地点
   ///- 文档：https://developers.google.com/maps/documentation/places/web-service/search-nearby?hl=zh-cn
   ///- latitude 纬度
@@ -311,10 +281,10 @@ class OpenApi {
           return ApiResponse.success(model.results);
         }
       }
-      return ApiResponse.error(AppException(-1, '获取数据失败'));
+      return ApiResponse.error(AppException(-1, S.current.fetchDataError));
     }catch(ex){
       AppLogger.w(ex);
-      return ApiResponse.error(AppException(-1, '请求失败'));
+      return ApiResponse.error(AppException(-1, S.current.requestFail));
     }
   }
 }

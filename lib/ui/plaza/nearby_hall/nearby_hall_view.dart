@@ -98,7 +98,7 @@ class _NearbyHallViewState extends State<NearbyHallView> with AutomaticKeepAlive
                               color: AppColor.green1D, shape: BoxShape.circle),
                         ),
                         Text(
-                          "在线",
+                          S.current.online,
                           style: AppTextStyle.fs10
                               .copyWith(height: 1.0, color: AppColor.green1D),
                         )

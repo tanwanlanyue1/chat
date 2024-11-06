@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
@@ -37,7 +38,7 @@ class WalletAddressPopupMenuButton extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                address ?? '选择钱包地址',
+                address ?? S.current.chooseWalletAddress,
                 style: AppTextStyle.fs14.copyWith(
                   color: address == null ? AppColor.black9 : AppColor.black3,
                 ),
@@ -55,7 +56,7 @@ class WalletAddressPopupMenuButton extends StatelessWidget {
   }
 
   void _showPopupMenu(BuildContext context) async {
-    const newAddressItem = '+新增地址';
+    final newAddressItem = S.current.addAddress;
 
     RenderBox renderBox = context.findRenderObject() as RenderBox;
     Offset offset = renderBox.localToGlobal(Offset.zero);

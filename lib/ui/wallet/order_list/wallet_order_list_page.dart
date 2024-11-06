@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
 import 'wallet_order_list_view.dart';
@@ -20,7 +21,7 @@ class WalletOrderListPage extends StatelessWidget {
         appBar: AppBar(
           leading: AppBackButton.light(),
           backgroundColor: AppColor.primaryBlue,
-          title: const Text('订单列表'),
+          title: Text(S.current.orderList),
           titleTextStyle: AppTextStyle.fs18m.copyWith(color: Colors.white),
           systemOverlayStyle: SystemUI.lightStyle,
         ),
@@ -58,14 +59,14 @@ class WalletOrderListPage extends StatelessWidget {
             height: 48.rpx,
             child: Padding(
               padding: FEdgeInsets(horizontal: 24.rpx),
-              child: Text('充值'),
+              child: Text(S.current.topUp),
             ),
           ),
           Tab(
             height: 48.rpx,
             child: Padding(
               padding: FEdgeInsets(horizontal: 24.rpx),
-              child: Text('提现'),
+              child: Text(S.current.withdrawal),
             ),
           ),
         ],

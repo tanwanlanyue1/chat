@@ -121,9 +121,9 @@ class AccountDataPage extends StatelessWidget {
                   // position
                   AccountDataItem(
                     onTap: controller.onTapArea,
-                    title: '地区',
+                    title: S.current.region,
                     detail: info.position,
-                    detailHintText: '未设置',
+                    detailHintText: S.current.notSetting,
                   ),
                   _padding(),
                   // phone

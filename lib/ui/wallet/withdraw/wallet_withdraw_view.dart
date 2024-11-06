@@ -8,6 +8,7 @@ import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/decimal_text_input_formatter.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/wallet/withdraw/wallet_address_popup_menu_button.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_gradient_button.dart';
@@ -55,7 +56,7 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
                 ),
               ),
               Text(
-                '提现到：',
+                S.current.withdrawalTo,
                 style: AppTextStyle.st.medium
                     .size(16.rpx)
                     .textColor(AppColor.black6),
@@ -77,7 +78,7 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
             Padding(
               padding: FEdgeInsets(top: 8.rpx, left: 8.rpx),
               child: Text(
-                '手续费：$withdrawFee USDT',
+                S.current.fee(withdrawFee),
                 style: AppTextStyle.fs12r.copyWith(
                   color: AppColor.black999,
                   height: 1,
@@ -90,7 +91,7 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
             child: CommonGradientButton(
               onTap: controller.onSubmit,
               height: 50.rpx,
-              text: '立即提现',
+              text: S.current.withdrawalNow,
             ),
           ),
           Center(
@@ -106,7 +107,7 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      '我已成功提现，刷新余额',
+                      S.current.refreshBalance,
                       style: AppTextStyle.fs12.copyWith(
                         color: AppColor.black9,
                         height: 1.0,
@@ -144,7 +145,7 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
         child: Row(
           children: [
             Text(
-              '提现金额：',
+              S.current.withdrawalAmount,
               style: AppTextStyle.fs14.copyWith(
                 color: AppColor.black6,
               ),
@@ -195,7 +196,7 @@ class _WalletWithdrawViewState extends State<WalletWithdrawView>
       child: HighlightText(
         text,
         words: {
-          '提现须知': HighlightedWord(
+          S.current.withdrawalTips: HighlightedWord(
               textStyle: AppTextStyle.fs12.copyWith(
             color: AppColor.black666,
             height: 1.5,

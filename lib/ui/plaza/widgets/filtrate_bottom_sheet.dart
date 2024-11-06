@@ -83,7 +83,7 @@ class FiltrateBottomSheet extends StatelessWidget {
                   child: AppImage.asset('assets/images/common/close.png',width: 20.rpx,height: 20.rpx,color: AppColor.black92,),
                 ),
               ),
-              Text("您希望Ta是",style: AppTextStyle.fs20b.copyWith(color: AppColor.blackBlue),),
+              Text(S.current.youWant,style: AppTextStyle.fs20b.copyWith(color: AppColor.blackBlue),),
               SizedBox(height: 16.rpx),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

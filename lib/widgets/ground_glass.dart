@@ -75,7 +75,7 @@ class GroundGlass extends StatelessWidget {
                     children: [
                       Padding(
                         padding: EdgeInsets.only(top: 8.rpx,bottom: 16.rpx),
-                        child: Text("开通会员权益",
+                        child: Text(S.current.openMembershipRights,
                           style: AppTextStyle.fs20.copyWith(color: Colors.white,height: 1.0),
                         ),
                       ),
@@ -88,17 +88,17 @@ class GroundGlass extends StatelessWidget {
                               children: [
                                 Container(
                                   margin: EdgeInsets.only(bottom: 12.rpx),
-                                  child: AppImage.network(vipInfo?.benefits[vipIndex.value].bigIcon ?? '',width: 180.rpx,height: 130.rpx,),
+                                  child: AppImage.network(vipInfo.benefits[vipIndex.value].bigIcon ?? '',width: 180.rpx,height: 130.rpx,),
                                 ),
-                                Text(vipInfo?.benefits[vipIndex.value].bigTitle ?? '', style: AppTextStyle.fs18.copyWith(color: Colors.white,height: 1.0),),
+                                Text(vipInfo.benefits[vipIndex.value].bigTitle ?? '', style: AppTextStyle.fs18.copyWith(color: Colors.white,height: 1.0),),
                                 SizedBox(height: 10.rpx,),
-                                Text(vipInfo?.benefits[vipIndex.value].bigSubTitle ?? '', style: AppTextStyle.fs14.copyWith(color: Colors.white,height: 1.0),),
+                                Text(vipInfo.benefits[vipIndex.value].bigSubTitle ?? '', style: AppTextStyle.fs14.copyWith(color: Colors.white,height: 1.0),),
                               ],
                             );
                           },
                           autoplay: true,
-                          itemCount: vipInfo?.benefits.length ?? 0,
-                          pagination: (vipInfo?.benefits.length ?? 0) > 1 ?
+                          itemCount: vipInfo.benefits.length ?? 0,
+                          pagination: (vipInfo.benefits.length ?? 0) > 1 ?
                           SwiperPagination(
                               margin: EdgeInsets.only(bottom: 12.rpx),
                               builder: UserSwiperPagination(
@@ -123,8 +123,8 @@ class GroundGlass extends StatelessWidget {
                         height: 152.rpx,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: List.generate(vipInfo?.packages.length ?? 0, (index) {
-                            VipPackageModel pack = vipInfo!.packages[index];
+                          children: List.generate(vipInfo.packages.length ?? 0, (index) {
+                            VipPackageModel pack = vipInfo.packages[index];
                             bool select = selectIndex.value == index;
                             return [1,3,12].contains(pack.duration) ?
                             VipPackageListTile(
@@ -160,17 +160,19 @@ class GroundGlass extends StatelessWidget {
                       Get.back();
                       Get.toNamed(AppRoutes.orderPaymentPage, arguments: {
                         "type": OrderPaymentType.vip,
-                        "vipPackage": vipInfo!.packages[selectIndex.value],
+                        "vipPackage": vipInfo.packages[selectIndex.value],
                       });
                     },
                   ),
                 ),
-                Text("${vipInfo!.packages[selectIndex.value].duration*30}天会员权益，开通时效越长，优惠越多哦～", style: AppTextStyle.fs12.copyWith(color: Colors.white.withOpacity(0.8)),),
+                Text(
+                  S.current.openVipHint(vipInfo.packages[selectIndex.value].duration*30),
+                  style: AppTextStyle.fs12.copyWith(color: Colors.white.withOpacity(0.8)),),
                 SizedBox(height: 16.rpx,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("点击立即开通即表示同意", style: AppTextStyle.fs10.copyWith(color: Colors.white.withOpacity(0.8),height: 1.0),),
+                    Text(S.current.clickAgreeNow, style: AppTextStyle.fs10.copyWith(color: Colors.white.withOpacity(0.8),height: 1.0),),
                     GestureDetector(
                       onTap: (){
                         WebPage.go(url: AppConfig.urlPrivacyPolicy);

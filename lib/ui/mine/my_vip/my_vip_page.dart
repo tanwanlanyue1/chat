@@ -510,7 +510,7 @@ class MyVipPage extends StatelessWidget {
                         //     },
                         // ),
                         TextSpan(
-                          text: '点击立即开通即表示同意',
+                          text: S.current.clickAgreeNow,
                           style: AppTextStyle.st.textColor(AppColor.black999),
                         ),
                         TextSpan(

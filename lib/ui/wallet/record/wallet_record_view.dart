@@ -8,6 +8,7 @@ import 'package:guanjia/common/extension/math_extension.dart';
 import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/paging/default_paged_child_builder_delegate.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -83,7 +84,7 @@ class _WalletRecordViewState extends State<WalletRecordView>
         child: Row(
           children: [
             Text(
-              '支出${totalExpenditure.toCurrencyString()}  收益${totalIncome.toCurrencyString()}',
+              '${S.current.expenditure}${totalExpenditure.toCurrencyString()}  ${S.current.income}${totalIncome.toCurrencyString()}',
               style: AppTextStyle.fs14.copyWith(
                 color: AppColor.blackBlue,
                 height: 1,
@@ -105,7 +106,7 @@ class _WalletRecordViewState extends State<WalletRecordView>
               child: Row(
                 children: [
                   Text(
-                    '筛选',
+                    S.current.filtrate,
                     style:
                         AppTextStyle.st.size(12.rpx).textColor(AppColor.black3),
                   ),

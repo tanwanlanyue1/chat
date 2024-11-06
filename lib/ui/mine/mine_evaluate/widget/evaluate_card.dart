@@ -54,7 +54,7 @@ class EvaluateCard extends StatelessWidget {
                           Expanded(
                             child: Text(team ? item.toName : item.fromName,style: AppTextStyle.fs16m.copyWith(color: AppColor.black20),maxLines: 2,overflow: TextOverflow.ellipsis,),
                           ),
-                          Text(CommonUtils.timestamp(item.createTime,unit: 'yyyy年MM月dd日'),style: AppTextStyle.fs12.copyWith(color: AppColor.gray9),),
+                          Text(CommonUtils.timestamp(item.createTime,unit: S.current.yyyyMMdd),style: AppTextStyle.fs12.copyWith(color: AppColor.gray9),),
                         ],
                       ),
                       Row(

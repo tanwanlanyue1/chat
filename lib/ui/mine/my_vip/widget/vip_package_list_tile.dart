@@ -95,7 +95,7 @@ class VipPackageListTile extends StatelessWidget {
                   Padding(
                     padding: FEdgeInsets(top: 4.rpx),
                     child: Text(
-                      '原价${item.price.toCurrencyString()}',
+                      S.current.originalPrice(item.price.toCurrencyString()),
                       style: AppTextStyle.fs10.copyWith(
                         color: AppColor.grayText,
                         height: 1,

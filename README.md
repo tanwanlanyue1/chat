@@ -43,4 +43,4 @@ keytool -list -v -keystore guanjia.jks
 flutter build ipa --export-method ad-hoc
 
 ## iOS打正式包
-flutter build ipa --dart-define=APP_CHANNEL=0 --dart-define=APP_RELEASE=release
+flutter build ipa --dart-define=APP_CHANNEL=appstore --dart-define=APP_RELEASE=release

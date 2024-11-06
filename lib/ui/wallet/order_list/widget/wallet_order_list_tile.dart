@@ -39,11 +39,11 @@ class WalletOrderListTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   buildTypeFlag(),
-                  Text('订单编号：${item.orderNo}'),
-                  Text('订单金额：${item.amount}'),
-                  Text(isRecharge ? '充值币种：USDT' : '提现币种：USDT'),
-                  if(!isRecharge) Text('钱包地址：${item.address}'),
-                  Text('下单时间：${item.createTime}'),
+                  Text('${S.current.orderReference}${item.orderNo}'),
+                  Text('${S.current.orderAmount}${item.amount}'),
+                  Text('${isRecharge ? S.current.rechargeCoinType : S.current.withdrawCoinType}USDT'),
+                  if(!isRecharge) Text(S.current.walletAddress(item.address)),
+                  Text('${S.current.orderTime}${item.createTime}'),
                 ].separated(Spacing.h8).toList(),
               ),
             ),
@@ -78,7 +78,7 @@ class WalletOrderListTile extends StatelessWidget {
             : AppColor.orange6.withOpacity(0.2),
       ),
       child: Text(
-        isRecharge ? '充值' : '提现',
+        isRecharge ? S.current.topUp : S.current.withdrawal,
         style: AppTextStyle.fs14.copyWith(
           color: isRecharge ? AppColor.primaryBlue : AppColor.orange6,
         ),

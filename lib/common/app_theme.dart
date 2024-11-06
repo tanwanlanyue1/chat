@@ -12,7 +12,7 @@ class AppTheme {
   static final light = ThemeData(
     brightness: Brightness.light,
     useMaterial3: false,
-    fontFamily: PFTextStyle.medium().fontFamily,
+    fontFamily: AppTextStyle.normal.fontFamily,
     actionIconTheme: ActionIconThemeData(
       backButtonIconBuilder: (BuildContext context) {
         final brightness = AppBarTheme.of(context).systemOverlayStyle?.statusBarIconBrightness;

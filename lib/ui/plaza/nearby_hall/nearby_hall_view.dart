@@ -18,14 +18,21 @@ import '../../../common/network/api/api.dart';
 import 'nearby_hall_controller.dart';
 
 //交友大厅-附近
-class NearbyHallView extends StatelessWidget {
-  NearbyHallView({Key? key}) : super(key: key);
+class NearbyHallView extends StatefulWidget {
+  const NearbyHallView({super.key});
+
+  @override
+  State<NearbyHallView> createState() => _NearbyHallViewState();
+}
+
+class _NearbyHallViewState extends State<NearbyHallView> with AutomaticKeepAliveClientMixin {
 
   final controller = Get.put(NearbyHallController());
   final state = Get.find<NearbyHallController>().state;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SmartRefresher(
@@ -286,4 +293,7 @@ class NearbyHallView extends StatelessWidget {
           ),
         ));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

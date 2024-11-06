@@ -4,6 +4,8 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:guanjia/widgets/app_image.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -59,11 +61,23 @@ class _PhotoViewGalleryPageState extends State<PhotoViewGalleryPage> {
               child: PhotoViewGallery.builder(
                 scrollPhysics: const AlwaysScrollableScrollPhysics(),
                 builder: (BuildContext context, int index) {
-                  final item = widget.images[index];
+                  final item = widget.images[index] as String;
                   final isNetworkUrl = item.startsWith('http');
+                  print('origin: $item');
+                  print('resize: ${item.getResizeImageUrl(
+                    width: Get.width,
+                    height: Get.height,
+                  )}');
                   return PhotoViewGalleryPageOptions(
                     minScale: PhotoViewComputedScale.contained,
-                    imageProvider: isNetworkUrl ? CachedNetworkImageProvider(item) : FileImage(File(item)) as ImageProvider,
+                    imageProvider: isNetworkUrl
+                        ? CachedNetworkImageProvider(
+                            item.getResizeImageUrl(
+                              width: Get.width,
+                              height: Get.height,
+                            ),
+                          )
+                        : FileImage(File(item)) as ImageProvider,
                     heroAttributes: (widget.heroTag.isNotEmpty)
                         ? PhotoViewHeroAttributes(tag: widget.heroTag)
                         : null,
@@ -84,26 +98,27 @@ class _PhotoViewGalleryPageState extends State<PhotoViewGalleryPage> {
           Positioned(
             top: 0,
             child: Container(
-              height: 40.rpx+MediaQuery.of(context).padding.top,
+              height: 40.rpx + MediaQuery.of(context).padding.top,
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
               color: Colors.black.withOpacity(0.05),
             ),
           ),
-          if(widget.images.length > 1) Positioned(
-            //图片index显示
-            top: MediaQuery.of(context).padding.top + 15.rpx,
-            width: MediaQuery.of(context).size.width,
-            child: Center(
-              child: Text(
-                "${_currentIndex + 1}/${widget.images.length}",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.rpx,
+          if (widget.images.length > 1)
+            Positioned(
+              //图片index显示
+              top: MediaQuery.of(context).padding.top + 15.rpx,
+              width: MediaQuery.of(context).size.width,
+              child: Center(
+                child: Text(
+                  "${_currentIndex + 1}/${widget.images.length}",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.rpx,
+                  ),
                 ),
               ),
             ),
-          ),
           Positioned(
             //右上角关闭按钮
             right: 10,
@@ -128,23 +143,24 @@ class _PhotoViewGalleryPageState extends State<PhotoViewGalleryPage> {
 //渐隐动画
 class FadeRoute extends PageRouteBuilder {
   final Widget page;
+
   FadeRoute({required this.page})
       : super(
-    pageBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        ) =>
-    page,
-    transitionsBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        Widget child,
-        ) =>
-        FadeTransition(
-          opacity: animation,
-          child: child,
-        ),
-  );
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) =>
+              page,
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
+              FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+        );
 }

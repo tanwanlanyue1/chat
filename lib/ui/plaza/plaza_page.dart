@@ -27,12 +27,14 @@ class _PlazaPageState extends State<PlazaPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SystemUI.light(
-      child: ObxValue((tabIndexRx) {
-        return Container(
+    return Obx((){
+      final tabIndex = state.tabIndex();
+      return SystemUI(
+        value: tabIndex == 2 ? SystemUI.darkStyle : SystemUI.lightStyle,
+        child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-                image: AppAssetImage(state.tabBarList[tabIndexRx.value]['img']),
+                image: AppAssetImage(state.tabBarList[tabIndex]['img']),
                 fit: BoxFit.fill,alignment: Alignment.topCenter
             ),
           ),
@@ -43,7 +45,7 @@ class _PlazaPageState extends State<PlazaPage>
                 child: TabBarView(
                     controller: controller.tabController,
                     physics: const NeverScrollableScrollPhysics(),
-                    children: <Widget>[
+                    children: const <Widget>[
                       DatingHallView(),
                       NearbyHallView(),
                       FortuneSquareView(),
@@ -51,9 +53,9 @@ class _PlazaPageState extends State<PlazaPage>
               )
             ],
           ),
-        );
-      },state.tabIndex),
-    );
+        ),
+      );
+    });
   }
 
   @override

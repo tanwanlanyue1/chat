@@ -244,7 +244,7 @@ class AppAssetImage extends AssetImage {
 extension StringImageResize on String {
   ///华为云https://support.huaweicloud.com/usermanual-obs/obs_01_0430.html
   ///OSS云存储裁剪图片
-  String getResizeImageUrl({double? width, double? height}) {
+  String getResizeImageUrl({double? width, double? height, BoxFit fit = BoxFit.contain}) {
     if (width == null && height == null) {
       return this;
     }
@@ -255,7 +255,7 @@ extension StringImageResize on String {
   }
 
   ///阿里云图片裁剪
-  String _resizeForOSS({double? width, double? height}) {
+  String _resizeForOSS({double? width, double? height, BoxFit fit = BoxFit.contain}) {
     if (width == double.infinity || height == double.infinity || contains('amazonaws.com')) {
       return this;
     }
@@ -267,7 +267,26 @@ extension StringImageResize on String {
         (dstWidth <= 0 && dstHeight <= 0)) {
       return this;
     }
-    var process = '$resizePrefix,m_lfit,limit_1';
+    var mode = 'm_lfit';
+    switch(fit){
+      case BoxFit.fill:
+        mode = 'm_fixed';
+        break;
+      case BoxFit.contain:
+      case BoxFit.fitWidth:
+      case BoxFit.fitHeight:
+      case BoxFit.scaleDown:
+        mode = 'm_lfit';
+        break;
+      case BoxFit.cover:
+        mode = 'm_fill';
+        break;
+      case BoxFit.none:
+        mode = 'm_mfit';
+        break;
+    }
+
+    var process = '$resizePrefix,$mode,limit_1';
     if (dstWidth > 0) {
       process += ',w_$dstWidth';
     }
@@ -279,7 +298,7 @@ extension StringImageResize on String {
   }
 
   ///亚马逊图片裁剪
-  String _resizeForAmazonaws({double? width, double? height}) {
+  String _resizeForAmazonaws({double? width, double? height, BoxFit fit = BoxFit.contain}) {
     if (width == double.infinity ||
         height == double.infinity ||
         !contains('amazonaws.com')) {
@@ -313,7 +332,22 @@ extension StringImageResize on String {
     if (resize.isEmpty) {
       return this;
     }
-    resize['fit'] = 'cover';
+
+    switch(fit){
+      case BoxFit.fill:
+      case BoxFit.cover:
+        resize['fit'] = fit.name;
+        break;
+      case BoxFit.contain:
+      case BoxFit.scaleDown:
+      case BoxFit.fitWidth:
+      case BoxFit.fitHeight:
+        resize['fit'] = 'inside';
+        break;
+      case BoxFit.none:
+        resize['fit'] = 'outside';
+        break;
+    }
 
     final options = {
       "bucket": bucket,

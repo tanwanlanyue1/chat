@@ -24,14 +24,22 @@ import '../../../common/network/api/api.dart';
 import 'dating_hall_controller.dart';
 
 /// 推荐
-class DatingHallView extends StatelessWidget {
-  DatingHallView({super.key});
+
+class DatingHallView extends StatefulWidget {
+  const DatingHallView({super.key});
+
+  @override
+  State<DatingHallView> createState() => _DatingHallViewState();
+}
+
+class _DatingHallViewState extends State<DatingHallView> with AutomaticKeepAliveClientMixin {
 
   final controller = Get.put(RectifyTheWorkplaceController());
   final state = Get.find<RectifyTheWorkplaceController>().state;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Column(
       children: [
         buildSpeedDating(),
@@ -247,4 +255,7 @@ class DatingHallView extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

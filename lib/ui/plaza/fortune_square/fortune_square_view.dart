@@ -20,14 +20,21 @@ import '../../../common/network/api/model/talk_model.dart';
 import 'fortune_square_controller.dart';
 
 ///社区
-class FortuneSquareView extends StatelessWidget {
-  FortuneSquareView({Key? key}) : super(key: key);
+class FortuneSquareView extends StatefulWidget {
+  const FortuneSquareView({super.key});
+
+  @override
+  State<FortuneSquareView> createState() => _FortuneSquareViewState();
+}
+
+class _FortuneSquareViewState extends State<FortuneSquareView> with AutomaticKeepAliveClientMixin {
 
   final controller = Get.put(FortuneSquareController());
   final state = Get.find<FortuneSquareController>().state;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -282,5 +289,8 @@ class FortuneSquareView extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
 }

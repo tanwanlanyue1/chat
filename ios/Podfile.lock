@@ -233,9 +233,9 @@ PODS:
     - Flutter
   - zego_uikit_signaling_plugin (0.0.1):
     - Flutter
-  - zego_zim (2.16.0):
+  - zego_zim (2.17.0):
     - Flutter
-    - ZIM (= 2.16.0)
+    - ZIM (= 2.17.0)
   - zego_zim_audio (1.0.0):
     - Flutter
     - ZIMAudio (= 1.0.0)
@@ -244,7 +244,7 @@ PODS:
   - zego_zpns (2.6.0):
     - Flutter
     - ZPNs (= 2.6.0)
-  - ZIM (2.16.0)
+  - ZIM (2.17.0)
   - ZIMAudio (1.0.0)
   - ZIPFoundation (0.9.19)
   - ZPNs (2.6.0)
@@ -481,11 +481,11 @@ SPEC CHECKSUMS:
   zego_uikit: 596cd6edd0e5162a9a1d1f7fec5a79fa8899fb7b
   zego_uikit_prebuilt_call: 13173d7a3c6dcc1695cbdff15d19463acd1ca39c
   zego_uikit_signaling_plugin: 7fdfcd9f796b591c9cb8770609f4fa85178aa40e
-  zego_zim: b3fc958423218074c920c5e87252ed756afd7f4b
+  zego_zim: 666aabc25410fa7e3b0bd9d4e83ef1dc9d6043ea
   zego_zim_audio: 20d1d37b8f81e477ce9baa50c8d81276912bbce4
   zego_zimkit: 47949b311127859b9b8d0fd6919b37037ce22e80
   zego_zpns: 282d9f9926ea5dff87efbafae8cf33fdada41f4f
-  ZIM: 689608cfd428d0ad6d6784c0c42f8d0bf7c29bc0
+  ZIM: d9262b11fe75a39a00240b8820833f6a1e8e61c1
   ZIMAudio: ea64952184a6eb9c27d1daf21c3994a818834189
   ZIPFoundation: b8c29ea7ae353b309bc810586181fd073cb3312c
   ZPNs: 73bad0046a74e37315201053f9a0e7ac625d9436

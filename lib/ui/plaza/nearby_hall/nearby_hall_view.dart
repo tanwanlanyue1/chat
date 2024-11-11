@@ -143,11 +143,10 @@ class _NearbyHallViewState extends State<NearbyHallView> with AutomaticKeepAlive
                                 SizedBox(
                                   width: 4.rpx,
                                 ),
-                                if (item.distance != null &&
-                                    double.parse(item.distance!) > 0)
+                                if (item.distance != null)
                                   Expanded(
                                       child: Text(
-                                    '${item.distance ?? ''}Km',
+                                    '${double.parse(item.distance!) < 1 ? '1': item.distance ?? ''}Km',
                                     style: AppTextStyle.fs10.copyWith(
                                         color: Colors.white, height: 1.0),
                                     maxLines: 1,

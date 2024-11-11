@@ -29,6 +29,7 @@ class AppLocalization{
     var languageTag = await _preferences.getString(_kLanguageTag);
     languageTag ??= Get.deviceLocale?.toLanguageTag() ?? _defaultLanguageTag;
     _locale = supportedLocales.firstWhereOrNull((element) => element.toLanguageTag() == languageTag);
+    _locale ??= const Locale.fromSubtags(languageCode: _defaultLanguageTag);
     _locale?.let(S.load);
   }
 

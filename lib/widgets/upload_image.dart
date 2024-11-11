@@ -51,11 +51,14 @@ class _UploadImageState extends State<UploadImage> {
 
   //压缩图片
   void compressAndGetFile(List<File> file) async {
+    Loading.show();
     List<File> compressedList = [];
     for(var i = 0; i < file.length; i++){
       var result = await FlutterImageCompress.compressAndGetFile(
         file[i].absolute.path, '${directory.path}/$i.jpg',
-        quality: 100,
+        quality: 90,
+        minHeight: 1920,
+        minWidth: 1080,
       );
       if(result != null){
         compressedList.add(File(result.path));
@@ -77,6 +80,7 @@ class _UploadImageState extends State<UploadImage> {
         setState(() {});
       }
     }
+    Loading.dismiss();
     widget.callback?.call(_imagesList);
   }
 
@@ -114,6 +118,7 @@ class _UploadImageState extends State<UploadImage> {
             final XFile? photo =
                 await picker.pickImage(source: ImageSource.camera);
             if (photo != null) {
+              Loading.show();
               uploadImage([File(photo.path)]);
             }
             break;

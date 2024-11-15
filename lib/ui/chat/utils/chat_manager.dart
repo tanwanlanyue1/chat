@@ -22,6 +22,7 @@ import 'package:guanjia/common/notification/notification_manager.dart';
 import 'package:guanjia/common/notification/payload/chat_message_payload.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/user_info_cache.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/file_logger.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
@@ -199,11 +200,13 @@ class ChatManager
   }
 
   ///开始聊天(跳转聊天页面)
-  bool startChat({required int userId}) {
+  Future<bool> startChat({required int userId}) async{
     if (userId == SS.login.userId) {
       AppLogger.w('不可和自己聊天');
       return false;
     }
+    //预加载用户信息
+    await UserInfoCache().getOrQuery(userId).timeout(const Duration(milliseconds: 300));
 
     clearNotifications(conversationId: userId.toString());
     final index = AppPages.routeObserver.stack.indexWhere(

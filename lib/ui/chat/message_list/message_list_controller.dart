@@ -86,7 +86,7 @@ class MessageListController extends GetxController
       //获取用户关注状态
       getIsAttention(userId),
       //用户信息
-      UserInfoCache().getOrQuery(userId, isQueryFromServer: true),
+      UserInfoCache().getOrQuery(userId, isQueryFromServer: false, ttlMs: 3000),
       //订单信息
       fetchOrder(),
     ]);

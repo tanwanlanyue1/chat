@@ -7,6 +7,7 @@ import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/api/model/im/chat_user_model.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/user_info_cache.dart';
 import 'package:guanjia/common/utils/common_utils.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
@@ -42,6 +43,7 @@ class ContactController extends GetxController with GetAutoDisposeMixin {
     if (response.isSuccess) {
       final list = (response.data ?? []).map((it) => it.toChatUserModel()).toList();
       ChatUserManager().batchUpdate(list);
+      UserInfoCache().putIfAbsent(response.data ?? []);
       pagingController.appendPageData(list);
     } else {
       pagingController.error = response.errorMessage;

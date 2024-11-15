@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/paging/default_paging_controller.dart';
+import 'package:guanjia/common/user_info_cache.dart';
 import 'package:guanjia/ui/plaza/user_center/user_center_controller.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -50,11 +51,12 @@ class AllCommentsController extends GetxController  with UserAttentionMixin, Get
 
   ///获取作者信息
   Future<void> getUserInfo() async {
-    final response = await UserApi.info(uid: state.userId);
-    if (response.isSuccess) {
-      state.authorInfo = response.data ?? UserModel.fromJson({});
-      update();
+    final user = await UserInfoCache().getOrQuery(state.userId, isQueryFromServer: true);
+    if (user != null) {
+      state.authorInfo = user;
+      update([]);
     }
   }
+
 
 }

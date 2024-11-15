@@ -156,7 +156,7 @@ class _ConversationListTileState extends State<ConversationListTile>
     }
 
     return Padding(
-      padding: FEdgeInsets(right: 16.rpx),
+      padding: FEdgeInsets(right: 12.rpx),
       child: child,
     );
   }

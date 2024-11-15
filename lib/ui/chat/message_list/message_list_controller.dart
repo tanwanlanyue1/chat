@@ -5,6 +5,7 @@ import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/network/api/im_api.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
+import 'package:guanjia/common/user_info_cache.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
@@ -85,16 +86,16 @@ class MessageListController extends GetxController
       //获取用户关注状态
       getIsAttention(userId),
       //用户信息
-      UserApi.info(uid: userId),
+      UserInfoCache().getOrQuery(userId, isQueryFromServer: true),
       //订单信息
       fetchOrder(),
     ]);
 
     //用户信息
-    final userResponse = responses[1] as ApiResponse<UserModel>;
-    if (userResponse.isSuccess) {
-      state.userInfoRx.value = userResponse.data;
-      userResponse.data?.let((it) => ChatUserManager().updateWithUserModels([it]));
+    final user = responses[1] as UserModel?;
+    if (user != null &&
+        user.toJson().toString() != state.userInfoRx()?.toJson().toString()) {
+      state.userInfoRx.value = user;
       update();
     }
   }

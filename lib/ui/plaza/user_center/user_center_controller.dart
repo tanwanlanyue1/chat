@@ -9,6 +9,7 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/get_extension.dart';
+import 'package:guanjia/common/user_info_cache.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
@@ -82,12 +83,12 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
 
   ///获取作者信息
   Future<void> getUserInfo() async {
-    final response = await UserApi.info(uid: state.authorId);
-    if (response.isSuccess) {
-      state.authorInfo = response.data ?? UserModel.fromJson({});
-      state.imgList = response.data?.images != null ? List<String>.from(jsonDecode(response.data?.images ?? '')) : [];
-      state.fansNum.value = response.data?.fansNum ?? 0;
-      state.userBasics = response.data?.type.index == 2 ? [
+    final user = await UserInfoCache().getOrQuery(state.authorId, isQueryFromServer: true);
+    if (user != null) {
+      state.authorInfo = user;
+      state.imgList = user.images != null ? List<String>.from(jsonDecode(user.images ?? '')) : [];
+      state.fansNum.value = user.fansNum ?? 0;
+      state.userBasics = user.type.index == 2 ? [
         {
           "name": S.current.aboutTa,
           "data":"type",
@@ -106,7 +107,6 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
         },
       ] : state.userBasics;
       update();
-      ChatUserManager().updateWithUserModels([state.authorInfo]);
     }
   }
 

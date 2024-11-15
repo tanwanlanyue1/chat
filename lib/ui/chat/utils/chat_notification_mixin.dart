@@ -88,7 +88,9 @@ mixin _ChatNotificationMixin {
           enableVibration: false,
           playSound: false,
         ),
-        iOS: const DarwinNotificationDetails(),
+        iOS: const DarwinNotificationDetails(
+          presentSound: false,
+        ),
       ),
       payload: ChatMessagePayload(conversationId: conversationID).toJsonString(),
     );

@@ -158,6 +158,7 @@ class GroundGlass extends StatelessWidget {
                     height: 50.rpx,
                     onTap: (){
                       Get.back();
+                      callBack?.call();
                       Get.toNamed(AppRoutes.orderPaymentPage, arguments: {
                         "type": OrderPaymentType.vip,
                         "vipPackage": vipInfo.packages[selectIndex.value],

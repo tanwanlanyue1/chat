@@ -137,7 +137,7 @@ class _FortuneSquareViewState extends State<FortuneSquareView> with AutomaticKee
                   },
                   child: Container(
                     alignment: Alignment.center,
-                    height: 24.rpx,
+                    height: 26.rpx,
                     padding: EdgeInsets.symmetric(horizontal: 10.rpx),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.rpx),
@@ -161,7 +161,7 @@ class _FortuneSquareViewState extends State<FortuneSquareView> with AutomaticKee
                     blendMode: BlendMode.srcATop,
                     child: Text(
                       '${state.communityTitle[i]}',
-                      style: AppTextStyle.fs14.copyWith(height: 1.0),
+                      style: AppTextStyle.fs14.copyWith(height: 1.0,leadingDistribution: TextLeadingDistribution.even),
                     ),
                   ),
                 ),

@@ -223,13 +223,10 @@ class PlazaCard extends StatelessWidget {
                   memCacheHeight: Get.width/3,
                   memCacheWidth: Get.width/3,
                   fit: BoxFit.cover,
-                  // placeholder: AppImage.asset("assets/images/plaza/back_image.png",
-                  //   fit: BoxFit.cover,
-                  // ),
                 ),
               ),
               Visibility(
-                visible: index == 2,
+                visible: (jsonDecode(item.images).length-3 > 0) && index == 2,
                 child: Positioned(
                   right: 0,
                   bottom: 0,
@@ -243,7 +240,7 @@ class PlazaCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AppImage.asset("assets/images/plaza/plaza_img.png",width: 12.rpx,height: 12.rpx,),
-                        Text("+${jsonDecode(item.images).length}",style: AppTextStyle.fs12m.copyWith(color: Colors.white),)
+                        Text("+${jsonDecode(item.images).length-3}",style: AppTextStyle.fs12m.copyWith(color: Colors.white),)
                       ],
                     ),
                   ),

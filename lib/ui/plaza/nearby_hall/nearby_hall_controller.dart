@@ -64,7 +64,8 @@ class NearbyHallController extends GetxController {
     PlaceModel? data = await MapPage.go(title: S.current.selectLocation);
     if(data != null){
       state.location = '${data.geometry?.location?.lng},${data.geometry?.location?.lat}';
-      pagingController.onRefresh();
+      pagingController.refresh();
     }
+    pagingController.refresh();
   }
 }

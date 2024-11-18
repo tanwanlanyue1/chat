@@ -12,6 +12,7 @@ class RectifyTheWorkplaceState {
       "name":S.current.videoDating,
       "subtitle": S.current.communicateEmotionsFace,
       "image":"assets/images/plaza/voice_back.png",
+      "svga":"assets/images/plaza/视频速配.svga",
       "text":"assets/images/plaza/voice_text.png",
       "isVideo": true,
       "color":[
@@ -23,6 +24,7 @@ class RectifyTheWorkplaceState {
       "name":S.current.voiceDating,
       "subtitle": S.current.exploreSoulSound,
       "image":"assets/images/plaza/video_back.png",
+      "svga":"assets/images/plaza/语音速配.svga",
       "text":"assets/images/plaza/video_text.png",
       "isVideo": false,
       "color":[

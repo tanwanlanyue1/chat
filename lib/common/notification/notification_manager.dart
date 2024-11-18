@@ -10,15 +10,29 @@ import 'package:guanjia/common/notification/payload/app_update_payload.dart';
 import 'package:guanjia/common/notification/payload/chat_message_payload.dart';
 import 'package:guanjia/common/notification/payload/sys_notice_payload.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
+import 'package:guanjia/common/utils/file_logger.dart';
 import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/main.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/mine/mine_message/mine_message_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/app_update/app_update_manager.dart';
-
-import '../utils/app_link.dart';
 import '../utils/app_logger.dart';
 import '../utils/plugin_util.dart';
+
+///TODO 点击后台通知时调用(iOS)
+@pragma('vm:entry-point')
+void onDidReceiveBackgroundNotificationResponse(NotificationResponse notificationResponse) {
+  // ignore: avoid_print
+  print('notification(${notificationResponse.id}) action tapped: '
+      '${notificationResponse.actionId} with'
+      ' payload: ${notificationResponse.payload}');
+  if (notificationResponse.input?.isNotEmpty ?? false) {
+    // ignore: avoid_print
+    print(
+        'notification action tapped with input: ${notificationResponse.input}');
+    FileLogger.d('${notificationResponse.payload}');
+  }
+}
 
 ///应用通知
 class NotificationManager {
@@ -59,7 +73,7 @@ class NotificationManager {
   /// Defines a iOS/MacOS notification category for plain actions.
   final String darwinNotificationCategoryPlain = 'plainCategory';
 
-  DarwinInitializationSettings init(){
+  DarwinInitializationSettings get _iOSSettings{
 
     final List<DarwinNotificationCategory> darwinNotificationCategories =
     <DarwinNotificationCategory>[
@@ -122,11 +136,11 @@ class NotificationManager {
     }
     await FlutterLocalNotificationsPlugin().initialize(
       InitializationSettings(
-        android: AndroidInitializationSettings('logo'),
-        iOS: init(),
+        android: const AndroidInitializationSettings('logo'),
+        iOS: _iOSSettings,
       ),
       onDidReceiveNotificationResponse: _onTapNotification,
-      // onDidReceiveBackgroundNotificationResponse: _onTapNotification,
+      onDidReceiveBackgroundNotificationResponse: onDidReceiveBackgroundNotificationResponse,
     );
   }
 

@@ -206,7 +206,11 @@ class ChatManager
       return false;
     }
     //预加载用户信息
-    await UserInfoCache().getOrQuery(userId).timeout(const Duration(milliseconds: 300));
+    try{
+      await UserInfoCache().getOrQuery(userId).timeout(const Duration(milliseconds: 300));
+    }catch(ex){
+      AppLogger.w(ex);
+    }
 
     clearNotifications(conversationId: userId.toString());
     final index = AppPages.routeObserver.stack.indexWhere(

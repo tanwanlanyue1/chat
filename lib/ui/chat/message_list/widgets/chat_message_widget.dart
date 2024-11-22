@@ -89,7 +89,7 @@ class ChatMessageWidget extends StatelessWidget {
         defaultMessageContent = const Text('Recalled a message.');
         break;
       case ZIMMessageType.custom:
-        AppLogger.d('自定义消息：${message.customContent}, ');
+        // AppLogger.d('自定义消息：${message.customContent}, ');
         final customType = message.customType;
         switch (customType) {
           case CustomMessageType.redPacket:

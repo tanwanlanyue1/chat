@@ -34,33 +34,10 @@ class ChatImageMessage extends StatelessWidget {
   ///获取图片原始大小(px)
   Size getOriginalPixelSize() {
     final imageContent = message.imageContent!;
-    var size = Size(
+    return Size(
       imageContent.originalImageWidth.toDouble(),
       imageContent.originalImageHeight.toDouble(),
     );
-    if (!size.isEmpty) {
-      return size;
-    }
-    //图片发送中，ZIMKitMessageImageContent没有图片尺寸信息，需从本地扩展字段中获取原始宽高
-    final extData = message.zim.localExtendedData;
-    if (extData.isNotEmpty) {
-      try {
-        final data = jsonDecode(extData);
-        if (data is Map) {
-          size = Size(
-            double.tryParse("${data['width']}") ?? 0,
-            double.tryParse("${data['height']}") ?? 0,
-          );
-          if (!size.isEmpty) {
-            imageContent.originalImageWidth = size.width.toInt();
-            imageContent.originalImageHeight = size.height.toInt();
-          }
-        }
-      } catch (ex) {
-        //e
-      }
-    }
-    return size;
   }
 
   ///获取图片最佳显示大小
@@ -136,9 +113,7 @@ class ChatImageMessage extends StatelessWidget {
 
   Widget buildNetworkImage(ZIMKitMessageImageContent imageContent, Size size) {
     return AppImage.network(
-      message.isNetworkUrl
-          ? imageContent.fileDownloadUrl
-          : imageContent.largeImageDownloadUrl,
+      imageContent.imageUrl,
       fit: BoxFit.cover,
       width: size.width,
       height: size.height,
@@ -165,9 +140,7 @@ class ChatImageMessage extends StatelessWidget {
     final hasLocalFile = await File(imageContent.fileLocalPath).exists();
     var imagePath = imageContent.fileLocalPath;
     if (!hasLocalFile) {
-      imagePath = message.isNetworkUrl
-          ? imageContent.fileDownloadUrl
-          : imageContent.largeImageDownloadUrl;
+      imagePath = imageContent.imageUrl;
     }
 
     //查看大图
@@ -179,5 +152,14 @@ class ChatImageMessage extends StatelessWidget {
         heroTag: '',
       ),
     );
+  }
+}
+
+extension on ZIMKitMessageImageContent{
+  String get imageUrl{
+    if(largeImageDownloadUrl.startsWith('http')){
+      return largeImageDownloadUrl;
+    }
+    return fileDownloadUrl;
   }
 }

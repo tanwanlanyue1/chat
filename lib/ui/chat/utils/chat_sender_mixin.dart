@@ -7,15 +7,11 @@ mixin _ChatSenderMixin {
     required ZIMConversationType conversationType,
     required String conversationId,
   }) async {
-    if (await _checkMessage(type: 1, msg: {'message': text})) {
-      await ZIMKit().sendTextMessage(
-        conversationId,
-        conversationType,
-        text,
-      );
-      return true;
-    }
-    return false;
+    return _sendMessage(
+      toUid: int.parse(conversationId),
+      type: 1,
+      message: text
+    );
   }
 
   ///发送图片消息
@@ -24,31 +20,11 @@ mixin _ChatSenderMixin {
     required ZIMConversationType conversationType,
     required String conversationId,
   }) async {
-    String? localExtendedData;
-    try {
-      final input = AsyncImageInput.input(FileInput(File(filePath)));
-      final size = await ImageSizeGetter.getSizeAsync(input);
-      if (size.width > 0 && size.height > 0) {
-        localExtendedData = jsonEncode({
-          'width': size.needRotate ? size.height : size.width,
-          'height': size.needRotate ? size.width : size.height,
-        });
-      }
-    } catch (ex) {
-      AppLogger.w('获取图片尺寸信息失败，$ex');
-    }
-
-    if (await _checkMessage(type: 2)) {
-      await ZIMKitCore.instance.sendMediaMessageExt(
-        conversationId,
-        conversationType,
-        filePath,
-        ZIMMessageType.image,
-        localExtendedData: localExtendedData,
-      );
-      return true;
-    }
-    return false;
+    return _sendMessage(
+        toUid: int.parse(conversationId),
+        type: 2,
+        file: File(filePath)
+    );
   }
 
   ///发送视频消息
@@ -57,36 +33,54 @@ mixin _ChatSenderMixin {
     required ZIMConversationType conversationType,
     required String conversationId,
   }) async {
-    String? extendedData;
-    try {
-      final videoInfo = await FlutterVideoInfo().getVideoInfo(filePath);
-      final durationMs = videoInfo?.duration ?? 0;
-      if (videoInfo != null && durationMs > 0) {
-        final needRotate = [90, 270].contains(videoInfo.orientation);
-        final width = videoInfo.width ?? 0;
-        final height = videoInfo.height ?? 0;
+    return _sendMessage(
+        toUid: int.parse(conversationId),
+        type: 3,
+        file: File(filePath)
+    );
 
-        extendedData = jsonEncode({
-          'duration': (durationMs / 1000).ceil(), //毫秒转成秒
-          'width': needRotate ? height : width,
-          'height': needRotate ? width : height,
-        });
-      }
-    } catch (ex) {
-      AppLogger.w('获取视频信息失败，$ex');
-    }
+    // String? extendedData;
+    // try {
+    //   final videoInfo = await FlutterVideoInfo().getVideoInfo(filePath);
+    //   final durationMs = videoInfo?.duration ?? 0;
+    //   if (videoInfo != null && durationMs > 0) {
+    //     final needRotate = [90, 270].contains(videoInfo.orientation);
+    //     final width = videoInfo.width ?? 0;
+    //     final height = videoInfo.height ?? 0;
+    //
+    //     extendedData = jsonEncode({
+    //       'duration': (durationMs / 1000).ceil(), //毫秒转成秒
+    //       'width': needRotate ? height : width,
+    //       'height': needRotate ? width : height,
+    //     });
+    //   }
+    // } catch (ex) {
+    //   AppLogger.w('获取视频信息失败，$ex');
+    // }
+    //
+    // if (await _checkMessage(type: 3)) {
+    //   await ZIMKitCore.instance.sendMediaMessageExt(
+    //     conversationId,
+    //     conversationType,
+    //     filePath,
+    //     ZIMMessageType.video,
+    //     extendedData: extendedData,
+    //   );
+    //   return true;
+    // }
+    // return false;
+  }
 
-    if (await _checkMessage(type: 3)) {
-      await ZIMKitCore.instance.sendMediaMessageExt(
-        conversationId,
-        conversationType,
-        filePath,
-        ZIMMessageType.video,
-        extendedData: extendedData,
-      );
-      return true;
-    }
-    return false;
+  ///发送位置消息
+  Future<bool> sendLocationMessage({
+    required MessageLocationContent content,
+    required String conversationId,
+  }) async {
+    return _sendMessage(
+        toUid: int.parse(conversationId),
+        type: 4,
+        message: jsonEncode(content.toJson()),
+    );
   }
 
   ///发送自定义消息
@@ -96,9 +90,6 @@ mixin _ChatSenderMixin {
     required ZIMConversationType conversationType,
     required String conversationId,
   }) async {
-    if (await _checkMessage(
-        type: 5,
-        msg: {'customType': customType, 'customMessage': customMessage})) {
       await ZIMKitCore.instance.sendCustomMessage(
         conversationId,
         conversationType,
@@ -106,8 +97,6 @@ mixin _ChatSenderMixin {
         customMessage: customMessage,
       );
       return true;
-    }
-    return false;
   }
 
   ///发送本地消息
@@ -126,14 +115,23 @@ mixin _ChatSenderMixin {
     return result != null;
   }
 
-  ///检查消息是否可发送
-  ///- type 消息类型 1文字 2图片 3视频 4定位 5自定义消息
-  ///- msg 消息内容
-  Future<bool> _checkMessage({
+  /// 发送消息
+  ///- toUid 接收方
+  ///- type 消息类型 1文字 2图片 3视频 4定位
+  ///- message 消息内容
+  ///- file 图片或者视频文件
+  Future<bool> _sendMessage({
+    required int toUid,
     required int type,
-    Map<String, dynamic> msg = const {},
+    String? message,
+    File? file,
   }) async {
-    final response = await IMApi.sendMessage(type: type, msg: msg);
+    final response = await IMApi.sendMessage(
+      toUid: toUid,
+      type: type,
+      message: message,
+      file: file,
+    );
     final ret = response.isSuccess;
     if (!ret) {
       response.showErrorMessage();

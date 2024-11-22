@@ -12,6 +12,7 @@ import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/map/choose_place/choose_place_page.dart';
 import 'package:guanjia/ui/order/enum/order_enum.dart';
 import 'package:guanjia/widgets/loading.dart';
+import 'package:guanjia/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
@@ -34,7 +35,7 @@ extension MessageSenderPart on MessageListController {
     }
   }
 
-  ///发送图片+视频消息
+  ///发送图片+视频消息 TODO 图片压缩
   Future<void> sendMediaMessage() async {
     // iOS端需要判断权限
     if (GetPlatform.isIOS) {
@@ -67,6 +68,7 @@ extension MessageSenderPart on MessageListController {
       return;
     }
 
+    Loading.show();
     for (final file in files) {
       final mimeType = file.mimeType ?? lookupMimeType(file.name) ?? '';
       if (videoMimeTypes.contains(mimeType)) {
@@ -75,10 +77,10 @@ extension MessageSenderPart on MessageListController {
         await _sendImageMessage(file.path);
       }
     }
+    Loading.dismiss();
   }
 
   Future<void> _sendImageMessage(String filePath) async {
-
     final result = await ChatManager().sendImageMessage(
       filePath: filePath,
       conversationId: state.conversationId,
@@ -103,7 +105,9 @@ extension MessageSenderPart on MessageListController {
     if (file == null) {
       return;
     }
-    return _sendVideoMessage(file.path);
+    Loading.show();
+    await _sendVideoMessage(file.path);
+    Loading.dismiss();
   }
 
   ///发送视频消息
@@ -138,12 +142,16 @@ extension MessageSenderPart on MessageListController {
         poi: place.name,
         address: place.vicinity,
       );
-      final result = await ChatManager().sendCustomMessage(
-        customType: CustomMessageType.location.value,
-        customMessage: jsonEncode(content.toJson()),
-        conversationType: ZIMConversationType.peer,
+      final result = await ChatManager().sendLocationMessage(
+        content: content,
         conversationId: userId.toString(),
       );
+      // final result = await ChatManager().sendCustomMessage(
+      //   customType: CustomMessageType.location.value,
+      //   customMessage: jsonEncode(content.toJson()),
+      //   conversationType: ZIMConversationType.peer,
+      //   conversationId: userId.toString(),
+      // );
       if (result) {
         scrollController.jumpTo(0);
       }

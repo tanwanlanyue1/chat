@@ -32,6 +32,7 @@ import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/global.dart';
 import 'package:guanjia/ui/chat/custom/message_call_reject_content.dart';
 import 'package:guanjia/ui/chat/custom/message_extension.dart';
+import 'package:guanjia/ui/chat/custom/message_location_content.dart';
 import 'package:guanjia/ui/chat/custom/zim_kit_core_extension.dart';
 import 'package:guanjia/ui/chat/message_list/message_list_controller.dart';
 import 'package:guanjia/ui/chat/message_list/widgets/chat_call_end_dialog.dart';

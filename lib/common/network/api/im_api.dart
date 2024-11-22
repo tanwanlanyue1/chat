@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:guanjia/common/network/httpclient/http_client.dart';
 
 import 'model/im/chat_call_pay_model.dart';
@@ -30,18 +32,30 @@ class IMApi {
   }
 
   /// 发送消息
+  ///- toUid 接收方
   ///- type 消息类型 1文字 2图片 3视频 4定位
-  ///- msg 消息内容
+  ///- message 消息内容
+  ///- file 图片或者视频文件
   static Future<ApiResponse> sendMessage({
+    required int toUid,
     required int type,
-    required Map<String, dynamic> msg,
-  }) {
+    String? message,
+    File? file,
+  }) async{
+
+    final map = {
+      'toUid': toUid,
+      'type': type,
+      if(message != null) 'msg': message,
+    };
+    if(file != null){
+      map['file'] = await MultipartFile.fromFile(
+        file.path,
+      );
+    }
     return HttpClient.post(
       '/api/im/sendMessage',
-      data: {
-        "type": type,
-        "msg": msg,
-      },
+      data: FormData.fromMap(map),
     );
   }
 

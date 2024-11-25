@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
@@ -12,6 +13,8 @@ class LocationService extends GetxService with WidgetsBindingObserver {
 
   ///当前设备位置
   final locationRx = Rxn<Position>();
+
+  final _debounceReport = Debouncer(delay: 1.seconds);
 
   @override
   void onInit() {
@@ -31,6 +34,13 @@ class LocationService extends GetxService with WidgetsBindingObserver {
   ///上报用户当前位置到服务端
   ///- silent 静默上报（没有权限时，不进行申请）
   Future<void> reportPosition({bool silent = false}) async {
+    //防抖处理
+    return _debounceReport(()=> _reportPosition(silent: silent));
+  }
+
+  ///上报用户当前位置到服务端
+  ///- silent 静默上报（没有权限时，不进行申请）
+  Future<void> _reportPosition({bool silent = false}) async {
     if (!SS.login.isLogin) {
       return;
     }

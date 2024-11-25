@@ -146,12 +146,6 @@ extension MessageSenderPart on MessageListController {
         content: content,
         conversationId: userId.toString(),
       );
-      // final result = await ChatManager().sendCustomMessage(
-      //   customType: CustomMessageType.location.value,
-      //   customMessage: jsonEncode(content.toJson()),
-      //   conversationType: ZIMConversationType.peer,
-      //   conversationId: userId.toString(),
-      // );
       if (result) {
         scrollController.jumpTo(0);
       }

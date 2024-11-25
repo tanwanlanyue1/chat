@@ -7,17 +7,17 @@ import 'dart:io';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
+import 'package:guanjia/common/network/api/api.dart';
 import 'package:guanjia/common/network/api/im_api.dart';
 import 'package:guanjia/common/network/api/model/im/chat_call_pay_model.dart';
+import 'package:guanjia/common/network/api/model/im/send_message_params.dart';
 import 'package:guanjia/common/notification/notification_manager.dart';
 import 'package:guanjia/common/notification/payload/chat_message_payload.dart';
 import 'package:guanjia/common/routes/app_pages.dart';
@@ -47,6 +47,7 @@ import 'package:image_size_getter/file_input.dart';
 import 'package:image_size_getter/image_size_getter.dart' hide Size;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:vibration/vibration.dart';
+import 'package:video_compress/video_compress.dart';
 import 'package:zego_uikit_prebuilt_call/src/invitation/internal/defines.dart';
 import 'package:zego_uikit_prebuilt_call/src/invitation/internal/internal_instance.dart';
 import 'package:zego_uikit_prebuilt_call/src/invitation/internal/notification.dart';
@@ -57,7 +58,7 @@ import 'package:zego_uikit_prebuilt_call/src/minimizing/overlay_machine.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
-
+import 'package:path/path.dart';
 import '../custom/custom_message_type.dart';
 import 'chat_event_notifier.dart';
 

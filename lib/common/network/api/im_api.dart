@@ -7,6 +7,7 @@ import 'package:guanjia/common/network/httpclient/http_client.dart';
 import 'model/im/chat_call_pay_model.dart';
 import 'model/im/chat_user_model.dart';
 import 'model/im/red_packet_model.dart';
+import 'model/im/send_message_params.dart';
 
 /// IM API
 class IMApi {
@@ -32,30 +33,10 @@ class IMApi {
   }
 
   /// 发送消息
-  ///- toUid 接收方
-  ///- type 消息类型 1文字 2图片 3视频 4定位
-  ///- message 消息内容
-  ///- file 图片或者视频文件
-  static Future<ApiResponse> sendMessage({
-    required int toUid,
-    required int type,
-    String? message,
-    File? file,
-  }) async{
-
-    final map = {
-      'toUid': toUid,
-      'type': type,
-      if(message != null) 'msg': message,
-    };
-    if(file != null){
-      map['file'] = await MultipartFile.fromFile(
-        file.path,
-      );
-    }
+  static Future<ApiResponse> sendMessage(SendMessageParams params) async{
     return HttpClient.post(
       '/api/im/sendMessage',
-      data: FormData.fromMap(map),
+      data: params.toJson(),
     );
   }
 

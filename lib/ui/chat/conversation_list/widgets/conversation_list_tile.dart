@@ -6,8 +6,11 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/event/event_bus_listener.dart';
+import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/extension/date_time_extension.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
 import 'package:guanjia/common/extension/iterable_extension.dart';
 import 'package:guanjia/common/network/api/model/im/chat_user_model.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -18,6 +21,7 @@ import 'package:guanjia/ui/chat/message_list/widgets/chat_date_view.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/ui/chat/widgets/chat_user_builder.dart';
+import 'package:guanjia/ui/home/home_controller.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/unread_badge.dart';
 import 'package:guanjia/widgets/widgets.dart';
@@ -27,6 +31,8 @@ import '../../../../common/network/api/api.dart';
 ///聊天会话列表项
 class ConversationListTile extends StatefulWidget {
   static double? _messageContentMaxWidth;
+
+  static const groupTag = 'ConversationList';
 
   final ZIMKitConversation conversation;
 
@@ -70,7 +76,7 @@ class _ConversationListTileState extends State<ConversationListTile>
     final orderInfoView = isOrderMsg ? _buildOrderInfo() : null;
     return Slidable(
       key: ValueKey(conversation.id),
-      groupTag: 'ConversationList',
+      groupTag: ConversationListTile.groupTag,
       endActionPane: ActionPane(
         extentRatio: 0.3,
         motion: const ScrollMotion(),
@@ -83,36 +89,49 @@ class _ConversationListTileState extends State<ConversationListTile>
           ),
         ],
       ),
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          padding: FEdgeInsets(horizontal: 16.rpx, vertical: 12.rpx),
-          alignment: Alignment.centerLeft,
-          child: ChatUserBuilder(
-            userId: conversation.id,
-            defaultInfo: defaultInfo,
-            builder: (userInfo) {
-              return Row(
-                crossAxisAlignment: conversation.lastMessage == null
-                    ? CrossAxisAlignment.center
-                    : CrossAxisAlignment.start,
-                children: [
-                  _buildAvatar(userInfo ?? defaultInfo),
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildNameAndTime(userInfo ?? defaultInfo),
-                        if (conversation.lastMessage != null)
-                          _buildMessageContent(),
-                        if (orderInfoView != null) orderInfoView,
-                      ].separated(Spacing.h(6)).toList(growable: false),
-                    ),
-                  )
-                ],
-              );
-            },
+      child: EventBusListener(
+        eventName: kEventCloseSlidable,
+        onEvent: (ctx, data) {
+          final ctrl = Slidable.of(ctx);
+          if (data == ConversationListTile.groupTag &&
+              ctrl != null &&
+              !ctrl.closing &&
+              ctrl.direction.value != 0) {
+            ctrl.isLeftToRight;
+            ctrl.close();
+          }
+        },
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            padding: FEdgeInsets(horizontal: 16.rpx, vertical: 12.rpx),
+            alignment: Alignment.centerLeft,
+            child: ChatUserBuilder(
+              userId: conversation.id,
+              defaultInfo: defaultInfo,
+              builder: (userInfo) {
+                return Row(
+                  crossAxisAlignment: conversation.lastMessage == null
+                      ? CrossAxisAlignment.center
+                      : CrossAxisAlignment.start,
+                  children: [
+                    _buildAvatar(userInfo ?? defaultInfo),
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildNameAndTime(userInfo ?? defaultInfo),
+                          if (conversation.lastMessage != null)
+                            _buildMessageContent(),
+                          if (orderInfoView != null) orderInfoView,
+                        ].separated(Spacing.h(6)).toList(growable: false),
+                      ),
+                    )
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -121,11 +140,12 @@ class _ConversationListTileState extends State<ConversationListTile>
 
   Widget _buildAvatar(ChatUserModel info) {
     final timestamp = conversation.lastMessage?.info.timestamp ?? 0;
-    var avatar = timestamp > info.createdAt ? conversation.avatarUrl : info.avatar;
-    if(avatar.isEmpty){
+    var avatar =
+        timestamp > info.createdAt ? conversation.avatarUrl : info.avatar;
+    if (avatar.isEmpty) {
       avatar = conversation.avatarUrl;
     }
-    if(avatar.isEmpty){
+    if (avatar.isEmpty) {
       avatar = info.avatar;
     }
     Widget child = UserAvatar.circle(
@@ -187,13 +207,14 @@ class _ConversationListTileState extends State<ConversationListTile>
     // print('$info');
 
     final extendedChildren = <Widget>[
-      if(info.gender != null) Padding(
-        padding: FEdgeInsets(left: 4.rpx),
-        child: AppImage.asset(
-          info.gender!.icon,
-          size: 12.rpx,
+      if (info.gender != null)
+        Padding(
+          padding: FEdgeInsets(left: 4.rpx),
+          child: AppImage.asset(
+            info.gender!.icon,
+            size: 12.rpx,
+          ),
         ),
-      ),
     ];
     nameMaxWidth -= 16.rpx;
 

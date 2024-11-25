@@ -69,6 +69,9 @@ dependencies:
     path: plugins/zego_uikit_prebuilt_call
   zego_uikit_signaling_plugin: 2.8.2
   flutter_image_compress: ^2.3.0
+#  video_compress: ^3.1.3 #视频压缩，元数据，首帧图片
+  video_compress: #视频压缩，元数据，首帧图片
+    path: plugins/video_compress-3.1.3
   flutter_ringtone_player: ^4.0.0+3 #播放设备默认铃声
   vibration: ^1.9.0 #振动
   flutter_local_notifications: ^17.2.2
@@ -95,6 +98,7 @@ dependency_overrides:
   win32: 5.5.0
   zego_uikit_prebuilt_call:
     path: plugins/zego_uikit_prebuilt_call
+  zego_zim: 2.16.0
 
 dev_dependencies:
   flutter_test:

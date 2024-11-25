@@ -7,11 +7,11 @@ mixin _ChatSenderMixin {
     required ZIMConversationType conversationType,
     required String conversationId,
   }) async {
-    return _sendMessage(
+    return _sendMessage(SendMessageParams(
       toUid: int.parse(conversationId),
       type: 1,
-      message: text
-    );
+      msg: text,
+    ));
   }
 
   ///发送图片消息
@@ -20,11 +20,39 @@ mixin _ChatSenderMixin {
     required ZIMConversationType conversationType,
     required String conversationId,
   }) async {
-    return _sendMessage(
+
+    try {
+
+      //上传图片
+      final fileName = basename(filePath);
+      final response =
+      await UserApi.upload(filePath: filePath, fileName: fileName);
+      final imgUrl = response.data;
+      if (!response.isSuccess || imgUrl?.isNotEmpty != true) {
+        Loading.showToast(S.current.sendFail);
+        return false;
+      }
+
+      //获取图片信息
+      final file = File(filePath);
+      final fileInfo = await file.stat();
+      final input = AsyncImageInput.input(FileInput(file));
+      final size = await ImageSizeGetter.getSizeAsync(input);
+
+      return _sendMessage(SendMessageParams(
         toUid: int.parse(conversationId),
         type: 2,
-        file: File(filePath)
-    );
+        imgWidth: size.width,
+        imgHeight: size.height,
+        imgUrl: imgUrl,
+        fileSize: fileInfo.size,
+        fileName: basename(fileName),
+      ));
+    } catch (ex) {
+      Loading.showToast(S.current.sendFail);
+      AppLogger.w(ex);
+      return false;
+    }
   }
 
   ///发送视频消息
@@ -33,42 +61,48 @@ mixin _ChatSenderMixin {
     required ZIMConversationType conversationType,
     required String conversationId,
   }) async {
-    return _sendMessage(
+    try {
+
+      //获取视频信息
+      final videoInfo = await VideoCompress.getMediaInfo(filePath);
+
+      //获取视频首帧图片缩略图
+      final thumb = await VideoCompress.getFileThumbnail(filePath);
+      final input = AsyncImageInput.input(FileInput(thumb));
+      final thumbSize = await ImageSizeGetter.getSizeAsync(input);
+
+      //上传视频和缩略图
+      final fileName = basename(filePath);
+      final responses = await Future.wait([
+        UserApi.upload(filePath: filePath, fileName: fileName),
+        UserApi.upload(filePath: thumb.path),
+      ]);
+      if(!responses.first.isSuccess || !responses.last.isSuccess){
+        AppLogger.w('上传视频或者缩率图失败');
+        Loading.showToast(S.current.sendFail);
+        return false;
+      }
+      final videoUrl = responses.first.data;
+      final thumbUrl = responses.last.data;
+
+      //发送消息
+      return _sendMessage(SendMessageParams(
         toUid: int.parse(conversationId),
         type: 3,
-        file: File(filePath)
-    );
+        imgWidth: thumbSize.width,
+        imgHeight: thumbSize.height,
+        imgUrl: thumbUrl,
+        videoDuration: ((videoInfo.duration ?? 0) / 1000).ceil(),
+        videoUrl: videoUrl,
+        fileName: fileName,
+        fileSize: videoInfo.filesize,
+      ));
+    } catch (ex) {
+      Loading.showToast(S.current.sendFail);
+      AppLogger.w(ex);
+      return false;
+    }
 
-    // String? extendedData;
-    // try {
-    //   final videoInfo = await FlutterVideoInfo().getVideoInfo(filePath);
-    //   final durationMs = videoInfo?.duration ?? 0;
-    //   if (videoInfo != null && durationMs > 0) {
-    //     final needRotate = [90, 270].contains(videoInfo.orientation);
-    //     final width = videoInfo.width ?? 0;
-    //     final height = videoInfo.height ?? 0;
-    //
-    //     extendedData = jsonEncode({
-    //       'duration': (durationMs / 1000).ceil(), //毫秒转成秒
-    //       'width': needRotate ? height : width,
-    //       'height': needRotate ? width : height,
-    //     });
-    //   }
-    // } catch (ex) {
-    //   AppLogger.w('获取视频信息失败，$ex');
-    // }
-    //
-    // if (await _checkMessage(type: 3)) {
-    //   await ZIMKitCore.instance.sendMediaMessageExt(
-    //     conversationId,
-    //     conversationType,
-    //     filePath,
-    //     ZIMMessageType.video,
-    //     extendedData: extendedData,
-    //   );
-    //   return true;
-    // }
-    // return false;
   }
 
   ///发送位置消息
@@ -76,11 +110,11 @@ mixin _ChatSenderMixin {
     required MessageLocationContent content,
     required String conversationId,
   }) async {
-    return _sendMessage(
-        toUid: int.parse(conversationId),
-        type: 4,
-        message: jsonEncode(content.toJson()),
-    );
+    return _sendMessage(SendMessageParams(
+      toUid: int.parse(conversationId),
+      type: 4,
+      msg: jsonEncode(content.toJson()),
+    ));
   }
 
   ///发送自定义消息
@@ -90,13 +124,13 @@ mixin _ChatSenderMixin {
     required ZIMConversationType conversationType,
     required String conversationId,
   }) async {
-      await ZIMKitCore.instance.sendCustomMessage(
-        conversationId,
-        conversationType,
-        customType: customType,
-        customMessage: customMessage,
-      );
-      return true;
+    await ZIMKitCore.instance.sendCustomMessage(
+      conversationId,
+      conversationType,
+      customType: customType,
+      customMessage: customMessage,
+    );
+    return true;
   }
 
   ///发送本地消息
@@ -116,22 +150,8 @@ mixin _ChatSenderMixin {
   }
 
   /// 发送消息
-  ///- toUid 接收方
-  ///- type 消息类型 1文字 2图片 3视频 4定位
-  ///- message 消息内容
-  ///- file 图片或者视频文件
-  Future<bool> _sendMessage({
-    required int toUid,
-    required int type,
-    String? message,
-    File? file,
-  }) async {
-    final response = await IMApi.sendMessage(
-      toUid: toUid,
-      type: type,
-      message: message,
-      file: file,
-    );
+  Future<bool> _sendMessage(SendMessageParams params) async {
+    final response = await IMApi.sendMessage(params);
     final ret = response.isSuccess;
     if (!ret) {
       response.showErrorMessage();

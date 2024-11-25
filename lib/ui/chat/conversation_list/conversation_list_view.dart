@@ -1,8 +1,8 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
-import 'package:guanjia/common/app_config.dart';
+import 'package:guanjia/common/event/event_bus.dart';
+import 'package:guanjia/common/event/event_constant.dart';
 import 'package:guanjia/common/paging/default_status_indicators/first_page_error_indicator.dart';
 import 'package:guanjia/common/paging/default_status_indicators/first_page_progress_indicator.dart';
 import 'package:guanjia/common/paging/default_status_indicators/no_items_found_indicator.dart';
@@ -11,6 +11,7 @@ import 'package:guanjia/generated/l10n.dart';
 import 'package:guanjia/ui/chat/utils/chat_user_manager.dart';
 import 'package:guanjia/widgets/spacing.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+
 import 'conversation_list_controller.dart';
 import 'widgets/conversation_list_tile.dart';
 import 'widgets/conversation_notice_tile.dart';
@@ -38,6 +39,7 @@ class _ConversationListViewState extends State<ConversationListView>
           ChatUserManager().startSync();
         } else {
           ChatUserManager().stopSync();
+          EventBus().emit(kEventCloseSlidable, ConversationListTile.groupTag);
         }
       },
       child: ObxValue((statusRx) {

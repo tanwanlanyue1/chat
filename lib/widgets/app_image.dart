@@ -99,6 +99,7 @@ class AppImage extends StatelessWidget {
     Widget? placeholder,
     Alignment align = Alignment.center,
     double opacity = 1,
+    Duration fadeDuration = const Duration(milliseconds: 300),
     super.key,
   }) : child = CachedNetworkImage(
           memCacheWidth:
@@ -113,6 +114,8 @@ class AppImage extends StatelessWidget {
                   height: memCacheHeight ?? length ?? height)
               : url,
           alignment: align,
+          fadeInDuration: fadeDuration,
+          fadeOutDuration: fadeDuration,
           imageBuilder: (context, imageProvider) {
             return Container(
               width: length ?? width,
@@ -244,19 +247,24 @@ class AppAssetImage extends AssetImage {
 extension StringImageResize on String {
   ///华为云https://support.huaweicloud.com/usermanual-obs/obs_01_0430.html
   ///OSS云存储裁剪图片
-  String getResizeImageUrl({double? width, double? height, BoxFit fit = BoxFit.contain}) {
+  String getResizeImageUrl(
+      {double? width, double? height, BoxFit fit = BoxFit.contain}) {
     if (width == null && height == null) {
       return this;
     }
     if (width == double.infinity || height == double.infinity) {
       return this;
     }
-    return _resizeForAmazonaws(width: width, height: height)._resizeForOSS(width: width, height: height);
+    return _resizeForAmazonaws(width: width, height: height)
+        ._resizeForOSS(width: width, height: height);
   }
 
   ///阿里云图片裁剪
-  String _resizeForOSS({double? width, double? height, BoxFit fit = BoxFit.contain}) {
-    if (width == double.infinity || height == double.infinity || contains('amazonaws.com')) {
+  String _resizeForOSS(
+      {double? width, double? height, BoxFit fit = BoxFit.contain}) {
+    if (width == double.infinity ||
+        height == double.infinity ||
+        contains('amazonaws.com')) {
       return this;
     }
     const resizePrefix = 'x-oss-process=image/resize';
@@ -268,7 +276,7 @@ extension StringImageResize on String {
       return this;
     }
     var mode = 'm_lfit';
-    switch(fit){
+    switch (fit) {
       case BoxFit.fill:
         mode = 'm_fixed';
         break;
@@ -298,7 +306,8 @@ extension StringImageResize on String {
   }
 
   ///亚马逊图片裁剪
-  String _resizeForAmazonaws({double? width, double? height, BoxFit fit = BoxFit.contain}) {
+  String _resizeForAmazonaws(
+      {double? width, double? height, BoxFit fit = BoxFit.contain}) {
     if (width == double.infinity ||
         height == double.infinity ||
         !contains('amazonaws.com')) {
@@ -306,7 +315,8 @@ extension StringImageResize on String {
     }
 
     final amazonawsCloudFront = SS.appConfig.configRx()?.amazonawsCloudFront;
-    if(amazonawsCloudFront == null || !amazonawsCloudFront.startsWith('http')){
+    if (amazonawsCloudFront == null ||
+        !amazonawsCloudFront.startsWith('http')) {
       return this;
     }
 
@@ -333,7 +343,7 @@ extension StringImageResize on String {
       return this;
     }
 
-    switch(fit){
+    switch (fit) {
       case BoxFit.fill:
       case BoxFit.cover:
         resize['fit'] = fit.name;

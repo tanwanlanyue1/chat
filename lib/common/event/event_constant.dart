@@ -29,3 +29,6 @@ const kEventRechargeSuccess = 'kEventRechargeSuccess';
 
 ///选择地区 List<AreaModel>
 const kEventChooseArea = 'kEventChooseArea';
+
+///关闭Slidable data=groupTag
+const kEventCloseSlidable = 'kEventCloseSlidable';

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/event/event_bus.dart';
 import 'package:guanjia/common/event/event_constant.dart';
@@ -18,7 +19,7 @@ import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'home_state.dart';
 
-class HomeController extends GetxController with GetAutoDisposeMixin {
+class HomeController extends GetxController with GetAutoDisposeMixin, GetSingleTickerProviderStateMixin {
   final HomeState state = HomeState();
   late PageController pageController =
       PageController(initialPage: state.currentPageRx.value);

@@ -18,23 +18,30 @@ mixin _ChatNotificationMixin {
     // payload: {"operation_type":"text_msg","id":"21","sender":{"id":"20","name":"Beauty"},"type":1},
     final options = await PluginUtil.getAppLaunchOptions();
     // FileLogger.d('details: ${jsonEncode(options)}');
-    final payload = options['payload'];
+    startChatWithRemoteNotification(options);
+  }
+
+  ///通过远程通知启动聊天页
+  ///- extras 通知携带的数据
+  Future<bool> startChatWithRemoteNotification(Map<dynamic, dynamic> extras) async{
+    final payload = extras['payload'];
     if (payload == null) {
-      return;
+      return false;
     }
     try {
       final json = jsonDecode(payload);
       final sender = json['sender'];
       if (json['type'] != ZIMConversationType.peer.index || sender is! Map) {
-        return;
+        return false;
       }
       final senderUid = int.tryParse("${sender['id']}");
       if (senderUid != null) {
-        ChatManager().startChat(userId: senderUid);
+        return ChatManager().startChat(userId: senderUid);
       }
     } catch (ex) {
-      AppLogger.w('startChatWithNotification ex=$ex');
+      AppLogger.w('startChatWithRemoteNotification ex=$ex');
     }
+    return false;
   }
 
   ///显示通知

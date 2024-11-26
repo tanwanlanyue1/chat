@@ -87,6 +87,7 @@ class FileLogger{
 
   static void d(String msg) async {
     if(isEnabled){
+      AppLogger.d(msg);
       _logs.add('${DateTime.now().toString()}  $msg\n');
       _execute();
       return;

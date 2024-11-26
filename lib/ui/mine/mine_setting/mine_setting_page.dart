@@ -277,7 +277,7 @@ class MineSettingPage extends StatelessWidget {
   Widget _buildLogfile() {
     return GestureDetector(
       onTap: () {
-        FileLogger.printFileLog();
+        FileLogger.show();
       },
       onLongPress: () async{
         await FileLogger.clear();

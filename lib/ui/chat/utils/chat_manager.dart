@@ -80,6 +80,8 @@ class ChatManager
   static final instance = ChatManager._();
 
   var _isInit = false;
+  var _initTimestamp = DateTime.now().millisecondsSinceEpoch;
+  void updateInitTimestamp() => _initTimestamp = DateTime.now().millisecondsSinceEpoch;
 
   ///初始化
   Future<void> init() async {
@@ -87,6 +89,7 @@ class ChatManager
       return;
     }
     _isInit = true;
+    updateInitTimestamp();
 
     //ZEGO 即时通信
     await ZIMKit().init(
@@ -116,11 +119,10 @@ class ChatManager
     });
 
     //监听聊天消息
-    final initTimestamp = DateTime.now().millisecondsSinceEpoch;
     ChatEventNotifier().onReceivePeerMessage.listen((event) {
       var reminder = false;
       event.messageList
-          .where((element) => element.timestamp > initTimestamp)
+          .where((element) => element.timestamp > _initTimestamp)
           .map((element) => element.toKIT())
           .forEach((message) {
         //通话结束对话框

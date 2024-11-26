@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_config.dart';
@@ -16,23 +17,9 @@ import 'package:guanjia/main.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
 import 'package:guanjia/ui/mine/mine_message/mine_message_page.dart';
 import 'package:guanjia/ui/mine/mine_setting/app_update/app_update_manager.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import '../utils/app_logger.dart';
 import '../utils/plugin_util.dart';
-
-///TODO 点击后台通知时调用(iOS)
-@pragma('vm:entry-point')
-void onDidReceiveBackgroundNotificationResponse(NotificationResponse notificationResponse) {
-  // ignore: avoid_print
-  print('notification(${notificationResponse.id}) action tapped: '
-      '${notificationResponse.actionId} with'
-      ' payload: ${notificationResponse.payload}');
-  if (notificationResponse.input?.isNotEmpty ?? false) {
-    // ignore: avoid_print
-    print(
-        'notification action tapped with input: ${notificationResponse.input}');
-    FileLogger.d('${notificationResponse.payload}');
-  }
-}
 
 ///应用通知
 class NotificationManager {
@@ -59,8 +46,6 @@ class NotificationManager {
 
   var _jumpWithAppLaunchOptions = '';
 
-
-
   /// A notification action which triggers a url launch event
   final String urlLaunchActionId = 'id_1';
 
@@ -73,10 +58,9 @@ class NotificationManager {
   /// Defines a iOS/MacOS notification category for plain actions.
   final String darwinNotificationCategoryPlain = 'plainCategory';
 
-  DarwinInitializationSettings get _iOSSettings{
-
+  DarwinInitializationSettings get _iOSSettings {
     final List<DarwinNotificationCategory> darwinNotificationCategories =
-    <DarwinNotificationCategory>[
+        <DarwinNotificationCategory>[
       DarwinNotificationCategory(
         darwinNotificationCategoryText,
         actions: <DarwinNotificationAction>[
@@ -126,7 +110,7 @@ class NotificationManager {
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
-      notificationCategories: darwinNotificationCategories,
+      // notificationCategories: darwinNotificationCategories,
     );
   }
 
@@ -140,8 +124,20 @@ class NotificationManager {
         iOS: _iOSSettings,
       ),
       onDidReceiveNotificationResponse: _onTapNotification,
-      onDidReceiveBackgroundNotificationResponse: onDidReceiveBackgroundNotificationResponse,
+      //TODO 不会回调到，不知道是什么原因，因此使用ZegoPluginAdapter().signalingPlugin来监听通知点击了
+      // onDidReceiveBackgroundNotificationResponse: _onTapNotification,
     );
+
+    //仅处理iOS，Android已通过监听应用切换前台事件获取启动参数实现
+    if (Platform.isIOS) {
+      final signalingPlugin =
+          ZegoPluginAdapter().signalingPlugin ?? ChatManager().signalingPlugin;
+      signalingPlugin.getNotificationClickedEventStream().listen((event) {
+        // FileLogger.d('getNotificationClickedEventStream: ${event.toString()}');
+        ChatManager().updateInitTimestamp();
+        ChatManager().startChatWithRemoteNotification(event.extras);
+      });
+    }
   }
 
   ///创建通知渠道
@@ -191,6 +187,8 @@ class NotificationManager {
 
   ///点击通知
   void _onTapNotification(NotificationResponse response) {
+    print('_onTapNotification: ${response.payload}');
+    FileLogger.d('_onTapNotification: ${response.payload}');
     try {
       final json = jsonDecode(response.payload ?? '');
       if (json == null) {
@@ -215,7 +213,7 @@ class NotificationManager {
   }
 
   ///跳转聊天
-  bool _jumpChat(Map<String, dynamic> json){
+  bool _jumpChat(Map<String, dynamic> json) {
     final payload = ChatMessagePayload.fromJson(json);
     if (payload != null) {
       final userId = int.tryParse(payload.conversationId);
@@ -228,13 +226,13 @@ class NotificationManager {
   }
 
   ///跳转我的消息通知
-  bool _jumpMyMessage(Map<String, dynamic> json){
+  bool _jumpMyMessage(Map<String, dynamic> json) {
     final payload = SysNoticePayload.fromJson(json);
     if (payload != null) {
-      final tabIndex = payload.type == 1 ? 1:0;
+      final tabIndex = payload.type == 1 ? 1 : 0;
       final controller = Get.tryFind<MineMessagePageController>();
       AppLogger.d('_jumpMyMessage: $controller,  tabIndex:$tabIndex');
-      if(controller != null){
+      if (controller != null) {
         controller.setSelectedTabIndex(tabIndex);
       }
       Get.toNamed(AppRoutes.mineMessage, arguments: {
@@ -246,12 +244,13 @@ class NotificationManager {
   }
 
   ///跳转app更新
-  bool _jumpAppUpdate(Map<String, dynamic> json){
+  bool _jumpAppUpdate(Map<String, dynamic> json) {
     final appUpdatePayload = AppUpdatePayload.fromJson(json);
     if (appUpdatePayload == null) {
       return false;
     }
-    if(appUpdatePayload.progress == 1 && appUpdatePayload.apkFilePath.isNotEmpty){
+    if (appUpdatePayload.progress == 1 &&
+        appUpdatePayload.apkFilePath.isNotEmpty) {
       AppUpdateManager.instance.installApk(appUpdatePayload.apkFilePath);
     }
     return true;
@@ -278,7 +277,6 @@ class NotificationManager {
       AppLogger.w('jumpWithAppLaunch ex=$ex');
     }
   }
-
 }
 
 ///通知渠道

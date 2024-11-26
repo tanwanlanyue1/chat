@@ -22,6 +22,8 @@ mixin _ChatCallMixin {
   ///是否需要再次显示充值提醒对话框
   var _callRechargeDialogAgain = true;
 
+  final signalingPlugin = ZegoUIKitSignalingPlugin();
+
   ///开始音视频通话
   ///- userId 接收方用户ID
   ///- nickname 接收方昵称
@@ -263,7 +265,7 @@ mixin _ChatCallMixin {
       appSign: AppConfig.zegoAppSign,
       userID: userId,
       userName: nickname,
-      plugins: [ZegoUIKitSignalingPlugin()],
+      plugins: [signalingPlugin],
       //自定义文本内容
       innerText: ZegoCallInvitationInnerText(
         incomingVideoCallDialogMessage: S.current.videoChatCallIn,

@@ -75,6 +75,8 @@ class MessageListController extends GetxController
       }
     }));
 
+    state.userInfoRx.value = UserInfoCache().get(userId);
+
     _fetchData();
   }
 

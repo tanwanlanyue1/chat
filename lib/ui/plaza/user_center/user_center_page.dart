@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:get/get.dart';
@@ -42,14 +43,12 @@ class UserCenterPage extends StatelessWidget {
         final state = controller.state;
         return Scaffold(
           resizeToAvoidBottomInset: false,
-          body: SmartRefresher(
-            controller: controller.pagingController.refreshController,
-            onRefresh: controller.pagingController.onRefresh,
-            child: Stack(
-              children: [
-                CustomScrollView(
-                  controller: controller.scrollController,
-                  slivers: <Widget>[
+          body: Stack(
+            children: [
+              ExtendedNestedScrollView(
+                controller: controller.scrollController,
+                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                  return [
                     Obx(() => SliverAppBar(
                       pinned: true,
                       leadingWidth: 0,
@@ -93,88 +92,100 @@ class UserCenterPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    PagedSliverList(
-                      pagingController: controller.pagingController,
-                      builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
-                        pagingController: controller.pagingController,
-                        itemBuilder: (_, item, index) {
-                          return Container(
-                            color: Colors.white,
-                            child: Column(
-                              children: [
-                                PlazaCard(
-                                  user: true,
-                                  item: item,
-                                  margin: EdgeInsets.zero,
-                                  isLike: (like){
-                                    controller.getCommentLike(like, index);
-                                  },
-                                  callBack: (val){
-                                    controller.setComment(val ?? '',index);
-                                  },
-                                ),
-                                Container(
-                                  height: 1.rpx,
-                                  margin: EdgeInsets.only(left: 24.rpx,right: 16.rpx,bottom: 12.rpx),
-                                  color: AppColor.scaffoldBackground,
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        noItemsFoundIndicatorBuilder:(_){
-                          return NoItemsFoundIndicator(
-                            title: S.current.noData,
-                            backgroundColor: Colors.white,
-                          );
-                        },
+                  ];
+                },
+                pinnedHeaderSliverHeightBuilder: ()=> Get.mediaQuery.padding.top+56.rpx,
+                body: Column(
+                  children: [
+                    tabBars(controller),
+                    Expanded(
+                        child: SmartRefresher(
+                          controller: controller.pagingController.refreshController,
+                          onRefresh: controller.pagingController.onRefresh,
+                          child: PagedListView(
+                              pagingController: controller.pagingController,
+                              builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
+                                pagingController: controller.pagingController,
+                                itemBuilder: (_, item, index) {
+                                  return Container(
+                                    color: Colors.white,
+                                    child: Column(
+                                      children: [
+                                        PlazaCard(
+                                          user: true,
+                                          item: item,
+                                          margin: EdgeInsets.zero,
+                                          isLike: (like){
+                                            controller.getCommentLike(like, index);
+                                          },
+                                          callBack: (val){
+                                            controller.setComment(val ?? '',index);
+                                          },
+                                        ),
+                                        Container(
+                                          height: 1.rpx,
+                                          margin: EdgeInsets.only(left: 24.rpx,right: 16.rpx,bottom: 12.rpx,),
+                                          color: AppColor.scaffoldBackground,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                noItemsFoundIndicatorBuilder:(_){
+                                  return NoItemsFoundIndicator(
+                                    title: S.current.noData,
+                                    backgroundColor: Colors.white,
+                                  );
+                                },
+                              ),
+                          ),
+                        )
+                    )
+                  ],
+                ),
+              ),
+              Obx(() => Container(
+                height: 44.rpx+Get.mediaQuery.padding.top,
+                decoration: BoxDecoration(
+                    color: state.isAppBarExpanded.value ? Colors.white : Colors.transparent
+                ),
+                child: AppBar(
+                  backgroundColor: Colors.transparent,
+                  leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
+                  systemOverlayStyle: SystemUI.lightStyle,
+                  actions: [
+                    Visibility(
+                      visible: state.isAppBarExpanded.value,
+                      child: Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(left: 52.rpx,right: 12.rpx),
+                        child: UserAvatar.circle(
+                          state.authorInfo.avatar ?? '',
+                          size: 32.rpx,
+                        ),
+                      ),
+                    ),
+                    Visibility(
+                      visible: state.isAppBarExpanded.value,
+                      child: Center(
+                        child: Text(state.authorInfo.nickname,style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue,height: 1),),
+                      ),
+                    ),
+                    const Spacer(),
+                    Visibility(
+                      visible: SS.login.userId == state.authorId,
+                      child: InkWell(
+                        onTap: ()=>controller.upload(controller),
+                        child: Container(
+                          padding: EdgeInsets.only(right: 16.rpx,left: 12.rpx),
+                          child: AppImage.asset("assets/images/plaza/uploading.png",width: 24.rpx,height: 24.rpx,color: state.isAppBarExpanded.value ? Colors.black :Colors.white,),
+                        ),
                       ),
                     ),
                   ],
                 ),
-                Obx(() => Container(
-                  height: 44.rpx+Get.mediaQuery.padding.top,
-                  decoration: BoxDecoration(
-                      color: state.isAppBarExpanded.value ? Colors.white : Colors.transparent
-                  ),
-                  child: AppBar(
-                    backgroundColor: Colors.transparent,
-                    leading: AppBackButton(brightness: state.isAppBarExpanded.value ? Brightness.dark : Brightness.light,),
-                    systemOverlayStyle: SystemUI.lightStyle,
-                    actions: [
-                      Visibility(
-                        visible: state.isAppBarExpanded.value,
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.only(left: 52.rpx,right: 12.rpx),
-                          child: UserAvatar.circle(
-                            state.authorInfo.avatar ?? '',
-                            size: 32.rpx,
-                          ),
-                        ),
-                      ),
-                      Visibility(
-                        visible: state.isAppBarExpanded.value,
-                        child: Center(
-                          child: Text(state.authorInfo.nickname,style: AppTextStyle.fs16m.copyWith(color: AppColor.blackBlue,height: 1),),
-                        ),
-                      ),
-                      const Spacer(),
-                      Visibility(
-                        visible: SS.login.userId == state.authorId,
-                        child: InkWell(
-                          onTap: ()=>controller.upload(controller),
-                          child: Container(
-                            padding: EdgeInsets.only(right: 16.rpx,left: 12.rpx),
-                            child: AppImage.asset("assets/images/plaza/uploading.png",width: 24.rpx,height: 24.rpx,color: state.isAppBarExpanded.value ? Colors.black :Colors.white,),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )),
-              ],
-            ),
+              )),
+            ],
           ),
           bottomNavigationBar: voiceContainer(controller),
         );
@@ -460,6 +471,42 @@ class UserCenterPage extends StatelessWidget {
     );
   }
 
+  ///导航栏
+  ///                    Obx(() => Visibility(
+  //                       visible: state.tabShow.value,
+  //                       child: Container(
+  //                         height: 56.rpx+Get.mediaQuery.padding.top,
+  //                       ),
+  //                     )),
+  Widget tabBars(UserCenterController controller){
+    final state = controller.state;
+    return Container(
+      // height: state.tabShow.value ?(96.rpx+Get.mediaQuery.padding.top) : 40.rpx,
+      width: double.infinity,
+      height: 40.rpx,
+      margin: EdgeInsets.symmetric(horizontal: 15.rpx),
+      alignment: Alignment.center,
+      color: Colors.white,
+      child: DefaultTabController(
+        length: state.barTabs.length,
+        child: TabBar(
+          controller: controller.tabController,
+          indicatorSize: TabBarIndicatorSize.label,
+          isScrollable: true,
+          labelColor: const Color.fromRGBO(51, 51, 51, 1),
+          labelStyle: TextStyle(fontSize: 30.rpx,),
+          unselectedLabelColor: const Color.fromRGBO(51, 51, 51, 1),
+          unselectedLabelStyle: TextStyle(fontSize: 30.rpx),
+          indicatorColor: AppColor.primaryBlue,
+          indicatorWeight: 2.rpx,
+          tabs: state.barTabs.map((item) {
+            return Text(item,style: TextStyle(fontSize: 12.rpx),);
+          }).toList(),
+          onTap: (val){},
+        ),
+      ),
+    );
+  }
   ///个人帖子
   Widget creativeDynamics(){
     return Container(

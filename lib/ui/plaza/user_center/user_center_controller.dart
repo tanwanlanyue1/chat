@@ -23,7 +23,7 @@ import '../../../common/network/api/api.dart';
 import '../widgets/upload_cover.dart';
 import 'user_center_state.dart';
 
-class UserCenterController extends GetxController with UserAttentionMixin, GetAutoDisposeMixin{
+class UserCenterController extends GetxController with UserAttentionMixin, GetAutoDisposeMixin,GetSingleTickerProviderStateMixin{
   UserCenterController({
     int? userId //用户id
   }){
@@ -33,6 +33,7 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
   final UserCenterState state = UserCenterState();
   final ScrollController scrollController = ScrollController();
   SwiperController swiper = SwiperController();
+  late TabController tabController;
 
   final pagingController = DefaultPagingController<PlazaListModel>(
     firstPage: 1,
@@ -52,7 +53,9 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
       double offset = scrollController.offset;
       double appBarHeight = 220.rpx;
       state.isAppBarExpanded.value = (appBarHeight - kToolbarHeight) < offset;
+      state.tabShow.value = offset > (340.rpx+Get.mediaQuery.padding.top);
     });
+    tabController = TabController(length: state.barTabs.length, vsync: this,initialIndex: 0);
     autoDisposeWorker(EventBus().listen(kEventIsAttention, (data) {
       if(data){
         state.fansNum.value++;

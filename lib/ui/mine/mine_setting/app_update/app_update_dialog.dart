@@ -81,7 +81,7 @@ class AppUpdateDialog extends StatelessWidget {
       padding: FEdgeInsets(horizontal: 16.rpx, top: 36.rpx, bottom: 24.rpx),
       child: Obx(() {
         final downloadInfo = updateManager.downloadUpdateInfoRx();
-        final isDownloadFinish = updateManager.downloadProgressRx() == 1;
+        final isDownloadFinish = updateManager.downloadProgressRx() == 100;
         final isSingleButton = !isCancelable || isDownloadFinish;
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -144,8 +144,7 @@ class AppUpdateDialog extends StatelessWidget {
                   ),
                 ],
               ),
-            if (downloadInfo != null &&
-                NotificationPermissionUtil.instance.isGrantedRx.isFalse)
+            if (downloadInfo != null && (NotificationPermissionUtil.instance.isGrantedRx.isFalse || !isCancelable))
               _buildDownloadProgress(),
           ],
         );
@@ -158,9 +157,8 @@ class AppUpdateDialog extends StatelessWidget {
     return ClipRRect(
       clipBehavior: Clip.antiAlias,
       borderRadius: BorderRadius.circular(buttonSize.height / 2),
-      child: ObxValue<RxDouble>(
-        (progressRx) {
-          final progress = progressRx();
+      child: ObxValue<Rxn<int>>((progressRx) {
+          final progress = progressRx() ?? 0;
           return Stack(
             alignment: Alignment.center,
             children: [
@@ -173,13 +171,13 @@ class AppUpdateDialog extends StatelessWidget {
                 left: 0,
                 top: 0,
                 child: Container(
-                  width: buttonSize.width * progress,
+                  width: buttonSize.width * (progress/100),
                   height: buttonSize.height,
                   color: AppColor.primaryBlue,
                 ),
               ),
               Text(
-                '${S.current.downloadingProgress} ${(progress * 100).toStringAsFixed(0)}%',
+                '${S.current.downloadingProgress} $progress%',
                 textAlign: TextAlign.center,
                 style: AppTextStyle.fs14.copyWith(
                   color: Colors.white,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -142,7 +144,7 @@ class MineSettingPage extends StatelessWidget {
                       borderRadius: BorderRadius.zero,
                       callBack: () => controller.onTapClearCache(),
                     ),
-                    SettingItem(
+                    if(Platform.isAndroid) SettingItem(
                       title: S.current.detectNewVersions,
                       bottom: 0,
                       trailing: Text(

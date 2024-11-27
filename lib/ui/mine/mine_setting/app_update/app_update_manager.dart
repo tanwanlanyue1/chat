@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -28,8 +29,8 @@ class AppUpdateManager {
   ///正在下载的版本信息
   final downloadUpdateInfoRx = Rxn<AppUpdateVersionModel>();
 
-  ///下载进度0-1
-  final downloadProgressRx = 0.0.obs;
+  ///下载进度0-100
+  final downloadProgressRx = Rxn<int>();
 
   ///检查APP更新
   ///- userAction 是否用户点击检查更新
@@ -54,11 +55,11 @@ class AppUpdateManager {
   }
 
   Future<void> _showProgressNotification({
-    required double progress,
+    required int progress,
     required String apkFilePath,
     required int notificationId,
   }) async {
-    final isFinish = progress == 1;
+    final isFinish = progress == 100;
     final notificationDetails = NotificationDetails(
       android: AndroidNotificationDetails(
         NotificationManager.appUpdateChannel.id,
@@ -70,7 +71,7 @@ class AppUpdateManager {
         onlyAlertOnce: true,
         showProgress: true,
         maxProgress: 100,
-        progress: (progress * 100).toInt(),
+        progress: progress,
       ),
     );
     await FlutterLocalNotificationsPlugin().show(
@@ -79,7 +80,7 @@ class AppUpdateManager {
       S.current.versionUpdating,
       notificationDetails,
       payload: AppUpdatePayload(
-        progress: progress,
+        progress: progress/100,
         apkFilePath: apkFilePath,
       ).toJsonString(),
     );
@@ -110,7 +111,7 @@ class AppUpdateManager {
 
   ///下载并安装
   void downloadAndInstall(AppUpdateVersionModel info) async {
-    if(downloadUpdateInfoRx() != null){
+    if (downloadUpdateInfoRx() != null) {
       Loading.showToast(S.current.downloading);
       return;
     }
@@ -121,7 +122,7 @@ class AppUpdateManager {
 
     //文件已存在，直接安装
     if (await File(targetPath).exists()) {
-      downloadProgressRx(1);
+      downloadProgressRx(100);
       installApk(targetPath);
       return;
     }
@@ -133,7 +134,6 @@ class AppUpdateManager {
       if (total <= 0) {
         return;
       }
-      downloadProgressRx.value = count / total;
       if (count == total && tempPath.isNotEmpty) {
         downloadUpdateInfoRx.value = null;
         File(tempPath)
@@ -141,11 +141,15 @@ class AppUpdateManager {
             .then((file) => installApk(file.path));
         tempPath = '';
       }
-      _showProgressNotification(
-        notificationId: targetPath.hashCode,
-        progress: downloadProgressRx(),
-        apkFilePath: targetPath,
-      );
+      final progress = (count / total * 100).toInt();
+      if(downloadProgressRx() != progress){
+        downloadProgressRx.value = progress;
+        _showProgressNotification(
+          notificationId: targetPath.hashCode,
+          progress: progress,
+          apkFilePath: targetPath,
+        );
+      }
     }).then((value) {
       if (value.statusCode != 200) {
         Loading.showToast(S.current.downloadFailed);
@@ -166,7 +170,7 @@ class AppUpdateManager {
 
   Future<void> _cleanup(String apkFilePath) async {
     downloadUpdateInfoRx.value = null;
-    downloadProgressRx(0);
+    downloadProgressRx.value = null;
     if (apkFilePath.isNotEmpty) {
       final targetFile = File(apkFilePath);
       if (await targetFile.exists()) {

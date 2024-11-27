@@ -8,8 +8,8 @@ class AppConfig{
 
   ///开发环境接口地址
   // static const urlDevServer = 'http://newchat.happysport-666.cn:8300/app';
-  static const urlDevServer = 'http://103.60.146.71:8300/app';
-  // static const urlDevServer = 'http://192.168.2.79:20000';
+  // static const urlDevServer = 'http://103.60.146.71:8300/app';
+  static const urlDevServer = 'http://192.168.2.79:20000';
 
   ///正式环境接口地址
   static const urlProdServer = 'http://103.60.146.71:8300/app';

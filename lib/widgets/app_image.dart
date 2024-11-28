@@ -6,13 +6,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
-import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/service/service.dart';
-import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
-import 'package:svgaplayer_flutter/player.dart';
 import 'package:guanjia/widgets/widgets.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
+import 'package:svgaplayer_flutter/player.dart';
 
 ///图片显示控件
 class AppImage extends StatelessWidget {

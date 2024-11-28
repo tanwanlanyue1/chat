@@ -9,6 +9,7 @@ import 'package:guanjia/widgets/photo_view_gallery_page.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 const heroTag = 'ChatImageMessage';
+
 class ChatImageMessage extends StatelessWidget {
   const ChatImageMessage({
     super.key,
@@ -99,13 +100,17 @@ class ChatImageMessage extends StatelessWidget {
   }
 
   Widget buildLocalImage(ZIMKitMessageImageContent imageContent, Size size) {
-    return AppImage.file(
-      File(imageContent.fileLocalPath),
-      width: size.width,
-      height: size.height,
-      fit: BoxFit.cover,
-      heroTag: heroTag,
-    );
+    if(imageContent.fileLocalPath.isNotEmpty){
+      return AppImage.file(
+        File(imageContent.fileLocalPath),
+        width: size.width,
+        height: size.height,
+        fit: BoxFit.cover,
+        heroTag: heroTag,
+      );
+    }
+
+    return buildNetworkImage(imageContent, size);
   }
 
   Widget buildNetworkImage(ZIMKitMessageImageContent imageContent, Size size) {
@@ -120,14 +125,14 @@ class ChatImageMessage extends StatelessWidget {
     );
   }
 
-  Widget buildImagePlaceholder(ZIMKitMessageImageContent imageContent, Size size) {
+  Widget buildImagePlaceholder(
+      ZIMKitMessageImageContent imageContent, Size size) {
     return Container(
       width: size.width,
       height: size.height,
       color: Colors.white,
     );
   }
-
 
   void showPhotoView() async {
     final imageContent = message.imageContent;
@@ -146,9 +151,9 @@ class ChatImageMessage extends StatelessWidget {
   }
 }
 
-extension on ZIMKitMessageImageContent{
-  String get imageUrl{
-    if(largeImageDownloadUrl.startsWith('http')){
+extension on ZIMKitMessageImageContent {
+  String get imageUrl {
+    if (largeImageDownloadUrl.startsWith('http')) {
       return largeImageDownloadUrl;
     }
     return fileDownloadUrl;

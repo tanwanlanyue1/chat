@@ -23,7 +23,7 @@ class VideoItem extends MediaItem {
 abstract class MediaItem {
   final String uuid;
   final bool isVideo;
-  final String? local;
+  String? local;
   String? remote;
 
   MediaItem({

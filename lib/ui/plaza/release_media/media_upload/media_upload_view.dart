@@ -18,6 +18,8 @@ import 'package:video_compress/video_compress.dart';
 
 import 'media_item.dart';
 import 'media_list_tile.dart';
+import 'video_cover_picker.dart';
+import 'video_editor_page.dart';
 
 ///图片+视频上传控件
 class MediaUploadView extends StatefulWidget {
@@ -179,10 +181,10 @@ class _MediaUploadViewState extends State<MediaUploadView> {
       Get.bottomSheet(
         CommonBottomSheet(
           titles: ['选封面', '预览', '删除'],
-          onTap: (index) {
+          onTap: (index) async{
             switch (index) {
               case 0:
-                //TODO 选封面
+                chooseVideoCover(item);
                 break;
               case 1:
                 VideoPreviewPlayer.show(item);
@@ -247,6 +249,20 @@ class _MediaUploadViewState extends State<MediaUploadView> {
         source: ImageSource.gallery, maxDuration: const Duration(minutes: 5));
     if (result != null) {
       addVideo(result);
+    }
+  }
+
+  ///选择视频封面
+  void chooseVideoCover(VideoItem item) async{
+    final result = await VideoCoverPicker.open(filepath: item.local ?? '');
+    if(result != null){
+      item.cover.local = result;
+      item.cover.remote = null;
+      MediaUploader()
+          ..cancel(item.cover.uuid)
+          ..uploads([item]);
+      //刷新ui
+      setState((){});
     }
   }
 }

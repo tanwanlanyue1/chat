@@ -49,8 +49,8 @@ class _PrivatePhotoViewState extends State<PrivatePhotoView> {
                     item: item,
                     onItemTap: () {
                       //Get.toNamed(AppRoutes.privatePhotoDetail);
-                      if ((item.price ?? 0) > 0 && (item.isUnlock ?? false)) {
-                        controller.showPayDialog();
+                      if ((item.price ?? 0) > 0 && !(item.isUnlock ?? true)) {
+                        controller.showPayDialog(item);
                       } else {
                         if (item.isVideo ?? false) {
                           PrivateVideoView.show(

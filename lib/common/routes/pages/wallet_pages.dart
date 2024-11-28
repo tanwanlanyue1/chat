@@ -7,6 +7,7 @@ import 'package:guanjia/ui/wallet/recharge/wallet_recharge_page.dart';
 import 'package:guanjia/ui/wallet/wallet_page.dart';
 
 import '../../../ui/wallet/recharge/recharge_order/recharge_order_controller.dart';
+import '../../../ui/wallet/wallet_controller.dart';
 
 class WalletPages {
   static final routes = [
@@ -15,6 +16,12 @@ class WalletPages {
       page: () {
         return WalletPage();
       },
+      binding: BindingsBuilder.put(
+            () => WalletController(
+          moneyValue: Get.getArgs('moneyValue', 0),
+          tabIndex: Get.getArgs('tabIndex', 2),
+        ),
+      ),
     ),
     GetPage(
       name: AppRoutes.rechargeOrderPage,

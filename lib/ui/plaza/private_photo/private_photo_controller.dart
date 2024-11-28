@@ -8,9 +8,12 @@ import '../../../common/extension/get_extension.dart';
 import '../../../common/network/api/model/plaza/plaza_list_model.dart';
 import '../../../common/network/api/plaza_api.dart';
 import '../../../common/paging/default_paging_controller.dart';
+import '../../../common/routes/app_pages.dart';
 import '../../../common/service/service.dart';
 import '../../../generated/l10n.dart';
 import '../../../widgets/common_bottom_sheet.dart';
+import '../../../widgets/loading.dart';
+import '../../../widgets/payment_password_keyboard.dart';
 import '../dating_hall/dating_hall_controller.dart';
 import '../user_center/user_center_controller.dart';
 import 'private_photo_state.dart';
@@ -142,7 +145,45 @@ class PrivatePhotoController extends GetxController  with GetAutoDisposeMixin, U
     }
   }
 
-  void showPayDialog(){
-    PrivatePayDialog.show();
+  ///解锁
+  void _unlockPrivate(int postId) async {
+    final password = await PaymentPasswordKeyboard.show();
+    if (password == null) {
+      return;
+    }
+
+    Loading.show();
+    final response = await PlazaApi.unlockPrivate(
+      postId: postId,
+      password: password,
+    );
+    Loading.dismiss();
+    if (response.isSuccess) {
+      SS.login.fetchMyInfo();
+      EventBus().emit(kEventOpenVip);
+      Get.offNamed(
+        AppRoutes.orderPaymentResultPage,
+        arguments: {
+          "isSuccess": true,
+          "vipOrderNo": response.data,
+        },
+      );
+    } else {
+      response.showErrorMessage();
+    }
+  }
+
+  void showPayDialog(PlazaListModel item){
+    PrivatePayDialog.show(item ,  () {
+      if((item.price??0) > (SS.login.info?.balance ?? 0)){
+
+        Get.toNamed(AppRoutes.walletPage, arguments: {
+          'tabIndex': 0,
+          'moneyValue': item.price,
+        });
+        return;
+      }
+      _unlockPrivate(item.postId!);
+    });
   }
 }

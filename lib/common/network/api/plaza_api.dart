@@ -225,4 +225,24 @@ class PlazaApi{
       },
     );
   }
+
+  /// 解锁
+  /// postId:私房照id
+  /// password:支付密码
+  static Future<ApiResponse> unlockPrivate({
+    int? postId,
+    String? password,
+  }) {
+    return HttpClient.post(
+      '/api/community/unlockPrivate',
+      data: {
+
+        "postId":postId,
+        "password":password,
+      },
+      dataConverter: (data) => data,
+    );
+  }
+
+
 }

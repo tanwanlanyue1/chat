@@ -140,7 +140,7 @@ class _PrivatePhotoGalleryViewState extends State<PrivatePhotoGalleryView> {
           ),
           Positioned(
               bottom: MediaQuery.of(context).padding.bottom,
-              height: 80.rpx,
+              height: 120.rpx,
               width: MediaQuery.of(context).size.width,
               child: BottomReview(
                 user: false,

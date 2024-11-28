@@ -1,23 +1,35 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/widgets/widgets.dart';
 
+import '../../../../common/app_text_style.dart';
+import '../../../../common/network/api/model/plaza/plaza_list_model.dart';
 import '../../../../common/service/service.dart';
 import '../../../../widgets/app_image.dart';
+import '../../../../widgets/button.dart';
 import '../../../../widgets/user_avatar.dart';
 import '../../../chat/widgets/chat_avatar.dart';
 
-class PrivatePayDialog  extends StatelessWidget {
+class PrivatePayDialog extends StatelessWidget {
+  final VoidCallback? onItemTap; // 定义回调函数
+  const PrivatePayDialog({
+    super.key,
+    required this.item, this.onItemTap,
+  });
 
-
-  const PrivatePayDialog._({super.key,});
+  final PlazaListModel item;
 
   ///- true 确认发起， false取消
-  static Future<bool> show() async{
+  static Future<bool> show(PlazaListModel item , VoidCallback? onItemTap) async {
     final ret = await Get.dialog<bool>(
-      PrivatePayDialog._(
+      PrivatePayDialog(
+        item: item,
+        onItemTap: onItemTap,
       ),
     );
     return ret == true;
@@ -47,32 +59,85 @@ class PrivatePayDialog  extends StatelessWidget {
               ),
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container( width: 24.rpx,
-                ),
-                Expanded(
-                  child: Column(
+                Stack(
+                    alignment: Alignment.center,
                     children: [
-                      Row(
-                        children: [
-                          SizedBox(width: 10.rpx,),
-                          Text(
-                            '小明',
-                            style: TextStyle(
-                              fontSize: 16.rpx,
-                              fontWeight: FontWeight.w600,
-                            )
-                          )
-                        ]
-                      )
-                    ]
+                  Container(
+                    margin: EdgeInsets.all(12.rpx),
+                    height: 200.rpx,
+                    width: 140.rpx,
+                    color: Colors.black,
+                    child: AppImage.network((item.isVideo ?? false)
+                        ? item.videoCover ?? ''
+                        : getFirstImage(item.images) ?? ''),
                   ),
-                ),
+                  Positioned(
+                    bottom: 22,
+                    right: 22,
+                    child: AppImage.asset("assets/images/plaza/attention.png"),
+                    height: 18.rpx,
+                    width: 18.rpx,
+                  ),
+                  Positioned(
+                    top: 22,
+                    right: 22,
+                    child: Text((item.isVideo ?? false) ? "视频" : "图片",
+                        style: AppTextStyle.fs14.copyWith(color: Colors.white)),
+                  ),
+                  Positioned(
+                      top: 22,
+                      left: 22,
+                      child: Text(((item.price ?? 0) > 0) ? "收费" : "免费",
+                          style:
+                              AppTextStyle.fs14.copyWith(color: Colors.white))),
+                ]),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                  Text('当前内容付费观看',
+                      style: TextStyle(
+                        fontSize: 16.rpx,
+                        fontWeight: FontWeight.w600,
+                      )),
+                    SizedBox(height: 10.rpx),
+                    Text('解锁费用${item.price}',
+                        style: TextStyle(
+                          fontSize: 16.rpx,
+                          fontWeight: FontWeight.w600,
+                        )),
+                    SizedBox(height: 80.rpx),
+                    Button.stadium(
+                      onPressed: onItemTap,
+                      height: 50.rpx,
+                      width: 140.rpx,
+                      child: Text('立即解锁'),
+                    )
+                ],)
+
               ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  String getFirstImage(String? images) {
+    if (images == null || images.isEmpty) {
+      return '';
+    }
+    try {
+      List<dynamic> imageList = jsonDecode(images);
+      if (imageList.isNotEmpty) {
+        return imageList[0];
+      }
+    } catch (e) {
+      // 处理解析错误
+      print('JSON 解析错误: $e');
+    }
+    return '';
   }
 }

@@ -10,6 +10,8 @@ class PrivatePhotoState {
     S.current.myFocusPhoto,
   ];
   final communityIndex = 0.obs;
+  int currentPage = 0;
+  var selectIndex =-1;
   PrivatePhotoState() {
     ///Initialize variables
   }

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/ui/plaza/private_photo/widget/private_pay_dialog.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -8,9 +9,12 @@ import '../../../common/extension/get_extension.dart';
 import '../../../common/network/api/model/plaza/plaza_list_model.dart';
 import '../../../common/network/api/plaza_api.dart';
 import '../../../common/paging/default_paging_controller.dart';
+import '../../../common/routes/app_pages.dart';
 import '../../../common/service/service.dart';
 import '../../../generated/l10n.dart';
 import '../../../widgets/common_bottom_sheet.dart';
+import '../../../widgets/loading.dart';
+import '../../../widgets/payment_password_keyboard.dart';
 import '../dating_hall/dating_hall_controller.dart';
 import '../user_center/user_center_controller.dart';
 import 'private_photo_state.dart';
@@ -36,9 +40,11 @@ class PrivatePhotoController extends GetxController  with GetAutoDisposeMixin, U
   /// 获取列表数据
   /// page: 第几页
   void _fetchPage(int page) async {
+    state.currentPage = page;
     if(page == 1){
       pagingController.itemList?.clear();
     }
+    AppLogger.e("position${state.communityIndex.value}");
     if(state.communityIndex.value == 1){
       ///按时间排列
       getCommunityList(page: page,sort: 0);
@@ -85,6 +91,7 @@ class PrivatePhotoController extends GetxController  with GetAutoDisposeMixin, U
       style: tag,
       currentPage: page,
       type: 2,
+      sort: sort,
       pageSize: pagingController.pageSize,
     );
     if (response.isSuccess) {
@@ -142,7 +149,54 @@ class PrivatePhotoController extends GetxController  with GetAutoDisposeMixin, U
     }
   }
 
-  void showPayDialog(){
-    PrivatePayDialog.show();
+  ///解锁
+  void _unlockPrivate(int postId) async {
+    final password = await PaymentPasswordKeyboard.show();
+    if (password == null) {
+      return;
+    }
+
+    Loading.show();
+    final response = await PlazaApi.unlockPrivate(
+      postId: postId,
+      password: password,
+    );
+    Loading.dismiss();
+    if (response.isSuccess) {
+      SS.login.fetchMyInfo();
+      EventBus().emit(kEventOpenVip);
+      if(state.communityIndex.value == 1){
+        ///按时间排列
+        getCommunityList(page: state.currentPage,sort: 0);
+      }else if(state.communityIndex.value == 2){
+        myFollowListPage(state.currentPage);
+      }else{
+        ///按点赞数排列
+        getCommunityList(page: state.currentPage , sort: 1);
+      }
+      Get.offNamed(
+        AppRoutes.orderPaymentResultPage,
+        arguments: {
+          "isSuccess": true,
+          "vipOrderNo": response.data,
+        },
+      );
+    } else {
+      response.showErrorMessage();
+    }
+  }
+
+  void showPayDialog(PlazaListModel item){
+    PrivatePayDialog.show(item ,  () {
+      if((item.price??0) > (SS.login.info?.balance ?? 0)){
+
+        Get.toNamed(AppRoutes.walletPage, arguments: {
+          'tabIndex': 0,
+          'moneyValue': item.price,
+        });
+        return;
+      }
+      _unlockPrivate(item.postId!);
+    });
   }
 }

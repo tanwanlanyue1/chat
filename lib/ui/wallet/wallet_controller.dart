@@ -9,6 +9,13 @@ import 'wallet_state.dart';
 class WalletController extends GetxController
     with GetSingleTickerProviderStateMixin {
   final WalletState state = WalletState();
+  WalletController({
+     this.moneyValue,
+     this.tabIndex,
+  });
+   double? moneyValue;
+   int? tabIndex;
+
   late final tabController = TabController(
     length: WalletOperationType.values.length,
     vsync: this,
@@ -21,6 +28,9 @@ class WalletController extends GetxController
     super.onInit();
     //刷新余额
     SS.login.fetchMyInfo();
+    if (tabIndex != null) {
+      tabController.animateTo(tabIndex ??2);
+    }
   }
 
   void onTapOrder() {

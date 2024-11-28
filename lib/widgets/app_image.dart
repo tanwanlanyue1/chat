@@ -64,8 +64,11 @@ class AppImage extends StatelessWidget {
     BoxFit fit = BoxFit.fill,
     AlignmentGeometry alignment = Alignment.center,
     super.key,
-  }) : child = Image.file(
-          file,
+  }) : child = Image(
+          image: ResizeImage(
+            FileImage(file),
+            width: _toInt(length ?? width, Get.pixelRatio),
+          ),
           width: length ?? width,
           height: length ?? height,
           color: color,

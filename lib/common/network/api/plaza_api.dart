@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:guanjia/common/network/httpclient/http_client.dart';
 import 'package:guanjia/common/network/api/api.dart';
 
@@ -6,8 +8,10 @@ class PlazaApi{
   const PlazaApi._();
 
   /// 获取广场列表
-  /// location：坐标 经纬度用英文逗号隔开（地图传递才有效）
-  /// distance 	距离 单位km gender 性别 1：男 2：女 minAge最小年龄 style 风格
+  ///- location：坐标 经纬度用英文逗号隔开（地图传递才有效）
+  ///- distance 	距离 单位km gender 性别 1：男 2：女 minAge最小年龄 style 风格
+  ///- type 类型： 1 帖子 2私房照
+  ///- sort 排序方式 0发布时间倒叙 1点赞数倒叙 默认0
   static Future<ApiResponse<List<PlazaListModel>>> getCommunityList({
     String? location,
     int? distance,
@@ -17,6 +21,8 @@ class PlazaApi{
     String? style,
     int currentPage = 1,
     int? pageSize = 10,
+    int type = 1,
+    int sort = 0,
 }) {
     return HttpClient.get(
       '/api/community/list',
@@ -29,6 +35,8 @@ class PlazaApi{
         "style": style,
         'page': currentPage,
         'size': pageSize,
+        'type': type,
+        if(type == 2)'sort': sort,
       },
       dataConverter: (data) {
         if(data is List) {
@@ -135,19 +143,30 @@ class PlazaApi{
     );
   }
 
-  /// 发布帖子
+  /// 发布帖子、私房照
+  /// - type 类型： 1 帖子 2私房照
+  /// - images 图片数组
+  /// - video 视频，只能传一个
+  /// - videoCover 视频封面
+  /// - price 私房照解锁价格
   static Future<ApiResponse> addCommunity({
+    int type = 1,
     required String content,
-    required String images,
-    String? video
+    List<String>? images,
+    String? video,
+    String? videoCover,
+    double? price,
 }) {
     return HttpClient.post(
       '/api/community/add',
       data: {
         // "title":title,
+        "type":type,
         "content":content,
-        "images":images,
-        "video":video,
+        if(images != null) "images":jsonEncode(images),
+        if(video != null ) "video":video,
+        if(videoCover != null ) "videoCover":videoCover,
+        if(price != null ) "price":price,
       },
       dataConverter: (data) => data,
     );

@@ -5,7 +5,6 @@ import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/permissions_utils.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/ui/chat/custom/custom_message_type.dart';
 import 'package:guanjia/ui/chat/custom/message_location_content.dart';
 import 'package:guanjia/ui/chat/message_list/message_order_part.dart';
 import 'package:guanjia/ui/chat/utils/chat_manager.dart';
@@ -15,7 +14,6 @@ import 'package:guanjia/widgets/loading.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'message_list_controller.dart';
 import 'widgets/chat_feature_panel.dart';

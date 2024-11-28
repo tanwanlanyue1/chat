@@ -293,6 +293,7 @@ class UserApi {
     required String filePath,
     String? fileName,
     final void Function(int count, int total)? onSendProgress,
+    CancelToken? cancelToken,
   }) async {
     final fileData = await MultipartFile.fromFile(
       filePath,
@@ -307,6 +308,7 @@ class UserApi {
         },
       ),
       onSendProgress: onSendProgress,
+        cancelToken: cancelToken,
     );
   }
 

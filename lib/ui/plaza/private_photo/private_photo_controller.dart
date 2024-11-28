@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/ui/plaza/private_photo/widget/private_pay_dialog.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -39,9 +40,11 @@ class PrivatePhotoController extends GetxController  with GetAutoDisposeMixin, U
   /// 获取列表数据
   /// page: 第几页
   void _fetchPage(int page) async {
+    state.currentPage = page;
     if(page == 1){
       pagingController.itemList?.clear();
     }
+    AppLogger.e("position${state.communityIndex.value}");
     if(state.communityIndex.value == 1){
       ///按时间排列
       getCommunityList(page: page,sort: 0);
@@ -88,6 +91,7 @@ class PrivatePhotoController extends GetxController  with GetAutoDisposeMixin, U
       style: tag,
       currentPage: page,
       type: 2,
+      sort: sort,
       pageSize: pagingController.pageSize,
     );
     if (response.isSuccess) {
@@ -161,6 +165,15 @@ class PrivatePhotoController extends GetxController  with GetAutoDisposeMixin, U
     if (response.isSuccess) {
       SS.login.fetchMyInfo();
       EventBus().emit(kEventOpenVip);
+      if(state.communityIndex.value == 1){
+        ///按时间排列
+        getCommunityList(page: state.currentPage,sort: 0);
+      }else if(state.communityIndex.value == 2){
+        myFollowListPage(state.currentPage);
+      }else{
+        ///按点赞数排列
+        getCommunityList(page: state.currentPage , sort: 1);
+      }
       Get.offNamed(
         AppRoutes.orderPaymentResultPage,
         arguments: {

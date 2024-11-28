@@ -14,6 +14,9 @@ class PlazaState {
     {
       "name": S.current.community,
       "img": "assets/images/plaza/community_back.png",
+    },{
+      "name": S.current.privatePhoto,
+      "img": "assets/images/plaza/community_back.png",
     },
   ];
   final tabIndex = 0.obs;

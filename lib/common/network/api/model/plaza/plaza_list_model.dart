@@ -50,7 +50,17 @@ class PlazaListModel {
     // 职业 1在职人员 2学生
     this.occupation,
     //广场-帖子列表（根评论）
-    this.commentList,});
+    this.commentList,
+    //私房照价格
+    this.price,
+    //是否是视频
+    this.isVideo,
+    // 是否解锁
+    this.isUnlock,
+    //视频封面
+    this.videoCover,
+
+  });
 
   PlazaListModel.fromJson(dynamic json) {
     postId = json['postId'];
@@ -75,6 +85,10 @@ class PlazaListModel {
     type = json['type'];
     nameplate = json['nameplate'];
     occupation = json['occupation'];
+    price = json['price'];
+    videoCover = json['videoCover'];
+    isVideo = json['isVideo'];
+    isUnlock = json['isUnlock'];
     if (json['styleList'] != null) {
       styleList = [];
       json['styleList'].forEach((v) {
@@ -123,6 +137,10 @@ class PlazaListModel {
   int? age;
   int? type;
   int? occupation;
+  double? price;
+  bool? isVideo;
+  bool? isUnlock;
+  String? videoCover;
   String? nameplate;
   List<LabelModel>? styleList;
   List<CommentListModel>? commentList;
@@ -147,6 +165,10 @@ class PlazaListModel {
     int? age,
     int? type,
     int? occupation,
+    double? price,
+    bool? isVideo,
+    bool? isUnlock,
+    String? videoCover,
     String? nameplate,
     List<LabelModel>? styleList,
     List<CommentListModel>? commentList,
@@ -171,6 +193,10 @@ class PlazaListModel {
     age: age ?? this.age,
     type: type ?? this.type,
     occupation: occupation ?? this.occupation,
+    price: price ?? this.price,
+    videoCover: videoCover ?? this.videoCover,
+    isVideo: isVideo ?? this.isVideo,
+    isUnlock: isUnlock ?? this.isUnlock,
     nameplate: nameplate ?? this.nameplate,
     styleList: styleList ?? this.styleList,
     commentList: commentList ?? this.commentList,
@@ -198,6 +224,10 @@ class PlazaListModel {
     map['age'] = age;
     map['type'] = type;
     map['occupation'] = occupation;
+    map['price'] = price;
+    map['videoCover'] = videoCover;
+    map['isVideo'] = isVideo;
+    map['isUnlock'] = isUnlock;
     map['nameplate'] = nameplate;
     if (map['styleList'] != null) {
       map['styleList'] = styleList?.map((v) => v.toJson()).toList();

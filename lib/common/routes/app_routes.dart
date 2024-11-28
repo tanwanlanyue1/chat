@@ -190,4 +190,7 @@ abstract class AppRoutes {
 
   ///转账
   static const transferMoneyPage = '$auth/TransferMoneyPage';
+
+  ///私人照详情
+  static const privatePhotoDetail = '$auth/privatePhotoDetailPage';
 }

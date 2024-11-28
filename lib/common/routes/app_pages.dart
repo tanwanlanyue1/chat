@@ -12,6 +12,7 @@ import 'package:guanjia/ui/discover/friend_date/release_invitation/release_invit
 import 'package:guanjia/ui/home/home_page.dart';
 import 'package:guanjia/ui/plaza/all_comments/all_comments_controller.dart';
 import 'package:guanjia/ui/plaza/all_comments/all_comments_page.dart';
+import 'package:guanjia/ui/plaza/private_photo/private_photo_detail/private_photo_detail_page.dart';
 import 'package:guanjia/ui/plaza/release_dynamic/release_dynamic_controller.dart';
 import 'package:guanjia/ui/plaza/release_dynamic/release_dynamic_page.dart';
 import 'package:guanjia/ui/plaza/release_media/release_media_page.dart';
@@ -85,6 +86,11 @@ class AppPages {
     GetPage(
       name: AppRoutes.releaseInvitation,
       page: () => ReleaseInvitationPage(),
+    ),
+
+    GetPage(
+      name: AppRoutes.privatePhotoDetail,
+      page: () => PrivatePhotoDetailPage(),
     ),
     GetPage(
       name: AppRoutes.speedDatingPage,

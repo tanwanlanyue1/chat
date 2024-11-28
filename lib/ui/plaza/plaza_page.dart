@@ -4,6 +4,7 @@ import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/plaza/fortune_square/fortune_square_view.dart';
+import 'package:guanjia/ui/plaza/private_photo/private_photo_view.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/system_ui.dart';
 
@@ -49,6 +50,7 @@ class _PlazaPageState extends State<PlazaPage>
                       DatingHallView(),
                       NearbyHallView(),
                       FortuneSquareView(),
+                      PrivatePhotoView(),
                     ]),
               )
             ],

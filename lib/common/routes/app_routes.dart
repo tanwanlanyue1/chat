@@ -16,6 +16,9 @@ abstract class AppRoutes {
   ///发布动态
   static const releaseDynamicPage = '$auth/releaseDynamicPage';
 
+  ///发布私房照
+  static const releaseMediaPage = '$auth/ReleaseMediaPage';
+
   ///分类广场/话题广场
   static const classificationSquarePage = '$auth/classificationSquarePage';
 

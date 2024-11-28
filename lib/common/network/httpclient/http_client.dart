@@ -135,14 +135,17 @@ class HttpClient {
     final FormData? data,
     final DataConverter<T>? dataConverter,
     final void Function(int count, int total)? onSendProgress,
+    final CancelToken? cancelToken,
   }) async {
     try {
       final response = await _instance.dio.post(
         url,
         data: data,
         onSendProgress: onSendProgress,
+        cancelToken: cancelToken,
       );
-      return ApiResponse.fromJson<T>(response.data, dataConverter: dataConverter);
+      return ApiResponse.fromJson<T>(response.data,
+          dataConverter: dataConverter);
     } catch (ex) {
       return _errorResponse<T>(ex, _instance.locale);
     }
@@ -192,7 +195,7 @@ class HttpClient {
   static ApiResponse<T> _errorResponse<T>(dynamic exception, Locale? locale) {
     // AppLogger.e('_errorResponse=$exception');
 
-    if(exception is DioError || exception is DioException){
+    if (exception is DioError || exception is DioException) {
       final response = exception.response;
       final sb = StringBuffer();
       sb.writeln('type=${exception.type}');
@@ -221,8 +224,8 @@ class HttpClient {
         case DioExceptionType.badResponse:
         case DioExceptionType.connectionError:
         case DioExceptionType.badCertificate:
-          appException =
-              BadRequestException(-1, isEnglish ? 'Request failed' : S.current.requestFail);
+          appException = BadRequestException(
+              -1, isEnglish ? 'Request failed' : S.current.requestFail);
           break;
         case DioExceptionType.unknown:
         case DioExceptionType.cancel:
@@ -234,7 +237,8 @@ class HttpClient {
     return ApiResponse<T>(
       code: -1,
       exception: appException ??
-          AppException(-1, isEnglish ? 'Unknown error' : S.current.unknownError),
+          AppException(
+              -1, isEnglish ? 'Unknown error' : S.current.unknownError),
     );
   }
 }

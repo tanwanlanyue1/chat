@@ -37,7 +37,7 @@ class ReleaseDynamicController extends GetxController with GetSingleTickerProvid
     }else{
       final response = await PlazaApi.addCommunity(
           content: contentController.text,
-          images: jsonEncode(state.imgList)
+          images: state.imgList
       );
       if (response.isSuccess) {
         EventBus().emit(kEventInvitationSuccess);

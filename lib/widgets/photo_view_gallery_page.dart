@@ -11,24 +11,29 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 
 class PhotoViewGalleryPage extends StatefulWidget {
-  final List images;
+  final List<String> images;
   final int index;
-  final String heroTag;
+  final String? heroTag;
 
   const PhotoViewGalleryPage({
     super.key,
     required this.images,
     required this.index,
-    required this.heroTag,
+    this.heroTag,
   });
 
   @override
   _PhotoViewGalleryPageState createState() => _PhotoViewGalleryPageState();
 
-  static void show(BuildContext context, PhotoViewGalleryPage galleryPage) {
-    Navigator.of(context).push(
+  static void show(
+      {required List<String> images, int index = 0, String? heroTag}) {
+    Navigator.of(Get.context!).push(
       FadeRoute(
-        page: galleryPage,
+        page: PhotoViewGalleryPage(
+          images: images,
+          index: index,
+          heroTag: heroTag,
+        ),
       ),
     );
   }
@@ -61,13 +66,8 @@ class _PhotoViewGalleryPageState extends State<PhotoViewGalleryPage> {
               child: PhotoViewGallery.builder(
                 scrollPhysics: const AlwaysScrollableScrollPhysics(),
                 builder: (BuildContext context, int index) {
-                  final item = widget.images[index] as String;
+                  final item = widget.images[index];
                   final isNetworkUrl = item.startsWith('http');
-                  print('origin: $item');
-                  print('resize: ${item.getResizeImageUrl(
-                    width: Get.width,
-                    height: Get.height,
-                  )}');
                   return PhotoViewGalleryPageOptions(
                     minScale: PhotoViewComputedScale.contained,
                     imageProvider: isNetworkUrl
@@ -78,9 +78,7 @@ class _PhotoViewGalleryPageState extends State<PhotoViewGalleryPage> {
                             ),
                           )
                         : FileImage(File(item)) as ImageProvider,
-                    heroAttributes: (widget.heroTag.isNotEmpty)
-                        ? PhotoViewHeroAttributes(tag: widget.heroTag)
-                        : null,
+                    heroAttributes: widget.heroTag != null ? PhotoViewHeroAttributes(tag: '${widget.heroTag}$item') : null,
                   );
                 },
                 gaplessPlayback: true,

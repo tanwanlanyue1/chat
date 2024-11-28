@@ -55,6 +55,7 @@ class _FortuneSquareViewState extends State<FortuneSquareView> with AutomaticKee
                             return PlazaCard(
                               item: item,
                               plazaIndex: state.communityIndex.value,
+                              heroTag: runtimeType.toString(),
                               more: () {
                                 controller.selectMore(item);
                               },

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
@@ -13,15 +12,21 @@ import 'package:guanjia/widgets/widgets.dart';
 import 'media_item.dart';
 
 class MediaListTile extends StatefulWidget {
+  static const heroTag = 'MediaListTile';
+
   final MediaItem item;
   final double itemSize;
+  final VoidCallback? onTap;
   final VoidCallback? onTapDelete;
+  final VoidCallback? onTapEdit;
 
   const MediaListTile({
     super.key,
     required this.item,
     required this.itemSize,
+    this.onTap,
     this.onTapDelete,
+    this.onTapEdit,
   });
 
   @override
@@ -61,7 +66,7 @@ class _MediaListTileState extends State<MediaListTile> with AutoDisposeMixin {
   Widget build(BuildContext context) {
     final progress = this.progress;
     return GestureDetector(
-      onTap: () {},
+      onTap: widget.onTap,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -102,6 +107,20 @@ class _MediaListTileState extends State<MediaListTile> with AutoDisposeMixin {
     );
   }
 
+  double get progressValue {
+    final value = progress?.progress ?? 0;
+
+    //视频上传进度+封面上传进度
+    if (item.isVideo) {
+      final coverUuid = (item as VideoItem).cover.uuid;
+      final coverProgress =
+          MediaUploader().getProgress(coverUuid)?.progress ?? 0;
+      return (value + coverProgress) / 2;
+    }
+
+    return value;
+  }
+
   Widget buildSuccessIcon() {
     if (item.isVideo) {
       return Icon(
@@ -124,7 +143,7 @@ class _MediaListTileState extends State<MediaListTile> with AutoDisposeMixin {
       child: Button(
         height: 32.rpx,
         borderRadius: BorderRadius.zero,
-        onPressed: () {},
+        onPressed: widget.onTapEdit,
         padding: FEdgeInsets(horizontal: 8.rpx),
         child: Text('编辑', style: AppTextStyle.fs12),
       ),
@@ -144,12 +163,14 @@ class _MediaListTileState extends State<MediaListTile> with AutoDisposeMixin {
         width: size,
         height: size,
         fit: BoxFit.cover,
+        heroTag: MediaListTile.heroTag,
       );
     }
     return AppImage.network(
       item.remote ?? '',
       length: size,
       fit: BoxFit.cover,
+      heroTag: MediaListTile.heroTag,
     );
   }
 }

@@ -39,6 +39,7 @@ class UploadImage extends StatefulWidget {
 }
 
 class _UploadImageState extends State<UploadImage> {
+  static const heroTag = 'UploadImage';
   List<String> _imagesList = []; // 图片数组
   final ImagePicker picker = ImagePicker();
   final directory = Directory.systemTemp;
@@ -167,6 +168,7 @@ class _UploadImageState extends State<UploadImage> {
                     _imagesList[index],
                     width: 80.rpx,
                     height: 80.rpx,
+                    heroTag: heroTag,
                   ),
                 ),
               ),
@@ -191,12 +193,10 @@ class _UploadImageState extends State<UploadImage> {
                 child: child,
                 onTap: () async {
                   PhotoViewGalleryPage.show(
-                      context,
-                      PhotoViewGalleryPage(
-                        images: _imagesList,
-                        index: index,
-                        heroTag: '',
-                      ));
+                    images: _imagesList,
+                    index: index,
+                    heroTag: heroTag,
+                  );
                 },
               ),
               if (widget.closeIcon)

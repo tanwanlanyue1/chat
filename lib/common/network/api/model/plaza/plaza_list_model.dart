@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:guanjia/common/utils/app_logger.dart';
+
 import '../open/app_config_model.dart';
 import 'comment_list_model.dart';
 
@@ -87,7 +91,21 @@ class PlazaListModel {
   int? postId;
   String? title;
   String? content;
-  dynamic images;
+  String? images;
+  List<String> get imageList{
+    if(images?.isNotEmpty == true){
+      try{
+        final json = jsonDecode(images ?? '');
+        if(json is List){
+          return json.map((e) => e.toString()).toList();
+        }
+      }catch(ex){
+        AppLogger.w(ex);
+      }
+    }
+    return [];
+  }
+
   String? video;
   int? viewNum;
   int? commentNum;
@@ -111,7 +129,7 @@ class PlazaListModel {
   PlazaListModel copyWith({  int? postId,
     String? title,
     String? content,
-    dynamic images,
+    String? images,
     String? video,
     int? viewNum,
     int? commentNum,

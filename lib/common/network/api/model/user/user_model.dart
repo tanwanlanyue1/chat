@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:guanjia/common/app_color.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 
 import '../open/app_config_model.dart';
 
@@ -151,7 +154,21 @@ class UserModel {
   double serviceCharge; // 服务费
   String nickname; // 昵称
   String? signature; // 个性签名
-  String? images; // 个人图片 "1, 2, 4" 逗号隔开
+  String? images; // 个人图片json数组
+  List<String> get imageList{
+    if(images?.isNotEmpty == true){
+      try{
+        final json = jsonDecode(images ?? '');
+        if(json is List){
+          return json.map((e) => e.toString()).toList();
+        }
+      }catch(ex){
+        AppLogger.w(ex);
+      }
+    }
+    return [];
+  }
+
   UserGender gender; // 用户性别 1：男 2：女
   String? zodiac; // 生肖
   String? star; // 星座

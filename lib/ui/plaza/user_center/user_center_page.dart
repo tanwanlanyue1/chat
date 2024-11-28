@@ -114,6 +114,7 @@ class UserCenterPage extends StatelessWidget {
                                         PlazaCard(
                                           user: true,
                                           item: item,
+                                          heroTag: runtimeType.toString(),
                                           margin: EdgeInsets.zero,
                                           isLike: (like){
                                             controller.getCommentLike(like, index);
@@ -196,24 +197,25 @@ class UserCenterPage extends StatelessWidget {
   ///背景
   Widget backImage(UserCenterController controller){
     final state = controller.state;
+    final imageList = state.authorInfo.imageList;
     return SizedBox(
       height: 220.rpx,
-      child: state.authorInfo.images != null && jsonDecode(state.authorInfo.images!).isNotEmpty?
+      child: imageList.isNotEmpty ?
       Swiper(
-        autoplay: jsonDecode(state.authorInfo.images!).length > 1 ? true : false,
+        autoplay: imageList.length > 1 ? true : false,
         controller: controller.swiper,
         index: state.swiperIndex,
         itemBuilder: (BuildContext context, int index) {
           return AppImage.network(
-            jsonDecode(state.authorInfo.images!)[index],
+            imageList[index],
             width: Get.width,
             height: 220.rpx,
             fit: BoxFit.cover,
             align: Alignment.topCenter,
           );
         },
-        itemCount: jsonDecode(state.authorInfo.images!).length,
-        pagination: jsonDecode(state.authorInfo.images!).length > 1 ?
+        itemCount: imageList.length,
+        pagination: imageList.length > 1 ?
         SwiperPagination(
             alignment:  Alignment.bottomRight,
             margin: EdgeInsets.only(bottom: 16.rpx,right: 16.rpx),
@@ -226,13 +228,7 @@ class UserCenterPage extends StatelessWidget {
             )
         ):null,
         onTap: (i){
-          PhotoViewGalleryPage.show(
-              Get.context!,
-              PhotoViewGalleryPage(
-                images: jsonDecode(state.authorInfo.images!),
-                index: i,
-                heroTag: '',
-              ));
+          PhotoViewGalleryPage.show(images: imageList, index: i);
         },
       ):
       GestureDetector(

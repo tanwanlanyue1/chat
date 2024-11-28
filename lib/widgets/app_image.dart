@@ -14,18 +14,6 @@ import 'package:svgaplayer_flutter/player.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
-double getDefaultIconSize({double? width, double? height}) {
-  final defaultSize = 50.rpx;
-  final size = min(width ?? 0, height ?? 0) * 0.2;
-  if (size == 0) {
-    return defaultSize;
-  }
-  if (size > defaultSize) {
-    return defaultSize;
-  }
-  return size;
-}
-
 ///图片显示控件
 class AppImage extends StatelessWidget {
   final Widget child;
@@ -63,18 +51,22 @@ class AppImage extends StatelessWidget {
     Animation<double>? opacity,
     BoxFit fit = BoxFit.fill,
     AlignmentGeometry alignment = Alignment.center,
+    final String? heroTag, //HeroTag前缀
     super.key,
-  }) : child = Image(
-          image: ResizeImage(
-            FileImage(file),
-            width: _toInt(length ?? width, Get.pixelRatio),
+  }) : child = _wrapHero(
+          tag: heroTag != null ? heroTag + file.path : null,
+          child: Image(
+            image: ResizeImage(
+              FileImage(file),
+              width: _toInt(length ?? width, Get.pixelRatio),
+            ),
+            width: length ?? width,
+            height: length ?? height,
+            color: color,
+            opacity: opacity,
+            fit: fit,
+            alignment: alignment,
           ),
-          width: length ?? width,
-          height: length ?? height,
-          color: color,
-          opacity: opacity,
-          fit: fit,
-          alignment: alignment,
         );
 
   static int? _toInt(double? value, double scale) {
@@ -103,82 +95,86 @@ class AppImage extends StatelessWidget {
     Alignment align = Alignment.center,
     double opacity = 1,
     Duration fadeDuration = const Duration(milliseconds: 300),
+    final String? heroTag, //HeroTag前缀
     super.key,
-  }) : child = CachedNetworkImage(
-          memCacheWidth:
-              _toInt(memCacheWidth ?? length ?? width, Get.pixelRatio),
-          memCacheHeight:
-              _toInt(memCacheHeight ?? length ?? height, Get.pixelRatio),
-          width: length ?? width,
-          height: length ?? height,
-          imageUrl: resizeImage
-              ? url.getResizeImageUrl(
-                  width: memCacheWidth ?? length ?? width,
-                  height: memCacheHeight ?? length ?? height)
-              : url,
-          alignment: align,
-          fadeInDuration: fadeDuration,
-          fadeOutDuration: fadeDuration,
-          imageBuilder: (context, imageProvider) {
-            return Container(
-              width: length ?? width,
-              height: length ?? height,
-              decoration: BoxDecoration(
-                borderRadius: borderRadius,
-                border: border,
-                shape: shape,
-                boxShadow: boxShadow,
-                image: DecorationImage(
-                  alignment: align,
-                  image: imageProvider,
-                  fit: fit,
-                  opacity: opacity,
+  }) : child = _wrapHero(
+          tag: heroTag != null ? heroTag + url : null,
+          child: CachedNetworkImage(
+            memCacheWidth:
+                _toInt(memCacheWidth ?? length ?? width, Get.pixelRatio),
+            memCacheHeight:
+                _toInt(memCacheHeight ?? length ?? height, Get.pixelRatio),
+            width: length ?? width,
+            height: length ?? height,
+            imageUrl: resizeImage
+                ? url.getResizeImageUrl(
+                    width: memCacheWidth ?? length ?? width,
+                    height: memCacheHeight ?? length ?? height)
+                : url,
+            alignment: align,
+            fadeInDuration: fadeDuration,
+            fadeOutDuration: fadeDuration,
+            imageBuilder: (context, imageProvider) {
+              return Container(
+                width: length ?? width,
+                height: length ?? height,
+                decoration: BoxDecoration(
+                  borderRadius: borderRadius,
+                  border: border,
+                  shape: shape,
+                  boxShadow: boxShadow,
+                  image: DecorationImage(
+                    alignment: align,
+                    image: imageProvider,
+                    fit: fit,
+                    opacity: opacity,
+                  ),
                 ),
-              ),
-            );
-          },
-          placeholder: placeholder != null
-              ? (context, url) => placeholder
-              : (context, url) => Container(
-                    width: length ?? width,
-                    height: length ?? height,
-                    alignment: Alignment.center,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      borderRadius: borderRadius,
-                      border: border,
-                      shape: shape,
-                      color: AppColor.background,
-                    ),
-                    child: AppImage.asset(
-                      'assets/images/common/default_img.png',
-                      size: getDefaultIconSize(
-                        width: length ?? width,
-                        height: length ?? height,
+              );
+            },
+            placeholder: placeholder != null
+                ? (context, url) => placeholder
+                : (context, url) => Container(
+                      width: length ?? width,
+                      height: length ?? height,
+                      alignment: Alignment.center,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        borderRadius: borderRadius,
+                        border: border,
+                        shape: shape,
+                        color: AppColor.background,
+                      ),
+                      child: AppImage.asset(
+                        'assets/images/common/default_img.png',
+                        size: getDefaultIconSize(
+                          width: length ?? width,
+                          height: length ?? height,
+                        ),
                       ),
                     ),
-                  ),
-          errorWidget: placeholder != null
-              ? (context, url, obj) => placeholder
-              : (context, url, obj) => Container(
-                    width: length ?? width,
-                    height: length ?? height,
-                    alignment: Alignment.center,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      borderRadius: borderRadius,
-                      border: border,
-                      shape: shape,
-                      color: AppColor.background,
-                    ),
-                    child: AppImage.asset(
-                      'assets/images/common/default_img.png',
-                      size: getDefaultIconSize(
-                        width: length ?? width,
-                        height: length ?? height,
+            errorWidget: placeholder != null
+                ? (context, url, obj) => placeholder
+                : (context, url, obj) => Container(
+                      width: length ?? width,
+                      height: length ?? height,
+                      alignment: Alignment.center,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        borderRadius: borderRadius,
+                        border: border,
+                        shape: shape,
+                        color: AppColor.background,
+                      ),
+                      child: AppImage.asset(
+                        'assets/images/common/default_img.png',
+                        size: getDefaultIconSize(
+                          width: length ?? width,
+                          height: length ?? height,
+                        ),
                       ),
                     ),
-                  ),
+          ),
         );
 
   ///SVGA动效
@@ -380,4 +376,23 @@ extension StringImageResize on String {
       return this;
     }
   }
+}
+
+double getDefaultIconSize({double? width, double? height}) {
+  final defaultSize = 50.rpx;
+  final size = min(width ?? 0, height ?? 0) * 0.2;
+  if (size == 0) {
+    return defaultSize;
+  }
+  if (size > defaultSize) {
+    return defaultSize;
+  }
+  return size;
+}
+
+Widget _wrapHero({required Widget child, String? tag}) {
+  if (tag != null) {
+    return Hero(tag: tag, child: child);
+  }
+  return child;
 }

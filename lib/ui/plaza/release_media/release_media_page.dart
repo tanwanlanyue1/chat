@@ -55,7 +55,6 @@ class ReleaseMediaPage extends StatelessWidget {
 
   Widget buildBody() {
     return ListView(
-      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           padding: EdgeInsets.only(top: 12.rpx),

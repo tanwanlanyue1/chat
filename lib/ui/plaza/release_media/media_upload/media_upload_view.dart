@@ -1,13 +1,16 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/plaza/release_media/media_upload/media_uploader.dart';
+import 'package:guanjia/ui/plaza/release_media/media_upload/video_preview_player.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
+import 'package:guanjia/widgets/photo_view_gallery_page.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
@@ -59,7 +62,9 @@ class _MediaUploadViewState extends State<MediaUploadView> {
             return MediaListTile(
               item: item,
               itemSize: itemSize,
+              onTap: () => onTapItem(item),
               onTapDelete: () => onTapDeleteItem(item),
+              onTapEdit: () => onTapEditVideoItem(item),
             );
           }),
         ],
@@ -167,6 +172,52 @@ class _MediaUploadViewState extends State<MediaUploadView> {
     setState(() {
       dataList.remove(item);
     });
+  }
+
+  void onTapEditVideoItem(final MediaItem item) {
+    if (item is VideoItem) {
+      Get.bottomSheet(
+        CommonBottomSheet(
+          titles: ['选封面', '预览', '删除'],
+          onTap: (index) {
+            switch (index) {
+              case 0:
+                //TODO 选封面
+                break;
+              case 1:
+                VideoPreviewPlayer.show(item);
+                break;
+              case 2:
+                onTapDeleteItem(item);
+                break;
+            }
+          },
+        ),
+      );
+    }
+  }
+
+  void onTapItem(MediaItem item) {
+    if (item.isVideo) {
+      VideoPreviewPlayer.show(item as VideoItem);
+    } else {
+      var initIndex = 0;
+      final images = dataList.mapIndexed((index, element) {
+        if(item.uuid == element.uuid){
+          initIndex = index;
+        }
+        if (element.local != null) {
+          return element.local ?? '';
+        } else {
+          return element.remote ?? '';
+        }
+      }).toList();
+      PhotoViewGalleryPage.show(
+        images: images,
+        index: initIndex,
+        heroTag: MediaListTile.heroTag,
+      );
+    }
   }
 
   void takePhoto() async {

@@ -8,6 +8,7 @@ import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/photo_view_gallery_page.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
+const heroTag = 'ChatImageMessage';
 class ChatImageMessage extends StatelessWidget {
   const ChatImageMessage({
     super.key,
@@ -98,16 +99,12 @@ class ChatImageMessage extends StatelessWidget {
   }
 
   Widget buildLocalImage(ZIMKitMessageImageContent imageContent, Size size) {
-    return Image.file(
+    return AppImage.file(
       File(imageContent.fileLocalPath),
       width: size.width,
       height: size.height,
-      cacheWidth: (size.width * Get.pixelRatio).floor(),
-      cacheHeight: (size.height * Get.pixelRatio).floor(),
       fit: BoxFit.cover,
-      errorBuilder: (_, __, errorStack){
-        return buildNetworkImage(imageContent, size);
-      },
+      heroTag: heroTag,
     );
   }
 
@@ -119,6 +116,7 @@ class ChatImageMessage extends StatelessWidget {
       height: size.height,
       memCacheWidth: size.width,
       memCacheHeight: size.height,
+      heroTag: heroTag,
     );
   }
 
@@ -144,14 +142,7 @@ class ChatImageMessage extends StatelessWidget {
     }
 
     //查看大图
-    PhotoViewGalleryPage.show(
-      Get.context!,
-      PhotoViewGalleryPage(
-        images: [imagePath],
-        index: 0,
-        heroTag: '',
-      ),
-    );
+    PhotoViewGalleryPage.show(images: [imagePath], heroTag: heroTag);
   }
 }
 

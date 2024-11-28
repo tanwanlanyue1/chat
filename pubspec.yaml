@@ -91,6 +91,8 @@ dependencies:
   equatable: ^2.0.5
   flutter_xlider: ^3.5.0
   extended_nested_scroll_view: ^6.2.1
+  video_editor: ^3.0.0
+  fraction: 5.0.2
 
 dependency_overrides:
   http: ^1.2.1 # svgaplayer_flutter 和 flutter_cache_manager会冲突，强制使用flutter_cache_manager依赖版本

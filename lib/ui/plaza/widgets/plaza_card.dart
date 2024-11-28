@@ -34,10 +34,11 @@ class PlazaCard extends StatelessWidget {
   final int? plazaIndex;
   final EdgeInsets? margin;
   PlazaListModel item;
+  final String? heroTag;
   final Function(bool like)? isLike;//点击点赞
   final Function(String? str)? callBack;//评论回复
   final Function()? more;//更多
-  PlazaCard({super.key,this.user = false,this.plazaIndex = 0,required this.item,this.isLike,this.callBack,this.more,this.margin});
+  PlazaCard({super.key,this.user = false,this.plazaIndex = 0,required this.item,this.isLike,this.callBack,this.more,this.margin, this.heroTag});
 
   ///点赞或者取消点赞
   /// type:点赞类型（1动态2评论）
@@ -183,20 +184,21 @@ class PlazaCard extends StatelessWidget {
 
   ///图片
   Widget _imageViews() {
-    return item.images != null && jsonDecode(item.images).isNotEmpty ?
+    final imageList = item.imageList;
+    return imageList.isNotEmpty ?
     Container(
       padding: EdgeInsets.only(bottom: 6.rpx),
       alignment: Alignment.centerLeft,
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: jsonDecode(item.images).length > 3 ? 3 : jsonDecode(item.images).length,
+        itemCount: imageList.length > 3 ? 3 : imageList.length,
         padding: EdgeInsets.zero,
         gridDelegate: SliverQuiltedGridDelegate(
-          crossAxisCount: jsonDecode(item.images).length == 2 ? 2 : 3,
+          crossAxisCount: imageList.length == 2 ? 2 : 3,
           mainAxisSpacing: 5.rpx,
           crossAxisSpacing: 5.rpx,
-          pattern: jsonDecode(item.images).length == 2 ?
+          pattern: imageList.length == 2 ?
           [
             const QuiltedGridTile(1, 1),
             const QuiltedGridTile(1, 1),
@@ -212,21 +214,20 @@ class PlazaCard extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   PhotoViewGalleryPage.show(
-                      Get.context!,
-                      PhotoViewGalleryPage(
-                        images: jsonDecode(item.images ?? ''),
-                        index: index,
-                        heroTag: '',
-                      ));
+                    images: imageList,
+                    index: index,
+                    heroTag: heroTag,
+                  );
                 },
-                child: AppImage.network("${jsonDecode(item.images ?? '')?[index]}",
+                child: AppImage.network(imageList[index],
                   memCacheHeight: Get.width/3,
                   memCacheWidth: Get.width/3,
                   fit: BoxFit.cover,
+                  heroTag: heroTag,
                 ),
               ),
               Visibility(
-                visible: (jsonDecode(item.images).length-3 > 0) && index == 2,
+                visible: (imageList.length-3 > 0) && index == 2,
                 child: Positioned(
                   right: 0,
                   bottom: 0,
@@ -240,7 +241,7 @@ class PlazaCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AppImage.asset("assets/images/plaza/plaza_img.png",width: 12.rpx,height: 12.rpx,),
-                        Text("+${jsonDecode(item.images).length-3}",style: AppTextStyle.fs12m.copyWith(color: Colors.white),)
+                        Text("+${imageList.length-3}",style: AppTextStyle.fs12m.copyWith(color: Colors.white),)
                       ],
                     ),
                   ),

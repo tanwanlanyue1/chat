@@ -134,34 +134,39 @@ class _PrivatePhotoViewState extends State<PrivatePhotoView> {
                   ),
                 ).separated(Spacing.w8).toList(growable: false),
               )),
-          Container(
-              alignment: Alignment.center,
-              height: 26.rpx,
-              margin: EdgeInsets.only(right: 12.rpx),
-              padding: EdgeInsets.symmetric(horizontal: 10.rpx),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.rpx),
-                gradient: LinearGradient(colors: [
-                  AppColor.black9.withOpacity(0.1),
-                  AppColor.black9.withOpacity(0.1)
-                ]),
-              ),
-              child: ShaderMask(
-                shaderCallback: (Rect bounds) {
-                  return const LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [AppColor.black6, AppColor.black6],
-                  ).createShader(bounds);
-                },
-                blendMode: BlendMode.srcATop,
-                child: Text(
-                  '发布',
-                  style: AppTextStyle.fs14.copyWith(
-                      height: 1.0,
-                      leadingDistribution: TextLeadingDistribution.even),
-                ),
-              ))
+          GestureDetector(
+              onTap: () {
+                // Get.toNamed(AppRoutes.releaseDynamicPage);
+                Get.toNamed(AppRoutes.releaseMediaPage);
+              },
+              child: Container(
+                  alignment: Alignment.center,
+                  height: 26.rpx,
+                  margin: EdgeInsets.only(right: 12.rpx),
+                  padding: EdgeInsets.symmetric(horizontal: 12.rpx , vertical: 4.rpx),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.rpx),
+                    gradient: LinearGradient(colors: [
+                      AppColor.black9.withOpacity(0.1),
+                      AppColor.black9.withOpacity(0.1)
+                    ]),
+                  ),
+                  child: ShaderMask(
+                    shaderCallback: (Rect bounds) {
+                      return const LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [AppColor.black6, AppColor.black6],
+                      ).createShader(bounds);
+                    },
+                    blendMode: BlendMode.srcATop,
+                    child: Text(
+                      '发布',
+                      style: AppTextStyle.fs14.copyWith(
+                          height: 1.0,
+                          leadingDistribution: TextLeadingDistribution.even),
+                    ),
+                  )))
         ]));
   }
 }

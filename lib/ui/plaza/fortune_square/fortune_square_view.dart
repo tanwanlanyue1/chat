@@ -184,8 +184,7 @@ class _FortuneSquareViewState extends State<FortuneSquareView> with AutomaticKee
             margin: FEdgeInsets(right: 16.rpx),
             child: GestureDetector(
               onTap: (){
-                // Get.toNamed(AppRoutes.releaseDynamicPage);
-                Get.toNamed(AppRoutes.releaseMediaPage);
+                 Get.toNamed(AppRoutes.releaseDynamicPage);
               },
               child: Container(
                 width: 50.rpx,

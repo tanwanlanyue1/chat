@@ -9,6 +9,8 @@ class UserCenterState {
   final isAppBarExpanded = false.obs;
 
   final isShow = true.obs;
+
+  final tabShow = false.obs;
   //作者信息
   UserModel authorInfo = UserModel.fromJson({});
   int swiperIndex = 0;
@@ -35,5 +37,9 @@ class UserCenterState {
       "name": S.current.numberTransactions,
       "data":"dealNum",
     },
+  ];
+
+  List barTabs = [
+    "全部","个人帖子","私房照"
   ];
 }

@@ -46,22 +46,29 @@ class _PrivatePhotoViewState extends State<PrivatePhotoView> {
                 pagingController: controller.pagingController,
                 itemBuilder: (_, item, index) {
                   return PrivatePhotoListItem(
+                    item: item,
                     onItemTap: () {
                       //Get.toNamed(AppRoutes.privatePhotoDetail);
-                      //controller.showPayDialog();
-                      // PrivatePhotoGalleryView.show(
-                      //     Get.context!,
-                      //     PrivatePhotoGalleryView(
-                      //       images: jsonDecode(item.images ?? ''),
-                      //       index: index,
-                      //       heroTag: '',
-                      //       item: item,
-                      //     ));
-                      PrivateVideoView.show(
-                          Get.context!,
-                          PrivateVideoView(
-                            item: item,
-                          ));
+                      if ((item.price ?? 0) > 0 && (item.isUnlock ?? false)) {
+                        controller.showPayDialog();
+                      } else {
+                        if (item.isVideo ?? false) {
+                          PrivateVideoView.show(
+                              Get.context!,
+                              PrivateVideoView(
+                                item: item,
+                              ));
+                        } else {
+                          PrivatePhotoGalleryView.show(
+                              Get.context!,
+                              PrivatePhotoGalleryView(
+                                images: jsonDecode(item.images ?? ''),
+                                index: index,
+                                heroTag: '',
+                                item: item,
+                              ));
+                        }
+                      }
                     },
                   );
                 },
@@ -143,7 +150,8 @@ class _PrivatePhotoViewState extends State<PrivatePhotoView> {
                   alignment: Alignment.center,
                   height: 26.rpx,
                   margin: EdgeInsets.only(right: 12.rpx),
-                  padding: EdgeInsets.symmetric(horizontal: 12.rpx , vertical: 4.rpx),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12.rpx, vertical: 4.rpx),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.rpx),
                     gradient: LinearGradient(colors: [

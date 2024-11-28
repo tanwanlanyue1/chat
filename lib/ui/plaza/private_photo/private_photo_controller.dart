@@ -40,34 +40,23 @@ class PrivatePhotoController extends GetxController  with GetAutoDisposeMixin, U
       pagingController.itemList?.clear();
     }
     if(state.communityIndex.value == 1){
-      myFollowListPage(page);
+      ///按时间排列
+      getCommunityList(page: page,sort: 0);
     }else if(state.communityIndex.value == 2){
-      myFetchPage(page);
+      myFollowListPage(page);
     }else{
-      getCommunityList(page: page);
+      ///按点赞数排列
+      getCommunityList(page: page , sort: 1);
     }
   }
 
-  ///获取我的帖子列表
-  void myFetchPage(int page) async {
-    final response = await PlazaApi.getMyPostList(
-      uid: SS.login.info?.uid ?? 0,
-      page: page,
-      size: pagingController.pageSize,
-    );
-    if (response.isSuccess) {
-      final items = response.data ?? [];
-      pagingController.appendPageData(items);
-    } else {
-      pagingController.error = response.errorMessage;
-    }
-  }
 
   ///我的关注帖子列表
   void myFollowListPage(int page) async {
     final response = await PlazaApi.followList(
       page: page,
       size: pagingController.pageSize,
+      type: 2
     );
     if (response.isSuccess) {
       final items = response.data ?? [];
@@ -77,9 +66,10 @@ class PrivatePhotoController extends GetxController  with GetAutoDisposeMixin, U
     }
   }
 
-  ///获取动态列表
+  ///获取私房照列表列表
   Future<void> getCommunityList({
     required int page,
+    required int sort,
   }) async {
     if(page == 1){
       pagingController.itemList?.clear();
@@ -94,6 +84,7 @@ class PrivatePhotoController extends GetxController  with GetAutoDisposeMixin, U
       maxAge: controller.state.info?.value.likeAgeMax,
       style: tag,
       currentPage: page,
+      type: 2,
       pageSize: pagingController.pageSize,
     );
     if (response.isSuccess) {

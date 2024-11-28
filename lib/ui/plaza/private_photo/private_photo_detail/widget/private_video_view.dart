@@ -23,19 +23,9 @@ class PrivateVideoView extends StatefulWidget {
 }
 
 class _PrivateVideoViewState extends State<PrivateVideoView> {
-  VideoPlayerController videoPlayerController =
-      VideoPlayerController.networkUrl(
-    Uri.parse('https://media.w3.org/2010/05/sintel/trailer.mp4'),
-  );
+
   late ChewieController chewieController;
-
-  @override
-  Future<void> dispose() async {
-    videoPlayerController.dispose();
-    chewieController?.dispose();
-    super.dispose();
-  }
-
+  late VideoPlayerController videoPlayerController ;
   @override
   void initState() {
     super.initState();
@@ -68,6 +58,10 @@ class _PrivateVideoViewState extends State<PrivateVideoView> {
   }
 
   Future<void> createChewieController() async {
+    videoPlayerController =
+        VideoPlayerController.networkUrl(
+          Uri.parse(widget.item.video??''),
+        );
     await videoPlayerController.initialize();
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController,

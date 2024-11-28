@@ -173,15 +173,18 @@ class PlazaApi{
   }
 
   /// 获取关注帖子列表
+  /// type	类型： 1 帖子 2私房照
   static Future<ApiResponse<List<PlazaListModel>>> followList({
     int? page,
     int? size,
+    int type = 1,
   }) {
     return HttpClient.get(
       '/api/community/followList',
       params: {
         "page":page,
         "size":size,
+        "type":type,
       },
       dataConverter: (data) {
         if (data is List) {

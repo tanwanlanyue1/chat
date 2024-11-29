@@ -14,12 +14,7 @@ class ReleaseMediaController extends GetxController with GetSingleTickerProvider
   final contentEditingController = TextEditingController();
   ///打赏金额
   final amountEditingController = TextEditingController();
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
+  final mediaUploader = MediaUploader();
 
   ///发布
   void onSubmit() async {
@@ -47,7 +42,7 @@ class ReleaseMediaController extends GetxController with GetSingleTickerProvider
 
     //获取上传连接
     for (var element in mediaList) {
-      final url = MediaUploader().getProgress(element.uuid)?.url;
+      final url = mediaUploader.getProgress(element.uuid)?.url;
       if(url == null){
         Loading.showToast('图片或视频未上传完成');
         return;
@@ -55,7 +50,7 @@ class ReleaseMediaController extends GetxController with GetSingleTickerProvider
 
       //视频
       if(element is VideoItem){
-        final coverUrl = MediaUploader().getProgress(element.cover.uuid)?.url;
+        final coverUrl = mediaUploader.getProgress(element.cover.uuid)?.url;
         if(coverUrl == null){
           Loading.showToast('视频封面未上传完成');
           return;
@@ -89,6 +84,12 @@ class ReleaseMediaController extends GetxController with GetSingleTickerProvider
     } else {
       response.showErrorMessage();
     }
+  }
+
+  @override
+  void onClose() {
+    mediaUploader.cancelAll();
+    super.onClose();
   }
 
 }

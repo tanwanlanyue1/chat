@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/plaza/release_media/release_media_controller.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:guanjia/widgets/input_widget.dart';
 import 'package:guanjia/widgets/upload_image.dart';
@@ -22,8 +25,23 @@ class ReleaseDynamicPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(S.current.newPost),
+        actions: [
+          Button(
+            onPressed: (){
+              if(Get.tryFind<ReleaseMediaController>() != null){
+                Get.back();
+              }else{
+                Get.toNamed(AppRoutes.releaseMediaPage);
+              }
+            },
+            backgroundColor: Colors.transparent,
+            padding: FEdgeInsets(right: 16.rpx),
+            child: Text('发布私房照>', style: AppTextStyle.fs12.copyWith(
+              color: AppColor.black6,
+            ),),
+          ),
+        ],
       ),
-      backgroundColor: AppColor.scaffoldBackground,
       body: buildDynamic(),
       bottomNavigationBar: Container(
         padding: EdgeInsets.only(bottom: Get.mediaQuery.padding.bottom+14.rpx,left: 38.rpx,right: 38.rpx,top: 14.rpx),
@@ -93,7 +111,7 @@ class ReleaseDynamicPage extends StatelessWidget {
           },
         ),
         Container(
-          margin: EdgeInsets.only(top: 2.rpx),
+          margin: const EdgeInsets.only(top: 1),
           padding: EdgeInsets.only(left: 16.rpx,top: 16.rpx),
           color: Colors.white,
           alignment: Alignment.centerLeft,
@@ -110,19 +128,17 @@ class ReleaseDynamicPage extends StatelessWidget {
             ),
           ),
         ),
-        Expanded(
-          child: Container(
-            margin: EdgeInsets.only(left: 12.rpx),
-            color: Colors.white,
-            alignment: Alignment.topLeft,
-            child: UploadImage(
-              imgList: state.imgList,
-              limit: 9,
-              callback: (val) {
-                controller.state.imgList = val;
-                controller.update(['upload']);
-              },
-            ),
+        Container(
+          padding: EdgeInsets.only(left: 12.rpx, bottom: 24.rpx),
+          color: Colors.white,
+          alignment: Alignment.topLeft,
+          child: UploadImage(
+            imgList: state.imgList,
+            limit: 9,
+            callback: (val) {
+              controller.state.imgList = val;
+              controller.update(['upload']);
+            },
           ),
         ),
       ],

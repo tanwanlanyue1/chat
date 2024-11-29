@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/extension/get_extension.dart';
+import 'package:guanjia/common/routes/app_pages.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/decimal_text_input_formatter.dart';
 import 'package:guanjia/generated/l10n.dart';
+import 'package:guanjia/ui/plaza/release_dynamic/release_dynamic_controller.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:guanjia/widgets/input_widget.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -22,11 +25,12 @@ class ReleaseMediaPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (canPop) async{
-        if(canPop){
+      onPopInvoked: (canPop) async {
+        if (canPop) {
           return;
         }
-        if(state.mediaList.isEmpty && controller.contentEditingController.text.isEmpty){
+        if (state.mediaList.isEmpty &&
+            controller.contentEditingController.text.isEmpty) {
           return Get.back();
         }
         final result = await ConfirmDialog.show(message: Text('确定返回吗？'));
@@ -37,6 +41,25 @@ class ReleaseMediaPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text('发布私房照'),
+          actions: [
+            Button(
+              onPressed: () {
+                if (Get.tryFind<ReleaseDynamicController>() != null) {
+                  Get.back();
+                } else {
+                  Get.toNamed(AppRoutes.releaseDynamicPage);
+                }
+              },
+              backgroundColor: Colors.transparent,
+              padding: FEdgeInsets(right: 16.rpx),
+              child: Text(
+                '社区帖子>',
+                style: AppTextStyle.fs12.copyWith(
+                  color: AppColor.black6,
+                ),
+              ),
+            ),
+          ],
         ),
         body: buildBody(),
         bottomNavigationBar: Container(
@@ -70,8 +93,47 @@ class ReleaseMediaPage extends StatelessWidget {
     return ListView(
       children: [
         Container(
+          margin: FEdgeInsets(top: 8.rpx),
+          padding: FEdgeInsets(all: 16.rpx),
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RichText(
+                text: TextSpan(
+                  text: '上传图片或视频',
+                  style: AppTextStyle.fs16.copyWith(
+                    color: AppColor.black3,
+                    height: 1,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: '(最多9张图片/1个视频)',
+                      style: AppTextStyle.fs14.copyWith(
+                        color: AppColor.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 14.rpx),
+                child: MediaUploadView(
+                  uploader: controller.mediaUploader,
+                  onChanged: (list) {
+                    state.mediaList
+                      ..clear()
+                      ..addAll(list);
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
           padding: EdgeInsets.only(top: 12.rpx),
-          margin: EdgeInsets.only(top: 12.rpx),
+          margin: EdgeInsets.only(top: 8.rpx),
           color: Colors.white,
           child: InputWidget(
             hintText: S.current.pleaseEnterContent,
@@ -111,38 +173,6 @@ class ReleaseMediaPage extends StatelessWidget {
             );
           },
         ),
-        Container(
-          margin: EdgeInsets.only(top: 2.rpx),
-          padding: EdgeInsets.only(left: 16.rpx, top: 16.rpx),
-          color: Colors.white,
-          alignment: Alignment.centerLeft,
-          child: RichText(
-            text: TextSpan(
-              text: '上传图片或视频',
-              style: AppTextStyle.fs16.copyWith(color: AppColor.gray5),
-              children: <TextSpan>[
-                TextSpan(
-                  text: '（最多9张图片/1个视频）',
-                  style: AppTextStyle.fs14.copyWith(
-                    color: AppColor.red,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(left: 12.rpx, top: 12.rpx),
-          color: Colors.white,
-          alignment: Alignment.topLeft,
-          child: MediaUploadView(
-            onChanged: (list) {
-              state.mediaList
-                ..clear()
-                ..addAll(list);
-            },
-          ),
-        ),
         Padding(
           padding: EdgeInsets.only(left: 16.rpx, top: 16.rpx),
           child: Text('解锁查看'),
@@ -153,7 +183,7 @@ class ReleaseMediaPage extends StatelessWidget {
   }
 
   Widget buildUnlockOptions() {
-    return Obx((){
+    return Obx(() {
       final isFree = state.isFreeRx();
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -163,7 +193,7 @@ class ReleaseMediaPage extends StatelessWidget {
             leading: Radio<bool>(
               value: true,
               groupValue: isFree,
-              onChanged: (value){
+              onChanged: (value) {
                 state.isFreeRx.value = value ?? true;
               },
             ),
@@ -173,7 +203,7 @@ class ReleaseMediaPage extends StatelessWidget {
             leading: Radio<bool>(
               value: false,
               groupValue: isFree,
-              onChanged: (value){
+              onChanged: (value) {
                 state.isFreeRx.value = value ?? true;
               },
             ),
@@ -194,8 +224,7 @@ class ReleaseMediaPage extends StatelessWidget {
                   DecimalTextInputFormatter(
                       decimalDigits: SS.appConfig.decimalDigits,
                       maxValue: 9999999,
-                      maxValueHint: S.current.amountMaxLimitExceed
-                  )
+                      maxValueHint: S.current.amountMaxLimitExceed)
                 ],
                 textAlignVertical: TextAlignVertical.center,
                 decoration: InputDecoration(

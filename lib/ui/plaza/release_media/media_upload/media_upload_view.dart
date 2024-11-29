@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/extension/functions_extension.dart';
+import 'package:guanjia/common/extension/text_style_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/plaza/release_media/media_upload/media_uploader.dart';
 import 'package:guanjia/ui/plaza/release_media/media_upload/video_editor_page.dart';
@@ -23,11 +25,16 @@ import 'video_preview_page.dart';
 
 ///图片+视频上传控件
 class MediaUploadView extends StatefulWidget {
+
+  ///上传管理器
+  final MediaUploader uploader;
+
   ///选中的文件列表变化回调
   final void Function(List<MediaItem> items)? onChanged;
 
   const MediaUploadView({
     super.key,
+    required this.uploader,
     this.onChanged,
   });
 
@@ -55,12 +62,15 @@ class _MediaUploadViewState extends State<MediaUploadView> {
       return GridView.count(
         crossAxisCount: 3,
         childAspectRatio: 1,
+        mainAxisSpacing: 8.rpx,
+        crossAxisSpacing: 8.rpx,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         children: [
           if (visibleAddItem) buildAddItem(),
           ...dataList.map((item) {
             return MediaListTile(
+              mediaUploader: widget.uploader,
               item: item,
               itemSize: itemSize,
               onTap: () => onTapItem(item),
@@ -81,6 +91,10 @@ class _MediaUploadViewState extends State<MediaUploadView> {
 
   Widget buildAddItem() {
     return Button.icon(
+      width: itemSize,
+      height: itemSize,
+      backgroundColor: AppColor.black9.withOpacity(0.1),
+      borderRadius: BorderRadius.circular(8.rpx),
       onPressed: () {
         Get.bottomSheet(
           CommonBottomSheet(
@@ -102,8 +116,8 @@ class _MediaUploadViewState extends State<MediaUploadView> {
         );
       },
       icon: AppImage.asset(
-        'assets/images/mine/add_image.png',
-        size: itemSize,
+        'assets/images/plaza/ic_plus.png',
+        size: 24.rpx,
       ),
     );
   }
@@ -115,7 +129,7 @@ class _MediaUploadViewState extends State<MediaUploadView> {
     var list = List.of(dataList);
     if (isVideo) {
       isVideo = false;
-      MediaUploader().cancelAll();
+      widget.uploader.cancelAll();
       deleteCacheFiles(list);
       list.clear();
     }
@@ -136,12 +150,12 @@ class _MediaUploadViewState extends State<MediaUploadView> {
     });
 
     //开始下载
-    MediaUploader().uploads(items);
+    widget.uploader.uploads(items);
   }
 
   void addVideo(File file) async {
     isVideo = true;
-    MediaUploader().cancelAll();
+    widget.uploader.cancelAll();
     deleteCacheFiles(dataList);
 
     //获取视频首帧图片缩略图和时长
@@ -167,12 +181,12 @@ class _MediaUploadViewState extends State<MediaUploadView> {
     });
 
     //开始下载
-    MediaUploader().uploads([videoItem]);
+    widget.uploader.uploads([videoItem]);
   }
 
   void onTapDeleteItem(MediaItem item) {
     setState(() {
-      MediaUploader().cancel(item.uuid);
+      widget.uploader.cancel(item.uuid);
       dataList.remove(item);
       deleteCacheFiles([item]);
     });
@@ -270,7 +284,7 @@ class _MediaUploadViewState extends State<MediaUploadView> {
       deleteCacheFiles([item.cover]);
       item.cover.local = result.path;
       item.cover.remote = null;
-      MediaUploader()
+      widget.uploader
         ..cancel(item.cover.uuid)
         ..uploads([item]);
       //刷新ui

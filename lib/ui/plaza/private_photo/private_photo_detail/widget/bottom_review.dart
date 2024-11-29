@@ -144,17 +144,16 @@ class BottomReview extends StatelessWidget {
           )
         ],
       ),
-      GestureDetector(
-          onTap: () {
-            ReviewDialog.show(
-                pid: item.postId??0,
-                callBack: (val) {
-                  if (val != null && val.isNotEmpty) {
-
-                  }
-                });
-          },
-          child: Center(
+      Row(
+        children: [
+          GestureDetector(
+              onTap: () {
+                ReviewDialog.show(
+                    pid: item.postId ?? 0,
+                    callBack: (val) {
+                      if (val != null && val.isNotEmpty) {}
+                    });
+              },
               child: Container(
                   height: 36.rpx,
                   decoration: BoxDecoration(
@@ -179,7 +178,47 @@ class BottomReview extends StatelessWidget {
                             AppTextStyle.fs14.copyWith(color: AppColor.gray9),
                       ),
                     ],
-                  )))),
+                  ))),
+          Row(
+            children: [
+              AppImage.asset(
+                (item.isLike ?? false)
+                    ? "assets/images/plaza/attention.png"
+                    : "assets/images/plaza/attention_no.png",
+                width: 16.rpx,
+                height: 16.rpx,
+              ),
+              SizedBox(width: 2.rpx),
+              Text('${item.likeNum ?? 0}'),
+
+            ],
+          ),
+          GestureDetector(
+            onTap: ()async{
+              var res = await Get.toNamed(AppRoutes.allCommentsPage,arguments: {"postId": item.postId, "userId": item.uid});
+              if(res != null && res.isNotEmpty){
+                //callBack?.call(res);
+              }
+            },
+            child: Container(
+              color: Colors.transparent,
+              height: 28.rpx,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AppImage.asset("assets/images/plaza/comment.png",width: 14.rpx,height: 14.rpx,),
+                  SizedBox(width: 4.rpx,),
+                  Padding(
+                    padding: EdgeInsets.only(top: 2.rpx),
+                    child: Text('${(item.commentNum != null && item.commentNum != 0) ? item.commentNum : S.current.comment}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+
     ]);
   }
 }

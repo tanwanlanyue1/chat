@@ -109,6 +109,7 @@ class PrivatePhotoListItem extends StatelessWidget {
             left: 10,
             child: Text(((item.price ?? 0) > 0) ? "收费" : "免费",
                 style: AppTextStyle.fs14.copyWith(color: Colors.white))),
+        if (((item.price ?? 0) > 0))
         Align(
            alignment: Alignment.center,
             child: buildCover())

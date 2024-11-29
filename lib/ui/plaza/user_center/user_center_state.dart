@@ -10,7 +10,6 @@ class UserCenterState {
 
   final isShow = true.obs;
 
-  final tabShow = false.obs;
   //作者信息
   UserModel authorInfo = UserModel.fromJson({});
   int swiperIndex = 0;

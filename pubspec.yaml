@@ -94,6 +94,7 @@ dependencies:
   video_editor: ^3.0.0
   fraction: 5.0.2
   ffmpeg_kit_flutter_min: ^5.1.0
+#  cometchat_chat_uikit: ^4.5.10
 
 dependency_overrides:
   http: ^1.2.1 # svgaplayer_flutter 和 flutter_cache_manager会冲突，强制使用flutter_cache_manager依赖版本

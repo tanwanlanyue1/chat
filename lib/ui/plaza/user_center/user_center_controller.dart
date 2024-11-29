@@ -53,7 +53,6 @@ class UserCenterController extends GetxController with UserAttentionMixin, GetAu
       double offset = scrollController.offset;
       double appBarHeight = 220.rpx;
       state.isAppBarExpanded.value = (appBarHeight - kToolbarHeight) < offset;
-      state.tabShow.value = offset > (340.rpx+Get.mediaQuery.padding.top);
     });
     tabController = TabController(length: state.barTabs.length, vsync: this,initialIndex: 0);
     autoDisposeWorker(EventBus().listen(kEventIsAttention, (data) {

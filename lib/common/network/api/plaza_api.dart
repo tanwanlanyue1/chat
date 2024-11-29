@@ -122,8 +122,10 @@ class PlazaApi{
 
   /// 获取自己的帖子列表
   /// uid:用户id
+  /// type:1：帖子 2 私房照
   static Future<ApiResponse<List<PlazaListModel>>> getMyPostList({
     required int uid,
+    int? type,
     int? page,
     int? size,
   }) {
@@ -131,6 +133,7 @@ class PlazaApi{
       '/api/community/getMyPostList',
       params: {
         "uid": uid,
+        "type": type,
         "page": page,
         "size": size,
       },

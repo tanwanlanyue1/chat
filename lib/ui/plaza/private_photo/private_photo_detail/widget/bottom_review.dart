@@ -15,6 +15,7 @@ import '../../../../../widgets/occupation_widget.dart';
 import '../../../../../widgets/user_avatar.dart';
 import '../../../../../widgets/user_style.dart';
 import '../../../../chat/utils/chat_manager.dart';
+import '../../../widgets/review_dialog.dart';
 
 class BottomReview extends StatelessWidget {
   BottomReview({Key? key, required this.user, required this.item});
@@ -143,31 +144,42 @@ class BottomReview extends StatelessWidget {
           )
         ],
       ),
-    Center(
-    child: Container(
-    height: 36.rpx,
-    decoration: BoxDecoration(
-    color: AppColor.white8,
-    borderRadius: BorderRadius.circular(8.rpx),
-    ),
-    padding: EdgeInsets.only(left: 16.rpx),
-    alignment: Alignment.centerLeft,
-    child:Row(
-        children: [
-          Container(
-            margin: EdgeInsets.only(right: 3.rpx),
-            child: AppImage.asset(
-              "assets/images/plaza/write.png",
-              width: 20.rpx,
-              height: 20.rpx,
-            ),
-          ),
-          Text(
-            S.current.writeYourComments,
-            style: AppTextStyle.fs14.copyWith(color: AppColor.gray9),
-          ),
-        ],
-      ))),
+      GestureDetector(
+          onTap: () {
+            ReviewDialog.show(
+                pid: item.postId??0,
+                callBack: (val) {
+                  if (val != null && val.isNotEmpty) {
+
+                  }
+                });
+          },
+          child: Center(
+              child: Container(
+                  height: 36.rpx,
+                  decoration: BoxDecoration(
+                    color: AppColor.white8,
+                    borderRadius: BorderRadius.circular(8.rpx),
+                  ),
+                  padding: EdgeInsets.only(left: 16.rpx),
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 3.rpx),
+                        child: AppImage.asset(
+                          "assets/images/plaza/write.png",
+                          width: 20.rpx,
+                          height: 20.rpx,
+                        ),
+                      ),
+                      Text(
+                        S.current.writeYourComments,
+                        style:
+                            AppTextStyle.fs14.copyWith(color: AppColor.gray9),
+                      ),
+                    ],
+                  )))),
     ]);
   }
 }

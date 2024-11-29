@@ -15,6 +15,7 @@ import '../../../../../widgets/occupation_widget.dart';
 import '../../../../../widgets/user_avatar.dart';
 import '../../../../../widgets/user_style.dart';
 import '../../../../chat/utils/chat_manager.dart';
+import '../../../widgets/review_dialog.dart';
 
 class BottomReview extends StatelessWidget {
   BottomReview({Key? key, required this.user, required this.item});
@@ -143,31 +144,81 @@ class BottomReview extends StatelessWidget {
           )
         ],
       ),
-    Center(
-    child: Container(
-    height: 36.rpx,
-    decoration: BoxDecoration(
-    color: AppColor.white8,
-    borderRadius: BorderRadius.circular(8.rpx),
-    ),
-    padding: EdgeInsets.only(left: 16.rpx),
-    alignment: Alignment.centerLeft,
-    child:Row(
+      Row(
         children: [
-          Container(
-            margin: EdgeInsets.only(right: 3.rpx),
-            child: AppImage.asset(
-              "assets/images/plaza/write.png",
-              width: 20.rpx,
-              height: 20.rpx,
+          GestureDetector(
+              onTap: () {
+                ReviewDialog.show(
+                    pid: item.postId ?? 0,
+                    callBack: (val) {
+                      if (val != null && val.isNotEmpty) {}
+                    });
+              },
+              child: Container(
+                  height: 36.rpx,
+                  decoration: BoxDecoration(
+                    color: AppColor.white8,
+                    borderRadius: BorderRadius.circular(8.rpx),
+                  ),
+                  padding: EdgeInsets.only(left: 16.rpx),
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 3.rpx),
+                        child: AppImage.asset(
+                          "assets/images/plaza/write.png",
+                          width: 20.rpx,
+                          height: 20.rpx,
+                        ),
+                      ),
+                      Text(
+                        S.current.writeYourComments,
+                        style:
+                            AppTextStyle.fs14.copyWith(color: AppColor.gray9),
+                      ),
+                    ],
+                  ))),
+          Row(
+            children: [
+              AppImage.asset(
+                (item.isLike ?? false)
+                    ? "assets/images/plaza/attention.png"
+                    : "assets/images/plaza/attention_no.png",
+                width: 16.rpx,
+                height: 16.rpx,
+              ),
+              SizedBox(width: 2.rpx),
+              Text('${item.likeNum ?? 0}'),
+
+            ],
+          ),
+          GestureDetector(
+            onTap: ()async{
+              var res = await Get.toNamed(AppRoutes.allCommentsPage,arguments: {"postId": item.postId, "userId": item.uid});
+              if(res != null && res.isNotEmpty){
+                //callBack?.call(res);
+              }
+            },
+            child: Container(
+              color: Colors.transparent,
+              height: 28.rpx,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AppImage.asset("assets/images/plaza/comment.png",width: 14.rpx,height: 14.rpx,),
+                  SizedBox(width: 4.rpx,),
+                  Padding(
+                    padding: EdgeInsets.only(top: 2.rpx),
+                    child: Text('${(item.commentNum != null && item.commentNum != 0) ? item.commentNum : S.current.comment}',style: TextStyle(color: const Color(0xff666666),fontSize: 12.rpx)),
+                  ),
+                ],
+              ),
             ),
           ),
-          Text(
-            S.current.writeYourComments,
-            style: AppTextStyle.fs14.copyWith(color: AppColor.gray9),
-          ),
         ],
-      ))),
+      ),
+
     ]);
   }
 }

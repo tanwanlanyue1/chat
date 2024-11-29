@@ -9,7 +9,7 @@ import 'package:guanjia/ui/plaza/release_media/media_upload/media_uploader.dart'
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/widgets.dart';
 
-import 'media_item.dart';
+import 'media_upload_view.dart';
 
 class MediaListTile extends StatefulWidget {
   static const heroTag = 'MediaListTile';

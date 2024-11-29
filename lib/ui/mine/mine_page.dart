@@ -326,7 +326,8 @@ class _MinePageState extends State<MinePage>
           MineListTile(
             title: S.current.personalInformation,
             icon: "assets/images/mine/personal_info.png",
-            pagePath: AppRoutes.accountDataPage,
+            // pagePath: AppRoutes.accountDataPage,
+            pagePath: AppRoutes.releaseMediaPage,
           ),
           //我的钱包
           MineListTile(

@@ -5,9 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
 import 'package:guanjia/ui/plaza/release_media/media_upload/media_uploader.dart';
-import 'package:guanjia/ui/plaza/release_media/media_upload/video_preview_player.dart';
+import 'package:guanjia/ui/plaza/release_media/media_upload/video_editor_page.dart';
 import 'package:guanjia/widgets/app_image.dart';
 import 'package:guanjia/widgets/common_bottom_sheet.dart';
 import 'package:guanjia/widgets/photo_view_gallery_page.dart';
@@ -16,14 +17,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_compress/video_compress.dart';
 
-import 'media_item.dart';
 import 'media_list_tile.dart';
-import 'video_cover_picker.dart';
-import 'video_editor_page.dart';
+import 'video_cover_page.dart';
+import 'video_preview_page.dart';
 
 ///图片+视频上传控件
 class MediaUploadView extends StatefulWidget {
-
   ///选中的文件列表变化回调
   final void Function(List<MediaItem> items)? onChanged;
 
@@ -115,9 +114,10 @@ class _MediaUploadViewState extends State<MediaUploadView> {
     }
     var list = List.of(dataList);
     if (isVideo) {
-      list.clear();
       isVideo = false;
       MediaUploader().cancelAll();
+      deleteCacheFiles(list);
+      list.clear();
     }
     final items = files
         .take(imageLimit - list.length)
@@ -139,9 +139,10 @@ class _MediaUploadViewState extends State<MediaUploadView> {
     MediaUploader().uploads(items);
   }
 
-  void addVideo(XFile file) async {
+  void addVideo(File file) async {
     isVideo = true;
     MediaUploader().cancelAll();
+    deleteCacheFiles(dataList);
 
     //获取视频首帧图片缩略图和时长
     Loading.show();
@@ -170,9 +171,10 @@ class _MediaUploadViewState extends State<MediaUploadView> {
   }
 
   void onTapDeleteItem(MediaItem item) {
-    MediaUploader().cancel(item.uuid);
     setState(() {
+      MediaUploader().cancel(item.uuid);
       dataList.remove(item);
+      deleteCacheFiles([item]);
     });
   }
 
@@ -181,13 +183,13 @@ class _MediaUploadViewState extends State<MediaUploadView> {
       Get.bottomSheet(
         CommonBottomSheet(
           titles: ['选封面', '预览', '删除'],
-          onTap: (index) async{
+          onTap: (index) async {
             switch (index) {
               case 0:
                 chooseVideoCover(item);
                 break;
               case 1:
-                VideoPreviewPlayer.show(item);
+                VideoPreviewPage.open(item);
                 break;
               case 2:
                 onTapDeleteItem(item);
@@ -201,11 +203,11 @@ class _MediaUploadViewState extends State<MediaUploadView> {
 
   void onTapItem(MediaItem item) {
     if (item.isVideo) {
-      VideoPreviewPlayer.show(item as VideoItem);
+      VideoPreviewPage.open(item as VideoItem);
     } else {
       var initIndex = 0;
       final images = dataList.mapIndexed((index, element) {
-        if(item.uuid == element.uuid){
+        if (item.uuid == element.uuid) {
           initIndex = index;
         }
         if (element.local != null) {
@@ -246,23 +248,88 @@ class _MediaUploadViewState extends State<MediaUploadView> {
 
   void chooseVideo() async {
     final result = await ImagePicker().pickVideo(
-        source: ImageSource.gallery, maxDuration: const Duration(minutes: 5));
+      source: ImageSource.gallery,
+      maxDuration: const Duration(minutes: 5),
+    );
     if (result != null) {
-      addVideo(result);
+      final file = await VideoEditorPage.open(file: File(result.path));
+      if (file != null) {
+        addVideo(file);
+      } else {
+        //删除临时文件
+        File(result.path).delete().ignore();
+      }
     }
   }
 
   ///选择视频封面
-  void chooseVideoCover(VideoItem item) async{
-    final result = await VideoCoverPicker.open(filepath: item.local ?? '');
-    if(result != null){
-      item.cover.local = result;
+  void chooseVideoCover(VideoItem item) async {
+    final result = await VideoCoverPage.open(file: File(item.local ?? ''));
+    if (result != null) {
+      //删除原来的封面图片缓存
+      deleteCacheFiles([item.cover]);
+      item.cover.local = result.path;
       item.cover.remote = null;
       MediaUploader()
-          ..cancel(item.cover.uuid)
-          ..uploads([item]);
+        ..cancel(item.cover.uuid)
+        ..uploads([item]);
       //刷新ui
-      setState((){});
+      setState(() {});
     }
   }
+
+  ///删除缓存文件
+  Future<void> deleteCacheFiles(List<MediaItem> items) async {
+    for (var element in items) {
+      final file = element.local?.let(File.new);
+      if (file != null && await file.exists()) {
+        file.delete().ignore();
+      }
+      if (element is VideoItem) {
+        await deleteCacheFiles([element.cover]);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    //删除所有图片缓存
+    deleteCacheFiles(dataList);
+    super.dispose();
+  }
+}
+
+class ImageItem extends MediaItem {
+  ImageItem({
+    required super.uuid,
+    super.local,
+    super.remote,
+  }) : super(isVideo: false);
+}
+
+class VideoItem extends MediaItem {
+  final ImageItem cover;
+  final Duration duration;
+
+  VideoItem({
+    required this.cover,
+    required this.duration,
+    required super.uuid,
+    super.local,
+    super.remote,
+  }) : super(isVideo: true);
+}
+
+abstract class MediaItem {
+  final String uuid;
+  final bool isVideo;
+  String? local;
+  String? remote;
+
+  MediaItem({
+    required this.isVideo,
+    required this.uuid,
+    this.local,
+    this.remote,
+  });
 }

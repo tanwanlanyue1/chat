@@ -1,38 +1,31 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
 import 'package:chewie/chewie.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:guanjia/common/app_color.dart';
 import 'package:guanjia/common/paging/default_status_indicators/first_page_progress_indicator.dart';
-import 'package:guanjia/ui/plaza/release_media/media_upload/media_item.dart';
 import 'package:guanjia/widgets/app_back_button.dart';
 import 'package:guanjia/widgets/system_ui.dart';
 import 'package:video_player/video_player.dart';
 
-import 'package:zego_zimkit/src/components/messages/video_message_controls.dart';
-import 'package:zego_zimkit/src/components/messages/video_message_preview.dart';
-import 'package:zego_zimkit/src/services/logger_service.dart';
-import 'package:zego_zimkit/src/services/services.dart';
+import 'media_upload_view.dart';
 
-///视频预览播放器
-class VideoPreviewPlayer extends StatefulWidget {
+///视频预览播放页
+class VideoPreviewPage extends StatefulWidget {
   final VideoItem item;
 
-  const VideoPreviewPlayer._(this.item, {super.key});
+  const VideoPreviewPage._(this.item, {super.key});
 
-  static void show(VideoItem item){
-    Get.to(() => VideoPreviewPlayer._(item));
+  static void open(VideoItem item){
+    Get.to(() => VideoPreviewPage._(item));
   }
 
   @override
-  State<VideoPreviewPlayer> createState() => _VideoPreviewPlayerState();
+  State<VideoPreviewPage> createState() => _VideoPreviewPageState();
 }
 
-class _VideoPreviewPlayerState extends State<VideoPreviewPlayer> {
+class _VideoPreviewPageState extends State<VideoPreviewPage> {
   late VideoPlayerController videoPlayerController;
   ChewieController? chewieController;
 

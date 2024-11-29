@@ -5,12 +5,10 @@ import 'package:guanjia/common/app_text_style.dart';
 import 'package:guanjia/common/service/service.dart';
 import 'package:guanjia/common/utils/decimal_text_input_formatter.dart';
 import 'package:guanjia/generated/l10n.dart';
-import 'package:guanjia/ui/plaza/release_media/media_upload/media_upload_view.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:guanjia/widgets/input_widget.dart';
-import 'package:guanjia/widgets/upload_image.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
-
+import 'media_upload/media_upload_view.dart';
 import 'release_media_controller.dart';
 
 ///发布私房照
@@ -22,32 +20,47 @@ class ReleaseMediaPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('发布私房照'),
-      ),
-      body: buildBody(),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.only(
-          bottom: Get.mediaQuery.padding.bottom + 14.rpx,
-          left: 38.rpx,
-          right: 38.rpx,
-          top: 14.rpx,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (canPop) async{
+        if(canPop){
+          return;
+        }
+        if(state.mediaList.isEmpty && controller.contentEditingController.text.isEmpty){
+          return Get.back();
+        }
+        final result = await ConfirmDialog.show(message: Text('确定返回吗？'));
+        if (result) {
+          Get.back();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('发布私房照'),
         ),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey,
-                offset: Offset(0.0, 12.0),
-                blurRadius: 15.0,
-                spreadRadius: 4.0),
-          ],
-        ),
-        child: CommonGradientButton(
-          onTap: controller.onSubmit,
-          height: 50.rpx,
-          text: S.current.publishNow,
+        body: buildBody(),
+        bottomNavigationBar: Container(
+          padding: EdgeInsets.only(
+            bottom: Get.mediaQuery.padding.bottom + 14.rpx,
+            left: 38.rpx,
+            right: 38.rpx,
+            top: 14.rpx,
+          ),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0.0, 12.0),
+                  blurRadius: 15.0,
+                  spreadRadius: 4.0),
+            ],
+          ),
+          child: CommonGradientButton(
+            onTap: controller.onSubmit,
+            height: 50.rpx,
+            text: S.current.publishNow,
+          ),
         ),
       ),
     );

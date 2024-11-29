@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import 'package:guanjia/ui/plaza/release_media/media_upload/media_item.dart';
+
+import 'media_upload/media_upload_view.dart';
 
 class ReleaseMediaState {
 

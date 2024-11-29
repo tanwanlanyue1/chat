@@ -71,5 +71,11 @@ class AppConfig{
   ///金额小数位精度
   static const decimalDigits = 2;
 
+  ///发布私房照视频最小时长
+  static const videoMinDuration = Duration(seconds: 2);
+
+  ///发布私房照视频最大时长
+  static const videoMaxDuration = Duration(minutes: 10);
+
 
 }

@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:guanjia/common/extension/functions_extension.dart';
 import 'package:guanjia/common/network/api/api.dart';
-import 'package:guanjia/ui/plaza/release_media/media_upload/media_item.dart';
+
+import 'media_upload_view.dart';
 
 ///媒体上传
 class MediaUploader {

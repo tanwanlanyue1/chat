@@ -1,47 +1,49 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:guanjia/common/app_config.dart';
 import 'package:guanjia/common/app_text_style.dart';
+import 'package:guanjia/common/utils/app_logger.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
-import 'package:guanjia/ui/plaza/release_media/media_upload/media_item.dart';
 import 'package:guanjia/widgets/widgets.dart';
 import 'package:video_editor/video_editor.dart';
 
-import 'export_service.dart';
+import 'ffmpeg_utils.dart';
 
-///获取视频封面
-class VideoCoverPicker extends StatefulWidget {
-  final String filepath;
 
-  const VideoCoverPicker._({super.key, required this.filepath});
+///获取视频封面页
+class VideoCoverPage extends StatefulWidget {
+  final File file;
 
-  static Future<String?> open({required String filepath}) async {
-    return Get.to(() => VideoCoverPicker._(filepath: filepath));
+  const VideoCoverPage._({super.key, required this.file});
+
+  static Future<File?> open({required File file}) async {
+    return Get.to(() => VideoCoverPage._(file: file));
   }
 
   @override
-  State<VideoCoverPicker> createState() => _VideoCoverPickerState();
+  State<VideoCoverPage> createState() => _VideoCoverPageState();
 }
 
-class _VideoCoverPickerState extends State<VideoCoverPicker> {
+class _VideoCoverPageState extends State<VideoCoverPage> {
   late final VideoEditorController controller;
 
   @override
   void initState() {
     super.initState();
     controller = VideoEditorController.file(
-      File(widget.filepath),
-      minDuration: const Duration(seconds: 1),
-      maxDuration: Duration(minutes: 5),
+      widget.file,
+      minDuration: AppConfig.videoMinDuration,
+      maxDuration: AppConfig.videoMaxDuration,
       coverThumbnailsQuality: 100,
     );
     controller
         .initialize(aspectRatio: 9 / 16)
         .then((_) => setState(() {}))
         .catchError((error) {
+          AppLogger.w(error);
+          Loading.showToast('初始化失败');
       Get.back();
     }, test: (e) => e is VideoMinDurationError);
   }
@@ -133,7 +135,7 @@ class _VideoCoverPickerState extends State<VideoCoverPicker> {
       Loading.showToast("Error on cover exportation initialization.");
       return;
     }
-    await ExportService.runFFmpegCommand(
+    await FFmpegUtils.runCommand(
       execute,
       onError: (e, s) {
         if (mounted) {
@@ -141,10 +143,10 @@ class _VideoCoverPickerState extends State<VideoCoverPicker> {
           Loading.dismiss();
         }
       },
-      onCompleted: (result) {
+      onCompleted: (file) {
         if (mounted) {
           Loading.dismiss();
-          Get.back(result: result.path);
+          Get.back(result: file);
         }
       },
     );
@@ -153,6 +155,7 @@ class _VideoCoverPickerState extends State<VideoCoverPicker> {
   @override
   void dispose() {
     super.dispose();
+    FFmpegUtils.dispose();
     controller.dispose();
   }
 }

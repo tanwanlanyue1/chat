@@ -1,11 +1,14 @@
 import 'dart:convert';
-
+import 'dart:ui';
+import 'package:guanjia/common/network/api/model/open/app_config_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/plaza/private_photo/widget/private_user_view.dart';
 
 import '../../../../common/app_color.dart';
 import '../../../../common/app_text_style.dart';
@@ -13,9 +16,12 @@ import '../../../../common/network/api/model/plaza/plaza_list_model.dart';
 import '../../../../common/network/api/model/user/user_model.dart';
 import '../../../../common/network/api/plaza_api.dart';
 import '../../../../common/routes/app_pages.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../widgets/app_image.dart';
+import '../../../../widgets/edge_insets.dart';
 import '../../../../widgets/occupation_widget.dart';
 import '../../../../widgets/user_avatar.dart';
+import '../../../../widgets/user_style.dart';
 
 class PrivatePhotoListItem extends StatelessWidget {
   PrivatePhotoListItem(
@@ -63,6 +69,8 @@ class PrivatePhotoListItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.rpx),
           ),
         ),
+
+        /// 已看过遮罩
         Visibility(
             visible: isLook,
             child: ClipRRect(
@@ -71,74 +79,17 @@ class PrivatePhotoListItem extends StatelessWidget {
                   height: 219.rpx,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.rpx),
-                    color: const Color(0x00000000).withOpacity(0.6),
+                    color: const Color(0xff000000).withOpacity(0.6),
                   ),
                   alignment: Alignment.center,
-                  child: Text('刚刚看过',
+                  child: Text(S.current.hasSeen,
                       style: AppTextStyle.fs14.copyWith(color: Colors.white)),
                 ))),
-        Positioned(
-            bottom: 8.rpx,
-            right: 8.rpx,
-            child: GestureDetector(
-                onTap: () {
-                  getCommentLike();
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  child: Row(
-                    children: [
-                      AppImage.asset(
-                        (item.isLike ?? false)
-                            ? "assets/images/plaza/attention.png"
-                            : "assets/images/plaza/private_notlike.png",
-                        width: 16.rpx,
-                        height: 16.rpx,
-                      ),
-                      SizedBox(width: 4.rpx),
-                      Text(
-                        '${item.likeNum ?? 0}',
-                        style: AppTextStyle.fs12.copyWith(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ))),
-        Positioned(
-            top: 8.rpx,
-            right: 8.rpx,
-            child: (item.isVideo ?? false)
-                ? AppImage.asset(
-                    "assets/images/plaza/private_photo_vedio_ic.png",
-                    width: 20.rpx,
-                    height: 20.rpx,
-                  )
-                : Stack(
-                    children: [
-                      AppImage.asset(
-                        "assets/images/plaza/private_photo_count_bg.png",
-                        width: 20.rpx,
-                        height: 20.rpx,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 3.rpx, top: 7.rpx),
-                        child: Visibility(
-                            visible: getImageCount(item.images) > 0,
-                            child: RichText(
-                                text: TextSpan(
-                              style: TextStyle(
-                                  fontSize: 7.rpx,
-                                  color: const Color(0xff666666),
-                                  height: 1),
-                              children: <TextSpan>[
-                                const TextSpan(text: '+'),
-                                TextSpan(
-                                    text: "${getImageCount(item.images) - 1}",
-                                    style: TextStyle(fontSize: 9.rpx)),
-                              ],
-                            ))),
-                      )
-                    ],
-                  )),
+
+        /// 图片数量
+        buildImgCount(),
+
+        /// 付费图标
         Positioned(
             top: 8.rpx,
             left: 8.rpx,
@@ -149,113 +100,193 @@ class PrivatePhotoListItem extends StatelessWidget {
                   width: 45.rpx,
                   height: 20.rpx,
                 ))),
+
+        ///是否付费 查看用户信息
         if (((item.price ?? 0) > 0))
           Positioned(
-              top: 35.rpx,
-              width: 167.rpx,
-              child: Container(
-                width: 167.rpx,
-                child: buildCover(),
-              ))
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed(AppRoutes.userCenterPage,
+                      arguments: {"userId": item.uid});
+                },
+                child: PrivateUserView(item: item,),
+              ),
+              SizedBox(height: 8.rpx),
+              IntrinsicHeight(
+                  child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.only(topRight: Radius.circular(24.rpx)),
+                      child: BackdropFilter(
+                          filter:
+                              ImageFilter.blur(sigmaX: 4.rpx, sigmaY: 4.rpx),
+                          child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                minHeight: 100.rpx, // 设置最小高度
+                              ),
+                              child: Container(
+                                width: 167.rpx,
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                      colors: [
+                                        Color(0x64626399),
+                                        Color(0xFF252432)
+                                      ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter),
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(24.rpx)),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.2),
+                                    // 描边颜色
+                                    width: 0.65.rpx, // 描边宽度
+                                  ),
+                                ),
+
+                                ///用户信息
+                                child: buildCover(),
+                              )))))
+            ],
+          )),
+
+        ///点赞
+        Positioned(bottom: 5.rpx, right: 8.rpx, child: buildLike()),
       ]),
     );
   }
 
   Widget buildCover() {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
-          onTap: () {
-            Get.toNamed(AppRoutes.userCenterPage,
-                arguments: {"userId": item.uid});
-          },
-          child: buildUserAvatar(),
-        ),
-        SizedBox(height: 8.rpx),
-        Text(
-          item.nickname ?? '',
-          style:
-              AppTextStyle.fs14b.copyWith(color: AppColor.black20, height: 1.0),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        Wrap(
-          spacing: 8.rpx,
-          runSpacing: 4.rpx,
-          children: [
-            Container(
-              height: 12.rpx,
-              padding: EdgeInsets.symmetric(horizontal: 4.rpx),
-              decoration: BoxDecoration(
-                  color: UserGender.valueForIndex(item.gender ?? 0)
-                      .iconColor
-                      .withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(14.rpx)),
-              margin: EdgeInsets.only(left: 4.rpx, right: 4.rpx),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AppImage.asset(
-                      UserGender.valueForIndex(item.gender ?? 0).icon,
-                      width: 8.rpx,
-                      height: 8.rpx),
-                  SizedBox(
-                    width: 2.rpx,
-                  ),
-                  Text(
-                    "${item.age ?? ''}",
-                    style: AppTextStyle.fs10.copyWith(
-                        color:
-                            UserGender.valueForIndex(item.gender ?? 0).index ==
-                                    1
-                                ? AppColor.primaryBlue
-                                : AppColor.textPurple,
-                        height: 1.0),
-                  ),
-                ],
+        if ((item.age ?? 0) > 0)
+          Row(
+            children: [
+              Container(
+                height: 12.rpx,
+                padding: EdgeInsets.symmetric(horizontal: 4.rpx),
+                decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.6),
+                    borderRadius: BorderRadius.circular(14.rpx)),
+                margin: EdgeInsets.only(left: 8.rpx, right: 8.rpx, top: 8.rpx),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AppImage.asset(
+                        UserGender.valueForIndex(item.gender ?? 0).icon,
+                        width: 8.rpx,
+                        height: 8.rpx),
+                    SizedBox(
+                      width: 2.rpx,
+                    ),
+                    Text(
+                      "${item.age ?? ''}",
+                      style: AppTextStyle.fs10.copyWith(
+                          color: UserGender.valueForIndex(item.gender ?? 0)
+                                      .index ==
+                                  1
+                              ? AppColor.primaryBlue
+                              : AppColor.textPurple,
+                          height: 1.0),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            OccupationWidget(
-                occupation: UserOccupation.valueForIndex(item.occupation ?? 0)),
-            Visibility(
-              visible: item.nameplate != null && item.nameplate!.isNotEmpty,
-              child: CachedNetworkImage(
-                  imageUrl: item.nameplate ?? '', height: 12.rpx),
-            )
-          ],
-        )
+              getOccupation(UserOccupation.valueForIndex(item.occupation ?? 0)),
+              Visibility(
+                visible: item.nameplate != null && item.nameplate!.isNotEmpty,
+                child: CachedNetworkImage(
+                    imageUrl: item.nameplate ?? '', height: 12.rpx),
+              )
+            ],
+          ),
+        SizedBox(
+          height: 4.rpx,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.rpx),
+          child: Wrap(
+              runSpacing: 4.rpx,
+              children: item.styleList?.map((labelModel) {
+                    return getStyle(labelModel);
+                  }).toList() ??
+                  []),
+        ),
+        SizedBox(height: 6.rpx),
+        Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.rpx),
+            child: Text(
+              item.content ?? '',
+              style: AppTextStyle.fs10.copyWith(
+                  color: Colors.white.withOpacity(0.5), height: 15.6 / 12),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            )),
+        Spacer(),
+        Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.rpx, vertical: 8),
+            child: Row(
+              children: [
+                UserAvatar.circle(
+                  item.avatar ?? "",
+                  size: 10.rpx,
+                ),
+                SizedBox(width: 4.rpx),
+                Text(
+                  item.nickname ?? '',
+                  style: AppTextStyle.fs10.copyWith(
+                      color: Colors.white.withOpacity(0.6), height: 1.0),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ))
       ],
     );
   }
 
-  Widget buildUserAvatar() {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        AppImage.svga(
-          'assets/images/plaza/头像.svga',
-          width: 70.rpx,
-          height: 70.rpx,
-        ),
-        Container(
-          width: 51.5.rpx,
-          height: 51.5.rpx,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: Color(0xffC644FC), // 描边颜色
-              width: 1.5.rpx, // 描边宽度
-            ),
-          ),
-        ),
-        UserAvatar.circle(
-          item.avatar ?? "",
-          size: 50.rpx,
-        ),
-      ],
-    );
+
+
+  Widget buildImgCount() {
+    return Positioned(
+        top: 8.rpx,
+        right: 8.rpx,
+        child: (item.isVideo ?? false)
+            ? AppImage.asset(
+                "assets/images/plaza/private_photo_vedio_ic.png",
+                width: 20.rpx,
+                height: 20.rpx,
+              )
+            : Stack(
+                children: [
+                  AppImage.asset(
+                    "assets/images/plaza/private_photo_count_bg.png",
+                    width: 20.rpx,
+                    height: 20.rpx,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 3.rpx, top: 7.rpx),
+                    child: Visibility(
+                        visible: getImageCount(item.images) > 0,
+                        child: RichText(
+                            text: TextSpan(
+                          style: TextStyle(
+                              fontSize: 7.rpx,
+                              color: const Color(0xff666666),
+                              height: 1),
+                          children: <TextSpan>[
+                            const TextSpan(text: '+'),
+                            TextSpan(
+                                text: "${getImageCount(item.images) - 1}",
+                                style: TextStyle(fontSize: 9.rpx)),
+                          ],
+                        ))),
+                  )
+                ],
+              ));
   }
 
   String getFirstImage(String? images) {
@@ -288,5 +319,114 @@ class PrivatePhotoListItem extends StatelessWidget {
       print('JSON 解析错误: $e');
     }
     return 0;
+  }
+
+  Widget buildLike() {
+    return GestureDetector(
+        onTap: () {
+          getCommentLike();
+        },
+        child: Container(
+          alignment: Alignment.center,
+          child: Row(
+            children: [
+              AppImage.asset(
+                (item.isLike ?? false)
+                    ? "assets/images/plaza/attention.png"
+                    : "assets/images/plaza/private_notlike.png",
+                width: 16.rpx,
+                height: 16.rpx,
+              ),
+              SizedBox(width: 4.rpx),
+              Text(
+                '${item.likeNum ?? 0}',
+                style: AppTextStyle.fs12.copyWith(color: Colors.white),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  Widget getStyle(LabelModel styleList) {
+    final double skewX = 0.15;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 4.rpx, vertical: 2.rpx)
+          .copyWith(right: 6.rpx),
+      transform: Matrix4.skewX(-skewX),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4.rpx),
+        color: Colors.white.withOpacity(0.6),
+      ),
+      margin: EdgeInsets.only(right: 4.rpx),
+      child: Transform(
+        transform: Matrix4.skewX(skewX),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppImage.network(
+              styleList.icon,
+              width: 16.rpx,
+              height: 16.rpx,
+            ),
+            Padding(
+              padding: FEdgeInsets(left: 1.rpx),
+              child: Text(
+                styleList.tag,
+                style: AppTextStyle.fs10m.copyWith(
+                    color: AppColor.black20, height: 1, fontSize: 11.rpx),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getOccupation(UserOccupation occupation) {
+    Color color;
+    String icon;
+    String text;
+    switch (occupation) {
+      case UserOccupation.unknown:
+        return const SizedBox.shrink();
+      case UserOccupation.employees:
+        color = AppColor.primaryBlue;
+        icon = 'assets/images/plaza/workplace.png';
+        text = S.current.workplace;
+        break;
+      case UserOccupation.student:
+        color = AppColor.green1D;
+        icon = 'assets/images/plaza/student.png';
+        text = S.current.student;
+        break;
+    }
+    const skewX = 0.15;
+    return Container(
+      padding: FEdgeInsets(
+        right: 4.rpx,
+      ),
+      height: 12.rpx,
+      margin: EdgeInsets.only(top: 8.rpx),
+      transform: Matrix4.skewX(-skewX),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(2.rpx),
+        color: Colors.white.withOpacity(0.6),
+      ),
+      child: Transform(
+        transform: Matrix4.skewX(skewX),
+        child: Row(
+          children: [
+            AppImage.asset(icon, width: 12.rpx),
+            Padding(
+              padding: FEdgeInsets(left: 1.rpx),
+              child: Text(
+                text,
+                style: AppTextStyle.fs8.copyWith(color: color, height: 1),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

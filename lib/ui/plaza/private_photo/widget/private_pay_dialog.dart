@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
@@ -10,6 +11,7 @@ import 'package:guanjia/widgets/widgets.dart';
 import '../../../../common/app_text_style.dart';
 import '../../../../common/network/api/model/plaza/plaza_list_model.dart';
 import '../../../../common/service/service.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../widgets/app_image.dart';
 import '../../../../widgets/button.dart';
 import '../../../../widgets/user_avatar.dart';
@@ -39,25 +41,34 @@ class PrivatePayDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 311.rpx,
+        width: 343.rpx,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(8.rpx)),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                onPressed: Get.back,
-                icon: AppImage.asset(
-                  'assets/images/common/close.png',
-                  width: 24.rpx,
-                  height: 24.rpx,
-                ),
+        child:
+        Stack(children: [
+          Positioned(
+            top: 16.rpx,
+            right: 16.rpx,
+            child: IconButton(
+              onPressed: Get.back,
+              icon: AppImage.asset(
+                'assets/images/common/close.png',
+                width: 24.rpx,
+                height: 24.rpx,
               ),
             ),
+          ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 24.rpx,),
+            Text(S.current.privatePayDialogTitle,
+                style: TextStyle(
+                  fontSize: 16.rpx,
+                  color: Color(0xff020635)
+                )),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -97,11 +108,7 @@ class PrivatePayDialog extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                  Text('当前内容付费观看',
-                      style: TextStyle(
-                        fontSize: 16.rpx,
-                        fontWeight: FontWeight.w600,
-                      )),
+
                     SizedBox(height: 10.rpx),
                     Text('解锁费用${item.price}',
                         style: TextStyle(
@@ -120,7 +127,7 @@ class PrivatePayDialog extends StatelessWidget {
               ],
             ),
           ],
-        ),
+        )]),
       ),
     );
   }

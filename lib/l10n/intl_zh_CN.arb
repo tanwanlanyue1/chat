@@ -848,5 +848,7 @@
   "yyyyM": "yyyy年M月",
   "addAddress": "+新增地址",
   "yyyyMMdd": "yyyy年MM月dd日",
-  "sendFail": "发送失败"
+  "sendFail": "发送失败",
+  "hasSeen": "刚刚看过",
+  "privatePayDialogTitle": "当前内容付费观看"
 }

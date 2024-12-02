@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:guanjia/common/utils/screen_adapt.dart';
+import 'package:guanjia/ui/plaza/private_photo/widget/private_blur_view.dart';
 import 'package:guanjia/ui/plaza/private_photo/widget/private_user_view.dart';
 
 import '../../../../common/app_color.dart';
@@ -113,42 +114,11 @@ class PrivatePhotoListItem extends StatelessWidget {
                   Get.toNamed(AppRoutes.userCenterPage,
                       arguments: {"userId": item.uid});
                 },
-                child: PrivateUserView(item: item,),
+                child: PrivateUserView(item: item, isPayDialog: false,),
               ),
               SizedBox(height: 8.rpx),
-              IntrinsicHeight(
-                  child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.only(topRight: Radius.circular(24.rpx)),
-                      child: BackdropFilter(
-                          filter:
-                              ImageFilter.blur(sigmaX: 4.rpx, sigmaY: 4.rpx),
-                          child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                minHeight: 100.rpx, // 设置最小高度
-                              ),
-                              child: Container(
-                                width: 167.rpx,
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                      colors: [
-                                        Color(0x64626399),
-                                        Color(0xFF252432)
-                                      ],
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter),
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(24.rpx)),
-                                  border: Border.all(
-                                    color: Colors.white.withOpacity(0.2),
-                                    // 描边颜色
-                                    width: 0.65.rpx, // 描边宽度
-                                  ),
-                                ),
-
-                                ///用户信息
-                                child: buildCover(),
-                              )))))
+              ///用户信息
+              PrivateBlurView( child: buildCover(),),
             ],
           )),
 
@@ -198,8 +168,11 @@ class PrivatePhotoListItem extends StatelessWidget {
               getOccupation(UserOccupation.valueForIndex(item.occupation ?? 0)),
               Visibility(
                 visible: item.nameplate != null && item.nameplate!.isNotEmpty,
-                child: CachedNetworkImage(
-                    imageUrl: item.nameplate ?? '', height: 12.rpx),
+                child:Container(
+                    margin: EdgeInsets.only(top: 8.rpx,left: 4.rpx),
+                    child: CachedNetworkImage(
+                    imageUrl: item.nameplate ?? '', height: 12.rpx),)
+
               )
             ],
           ),
@@ -221,7 +194,7 @@ class PrivatePhotoListItem extends StatelessWidget {
             child: Text(
               item.content ?? '',
               style: AppTextStyle.fs10.copyWith(
-                  color: Colors.white.withOpacity(0.5), height: 15.6 / 12),
+                  color: Colors.white, height: 15.6 / 12),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             )),

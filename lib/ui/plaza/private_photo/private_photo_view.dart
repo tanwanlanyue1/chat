@@ -17,6 +17,7 @@ import '../../../common/app_text_style.dart';
 import '../../../common/network/api/model/plaza/plaza_list_model.dart';
 import '../../../common/paging/default_paged_child_builder_delegate.dart';
 import '../../../common/routes/app_pages.dart';
+import '../../../widgets/app_image.dart';
 import '../../../widgets/spacing.dart';
 import 'private_photo_controller.dart';
 
@@ -100,7 +101,7 @@ class _PrivatePhotoViewState extends State<PrivatePhotoView> {
 
   Widget classifyTab() {
     return Padding(
-        padding: EdgeInsets.only(bottom: 20.rpx, left: 16.rpx, top: 4.rpx),
+        padding: EdgeInsets.only(bottom: 16.rpx, left: 16.rpx, top: 4.rpx),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Obx(() => Row(
@@ -117,37 +118,16 @@ class _PrivatePhotoViewState extends State<PrivatePhotoView> {
                       height: 26.rpx,
                       padding: EdgeInsets.symmetric(horizontal: 10.rpx),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.rpx),
-                        gradient: LinearGradient(
-                            colors: state.communityIndex.value == i
-                                ? [
-                                    AppColor.gradientBegin.withOpacity(0.1),
-                                    AppColor.gradientBackgroundEnd
-                                        .withOpacity(0.1),
-                                  ]
-                                : [
-                                    AppColor.black9.withOpacity(0.1),
-                                    AppColor.black9.withOpacity(0.1)
-                                  ]),
-                      ),
-                      child: ShaderMask(
-                        shaderCallback: (Rect bounds) {
-                          return LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: state.communityIndex.value == i
-                                ? [AppColor.gradientBegin, AppColor.gradientEnd]
-                                : [AppColor.black6, AppColor.black6],
-                          ).createShader(bounds);
-                        },
-                        blendMode: BlendMode.srcATop,
-                        child: Text(
-                          '${state.communityTitle[i]}',
-                          style: AppTextStyle.fs14.copyWith(
-                              height: 1.0,
-                              leadingDistribution:
-                                  TextLeadingDistribution.even),
-                        ),
+                          borderRadius: BorderRadius.circular(20.rpx),
+                          color: Colors.white.withOpacity(0.2)),
+                      child: Text(
+                        '${state.communityTitle[i]}',
+                        style: AppTextStyle.fs14.copyWith(
+                            height: 1.0,
+                            leadingDistribution: TextLeadingDistribution.even,
+                            color: state.communityIndex.value == i
+                                ? Color(0xFFF7BF4B)
+                                : Colors.white.withOpacity(0.7)),
                       ),
                     ),
                   ),
@@ -167,32 +147,36 @@ class _PrivatePhotoViewState extends State<PrivatePhotoView> {
           Get.toNamed(AppRoutes.releaseMediaPage);
         },
         child: Container(
-            alignment: Alignment.center,
-            height: 26.rpx,
-            margin: EdgeInsets.only(right: 12.rpx),
-            padding: EdgeInsets.symmetric(horizontal: 12.rpx, vertical: 4.rpx),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.rpx),
-              gradient: LinearGradient(colors: [
-                AppColor.black9.withOpacity(0.1),
-                AppColor.black9.withOpacity(0.1)
-              ]),
-            ),
-            child: ShaderMask(
-              shaderCallback: (Rect bounds) {
-                return const LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [AppColor.black6, AppColor.black6],
-                ).createShader(bounds);
-              },
-              blendMode: BlendMode.srcATop,
-              child: Text(
+          alignment: Alignment.center,
+          height: 24.rpx,
+          width: 60.rpx,
+          margin: EdgeInsets.only(right: 12.rpx),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.rpx),
+            gradient: LinearGradient(colors: [
+              Color(0xff0F73ED),
+              Color(0xffC538FF),
+            ],begin: Alignment.topLeft,end: Alignment.bottomRight),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AppImage.asset(
+                "assets/images/plaza/push_ic.png",
+                width: 16.rpx,
+                height: 16.rpx,
+              ),
+              SizedBox(
+                width: 4.rpx,
+              ),
+              Text(
                 '发布',
                 style: AppTextStyle.fs14.copyWith(
                     height: 1.0,
-                    leadingDistribution: TextLeadingDistribution.even),
+                    leadingDistribution: TextLeadingDistribution.even,color: Colors.white),
               ),
-            )));
+            ],
+          ),
+        ));
   }
 }

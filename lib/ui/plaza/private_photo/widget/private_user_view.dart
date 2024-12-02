@@ -6,9 +6,10 @@ import '../../../../widgets/app_image.dart';
 import '../../../../widgets/user_avatar.dart';
 
 class PrivateUserView extends StatelessWidget {
-  const PrivateUserView({Key? key, required this.item}) : super(key: key);
+  const PrivateUserView({Key? key, required this.item, required this.isPayDialog}) : super(key: key);
 
   final PlazaListModel item;
+  final bool isPayDialog ;
   @override
   Widget build(BuildContext context) {
     return buildUserAvatar();
@@ -38,6 +39,7 @@ class PrivateUserView extends StatelessWidget {
           item.avatar ?? "",
           size: 50.rpx,
         ),
+        if(!isPayDialog)
         Positioned(
             top: 49.rpx,
             child: AppImage.asset(

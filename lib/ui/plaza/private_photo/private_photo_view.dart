@@ -40,52 +40,58 @@ class _PrivatePhotoViewState extends State<PrivatePhotoView> {
           child: SmartRefresher(
             controller: controller.pagingController.refreshController,
             onRefresh: controller.pagingController.onRefresh,
-            child: PagedGridView(
-              pagingController: controller.pagingController,
-              builderDelegate: DefaultPagedChildBuilderDelegate<PlazaListModel>(
-                pagingController: controller.pagingController,
-                itemBuilder: (_, item, index) {
-                  return PrivatePhotoListItem(
-                    item: item,
-                    onItemTap: () {
-                      //Get.toNamed(AppRoutes.privatePhotoDetail);
-                      if ((item.price ?? 0) > 0 && !(item.isUnlock ?? true)) {
-                        controller.showPayDialog(item);
-                      } else {
-                        if (item.isVideo ?? false) {
-                          PrivateVideoView.show(
-                              Get.context!,
-                              PrivateVideoView(
-                                item: item,
-                              ));
-                        } else {
-                          PrivatePhotoGalleryView.show(
-                              Get.context!,
-                              PrivatePhotoGalleryView(
-                                images: jsonDecode(item.images ?? ''),
-                                index: index,
-                                heroTag: '',
-                                item: item,
-                              ));
-                        }
+            child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.rpx),
+                child: PagedGridView(
+                  pagingController: controller.pagingController,
+                  builderDelegate:
+                      DefaultPagedChildBuilderDelegate<PlazaListModel>(
+                    pagingController: controller.pagingController,
+                    itemBuilder: (_, item, index) {
+                      return PrivatePhotoListItem(
+                        item: item,
+                        onItemTap: () {
+                          //Get.toNamed(AppRoutes.privatePhotoDetail);
+                          if ((item.price ?? 0) > 0 &&
+                              !(item.isUnlock ?? true)) {
+                            controller.showPayDialog(item);
+                          } else {
+                            if (item.isVideo ?? false) {
+                              PrivateVideoView.show(
+                                  Get.context!,
+                                  PrivateVideoView(
+                                    item: item,
+                                  ));
+                            } else {
+                              PrivatePhotoGalleryView.show(
+                                  Get.context!,
+                                  PrivatePhotoGalleryView(
+                                    images: jsonDecode(item.images ?? ''),
+                                    index: index,
+                                    heroTag: '',
+                                    item: item,
+                                  ));
+                            }
 
-                        setState(() {
-                          state.selectIndex = index;
-                        });
-                      }
-                    }, isLook: state.selectIndex == index, isLike: (like){
-                    controller.getCommentLike(like, index);
-                  },
-                  );
-                },
-              ),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3, // 每行显示 3 列
-                mainAxisSpacing: 2.rpx, // 行间距
-                crossAxisSpacing: 2.rpx, // 列间距
-                mainAxisExtent: 154.rpx,
-              ),
-            ),
+                            setState(() {
+                              state.selectIndex = index;
+                            });
+                          }
+                        },
+                        isLook: state.selectIndex == index,
+                        isLike: (like) {
+                          controller.getCommentLike(like, index);
+                        },
+                      );
+                    },
+                  ),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, // 每行显示 3 列
+                    mainAxisSpacing: 9.rpx, // 行间距
+                    crossAxisSpacing: 8.rpx, // 列间距
+                    mainAxisExtent: 219.rpx,
+                  ),
+                )),
           ),
         )
       ],
@@ -147,10 +153,12 @@ class _PrivatePhotoViewState extends State<PrivatePhotoView> {
                   ),
                 ).separated(Spacing.w8).toList(growable: false),
               )),
-              ///发布
-              _builPush(),
+
+          ///发布
+          _builPush(),
         ]));
   }
+
   ///发布按钮
   Widget _builPush() {
     return GestureDetector(
@@ -162,8 +170,7 @@ class _PrivatePhotoViewState extends State<PrivatePhotoView> {
             alignment: Alignment.center,
             height: 26.rpx,
             margin: EdgeInsets.only(right: 12.rpx),
-            padding:
-            EdgeInsets.symmetric(horizontal: 12.rpx, vertical: 4.rpx),
+            padding: EdgeInsets.symmetric(horizontal: 12.rpx, vertical: 4.rpx),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.rpx),
               gradient: LinearGradient(colors: [

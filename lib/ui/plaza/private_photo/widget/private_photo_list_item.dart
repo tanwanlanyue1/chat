@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -51,73 +52,116 @@ class PrivatePhotoListItem extends StatelessWidget {
       onTap: onItemTap,
       child: Stack(children: [
         Container(
-          height: 200.rpx,
-          color: Colors.black,
-          child: AppImage.network((item.isVideo ?? false)
-              ? item.videoCover ?? ''
-              : getFirstImage(item.images) ?? ''),
+          height: 219.rpx,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.rpx), // 设置圆角半径
+          ),
+          child: AppImage.network(
+            (item.isVideo ?? false)
+                ? item.videoCover ?? ''
+                : getFirstImage(item.images) ?? '',
+            borderRadius: BorderRadius.circular(8.rpx),
+          ),
         ),
         Visibility(
             visible: isLook,
-            child: Container(
-              height: 220.rpx,
-              color: Colors.black.withOpacity(0.1),
-              alignment: Alignment.center,
-              child: Text('刚刚看过',
-                  style: AppTextStyle.fs14.copyWith(color: Colors.white)),
-            )),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.rpx),
+                child: Container(
+                  height: 219.rpx,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.rpx),
+                    color: const Color(0x00000000).withOpacity(0.6),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text('刚刚看过',
+                      style: AppTextStyle.fs14.copyWith(color: Colors.white)),
+                ))),
         Positioned(
-            bottom: 0,
-            right: 0,
+            bottom: 8.rpx,
+            right: 8.rpx,
             child: GestureDetector(
                 onTap: () {
                   getCommentLike();
                 },
                 child: Container(
-                  width: 26.rpx,
                   alignment: Alignment.center,
-                  child: Column(
+                  child: Row(
                     children: [
-                      Text('${item.likeNum ?? 0}'),
-                      SizedBox(height: 2.rpx),
                       AppImage.asset(
                         (item.isLike ?? false)
                             ? "assets/images/plaza/attention.png"
-                            : "assets/images/plaza/attention_no.png",
+                            : "assets/images/plaza/private_notlike.png",
                         width: 16.rpx,
                         height: 16.rpx,
+                      ),
+                      SizedBox(width: 4.rpx),
+                      Text(
+                        '${item.likeNum ?? 0}',
+                        style: AppTextStyle.fs12.copyWith(color: Colors.white),
                       ),
                     ],
                   ),
                 ))),
         Positioned(
-            top: 10,
-            right: 10,
-            child: Row(
-              children: [
-                Text((item.isVideo ?? false) ? "视频" : "图片",
-                    style: AppTextStyle.fs14.copyWith(color: Colors.white)),
-                if ((item.isVideo ?? false) == false)
-                  Text(
-                    "${getImageCount(item.images)}张",
-                    style: AppTextStyle.fs14.copyWith(color: Colors.white),
-                  ),
-              ],
-            )),
+            top: 8.rpx,
+            right: 8.rpx,
+            child: (item.isVideo ?? false)
+                ? AppImage.asset(
+                    "assets/images/plaza/private_photo_vedio_ic.png",
+                    width: 20.rpx,
+                    height: 20.rpx,
+                  )
+                : Stack(
+                    children: [
+                      AppImage.asset(
+                        "assets/images/plaza/private_photo_count_bg.png",
+                        width: 20.rpx,
+                        height: 20.rpx,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 3.rpx, top: 7.rpx),
+                        child: Visibility(
+                            visible: getImageCount(item.images) > 0,
+                            child: RichText(
+                                text: TextSpan(
+                              style: TextStyle(
+                                  fontSize: 7.rpx,
+                                  color: const Color(0xff666666),
+                                  height: 1),
+                              children: <TextSpan>[
+                                const TextSpan(text: '+'),
+                                TextSpan(
+                                    text: "${getImageCount(item.images) - 1}",
+                                    style: TextStyle(fontSize: 9.rpx)),
+                              ],
+                            ))),
+                      )
+                    ],
+                  )),
         Positioned(
-            top: 10,
-            left: 10,
-            child: Text(((item.price ?? 0) > 0) ? "收费" : "免费",
-                style: AppTextStyle.fs14.copyWith(color: Colors.white))),
+            top: 8.rpx,
+            left: 8.rpx,
+            child: Visibility(
+                visible: (item.price ?? 0) > 0,
+                child: AppImage.asset(
+                  "assets/images/plaza/private_bill.png",
+                  width: 45.rpx,
+                  height: 20.rpx,
+                ))),
         if (((item.price ?? 0) > 0))
-        Align(
-           alignment: Alignment.center,
-            child: buildCover())
+          Positioned(
+              top: 35.rpx,
+              width: 167.rpx,
+              child: Container(
+                width: 167.rpx,
+                child: buildCover(),
+              ))
       ]),
     );
   }
 
-  Widget buildCover(){
+  Widget buildCover() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -127,16 +171,13 @@ class PrivatePhotoListItem extends StatelessWidget {
             Get.toNamed(AppRoutes.userCenterPage,
                 arguments: {"userId": item.uid});
           },
-          child: UserAvatar.circle(
-            item.avatar ?? "",
-            size: 46.rpx,
-          ),
+          child: buildUserAvatar(),
         ),
         SizedBox(height: 8.rpx),
         Text(
           item.nickname ?? '',
-          style: AppTextStyle.fs14b
-              .copyWith(color: AppColor.black20, height: 1.0),
+          style:
+              AppTextStyle.fs14b.copyWith(color: AppColor.black20, height: 1.0),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -148,28 +189,71 @@ class PrivatePhotoListItem extends StatelessWidget {
               height: 12.rpx,
               padding: EdgeInsets.symmetric(horizontal: 4.rpx),
               decoration: BoxDecoration(
-                  color: UserGender.valueForIndex(item.gender ?? 0).iconColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(14.rpx)
-              ),
-              margin: EdgeInsets.only(left: 4.rpx,right: 4.rpx),
+                  color: UserGender.valueForIndex(item.gender ?? 0)
+                      .iconColor
+                      .withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(14.rpx)),
+              margin: EdgeInsets.only(left: 4.rpx, right: 4.rpx),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AppImage.asset(UserGender.valueForIndex(item.gender ?? 0).icon,width: 8.rpx,height: 8.rpx),
-                  SizedBox(width: 2.rpx,),
+                  AppImage.asset(
+                      UserGender.valueForIndex(item.gender ?? 0).icon,
+                      width: 8.rpx,
+                      height: 8.rpx),
+                  SizedBox(
+                    width: 2.rpx,
+                  ),
                   Text(
                     "${item.age ?? ''}",
-                    style: AppTextStyle.fs10.copyWith(color: UserGender.valueForIndex(item.gender ?? 0).index == 1 ? AppColor.primaryBlue:AppColor.textPurple,height: 1.0),
+                    style: AppTextStyle.fs10.copyWith(
+                        color:
+                            UserGender.valueForIndex(item.gender ?? 0).index ==
+                                    1
+                                ? AppColor.primaryBlue
+                                : AppColor.textPurple,
+                        height: 1.0),
                   ),
                 ],
               ),
             ),
-            OccupationWidget(occupation: UserOccupation.valueForIndex(item.occupation ?? 0)),
+            OccupationWidget(
+                occupation: UserOccupation.valueForIndex(item.occupation ?? 0)),
             Visibility(
               visible: item.nameplate != null && item.nameplate!.isNotEmpty,
-              child: CachedNetworkImage(imageUrl: item.nameplate ?? '',height: 12.rpx),
+              child: CachedNetworkImage(
+                  imageUrl: item.nameplate ?? '', height: 12.rpx),
             )
-        ],)
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget buildUserAvatar() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        AppImage.svga(
+          'assets/images/plaza/头像.svga',
+          width: 70.rpx,
+          height: 70.rpx,
+        ),
+        Container(
+          width: 51.5.rpx,
+          height: 51.5.rpx,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: Color(0xffC644FC), // 描边颜色
+              width: 1.5.rpx, // 描边宽度
+            ),
+          ),
+        ),
+        UserAvatar.circle(
+          item.avatar ?? "",
+          size: 50.rpx,
+        ),
       ],
     );
   }
